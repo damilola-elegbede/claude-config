@@ -1,7 +1,7 @@
 # Claude Configuration
 
 ## Trusted Folders
-- /Users/damilola - Home directory and all subdirectories
+- /Users/damilola/Documents/Projects/ - Projects directory and all subdirectories
 
 ## Code Quality Standards
 
