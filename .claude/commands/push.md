@@ -27,6 +27,7 @@ When you use `/push`, I will:
 4. **Push to remote**:
    - Use `-u` flag if branch needs upstream tracking
    - Push to appropriate remote (usually origin)
+   - Always specify current branch explicitly: `git push origin <current-branch>`
 
 5. **Confirm success**:
    - Verify push completed
@@ -47,7 +48,7 @@ git push -u origin feature/new-feature
 
 ### Regular push to tracked branch
 ```bash
-git push
+git push origin $(git branch --show-current)
 ```
 
 ### Force push (requires confirmation)
