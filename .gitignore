@@ -5,6 +5,9 @@
 .claude/shell-snapshots/
 .claude/projects/
 
+# Claude user-specific configuration with sensitive data
+.claude.json
+
 # Backup files
 *.backup
 *.bak

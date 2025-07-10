@@ -15,8 +15,9 @@ This repository contains backup copies of Claude configurations for easy restora
 
 ### 2. .claude.json
 - **Location**: `/Users/damilola/.claude.json`
-- **Purpose**: Claude JSON configuration file
+- **Purpose**: Claude JSON configuration file (contains sensitive user data)
 - **Usage**: General Claude settings and preferences
+- **Note**: This file contains personal information and is excluded from the repository. Use `.claude.json.template` as a reference
 
 ### 3. Claude Desktop Configuration
 - **File**: `claude_desktop_config.json`
@@ -46,9 +47,10 @@ To restore these configurations on a new computer:
    cp CLAUDE.md ~/CLAUDE.md
    ```
 
-2. **Copy .claude.json** to your home directory:
+2. **Create .claude.json** from template (contains sensitive data, not in repo):
    ```bash
-   cp .claude.json ~/.claude.json
+   cp .claude.json.template ~/.claude.json
+   # Edit ~/.claude.json to add your personal settings
    ```
 
 3. **Copy Claude desktop config** (macOS):
@@ -83,7 +85,7 @@ Once installed, you can use the following commands in Claude:
 ```
 claude-config/
 ├── CLAUDE.md                    # Main configuration with coding standards
-├── .claude.json                 # Claude settings
+├── .claude.json.template        # Template for Claude settings (actual .claude.json is gitignored)
 ├── claude_desktop_config.json   # Claude desktop app configuration
 ├── .claude/                     # Claude Code directory
 │   ├── commands/               # Custom commands
@@ -91,7 +93,7 @@ claude-config/
 │   │   ├── commit.md          # /commit command
 │   │   └── push.md            # /push command
 │   └── settings.local.json    # Local settings
-├── .gitignore                  # Excludes temporary files
+├── .gitignore                  # Excludes temporary files and sensitive data
 ├── README.md                   # This file
 └── LICENSE                     # MIT License
 ```
