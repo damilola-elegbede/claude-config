@@ -162,19 +162,7 @@ Look for clear approval intent, including but not limited to:
 - Tag appropriate reviewers and request specific types of review (code, architecture, security)
 
 ### Git Command Aliases
-Use these Git aliases for common operations:
-- `git st` - Show status
-- `git co` - Checkout branches
-- `git ci` - Commit changes
-- `git br` - Branch operations
-- `git lg` - View log with graph (all branches)
-- `git lol` - View log with graph (current branch)
-- `git lola` - View log with graph (all branches)
-- `git hist` - View formatted history
-- `git last` - Show last commit
-- `git unstage` - Unstage files
-- `git amend` - Amend last commit
-- `git ca` - Commit amend (shorthand)
+Use these Git aliases: `git st`, `git co`, `git ci`, `git br`, `git lg`, `git lol`, `git lola`, `git hist`, `git last`, `git unstage`, `git amend`, `git ca`
 
 ### Testing Requirements
 - Implement comprehensive test coverage for all major features
@@ -261,259 +249,39 @@ Use these Git aliases for common operations:
 
 ## Language-Specific Guidelines
 
-### Swift
-- Follow Swift API Design Guidelines (https://swift.org/documentation/api-design-guidelines/)
-- Use optionals appropriately - avoid force unwrapping unless absolutely certain
-- Prefer value types (structs) over reference types (classes) when possible
-- Use protocol-oriented programming where it improves code flexibility
-- Follow naming conventions: lowerCamelCase for variables/functions, UpperCamelCase for types
-- Use `guard` statements for early exits and unwrapping optionals
-- Implement proper error handling with `Result` types or throwing functions
-- Use `@available` annotations for API availability
-- Prefer composition over inheritance
-- Use extensions to organize code logically
+### Common Principles Across Languages
+- Follow official style guides and API design guidelines
+- Use language-specific linters and formatters
+- Implement proper error handling patterns
+- Write comprehensive tests
+- Use type safety features where available
+- Follow idiomatic patterns and conventions
 
-### Python
-- Follow PEP 8 style guide for code formatting
-- Use type hints for all function signatures (Python 3.5+)
-- Follow PEP 257 for docstring conventions
-- Use `dataclasses` or `pydantic` for data structures
-- Prefer list comprehensions and generator expressions where readable
-- Use context managers (`with` statements) for resource management
-- Implement proper exception handling with specific exception types
-- Use `logging` module instead of print statements
-- Follow the Zen of Python principles (`import this`)
-- Use virtual environments for dependency management
-
-### C++
-- Follow modern C++ standards (C++17 or later preferred)
-- Use RAII (Resource Acquisition Is Initialization) for resource management
-- Prefer smart pointers over raw pointers
-- Use `const` correctness throughout
-- Follow the Rule of Five for classes managing resources
-- Use STL algorithms over manual loops where possible
-- Implement move semantics for performance
-- Use `constexpr` for compile-time computations
-- Avoid using `using namespace std;` in headers
-- Use forward declarations to minimize compilation dependencies
-
-### JavaScript/TypeScript
-- Always use TypeScript for new projects
-- Use strict mode and enable all strict compiler options
-- Prefer `const` over `let`, avoid `var`
-- Use arrow functions for callbacks and short functions
-- Implement proper async/await error handling
-- Use optional chaining and nullish coalescing
-- Follow functional programming principles where appropriate
-- Use ESModules over CommonJS for new code
-- Implement proper type guards for runtime type checking
-- Use branded types for domain modeling
-
-### Go
-- Follow Effective Go guidelines
-- Keep interfaces small and focused
-- Use channels for communication between goroutines
-- Handle all errors explicitly - no silent failures
-- Use defer for cleanup operations
-- Keep package names short and lowercase
-- Use table-driven tests for comprehensive testing
-- Implement context.Context for cancellation and timeouts
-- Follow standard project layout (cmd/, pkg/, internal/)
-- Use go fmt, go vet, and golangci-lint
-
-### Rust
-- Follow Rust API Guidelines
-- Use `Result<T, E>` for recoverable errors
-- Implement the builder pattern for complex structs
-- Use iterators instead of loops where possible
-- Follow ownership and borrowing rules strictly
-- Use `#[derive()]` for common traits
-- Implement `From` and `Into` for type conversions
-- Use feature flags for optional dependencies
-- Document unsafe code blocks thoroughly
-- Use cargo clippy and cargo fmt
+### Language-Specific Requirements
+**Swift**: Swift API Guidelines, optionals over force unwrapping, value types preferred, protocol-oriented design, guard for early exits
+**Python**: PEP 8/257, type hints, dataclasses/pydantic, context managers, logging module, virtual environments
+**C++**: Modern C++ (C++17+), RAII, smart pointers, const correctness, STL algorithms, avoid `using namespace std` in headers
+**JavaScript/TypeScript**: Always TypeScript, strict mode, const > let, async/await, ESModules, type guards
+**Go**: Effective Go, small interfaces, explicit error handling, defer cleanup, standard layout (cmd/pkg/internal)
+**Rust**: Rust API Guidelines, Result<T,E>, ownership/borrowing, #[derive], cargo clippy/fmt
 
 ## Platform-Specific Guidelines
 
-### iOS/macOS Development
-- Follow Human Interface Guidelines (HIG) strictly
-- Use SwiftUI for new UI development, UIKit for legacy support
-- Implement proper state management (Combine, async/await)
-- Support Dynamic Type for accessibility
-- Handle all device orientations and sizes appropriately
-- Use Keychain for sensitive data storage
-- Implement proper background task handling
-- Support Dark Mode and High Contrast
-- Use SF Symbols for consistent iconography
-- Test on multiple device sizes and iOS versions
-
-### Android Development
-- Follow Material Design guidelines
-- Use Kotlin as primary language
-- Implement MVVM or MVI architecture patterns
-- Use Jetpack Compose for new UI development
-- Support multiple screen densities and sizes
-- Handle configuration changes properly
-- Use WorkManager for background tasks
-- Implement proper lifecycle management
-- Support both light and dark themes
-- Use Android Keystore for sensitive data
-
-### Web Development
-- Ensure responsive design for all screen sizes
-- Follow WCAG 2.1 AA accessibility standards
-- Implement Progressive Web App (PWA) features where appropriate
-- Use semantic HTML5 elements
-- Optimize for Core Web Vitals
-- Implement proper SEO meta tags
-- Use lazy loading for images and heavy resources
-- Support offline functionality with service workers
-- Implement proper CORS handling
-- Use HTTPS everywhere
-
-### Backend/API Development
-- Follow RESTful principles or GraphQL best practices
-- Implement proper API versioning
-- Use OpenAPI/Swagger for documentation
-- Implement rate limiting and throttling
-- Use proper HTTP status codes
-- Implement comprehensive error responses
-- Support pagination for large datasets
-- Use proper authentication (OAuth2, JWT)
-- Implement request/response validation
-- Use correlation IDs for request tracking
+**iOS/macOS**: HIG compliance, SwiftUI preferred, Dynamic Type accessibility, Keychain for secrets, Dark Mode support, test on multiple devices
+**Android**: Material Design, Kotlin, Jetpack Compose, handle configuration changes, WorkManager for background tasks, Keystore for secrets
+**Web**: Responsive design, WCAG 2.1 AA, semantic HTML5, Core Web Vitals, PWA features, HTTPS everywhere
+**Backend/API**: RESTful/GraphQL, API versioning, OpenAPI docs, rate limiting, proper auth (OAuth2/JWT), pagination, correlation IDs
 
 ### Cloud Platform Guidelines
-
-#### AWS
-- Follow Well-Architected Framework principles
-- Use IAM roles and policies with least privilege
-- Implement proper tagging strategy
-- Use CloudFormation or CDK for infrastructure as code
-- Enable CloudTrail for audit logging
-- Implement cost optimization strategies
-- Use appropriate storage classes for S3
-- Implement proper VPC design with security groups
-- Use Parameter Store or Secrets Manager for secrets
-- Enable encryption at rest and in transit
-
-#### Azure
-- Follow Azure Well-Architected Framework
-- Use Azure AD for authentication
-- Implement proper resource groups and tagging
-- Use ARM templates or Bicep for IaC
-- Enable Azure Monitor and Application Insights
-- Implement proper network security groups
-- Use Key Vault for secrets management
-- Follow naming conventions for resources
-- Implement proper backup and disaster recovery
-- Use managed identities where possible
-
-#### Google Cloud Platform
-- Follow Google Cloud Architecture Framework
-- Use IAM with principle of least privilege
-- Implement proper project and folder organization
-- Use Deployment Manager or Terraform for IaC
-- Enable Cloud Audit Logs
-- Use Cloud KMS for encryption key management
-- Implement proper VPC design with firewall rules
-- Use Secret Manager for sensitive data
-- Follow resource naming conventions
-- Implement cost management with budgets and alerts
+Follow platform-specific Well-Architected Frameworks. Key principles:
+- **Security**: Least privilege IAM, encryption at rest/transit, secrets management (AWS Secrets Manager/Azure Key Vault/GCP Secret Manager)
+- **Infrastructure**: Use IaC (CloudFormation/ARM/Terraform), proper VPC/network design, resource tagging/naming conventions
+- **Monitoring**: Enable audit logs, implement cost management, use platform monitoring tools
+- **Best Practices**: Managed identities where possible, proper backup/DR, follow platform-specific guidelines
 
 ## Plan Approval Examples
 
-### CORRECT Workflow Example:
-```
-User: Add a dark mode toggle to the settings page
-
-Claude: I'll help you add a dark mode toggle to the settings page. Let me create a detailed implementation plan for your review.
-
-```markdown
-# Implementation Plan: Dark Mode Toggle
-
-## Executive Summary
-Add a user-configurable dark mode toggle to the application settings page that persists user preference and applies theme across the entire application.
-
-## Problem Statement & Business Impact
-Users need the ability to switch between light and dark themes for better accessibility and reduced eye strain. This improves user experience and extends usage time, particularly in low-light environments.
-
-## Proposed Solution Architecture
-- Add toggle component to Settings page
-- Implement theme context provider for global state management
-- Store preference in localStorage for persistence
-- Apply theme classes using CSS variables for consistent styling
-
-## Technical Implementation Details
-1. Create ThemeContext in /contexts/ThemeContext.tsx
-2. Add DarkModeToggle component in /components/settings/DarkModeToggle.tsx
-3. Update Settings page to include toggle
-4. Modify root CSS to support theme variables
-5. Update all components to use theme-aware styling
-
-## Risk Assessment & Mitigation
-- Risk: Existing components may have hardcoded colors
-- Mitigation: Audit all components for color usage before implementation
-
-## Success Metrics & KPIs
-- Toggle successfully switches theme
-- Preference persists across sessions
-- All UI elements properly themed
-
-## Timeline & Milestones
-- Estimated: 2-3 hours
-- Milestone 1: Theme context and toggle component (1 hour)
-- Milestone 2: CSS variable implementation (1 hour)
-- Milestone 3: Testing and refinement (30-60 min)
-
-## Dependencies & Prerequisites
-- React Context API
-- CSS variable support
-- localStorage access
-```
-
-Please review this plan. Reply with approval to proceed with implementation.
-
-User: looks good, go ahead
-
-Claude: Thank you for the approval! I'll now proceed with implementing the dark mode toggle using the TodoWrite tool to track progress.
-
-[Creates todos and begins implementation]
-```
-
-### INCORRECT Workflow Example (What NOT to do):
-```
-User: Add a dark mode toggle to the settings page
-
-Claude: I'll add a dark mode toggle to your settings page. Let me start by creating the theme context...
-
-[WRONG: Immediately starts coding without presenting plan or getting approval]
-```
-
-### Example of NON-Approval Response:
-```
-User: Add a dark mode toggle to the settings page
-
-Claude: [Presents detailed plan]
-
-User: What about mobile responsiveness?
-
-Claude: Good question about mobile responsiveness. Let me update the plan to address that concern:
-
-[Updates plan with mobile considerations]
-
-Please review the updated plan. Reply with approval to proceed with implementation.
-
-[CORRECT: Recognizes question as feedback, not approval]
-```
-
-## Critical Reminders
-- **When `/plan` is used**: Create a detailed PRD/Spec plan BEFORE writing any code
-- **When `/plan` is used**: Present plans in markdown code blocks for clarity
-- **When `/plan` is used**: Wait for explicit approval before ANY implementation
-- **Branch Creation**: Only create branches when explicitly requested by user
-- **NEVER proceed based on ambiguous responses**
-- Do what has been asked; nothing more, nothing less
-- NEVER create files unless they're absolutely necessary for achieving your goal
-- ALWAYS prefer editing an existing file to creating a new one
-- NEVER proactively create documentation files (*.md) or README files unless explicitly requested
+When `/plan` is used:
+- **CORRECT**: Present full plan → Wait for explicit approval → Execute with TodoWrite
+- **INCORRECT**: Start coding immediately without plan or approval
+- **NON-APPROVAL**: Questions/feedback require updated plan and re-approval
