@@ -1,0 +1,50 @@
+# Claude temporary and session files
+.claude/todos/
+.claude/ide/
+.claude/statsig/
+.claude/shell-snapshots/
+.claude/projects/
+
+# Backup files
+*.backup
+*.bak
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and temporary files
+*.log
+*.tmp
+.temp/
+
+# Environment files with potential secrets
+.env
+.env.local
+.env.*.local
+
+# Private keys and certificates
+*.pem
+*.key
+*.cert
+*.crt
+
+# Node modules (if any JS tools are added)
+node_modules/
+
+# Python cache (if any Python tools are added)
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Build outputs
+dist/
+build/
+out/
