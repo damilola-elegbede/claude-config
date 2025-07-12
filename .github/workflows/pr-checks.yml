@@ -1,0 +1,116 @@
+name: PR Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  test-changes:
+    name: Test Changes
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout PR branch
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v44
+      
+    - name: List changed files
+      run: |
+        echo "Changed files:"
+        for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          echo "  - $file"
+        done
+        
+    - name: Run tests
+      run: |
+        chmod +x test.sh
+        ./test.sh
+        
+    - name: Check if sync needed
+      if: contains(steps.changed-files.outputs.all_changed_files, 'CLAUDE.md') || contains(steps.changed-files.outputs.all_changed_files, '.claude/commands/')
+      run: |
+        echo "⚠️ Changes detected in configuration files!"
+        echo "Remember to run /sync command after merging to update your local configuration."
+        
+  command-validation:
+    name: Validate Commands
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Validate command structure
+      run: |
+        echo "Validating command files..."
+        
+        for cmd in .claude/commands/*.md; do
+          echo "Checking $cmd..."
+          
+          # Check for required sections
+          if ! grep -q "^# /" "$cmd"; then
+            echo "❌ Missing command header in $cmd"
+            exit 1
+          fi
+          
+          if ! grep -q "^## Description" "$cmd"; then
+            echo "❌ Missing Description section in $cmd"
+            exit 1
+          fi
+          
+          if ! grep -q "^## Usage" "$cmd"; then
+            echo "❌ Missing Usage section in $cmd"
+            exit 1
+          fi
+          
+          if ! grep -q "^## Behavior" "$cmd"; then
+            echo "❌ Missing Behavior section in $cmd"
+            exit 1
+          fi
+          
+          echo "✓ $cmd structure is valid"
+        done
+        
+        echo "All command files are properly structured!"
+
+  security-check:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Check for sensitive data
+      run: |
+        echo "Scanning for sensitive data..."
+        
+        # Check for common patterns of sensitive data
+        patterns=(
+          "password.*=.*['\"].*['\"]"
+          "api[_-]?key.*=.*['\"].*['\"]"
+          "secret.*=.*['\"].*['\"]"
+          "token.*=.*['\"].*['\"]"
+          "private[_-]?key"
+        )
+        
+        found_issues=false
+        
+        for pattern in "${patterns[@]}"; do
+          if grep -r -i -E "$pattern" . --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.github; then
+            echo "❌ Found potential sensitive data matching pattern: $pattern"
+            found_issues=true
+          fi
+        done
+        
+        if [ "$found_issues" = true ]; then
+          echo "Security check failed! Please remove sensitive data."
+          exit 1
+        fi
+        
+        echo "✓ No sensitive data patterns found"
