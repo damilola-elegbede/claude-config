@@ -1,0 +1,36 @@
+{
+  // Markdownlint configuration for Claude configuration repository
+  // We disable several rules that conflict with our documentation style
+  "config": {
+    "default": true,
+    // MD009: Trailing spaces (sometimes needed for formatting)
+    "MD009": false,
+    // MD013: Line length (our commands have long descriptions)
+    "MD013": false,
+    // MD022: Headings should be surrounded by blank lines
+    "MD022": false,
+    // MD023: Headings must start at beginning of line
+    "MD023": false,
+    // MD026: Trailing punctuation in heading (we use colons)
+    "MD026": false,
+    // MD031: Fenced code blocks should be surrounded by blank lines
+    "MD031": false,
+    // MD032: Lists should be surrounded by blank lines
+    "MD032": false,
+    // MD033: Inline HTML (needed for some formatting)
+    "MD033": false,
+    // MD040: Fenced code blocks should have language specified
+    "MD040": false,
+    // MD041: First line in file should be a top level heading
+    "MD041": false,
+    // MD047: Files should end with single newline
+    "MD047": false,
+    // MD050: Strong style should be consistent (we use both ** and __)
+    "MD050": false
+  },
+  // Ignore patterns
+  "ignores": [
+    "node_modules",
+    ".git"
+  ]
+}

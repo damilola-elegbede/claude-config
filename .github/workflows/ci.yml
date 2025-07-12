@@ -85,7 +85,5 @@ jobs:
     - name: Lint markdown files
       uses: DavidAnson/markdownlint-cli2-action@v16
       with:
-        globs: |
-          **/*.md
-          !node_modules
-          !.git
+        config: '.markdownlint-cli2.jsonc'
+        globs: '**/*.md'
