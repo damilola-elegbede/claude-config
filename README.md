@@ -104,6 +104,7 @@ claude-config/
 │   ├── integration/            # Integration tests
 │   └── utils.sh               # Test utilities
 ├── test.sh                     # Test runner script
+├── .markdownlint.json          # Markdown linter configuration
 ├── .gitignore                  # Excludes temporary files and sensitive data
 ├── README.md                   # This file
 └── LICENSE                     # MIT License
