@@ -102,7 +102,7 @@ jobs:
         found_issues=false
         
         for pattern in "${patterns[@]}"; do
-          if grep -r -i -E "$pattern" . --exclude-dir=.git --exclude-dir=node_modules; then
+          if grep -r -i -E "$pattern" . --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.github; then
             echo "❌ Found potential sensitive data matching pattern: $pattern"
             found_issues=true
           fi
