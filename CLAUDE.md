@@ -1,5 +1,21 @@
 # Claude Configuration
 
+## CLI Command Shortcuts
+
+### /test Command
+- Automatically discovers and runs tests configured in any repository
+- Creates base level test suite if no tests exist
+- Analyzes README.md to find test commands
+- Falls back to detecting common test patterns (npm test, pytest, go test, etc.)
+- Generates framework-appropriate starter tests with best practices
+- Usage: Simply type `/test` to run tests in the current repository
+
+### /context Command  
+- Quickly analyzes repository structure, tech stack, and purpose
+- Provides comprehensive overview to get up to speed on any codebase
+- Auto-executes when Claude Code starts in a git repository
+- Usage: Type `/context` for instant repository analysis
+
 ## Trusted Folders
 - /Users/damilola/Documents/Projects/ - Projects directory and all subdirectories
 

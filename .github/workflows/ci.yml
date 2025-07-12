@@ -1,0 +1,98 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Make test script executable
+      run: chmod +x test.sh
+      
+    - name: Run test suite
+      run: ./test.sh
+      
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: |
+          test-results.log
+          tests/**/*.log
+        retention-days: 30
+
+  validate-structure:
+    name: Validate Repository Structure
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Check required files exist
+      run: |
+        echo "Checking required files..."
+        required_files=(
+          "README.md"
+          "CLAUDE.md"
+          "LICENSE"
+          "test.sh"
+          ".claude/commands/plan.md"
+          ".claude/commands/commit.md"
+          ".claude/commands/push.md"
+          ".claude/commands/test.md"
+          ".claude/commands/context.md"
+          ".claude/commands/sync.md"
+        )
+        
+        for file in "${required_files[@]}"; do
+          if [ ! -f "$file" ]; then
+            echo "❌ Missing required file: $file"
+            exit 1
+          else
+            echo "✓ Found: $file"
+          fi
+        done
+        
+        echo "All required files present!"
+        
+    - name: Check file permissions
+      run: |
+        if [ ! -x "test.sh" ]; then
+          echo "❌ test.sh is not executable"
+          exit 1
+        fi
+        echo "✓ test.sh is executable"
+
+  lint-markdown:
+    name: Lint Markdown Files
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Lint markdown files
+      uses: DavidAnson/markdownlint-cli2-action@v16
+      with:
+        config: |
+          {
+            "default": true,
+            "MD013": false,
+            "MD033": false,
+            "MD041": false
+          }
+        globs: |
+          **/*.md
+          !node_modules
+          !.git

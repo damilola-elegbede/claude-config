@@ -28,6 +28,12 @@ Thumbs.db
 *.tmp
 .temp/
 
+# Test artifacts
+test-results.log
+test-results/
+coverage/
+.coverage
+
 # Environment files with potential secrets
 .env
 .env.local
