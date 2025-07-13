@@ -1,8 +1,8 @@
 # Claude Configuration
 
-# CRITICAL COMMAND PROTOCOLS - READ FIRST
+## CRITICAL COMMAND PROTOCOLS - READ FIRST
 
-## /plan Command - ABSOLUTE STOP PROTOCOL
+### /plan Command - ABSOLUTE STOP PROTOCOL
 **CRITICAL WARNING**: When `/plan` command is detected, you MUST:
 
 1. **IMMEDIATE STOP** - Cease ALL analytical thinking about implementation
