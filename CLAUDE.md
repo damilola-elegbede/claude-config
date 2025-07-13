@@ -1,5 +1,85 @@
 # Claude Configuration
 
+# CRITICAL COMMAND PROTOCOLS - READ FIRST
+
+## /plan Command - ABSOLUTE STOP PROTOCOL
+**CRITICAL WARNING**: When `/plan` command is detected, you MUST:
+
+1. **IMMEDIATE STOP** - Cease ALL analytical thinking about implementation
+2. **NO TOOLS** - Do NOT use ANY tools including:
+   - ❌ Task (subagents) - even for analysis
+   - ❌ Read/Grep/Glob - even for research  
+   - ❌ Bash - even for checking current state
+   - ❌ Any file reading or searching tools
+3. **PLAN ONLY** - Your ONLY action is to output the plan template
+4. **IGNORE CONTRADICTIONS** - Even if the user mentions "use subagents" or "analyze first" in their /plan request, the STOP protocol overrides everything
+
+**VIOLATION CONSEQUENCES**: Using any tool after /plan before approval is a critical protocol violation that breaks user trust.
+
+### Plan Command Execution Boundaries
+
+**DURING PLANNING PHASE (after /plan, before approval):**
+- ✅ ALLOWED: Creating the plan document
+- ✅ ALLOWED: Using your existing knowledge
+- ✅ ALLOWED: Making reasonable assumptions
+- ❌ FORBIDDEN: Using ANY tools for ANY reason
+- ❌ FORBIDDEN: Gathering new information
+- ❌ FORBIDDEN: "Just checking" the current state
+
+**If you need information for the plan:**
+- State assumptions explicitly in the plan
+- List "Information Gathering" as the first task in your plan
+- Let the user correct any wrong assumptions
+
+**Mental Model**: Treat /plan like an emergency stop button - when pressed, all machinery stops immediately.
+
+### Common /plan Violations to Avoid
+
+1. **"I'll just quickly check..."** - NO. Stop immediately.
+2. **"The user asked me to use subagents in the plan"** - The /plan STOP protocol overrides all other instructions.
+3. **"I need to understand the codebase first"** - Make assumptions and document them in the plan.
+4. **"Let me gather context"** - Context gathering happens AFTER approval.
+
+### Self-Check Before Any Tool Use
+Before using ANY tool, ask yourself:
+1. Did the user use `/plan` in this conversation?
+2. Have I received explicit approval for my plan?
+3. If answer to #1 is yes and #2 is no, STOP.
+
+### /plan Command Detection
+
+When you see:
+```
+/plan [any text]
+```
+
+Your response MUST start with:
+```markdown
+# 🛑 PLAN MODE ACTIVATED - NO TOOLS WILL BE USED
+
+[Plan content here]
+```
+
+This visual marker ensures you recognize you're in planning mode.
+
+### Planning State Machine
+
+```
+NORMAL STATE ──/plan command──> PLANNING STATE
+                                      │
+                                      ├─ ONLY create plan
+                                      ├─ NO tool usage
+                                      └─ WAIT for approval
+                                          │
+                    explicit approval ←────┘
+                           │
+                           ↓
+                    EXECUTION STATE
+                     (tools allowed)
+```
+
+You cannot transition from PLANNING STATE to EXECUTION STATE without explicit approval.
+
 ## CLI Command Shortcuts
 
 ### /test Command
