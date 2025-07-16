@@ -329,20 +329,24 @@ Look for clear approval intent, including but not limited to:
 
 ### Push and Pull Request Workflow
 
-#### Preparing PR Documentation During Push
+#### Automated PR Creation on First Push
 When using `/push`, Claude will:
-1. **Analyze all commits** being pushed to understand the full scope of changes
-2. **Generate a draft PR description** and save it to `.github/pr-description-draft.md`
-3. **Include in the draft**:
+
+**On First Push (no upstream tracking)**:
+1. **Analyze all commits** to understand the full scope of changes
+2. **Push with `-u` flag** to set up remote tracking
+3. **Automatically create PR** with comprehensive description including:
    - Summary of all changes across commits
    - Aggregated list of files modified
    - Testing suggestions based on changes
    - Potential impacts and breaking changes
    - Review focus areas
-4. **Display the PR creation command** with pre-filled description:
-   ```bash
-   gh pr create --title "feat(scope): description" --body-file .github/pr-description-draft.md
-   ```
+4. **Display the PR URL** for immediate access
+
+**On Subsequent Pushes**:
+1. **Push changes normally** to the existing remote branch
+2. **Show commits pushed** and confirm PR update
+3. **Display existing PR URL** if available
 
 #### Pull Request Submission Guidelines
 - **Always fill out PR descriptions completely** - never submit with template placeholders
