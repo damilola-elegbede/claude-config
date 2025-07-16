@@ -96,6 +96,29 @@ You cannot transition from PLANNING STATE to EXECUTION STATE without explicit ap
 - Auto-executes when Claude Code starts in a git repository
 - Usage: Type `/context` for instant repository analysis
 
+## Audio Completion Notifications
+
+### Configuration
+- **Chime Sound**: `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Chime.m4r`
+- **Playback Command**: `afplay "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Chime.m4r"`
+- **Trigger Events**: Play chime when significant tasks are completed
+
+### Implementation Protocol
+- Play audio notification after major task completions including:
+  - Code implementation completion
+  - Test execution completion  
+  - Git operations completion (commits, PR creation)
+  - Multi-step process completion
+  - TodoWrite task completion for significant workflows
+- Use asynchronous playback to avoid blocking operations
+- Implement graceful failure handling if audio is unavailable
+- Smart triggering to avoid notification fatigue (excludes minor file reads, simple queries)
+
+### Error Handling
+- If audio playback fails, continue operation silently
+- Check file accessibility before attempting playback
+- Log audio errors for debugging but don't interrupt workflow
+
 ## Trusted Folders
 - /Users/damilola/Documents/Projects/ - Projects directory and all subdirectories
 
@@ -342,6 +365,7 @@ Use these Git aliases: `git st`, `git co`, `git ci`, `git br`, `git lg`, `git lo
 - Document any operational changes needed
 - Prepare deployment plan
 - Create knowledge transfer documentation
+- **Play completion audio notification**: Execute `afplay "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Chime.m4r"` to signal task completion
 
 ## Language-Specific Guidelines
 
