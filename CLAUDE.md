@@ -327,7 +327,24 @@ Look for clear approval intent, including but not limited to:
 - Keep documentation in sync with implementation - no orphaned docs or undocumented features
 - Include usage examples in documentation when adding new features
 
-### Pull Request Submission Guidelines
+### Push and Pull Request Workflow
+
+#### Preparing PR Documentation During Push
+When using `/push`, Claude will:
+1. **Analyze all commits** being pushed to understand the full scope of changes
+2. **Generate a draft PR description** and save it to `.github/pr-description-draft.md`
+3. **Include in the draft**:
+   - Summary of all changes across commits
+   - Aggregated list of files modified
+   - Testing suggestions based on changes
+   - Potential impacts and breaking changes
+   - Review focus areas
+4. **Display the PR creation command** with pre-filled description:
+   ```bash
+   gh pr create --title "feat(scope): description" --body-file .github/pr-description-draft.md
+   ```
+
+#### Pull Request Submission Guidelines
 - **Always fill out PR descriptions completely** - never submit with template placeholders
 - Use the existing PR template as a structure, but populate all sections with actual content
 - **Summary**: Provide a clear, concise description of what changes were made and why
