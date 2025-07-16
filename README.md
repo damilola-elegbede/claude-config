@@ -14,8 +14,9 @@ This repository contains backup copies of Claude configurations for easy restora
   - Git aliases and version control practices
 
 ### 2. Claude Code Settings
-- **Location**: `/Users/damilola/.claude/settings.local.json`
-- **Purpose**: Claude Code local settings
+- **Location**: `/Users/damilola/.claude/settings.json`
+- **Purpose**: Claude Code settings with audio notification hooks
+- **Features**: Automatic audio notifications for task completion and stop events
 - **Note**: Each project can have its own `.claude` directory with project-specific settings
 
 ### 3. Claude Commands
@@ -29,6 +30,16 @@ This repository contains backup copies of Claude configurations for easy restora
   - `/context` - Analyzes repository structure and provides comprehensive overview
   - `/sync` - (Repo-specific) Syncs configuration from this repo to user settings
 
+### 4. Audio Notification System
+- **Hook Script**: `audio_notification_hook.sh`
+- **Documentation**: `AUDIO_HOOK_README.md`
+- **Purpose**: Provides audio feedback for Claude Code operations
+- **Features**:
+  - Swish.m4r sound for task completions (Write, Edit, MultiEdit, Bash, TodoWrite)
+  - Ding.m4r sound for stop events (Claude stops, subagent stops)
+  - Smart filtering to avoid notification fatigue
+  - Background playback (non-blocking)
+
 ## Installation Instructions
 
 To restore these configurations on a new computer:
@@ -41,9 +52,13 @@ To restore these configurations on a new computer:
 2. **Copy Claude Code settings and commands**:
    ```bash
    cp -r .claude ~/.claude
+   cp settings.json ~/.claude/settings.json
+   cp audio_notification_hook.sh ~/.claude/audio_notification_hook.sh
+   chmod +x ~/.claude/audio_notification_hook.sh
+   cp AUDIO_HOOK_README.md ~/.claude/AUDIO_HOOK_README.md
    ```
 
-**Alternative**: Once installed, you can use the `/sync` command from within this repository to update your configuration files automatically.
+**Alternative**: Once installed, you can use the `/sync` command from within this repository to update your configuration files automatically. The sync command will back up existing files and copy all configuration files including the audio notification system.
 
 ## Using Claude Commands
 

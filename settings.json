@@ -1,0 +1,74 @@
+{
+  "model": "sonnet",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/damilola/.claude/audio_notification_hook.sh PostToolUse Write true"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/damilola/.claude/audio_notification_hook.sh PostToolUse Edit true"
+          }
+        ]
+      },
+      {
+        "matcher": "MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/damilola/.claude/audio_notification_hook.sh PostToolUse MultiEdit true"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/damilola/.claude/audio_notification_hook.sh PostToolUse Bash true"
+          }
+        ]
+      },
+      {
+        "matcher": "TodoWrite",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/damilola/.claude/audio_notification_hook.sh PostToolUse TodoWrite true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/damilola/.claude/audio_notification_hook.sh Stop"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/damilola/.claude/audio_notification_hook.sh SubagentStop"
+          }
+        ]
+      }
+    ]
+  }
+}
