@@ -5,10 +5,10 @@ This hook system provides automatic audio notifications for different Claude Cod
 
 ## Configuration
 
-### Hook Script Location
-- **Script**: `/Users/damilola/.claude/audio_notification_hook.sh`
+### Audio Configuration
 - **Completion Sound**: `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r`
 - **Stop Sound**: `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Ding.m4r`
+- **Implementation**: Direct afplay commands in Claude Code hooks
 
 ### Settings Configuration
 Add to `/Users/damilola/.claude/settings.json`:
@@ -17,36 +17,35 @@ Add to `/Users/damilola/.claude/settings.json`:
   "hooks": {
     "PostToolUse": [
       {
-        "matcher": "Write",
-        "hooks": [{"type": "command", "command": "/Users/damilola/.claude/audio_notification_hook.sh PostToolUse Write true"}]
-      },
-      {
-        "matcher": "Edit",
-        "hooks": [{"type": "command", "command": "/Users/damilola/.claude/audio_notification_hook.sh PostToolUse Edit true"}]
-      },
-      {
-        "matcher": "MultiEdit",
-        "hooks": [{"type": "command", "command": "/Users/damilola/.claude/audio_notification_hook.sh PostToolUse MultiEdit true"}]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [{"type": "command", "command": "/Users/damilola/.claude/audio_notification_hook.sh PostToolUse Bash true"}]
-      },
-      {
-        "matcher": "TodoWrite",
-        "hooks": [{"type": "command", "command": "/Users/damilola/.claude/audio_notification_hook.sh PostToolUse TodoWrite true"}]
+        "matcher": "Write|Edit|MultiEdit|Bash|TodoWrite",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r' 2>/dev/null &"
+          }
+        ]
       }
     ],
     "Stop": [
       {
         "matcher": "*",
-        "hooks": [{"type": "command", "command": "/Users/damilola/.claude/audio_notification_hook.sh Stop"}]
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Ding.m4r' 2>/dev/null &"
+          }
+        ]
       }
     ],
     "SubagentStop": [
       {
         "matcher": "*",
-        "hooks": [{"type": "command", "command": "/Users/damilola/.claude/audio_notification_hook.sh SubagentStop"}]
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Ding.m4r' 2>/dev/null &"
+          }
+        ]
       }
     ]
   }
@@ -81,19 +80,18 @@ Add to `/Users/damilola/.claude/settings.json`:
 2. Test audio manually: 
    - `afplay "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r"`
    - `afplay "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Ding.m4r"`
-3. Check script permissions: `ls -la ~/.claude/audio_notification_hook.sh`
-4. Verify hook configuration in settings.json
+3. Verify hook configuration in settings.json
 
 ### Too Many Notifications
-The hook includes smart filtering to avoid notification fatigue. If you're still getting too many notifications, you can:
-1. Modify the `is_significant_completion()` function in the hook script
-2. Add more restrictive filtering logic
-3. Remove specific tool matchers from settings.json
+The hooks use matcher patterns to filter which tools trigger notifications. If you're still getting too many notifications, you can:
+1. Modify the matcher patterns in settings.json to be more specific
+2. Remove specific tools from the matcher (e.g., change "Write|Edit|MultiEdit|Bash|TodoWrite" to "Write|Edit|MultiEdit")
+3. Add time-based filtering or other logic if needed
 
 ### Disabling Notifications
 To temporarily disable:
 1. Comment out the hooks section in settings.json
-2. Or rename the hook script file
+2. Or remove the PostToolUse, Stop, and SubagentStop hooks entirely
 
 ## Testing
 
@@ -121,16 +119,13 @@ Test the hook with these Claude Code operations:
    - Should trigger audio notification
 
 ### Automated Testing
-To test the hook script directly:
+To test the audio notifications directly:
 ```bash
 # Test PostToolUse hooks (Swish.m4r)
-/Users/damilola/.claude/audio_notification_hook.sh PostToolUse Write true
-/Users/damilola/.claude/audio_notification_hook.sh PostToolUse Edit true
-/Users/damilola/.claude/audio_notification_hook.sh PostToolUse Bash true
+afplay '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r' 2>/dev/null &
 
 # Test Stop hooks (Ding.m4r)
-/Users/damilola/.claude/audio_notification_hook.sh Stop
-/Users/damilola/.claude/audio_notification_hook.sh SubagentStop
+afplay '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Ding.m4r' 2>/dev/null &
 ```
 
 ### Expected Behavior
@@ -148,5 +143,5 @@ To test the hook script directly:
 - ✅ TodoWrite operations trigger Swish.m4r audio notifications
 - ✅ Stop hooks trigger Ding.m4r audio notifications
 - ✅ SubagentStop hooks trigger Ding.m4r audio notifications
-- ✅ Hook script handles missing audio files gracefully
+- ✅ Direct afplay commands handle missing audio files gracefully
 - ✅ Audio playback is non-blocking

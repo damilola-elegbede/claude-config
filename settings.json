@@ -3,47 +3,11 @@
   "hooks": {
     "PostToolUse": [
       {
-        "matcher": "Write",
+        "matcher": "Write|Edit|MultiEdit|Bash|TodoWrite",
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/damilola/.claude/audio_notification_hook.sh PostToolUse Write true"
-          }
-        ]
-      },
-      {
-        "matcher": "Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/Users/damilola/.claude/audio_notification_hook.sh PostToolUse Edit true"
-          }
-        ]
-      },
-      {
-        "matcher": "MultiEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/Users/damilola/.claude/audio_notification_hook.sh PostToolUse MultiEdit true"
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/Users/damilola/.claude/audio_notification_hook.sh PostToolUse Bash true"
-          }
-        ]
-      },
-      {
-        "matcher": "TodoWrite",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/Users/damilola/.claude/audio_notification_hook.sh PostToolUse TodoWrite true"
+            "command": "afplay -v 0.8 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r' 2>/dev/null &"
           }
         ]
       }
@@ -54,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/damilola/.claude/audio_notification_hook.sh Stop"
+            "command": "afplay -v 0.8 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Ding.m4r' 2>/dev/null &"
           }
         ]
       }
@@ -65,7 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/damilola/.claude/audio_notification_hook.sh SubagentStop"
+            "command": "afplay -v 0.8 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Ding.m4r' 2>/dev/null &"
           }
         ]
       }

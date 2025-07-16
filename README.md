@@ -31,13 +31,12 @@ This repository contains backup copies of Claude configurations for easy restora
   - `/sync` - (Repo-specific) Syncs configuration from this repo to user settings
 
 ### 4. Audio Notification System
-- **Hook Script**: `audio_notification_hook.sh`
 - **Documentation**: `AUDIO_HOOK_README.md`
 - **Purpose**: Provides audio feedback for Claude Code operations
 - **Features**:
   - Swish.m4r sound for task completions (Write, Edit, MultiEdit, Bash, TodoWrite)
   - Ding.m4r sound for stop events (Claude stops, subagent stops)
-  - Smart filtering to avoid notification fatigue
+  - Direct afplay commands for simplicity
   - Background playback (non-blocking)
 
 ## Installation Instructions
@@ -53,8 +52,6 @@ To restore these configurations on a new computer:
    ```bash
    cp -r .claude ~/.claude
    cp settings.json ~/.claude/settings.json
-   cp audio_notification_hook.sh ~/.claude/audio_notification_hook.sh
-   chmod +x ~/.claude/audio_notification_hook.sh
    cp AUDIO_HOOK_README.md ~/.claude/AUDIO_HOOK_README.md
    ```
 

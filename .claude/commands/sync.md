@@ -15,14 +15,12 @@ When you use `/sync`, I will:
    - Create backups of `~/CLAUDE.md` as `~/CLAUDE.md.backup`
    - Create backups of `~/.claude/commands/` as `~/.claude/commands.backup/`
    - Create backups of `~/.claude/settings.json` as `~/.claude/settings.json.backup`
-   - Create backups of `~/.claude/audio_notification_hook.sh` as `~/.claude/audio_notification_hook.sh.backup`
    - Create backups of `~/.claude/AUDIO_HOOK_README.md` as `~/.claude/AUDIO_HOOK_README.md.backup`
 
 2. **Copy configuration files**:
    - Copy `./CLAUDE.md` to `~/CLAUDE.md`
    - Copy all files from `./.claude/commands/` to `~/.claude/commands/`
    - Copy `./settings.json` to `~/.claude/settings.json` (merge with existing settings)
-   - Copy `./audio_notification_hook.sh` to `~/.claude/audio_notification_hook.sh`
    - Copy `./AUDIO_HOOK_README.md` to `~/.claude/AUDIO_HOOK_README.md`
    - Exclude the `/sync` command itself (repo-specific only)
 
@@ -39,7 +37,6 @@ When you use `/sync`, I will:
 - `.claude/commands/test.md` - Universal test runner
 - `.claude/commands/context.md` - Repository analyzer
 - `settings.json` - Claude Code settings with audio notification hooks
-- `audio_notification_hook.sh` - Audio notification hook script
 - `AUDIO_HOOK_README.md` - Audio notification setup and troubleshooting guide
 
 ## Important Notes
@@ -56,14 +53,12 @@ Creating backups...
 ✓ Backed up ~/CLAUDE.md to ~/CLAUDE.md.backup
 ✓ Backed up ~/.claude/commands/ to ~/.claude/commands.backup/
 ✓ Backed up ~/.claude/settings.json to ~/.claude/settings.json.backup
-✓ Backed up ~/.claude/audio_notification_hook.sh to ~/.claude/audio_notification_hook.sh.backup
 ✓ Backed up ~/.claude/AUDIO_HOOK_README.md to ~/.claude/AUDIO_HOOK_README.md.backup
 
 Syncing configuration files...
 ✓ Copied CLAUDE.md to ~/CLAUDE.md
 ✓ Copied 5 command files to ~/.claude/commands/
 ✓ Copied settings.json to ~/.claude/settings.json
-✓ Copied audio_notification_hook.sh to ~/.claude/audio_notification_hook.sh (made executable)
 ✓ Copied AUDIO_HOOK_README.md to ~/.claude/AUDIO_HOOK_README.md
 ✓ Excluded sync.md (repo-specific)
 
