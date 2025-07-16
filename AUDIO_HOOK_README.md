@@ -7,7 +7,8 @@ This hook system provides automatic audio notifications for different Claude Cod
 
 ### Audio Configuration
 - **Completion Sound**: `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r`
-- **Stop Sound**: `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Ding.m4r`
+- **Stop Sound**: `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r`
+- **Notification Sound**: `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r`
 - **Implementation**: Direct afplay commands in Claude Code hooks
 
 ### Settings Configuration
@@ -17,11 +18,11 @@ Add to `/Users/damilola/.claude/settings.json`:
   "hooks": {
     "PostToolUse": [
       {
-        "matcher": "Write|Edit|MultiEdit|Bash|TodoWrite",
+        "matcher": "*",
         "hooks": [
           {
             "type": "command",
-            "command": "afplay '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r' 2>/dev/null &"
+            "command": "afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r' 2>/dev/null &"
           }
         ]
       }
@@ -32,7 +33,7 @@ Add to `/Users/damilola/.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "afplay '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Ding.m4r' 2>/dev/null &"
+            "command": "afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r' 2>/dev/null &"
           }
         ]
       }
@@ -43,7 +44,18 @@ Add to `/Users/damilola/.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "afplay '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Ding.m4r' 2>/dev/null &"
+            "command": "afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r' 2>/dev/null &"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r' 2>/dev/null &"
           }
         ]
       }
@@ -55,31 +67,35 @@ Add to `/Users/damilola/.claude/settings.json`:
 ## Hook Types and Sounds
 
 ### PostToolUse Hooks (Swish.m4r)
-- **Write**: File creation operations
-- **Edit**: File modification operations
-- **MultiEdit**: Multiple file edits
-- **Bash**: Command execution
-- **TodoWrite**: Task management operations
+- Triggers on all tool operations (matcher: "*")
+- Plays Classic Swish sound for immediate feedback
 
-### Stop Hooks (Ding.m4r)
+### Stop Hooks (Chord.m4r)
 - **Stop**: When Claude stops execution
 - **SubagentStop**: When subagents stop execution
+- Plays Modern Chord sound for completion
 
-## Excluded Tools
-- **Read**: File reading operations
-- **Grep**: Search operations
-- **Glob**: File pattern matching
-- **LS**: Directory listing
+### Notification Hooks (Aurora.m4r)
+- Triggers when Claude needs permission to use a tool
+- Triggers when prompt input has been idle for 60+ seconds
+- Plays Modern Aurora sound for attention
+
+## Universal Matching
+- All tools trigger PostToolUse notifications (matcher: "*")
+- No tools are excluded from audio feedback
+- Provides consistent auditory feedback for all operations
 
 ## Troubleshooting
 
 ### No Audio Playing
 1. Check if audio files exist: 
    - `ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r"`
-   - `ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Ding.m4r"`
+   - `ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r"`
+   - `ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r"`
 2. Test audio manually: 
-   - `afplay "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r"`
-   - `afplay "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Ding.m4r"`
+   - `afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r"`
+   - `afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r"`
+   - `afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r"`
 3. Verify hook configuration in settings.json
 
 ### Too Many Notifications
@@ -122,26 +138,27 @@ Test the hook with these Claude Code operations:
 To test the audio notifications directly:
 ```bash
 # Test PostToolUse hooks (Swish.m4r)
-afplay '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r' 2>/dev/null &
+afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r' 2>/dev/null &
 
-# Test Stop hooks (Ding.m4r)
-afplay '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Ding.m4r' 2>/dev/null &
+# Test Stop hooks (Chord.m4r)
+afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r' 2>/dev/null &
+
+# Test Notification hooks (Aurora.m4r)
+afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r' 2>/dev/null &
 ```
 
 ### Expected Behavior
-- **Swish sound**: Plays after each significant tool operation (Write, Edit, MultiEdit, Bash, TodoWrite)
-- **Ding sound**: Plays when Claude stops or subagents stop
-- No audio for Read, Grep, Glob, LS operations
+- **Swish sound**: Plays after each tool operation (matcher: "*")
+- **Chord sound**: Plays when Claude stops or subagents stop
+- **Aurora sound**: Plays when Claude needs permission or is waiting for input
+- All tools trigger audio feedback (universal matcher)
 - Audio playback runs in background (non-blocking)
 - Graceful failure if audio system is unavailable
 
 ### Test Results Verification
-- ✅ Write operations trigger Swish.m4r audio notifications
-- ✅ Edit operations trigger Swish.m4r audio notifications  
-- ✅ MultiEdit operations trigger Swish.m4r audio notifications
-- ✅ Bash operations trigger Swish.m4r audio notifications
-- ✅ TodoWrite operations trigger Swish.m4r audio notifications
-- ✅ Stop hooks trigger Ding.m4r audio notifications
-- ✅ SubagentStop hooks trigger Ding.m4r audio notifications
+- ✅ All tool operations trigger Swish.m4r audio notifications (matcher: "*")
+- ✅ Stop hooks trigger Chord.m4r audio notifications
+- ✅ SubagentStop hooks trigger Chord.m4r audio notifications
+- ✅ Notification hooks trigger Aurora.m4r for permission/idle events
 - ✅ Direct afplay commands handle missing audio files gracefully
 - ✅ Audio playback is non-blocking

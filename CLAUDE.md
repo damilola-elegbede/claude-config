@@ -100,14 +100,16 @@ You cannot transition from PLANNING STATE to EXECUTION STATE without explicit ap
 
 ### Configuration
 - **Completion Sound**: `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r`
-- **Stop Sound**: `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Ding.m4r`
-- **Hook Script**: `/Users/damilola/.claude/audio_notification_hook.sh`
+- **Stop Sound**: `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r`
+- **Notification Sound**: `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r`
+- **Implementation**: Direct afplay commands in Claude Code hooks
 - **Trigger Method**: Claude Code hooks (PostToolUse, Stop, SubagentStop)
 
 ### Implementation Protocol
-- **PostToolUse hooks**: Play Swish.m4r after significant tool completions
-- **Stop hooks**: Play Ding.m4r when Claude stops or subagents stop
-- Triggers after significant tool completions: Write, Edit, MultiEdit, Bash, TodoWrite
+- **PostToolUse hooks**: Play Swish.m4r after all tool completions
+- **Stop hooks**: Play Chord.m4r when Claude stops or subagents stop
+- **Notification hooks**: Play Aurora.m4r when Claude needs permission or is waiting for input
+- Triggers after all tool completions (matcher: "*")
 - Uses background audio playback to avoid blocking operations
 - Smart filtering to avoid notification fatigue
 - Graceful failure handling if audio is unavailable
@@ -119,11 +121,11 @@ Configured in `/Users/damilola/.claude/settings.json`:
   "hooks": {
     "PostToolUse": [
       {
-        "matcher": "Write|Edit|MultiEdit|Bash|TodoWrite",
+        "matcher": "*",
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/damilola/.claude/audio_notification_hook.sh PostToolUse [TOOL] true"
+            "command": "afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r' 2>/dev/null &"
           }
         ]
       }
@@ -134,7 +136,7 @@ Configured in `/Users/damilola/.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/damilola/.claude/audio_notification_hook.sh Stop"
+            "command": "afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r' 2>/dev/null &"
           }
         ]
       }
@@ -145,7 +147,18 @@ Configured in `/Users/damilola/.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/damilola/.claude/audio_notification_hook.sh SubagentStop"
+            "command": "afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r' 2>/dev/null &"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r' 2>/dev/null &"
           }
         ]
       }
@@ -155,14 +168,15 @@ Configured in `/Users/damilola/.claude/settings.json`:
 ```
 
 ### Usage
-- **Swish sound**: Plays when Claude completes significant tools (Write, Edit, MultiEdit, Bash, TodoWrite)
-- **Ding sound**: Plays when Claude stops or subagents stop
+- **Swish sound**: Plays when Claude completes any tool operation (matcher: "*")
+- **Chord sound**: Plays when Claude stops or subagents stop
+- **Aurora sound**: Plays when Claude needs permission or is waiting for input (Notification hook)
 - No manual intervention required
 - Excludes: Read operations, searches, informational queries
 
 ### Testing
-- Test hook functionality with Write, Edit, MultiEdit, Bash, and TodoWrite operations
-- Verify audio playback works correctly for both Swish.m4r and Ding.m4r
+- Test hook functionality with all tool operations (matcher: "*")
+- Verify audio playback works correctly for Swish.m4r, Chord.m4r, and Aurora.m4r
 - Confirm filtering prevents over-notification
 - Test graceful failure when audio is unavailable
 
@@ -412,7 +426,7 @@ Use these Git aliases: `git st`, `git co`, `git ci`, `git br`, `git lg`, `git lo
 - Document any operational changes needed
 - Prepare deployment plan
 - Create knowledge transfer documentation
-- **Audio completion notification**: Automatically triggered via PostToolUse hooks after significant task completions
+- **Audio completion notification**: Automatically triggered via PostToolUse hooks after all tool completions
 
 ## Language-Specific Guidelines
 
