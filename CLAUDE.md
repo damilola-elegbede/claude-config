@@ -96,6 +96,90 @@ You cannot transition from PLANNING STATE to EXECUTION STATE without explicit ap
 - Auto-executes when Claude Code starts in a git repository
 - Usage: Type `/context` for instant repository analysis
 
+## Audio Completion Notifications
+
+### Configuration
+- **Completion Sound**: `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r`
+- **Stop Sound**: `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r`
+- **Notification Sound**: `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r`
+- **Implementation**: Direct afplay commands in Claude Code hooks
+- **Trigger Method**: Claude Code hooks (PostToolUse, Stop, SubagentStop)
+
+### Implementation Protocol
+- **PostToolUse hooks**: Play Swish.m4r after all tool completions
+- **Stop hooks**: Play Chord.m4r when Claude stops or subagents stop
+- **Notification hooks**: Play Aurora.m4r when Claude needs permission or is waiting for input
+- Triggers after all tool completions (matcher: "*")
+- Uses background audio playback to avoid blocking operations
+- Smart filtering to avoid notification fatigue
+- Graceful failure handling if audio is unavailable
+
+### Hook Configuration
+Configured in `/Users/damilola/.claude/settings.json`:
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r' 2>/dev/null &"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r' 2>/dev/null &"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r' 2>/dev/null &"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r' 2>/dev/null &"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+### Usage
+- **Swish sound**: Plays when Claude completes any tool operation (matcher: "*")
+- **Chord sound**: Plays when Claude stops or subagents stop
+- **Aurora sound**: Plays when Claude needs permission or is waiting for input (Notification hook)
+- No manual intervention required
+- Excludes: Read operations, searches, informational queries
+
+### Testing
+- Test hook functionality with all tool operations (matcher: "*")
+- Verify audio playback works correctly for Swish.m4r, Chord.m4r, and Aurora.m4r
+- Confirm filtering prevents over-notification
+- Test graceful failure when audio is unavailable
+
 ## Trusted Folders
 - /Users/damilola/Documents/Projects/ - Projects directory and all subdirectories
 
@@ -243,7 +327,24 @@ Look for clear approval intent, including but not limited to:
 - Keep documentation in sync with implementation - no orphaned docs or undocumented features
 - Include usage examples in documentation when adding new features
 
-### Pull Request Submission Guidelines
+### Push and Pull Request Workflow
+
+#### Preparing PR Documentation During Push
+When using `/push`, Claude will:
+1. **Analyze all commits** being pushed to understand the full scope of changes
+2. **Generate a draft PR description** and save it to `.github/pr-description-draft.md`
+3. **Include in the draft**:
+   - Summary of all changes across commits
+   - Aggregated list of files modified
+   - Testing suggestions based on changes
+   - Potential impacts and breaking changes
+   - Review focus areas
+4. **Display the PR creation command** with pre-filled description:
+   ```bash
+   gh pr create --title "feat(scope): description" --body-file .github/pr-description-draft.md
+   ```
+
+#### Pull Request Submission Guidelines
 - **Always fill out PR descriptions completely** - never submit with template placeholders
 - Use the existing PR template as a structure, but populate all sections with actual content
 - **Summary**: Provide a clear, concise description of what changes were made and why
@@ -342,6 +443,7 @@ Use these Git aliases: `git st`, `git co`, `git ci`, `git br`, `git lg`, `git lo
 - Document any operational changes needed
 - Prepare deployment plan
 - Create knowledge transfer documentation
+- **Audio completion notification**: Automatically triggered via PostToolUse hooks after all tool completions
 
 ## Language-Specific Guidelines
 
