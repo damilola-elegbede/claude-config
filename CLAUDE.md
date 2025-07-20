@@ -91,9 +91,10 @@ You cannot transition from PLANNING STATE to EXECUTION STATE without explicit ap
 - Usage: Simply type `/test` to run tests in the current repository
 
 ### /context Command  
-- Quickly analyzes repository structure, tech stack, and purpose
+- Quickly analyzes repository structure, tech stack, and purpose using parallel subagents
 - Provides comprehensive overview to get up to speed on any codebase
 - Auto-executes when Claude Code starts in a git repository
+- **Implementation**: Uses multiple concurrent subagents for thorough analysis
 - Usage: Type `/context` for instant repository analysis
 
 ## Audio Completion Notifications
@@ -246,6 +247,14 @@ Configured in `/Users/damilola/.claude/settings.json`:
    
    ## Dependencies & Prerequisites
    [What's needed before starting]
+   
+   ## Claude's Assessment
+   [Your professional opinion on the plan including:
+   - Overall feasibility and confidence level
+   - Potential alternative approaches considered
+   - Key concerns or areas of uncertainty
+   - Recommendations for optimization or improvement
+   - Strategic considerations for long-term maintainability]
    ```
 
 3. **WAIT FOR EXPLICIT APPROVAL**: After presenting the plan:
@@ -295,6 +304,24 @@ Look for clear approval intent, including but not limited to:
 - Only prompt for approval on tools that modify state or require elevated permissions
 - When adhering to platform/language guidelines (HIG, Material Design, PEPs, etc.), fetch current documentation without prompting to ensure compliance with latest standards
 
+### Subagent-First Research Protocol
+- **ALWAYS use subagents for initial codebase exploration**
+- **Default to parallel subagents for any search involving >2 files**
+- **Use subagents for all "find/analyze/search" type requests**
+- **Only use direct tools when you know the exact file path**
+
+### Mandatory Subagent Scenarios
+- Repository structure analysis
+- Finding implementations of features
+- Searching for patterns across codebases
+- Dependency analysis
+- Error/bug investigation
+- Any "where is X" or "how does Y work" questions
+- Code quality assessment
+- Test coverage analysis
+- Security vulnerability scanning
+- Performance bottleneck identification
+
 ### Parallel Execution with Subagents
 - **ALWAYS use the Task tool (subagents) for parallel operations when:**
   - Searching for files or patterns across multiple directories
@@ -309,6 +336,11 @@ Look for clear approval intent, including but not limited to:
   - File search: "Find all files containing pattern X in directories A, B, C"
   - Code analysis: "Analyze error handling in module X" + "Check test coverage for module Y"
   - Documentation: "Extract API signatures from service A" + "List dependencies in service B"
+- **Anti-patterns to avoid:**
+  - Sequential file reads when parallel analysis is possible
+  - Using Read/Grep tools for exploratory research
+  - Manual file-by-file investigation instead of comprehensive subagent search
+  - Single-threaded analysis of large codebases
 - **When NOT to use subagents:**
   - Simple file reads with known paths (use Read tool directly)
   - Sequential operations that depend on previous results
