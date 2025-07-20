@@ -94,7 +94,7 @@ You cannot transition from PLANNING STATE to EXECUTION STATE without explicit ap
 - Quickly analyzes repository structure, tech stack, and purpose using parallel subagents
 - Provides comprehensive overview to get up to speed on any codebase
 - Auto-executes when Claude Code starts in a git repository
-- **Implementation**: Uses multiple concurrent subagents for thorough analysis
+- **Implementation**: Uses multiple concurrent subagents for thorough analysis (falls back to single-threaded for small repos)
 - Usage: Type `/context` for instant repository analysis
 
 ## Audio Completion Notifications
@@ -248,7 +248,7 @@ Configured in `/Users/damilola/.claude/settings.json`:
    ## Dependencies & Prerequisites
    [What's needed before starting]
    
-   ## Claude's Assessment
+   ### Claude's Assessment
    [Your professional opinion on the plan including:
    - Overall feasibility and confidence level
    - Potential alternative approaches considered
@@ -305,10 +305,11 @@ Look for clear approval intent, including but not limited to:
 - When adhering to platform/language guidelines (HIG, Material Design, PEPs, etc.), fetch current documentation without prompting to ensure compliance with latest standards
 
 ### Subagent-First Research Protocol
-- **ALWAYS use subagents for initial codebase exploration**
+- **ALWAYS use subagents for initial codebase exploration (during execution phase only)**
 - **Default to parallel subagents for any search involving >2 files**
 - **Use subagents for all "find/analyze/search" type requests**
 - **Only use direct tools when you know the exact file path**
+- **NOTE**: This protocol applies only during execution state, NOT during /plan phase where all tools are forbidden
 
 ### Mandatory Subagent Scenarios
 - Repository structure analysis
@@ -338,7 +339,7 @@ Look for clear approval intent, including but not limited to:
   - Documentation: "Extract API signatures from service A" + "List dependencies in service B"
 - **Anti-patterns to avoid:**
   - Sequential file reads when parallel analysis is possible
-  - Using Read/Grep tools for exploratory research
+  - Using Read/Grep tools for exploratory research (allowed for known-path lookups; not for multi-file exploration where subagents excel)
   - Manual file-by-file investigation instead of comprehensive subagent search
   - Single-threaded analysis of large codebases
 - **When NOT to use subagents:**
