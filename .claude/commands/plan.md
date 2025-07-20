@@ -26,6 +26,7 @@ When you use `/plan`, I will:
    - Success Metrics & KPIs
    - Timeline & Milestones
    - Dependencies & Prerequisites
+   - Claude's Assessment (professional opinion and recommendations)
 
 3. **Wait for explicit approval** by asking: "Please review this plan. Reply with approval to proceed with implementation."
 4. **Execute with todo tracking** only after receiving clear approval
