@@ -97,6 +97,10 @@ You cannot transition from PLANNING STATE to EXECUTION STATE without explicit ap
 - **Implementation**: Uses multiple concurrent subagents for thorough analysis (falls back to single-threaded for small repos)
 - Usage: Type `/context` for instant repository analysis
 
+## Git Best Practices
+
+- NEVER use --no-verify for anything.
+
 ## Audio Completion Notifications
 
 ### Configuration

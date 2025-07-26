@@ -50,6 +50,12 @@ test_sync_content() {
     
     assert_file_contains "$sync_file" "will NOT be copied" \
         "Should mention sync exclusion"
+    
+    assert_file_contains "$sync_file" "agents/" \
+        "Should mention agents directory"
+    
+    assert_file_contains "$sync_file" "~/.claude/agents/" \
+        "Should mention target agents directory"
 }
 
 # Run all tests
