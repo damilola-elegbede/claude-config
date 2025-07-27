@@ -4,8 +4,6 @@ description: Use this agent for CI/CD pipelines, deployment automation, infrastr
 color: orange
 specialization_level: senior
 domain_expertise: [ci_cd_pipeline_design, infrastructure_as_code, deployment_orchestration, containerization_kubernetes, cloud_infrastructure_automation, environment_management, release_management, infrastructure_security]
-escalation_to: [backend-staff, principal-architect]
-escalation_from: [senior-dev]
 parallel_compatible: [backend-staff, frontend-staff, platform-engineer, tech-writer, project-orchestrator]
 scale_triggers:
   user_count: "5k-100k users"

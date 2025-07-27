@@ -2,7 +2,7 @@
 # YAML Front-Matter Validation Script for Agent Files
 # This script validates YAML front-matter in all agent markdown files
 
-set -e
+# set -e removed to allow processing all files even on errors
 
 # Debug mode for CI
 if [ -n "$CI" ]; then
@@ -54,12 +54,13 @@ validate_yaml() {
     esac
     
     echo -n "Checking $filename... "
+    local warnings_in_file=0
     
     # Check if file starts with ---
     if ! head -n 1 "$file" | grep -q "^---$"; then
         printf "${RED}ERROR: Missing opening YAML delimiter '---'${NC}\n"
         ERRORS=$((ERRORS + 1))
-        return 1
+        has_errors=true
     fi
     
     # Extract YAML front-matter
@@ -89,7 +90,7 @@ validate_yaml() {
     if [ "$closing_found" = false ]; then
         printf "${RED}ERROR: Missing closing YAML delimiter '---'${NC}\n"
         ERRORS=$((ERRORS + 1))
-        return 1
+        has_errors=true
     fi
     
     # Validate required fields
@@ -109,6 +110,7 @@ validate_yaml() {
     if echo "$yaml_content" | grep -q "^description: |"; then
         printf "${YELLOW}WARNING: Using multiline description (consider single-line format)${NC}\n"
         WARNINGS=$((WARNINGS + 1))
+        warnings_in_file=$((warnings_in_file + 1))
     fi
     
     # Check description length
@@ -116,10 +118,11 @@ validate_yaml() {
     if [ ${#desc_line} -gt 500 ]; then
         printf "${YELLOW}WARNING: Very long description line (%d chars)${NC}\n" "${#desc_line}"
         WARNINGS=$((WARNINGS + 1))
+        warnings_in_file=$((warnings_in_file + 1))
     fi
     
     # If no errors found
-    if [ "$has_errors" = false ] && [ $WARNINGS -eq 0 ]; then
+    if [ "$has_errors" = false ] && [ $warnings_in_file -eq 0 ]; then
         printf "${GREEN}VALID${NC}\n"
     fi
     
