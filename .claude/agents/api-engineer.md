@@ -8,10 +8,10 @@ escalation_to: [backend-staff, principal-architect]
 escalation_from: [senior-dev]
 parallel_compatible: [backend-staff, frontend-staff, tech-writer, security-auditor]
 scale_triggers:
-  user_count: ">10k API consumers (governance and standardization required)"
-  traffic_volume: ">5k API requests/second (performance optimization and caching required)"
-  data_volume: ">1M API calls/day (comprehensive analytics and monitoring required)"
-  geographic_distribution: "Multi-region API deployment (global API management required)"
+  user_count: "5k-100k API consumers"
+  traffic_volume: "100-10k API requests/second"
+  data_volume: "1-50GB API data or 100k-1M API calls/day"
+  geographic_distribution: "1-3 regions API deployment"
 complexity_triggers:
   api_design_standardization: "Cross-service API consistency, governance policies, design standards"
   contract_testing_implementation: "API contract validation, schema compatibility, integration testing"
@@ -67,9 +67,9 @@ handoff_protocols:
   iteration_cycle: "Design → Implement → Test → Refine based on backend-staff feedback"
 tool_access: documentation_access
 tool_restrictions:
-  allowed: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite]
+  allowed: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, Task, TodoWrite, Bash(read-only)]
   forbidden: [NotebookRead, NotebookEdit]
-  rationale: "API engineer focuses on specifications, documentation, and contract design rather than data analysis notebooks"
+  rationale: "API engineer creates specifications and documentation but doesn't modify runtime systems or analyze data notebooks"
 api_focus:
   primary: [api_design, contract_testing, governance, specification_management]
   provides_contracts: "Delivers API specifications for implementation teams"

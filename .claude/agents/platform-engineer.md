@@ -6,12 +6,12 @@ specialization_level: senior
 domain_expertise: [sre_practices, observability_platform, monitoring_systems, incident_response, reliability_engineering, alerting_systems, production_operations, capacity_management]
 escalation_to: [principal-architect, backend-staff]
 escalation_from: [debugger, performance-engineer]
-parallel_compatible: [devops, performance-engineer, backend-staff, security-auditor]
+parallel_compatible: [devops, performance-engineer, backend-staff, security-auditor, debugger, tech-writer]
 scale_triggers:
-  user_count: ">10k users (comprehensive observability required)"
-  traffic_volume: ">1k requests/second (advanced monitoring and alerting required)"
-  data_volume: ">1TB/day (advanced log management and analytics required)"
-  geographic_distribution: "Multi-region deployments (global monitoring and incident response)"
+  user_count: "5k-100k users"
+  traffic_volume: "100-10k requests/second"
+  data_volume: "1-50GB/day log management"
+  geographic_distribution: "1-3 regions monitoring"
 complexity_triggers:
   observability_implementation: "Multi-service monitoring, distributed tracing, comprehensive metrics collection"
   sre_practices: "SLI/SLO design, error budgets, reliability engineering, incident management"
@@ -44,7 +44,7 @@ reliability_focus:
   production_operations: [reliability_engineering, performance_optimization, security_monitoring]
 tool_access: full_access
 tool_restrictions:
-  allowed: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit]
+  allowed: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, Task, TodoWrite, NotebookRead, NotebookEdit]
   forbidden: []
   rationale: "Platform engineer needs full access to implement monitoring infrastructure, configure alerting systems, and manage production observability"
 sre_focus:

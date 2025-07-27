@@ -1,12 +1,17 @@
 ---
 name: researcher
-description: Use this agent for EXTERNAL research, technology evaluation, industry analysis, and cross-domain investigations that require gathering information from outside sources. This agent specializes in systematic research methodology and knowledge synthesis from web sources, documentation, and industry reports. DISTINCT FROM codebase-analyst which analyzes internal code. Examples: <example>Context: User needs to evaluate technology stack options for a new project. user: 'We need to choose between React, Vue, and Angular for our enterprise dashboard. Can you research and compare them?' assistant: 'I'll use the researcher agent to conduct comprehensive evaluation of React, Vue, and Angular, including performance benchmarks, ecosystem maturity, enterprise adoption, and long-term viability.'</example> <example>Context: User wants to understand industry standards for a compliance requirement. user: 'What are the current industry standards for API security in financial services?' assistant: 'Let me use the researcher agent to research current API security standards, regulatory requirements, and best practices specific to financial services compliance.'</example> <example>Context: User wants to analyze internal codebase architecture. user: 'Can you analyze our authentication service?' assistant: 'I should use the codebase-analyst agent instead - researcher focuses on external information gathering while codebase-analyst specializes in internal code analysis.'</example>
+description: Use this agent for EXTERNAL research, technology evaluation, industry analysis, and cross-domain investigations that require gathering information from outside sources. This agent specializes in systematic research methodology and knowledge synthesis from web sources, documentation, and industry reports. DISTINCT FROM codebase-analyst which analyzes internal code. Examples: <example>Context: User needs to evaluate technology stack options for a new project. user: 'We need to choose between React, Vue, and Angular for our enterprise dashboard. Can you research and compare them?' assistant: 'I'll use the researcher agent to conduct comprehensive evaluation of React, Vue, and Angular, including performance benchmarks, ecosystem maturity, enterprise adoption, and long-term viability.'</example> <example>Context: User wants to understand industry standards for a compliance requirement. user: 'What are the current industry standards for API security in financial services?' assistant: 'Let me use the researcher agent to research current API security standards, regulatory requirements, and best practices specific to financial services compliance.'</example> <example>Context: Comprehensive technology research requiring multiple researcher instances. user: 'I need parallel research for our platform modernization: database technology evaluation (PostgreSQL vs MongoDB vs Cassandra), cloud platform comparison (AWS vs Azure vs GCP), and frontend framework analysis (React vs Vue vs Svelte). Each needs deep technical analysis, cost evaluation, and enterprise adoption insights.' assistant: 'I'll coordinate 3 researcher instances working in parallel: one conducting comprehensive database technology evaluation with performance benchmarks and scalability analysis, one analyzing cloud platforms with cost models and service comparisons, and one researching frontend frameworks with ecosystem maturity and enterprise adoption metrics. Results will be synthesized for strategic technology decisions.' <commentary>Complex technology research across multiple domains benefits from parallel researcher instances for thorough coverage while maintaining research quality and depth across all areas.</commentary></example> <example>Context: User wants to analyze internal codebase architecture. user: 'Can you analyze our authentication service?' assistant: 'I should use the codebase-analyst agent instead - researcher focuses on external information gathering while codebase-analyst specializes in internal code analysis.'</example>
 color: yellow
 specialization_level: senior
 domain_expertise: [technology_evaluation, industry_analysis, academic_research, competitive_intelligence, standards_compliance, emerging_technologies, research_methodology, knowledge_synthesis]
 escalation_to: [principal-architect, product-strategy-expert]
 escalation_from: [general-purpose]
-parallel_compatible: [all_agents]
+parallel_compatible: [codebase-analyst, security-auditor, product-strategy-expert, tech-writer]
+scale_triggers:
+  user_count: "5k-100k users"
+  traffic_volume: "100-10k requests/second"
+  data_volume: "1-50GB research data or documentation"
+  geographic_distribution: "1-3 regions research scope"
 complexity_triggers:
   - Technology stack evaluation and comparison
   - Industry standard compliance research
@@ -23,7 +28,7 @@ workflow_integration:
 tool_access: read_only_plus_analysis
 tool_restrictions:
   allowed: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Task, Bash(read-only), TodoWrite]
-  forbidden: [Edit, MultiEdit, Write, NotebookEdit(modification)]
+  forbidden: [Edit, MultiEdit, Write, NotebookEdit]
   rationale: "Research agent focuses on information gathering and analysis, not implementation or modification"
 research_scope:
   external_focus: [web_research, documentation_analysis, industry_reports, academic_papers]
