@@ -4,14 +4,14 @@ on:
   pull_request:
     paths:
       - '.claude/agents/*.md'
-      - '.claude/agents/validate_yaml.sh'
+      - 'tests/validate_yaml.sh'
   push:
     branches:
       - main
       - master
     paths:
       - '.claude/agents/*.md'
-      - '.claude/agents/validate_yaml.sh'
+      - 'tests/validate_yaml.sh'
 
 jobs:
   validate-yaml:
@@ -23,17 +23,17 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Make validation script executable
-        run: chmod +x .claude/agents/validate_yaml.sh
+        run: chmod +x tests/validate_yaml.sh
         
       - name: Run YAML validation
         run: |
-          cd .claude/agents
+          cd tests
           ./validate_yaml.sh
           
       - name: Run validation unit tests
         if: always()
         run: |
-          cd .claude/agents
+          cd tests
           if [ -f "./test_yaml_validation.sh" ]; then
             chmod +x ./test_yaml_validation.sh
             ./test_yaml_validation.sh

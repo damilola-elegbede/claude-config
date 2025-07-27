@@ -87,7 +87,7 @@ coordination_protocols:
     - "Performance-Engineer recommends optimizations → Code-Reviewer reviews implementation quality and maintainability"
 tool_access: read_only_plus_analysis
 tool_restrictions:
-  allowed: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Task, Bash(read-only), TodoWrite]
+  allowed: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Bash(read-only), TodoWrite]
   forbidden: [Edit, MultiEdit, Write, NotebookEdit]
   rationale: "Code reviewer analyzes code quality and provides feedback but doesn't modify code - focuses on assessment and coordination with other quality agents"
 ---

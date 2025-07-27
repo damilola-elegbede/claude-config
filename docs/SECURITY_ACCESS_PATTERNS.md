@@ -8,32 +8,33 @@ This document defines the security access patterns and rationale for all Claude 
 
 ### 1. Full Access (Staff-Level Implementation Agents)
 **Agents**: backend-staff, frontend-staff, senior-dev, qa-tester, devops
-**Tools Allowed**: All tools including Bash, Write, Edit, MultiEdit, NotebookEdit
+**Tools Allowed**: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit]
+**Tools Forbidden**: []
 **Security Rationale**: These agents implement production code and require comprehensive tool access to fulfill their responsibilities. They operate under the principle of "trusted implementation" with full capability to modify systems.
 
 ### 2. Read-Only Plus Analysis
 **Agents**: security-auditor, debugger, code-reviewer, codebase-analyst, performance-engineer, researcher
-**Tools Allowed**: Read operations, analysis tools, WebFetch, WebSearch, Task (subagents), TodoWrite
-**Tools Forbidden**: Edit, MultiEdit, Write, NotebookEdit
+**Tools Allowed**: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Bash(read-only), TodoWrite]
+**Tools Forbidden**: [Edit, MultiEdit, Write, NotebookEdit]
 **Security Rationale**: Analysis agents focus on assessment and reporting without modifying production systems. This separation ensures analysis integrity and prevents accidental system modifications during security reviews.
 
 ### 3. Design Specification Access
 **Agents**: ui-designer, mobile-ui
-**Tools Allowed**: File creation/editing for specifications, documentation tools
-**Tools Forbidden**: Bash (system execution), NotebookEdit, Task (subagents)
+**Tools Allowed**: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, Bash(read-only)]
+**Tools Forbidden**: [NotebookRead, NotebookEdit]
 **Security Rationale**: Design agents create specifications and documentation but don't need system execution capabilities or data analysis tools.
 
 ### 4. Documentation Access
 **Agents**: tech-writer, api-engineer
-**Tools Allowed**: File operations for documentation, limited research tools
-**Tools Forbidden**: System execution beyond basic needs
+**Tools Allowed**: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, Bash(read-only)]
+**Tools Forbidden**: [NotebookRead, NotebookEdit]
 **Security Rationale**: Documentation agents need file modification capabilities for specifications but limited system access.
 
 ### 5. Strategic Planning Access
 **Agents**: principal-architect
-**Tools Allowed**: Documentation tools, Task (subagent coordination), read-only bash
-**Tools Forbidden**: NotebookRead/Edit (not needed for architectural planning)
-**Security Rationale**: Architects coordinate strategy and planning, requiring subagent orchestration but not data analysis capabilities.
+**Tools Allowed**: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, Bash(read-only)]
+**Tools Forbidden**: [NotebookRead, NotebookEdit]
+**Security Rationale**: Architects coordinate strategy and planning through the general-purpose agent, focusing on creating implementation plans without needing data analysis capabilities.
 
 ## Security Boundaries
 
@@ -53,7 +54,7 @@ This document defines the security access patterns and rationale for all Claude 
 
 #### Medium-Risk Mitigations
 - **Documentation Agents**: Controlled file access prevents system configuration changes
-- **Coordination Agents**: Task access for orchestration but limited system execution
+- **Coordination Agents**: Orchestrate through the general-purpose agent with limited system execution
 
 ## Agent-Specific Security Rationale
 
@@ -80,7 +81,7 @@ This document defines the security access patterns and rationale for all Claude 
 - **api-engineer**: Designs API contracts and specifications without implementation
 
 ### Strategic Agents (Planning Access)
-- **principal-architect**: Coordinates strategy and orchestrates other agents through Task tool
+- **principal-architect**: Coordinates strategy and creates plans for the general-purpose agent to execute
 
 ## Compliance and Monitoring
 

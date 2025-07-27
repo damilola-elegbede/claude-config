@@ -3,7 +3,7 @@
 
 # Test directory setup
 TEST_DIR="/tmp/claude-config-test-$$"
-ORIGINAL_DIR=$(pwd)
+ORIGINAL_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 
 # Colors (if not already defined)
 RED=${RED:-'\033[0;31m'}

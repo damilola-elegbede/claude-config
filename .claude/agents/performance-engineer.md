@@ -74,7 +74,7 @@ coordination_protocols:
     - "Backend-Staff implements optimizations → Performance-Engineer validates effectiveness through testing"
 tool_access: read_only_plus_analysis
 tool_restrictions:
-  allowed: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Task, Bash(read-only), TodoWrite]
+  allowed: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Bash(read-only), TodoWrite]
   forbidden: [Write, Edit, MultiEdit, NotebookEdit]
   rationale: "Performance engineer analyzes and tests performance, creating reports and recommendations rather than modifying production code"
 performance_focus:

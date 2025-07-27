@@ -27,7 +27,7 @@ workflow_integration:
   research_workflow: "Research Agent → Domain Expert → Implementation"
 tool_access: read_only_plus_analysis
 tool_restrictions:
-  allowed: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Task, Bash(read-only), TodoWrite]
+  allowed: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Bash(read-only), TodoWrite]
   forbidden: [Edit, MultiEdit, Write, NotebookEdit]
   rationale: "Research agent focuses on information gathering and analysis, not implementation or modification"
 research_scope:
