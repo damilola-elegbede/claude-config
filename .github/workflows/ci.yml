@@ -16,10 +16,10 @@ jobs:
       uses: actions/checkout@v4
       
     - name: Make test script executable
-      run: chmod +x test.sh
+      run: chmod +x tests/test.sh
       
     - name: Run test suite
-      run: ./test.sh
+      run: ./tests/test.sh
       
     - name: Upload test results
       if: always()
@@ -46,7 +46,7 @@ jobs:
           "README.md"
           "CLAUDE.md"
           "LICENSE"
-          "test.sh"
+          "tests/test.sh"
           ".claude/commands/plan.md"
           ".claude/commands/commit.md"
           ".claude/commands/push.md"
@@ -68,11 +68,11 @@ jobs:
         
     - name: Check file permissions
       run: |
-        if [ ! -x "test.sh" ]; then
-          echo "❌ test.sh is not executable"
+        if [ ! -x "tests/test.sh" ]; then
+          echo "❌ tests/test.sh is not executable"
           exit 1
         fi
-        echo "✓ test.sh is executable"
+        echo "✓ tests/test.sh is executable"
 
   lint-markdown:
     name: Lint Markdown Files
