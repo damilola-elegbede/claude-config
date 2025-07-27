@@ -30,7 +30,7 @@ tool_restrictions:
 ```yaml
 tool_access: read_only_plus_analysis
 tool_restrictions:
-  allowed: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Bash(read-only), TodoWrite]
+  allowed: [Bash(read-only), Read, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead]
   forbidden: [Edit, MultiEdit, Write, NotebookEdit]
   rationale: "[Agent type] analyzes and provides feedback/recommendations but doesn't modify code - focuses on assessment and coordination"
 ```
@@ -41,7 +41,7 @@ tool_restrictions:
 ```yaml
 tool_access: documentation_access
 tool_restrictions:
-  allowed: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, Bash(read-only)]
+  allowed: [Bash(read-only), Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite]
   forbidden: [NotebookRead, NotebookEdit]
   rationale: "[Agent type] creates specifications/documentation but doesn't modify runtime systems or analyze data notebooks"
 ```
@@ -52,7 +52,7 @@ tool_restrictions:
 ```yaml
 tool_access: design_specification
 tool_restrictions:
-  allowed: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, Bash(read-only)]
+  allowed: [Bash(read-only), Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite]
   forbidden: [NotebookRead, NotebookEdit]
   rationale: "[Agent type] creates designs/specifications and requires file creation but doesn't analyze data notebooks"
 ```
@@ -63,7 +63,7 @@ tool_restrictions:
 ```yaml
 tool_access: strategic_planning
 tool_restrictions:
-  allowed: [Glob, Grep, LS, Read, WebFetch, WebSearch, Bash(read-only), TodoWrite]
+  allowed: [Bash(read-only), Read, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite]
   forbidden: [Edit, MultiEdit, Write, NotebookRead, NotebookEdit]
   rationale: "Project orchestrator coordinates and tracks progress but doesn't implement code or create detailed documentation - focuses on coordination and task management"
 ```
@@ -71,7 +71,7 @@ tool_restrictions:
 ## Standardization Rules Applied
 
 1. **Consistent Tool Lists**: All agents in the same access category have identical tool lists
-2. **Standard Ordering**: Tools are ordered consistently: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit]
+2. **Standard Ordering**: Tools are ordered consistently: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit]. For read-only access, use Bash(read-only) in place of Bash.
 3. **Coordination**: Agents coordinate through the general-purpose agent rather than direct subagent invocation
 4. **Bash Access**: Specified as "Bash(read-only)" for restricted access or "Bash" for full access
 5. **Rationale Required**: Every agent has a clear business justification for its access level

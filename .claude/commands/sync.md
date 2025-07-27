@@ -33,12 +33,8 @@ When you use `/sync`, I will:
 
 ## Files Synced
 - `CLAUDE.md` - Main configuration with coding standards
-- `.claude/commands/plan.md` - Planning workflow command
-- `.claude/commands/commit.md` - Git commit command
-- `.claude/commands/push.md` - Git push command
-- `.claude/commands/test.md` - Universal test runner
-- `.claude/commands/context.md` - Repository analyzer
-- `.claude/agents/*.md` - Specialized agent configurations (backend-staff, codebase-analyst, code-reviewer, debugger, devops, frontend-staff, mobile-ui, principal-architect, product-strategy-expert, project-orchestrator, qa-tester, security-auditor, senior-dev, tech-writer, ui-designer)
+- `.claude/commands/*.md` - All command files (except sync.md which is repo-specific)
+- `.claude/agents/*.md` - All specialized agent configurations
 - `settings.json` - Claude Code settings with audio notification hooks
 - `AUDIO_HOOK_README.md` - Audio notification setup and troubleshooting guide
 

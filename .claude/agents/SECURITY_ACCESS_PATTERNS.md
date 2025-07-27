@@ -13,7 +13,7 @@ This document defines the security access patterns and rationale for all Claude 
 
 ### 2. Read-Only Plus Analysis
 **Agents**: security-auditor, debugger, code-reviewer, codebase-analyst, performance-engineer, researcher
-**Tools Allowed**: Read operations, analysis tools, WebFetch, WebSearch, TodoWrite
+**Tools Allowed**: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Bash(read-only), TodoWrite]
 **Tools Forbidden**: Edit, MultiEdit, Write, NotebookEdit
 **Security Rationale**: Analysis agents focus on assessment and reporting without modifying production systems. This separation ensures analysis integrity and prevents accidental system modifications during security reviews.
 
@@ -33,7 +33,7 @@ This document defines the security access patterns and rationale for all Claude 
 **Agents**: principal-architect
 **Tools Allowed**: Documentation tools, read-only bash
 **Tools Forbidden**: NotebookRead/Edit (not needed for architectural planning)
-**Security Rationale**: Architects coordinate strategy and planning, requiring subagent orchestration but not data analysis capabilities.
+**Security Rationale**: Architects coordinate strategy and planning through the general-purpose agent, focusing on creating implementation plans without needing data analysis capabilities.
 
 ## Security Boundaries
 
