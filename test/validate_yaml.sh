@@ -11,7 +11,7 @@ if [ -n "$CI" ]; then
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-AGENTS_DIR="$SCRIPT_DIR"
+AGENTS_DIR="$(dirname "$SCRIPT_DIR")/.claude/agents"
 ERRORS=0
 WARNINGS=0
 

@@ -20,11 +20,11 @@ When you use `/sync`, I will:
 
 2. **Copy configuration files**:
    - Copy `./CLAUDE.md` to `~/CLAUDE.md`
-   - Copy all files from `./.claude/commands/` to `~/.claude/commands/`
+   - Copy all files from `./.claude/commands/` to `~/.claude/commands/` (explicitly excluding `sync.md`)
    - Copy all files from `./.claude/agents/` to `~/.claude/agents/`
    - Copy `./settings.json` to `~/.claude/settings.json` (merge with existing settings)
    - Copy `./AUDIO_HOOK_README.md` to `~/.claude/AUDIO_HOOK_README.md`
-   - Exclude the `/sync` command itself (repo-specific only)
+   - **Important**: When copying commands, use pattern like `cp ./.claude/commands/[!s]*.md ~/.claude/commands/` or explicitly exclude sync.md
 
 3. **Verify the sync**:
    - Check that files were copied successfully
@@ -57,14 +57,29 @@ Creating backups...
 
 Syncing configuration files...
 ✓ Copied CLAUDE.md to ~/CLAUDE.md
-✓ Copied 5 command files to ~/.claude/commands/
-✓ Copied 15 agent files to ~/.claude/agents/
+✓ Copied 11 command files to ~/.claude/commands/ (excluding sync.md)
+✓ Copied 19 agent files to ~/.claude/agents/
 ✓ Copied settings.json to ~/.claude/settings.json
 ✓ Copied AUDIO_HOOK_README.md to ~/.claude/AUDIO_HOOK_README.md
-✓ Excluded sync.md (repo-specific)
+✓ Explicitly excluded: sync.md (repo-specific command)
 
 Sync completed successfully!
 Audio notifications and specialized agents are now configured and ready to use.
+```
+
+## Implementation Details
+When implementing the sync, ensure sync.md is explicitly excluded:
+```bash
+# Copy commands except sync.md
+for file in ./.claude/commands/*.md; do
+    filename=$(basename "$file")
+    if [ "$filename" != "sync.md" ]; then
+        cp "$file" ~/.claude/commands/
+    fi
+done
+
+# Or use find with exclusion
+find ./.claude/commands -name "*.md" ! -name "sync.md" -exec cp {} ~/.claude/commands/ \;
 ```
 
 ## Troubleshooting
