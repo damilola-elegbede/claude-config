@@ -14,12 +14,14 @@ When you use `/sync`, I will:
 1. **Backup existing files** (if any):
    - Create backups of `~/CLAUDE.md` as `~/CLAUDE.md.backup`
    - Create backups of `~/.claude/commands/` as `~/.claude/commands.backup/`
+   - Create backups of `~/.claude/agents/` as `~/.claude/agents.backup/`
    - Create backups of `~/.claude/settings.json` as `~/.claude/settings.json.backup`
    - Create backups of `~/.claude/AUDIO_HOOK_README.md` as `~/.claude/AUDIO_HOOK_README.md.backup`
 
 2. **Copy configuration files**:
    - Copy `./CLAUDE.md` to `~/CLAUDE.md`
    - Copy all files from `./.claude/commands/` to `~/.claude/commands/`
+   - Copy all files from `./.claude/agents/` to `~/.claude/agents/`
    - Copy `./settings.json` to `~/.claude/settings.json` (merge with existing settings)
    - Copy `./AUDIO_HOOK_README.md` to `~/.claude/AUDIO_HOOK_README.md`
    - Exclude the `/sync` command itself (repo-specific only)
@@ -36,6 +38,7 @@ When you use `/sync`, I will:
 - `.claude/commands/push.md` - Git push command
 - `.claude/commands/test.md` - Universal test runner
 - `.claude/commands/context.md` - Repository analyzer
+- `.claude/agents/*.md` - Specialized agent configurations (backend-staff, codebase-analyst, code-reviewer, debugger, devops, frontend-staff, mobile-ui, principal-architect, product-strategy-expert, project-orchestrator, qa-tester, security-auditor, senior-dev, tech-writer, ui-designer)
 - `settings.json` - Claude Code settings with audio notification hooks
 - `AUDIO_HOOK_README.md` - Audio notification setup and troubleshooting guide
 
@@ -52,18 +55,20 @@ When you use `/sync`, I will:
 Creating backups...
 ✓ Backed up ~/CLAUDE.md to ~/CLAUDE.md.backup
 ✓ Backed up ~/.claude/commands/ to ~/.claude/commands.backup/
+✓ Backed up ~/.claude/agents/ to ~/.claude/agents.backup/
 ✓ Backed up ~/.claude/settings.json to ~/.claude/settings.json.backup
 ✓ Backed up ~/.claude/AUDIO_HOOK_README.md to ~/.claude/AUDIO_HOOK_README.md.backup
 
 Syncing configuration files...
 ✓ Copied CLAUDE.md to ~/CLAUDE.md
 ✓ Copied 5 command files to ~/.claude/commands/
+✓ Copied 15 agent files to ~/.claude/agents/
 ✓ Copied settings.json to ~/.claude/settings.json
 ✓ Copied AUDIO_HOOK_README.md to ~/.claude/AUDIO_HOOK_README.md
 ✓ Excluded sync.md (repo-specific)
 
 Sync completed successfully!
-Audio notifications are now configured and ready to use.
+Audio notifications and specialized agents are now configured and ready to use.
 ```
 
 ## Troubleshooting
