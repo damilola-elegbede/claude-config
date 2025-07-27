@@ -67,30 +67,30 @@ cd "$(dirname "$0")"
 BASE_DIR=$(pwd)
 
 # Source test utilities if available
-if [ -f "tests/utils.sh" ]; then
-    source "tests/utils.sh"
+if [ -f "utils.sh" ]; then
+    source "utils.sh"
 fi
 
 # Run command tests
 echo "Running Command Tests..."
 echo "------------------------"
-run_test "Plan Command" "tests/commands/test_plan.sh"
-run_test "Commit Command" "tests/commands/test_commit.sh"
-run_test "Push Command" "tests/commands/test_push.sh"
-run_test "Test Command" "tests/commands/test_test.sh"
-run_test "Context Command" "tests/commands/test_context.sh"
-run_test "Sync Command" "tests/commands/test_sync.sh"
+run_test "Plan Command" "commands/test_plan.sh"
+run_test "Commit Command" "commands/test_commit.sh"
+run_test "Push Command" "commands/test_push.sh"
+run_test "Test Command" "commands/test_test.sh"
+run_test "Context Command" "commands/test_context.sh"
+run_test "Sync Command" "commands/test_sync.sh"
 
 # Run configuration tests
 echo "Running Configuration Tests..."
 echo "------------------------------"
-run_test "CLAUDE.md Validation" "tests/config/test_claude_md.sh"
-run_test "Command Files Validation" "tests/config/test_command_files.sh"
+run_test "CLAUDE.md Validation" "config/test_claude_md.sh"
+run_test "Command Files Validation" "config/test_command_files.sh"
 
 # Run integration tests
 echo "Running Integration Tests..."
 echo "----------------------------"
-run_test "Command Integration" "tests/integration/test_integration.sh"
+run_test "Command Integration" "integration/test_integration.sh"
 
 # Print summary
 echo "==================================="
