@@ -37,7 +37,7 @@ This repository contains backup copies of Claude configurations for easy restora
   - `/orchestrate` - Plans optimal multi-agent execution for complex projects
 
 ### 4. Audio Notification System
-- **Documentation**: `AUDIO_HOOK_README.md`
+- **Documentation**: `docs/AUDIO_HOOK_README.md`
 - **Purpose**: Provides audio feedback for Claude Code operations
 - **Features**:
   - Swish.m4r sound for task completions (Write, Edit, MultiEdit, Bash, TodoWrite)
@@ -58,7 +58,7 @@ To restore these configurations on a new computer:
    ```bash
    cp -r .claude ~/.claude
    cp settings.json ~/.claude/settings.json
-   cp AUDIO_HOOK_README.md ~/.claude/AUDIO_HOOK_README.md
+   cp docs/AUDIO_HOOK_README.md ~/.claude/AUDIO_HOOK_README.md
    ```
 
 **Alternative**: Once installed, you can use the `/sync` command from within this repository to update your configuration files automatically. The sync command will back up existing files and copy all configuration files including the audio notification system.
@@ -121,7 +121,12 @@ claude-config/
 │   ├── config/                 # Configuration validation tests
 │   ├── integration/            # Integration tests
 │   └── utils.sh               # Test utilities
-├── test.sh                     # Test runner script
+├── test/                       # Test scripts and validation
+│   ├── test.sh                 # Test runner script
+│   ├── check_yaml.py           # YAML validation script
+│   ├── validate_yaml.sh        # Agent YAML validation
+│   ├── test_yaml_validation.sh # YAML validation tests
+│   └── pre-commit-yaml-validation.sh # Pre-commit hook
 ├── .markdownlint-cli2.jsonc    # Markdown linter configuration with comments
 ├── .gitignore                  # Excludes temporary files and sensitive data
 ├── README.md                   # This file
@@ -136,7 +141,7 @@ This repository includes a comprehensive test suite to ensure all configurations
 
 To run all tests:
 ```bash
-./test.sh
+./test/test.sh
 ```
 
 ### Test Structure

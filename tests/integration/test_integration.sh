@@ -87,8 +87,8 @@ test_repo_structure() {
     assert_file_exists "$ORIGINAL_DIR/CLAUDE.md" \
         "CLAUDE.md should exist"
     
-    assert_file_exists "$ORIGINAL_DIR/test.sh" \
-        "test.sh should exist"
+    assert_file_exists "$ORIGINAL_DIR/test/test.sh" \
+        "test/test.sh should exist"
 }
 
 # Test that sync command is excluded from global commands

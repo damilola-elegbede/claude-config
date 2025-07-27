@@ -16,15 +16,15 @@ When you use `/sync`, I will:
    - Create backups of `~/.claude/commands/` as `~/.claude/commands.backup/`
    - Create backups of `~/.claude/agents/` as `~/.claude/agents.backup/`
    - Create backups of `~/.claude/settings.json` as `~/.claude/settings.json.backup`
-   - Create backups of `~/.claude/AUDIO_HOOK_README.md` as `~/.claude/AUDIO_HOOK_README.md.backup`
 
 2. **Copy configuration files**:
    - Copy `./CLAUDE.md` to `~/CLAUDE.md`
    - Copy all files from `./.claude/commands/` to `~/.claude/commands/` (explicitly excluding `sync.md`)
    - Copy all files from `./.claude/agents/` to `~/.claude/agents/`
    - Copy `./settings.json` to `~/.claude/settings.json` (merge with existing settings)
-   - Copy `./AUDIO_HOOK_README.md` to `~/.claude/AUDIO_HOOK_README.md`
-   - **Important**: When copying commands, use pattern like `cp ./.claude/commands/[!s]*.md ~/.claude/commands/` or explicitly exclude sync.md
+   - **Important**: When copying commands, explicitly exclude sync.md using methods like:
+     - `rsync -av --exclude='sync.md' ./.claude/commands/ ~/.claude/commands/`
+     - Or loop through files: `for f in ./.claude/commands/*.md; do [[ "$(basename "$f")" != "sync.md" ]] && cp "$f" ~/.claude/commands/; done`
 
 3. **Verify the sync**:
    - Check that files were copied successfully
@@ -36,7 +36,6 @@ When you use `/sync`, I will:
 - `.claude/commands/*.md` - All command files (except sync.md which is repo-specific)
 - `.claude/agents/*.md` - All specialized agent configurations
 - `settings.json` - Claude Code settings with audio notification hooks
-- `AUDIO_HOOK_README.md` - Audio notification setup and troubleshooting guide
 
 ## Important Notes
 - **This command is specific to the claude-config repository**
@@ -53,14 +52,12 @@ Creating backups...
 ✓ Backed up ~/.claude/commands/ to ~/.claude/commands.backup/
 ✓ Backed up ~/.claude/agents/ to ~/.claude/agents.backup/
 ✓ Backed up ~/.claude/settings.json to ~/.claude/settings.json.backup
-✓ Backed up ~/.claude/AUDIO_HOOK_README.md to ~/.claude/AUDIO_HOOK_README.md.backup
 
 Syncing configuration files...
 ✓ Copied CLAUDE.md to ~/CLAUDE.md
 ✓ Copied 11 command files to ~/.claude/commands/ (excluding sync.md)
 ✓ Copied 19 agent files to ~/.claude/agents/
 ✓ Copied settings.json to ~/.claude/settings.json
-✓ Copied AUDIO_HOOK_README.md to ~/.claude/AUDIO_HOOK_README.md
 ✓ Explicitly excluded: sync.md (repo-specific command)
 
 Sync completed successfully!
@@ -78,13 +75,13 @@ for file in ./.claude/commands/*.md; do
     fi
 done
 
-# Or use find with exclusion
-find ./.claude/commands -name "*.md" ! -name "sync.md" -exec cp {} ~/.claude/commands/ \;
+# Or use rsync with exclusion
+rsync -av --exclude='sync.md' ./.claude/commands/ ~/.claude/commands/
 ```
 
 ## Troubleshooting
 - If sync fails, check file permissions
 - Ensure you're in the claude-config repository
 - Backups are always created with timestamp if multiple syncs occur
-- If audio notifications don't work after sync, see `AUDIO_HOOK_README.md` for troubleshooting
+- If audio notifications don't work after sync, check the settings.json hooks configuration
 - Settings.json merge preserves existing configurations while adding new hooks
