@@ -10,10 +10,18 @@ ERRORS=0
 WARNINGS=0
 
 # Color codes for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-NC='\033[0m' # No Color
+# Detect if we're in a CI environment or if output is not a terminal
+if [ -n "$CI" ] || [ ! -t 1 ]; then
+    RED=''
+    GREEN=''
+    YELLOW=''
+    NC=''
+else
+    RED='\033[0;31m'
+    GREEN='\033[0;32m'
+    YELLOW='\033[0;33m'
+    NC='\033[0m' # No Color
+fi
 
 echo "🔍 Validating YAML front-matter in agent files..."
 echo "================================================"
