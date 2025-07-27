@@ -39,7 +39,7 @@ escalation_triggers:
   to_principal_architect: "System-wide architecture decisions, technology stack changes, compliance requirements"
 tool_access: full_access
 tool_restrictions:
-  allowed: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, Task, TodoWrite, NotebookRead, NotebookEdit]
+  allowed: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit]
   forbidden: []
   rationale: "Backend staff engineer requires full tool access to implement complex systems, perform database operations, and manage infrastructure components"
 ---

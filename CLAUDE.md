@@ -327,29 +327,15 @@ Look for clear approval intent, including but not limited to:
 - Security vulnerability scanning
 - Performance bottleneck identification
 
-### Parallel Execution with Subagents
-- **ALWAYS use the Task tool (subagents) for parallel operations when:**
-  - Searching for files or patterns across multiple directories
-  - Analyzing code structure in large codebases
-  - Gathering information from multiple sources simultaneously
-  - Performing independent analysis tasks that can run concurrently
-- **Launch multiple subagents concurrently for maximum performance:**
-  - Use a single message with multiple Task tool invocations
-  - Each subagent should have a focused, autonomous task
-  - Provide detailed instructions since subagents are stateless
-- **Effective subagent usage patterns:**
-  - File search: "Find all files containing pattern X in directories A, B, C"
-  - Code analysis: "Analyze error handling in module X" + "Check test coverage for module Y"
-  - Documentation: "Extract API signatures from service A" + "List dependencies in service B"
-- **Anti-patterns to avoid:**
-  - Sequential file reads when parallel analysis is possible
-  - Using Read/Grep tools for exploratory research (allowed for known-path lookups; not for multi-file exploration where subagents excel)
-  - Manual file-by-file investigation instead of comprehensive subagent search
-  - Single-threaded analysis of large codebases
-- **When NOT to use subagents:**
-  - Simple file reads with known paths (use Read tool directly)
-  - Sequential operations that depend on previous results
-  - Tasks requiring state maintenance between operations
+### Multi-Agent Orchestration (General-Purpose Agent Role)
+
+When coordinating multiple agents for complex projects:
+1. **Consult project-orchestrator agent** for orchestration strategies, parallel execution plans, and coordination recommendations
+2. **Prioritize parallel execution** - maximize concurrent agent operations whenever possible
+3. **Execute the recommended plan yourself** - you control all agent invocations  
+4. **Maintain visibility** - all agent calls happen in the main conversation thread
+
+For projects involving 3+ agents, always start by consulting project-orchestrator for optimal execution strategies.
 
 ### Version Control
 - **Branch Creation**: Only create branches when:

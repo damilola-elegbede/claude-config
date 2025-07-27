@@ -43,7 +43,7 @@ complexity_decision_framework:
     staff_level: "Cross-service impact, new patterns, >10k RPS, advanced database design, emerging technologies, business-critical systems"
 tool_access: full_implementation
 tool_restrictions:
-  allowed: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, Task, TodoWrite, NotebookRead, NotebookEdit]
+  allowed: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit]
   forbidden: []
   rationale: "Senior developer requires full tool access to implement features, fix bugs, and refactor code within their scope"
 ---

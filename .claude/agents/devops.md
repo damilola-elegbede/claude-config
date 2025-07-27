@@ -43,7 +43,7 @@ deployment_focus:
   development_workflows: [branch_strategies, code_quality_gates, release_automation]
 tool_access: full_access
 tool_restrictions:
-  allowed: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, Task, TodoWrite, NotebookRead, NotebookEdit]
+  allowed: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit]
   forbidden: []
   rationale: "DevOps engineer needs full access to implement infrastructure automation, manage deployments, and configure CI/CD systems"
 ---

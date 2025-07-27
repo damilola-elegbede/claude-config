@@ -67,7 +67,7 @@ handoff_protocols:
   iteration_cycle: "Design → Implement → Test → Refine based on backend-staff feedback"
 tool_access: documentation_access
 tool_restrictions:
-  allowed: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, Task, TodoWrite, Bash(read-only)]
+  allowed: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, Bash(read-only)]
   forbidden: [NotebookRead, NotebookEdit]
   rationale: "API engineer creates specifications and documentation but doesn't modify runtime systems or analyze data notebooks"
 api_focus:

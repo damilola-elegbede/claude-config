@@ -36,7 +36,7 @@ escalation_triggers:
   from_mobile_ui: "Cross-platform design consistency requiring web/desktop design expertise"
 tool_access: design_specification
 tool_restrictions:
-  allowed: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, Task, TodoWrite, Bash(read-only)]
+  allowed: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, Bash(read-only)]
   forbidden: [NotebookRead, NotebookEdit]
   rationale: "UI designer creates design specifications and documentation but doesn't need system execution or data analysis capabilities"
 ---

@@ -27,7 +27,7 @@ escalation_triggers:
   to_principal_architect: "Documentation strategy decisions affecting system architecture"
 tool_access: documentation_access
 tool_restrictions:
-  allowed: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, Task, TodoWrite, Bash(read-only)]
+  allowed: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, Bash(read-only)]
   forbidden: [NotebookRead, NotebookEdit]
   rationale: "Technical writer creates and maintains documentation but doesn't modify code or analyze data notebooks"
 ---

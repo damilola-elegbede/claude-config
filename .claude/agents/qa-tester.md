@@ -46,7 +46,7 @@ testing_focus:
   performance_testing: "Coordinates with performance-engineer for performance test scenarios and validation"
 tool_access: full_implementation
 tool_restrictions:
-  allowed: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, Task, TodoWrite, NotebookRead, NotebookEdit]
+  allowed: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit]
   forbidden: []
   rationale: "QA-Tester requires full tool access to implement comprehensive test suites, create test files, and modify test configurations"
 boundary_definitions:

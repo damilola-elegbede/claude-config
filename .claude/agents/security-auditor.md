@@ -49,7 +49,7 @@ security_gate_coordination:
   specialized_expertise: "Provides deep security analysis that complements general quality review"
 tool_access: read_only_plus_analysis
 tool_restrictions:
-  allowed: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Task, Bash(read-only), TodoWrite]
+  allowed: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Bash(read-only), TodoWrite]
   forbidden: [Edit, MultiEdit, Write, NotebookEdit]
   rationale: "Security auditor focuses on vulnerability assessment and compliance analysis, not code modification"
 ---

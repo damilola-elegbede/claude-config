@@ -44,7 +44,7 @@ reliability_focus:
   production_operations: [reliability_engineering, performance_optimization, security_monitoring]
 tool_access: full_access
 tool_restrictions:
-  allowed: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, Task, TodoWrite, NotebookRead, NotebookEdit]
+  allowed: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit]
   forbidden: []
   rationale: "Platform engineer needs full access to implement monitoring infrastructure, configure alerting systems, and manage production observability"
 sre_focus:

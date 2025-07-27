@@ -27,7 +27,7 @@ escalation_triggers:
   from_mobile_ui: "Mobile product strategy and platform-specific product decisions"
 tool_access: read_only_plus_analysis
 tool_restrictions:
-  allowed: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Task, Bash(read-only), TodoWrite]
+  allowed: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Bash(read-only), TodoWrite]
   forbidden: [Edit, MultiEdit, Write, NotebookEdit]
   rationale: "Product strategy expert analyzes data and creates strategic recommendations but doesn't implement code or modify systems"
 ---

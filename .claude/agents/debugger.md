@@ -68,7 +68,7 @@ when_not_to_use_debugger:
     production_incident: "Debugger analyzes failure patterns → Performance Engineer validates optimization effectiveness"
 tool_access: read_only_plus_analysis
 tool_restrictions:
-  allowed: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Task, Bash(read-only), TodoWrite]
+  allowed: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Bash(read-only), TodoWrite]
   forbidden: [Edit, MultiEdit, Write, NotebookEdit]
   rationale: "Debugger focuses on investigation and analysis, not code modification. Root cause identification requires read access to analyze systems without changing them"
 ---

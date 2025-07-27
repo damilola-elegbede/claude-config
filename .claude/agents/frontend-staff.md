@@ -39,7 +39,7 @@ handoff_protocol:
   feedback_loop: "Reports implementation challenges back to design agents for iteration"
 tool_access: full_access
 tool_restrictions:
-  allowed: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, Task, TodoWrite, NotebookRead, NotebookEdit]
+  allowed: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit]
   forbidden: []
   rationale: "Frontend staff engineer requires full tool access to implement complex UI systems, manage build processes, and handle deployment configurations"
 ---
