@@ -245,7 +245,6 @@ Implementation Level:
     ├── platform-engineer
     ├── devops
     ├── api-engineer
-    ├── researcher
     └── tech-writer
 
 Analysis Level:
