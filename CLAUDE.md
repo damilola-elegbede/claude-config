@@ -97,6 +97,42 @@ You cannot transition from PLANNING STATE to EXECUTION STATE without explicit ap
 - **Implementation**: Uses multiple concurrent subagents for thorough analysis (falls back to single-threaded for small repos)
 - Usage: Type `/context` for instant repository analysis
 
+### /review Command
+- Runs comprehensive code review using code-reviewer agent
+- Checks code quality, style compliance, and production readiness
+- Coordinates with qa-tester and security-auditor for comprehensive quality gates
+- Usage: `/review [file|directory]` for pre-PR code review
+
+### /security Command
+- Performs security vulnerability assessment using security-auditor agent
+- Checks OWASP Top 10, authentication flaws, data exposure risks
+- Provides remediation guidance and compliance checking
+- Usage: `/security [scope]` for security analysis
+
+### /perf Command
+- Analyzes performance using performance-engineer agent
+- Identifies bottlenecks, runs load tests, optimizes resource usage
+- Provides benchmarks and optimization recommendations
+- Usage: `/perf [target]` for performance analysis
+
+### /docs Command
+- Creates and updates documentation using tech-writer agent
+- Handles API docs, README files, architecture docs, and SPEC files
+- Ensures documentation stays synchronized with code
+- Usage: `/docs [type]` for documentation management
+
+### /debug Command
+- Investigates complex bugs using debugger agent
+- Systematic root cause analysis for hard-to-reproduce issues
+- Handles race conditions, memory leaks, and intermittent failures
+- Usage: `/debug <description>` for bug investigation
+
+### /orchestrate Command
+- Plans multi-agent execution using project-orchestrator agent
+- Optimizes parallel execution for 3+ agent projects
+- Supports multiple instances of same agent type
+- Usage: `/orchestrate <project>` for complex project planning
+
 ## Git Best Practices
 
 - NEVER use --no-verify for anything.
@@ -336,6 +372,29 @@ When coordinating multiple agents for complex projects:
 4. **Maintain visibility** - all agent calls happen in the main conversation thread
 
 For projects involving 3+ agents, always start by consulting project-orchestrator for optimal execution strategies.
+
+### Multiple Instances of Same Agent Type
+
+You can and should run multiple instances of the same agent type concurrently when appropriate:
+
+**Examples of Multi-Instance Patterns:**
+- **3 backend-staff agents**: Each working on different microservices (user service, payment service, analytics service)
+- **4 codebase-analyst agents**: Analyzing different parts of a large system (backend, frontend, mobile, integrations)
+- **2 frontend-staff agents**: One on web app, one on admin dashboard
+- **Multiple senior-dev agents**: Each implementing independent features in parallel
+
+**When to Use Multiple Instances:**
+- Large systems with independent components
+- Parallel analysis across different domains
+- Multiple similar tasks that can run concurrently
+- Cross-platform development (iOS + Android with 2 mobile-ui agents)
+
+**Coordination Best Practices:**
+- Use project-orchestrator to manage multiple instances
+- Establish shared standards/patterns upfront
+- Define integration points between instances
+- Synchronize at key milestones
+- Aggregate results for comprehensive reporting
 
 ### Version Control
 - **Branch Creation**: Only create branches when:
