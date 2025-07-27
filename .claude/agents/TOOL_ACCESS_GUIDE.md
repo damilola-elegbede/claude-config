@@ -19,7 +19,7 @@ This guide explains the rationale behind tool access restrictions for each agent
 **Justification**: Implementation agents must modify code, configure systems, and manage infrastructure to deliver working solutions.
 
 ### Read + Analysis Access
-**Tools**: Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Task, Bash(read-only), TodoWrite
+**Tools**: Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Bash(read-only), TodoWrite
 **Forbidden**: Edit, MultiEdit, Write, NotebookEdit(modification)
 
 #### Analysis Agents

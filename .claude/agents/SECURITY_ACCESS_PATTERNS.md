@@ -13,14 +13,14 @@ This document defines the security access patterns and rationale for all Claude 
 
 ### 2. Read-Only Plus Analysis
 **Agents**: security-auditor, debugger, code-reviewer, codebase-analyst, performance-engineer, researcher
-**Tools Allowed**: Read operations, analysis tools, WebFetch, WebSearch, Task (subagents), TodoWrite
+**Tools Allowed**: Read operations, analysis tools, WebFetch, WebSearch, TodoWrite
 **Tools Forbidden**: Edit, MultiEdit, Write, NotebookEdit
 **Security Rationale**: Analysis agents focus on assessment and reporting without modifying production systems. This separation ensures analysis integrity and prevents accidental system modifications during security reviews.
 
 ### 3. Design Specification Access
 **Agents**: ui-designer, mobile-ui
 **Tools Allowed**: File creation/editing for specifications, documentation tools
-**Tools Forbidden**: Bash (system execution), NotebookEdit, Task (subagents)
+**Tools Forbidden**: Bash (system execution), NotebookEdit
 **Security Rationale**: Design agents create specifications and documentation but don't need system execution capabilities or data analysis tools.
 
 ### 4. Documentation Access
@@ -31,7 +31,7 @@ This document defines the security access patterns and rationale for all Claude 
 
 ### 5. Strategic Planning Access
 **Agents**: principal-architect
-**Tools Allowed**: Documentation tools, Task (subagent coordination), read-only bash
+**Tools Allowed**: Documentation tools, read-only bash
 **Tools Forbidden**: NotebookRead/Edit (not needed for architectural planning)
 **Security Rationale**: Architects coordinate strategy and planning, requiring subagent orchestration but not data analysis capabilities.
 
@@ -53,7 +53,7 @@ This document defines the security access patterns and rationale for all Claude 
 
 #### Medium-Risk Mitigations
 - **Documentation Agents**: Controlled file access prevents system configuration changes
-- **Coordination Agents**: Task access for orchestration but limited system execution
+- **Coordination Agents**: Orchestrate through the general-purpose agent with limited system execution
 
 ## Agent-Specific Security Rationale
 
@@ -80,7 +80,7 @@ This document defines the security access patterns and rationale for all Claude 
 - **api-engineer**: Designs API contracts and specifications without implementation
 
 ### Strategic Agents (Planning Access)
-- **principal-architect**: Coordinates strategy and orchestrates other agents through Task tool
+- **principal-architect**: Coordinates strategy and creates plans for the general-purpose agent to execute
 
 ## Compliance and Monitoring
 
