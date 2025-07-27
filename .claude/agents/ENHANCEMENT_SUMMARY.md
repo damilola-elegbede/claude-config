@@ -255,6 +255,7 @@ Analysis Level:
 ```
 
 ### Tool Access Matrix
+
 | Access Level | Agent Count | Capabilities |
 |---|---|---|
 | **Full Access** | 6 agents | Complete implementation |
