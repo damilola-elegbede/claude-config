@@ -112,12 +112,23 @@ validate_yaml() {
     return 0
 }
 
-# Process all .md files
-for file in "$AGENTS_DIR"/*.md; do
-    if [ -f "$file" ]; then
-        validate_yaml "$file"
+# Check if specific file provided
+if [ $# -eq 1 ]; then
+    # Validate single file
+    if [ -f "$1" ]; then
+        validate_yaml "$1"
+    else
+        echo -e "${RED}Error: File not found: $1${NC}"
+        exit 1
     fi
-done
+else
+    # Process all .md files
+    for file in "$AGENTS_DIR"/*.md; do
+        if [ -f "$file" ]; then
+            validate_yaml "$file"
+        fi
+    done
+fi
 
 echo ""
 echo "================================================"
