@@ -29,6 +29,12 @@ This repository contains backup copies of Claude configurations for easy restora
   - `/test` - Automatically discovers and runs tests in any repository
   - `/context` - Analyzes repository structure and provides comprehensive overview
   - `/sync` - (Repo-specific) Syncs configuration from this repo to user settings
+  - `/review` - Runs comprehensive code review using code-reviewer agent
+  - `/security` - Performs security vulnerability assessment
+  - `/perf` - Analyzes performance and identifies optimization opportunities
+  - `/docs` - Creates and updates documentation including SPEC files
+  - `/debug` - Investigates complex bugs with systematic root cause analysis
+  - `/orchestrate` - Plans optimal multi-agent execution for complex projects
 
 ### 4. Audio Notification System
 - **Documentation**: `AUDIO_HOOK_README.md`
