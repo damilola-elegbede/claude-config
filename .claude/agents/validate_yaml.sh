@@ -4,6 +4,12 @@
 
 set -e
 
+# Debug mode for CI
+if [ -n "$CI" ]; then
+    echo "Running in CI environment"
+    set -x  # Enable command tracing in CI
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 AGENTS_DIR="$SCRIPT_DIR"
 ERRORS=0
@@ -23,12 +29,12 @@ else
     NC='\033[0m' # No Color
 fi
 
-echo "🔍 Validating YAML front-matter in agent files..."
+echo "Validating YAML front-matter in agent files..."
 echo "================================================"
 
 # Check if we're in the right directory
 if [ ! -d "$AGENTS_DIR" ]; then
-    echo -e "${RED}Error: Cannot find agents directory at $AGENTS_DIR${NC}"
+    printf "${RED}Error: Cannot find agents directory at %s${NC}\n" "$AGENTS_DIR"
     exit 1
 fi
 
@@ -51,8 +57,8 @@ validate_yaml() {
     
     # Check if file starts with ---
     if ! head -n 1 "$file" | grep -q "^---$"; then
-        echo -e "${RED}✗ Missing opening YAML delimiter '---'${NC}"
-        ((ERRORS++))
+        printf "${RED}ERROR: Missing opening YAML delimiter '---'${NC}\n"
+        ERRORS=$((ERRORS + 1))
         return 1
     fi
     
@@ -63,7 +69,7 @@ validate_yaml() {
     local closing_found=false
     
     while IFS= read -r line; do
-        ((line_num++))
+        line_num=$((line_num + 1))
         
         if [ $line_num -eq 1 ] && [ "$line" = "---" ]; then
             in_yaml=true
@@ -81,40 +87,40 @@ validate_yaml() {
     done < "$file"
     
     if [ "$closing_found" = false ]; then
-        echo -e "${RED}✗ Missing closing YAML delimiter '---'${NC}"
-        ((ERRORS++))
+        printf "${RED}ERROR: Missing closing YAML delimiter '---'${NC}\n"
+        ERRORS=$((ERRORS + 1))
         return 1
     fi
     
     # Validate required fields
     if ! echo "$yaml_content" | grep -q "^name:"; then
-        echo -e "${RED}✗ Missing required field: name${NC}"
-        ((ERRORS++))
+        printf "${RED}ERROR: Missing required field: name${NC}\n"
+        ERRORS=$((ERRORS + 1))
         has_errors=true
     fi
     
     if ! echo "$yaml_content" | grep -q "^description:"; then
-        echo -e "${RED}✗ Missing required field: description${NC}"
-        ((ERRORS++))
+        printf "${RED}ERROR: Missing required field: description${NC}\n"
+        ERRORS=$((ERRORS + 1))
         has_errors=true
     fi
     
     # Check for multiline descriptions (warning only)
     if echo "$yaml_content" | grep -q "^description: |"; then
-        echo -e "${YELLOW}⚠ Warning: Using multiline description (consider single-line format)${NC}"
-        ((WARNINGS++))
+        printf "${YELLOW}WARNING: Using multiline description (consider single-line format)${NC}\n"
+        WARNINGS=$((WARNINGS + 1))
     fi
     
     # Check description length
     desc_line=$(echo "$yaml_content" | grep "^description:" | head -1)
     if [ ${#desc_line} -gt 500 ]; then
-        echo -e "${YELLOW}⚠ Warning: Very long description line (${#desc_line} chars)${NC}"
-        ((WARNINGS++))
+        printf "${YELLOW}WARNING: Very long description line (%d chars)${NC}\n" "${#desc_line}"
+        WARNINGS=$((WARNINGS + 1))
     fi
     
     # If no errors found
     if [ "$has_errors" = false ] && [ $WARNINGS -eq 0 ]; then
-        echo -e "${GREEN}✓ Valid${NC}"
+        printf "${GREEN}VALID${NC}\n"
     fi
     
     return 0
@@ -126,7 +132,7 @@ if [ $# -eq 1 ]; then
     if [ -f "$1" ]; then
         validate_yaml "$1"
     else
-        echo -e "${RED}Error: File not found: $1${NC}"
+        printf "${RED}Error: File not found: %s${NC}\n" "$1"
         exit 1
     fi
 else
@@ -141,14 +147,16 @@ fi
 echo ""
 echo "================================================"
 echo "Validation Summary:"
-echo "  Files checked: $(ls -1 "$AGENTS_DIR"/*.md 2>/dev/null | wc -l)"
-echo -e "  Errors: ${RED}$ERRORS${NC}"
-echo -e "  Warnings: ${YELLOW}$WARNINGS${NC}"
+# Use tr to remove leading/trailing whitespace from wc output
+FILE_COUNT=$(ls -1 "$AGENTS_DIR"/*.md 2>/dev/null | wc -l | tr -d ' ')
+echo "  Files checked: $FILE_COUNT"
+printf "  Errors: ${RED}%d${NC}\n" "$ERRORS"
+printf "  Warnings: ${YELLOW}%d${NC}\n" "$WARNINGS"
 
 if [ $ERRORS -gt 0 ]; then
-    echo -e "\n${RED}❌ Validation failed with $ERRORS errors${NC}"
+    printf "\n${RED}FAILED: Validation failed with %d errors${NC}\n" "$ERRORS"
     exit 1
 else
-    echo -e "\n${GREEN}✅ All agent files have valid YAML front-matter${NC}"
+    printf "\n${GREEN}SUCCESS: All agent files have valid YAML front-matter${NC}\n"
     exit 0
 fi

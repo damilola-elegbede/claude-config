@@ -23,7 +23,7 @@ else
     NC='\033[0m'
 fi
 
-echo "🧪 Running YAML Validation Unit Tests"
+echo "Running YAML Validation Unit Tests"
 echo "===================================="
 
 # Create test directory
@@ -50,11 +50,11 @@ run_test() {
     
     # Check result
     if [ "$result" = "$expected_result" ]; then
-        echo -e "${GREEN}✓ PASSED${NC}"
-        ((PASSED++))
+        printf "${GREEN}PASSED${NC}\n"
+        PASSED=$((PASSED + 1))
     else
-        echo -e "${RED}✗ FAILED (expected $expected_result, got $result)${NC}"
-        ((FAILED++))
+        printf "${RED}FAILED (expected %s, got %s)${NC}\n" "$expected_result" "$result"
+        FAILED=$((FAILED + 1))
     fi
     
     # Cleanup
@@ -155,14 +155,14 @@ rm -rf "$TEST_DIR"
 echo ""
 echo "===================================="
 echo "Test Summary:"
-echo -e "  Passed: ${GREEN}$PASSED${NC}"
-echo -e "  Failed: ${RED}$FAILED${NC}"
+printf "  Passed: ${GREEN}%d${NC}\n" "$PASSED"
+printf "  Failed: ${RED}%d${NC}\n" "$FAILED"
 echo ""
 
 if [ $FAILED -eq 0 ]; then
-    echo -e "${GREEN}✅ All tests passed!${NC}"
+    printf "${GREEN}SUCCESS: All tests passed!${NC}\n"
     exit 0
 else
-    echo -e "${RED}❌ Some tests failed${NC}"
+    printf "${RED}FAILED: Some tests failed${NC}\n"
     exit 1
 fi
