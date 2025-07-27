@@ -120,9 +120,8 @@ claude-config/
 │   ├── commands/               # Tests for each command
 │   ├── config/                 # Configuration validation tests
 │   ├── integration/            # Integration tests
-│   └── utils.sh               # Test utilities
-├── test/                       # Test scripts and validation
-│   ├── test.sh                 # Test runner script
+│   ├── utils.sh               # Test utilities
+│   ├── test.sh                # Test runner script
 │   ├── check_yaml.py           # YAML validation script
 │   ├── validate_yaml.sh        # Agent YAML validation
 │   ├── test_yaml_validation.sh # YAML validation tests
@@ -141,7 +140,7 @@ This repository includes a comprehensive test suite to ensure all configurations
 
 To run all tests:
 ```bash
-./test/test.sh
+./tests/test.sh
 ```
 
 ### Test Structure
