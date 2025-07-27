@@ -1,8 +1,6 @@
 ---
 name: debugger
-description: |
-  Use this agent when you encounter mysterious bugs, intermittent failures, or complex issues that require systematic investigation. This agent excels at finding root causes of difficult-to-reproduce problems, performance anomalies, race conditions, memory leaks, and edge cases that other debugging approaches have missed.
-
+description: Use this agent when you encounter mysterious bugs, intermittent failures, or complex issues that require systematic investigation. This agent excels at finding root causes of difficult-to-reproduce problems, performance anomalies, race conditions, memory leaks, and edge cases that other debugging approaches have missed.
 coordination_protocols:
   with_performance_engineer:
     - "Debugger investigates mysterious performance anomalies → Performance-Engineer provides systematic load testing validation"
