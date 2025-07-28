@@ -48,7 +48,7 @@ The Claude agent ecosystem consists of 36 specialized agents organized across 8 
 - **product-strategy** - Product vision, roadmaps, feature prioritization
 - **business-analyst** - Requirements analysis, business logic, process mapping
 - **agent-architect** - Agent design, ecosystem improvements
-- **agent-auditor** - Agent ecosystem health, coverage gap analysis
+- **agent-auditor** - Agent ecosystem health, coverage gap analysis (auto-spawns multiple instances for >5 agents, max 5 agents per instance)
 
 ### Specialized Domain Agents
 - **accessibility-expert** - WCAG compliance, accessibility standards
@@ -228,6 +228,29 @@ backend-engineer: Shared API
 frontend-engineer: Web app
 mobile-engineer #1: iOS app
 mobile-engineer #2: Android app
+```
+
+#### Agent Ecosystem Audit
+```bash
+# Agent-auditor automatically scales based on total agents
+# Rule: Maximum 5 agents per instance for focused analysis
+
+Total agents: 36
+Required instances: 8 (ceiling of 36/5)
+
+agent-auditor #1: Agents 1-5
+agent-auditor #2: Agents 6-10
+agent-auditor #3: Agents 11-15
+agent-auditor #4: Agents 16-20
+agent-auditor #5: Agents 21-25
+agent-auditor #6: Agents 26-30
+agent-auditor #7: Agents 31-35
+agent-auditor #8: Agents 36
+
+# This pattern automatically scales:
+# - 10 agents = 2 instances
+# - 25 agents = 5 instances  
+# - 50 agents = 10 instances
 ```
 
 ## Tool Permissions
