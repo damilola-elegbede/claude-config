@@ -6,7 +6,7 @@
 
 | Task Complexity | Domain | Agent Choice | Key Indicators |
 |---|---|---|---|
-| **Staff Level** | Backend | `backend-engineer` | Multi-service architecture, complex state management, performance < 2.5s |
+| **Staff Level** | Backend | `backend-dev` | Multi-service architecture, complex state management, performance < 2.5s |
 | **Staff Level** | Frontend | `frontend-engineer` | Real-time features, complex UI, Core Web Vitals optimization |
 | **Senior Level** | General | `fullstack-lead` | Single-service features, well-defined APIs, standard patterns |
 | **Specialist** | Mobile | `mobile-ui` | iOS/Android design, platform-specific patterns |
@@ -20,7 +20,7 @@
 | **External Research** | Industry/technology | `researcher` | Technology comparison, standards, competitive analysis |
 | **Security Review** | Security-focused | `security-auditor` | OWASP compliance, vulnerability assessment |
 | **Code Quality** | Pre-commit | `code-reviewer` | Style, best practices, PR readiness |
-| **Testing Strategy** | Test coverage | `qa-engineer` | Framework selection, test architecture |
+| **Testing Strategy** | Test coverage | `qa-tester` | Framework selection, test architecture |
 | **Complex Debugging** | Mystery bugs | `debugger` | Intermittent failures, performance degradation |
 | **Performance Analysis** | System performance | `performance-engineer` | Load testing, optimization, benchmarking |
 
@@ -51,7 +51,7 @@ Task Request → fullstack-lead → [complexity assessment] → staff agents →
 
 ### Quality Assurance Workflow
 ```
-Code Complete → code-reviewer → [parallel: security-auditor, qa-engineer] → implementation agents
+Code Complete → code-reviewer → [parallel: security-auditor, qa-tester] → implementation agents
 ```
 
 ### Analysis Request Flow
@@ -80,8 +80,8 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 ## Parallel Execution Groups
 
 ### Development Workflow
-- **Primary**: `frontend-engineer` + `backend-engineer` + `fullstack-lead`
-- **Quality**: `code-reviewer` + `security-auditor` + `qa-engineer`
+- **Primary**: `frontend-engineer` + `backend-dev` + `fullstack-lead`
+- **Quality**: `code-reviewer` + `security-auditor` + `qa-tester`
 - **Design**: `ui-designer` + `mobile-ui` (cross-platform consistency)
 
 ### Analysis Workflow  
@@ -95,7 +95,7 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 
 | Access Level | Agents | Capabilities |
 |---|---|---|
-| **Full Access** | backend-engineer, frontend-engineer, fullstack-lead | All tools for implementation |
+| **Full Access** | backend-dev, frontend-engineer, fullstack-lead | All tools for implementation |
 | **Read + Analysis** | codebase-analyst, security-auditor, debugger | Read tools + analysis + TodoWrite |
 | **Orchestration** | principal-architect, project-orchestrator | Full access + project management |
 | **Documentation** | tech-writer | Read/write + documentation tools |
@@ -113,7 +113,7 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 - Using `general-purpose` for API design → Use `api-engineer`
 
 ### ❌ Missing Parallel Opportunities
-- Sequential code review → Run `code-reviewer` + `security-auditor` + `qa-engineer` in parallel
+- Sequential code review → Run `code-reviewer` + `security-auditor` + `qa-tester` in parallel
 - Single-threaded analysis → Use multiple analysis agents concurrently
 - Independent implementation → Parallel frontend/backend development
 
