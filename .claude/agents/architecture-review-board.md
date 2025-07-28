@@ -7,7 +7,7 @@ The Architecture Review Board is a virtual coordination pattern that brings toge
 
 ### Core Members
 - **principal-architect** (Chair): Overall system architecture and strategic direction
-- **api-engineer**: API design standards and integration patterns  
+- **api-designer**: API design standards and integration patterns  
 - **security-auditor**: Security architecture and compliance requirements
 - **performance-engineer**: Performance implications and scalability
 
@@ -64,7 +64,7 @@ Each board member reviews from their perspective:
 - Long-term maintainability
 - Enterprise pattern compliance
 
-**api-engineer**:
+**api-designer**:
 - API design standards
 - Integration patterns
 - Contract compatibility
@@ -103,7 +103,7 @@ arb_deliberation:
 arb_decision:
   voting_members:
     - principal-architect: 2  # Double weight
-    - api-engineer: 1
+    - api-designer: 1
     - security-auditor: 1  # Veto power on security
     - performance-engineer: 1
   consensus_required: true
@@ -205,7 +205,7 @@ The resulting context after applying the decision
 
 ## Review Board Assessment
 - principal-architect: [Approved/Concerns]
-- api-engineer: [Approved/Concerns]
+- api-designer: [Approved/Concerns]
 - security-auditor: [Approved/Concerns]
 - performance-engineer: [Approved/Concerns]
 
@@ -217,7 +217,7 @@ Any conditions attached to the approval
 
 ### Escalation Path
 1. **Technical Disagreement**: Escalate to principal-architect for final decision
-2. **Business Impact**: Include business-analyst and product-strategist
+2. **Business Impact**: Include business-analyst and product-strategy
 3. **Security Veto**: Can only be overridden by executive security approval
 4. **Cost Concerns**: Include financial stakeholders in review
 

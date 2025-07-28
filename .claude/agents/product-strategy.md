@@ -1,5 +1,5 @@
 ---
-name: product-strategist
+name: product-strategy
 description: Use this agent when you need strategic product guidance, feature prioritization, user experience optimization, or product roadmap planning. Specializes in distinguishing strategic vs tactical decisions for optimal business outcomes.
 color: cyan
 specialization_level: specialist
