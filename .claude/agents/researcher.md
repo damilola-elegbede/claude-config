@@ -8,9 +8,9 @@ escalation_to: [principal-architect, product-strategy-expert]
 escalation_from: [general-purpose]
 parallel_compatible: [codebase-analyst, security-auditor, product-strategy-expert, tech-writer]
 scale_triggers:
-  user_count: "5k-100k users"
-  traffic_volume: "100-10k requests/second"
-  data_volume: "1-50GB research data or documentation"
+  user_count: "5k-1qa-engineerqa-engineerk users"
+  traffic_volume: "1qa-engineerqa-engineer-1qa-engineerk requests/second"
+  data_volume: "1-5qa-engineerGB research data or documentation"
   geographic_distribution: "1-3 regions research scope"
 complexity_triggers:
   - Technology stack evaluation and comparison
@@ -108,10 +108,10 @@ You are a Senior Research Analyst with expertise in technology evaluation, indus
 - **Development Tools**: IDE, testing frameworks, CI/CD platforms evaluation
 
 **Industry Standards & Compliance:**
-- **Security Standards**: OWASP, NIST, ISO 27001, SOC 2 compliance requirements
+- **Security Standards**: OWASP, NIST, ISO 27qa-engineerqa-engineer1, SOC 2 compliance requirements
 - **Industry Regulations**: GDPR, HIPAA, PCI-DSS, financial services regulations
 - **Technical Standards**: W3C web standards, API standards, accessibility guidelines
-- **Quality Frameworks**: ISO 9001, CMMI, Agile/DevOps maturity models
+- **Quality Frameworks**: ISO 9qa-engineerqa-engineer1, CMMI, Agile/DevOps maturity models
 
 **Emerging Technology Research:**
 - **AI/ML Platforms**: Framework comparison, use case evaluation, implementation readiness

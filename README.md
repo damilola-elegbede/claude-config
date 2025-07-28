@@ -116,14 +116,18 @@ claude-config/
 │   │   ├── ci.yml             # Main CI workflow
 │   │   └── pr-checks.yml      # Pull request checks
 │   └── BRANCH_PROTECTION.md   # Branch protection setup guide
+├── docs/                        # Repository documentation
+│   ├── AUDIO_HOOK_README.md    # Audio notification setup guide
+│   └── ...                     # Other documentation files
+├── scripts/                     # Utility scripts
+│   ├── validate_yaml.sh        # Agent YAML validation script
+│   └── check_yaml.py           # Python YAML validation utility
 ├── tests/                       # Test suite for configurations
 │   ├── commands/               # Tests for each command
 │   ├── config/                 # Configuration validation tests
 │   ├── integration/            # Integration tests
 │   ├── utils.sh               # Test utilities
 │   ├── test.sh                # Test runner script
-│   ├── check_yaml.py           # YAML validation script
-│   ├── validate_yaml.sh        # Agent YAML validation
 │   ├── test_yaml_validation.sh # YAML validation tests
 │   └── pre-commit-yaml-validation.sh # Pre-commit hook
 ├── .markdownlint-cli2.jsonc    # Markdown linter configuration with comments

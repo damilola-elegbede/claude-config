@@ -99,10 +99,10 @@ Recommended order for consistency:
 #### Using the Validation Script
 ```bash
 # Validate all agent files
-./validate_yaml.sh
+./scripts/validate_yaml.sh
 
 # Validate specific file
-./validate_yaml.sh agent-name.md
+./scripts/validate_yaml.sh agent-name.md
 ```
 
 #### Running Unit Tests
@@ -160,8 +160,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Validate YAML front-matter
         run: |
-          cd .claude/agents
-          ./validate_yaml.sh
+          ./scripts/validate_yaml.sh
 ```
 
 ## Maintenance
@@ -172,11 +171,11 @@ Run validation as part of your regular CI/CD pipeline to catch issues early.
 ### Updating Templates
 When adding new required fields, update:
 1. AGENT_TEMPLATE.yaml
-2. validate_yaml.sh validation rules
+2. scripts/validate_yaml.sh validation rules
 3. This documentation
 
 ## Support
 For questions or issues with YAML validation:
-1. Check error messages from validate_yaml.sh
+1. Check error messages from scripts/validate_yaml.sh
 2. Refer to examples in existing agent files
 3. Run unit tests to verify validation logic

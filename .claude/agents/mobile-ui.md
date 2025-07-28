@@ -16,7 +16,7 @@ handoff_protocol:
   platform_coordination: "Mobile-UI ensures platform compliance → UI-Designer maintains visual consistency"
 scale_triggers:
   user_count: ">5k mobile users"
-  traffic_volume: ">100 requests/second"
+  traffic_volume: ">1qa-engineerqa-engineer requests/second"
   data_volume: ">1GB mobile data transfer"
   geographic_distribution: "Single-region deployment"
 complexity_triggers:
@@ -24,7 +24,7 @@ complexity_triggers:
   custom_mobile_components: "Complex mobile interactions, custom gestures, advanced animations"
   mobile_accessibility: "VoiceOver, TalkBack, Switch Control, mobile accessibility compliance"
   platform_specific_patterns: "iOS HIG compliance, Android Material Design implementation"
-  mobile_performance: "60fps animations, memory optimization, battery efficiency"
+  mobile_performance: "6qa-engineerfps animations, memory optimization, battery efficiency"
   advanced_interactions: "Multi-touch gestures, haptic feedback, biometric integration"
 scope_triggers:
   multi_platform_coordination: "Design consistency across iOS, Android, and mobile web"

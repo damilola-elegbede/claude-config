@@ -12,9 +12,9 @@ tool_restrictions:
 parallel_compatible: [security-auditor, debugger, researcher, qa-tester, tech-writer]
 escalation_to: [principal-architect, backend-staff, frontend-staff]
 scale_triggers:
-  user_count: "5k-100k users"
-  traffic_volume: "100-10k requests/second"
-  data_volume: "1-50GB codebase or 100-1000 code files"
+  user_count: "5k-1qa-engineerqa-engineerk users"
+  traffic_volume: "1qa-engineerqa-engineer-1qa-engineerk requests/second"
+  data_volume: "1-5qa-engineerGB codebase or 1qa-engineerqa-engineer-1qa-engineerqa-engineerqa-engineer code files"
   geographic_distribution: "1-3 regions deployment analysis"
 complexity_triggers:
   architecture_assessment: "Multi-service architectures, complex system interactions, technical debt evaluation"
@@ -139,3 +139,21 @@ Your core responsibility is to analyze codebases, systems, and technical impleme
 - Confirm all risk assessments are properly substantiated
 
 You report only what you find through systematic analysis, never making assumptions or providing generic advice. Your value lies in delivering precise, evidence-based insights that enable informed technical and business decisions.
+
+## Coordination Patterns
+
+**Hands off to:**
+- **security-auditor**: When identifying potential security vulnerabilities for deeper analysis
+- **performance-engineer**: When finding performance bottlenecks requiring optimization
+- **tech-writer**: When documentation gaps need to be addressed
+- **backend-engineer/frontend-engineer**: When implementation improvements are needed based on analysis
+
+**Receives from:**
+- **principal-architect**: Requests for architecture analysis and technical debt assessment
+- **project-orchestrator**: Requirements for multi-domain analysis across large systems
+- **product-strategy-expert**: Business-driven analysis requests
+
+**Parallel execution with:**
+- **Multiple codebase-analyst instances**: For comprehensive analysis of large systems
+- **qa-engineer**: Can analyze code quality while QA analyzes test coverage
+- **security-auditor**: Can work simultaneously on different aspects of the codebase
