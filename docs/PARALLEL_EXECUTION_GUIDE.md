@@ -34,7 +34,7 @@ Coordination Point:
 ```yaml
 Parallel Group: Strategic Planning
   - principal-architect: System architecture, technical decisions
-  - product-strategy-expert: Feature prioritization, user impact
+  - product-strategist: Feature prioritization, user impact
   - ui-designer: Design system, user experience specifications
   - mobile-ui: Platform-specific mobile design patterns
 
@@ -114,10 +114,10 @@ Coordination:
 | **frontend-engineer** | backend-engineer, ui-designer, mobile-ui, qa-engineer | Full-stack development with design integration |
 | **backend-engineer** | frontend-engineer, devops, platform-engineer, api-engineer | Infrastructure-aware backend development |
 | **code-reviewer** | security-auditor, qa-engineer, tech-writer | Comprehensive quality assurance |
-| **principal-architect** | product-strategy-expert, tech-writer, researcher | Strategic planning with research and documentation |
+| **principal-architect** | product-strategist, tech-writer, researcher | Strategic planning with research and documentation |
 | **debugger** | security-auditor, codebase-analyst, performance-engineer | Multi-angle problem analysis |
 | **devops** | platform-engineer, backend-engineer, security-auditor | Infrastructure deployment with monitoring |
-| **researcher** | codebase-analyst, api-engineer, product-strategy-expert | External research with internal analysis |
+| **researcher** | codebase-analyst, api-engineer, product-strategist | External research with internal analysis |
 
 ### Sequential Dependencies (Require Handoffs)
 
@@ -140,7 +140,7 @@ Coordination:
 ```yaml
 Phase 1 - Parallel Planning:
   - principal-architect: System design
-  - product-strategy-expert: Requirements refinement
+  - product-strategist: Requirements refinement
   - ui-designer: Design system updates
   Duration: 1-2 days
 
@@ -204,7 +204,7 @@ Comprehensive Analysis:
     - security-auditor (security)
     
   Strategic Assessment:
-    - product-strategy-expert (business impact)
+    - product-strategist (business impact)
     - principal-architect (technical strategy)
     
   Documentation:

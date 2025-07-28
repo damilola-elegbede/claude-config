@@ -29,7 +29,7 @@
 | Planning Level | Scope | Agent Choice | Key Indicators |
 |---|---|---|---|
 | **System Architecture** | Multi-service | `principal-architect` | Technical roadmaps, architecture decisions |
-| **Product Strategy** | Business features | `product-strategy-expert` | Feature prioritization, user experience |
+| **Product Strategy** | Business features | `product-strategist` | Feature prioritization, user experience |
 | **Project Coordination** | Multi-agent | `project-orchestrator` | Progress tracking, parallel execution |
 | **Documentation** | Knowledge transfer | `tech-writer` | API docs, technical writing |
 | **API Design** | API governance | `api-engineer` | OpenAPI specs, contract testing, API strategy |
@@ -87,7 +87,7 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 ### Analysis Workflow  
 - **Technical**: `codebase-analyst` + `debugger` + `security-auditor` + `performance-engineer`
 - **Research**: `researcher` + `codebase-analyst` (external context + internal analysis)
-- **Strategic**: `principal-architect` + `product-strategy-expert` + `project-orchestrator`
+- **Strategic**: `principal-architect` + `product-strategist` + `project-orchestrator`
 - **Infrastructure**: `devops` + `platform-engineer` (deployment + monitoring)
 - **Documentation**: `tech-writer` + any domain expert
 

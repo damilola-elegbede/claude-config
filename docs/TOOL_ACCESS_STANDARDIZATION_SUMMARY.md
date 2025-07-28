@@ -25,7 +25,7 @@ tool_restrictions:
 ```
 
 ### 3. Read + Analysis
-**Agents**: code-reviewer, security-auditor, researcher, product-strategy-expert, debugger, performance-engineer, codebase-analyst
+**Agents**: code-reviewer, security-auditor, researcher, product-strategist, debugger, performance-engineer, codebase-analyst
 **Purpose**: Quality/assessment agents that analyze but don't modify code
 ```yaml
 tool_access: read_only_plus_analysis
@@ -80,7 +80,7 @@ tool_restrictions:
 ## Files Updated
 
 ✅ All 19 agent files standardized with consistent tool access documentation
-✅ Added missing tool access sections to: tech-writer, product-strategy-expert, project-orchestrator
+✅ Added missing tool access sections to: tech-writer, product-strategist, project-orchestrator
 ✅ Fixed inconsistent tool lists across same access categories
 ✅ Standardized formatting and rationale explanations
 ✅ Aligned access levels with agent responsibilities

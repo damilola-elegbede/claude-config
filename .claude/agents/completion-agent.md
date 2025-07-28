@@ -1,5 +1,5 @@
 ---
-name: completion-summary
+name: completion-agent
 description: Meticulous documentation specialist who creates comprehensive summaries of completed work, cataloging changes, agent activities, and accomplishments in executive-friendly reports
 color: brown
 specialization_level: specialist
