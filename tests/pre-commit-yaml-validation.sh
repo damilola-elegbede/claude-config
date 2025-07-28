@@ -5,7 +5,7 @@
 # Get the repository root
 REPO_ROOT=$(git rev-parse --show-toplevel)
 AGENTS_DIR="$REPO_ROOT/.claude/agents"
-VALIDATION_SCRIPT="$REPO_ROOT/tests/validate_yaml.sh"
+VALIDATION_SCRIPT="$REPO_ROOT/scripts/validate_yaml.sh"
 
 # Check if validation script exists
 if [ ! -f "$VALIDATION_SCRIPT" ]; then

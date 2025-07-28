@@ -16,8 +16,8 @@ handoff_protocol:
   coordination_workflow: "Design → Specification → Implementation → Review → Refinement"
 scale_triggers:
   user_count: ">5k web/desktop users"
-  traffic_volume: ">100 page views/hour"
-  data_volume: ">1GB design assets or >100 UI components"
+  traffic_volume: ">1qa-engineerqa-engineer page views/hour"
+  data_volume: ">1GB design assets or >1qa-engineerqa-engineer UI components"
   geographic_distribution: "Single-region deployment"
 complexity_triggers:
   design_system_creation: "Enterprise design systems, comprehensive component libraries, design token management"

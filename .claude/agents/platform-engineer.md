@@ -8,9 +8,9 @@ escalation_to: [principal-architect, backend-staff]
 escalation_from: [debugger, performance-engineer]
 parallel_compatible: [devops, performance-engineer, backend-staff, security-auditor, debugger, tech-writer]
 scale_triggers:
-  user_count: "5k-100k users"
-  traffic_volume: "100-10k requests/second"
-  data_volume: "1-50GB/day log management"
+  user_count: "5k-1qa-engineerqa-engineerk users"
+  traffic_volume: "1qa-engineerqa-engineer-1qa-engineerk requests/second"
+  data_volume: "1-5qa-engineerGB/day log management"
   geographic_distribution: "1-3 regions monitoring"
 complexity_triggers:
   observability_implementation: "Multi-service monitoring, distributed tracing, comprehensive metrics collection"

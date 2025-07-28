@@ -4,7 +4,7 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-VALIDATION_SCRIPT="$SCRIPT_DIR/validate_yaml.sh"
+VALIDATION_SCRIPT="$SCRIPT_DIR/../scripts/validate_yaml.sh"
 TEST_DIR="$SCRIPT_DIR/test_yaml_files"
 PASSED=0
 FAILED=0
