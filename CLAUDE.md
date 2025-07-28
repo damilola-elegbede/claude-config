@@ -340,8 +340,9 @@ Look for clear approval intent, including but not limited to:
   - Test coverage: `npm run coverage`, `pytest --cov`, `go test -cover`
   - Linting/formatting checks: `eslint`, `prettier --check`, `black --check`, `ruff check`
   - Documentation fetching: WebFetch and WebSearch for technical standards, guidelines, and best practices
+  - Sync operations: `cp` for backing up and syncing CLAUDE.md, settings.json, and .claude directories during `/sync` command
 - Always explain the purpose when using these tools, but execute immediately
-- Only prompt for approval on tools that modify state or require elevated permissions
+- Only prompt for approval on tools that modify state or require elevated permissions (except for `/sync` operations which are pre-approved)
 - When adhering to platform/language guidelines (HIG, Material Design, PEPs, etc.), fetch current documentation without prompting to ensure compliance with latest standards
 
 ### Subagent-First Research Protocol
