@@ -58,10 +58,12 @@ To restore these configurations on a new computer:
    ```bash
    cp -r .claude ~/.claude
    cp settings.json ~/.claude/settings.json
-   cp docs/AUDIO_HOOK_README.md ~/.claude/AUDIO_HOOK_README.md
    ```
 
-**Alternative**: Once installed, you can use the `/sync` command from within this repository to update your configuration files automatically. The sync command will back up existing files and copy all configuration files including the audio notification system.
+**Alternative**: Once installed, you can use the `/sync` command from within this repository to update your configuration files automatically. The sync command will:
+- Back up existing files before overwriting
+- Copy CLAUDE.md, command files, agent configurations, and settings.json
+- Exclude repository-specific files (sync.md command and docs/ folder contents)
 
 ## Using Claude Commands
 
@@ -94,8 +96,11 @@ Once installed, you can use the following commands in Claude:
 - **`/sync`** - Sync configurations to user settings (repo-specific command)
   - Only available within the claude-config repository
   - Copies CLAUDE.md to ~/CLAUDE.md
-  - Copies command files to ~/.claude/commands/
+  - Copies command files to ~/.claude/commands/ (excludes sync.md)
+  - Copies agent configurations to ~/.claude/agents/
+  - Copies settings.json with audio hooks
   - Creates backups before overwriting
+  - Excludes repository documentation (docs/ folder)
 
 ## Repository Structure
 
@@ -109,13 +114,24 @@ claude-config/
 │   │   ├── push.md            # /push command
 │   │   ├── test.md            # /test command
 │   │   ├── context.md         # /context command
+│   │   ├── review.md          # /review command
+│   │   ├── security.md        # /security command
+│   │   ├── perf.md            # /perf command
+│   │   ├── docs.md            # /docs command
+│   │   ├── debug.md           # /debug command
+│   │   ├── orchestrate.md     # /orchestrate command
 │   │   └── sync.md            # /sync command (repo-specific)
+│   ├── agents/                 # Specialized agent configurations
+│   │   └── ...                # 19 agent configuration files
 │   └── settings.local.json    # Local settings
 ├── .github/                     # GitHub specific files
 │   ├── workflows/              # GitHub Actions workflows
 │   │   ├── ci.yml             # Main CI workflow
 │   │   └── pr-checks.yml      # Pull request checks
 │   └── BRANCH_PROTECTION.md   # Branch protection setup guide
+├── docs/                        # Repository documentation
+│   ├── AUDIO_HOOK_README.md    # Audio notification setup guide
+│   └── ...                     # Other documentation files
 ├── tests/                       # Test suite for configurations
 │   ├── commands/               # Tests for each command
 │   ├── config/                 # Configuration validation tests
