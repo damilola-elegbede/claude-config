@@ -100,7 +100,7 @@ You cannot transition from PLANNING STATE to EXECUTION STATE without explicit ap
 ### /review Command
 - Runs comprehensive code review using code-reviewer agent
 - Checks code quality, style compliance, and production readiness
-- Coordinates with qa-engineer and security-auditor for comprehensive quality gates
+- Coordinates with qa-tester and security-auditor for comprehensive quality gates
 - Usage: `/review [file|directory]` for pre-PR code review
 
 ### /security Command
@@ -378,7 +378,7 @@ For projects involving 3+ agents, always start by consulting project-orchestrato
 You can and should run multiple instances of the same agent type concurrently when appropriate:
 
 **Examples of Multi-Instance Patterns:**
-- **3 backend-engineer agents**: Each working on different microservices (user service, payment service, analytics service)
+- **3 backend-dev agents**: Each working on different microservices (user service, payment service, analytics service)
 - **4 codebase-analyst agents**: Analyzing different parts of a large system (backend, frontend, mobile, integrations)
 - **2 frontend-engineer agents**: One on web app, one on admin dashboard
 - **Multiple fullstack-lead agents**: Each implementing independent features in parallel

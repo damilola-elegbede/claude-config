@@ -12,9 +12,9 @@ tool_restrictions:
 parallel_compatible: [security-auditor, debugger, researcher, qa-tester, tech-writer]
 escalation_to: [principal-architect, backend-staff, frontend-staff]
 scale_triggers:
-  user_count: "5k-1qa-engineerqa-engineerk users"
-  traffic_volume: "1qa-engineerqa-engineer-1qa-engineerk requests/second"
-  data_volume: "1-5qa-engineerGB codebase or 1qa-engineerqa-engineer-1qa-engineerqa-engineerqa-engineer code files"
+  user_count: "5k-1qa-testerqa-testerk users"
+  traffic_volume: "1qa-testerqa-tester-1qa-testerk requests/second"
+  data_volume: "1-5qa-testerGB codebase or 1qa-testerqa-tester-1qa-testerqa-testerqa-tester code files"
   geographic_distribution: "1-3 regions deployment analysis"
 complexity_triggers:
   architecture_assessment: "Multi-service architectures, complex system interactions, technical debt evaluation"
@@ -146,7 +146,7 @@ You report only what you find through systematic analysis, never making assumpti
 - **security-auditor**: When identifying potential security vulnerabilities for deeper analysis
 - **performance-engineer**: When finding performance bottlenecks requiring optimization
 - **tech-writer**: When documentation gaps need to be addressed
-- **backend-engineer/frontend-engineer**: When implementation improvements are needed based on analysis
+- **backend-dev/frontend-engineer**: When implementation improvements are needed based on analysis
 
 **Receives from:**
 - **principal-architect**: Requests for architecture analysis and technical debt assessment
@@ -155,5 +155,5 @@ You report only what you find through systematic analysis, never making assumpti
 
 **Parallel execution with:**
 - **Multiple codebase-analyst instances**: For comprehensive analysis of large systems
-- **qa-engineer**: Can analyze code quality while QA analyzes test coverage
+- **qa-tester**: Can analyze code quality while QA analyzes test coverage
 - **security-auditor**: Can work simultaneously on different aspects of the codebase

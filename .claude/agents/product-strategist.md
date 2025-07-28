@@ -7,8 +7,8 @@ domain_expertise: [product_strategy, feature_prioritization, user_research, mark
 parallel_compatible: [principal-architect, tech-writer, ui-designer, researcher]
 scale_triggers:
   user_count: ">5k users"
-  traffic_volume: ">1qa-engineerqa-engineer requests/second"
-  data_volume: ">1GB analytics data or >1qa-engineerqa-engineer feature requests"
+  traffic_volume: ">1qa-testerqa-tester requests/second"
+  data_volume: ">1GB analytics data or >1qa-testerqa-tester feature requests"
   geographic_distribution: "Single-region deployment"
 complexity_triggers:
   strategic_product_decisions: "Major feature decisions, platform strategy, technology choices affecting user experience"

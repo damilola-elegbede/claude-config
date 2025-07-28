@@ -12,7 +12,7 @@ This guide provides comprehensive strategies for maximizing parallel agent execu
 ```yaml
 Parallel Group: Implementation
   - frontend-engineer: UI/UX implementation with performance optimization
-  - backend-engineer: API development with database optimization  
+  - backend-dev: API development with database optimization  
   - devops: CI/CD pipeline setup and infrastructure preparation
   
 Sequential Handoff:
@@ -24,7 +24,7 @@ Sequential Handoff:
 Parallel Group: Quality Gates
   - code-reviewer: Style, best practices, overall code quality
   - security-auditor: Vulnerability assessment, compliance review
-  - qa-engineer: Test strategy, coverage analysis, framework setup
+  - qa-tester: Test strategy, coverage analysis, framework setup
 
 Coordination Point: 
   All agents provide findings to code-reviewer for final approval
@@ -52,7 +52,7 @@ Parallel Group: Deep Analysis
   - researcher: External technology research, industry standards, competitive analysis
   - security-auditor: Security vulnerability comprehensive scan
   - debugger: Performance bottleneck identification
-  - qa-engineer: Test coverage and quality assessment
+  - qa-tester: Test coverage and quality assessment
 
 Coordination:
   - researcher provides external context → codebase-analyst applies to internal systems
@@ -85,7 +85,7 @@ Platform Teams:
     - mobile-ui: iOS/Android platform compliance
   
   Backend Team:
-    - backend-engineer: API development
+    - backend-dev: API development
     - devops: Infrastructure and deployment
 
 Coordination Agent: project-orchestrator
@@ -96,7 +96,7 @@ Coordination Agent: project-orchestrator
 Infrastructure Team:
   - devops: CI/CD pipeline modernization, deployment automation
   - platform-engineer: Production monitoring, SRE practices, observability setup
-  - backend-engineer: Application infrastructure requirements
+  - backend-dev: Application infrastructure requirements
   - security-auditor: Infrastructure security assessment
   - principal-architect: Architecture modernization strategy
 
@@ -111,12 +111,12 @@ Coordination:
 
 | Primary Agent | Compatible Parallel Agents | Workflow Benefit |
 |---|---|---|
-| **frontend-engineer** | backend-engineer, ui-designer, mobile-ui, qa-engineer | Full-stack development with design integration |
-| **backend-engineer** | frontend-engineer, devops, platform-engineer, api-engineer | Infrastructure-aware backend development |
-| **code-reviewer** | security-auditor, qa-engineer, tech-writer | Comprehensive quality assurance |
+| **frontend-engineer** | backend-dev, ui-designer, mobile-ui, qa-tester | Full-stack development with design integration |
+| **backend-dev** | frontend-engineer, devops, platform-engineer, api-engineer | Infrastructure-aware backend development |
+| **code-reviewer** | security-auditor, qa-tester, tech-writer | Comprehensive quality assurance |
 | **principal-architect** | product-strategist, tech-writer, researcher | Strategic planning with research and documentation |
 | **debugger** | security-auditor, codebase-analyst, performance-engineer | Multi-angle problem analysis |
-| **devops** | platform-engineer, backend-engineer, security-auditor | Infrastructure deployment with monitoring |
+| **devops** | platform-engineer, backend-dev, security-auditor | Infrastructure deployment with monitoring |
 | **researcher** | codebase-analyst, api-engineer, product-strategist | External research with internal analysis |
 
 ### Sequential Dependencies (Require Handoffs)
@@ -125,10 +125,10 @@ Coordination:
 |---|---|---|
 | ui-designer → frontend-engineer | Design specs needed for implementation | Design handoff via specifications |
 | mobile-ui → frontend-engineer | Platform requirements for implementation | Platform compliance checklist |
-| api-engineer → backend-engineer | API specifications needed for implementation | OpenAPI specs and contract delivery |
+| api-engineer → backend-dev | API specifications needed for implementation | OpenAPI specs and contract delivery |
 | codebase-analyst → implementation agents | Analysis insights guide implementation | Executive summary with action items |
 | researcher → implementation agents | External context informs technical decisions | Research findings and recommendations |
-| implementation agents → qa-engineer | Code needed for test development | Feature implementation completion |
+| implementation agents → qa-tester | Code needed for test development | Feature implementation completion |
 | devops → platform-engineer | Infrastructure deployed before monitoring | Deployment completion handoff |
 | fullstack-lead → staff agents | Complexity escalation when scope exceeds senior level | Auto-escalation based on complexity triggers |
 
@@ -146,14 +146,14 @@ Phase 1 - Parallel Planning:
 
 Phase 2 - Parallel Implementation:
   - frontend-engineer: UI implementation
-  - backend-engineer: API development  
+  - backend-dev: API development  
   - devops: Infrastructure preparation
   Duration: 3-5 days
 
 Phase 3 - Parallel Quality Assurance:
   - code-reviewer: Code quality review
   - security-auditor: Security assessment
-  - qa-engineer: Test implementation
+  - qa-tester: Test implementation
   Duration: 1-2 days
 ```
 
@@ -163,7 +163,7 @@ Parallel Analysis (Day 1):
   - codebase-analyst: Architecture and technical debt
   - security-auditor: Vulnerability assessment
   - debugger: Performance analysis
-  - qa-engineer: Test coverage evaluation
+  - qa-tester: Test coverage evaluation
 
 Parallel Implementation (Days 2-4):
   - Based on analysis findings, deploy appropriate implementation agents
@@ -172,7 +172,7 @@ Parallel Implementation (Days 2-4):
 Parallel Validation (Day 5):
   - code-reviewer: Implementation quality
   - security-auditor: Security improvement validation
-  - qa-engineer: Enhanced test coverage
+  - qa-tester: Enhanced test coverage
 ```
 
 ### 2. Resource Allocation Optimization
@@ -182,13 +182,13 @@ Parallel Validation (Day 5):
 Maximum Parallel Utilization:
   Core Development:
     - frontend-engineer (UI/UX critical path)
-    - backend-engineer (API critical path)
+    - backend-dev (API critical path)
     - devops (deployment critical path)
     
   Quality Assurance:
     - code-reviewer (continuous integration)
     - security-auditor (security requirements)
-    - qa-engineer (test development)
+    - qa-tester (test development)
     
   Documentation & Strategy:
     - tech-writer (parallel documentation)

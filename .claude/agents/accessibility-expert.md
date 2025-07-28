@@ -36,7 +36,7 @@ parallel_compatible:
   - frontend-engineer
   - ui-designer
   - mobile-ui
-  - qa-engineer
+  - qa-tester
   - tech-writer
 
 escalation_to:

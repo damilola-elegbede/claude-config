@@ -6,9 +6,9 @@ specialization_level: senior
 domain_expertise: [ci_cd_pipeline_design, infrastructure_as_code, deployment_orchestration, containerization_kubernetes, cloud_infrastructure_automation, environment_management, release_management, infrastructure_security]
 parallel_compatible: [backend-staff, frontend-staff, platform-engineer, tech-writer, project-orchestrator]
 scale_triggers:
-  user_count: "5k-1qa-engineerqa-engineerk users"
-  traffic_volume: "1qa-engineerqa-engineer-1qa-engineerk requests/second"
-  data_volume: "1-5qa-engineerGB storage and backup requirements"
+  user_count: "5k-1qa-testerqa-testerk users"
+  traffic_volume: "1qa-testerqa-tester-1qa-testerk requests/second"
+  data_volume: "1-5qa-testerGB storage and backup requirements"
   geographic_distribution: "1-3 regions deployment"
 complexity_triggers:
   ci_cd_pipeline_optimization: "Multi-environment pipelines, complex testing gates, parallel builds"
