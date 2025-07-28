@@ -93,7 +93,7 @@ tool_access: [access_level]
 
 #### Analysis Workflow
 - **Technical**: codebase-analyst + debugger + security-auditor + performance-engineer
-- **Strategic**: principal-architect + product-strategy-expert + project-orchestrator
+- **Strategic**: principal-architect + product-strategist + project-orchestrator
 - **Infrastructure**: devops + platform-engineer
 
 **Performance Benefits:**
@@ -117,7 +117,7 @@ tool_access: [access_level]
 - **Justification**: Objective analysis without implementation bias
 
 #### Orchestration Access (Leadership Agents)
-- **Agents**: principal-architect, project-orchestrator, product-strategy-expert
+- **Agents**: principal-architect, project-orchestrator, product-strategist
 - **Tools**: Full access + project management capabilities
 - **Justification**: Leadership requires comprehensive coordination abilities
 
@@ -139,7 +139,7 @@ tool_access: [access_level]
 ```yaml
 Phase 1 - Planning (Parallel):
   - principal-architect: System design
-  - product-strategy-expert: Requirements
+  - product-strategist: Requirements
   - ui-designer: Design specifications
   
 Phase 2 - Implementation (Parallel):
@@ -227,7 +227,7 @@ Multi-Perspective Analysis (Parallel):
 Orchestration Level:
 ├── principal-architect (System-wide decisions)
 ├── project-orchestrator (Multi-agent coordination)
-└── product-strategy-expert (Business strategy)
+└── product-strategist (Business strategy)
 
 Implementation Level:
 ├── Staff Agents (Complex implementation)

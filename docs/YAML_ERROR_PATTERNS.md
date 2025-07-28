@@ -7,7 +7,7 @@ Analysis of the .claude/agents/ directory reveals that while all agent files hav
 
 ### 1. Multiline String Handling
 **Pattern**: Using pipe (`|`) for multiline descriptions
-**Files Affected**: debugger.md, devops.md, mobile-ui.md, product-strategy-expert.md, security-auditor.md
+**Files Affected**: debugger.md, devops.md, mobile-ui.md, product-strategist.md, security-auditor.md
 **Issue**: While valid YAML, multiline strings can cause:
 - Indentation sensitivity issues
 - Parser compatibility problems

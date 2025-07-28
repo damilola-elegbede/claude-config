@@ -20,7 +20,7 @@ These files use pipe (`|`) for multiline descriptions which may cause parsing is
 1. **debugger.md** - Uses multiline description with complex coordination_protocols
 2. **devops.md** - Very long multiline description with multiple examples
 3. **mobile-ui.md** - Multiline description with examples and coordination patterns
-4. **product-strategy-expert.md** - Multiline description with strategic examples
+4. **product-strategist.md** - Multiline description with strategic examples
 5. **security-auditor.md** - Multiline description with security examples
 
 ## Common YAML Patterns Found
