@@ -46,7 +46,7 @@ tool_access: full_access
 tool_restrictions:
   allowed: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit]
   forbidden: []
-  rationale: "Platform engineer needs full access to implement monitoring infrastructure, configure alerting systems, and manage production observability"
+  rationale: "Platform engineer needs full access including Bash to execute infrastructure commands, monitoring scripts, incident response automation, and production operations management"
 sre_focus:
   primary: [reliability_engineering, incident_response, observability, capacity_planning]
   production_operations: "Owns production reliability and operational excellence"

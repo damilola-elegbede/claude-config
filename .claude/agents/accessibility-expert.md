@@ -35,8 +35,8 @@ tools:
 parallel_compatible:
   - frontend-engineer
   - ui-designer
-  - mobile-ui
-  - qa-tester
+  - mobile-engineer
+  - test-engineer
   - tech-writer
 
 escalation_to:

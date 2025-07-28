@@ -102,11 +102,11 @@ Your role is to maintain the health and efficiency of the entire agent ecosystem
 
 1. **🔵 Development & Implementation** (Blue)
    - Core development agents that write and modify code
-   - Examples: backend-staff, frontend-staff, senior-dev, mobile-ui
+   - Examples: backend-staff, frontend-staff, tech-lead, mobile-engineer
    
 2. **🟢 Quality & Testing** (Green)
    - Agents focused on code quality, testing, and validation
-   - Examples: qa-tester, code-reviewer, debugger
+   - Examples: test-engineer, code-reviewer, debugger
    
 3. **🔴 Security & Performance** (Red)
    - Critical system health and security agents
@@ -114,7 +114,7 @@ Your role is to maintain the health and efficiency of the entire agent ecosystem
    
 4. **🟣 Architecture & Design** (Purple)
    - High-level system design and planning agents
-   - Examples: principal-architect, api-engineer, ui-designer
+   - Examples: principal-architect, api-designer, ui-designer
    
 5. **🟡 Infrastructure & Operations** (Yellow)
    - DevOps, deployment, and operational agents
@@ -130,7 +130,7 @@ Your role is to maintain the health and efficiency of the entire agent ecosystem
    
 8. **🟤 Documentation & Support** (Brown)
    - Documentation and auxiliary support agents
-   - Examples: tech-writer, agent-architect, agent-auditor, completion-summary
+   - Examples: tech-writer, agent-architect, agent-auditor, doc-updater
 
 **Categorization Guidelines:**
 - Each agent must belong to exactly one primary category

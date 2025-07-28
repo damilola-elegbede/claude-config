@@ -100,7 +100,7 @@ You cannot transition from PLANNING STATE to EXECUTION STATE without explicit ap
 ### /review Command
 - Runs comprehensive code review using code-reviewer agent
 - Checks code quality, style compliance, and production readiness
-- Coordinates with qa-tester and security-auditor for comprehensive quality gates
+- Coordinates with test-engineer and security-auditor for comprehensive quality gates
 - Usage: `/review [file|directory]` for pre-PR code review
 
 ### /security Command
@@ -379,16 +379,16 @@ For projects involving 3+ agents, always start by consulting project-orchestrato
 You can and should run multiple instances of the same agent type concurrently when appropriate:
 
 **Examples of Multi-Instance Patterns:**
-- **3 backend-dev agents**: Each working on different microservices (user service, payment service, analytics service)
+- **3 backend-engineer agents**: Each working on different microservices (user service, payment service, analytics service)
 - **4 codebase-analyst agents**: Analyzing different parts of a large system (backend, frontend, mobile, integrations)
 - **2 frontend-engineer agents**: One on web app, one on admin dashboard
-- **Multiple fullstack-lead agents**: Each implementing independent features in parallel
+- **Multiple tech-lead agents**: Each implementing independent features in parallel
 
 **When to Use Multiple Instances:**
 - Large systems with independent components
 - Parallel analysis across different domains
 - Multiple similar tasks that can run concurrently
-- Cross-platform development (iOS + Android with 2 mobile-ui agents)
+- Cross-platform development (iOS + Android with 2 mobile-engineer agents)
 
 **Coordination Best Practices:**
 - Use project-orchestrator to manage multiple instances
@@ -396,6 +396,288 @@ You can and should run multiple instances of the same agent type concurrently wh
 - Define integration points between instances
 - Synchronize at key milestones
 - Aggregate results for comprehensive reporting
+
+### Agent-Auditor Orchestration
+
+When using agent-auditor for ecosystem analysis:
+- **Automatically launch multiple instances** if auditing >5 agents
+- **Each instance audits maximum 5 agents** for focused analysis
+- **Parallel execution pattern**:
+  - Instance 1: Development agents (backend-engineer, frontend-engineer, mobile-engineer, tech-lead, ml-engineer)
+  - Instance 2: Quality & testing agents (test-engineer, code-reviewer, debugger, security-auditor, performance-engineer)
+  - Instance 3: Architecture & design agents (principal-architect, api-designer, ui-designer, data-engineer, cloud-architect)
+  - Instance 4: Operations & support agents (devops, platform-engineer, sre-engineer, tech-writer, codebase-analyst, researcher, database-admin)
+  - Instance 5: Coordination & business agents (project-orchestrator, product-strategy, business-analyst, agent-architect, agent-auditor)
+- **Consolidate findings** into comprehensive report with:
+  - Coverage gap analysis
+  - Clarity and boundary issues
+  - Tool permission audit
+  - Coordination pattern recommendations
+  - Prioritized improvement roadmap
+
+## Agent Selection and Parallel Execution Guide
+
+### Core Principle: Parallel by Default
+**ALWAYS prioritize parallel execution**. If you can run multiple agents simultaneously, you MUST do so. Sequential execution is the exception, not the rule.
+
+### Quick Reference: Task-to-Agent Mapping
+
+| Task Type | Primary Agent(s) | Parallel Pattern |
+|-----------|-----------------|------------------|
+| **Code Search/Analysis** | `codebase-analyst` (multiple) | Launch 2-4 instances for different modules |
+| **Feature Implementation** | `backend-engineer`, `frontend-engineer`, `tech-lead` | Parallel for independent components |
+| **Bug Investigation** | `debugger` + `codebase-analyst` | Debugger for root cause + analyst for impact |
+| **Code Quality Check** | `code-reviewer` + `test-engineer` + `security-auditor` | All three in parallel |
+| **Performance Issues** | `performance-engineer` + `codebase-analyst` | Engineer for bottlenecks + analyst for code |
+| **Documentation** | `tech-writer` + `codebase-analyst` | Writer creates + analyst verifies accuracy |
+| **Architecture Design** | `principal-architect` + `api-designer` | Architect for system + API for contracts |
+| **Infrastructure** | `platform-engineer` (NOT devops) | Platform for actual infrastructure work |
+| **Multi-Agent Projects (3+)** | `project-orchestrator` first | Get parallel execution plan, then execute |
+| **API Development** | `api-designer` + `backend-engineer` | API design + implementation in parallel |
+| **Mobile Development** | `mobile-engineer` (multiple) | One per platform (iOS + Android) |
+| **Data Pipeline** | `data-engineer` + `backend-engineer` | Pipeline design + service implementation |
+| **Security Assessment** | `security-auditor` + `code-reviewer` | Security scan + code quality in parallel |
+| **UI/UX Implementation** | `ui-designer` + `frontend-engineer` | Design system + implementation |
+| **Testing Strategy** | `test-engineer` + `performance-engineer` | Functional + performance testing |
+| **Research Tasks** | `researcher` (multiple) | Multiple domains researched in parallel |
+
+### Agent Selection Matrix
+
+#### Development Agents
+- **backend-engineer**: Server-side logic, APIs, databases, microservices
+- **frontend-engineer**: Web UIs, React/Vue/Angular, browser compatibility
+- **mobile-engineer**: iOS/Android apps, React Native, Flutter
+- **tech-lead**: Full-stack features, integration between layers, technical leadership
+- **ml-engineer**: ML models, data science, AI/ML pipelines
+
+#### Quality & Testing Agents
+- **test-engineer**: Test strategies, test automation, quality processes
+- **test-data-manager**: Test data generation, fixtures, data privacy compliance
+- **code-reviewer**: Code quality, best practices, PR reviews
+- **debugger**: Complex bug investigation, root cause analysis
+- **security-auditor**: Vulnerability assessment, OWASP compliance
+- **performance-engineer**: Performance optimization, load testing
+
+#### Architecture & Design Agents
+- **principal-architect**: System design, architectural decisions
+- **api-designer**: API design, OpenAPI specs, REST/GraphQL
+- **ui-designer**: Design systems, user experience, accessibility
+- **data-engineer**: Data pipelines, ETL, data architecture
+- **cloud-architect**: Cloud infrastructure design, scalability, cost optimization
+
+#### Operations & Support Agents
+- **platform-engineer**: Infrastructure, Kubernetes, cloud platforms
+- **sre-engineer**: Site reliability, monitoring, incident response, SLIs/SLOs
+- **devops**: CI/CD pipelines, deployment automation, infrastructure as code (deploys → platform-engineer monitors)
+- **database-admin**: Database design, optimization, backup/recovery, scaling
+- **tech-writer**: Documentation, API docs, user guides
+- **codebase-analyst**: Code search, dependency analysis, impact assessment
+- **researcher**: Technical research, best practices, industry standards
+
+#### Coordination & Strategy Agents
+- **project-orchestrator**: Multi-agent coordination (3+ agents)
+- **product-strategy**: Product vision, roadmaps, requirements
+- **business-analyst**: Business logic, requirements analysis
+- **agent-architect**: Agent design, ecosystem improvements
+- **agent-auditor**: Agent ecosystem health, coverage gaps
+
+### Parallel Execution Patterns
+
+#### Pattern 1: Multi-Domain Analysis
+```
+Task: "Analyze the authentication system"
+Parallel Execution:
+├── codebase-analyst #1: Backend auth implementation
+├── codebase-analyst #2: Frontend auth flows  
+├── security-auditor: Security vulnerabilities
+└── test-engineer: Test coverage analysis
+```
+
+#### Pattern 2: Feature Development
+```
+Task: "Implement user dashboard"
+Parallel Execution:
+├── backend-engineer: API endpoints
+├── frontend-engineer: React components
+├── ui-designer: Design system updates
+└── test-engineer: Test plan creation
+```
+
+#### Pattern 3: Bug Investigation
+```
+Task: "Fix performance regression"
+Parallel Execution:
+├── debugger: Root cause analysis
+├── performance-engineer: Performance profiling
+├── codebase-analyst #1: Recent changes analysis
+└── codebase-analyst #2: Dependency impact
+```
+
+#### Pattern 4: Large-Scale Refactoring
+```
+Task: "Refactor payment system"
+Sequential: project-orchestrator (get plan)
+Then Parallel:
+├── backend-engineer #1: Payment service
+├── backend-engineer #2: Order service
+├── backend-engineer #3: Notification service
+├── api-designer: API contract updates
+└── test-engineer: Integration test suite
+```
+
+### Anti-Patterns to Avoid
+
+#### ❌ NEVER DO THIS:
+1. **Using devops for file operations** - devops is for CI/CD, not file management
+2. **Sequential execution when parallel is possible** - Always parallelize
+3. **Single analyst for large codebases** - Use multiple instances
+4. **Waiting for one agent before starting another** - Launch together
+5. **Using wrong agent for task** - Check the matrix above
+6. **Forgetting project-orchestrator for 3+ agents** - Always consult first
+7. **One agent per platform** - Use multiple for cross-platform
+
+#### ✅ ALWAYS DO THIS:
+1. **Launch related agents simultaneously**
+2. **Use multiple instances of same agent type**
+3. **Consult project-orchestrator for complex projects**
+4. **Batch independent analyses**
+5. **Aggregate results from parallel agents**
+
+### Orchestration Triggers
+
+**Mandatory project-orchestrator consultation when:**
+- Planning work for 3+ different agent types
+- Complex multi-phase projects
+- Cross-team coordination needed
+- Unclear agent selection
+- Dependencies between agent outputs
+- Need for optimal execution strategy
+
+**Direct parallel execution (skip orchestrator) when:**
+- Clear task-to-agent mapping
+- 2 or fewer agent types needed
+- Independent, well-defined tasks
+- Simple analysis or search operations
+
+### Agent Handoff Patterns
+
+#### Quality Gate Pattern
+```
+code-reviewer → security-auditor → test-engineer
+(finds issues)   (security check)   (validates fixes)
+```
+
+#### Investigation Pattern
+```
+codebase-analyst → debugger → performance-engineer
+(finds code)       (diagnose)   (optimize)
+```
+
+#### Implementation Pattern
+```
+principal-architect → api-designer → backend-engineer + frontend-engineer
+(system design)       (API specs)     (parallel implementation)
+```
+
+#### Documentation Pattern
+```
+codebase-analyst → tech-writer → code-reviewer
+(gather info)      (write docs)   (verify accuracy)
+```
+
+### Execution Best Practices
+
+1. **Parallel First Mindset**
+   - Default to parallel execution
+   - Question any sequential approach
+   - Look for independence between tasks
+
+2. **Multi-Instance Strategy**
+   - Large codebase? Multiple codebase-analysts
+   - Multiple services? Multiple backend-engineers
+   - Cross-platform? Multiple mobile-engineer agents
+
+3. **Batch Operations**
+   - Group similar analyses
+   - Launch all needed agents at once
+   - Aggregate results efficiently
+
+4. **Clear Task Definition**
+   - Define specific scope per agent
+   - Set clear boundaries
+   - Specify integration points
+
+5. **Progress Tracking**
+   - Monitor all parallel executions
+   - Identify blocking issues early
+   - Coordinate result aggregation
+
+### Common Scenarios
+
+#### Scenario: "Find all API endpoints"
+```bash
+# WRONG: Sequential
+codebase-analyst → examine results → codebase-analyst
+
+# RIGHT: Parallel
+codebase-analyst #1: REST endpoints
+codebase-analyst #2: GraphQL endpoints  
+codebase-analyst #3: WebSocket handlers
+```
+
+#### Scenario: "Review this PR"
+```bash
+# WRONG: Just code-reviewer
+code-reviewer
+
+# RIGHT: Comprehensive parallel review
+code-reviewer: Code quality
+security-auditor: Security issues
+test-engineer: Test coverage
+performance-engineer: Performance impact
+```
+
+#### Scenario: "Debug production issue"
+```bash
+# WRONG: Sequential investigation
+debugger → wait → check logs → wait → analyze
+
+# RIGHT: Parallel investigation
+debugger: Root cause analysis
+codebase-analyst: Recent deployments
+performance-engineer: Performance metrics
+platform-engineer: Infrastructure logs
+```
+
+### Remember
+- **Parallel execution is not optional** - it's the default
+- **Multiple instances** of the same agent are normal and encouraged
+- **Batch your tool calls** to maximize parallelism
+- **Think like a conductor** - orchestrate multiple performers simultaneously
+- **Speed comes from parallelism**, not from rushing
+
+### Post-Implementation Protocol
+
+After completing any significant changes:
+1. **ALWAYS use doc-updater** to ensure documentation is updated
+2. **Run in parallel with final tasks** - don't wait until everything is done
+3. **doc-updater handles**:
+   - Documentation updates based on changes
+   - Cross-reference verification
+   - Meta-documentation updates
+   - Ensuring consistency across all docs
+
+Example:
+```bash
+# While finishing implementation tasks:
+backend-engineer: Final API updates
+test-engineer: Running final tests
+doc-updater: Updating all documentation  # Run in parallel!
+```
+- **Multiple instances are encouraged** - don't limit yourself
+- **Wrong agent = wasted time** - check the matrix
+- **3+ agents = orchestrator first** - get the optimal plan
+- **Think in batches** - group related operations
 
 ### Version Control
 - **Branch Creation**: Only create branches when:
