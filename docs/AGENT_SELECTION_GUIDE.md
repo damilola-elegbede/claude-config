@@ -6,9 +6,9 @@
 
 | Task Complexity | Domain | Agent Choice | Key Indicators |
 |---|---|---|---|
-| **Staff Level** | Backend | `backend-staff` | Multi-service architecture, complex state management, performance < 2.5s |
-| **Staff Level** | Frontend | `frontend-staff` | Real-time features, complex UI, Core Web Vitals optimization |
-| **Senior Level** | General | `senior-dev` | Single-service features, well-defined APIs, standard patterns |
+| **Staff Level** | Backend | `backend-engineer` | Multi-service architecture, complex state management, performance < 2.5s |
+| **Staff Level** | Frontend | `frontend-engineer` | Real-time features, complex UI, Core Web Vitals optimization |
+| **Senior Level** | General | `fullstack-lead` | Single-service features, well-defined APIs, standard patterns |
 | **Specialist** | Mobile | `mobile-ui` | iOS/Android design, platform-specific patterns |
 | **Specialist** | Web Design | `ui-designer` | Design systems, visual hierarchy, web/desktop interfaces |
 
@@ -20,7 +20,7 @@
 | **External Research** | Industry/technology | `researcher` | Technology comparison, standards, competitive analysis |
 | **Security Review** | Security-focused | `security-auditor` | OWASP compliance, vulnerability assessment |
 | **Code Quality** | Pre-commit | `code-reviewer` | Style, best practices, PR readiness |
-| **Testing Strategy** | Test coverage | `qa-tester` | Framework selection, test architecture |
+| **Testing Strategy** | Test coverage | `qa-engineer` | Framework selection, test architecture |
 | **Complex Debugging** | Mystery bugs | `debugger` | Intermittent failures, performance degradation |
 | **Performance Analysis** | System performance | `performance-engineer` | Load testing, optimization, benchmarking |
 
@@ -46,12 +46,12 @@
 
 ### Implementation Escalation Path
 ```
-Task Request → senior-dev → [complexity assessment] → staff agents → principal-architect
+Task Request → fullstack-lead → [complexity assessment] → staff agents → principal-architect
 ```
 
 ### Quality Assurance Workflow
 ```
-Code Complete → code-reviewer → [parallel: security-auditor, qa-tester] → implementation agents
+Code Complete → code-reviewer → [parallel: security-auditor, qa-engineer] → implementation agents
 ```
 
 ### Analysis Request Flow
@@ -62,12 +62,12 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 ## Complexity Thresholds
 
 ### Staff Agent Triggers
-- **Backend Staff**: 100k+ requests/sec, microservices coordination, distributed state
-- **Frontend Staff**: Real-time data (WebSocket/SSE), complex state management, performance optimization
+- **Backend Engineer**: 100k+ requests/sec, microservices coordination, distributed state
+- **Frontend Engineer**: Real-time data (WebSocket/SSE), complex state management, performance optimization
 - **Principal Architect**: Cross-team coordination, system design changes, technology stack decisions
 
 ### Senior Agent Boundaries
-- **Senior Dev**: Single service, established patterns, clear requirements
+- **Fullstack Lead**: Single service, established patterns, clear requirements
 - **Stays Autonomous**: Implementation details, coding patterns, testing strategies
 - **Escalates When**: Architecture changes, new dependencies, breaking changes
 
@@ -75,13 +75,13 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 - **Mobile UI**: iOS HIG compliance, Android Material Design, touch interfaces
 - **UI Designer**: Web/desktop only, design systems, visual hierarchy
 - **Security Auditor**: OWASP Top 10, penetration testing, compliance
-- **QA Tester**: Test strategy, framework setup, coverage analysis
+- **QA Engineer**: Test strategy, framework setup, coverage analysis
 
 ## Parallel Execution Groups
 
 ### Development Workflow
-- **Primary**: `frontend-staff` + `backend-staff` + `senior-dev`
-- **Quality**: `code-reviewer` + `security-auditor` + `qa-tester`
+- **Primary**: `frontend-engineer` + `backend-engineer` + `fullstack-lead`
+- **Quality**: `code-reviewer` + `security-auditor` + `qa-engineer`
 - **Design**: `ui-designer` + `mobile-ui` (cross-platform consistency)
 
 ### Analysis Workflow  
@@ -95,7 +95,7 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 
 | Access Level | Agents | Capabilities |
 |---|---|---|
-| **Full Access** | backend-staff, frontend-staff, senior-dev | All tools for implementation |
+| **Full Access** | backend-engineer, frontend-engineer, fullstack-lead | All tools for implementation |
 | **Read + Analysis** | codebase-analyst, security-auditor, debugger | Read tools + analysis + TodoWrite |
 | **Orchestration** | principal-architect, project-orchestrator | Full access + project management |
 | **Documentation** | tech-writer | Read/write + documentation tools |
@@ -104,21 +104,21 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 ## Common Anti-Patterns to Avoid
 
 ### ❌ Wrong Agent Selection
-- Using `senior-dev` for architecture decisions → Use `principal-architect`
+- Using `fullstack-lead` for architecture decisions → Use `principal-architect`
 - Using `ui-designer` for mobile apps → Use `mobile-ui`
 - Using `codebase-analyst` for implementation → Use implementation agents
-- Using `debugger` for new feature bugs → Use `senior-dev` or staff agents
+- Using `debugger` for new feature bugs → Use `fullstack-lead` or staff agents
 - Using `researcher` for internal code analysis → Use `codebase-analyst`
 - Using `devops` for production monitoring → Use `platform-engineer`
 - Using `general-purpose` for API design → Use `api-engineer`
 
 ### ❌ Missing Parallel Opportunities
-- Sequential code review → Run `code-reviewer` + `security-auditor` + `qa-tester` in parallel
+- Sequential code review → Run `code-reviewer` + `security-auditor` + `qa-engineer` in parallel
 - Single-threaded analysis → Use multiple analysis agents concurrently
 - Independent implementation → Parallel frontend/backend development
 
 ### ❌ Incorrect Escalation
-- Staff agents for simple tasks → Start with `senior-dev`
+- Staff agents for simple tasks → Start with `fullstack-lead`
 - No escalation for complex decisions → Use proper escalation paths
 - Skipping domain specialists → Leverage expert knowledge
 

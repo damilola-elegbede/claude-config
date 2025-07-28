@@ -10,9 +10,9 @@ This guide explains the rationale behind tool access restrictions for each agent
 **Tools**: All tools including Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit
 
 #### Implementation Agents
-- **backend-staff**: Needs full access for complex server-side implementation, database modifications, and system configuration
-- **frontend-staff**: Requires all tools for UI implementation, build system configuration, and performance optimization
-- **senior-dev**: Standard implementation agent needing complete toolset for feature development and bug fixes
+- **backend-engineer**: Needs full access for complex server-side implementation, database modifications, and system configuration
+- **frontend-engineer**: Requires all tools for UI implementation, build system configuration, and performance optimization
+- **fullstack-lead**: Standard implementation agent needing complete toolset for feature development and bug fixes
 - **devops**: Essential for infrastructure automation, CI/CD configuration, and deployment scripts
 - **platform-engineer**: Needs full access for monitoring setup, infrastructure management, and SRE automation
 
@@ -64,7 +64,7 @@ This guide explains the rationale behind tool access restrictions for each agent
 **Tools**: Varies by agent role and responsibilities
 
 #### QA Agents
-- **qa-tester**: Full access needed for test implementation, framework configuration, and quality automation
+- **qa-engineer**: Full access needed for test implementation, framework configuration, and quality automation
 - **code-reviewer**: Read + analysis access for objective code quality assessment without implementation bias
 
 **Justification**: Testing requires implementation capabilities while code review benefits from objective, read-only analysis.
@@ -135,7 +135,7 @@ Tool restrictions enable clear audit trails:
 
 ### When Design Agents Need Implementation
 1. Create comprehensive design specifications
-2. Hand off to frontend-staff or senior-dev
+2. Hand off to frontend-engineer or fullstack-lead
 3. Implementation agent builds according to specs
 4. Design agent reviews for fidelity
 

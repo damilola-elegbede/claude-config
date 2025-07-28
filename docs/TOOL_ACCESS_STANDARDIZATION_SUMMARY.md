@@ -3,7 +3,7 @@
 ## Standardized Tool Access Categories
 
 ### 1. Full Access
-**Agents**: backend-staff, frontend-staff, devops, platform-engineer
+**Agents**: backend-engineer, frontend-engineer, devops, platform-engineer
 **Purpose**: Implementation agents requiring complete tool access
 ```yaml
 tool_access: full_access
@@ -14,7 +14,7 @@ tool_restrictions:
 ```
 
 ### 2. Full Implementation  
-**Agents**: senior-dev, qa-tester
+**Agents**: fullstack-lead, qa-engineer
 **Purpose**: Implementation agents with full access but more focused scope
 ```yaml
 tool_access: full_implementation
