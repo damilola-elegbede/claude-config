@@ -5,30 +5,30 @@ The Claude agent ecosystem consists of 30 specialized agents organized across 8 
 
 ## Agent Categories
 
-The agent ecosystem is organized into 8 primary categories:
+The agent ecosystem is organized into 8 primary categories. For detailed category definitions and color assignments, see [AGENT_CATEGORIES.md](./AGENT_CATEGORIES.md).
 
-1. **Development** - Core programming and implementation
+1. **Development** (blue) - Core programming and implementation
    - backend-engineer, frontend-engineer, fullstack-lead, mobile-engineer, ml-engineer
 
-2. **Infrastructure** - Systems, operations, and deployment
+2. **Infrastructure** (orange) - Systems, operations, and deployment
    - devops, cloud-architect, platform-engineer, reliability-engineer, database-admin
 
-3. **Architecture** - System design and technical planning
+3. **Architecture** (purple) - System design and technical planning
    - api-architect, principal-architect, agent-architect
 
-4. **Design** - User experience and interface design
+4. **Design** (purple) - User experience and interface design
    - ui-designer, mobile-ui
 
-5. **Quality** - Testing, review, and validation
+5. **Quality** (green) - Testing, review, and validation
    - test-engineer, performance-engineer, code-reviewer, accessibility-auditor
 
-6. **Security** - Security assessment and compliance
+6. **Security** (red) - Security assessment and compliance
    - security-auditor, security-tester, agent-auditor
 
-7. **Analysis** - Research, documentation, and analysis
+7. **Analysis** (yellow) - Research, documentation, and analysis
    - data-engineer, business-analyst, codebase-analyst, tech-writer, researcher
 
-8. **Operations** - Support, coordination, and strategic planning
+8. **Operations** (orange) - Support, coordination, and strategic planning
    - incident-commander, debugger, project-orchestrator, product-strategist, general-purpose
 
 ## Table of Contents
