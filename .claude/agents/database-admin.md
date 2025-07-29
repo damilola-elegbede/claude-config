@@ -1,42 +1,17 @@
 ---
 name: database-admin
-description: Database security, optimization, and administration expert
-color: white
-specialization_level: specialist
-
-domain_expertise:
-  - database_administration
-  - database_security
-  - database_optimization
-
+description: Use for database optimization, security hardening, backup strategies, and performance tuning. MUST BE USED for query optimization, index management, and database administration
+color: blue
 tools:
-  allowed:
-    read: "Accessing relevant information"
-    write: "Creating documentation and reports"
-    task: "Coordinating with domain experts"
-  forbidden:
-    deploy: "Production deployment restricted to infrastructure agents"
-
-coordination_protocols:
-  handoff_to:
-    test-engineer: "Quality validation"
-  parallel_compatible:
-    - test-engineer
-    - code-reviewer
-  escalation_path:
-    principal-architect: "Complex decisions beyond current scope"
-
-knowledge_base:
-  - Specialized best practices and patterns
-
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-examples:
-  - scenario: "Typical database admin task"
-    approach: "Systematic approach using specialized expertise"
+  - Read
+  - Write
+  - Edit
+  - Bash
+  - Grep
+  - Glob
+  - LS
+  - TodoWrite
+  - WebFetch
 ---
 
 # Database Admin

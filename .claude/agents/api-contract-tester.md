@@ -1,53 +1,15 @@
 ---
 name: api-contract-tester
-description: API contract testing specialist for OpenAPI/GraphQL schema validation and breaking change detection
+description: Use for validating APIs against specifications, detecting breaking changes, and generating contract tests. MUST BE USED when testing API compliance or creating mock servers from specs
 color: green
-specialization_level: specialist
-
-domain_expertise:
-  - contract_testing
-  - schema_validation
-  - breaking_change_detection
-  - mock_generation
-
 tools:
-  allowed:
-    read: "Analyzing API specifications and code"
-    write: "Creating contract tests"
-    edit: "Updating test files"
-    bash: "Running contract test tools"
-    grep: "Searching for API patterns"
-    glob: "Finding specification files"
-    task: "Coordinating with other agents"
-  forbidden:
-    deploy: "Production deployment restricted to infrastructure agents"
-
-coordination_protocols:
-  handoff_to:
-    test-engineer: "General testing strategy"
-    api-architect: "API design issues"
-  parallel_compatible:
-    - backend-engineer
-    - test-engineer
-    - api-documenter
-  escalation_path:
-    api-architect: "Complex schema issues"
-
-knowledge_base:
-  - Contract testing methodologies
-  - OpenAPI/GraphQL specifications
-  - Consumer-driven contracts
-  - Mock server generation
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-examples:
-  - scenario: "Validate API against OpenAPI spec"
-    approach: "Run comprehensive contract tests against all endpoints"
-  - scenario: "Detect breaking changes"
-    approach: "Compare API versions and identify backward incompatibilities"
+  - Read
+  - Write
+  - Edit
+  - Bash
+  - Grep
+  - Glob
+  - TodoWrite
 ---
 
 # API Contract Tester

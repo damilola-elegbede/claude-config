@@ -1,46 +1,19 @@
 ---
 name: devops
-description: Deployment automation, CI/CD pipelines, and application deployment coordinator
+description: Use for CI/CD pipelines, containerization, IaC, and deployment automation. MUST BE USED for Kubernetes, Terraform, monitoring setup, and DevSecOps practices
 color: yellow
-specialization_level: senior
-
-domain_expertise:
-  - deployment_automation
-  - cicd_pipelines
-  - infrastructure_automation
-
 tools:
-  allowed:
-    read: "Analyzing infrastructure and configurations"
-    write: "Creating infrastructure code and configs"
-    bash: "Running infrastructure commands"
-    task: "Coordinating deployment and operations"
-  forbidden:
-    none: "Infrastructure agents have broad access for operations"
-
-coordination_protocols:
-  handoff_to:
-    platform-engineer: "Production monitoring setup"
-    security-auditor: "Security validation"
-  parallel_compatible:
-    - test-engineer
-    - code-reviewer
-  escalation_path:
-    principal-architect: "Complex decisions beyond current scope"
-
-knowledge_base:
-  - Infrastructure best practices and patterns
-
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-examples:
-  - scenario: "Typical devops task"
-    approach: "Systematic approach using infrastructure expertise"
-  - scenario: "CI/CD pipeline optimization for microservices"
-    approach: "Design multi-stage pipeline with automated testing, security scanning, and blue-green deployment strategy"
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Grep
+  - Glob
+  - LS
+  - Bash
+  - TodoWrite
+  - WebFetch
+  - WebSearch
 ---
 
 # devops-engineer Agent

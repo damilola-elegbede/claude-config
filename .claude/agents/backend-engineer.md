@@ -1,48 +1,19 @@
 ---
 name: backend-engineer
-description: Expert backend engineer for server-side architecture, APIs, databases, and distributed systems
+description: Use for building server-side systems, APIs, microservices, databases, and distributed architectures. MUST BE USED for high-performance optimization (>10k RPS), event-driven systems, and cloud-native backend development
 color: blue
-specialization_level: senior
-
-domain_expertise:
-  - server_architecture
-  - api_development
-  - database_design
-  - distributed_systems
-
 tools:
-  allowed:
-    read: "Analyzing existing code and documentation"
-    write: "Implementing features and creating code"
-    bash: "Running development commands and scripts"
-    task: "Coordinating with other agents for complex implementations"
-  forbidden:
-    deploy: "Production deployment restricted to infrastructure agents"
-
-coordination_protocols:
-  handoff_to:
-    frontend-engineer: "API integration specifications"
-    test-engineer: "Test requirements"
-  parallel_compatible:
-    - frontend-engineer
-    - test-engineer
-    - devops
-  escalation_path:
-    principal-architect: "Complex decisions beyond current scope"
-
-knowledge_base:
-  - Development best practices and patterns
-
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-examples:
-  - scenario: "Typical backend engineer task"
-    approach: "Systematic approach using development expertise"
-  - scenario: "Design and implement RESTful API with authentication"
-    approach: "Create secure endpoints with JWT authentication, implement proper validation, error handling, and database integration with transaction support"
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Grep
+  - Glob
+  - LS
+  - Bash
+  - TodoWrite
+  - WebFetch
+  - WebSearch
 ---
 
 # Backend Engineer

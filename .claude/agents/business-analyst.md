@@ -1,43 +1,16 @@
 ---
 name: business-analyst
-description: Requirements analysis, stakeholder communication, and process mapping expert
+description: Use for gathering requirements, stakeholder analysis, process mapping, and business-technical translation. MUST BE USED when creating user stories, BPM diagrams, or conducting gap analysis
 color: purple
-specialization_level: specialist
-
-domain_expertise:
-  - requirements_analysis
-  - stakeholder_management
-  - process_mapping
-
 tools:
-  allowed:
-    read: "Analyzing code and documentation"
-    grep: "Searching for patterns and issues"
-    bash: "Running analysis and test commands"
-    task: "Coordinating quality checks with other agents"
-  forbidden:
-    deploy: "Production deployment restricted to infrastructure agents"
-
-coordination_protocols:
-  handoff_to:
-    test-engineer: "Quality validation"
-  parallel_compatible:
-    - test-engineer
-    - code-reviewer
-  escalation_path:
-    principal-architect: "Complex decisions beyond current scope"
-
-knowledge_base:
-  - Analysis best practices and patterns
-
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-examples:
-  - scenario: "Typical business analyst task"
-    approach: "Systematic approach using analysis expertise"
+  - Read
+  - Write
+  - Grep
+  - Glob
+  - LS
+  - TodoWrite
+  - WebFetch
+  - WebSearch
 ---
 
 # Business Analyst

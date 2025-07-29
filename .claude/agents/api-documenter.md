@@ -1,53 +1,14 @@
 ---
 name: api-documenter
-description: Automated API documentation specialist for OpenAPI/Swagger and endpoint reference generation
+description: Use for generating API documentation, OpenAPI specs from code, SDK docs, and developer guides. MUST BE USED when creating interactive API docs or Postman collections
 color: yellow
-specialization_level: specialist
-
-domain_expertise:
-  - api_documentation
-  - openapi_swagger
-  - endpoint_reference
-  - example_generation
-
 tools:
-  allowed:
-    read: "Analyzing code and API specifications"
-    write: "Creating API documentation"
-    edit: "Updating documentation"
-    grep: "Searching for API endpoints and patterns"
-    glob: "Finding API specification files"
-    task: "Coordinating with other agents"
-  forbidden:
-    bash: "Direct system commands not needed"
-    deploy: "Production deployment restricted to infrastructure agents"
-
-coordination_protocols:
-  handoff_to:
-    tech-writer: "General documentation needs"
-    api-architect: "API design decisions"
-  parallel_compatible:
-    - backend-engineer
-    - test-engineer
-    - tech-writer
-  escalation_path:
-    api-architect: "Complex API design issues"
-
-knowledge_base:
-  - OpenAPI/Swagger specifications
-  - API documentation best practices
-  - Multiple programming language patterns
-  - RESTful and GraphQL standards
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-examples:
-  - scenario: "Generate OpenAPI spec from code"
-    approach: "Analyze code annotations and generate comprehensive spec"
-  - scenario: "Document GraphQL schema"
-    approach: "Extract schema and create detailed field documentation"
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
+  - TodoWrite
 ---
 
 # API Documenter

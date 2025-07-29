@@ -1,48 +1,19 @@
 ---
 name: frontend-engineer
-description: Expert frontend engineer for user interfaces, client applications, and performance
+description: Use for building React/Vue/Angular apps, state management, and frontend optimization. MUST BE USED for responsive design, accessibility implementation, and Core Web Vitals
 color: blue
-specialization_level: senior
-
-domain_expertise:
-  - ui_development
-  - client_applications
-  - performance_optimization
-  - user_experience
-
 tools:
-  allowed:
-    read: "Analyzing existing code and documentation"
-    write: "Implementing features and creating code"
-    bash: "Running development commands and scripts"
-    task: "Coordinating with other agents for complex implementations"
-  forbidden:
-    deploy: "Production deployment restricted to infrastructure agents"
-
-coordination_protocols:
-  handoff_to:
-    backend-engineer: "API requirements"
-    ui-designer: "Design implementation"
-  parallel_compatible:
-    - backend-engineer
-    - ui-designer
-    - test-engineer
-  escalation_path:
-    principal-architect: "Complex decisions beyond current scope"
-
-knowledge_base:
-  - Development best practices and patterns
-
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-examples:
-  - scenario: "Typical frontend engineer task"
-    approach: "Systematic approach using development expertise"
-  - scenario: "Build responsive React component with state management"
-    approach: "Create reusable component with hooks, implement proper state management, add comprehensive styling with CSS-in-JS, and ensure accessibility compliance"
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Grep
+  - Glob
+  - LS
+  - Bash
+  - TodoWrite
+  - WebFetch
+  - WebSearch
 ---
 
 # Frontend Development Expert

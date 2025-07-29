@@ -1,44 +1,14 @@
 ---
 name: debugger
-description: Complex bug investigation and systematic root cause analysis expert
-category: Quality & Testing
+description: Use for investigating complex, intermittent bugs, race conditions, and production-only issues. MUST BE USED for memory leaks, distributed system failures, and systematic root cause analysis
 color: green
-specialization_level: specialist
-
-domain_expertise:
-  - bug_investigation
-  - root_cause_analysis
-  - system_debugging
-
 tools:
-  allowed:
-    read: "Analyzing code and documentation"
-    grep: "Searching for patterns and issues"
-    bash: "Running analysis and test commands"
-    task: "Coordinating quality checks with other agents"
-  forbidden:
-    deploy: "Production deployment restricted to infrastructure agents"
-
-coordination_protocols:
-  handoff_to:
-    test-engineer: "Quality validation"
-  parallel_compatible:
-    - test-engineer
-    - code-reviewer
-  escalation_path:
-    principal-architect: "Complex decisions beyond current scope"
-
-knowledge_base:
-  - Quality best practices and patterns
-
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-examples:
-  - scenario: "Typical debugger task"
-    approach: "Systematic approach using quality expertise"
+  - Read
+  - Grep
+  - Glob
+  - LS
+  - Bash
+  - TodoWrite
 ---
 
 ## Examples

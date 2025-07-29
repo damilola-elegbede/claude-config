@@ -1,43 +1,19 @@
 ---
 name: cloud-architect
-description: Cloud deployment and infrastructure design expert
+description: Use for cloud architecture design, migration planning, cost optimization, and multi-cloud strategies. MUST BE USED for AWS/Azure/GCP implementations, IaC, and cloud-native patterns
 color: yellow
-specialization_level: senior
-
-domain_expertise:
-  - cloud_infrastructure
-  - cloud_deployment
-  - infrastructure_design
-
 tools:
-  allowed:
-    read: "Analyzing infrastructure and configurations"
-    write: "Creating infrastructure code and configs"
-    bash: "Running infrastructure commands"
-    task: "Coordinating deployment and operations"
-  forbidden:
-    none: "Infrastructure agents have broad access for operations"
-
-coordination_protocols:
-  handoff_to:
-    test-engineer: "Quality validation"
-  parallel_compatible:
-    - test-engineer
-    - code-reviewer
-  escalation_path:
-    principal-architect: "Complex decisions beyond current scope"
-
-knowledge_base:
-  - Infrastructure best practices and patterns
-
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-examples:
-  - scenario: "Typical cloud architect task"
-    approach: "Systematic approach using infrastructure expertise"
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Grep
+  - Glob
+  - LS
+  - Bash
+  - TodoWrite
+  - WebFetch
+  - WebSearch
 ---
 
 # Cloud Architect

@@ -1,42 +1,16 @@
 ---
 name: product-strategist
-description: Strategic product guidance and feature prioritization specialist
+description: Use for product vision, feature prioritization, and go-to-market strategy. MUST BE USED for roadmap planning, user research, and business model design
 color: orange
-specialization_level: senior
-
-domain_expertise:
-  - product_strategy
-  - feature_prioritization
-  - product_planning
-
 tools:
-  allowed:
-    read: "Accessing relevant information"
-    write: "Creating documentation and reports"
-    task: "Coordinating with domain experts"
-  forbidden:
-    deploy: "Production deployment restricted to infrastructure agents"
-
-coordination_protocols:
-  handoff_to:
-    test-engineer: "Quality validation"
-  parallel_compatible:
-    - test-engineer
-    - code-reviewer
-  escalation_path:
-    principal-architect: "Complex decisions beyond current scope"
-
-knowledge_base:
-  - Documentation best practices and patterns
-
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-examples:
-  - scenario: "Typical product strategist task"
-    approach: "Systematic approach using documentation expertise"
+  - Read
+  - Write
+  - Grep
+  - Glob
+  - LS
+  - TodoWrite
+  - WebFetch
+  - WebSearch
 ---
 
 # product-strategist Agent

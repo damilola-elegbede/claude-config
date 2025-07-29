@@ -1,44 +1,19 @@
 ---
 name: data-engineer
-description: Expert data engineer for pipelines, ETL/ELT systems, and data warehouse architecture
+description: Use for building data pipelines, ETL/ELT systems, data warehouses, and stream processing. MUST BE USED for big data platforms, ML infrastructure, and real-time data architectures
 color: blue
-specialization_level: senior
-
-domain_expertise:
-  - data_pipelines
-  - etl_systems
-  - data_warehousing
-  - big_data
-
 tools:
-  allowed:
-    read: "Analyzing existing code and documentation"
-    write: "Implementing features and creating code"
-    bash: "Running development commands and scripts"
-    task: "Coordinating with other agents for complex implementations"
-  forbidden:
-    deploy: "Production deployment restricted to infrastructure agents"
-
-coordination_protocols:
-  handoff_to:
-    test-engineer: "Quality validation"
-  parallel_compatible:
-    - test-engineer
-    - code-reviewer
-  escalation_path:
-    principal-architect: "Complex decisions beyond current scope"
-
-knowledge_base:
-  - Development best practices and patterns
-
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-examples:
-  - scenario: "Typical data engineer task"
-    approach: "Systematic approach using development expertise"
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Grep
+  - Glob
+  - LS
+  - Bash
+  - TodoWrite
+  - WebFetch
+  - WebSearch
 ---
 
 # Data Engineer

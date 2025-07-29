@@ -1,46 +1,19 @@
 ---
 name: mobile-engineer
-description: Expert mobile engineer for native and cross-platform mobile applications
+description: Use for iOS/Android native apps, React Native, and Flutter development. MUST BE USED for mobile architecture, app store deployment, and device-specific features
 color: blue
-specialization_level: senior
-
-domain_expertise:
-  - mobile_development
-  - native_apps
-  - cross_platform
-  - app_deployment
-
 tools:
-  allowed:
-    read: "Analyzing existing code and documentation"
-    write: "Implementing features and creating code"
-    bash: "Running development commands and scripts"
-    task: "Coordinating with other agents for complex implementations"
-  forbidden:
-    deploy: "Production deployment restricted to infrastructure agents"
-
-coordination_protocols:
-  handoff_to:
-    test-engineer: "Quality validation"
-  parallel_compatible:
-    - test-engineer
-    - code-reviewer
-  escalation_path:
-    principal-architect: "Complex decisions beyond current scope"
-
-knowledge_base:
-  - Development best practices and patterns
-
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-examples:
-  - scenario: "Typical mobile engineer task"
-    approach: "Systematic approach using development expertise"
-  - scenario: "Implement cross-platform authentication flow"
-    approach: "Design unified authentication architecture for iOS and Android, implement biometric authentication, secure token storage, and proper state management across app lifecycle"
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Grep
+  - Glob
+  - LS
+  - Bash
+  - TodoWrite
+  - WebFetch
+  - WebSearch
 ---
 
 # Mobile Engineer

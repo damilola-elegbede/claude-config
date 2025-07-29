@@ -1,43 +1,16 @@
 ---
 name: mobile-ui
-description: Mobile UI/UX design specialist for iOS/Android design patterns
+description: Use for iOS Human Interface Guidelines and Android Material Design implementation. MUST BE USED for mobile-specific UI patterns, gestures, and platform adaptations
 color: red
-specialization_level: specialist
-
-domain_expertise:
-  - mobile_ux
-  - ios_design
-  - android_design
-  - mobile_patterns
-
 tools:
-  allowed:
-    read: "Reviewing existing architecture and code"
-    write: "Creating architectural documentation and specs"
-    task: "Coordinating architectural decisions"
-  forbidden:
-    deploy: "Production deployment restricted to infrastructure agents"
-
-coordination_protocols:
-  handoff_to:
-    test-engineer: "Quality validation"
-  parallel_compatible:
-    - test-engineer
-    - code-reviewer
-  escalation_path:
-    principal-architect: "Complex decisions beyond current scope"
-
-knowledge_base:
-  - Architecture best practices and patterns
-
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-examples:
-  - scenario: "Typical mobile ui task"
-    approach: "Systematic approach using architecture expertise"
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
+  - LS
+  - TodoWrite
+  - WebFetch
 ---
 
 # mobile-ui Agent

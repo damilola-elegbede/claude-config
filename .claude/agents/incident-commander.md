@@ -1,53 +1,15 @@
 ---
 name: incident-commander
-description: Incident response, war room coordination, and post-mortem specialist
+description: Use for production incidents, outages, and crisis management. MUST BE USED for war room coordination, severity assessment, and leading post-mortem analysis
 color: orange
-specialization_level: senior
-
-domain_expertise:
-  - incident_response
-  - crisis_management
-  - root_cause_analysis
-  - post_mortem_facilitation
-
 tools:
-  allowed:
-    read: "Analyzing logs, metrics, and system state"
-    grep: "Searching for error patterns and anomalies"
-    bash: "Running diagnostic and recovery commands"
-    task: "Coordinating multiple agents for incident resolution"
-  forbidden:
-    write: "Should coordinate fixes through appropriate agents"
-
-coordination_protocols:
-  handoff_to:
-    debugger: "Deep technical investigation"
-    platform-engineer: "Infrastructure recovery actions"
-    backend-engineer: "Application-level fixes"
-  parallel_compatible:
-    - debugger
-    - performance-engineer
-    - security-auditor
-    - platform-engineer
-  escalation_path:
-    principal-architect: "Architectural decisions during crisis"
-
-knowledge_base:
-  - Incident Command System (ICS) principles
-  - SRE practices and incident management
-  - Communication and escalation protocols
-  - Post-mortem methodologies
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-
-examples:
-  - scenario: "Production outage affecting 50% of users"
-    approach: "Establish war room, coordinate parallel debugging and monitoring teams, implement immediate mitigation, then root cause analysis"
-  - scenario: "Data inconsistency incident discovered"
-    approach: "Assess impact scope, coordinate data team for analysis, implement data freeze if needed, plan remediation strategy"
+  - Read
+  - Grep
+  - Glob
+  - LS
+  - Bash
+  - TodoWrite
+  - WebFetch
 ---
 
 # Incident Commander

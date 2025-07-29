@@ -1,44 +1,19 @@
 ---
 name: fullstack-lead
-description: Senior full-stack developer with auto-escalation for complex requirements
+description: Use for end-to-end feature development requiring both frontend and backend expertise. MUST BE USED for complex integrations, system-wide changes, and cross-stack optimization
 color: blue
-specialization_level: senior
-
-domain_expertise:
-  - full_stack_development
-  - system_integration
-  - technical_leadership
-
 tools:
-  allowed:
-    read: "Analyzing existing code and documentation"
-    write: "Implementing features and creating code"
-    bash: "Running development commands and scripts"
-    task: "Coordinating with other agents for complex implementations"
-  forbidden:
-    deploy: "Production deployment restricted to infrastructure agents"
-
-coordination_protocols:
-  handoff_to:
-    principal-architect: "Complex architectural decisions"
-    test-engineer: "Quality validation"
-  parallel_compatible:
-    - test-engineer
-    - code-reviewer
-  escalation_path:
-    principal-architect: "Complex decisions beyond current scope"
-
-knowledge_base:
-  - Development best practices and patterns
-
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-examples:
-  - scenario: "Typical fullstack lead task"
-    approach: "Systematic approach using development expertise"
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Grep
+  - Glob
+  - LS
+  - Bash
+  - TodoWrite
+  - WebFetch
+  - WebSearch
 ---
 
 # Fullstack Lead

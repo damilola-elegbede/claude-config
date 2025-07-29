@@ -66,6 +66,9 @@ run_test "valid_yaml" "---
 name: test-agent
 description: A test agent for validation
 color: blue
+tools:
+  - Read
+  - Write
 ---
 
 # Test Agent Content" "pass"
@@ -81,6 +84,9 @@ description: Missing opening delimiter
 run_test "missing_closing" "---
 name: test-agent
 description: Missing closing delimiter
+color: green
+tools:
+  - Read
 
 # Content without closing ---" "fail"
 
@@ -88,6 +94,8 @@ description: Missing closing delimiter
 run_test "missing_name" "---
 description: Agent without name
 color: red
+tools:
+  - Read
 ---
 
 # Content" "fail"
@@ -96,6 +104,8 @@ color: red
 run_test "missing_description" "---
 name: test-agent
 color: green
+tools:
+  - Read
 ---
 
 # Content" "fail"
@@ -106,14 +116,17 @@ run_test "empty_yaml" "---
 
 # Content" "fail"
 
-# Test 7: Multiline description (should warn but pass)
+# Test 7: Multiline description (valid)
 run_test "multiline_description" "---
 name: test-agent
 description: |
   This is a multiline
   description that should
-  generate a warning
+  be valid
 color: purple
+tools:
+  - Read
+  - Write
 ---
 
 # Content" "pass"
@@ -121,8 +134,10 @@ color: purple
 # Test 8: Very long description (should warn but pass)
 run_test "long_description" "---
 name: test-agent
-description: $(printf 'x%.0s' {1..600})
+description: $(printf 'x%.0s' {1..300})
 color: orange
+tools:
+  - Read
 ---
 
 # Content" "pass"
@@ -131,19 +146,12 @@ color: orange
 run_test "complex_valid" "---
 name: complex-agent
 description: An agent with complex YAML structure
-color: cyan
-specialization_level: senior
-domain_expertise:
-  - skill1
-  - skill2
-  - skill3
+color: purple
 tools:
-  allowed: [Read, Write]
-  forbidden: [Delete]
-coordination_protocols:
-  with_other_agent:
-    - Protocol 1
-    - Protocol 2
+  - Read
+  - Write
+  - Grep
+  - Glob
 ---
 
 # Complex Agent Content" "pass"

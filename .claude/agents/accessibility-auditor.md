@@ -1,42 +1,15 @@
 ---
 name: accessibility-auditor
-description: Accessibility testing and WCAG compliance specialist
-color: white
-specialization_level: specialist
-
-domain_expertise:
-  - accessibility_testing
-  - wcag_compliance
-  - inclusive_design
-
+description: Use for WCAG compliance audits, screen reader testing, keyboard navigation checks, and accessibility remediation. MUST BE USED when implementing accessible UI components or fixing accessibility violations
+color: green
 tools:
-  allowed:
-    read: "Accessing relevant information"
-    write: "Creating documentation and reports"
-    task: "Coordinating with domain experts"
-  forbidden:
-    deploy: "Production deployment restricted to infrastructure agents"
-
-coordination_protocols:
-  handoff_to:
-    test-engineer: "Quality validation"
-  parallel_compatible:
-    - test-engineer
-    - code-reviewer
-  escalation_path:
-    principal-architect: "Complex decisions beyond current scope"
-
-knowledge_base:
-  - Specialized best practices and patterns
-
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-examples:
-  - scenario: "Typical accessibility auditor task"
-    approach: "Systematic approach using specialized expertise"
+  - Read
+  - Write
+  - Grep
+  - Glob
+  - LS
+  - TodoWrite
+  - WebFetch
 ---
 
 # Accessibility Expert

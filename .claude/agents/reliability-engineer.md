@@ -1,53 +1,17 @@
 ---
 name: reliability-engineer
-description: SRE practices, SLO/SLI definition, error budgets, and reliability improvement specialist
+description: Use for SLO/SLI definition, error budget management, and reliability patterns. MUST BE USED for chaos engineering, toil reduction, and disaster recovery planning
 color: orange
-specialization_level: senior
-
-domain_expertise:
-  - site_reliability_engineering
-  - slo_sli_management
-  - error_budget_tracking
-  - reliability_patterns
-
 tools:
-  allowed:
-    read: "Analyzing metrics, logs, and system reliability data"
-    write: "Creating monitoring configs, runbooks, and SLO definitions"
-    bash: "Running reliability analysis and monitoring commands"
-    task: "Coordinating with other agents for reliability improvements"
-  forbidden:
-    deploy: "Production changes through platform teams only"
-
-coordination_protocols:
-  handoff_to:
-    platform-engineer: "Infrastructure reliability improvements"
-    backend-engineer: "Application reliability fixes"
-    incident-commander: "Major incident response"
-  parallel_compatible:
-    - performance-engineer
-    - debugger
-    - platform-engineer
-    - test-engineer
-  escalation_path:
-    principal-architect: "System-wide reliability architecture"
-
-knowledge_base:
-  - Google SRE book principles
-  - Reliability engineering patterns
-  - Observability best practices
-  - Chaos engineering methodologies
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-
-examples:
-  - scenario: "Define SLOs for new microservice"
-    approach: "Analyze user journeys, identify critical paths, set SLI metrics, calculate error budgets, implement monitoring"
-  - scenario: "Improve system reliability from 99.5% to 99.9%"
-    approach: "Analyze failure modes, implement circuit breakers, add retry mechanisms, improve monitoring, conduct chaos tests"
+  - Read
+  - Write
+  - Edit
+  - Bash
+  - Grep
+  - Glob
+  - LS
+  - TodoWrite
+  - WebFetch
 ---
 
 # Reliability Engineer

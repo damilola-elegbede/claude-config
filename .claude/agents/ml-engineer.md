@@ -1,44 +1,19 @@
 ---
 name: ml-engineer
-description: Expert ML engineer for machine learning systems, model deployment, and MLOps
+description: Use for ML model deployment, MLOps pipelines, and production ML systems. MUST BE USED for model serving, feature stores, and distributed training infrastructure
 color: blue
-specialization_level: senior
-
-domain_expertise:
-  - machine_learning
-  - model_deployment
-  - mlops
-  - ai_systems
-
 tools:
-  allowed:
-    read: "Analyzing existing code and documentation"
-    write: "Implementing features and creating code"
-    bash: "Running development commands and scripts"
-    task: "Coordinating with other agents for complex implementations"
-  forbidden:
-    deploy: "Production deployment restricted to infrastructure agents"
-
-coordination_protocols:
-  handoff_to:
-    test-engineer: "Quality validation"
-  parallel_compatible:
-    - test-engineer
-    - code-reviewer
-  escalation_path:
-    principal-architect: "Complex decisions beyond current scope"
-
-knowledge_base:
-  - Development best practices and patterns
-
-
-architecture_constraints:
-  - Must use Task tool for all agent coordination
-  - Never directly invoke other agents
-  - Respect scope boundaries of other agents
-examples:
-  - scenario: "Typical ml engineer task"
-    approach: "Systematic approach using development expertise"
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Grep
+  - Glob
+  - LS
+  - Bash
+  - TodoWrite
+  - WebFetch
+  - WebSearch
 ---
 
 # ML Engineer

@@ -45,6 +45,7 @@ When you use `/sync`, I will:
 - `CLAUDE.md` - Main configuration with coding standards
 - `.claude/commands/*.md` - All command files (except sync.md which is repo-specific)
 - `.claude/agents/*.md` - All 26 specialized agent configurations (consolidated system)
+- `.claude/agents/AGENT_CATEGORIES.md` - Agent category definitions and color mappings
 - `settings.json` - Claude Code settings with audio notification hooks
 
 ## Important Notes
@@ -76,6 +77,7 @@ Syncing configuration files...
 ✓ Removed old commands from ~/.claude/commands/
 ✓ Copied 11 command files to ~/.claude/commands/ (excluding sync.md)
 ✓ Copied 26 agent files to ~/.claude/agents/ (consolidated system)
+✓ Copied AGENT_CATEGORIES.md to ~/.claude/agents/
 ✓ Copied settings.json to ~/.claude/settings.json
 ✓ Explicitly excluded: sync.md (repo-specific command)
 
@@ -92,7 +94,7 @@ python3 scripts/validate-agent-yaml.py || exit 1
 # Remove old agents directory completely
 rm -rf ~/.claude/agents/
 
-# Copy new agents directory
+# Copy new agents directory (includes AGENT_CATEGORIES.md)
 cp -r ./.claude/agents/ ~/.claude/agents/
 
 # Remove old command files (but preserve directory)

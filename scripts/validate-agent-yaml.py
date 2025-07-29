@@ -9,26 +9,25 @@ import re
 import sys
 from pathlib import Path
 
-# Required fields in YAML front-matter
+# Required fields in YAML front-matter based on actual agent schema
 REQUIRED_FIELDS = [
     'name',
     'description',
     'color',
-    'specialization_level',
-    'domain_expertise',
-    'tools',
-    'coordination_protocols',
-    'knowledge_base',
-    'examples'
+    'tools'
 ]
 
 # Valid values for specific fields
-VALID_COLORS = ['blue', 'green', 'red', 'purple', 'yellow', 'orange', 'white', 'brown']
-VALID_LEVELS = ['specialist', 'senior', 'principal']
+VALID_COLORS = ['blue', 'green', 'red', 'purple', 'yellow', 'orange', 'white', 'brown', 'cyan']
 
-# Required subfields
-REQUIRED_TOOL_FIELDS = ['allowed', 'forbidden']
-REQUIRED_COORDINATION_FIELDS = ['handoff_to', 'parallel_compatible', 'escalation_path']
+# Non-agent documentation files to skip
+NON_AGENT_FILES = [
+    'README.md', 'AGENT_CATEGORIES.md', 'AGENT_TEMPLATE.md', 
+    'AUDIT_VERIFICATION_PROTOCOL.md', 'AGENT_SELECTION_GUIDE.md',
+    'ENHANCEMENT_SUMMARY.md', 'PARALLEL_EXECUTION_GUIDE.md',
+    'SECURITY_ACCESS_PATTERNS.md', 'TOOL_ACCESS_GUIDE.md',
+    'TOOL_ACCESS_STANDARDIZATION_SUMMARY.md'
+]
 
 def extract_yaml_section(file_path):
     """Extract YAML front-matter from file."""
@@ -68,22 +67,9 @@ def parse_yaml_structure(yaml_text):
                     if value and value not in VALID_COLORS:
                         issues.append(f"Invalid color '{value}'. Must be one of: {', '.join(VALID_COLORS)}")
                 
-                elif field == 'specialization_level':
-                    value = line.split(':', 1)[1].strip()
-                    if value and value not in VALID_LEVELS:
-                        issues.append(f"Invalid level '{value}'. Must be one of: {', '.join(VALID_LEVELS)}")
+                # Remove specialization_level check as it's not required
         
-        # Check for required subfields
-        elif current_section == 'tools' and line.strip().endswith(':'):
-            subfield = line.strip()[:-1]
-            if subfield not in REQUIRED_TOOL_FIELDS:
-                if subfield not in ['allowed', 'forbidden', 'rationale']:
-                    issues.append(f"Unknown tools subfield: {subfield}")
-        
-        elif current_section == 'coordination_protocols' and line.strip().endswith(':'):
-            subfield = line.strip()[:-1]
-            if subfield not in REQUIRED_COORDINATION_FIELDS:
-                issues.append(f"Unknown coordination_protocols subfield: {subfield}")
+        # Tools can be a simple list or have subfields - both are valid
     
     # Check for missing required fields
     for field in REQUIRED_FIELDS:
@@ -96,6 +82,10 @@ def validate_agent_file(file_path):
     """Validate a single agent file."""
     agent_name = Path(file_path).stem
     issues = []
+    
+    # Skip non-agent files
+    if Path(file_path).name in NON_AGENT_FILES:
+        return agent_name, []
     
     # Extract YAML section
     yaml_section = extract_yaml_section(file_path)
@@ -114,12 +104,12 @@ def validate_agent_file(file_path):
         if yaml_name != agent_name:
             issues.append(f"Name mismatch: YAML says '{yaml_name}' but filename is '{agent_name}.md'")
     
-    # Check description length
+    # Check description length - increased limit to 250 for complex agents
     desc_match = re.search(r'^description:\s*(.+)$', yaml_section, re.MULTILINE)
     if desc_match:
         description = desc_match.group(1).strip()
-        if len(description) > 200:
-            issues.append(f"Description too long ({len(description)} chars). Should be under 200.")
+        if len(description) > 250:
+            issues.append(f"Description too long ({len(description)} chars). Should be under 250.")
     
     # Check for empty lists
     if re.search(r'domain_expertise:\s*$', yaml_section, re.MULTILINE):
@@ -136,8 +126,8 @@ def main():
         print(f"Error: Agents directory not found at {agents_dir}")
         sys.exit(1)
     
-    # Get all agent markdown files
-    agent_files = sorted([f for f in agents_dir.glob('*.md') if f.name != 'README.md'])
+    # Get all agent markdown files, excluding non-agent documentation
+    agent_files = sorted([f for f in agents_dir.glob('*.md') if f.name not in NON_AGENT_FILES])
     
     print(f"Validating {len(agent_files)} agent files...\n")
     
