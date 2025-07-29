@@ -79,6 +79,7 @@ NORMAL STATE ──/plan command──> PLANNING STATE
 - **Multiple instances of same agent type are encouraged**
 - **Agent-Auditor should always be used for agent audits**
 - **Always use the right agent for the right job**
+- **Agents live in .claude/agents/**
 
 ### 📚 Full Agent Documentation
 For detailed agent capabilities, selection matrix, and execution patterns:
