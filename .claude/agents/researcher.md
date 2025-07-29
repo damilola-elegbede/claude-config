@@ -1,6 +1,7 @@
 ---
 name: researcher
 description: External research, technology evaluation, and industry analysis specialist
+category: Architecture & Design
 color: purple
 specialization_level: specialist
 

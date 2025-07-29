@@ -1,6 +1,7 @@
 ---
 name: tech-writer
 description: Technical documentation, API docs, and knowledge management specialist. Use proactively for README creation, code explanations, architecture docs, migration guides, and work summaries
+category: Operations & Support
 color: orange
 specialization_level: specialist
 

@@ -47,7 +47,7 @@ validate_yaml() {
     
     # Skip non-agent documentation files
     case "$filename" in
-        AGENT_SELECTION_GUIDE.md|ENHANCEMENT_SUMMARY.md|PARALLEL_EXECUTION_GUIDE.md|\
+        README.md|AGENT_SELECTION_GUIDE.md|ENHANCEMENT_SUMMARY.md|PARALLEL_EXECUTION_GUIDE.md|\
         SECURITY_ACCESS_PATTERNS.md|TOOL_ACCESS_GUIDE.md|TOOL_ACCESS_STANDARDIZATION_SUMMARY.md|\
         YAML_*.md|AGENT_TEMPLATE.md)
             return 0

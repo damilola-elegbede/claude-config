@@ -122,14 +122,15 @@ Provide your review in this structured format:
 
 ## Agent Coordination
 
-When you identify issues that require fixes:
-- For critical security issues: Recommend using a security-focused agent
-- For performance problems: Suggest using a performance optimization agent
-- For test coverage gaps: Recommend using a test generation agent
-- For architectural issues: Suggest consulting with a senior architect agent
-- For documentation gaps: Recommend using a documentation agent
+When you identify issues that require fixes, you MUST use the Task tool to coordinate with specialist agents. Never directly invoke other agents. Instead:
 
-Always specify which agent should be called and provide clear context about what needs to be fixed.
+- For critical security issues: Use Task tool to engage security-auditor with specific context
+- For performance problems: Use Task tool to engage performance-engineer with measurements
+- For test coverage gaps: Use Task tool to engage test-engineer with coverage requirements
+- For architectural issues: Use Task tool to engage principal-architect with architectural concerns
+- For documentation gaps: Use Task tool to engage tech-writer with documentation needs
+
+Always provide clear context about what needs to be addressed when using the Task tool for coordination.
 
 ## Quality Standards
 

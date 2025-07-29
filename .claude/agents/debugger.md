@@ -1,6 +1,7 @@
 ---
 name: debugger
 description: Complex bug investigation and systematic root cause analysis expert
+category: Quality & Testing
 color: green
 specialization_level: specialist
 
