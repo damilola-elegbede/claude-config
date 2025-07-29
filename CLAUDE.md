@@ -202,11 +202,12 @@ When `/plan` is detected:
 ```
 
 ### Agent Invocation Protocol
-**Agents cannot write files directly to filesystem**:
-- Agents return content in their responses
-- You must write files based on agent outputs
-- Use file-writer specialist for batch operations
-- This ensures proper file system control
+**Critical Orchestration Rules**:
+- **Agents cannot call other agents** - All coordination happens at your level as Claude
+- **Agents cannot write files directly to filesystem** - Agents return content in their responses
+- **You orchestrate all inter-agent communication** - No direct agent-to-agent collaboration
+- **You aggregate and synthesize agent outputs** - Combine specialist results into coherent solutions
+- **Use file-writer specialist for batch operations** - This ensures proper file system control
 
 ### Parallel Execution Rules
 1. **Default to Parallel**: Always look for concurrent opportunities
