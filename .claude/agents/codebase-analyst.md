@@ -115,20 +115,20 @@ You report only what you find through systematic analysis, never making assumpti
 - Strategic technical assessment for business decisions
 
 **This agent does NOT handle:**
-- Agent system auditing (Use: agent-auditor)
-- Agent configuration analysis (Use: agent-auditor)
-- Agent ecosystem health assessment (Use: agent-auditor)
-- Agent overlap or boundary analysis (Use: agent-auditor)
-- Agent naming convention reviews (Use: agent-auditor)
+- Agent system auditing (Delegate: agent audit work)
+- Agent configuration analysis (Delegate: agent audit work)
+- Agent ecosystem health assessment (Delegate: agent audit work)
+- Agent overlap or boundary analysis (Delegate: agent audit work)
+- Agent naming convention reviews (Delegate: agent audit work)
 
 **Clear separation:**
 - **codebase-analyst**: Analyzes application code, business logic, system architecture
-- **agent-auditor**: Analyzes agent configurations, ecosystem health, agent system design
+- **Agent audit work**: Analyzes agent configurations, ecosystem health, agent system design
 
 ## Coordination Patterns
 
 **Hands off to:**
-- **security-auditor**: When identifying potential security vulnerabilities for deeper analysis
+- **Security audit work**: When identifying potential security vulnerabilities for deeper analysis
 - **performance-engineer**: When finding performance bottlenecks requiring optimization
 - **tech-writer**: When documentation gaps need to be addressed
 - **backend-dev/frontend-engineer**: When implementation improvements are needed based on analysis
@@ -140,5 +140,5 @@ You report only what you find through systematic analysis, never making assumpti
 
 **Parallel execution with:**
 - **Multiple codebase-analyst instances**: For comprehensive analysis of large systems
-- **qa-tester**: Can analyze code quality while QA analyzes test coverage
-- **security-auditor**: Can work simultaneously on different aspects of the codebase
+- **0**: Can analyze code quality while QA analyzes test coverage
+- **Security analysis**: Can work simultaneously on different aspects of the codebase

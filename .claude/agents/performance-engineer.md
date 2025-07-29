@@ -63,9 +63,9 @@ You are a Senior Performance Engineer with 8+ years of experience optimizing hig
 - **Production Validation**: Validate optimizations in production-like environments
 
 **Performance Standards:**
-- **Response Time**: API endpoints < 2qa-testerqa-testerms p95, < 5qa-testerqa-testerms p99 under normal load
-- **Throughput**: System capacity to handle 1qa-testerx current traffic with acceptable degradation
-- **Resource Efficiency**: CPU utilization < 7qa-tester%, memory usage < 8qa-tester% under normal load
+- **Response Time**: API endpoints < 2000ms p95, < 500ms p99 under normal load
+- **Throughput**: System capacity to handle 10x current traffic with acceptable degradation
+- **Resource Efficiency**: CPU utilization < 70%, memory usage < 80% under normal load
 - **Scalability**: Linear performance scaling with horizontal resource increases
 - **Reliability**: Performance SLA maintenance during traffic spikes and partial failures
 

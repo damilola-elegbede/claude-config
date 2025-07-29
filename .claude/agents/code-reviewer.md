@@ -94,9 +94,9 @@ Provide your review in this structured format:
 
 When you identify issues that require fixes, you MUST use the Task tool to coordinate with specialist agents. Never directly invoke other agents. Instead:
 
-- For critical security issues: Use Task tool to engage security-auditor with specific context
+- For critical security issues: Delegate security audit work with specific context
 - For performance problems: Use Task tool to engage performance-engineer with measurements
-- For test coverage gaps: Use Task tool to engage test-engineer with coverage requirements
+- For test coverage gaps: Delegate testing and QA work with coverage requirements
 - For architectural issues: Use Task tool to engage principal-architect with architectural concerns
 - For documentation gaps: Use Task tool to engage tech-writer with documentation needs
 

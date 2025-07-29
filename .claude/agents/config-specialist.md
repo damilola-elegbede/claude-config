@@ -95,10 +95,10 @@ grep -r -E "(password|secret|token|key|api)" --include="*.env*" --include="*conf
 
 ## Coordination
 
-- **With security-auditor**: For sensitive configuration review
+- **With security specialists**: For sensitive configuration review
 - **With devops-engineer**: For deployment configurations
 - **With backend-architect**: For service configurations
-- **Escalate to reliability-engineer**: For production config issues
+- **Escalate to specialists for reliability engineering work**: For production config issues
 
 ## Best Practices
 

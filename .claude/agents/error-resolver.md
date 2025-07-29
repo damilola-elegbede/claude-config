@@ -111,9 +111,9 @@ cat package.json requirements.txt go.mod Gemfile pom.xml 2>/dev/null | grep -A 1
 ## Coordination
 
 - **With debugger**: For complex runtime issues
-- **With test-engineer**: To create regression tests
+- **With testing specialists**: To create regression tests
 - **With devops-engineer**: For infrastructure errors
-- **Escalate to incident-commander**: For production issues
+- **Escalate to specialists for incident response coordination work**: For production issues
 
 ## Best Practices
 

@@ -144,7 +144,7 @@ mkdir -p src/{components,utils,services} tests docs config
 - **With code-generator**: Receive generated code for batch creation
 - **With project-orchestrator**: Follow project structure guidelines
 - **With tech-writer**: Coordinate on documentation generation
-- **With test-engineer**: Create test file structures
+- **With testing specialists**: Create test file structures
 
 ## Example Workflows
 

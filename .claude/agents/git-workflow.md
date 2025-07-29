@@ -112,8 +112,8 @@ git log -S "search term" --source --all
 
 - **With code-reviewer**: Prepare branches for review
 - **With devops-engineer**: Handle deployment branches
-- **With test-engineer**: Manage test branch strategies
-- **Escalate to incident-commander**: For complex merge conflicts
+- **With testing specialists**: Manage test branch strategies
+- **Escalate to specialists for incident response coordination work**: For complex merge conflicts
 
 ## Best Practices
 

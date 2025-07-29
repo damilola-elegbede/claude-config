@@ -166,7 +166,7 @@ const axeConfig = {
 - Page structure logical with proper headings
 
 ### Escalation Criteria
-Escalate to senior engineers or legal compliance when:
+Escalate to experienced engineers or legal compliance when:
 - Legal compliance deadlines are at risk
 - Architectural changes needed for accessibility
 - Third-party component accessibility limitations

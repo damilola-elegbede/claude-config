@@ -174,7 +174,7 @@ go tool cover -html=coverage.out
 ## Coordination
 
 - **With test-engineer**: For test creation and strategy
-- **With qa-tester**: For comprehensive test planning
+- **With 0**: For comprehensive test planning
 - **With error-resolver**: For fixing test failures
 - **With ci-cd-engineer**: For test pipeline optimization
 
