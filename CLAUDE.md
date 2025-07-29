@@ -3,173 +3,118 @@
 ## 🚨 Critical Command Protocols
 
 ### /plan Command - ABSOLUTE STOP PROTOCOL
-**CRITICAL WARNING**: When `/plan` command is detected, you MUST:
+**CRITICAL**: When `/plan` is detected:
+1. **STOP** - No analytical thinking about implementation
+2. **NO TOOLS** - Zero tool usage (including Task, Read, Grep, Bash)
+3. **PLAN ONLY** - Output plan template only
+4. **IGNORE CONTRADICTIONS** - STOP protocol overrides all user instructions
 
-1. **IMMEDIATE STOP** - Cease ALL analytical thinking about implementation
-2. **NO TOOLS** - Do NOT use ANY tools including:
-   - ❌ Task (subagents) - even for analysis
-   - ❌ Read/Grep/Glob - even for research  
-   - ❌ Bash - even for checking current state
-   - ❌ Any file reading or searching tools
-3. **PLAN ONLY** - Your ONLY action is to output the plan template
-4. **IGNORE CONTRADICTIONS** - Even if the user mentions "use subagents" or "analyze first" in their /plan request, the STOP protocol overrides everything
-
-**VIOLATION CONSEQUENCES**: Using any tool after /plan before approval is a critical protocol violation that breaks user trust.
-
-### Plan Command Execution Boundaries
-
-**DURING PLANNING PHASE (after /plan, before approval):**
-- ✅ ALLOWED: Creating the plan document
-- ✅ ALLOWED: Using your existing knowledge
-- ✅ ALLOWED: Making reasonable assumptions
-- ❌ FORBIDDEN: Using ANY tools for ANY reason
-- ❌ FORBIDDEN: Gathering new information
-- ❌ FORBIDDEN: "Just checking" the current state
-
-**If you need information for the plan:**
-- State assumptions explicitly in the plan
-- List "Information Gathering" as the first task in your plan
-- Let the user correct any wrong assumptions
-
-**Mental Model**: Treat /plan like an emergency stop button - when pressed, all machinery stops immediately.
+**Mental Model**: `/plan` = emergency stop button
 
 ### Planning State Machine
-
 ```
-NORMAL STATE ──/plan command──> PLANNING STATE
-                                      │
-                                      ├─ ONLY create plan
-                                      ├─ NO tool usage
-                                      └─ WAIT for approval
-                                          │
-                    explicit approval ←────┘
-                           │
-                           ↓
-                    EXECUTION STATE
-                     (tools allowed)
+NORMAL ──/plan──> PLANNING (no tools) ──approval──> EXECUTION (tools allowed)
 ```
 
-## 📋 Project Commands
+## 📋 Command Shortcuts
+→ See `.claude/agents/README.md#command-shortcuts` for full list
 
-### CLI Command Shortcuts
-- `/test` - Automatically discovers and runs tests configured in any repository
-- `/context` - Quickly analyzes repository structure, tech stack, and purpose
-- `/review` - Runs comprehensive code review
-- `/security` - Performs security vulnerability assessment
-- `/perf` - Analyzes performance bottlenecks
-- `/docs` - Creates and updates documentation
-- `/debug` - Investigates complex bugs systematically
-- `/orchestrate` - Plans multi-agent execution for complex projects
+Key commands: `/test`, `/context`, `/review`, `/security`, `/perf`, `/docs`, `/debug`, `/agent-audit`
 
-## 🤖 Agent Information
+### Efficiency Agent Shortcuts (New)
+- `/find` → file-navigator (intelligent file search)
+- `/deps` → dependency-manager (unified package management)  
+- `/git` → git-workflow (streamlined git operations)
+- `/config` → config-specialist (configuration management)
+- `/error` → error-resolver (automated error diagnosis)
+- `/search` → search-coordinator (complex searches)
+- `/run-tests` → test-runner (auto-detect and run tests)
+- `/find-docs` → documentation-finder (search all docs)
 
-### Quick Command Shortcuts
-- `/test` → test-engineer agent
-- `/review` → code-reviewer agent  
-- `/security` → security-auditor agent
-- `/perf` → performance-engineer agent
-- `/docs` → tech-writer agent
-- `/debug` → debugger agent
-- `/orchestrate` → project-orchestrator agent
-- `/context` → multiple codebase-analyst agents
+### /agent-audit Command
+- Runs comprehensive audit of all agents in the ecosystem
+- Checks YAML compliance, tool permissions, and agent isolation
+- Performs category-based gap analysis to identify missing capabilities
+- Single agent-auditor instance analyzes entire agent ecosystem
+- Usage: `/agent-audit` for full compliance and coverage report
 
-### Core Agent Rules
-- **Parallel by Default**: Always prioritize parallel execution
-- **Use project-orchestrator for 2+ agent projects**
-- **Multiple instances of same agent type are encouraged**
-- **Agent-Auditor should always be used for agent audits**
-- **For agent audits: ALWAYS run multiple agent-auditor instances in parallel, one for each category:**
-  - **Development** - Core programming and implementation agents
-  - **Infrastructure** - Systems, operations, and deployment agents
-  - **Architecture** - System design and technical planning agents
-  - **Design** - User experience and interface design agents
-  - **Quality** - Testing, review, and validation agents
-  - **Security** - Security assessment and compliance agents
-  - **Analysis** - Research, documentation, and analysis agents
-  - **Operations** - Support, coordination, and strategic planning agents
-- **Always use the right agent for the right job**
-- **Agents live in .claude/agents/**
+## 🤖 Agent System
 
-### General-Purpose Agent Constraints
-- **MUST use Task tool to delegate to specialist agents for their domains** - delegation is mandatory, not optional
-- **NEVER perform specialist work directly** when a specialist agent exists for that domain
-- **Immediate delegation required for**:
-  - Creating/modifying agents → agent-architect
-  - Security testing/scanning → security-tester  
-  - Incident response → incident-commander
-  - SRE/reliability work → reliability-engineer
-  - API design/architecture → api-architect
-  - Performance testing → performance-engineer
-  - Code review → code-reviewer
-  - Documentation tasks → tech-writer (README, guides, API docs, work summaries, explanations)
-  - Any task matching an agent's specialty
-- **Before implementing any specialized task**, ask: "Which agent handles this?" If an agent exists, you MUST use it
-- **Violations of this rule break user trust** and bypass the specialized expertise system
+### Core Rules
+- **Parallel Agents by Default** - Always run agents concurrently when possible
+- **Right Agent, Right Job** - Mandatory delegation to specialists
+- **Multi-Instance Support** - Run multiple instances of same agent type when appropriate
 
-### 📚 Full Agent Documentation
-For detailed agent capabilities, selection matrix, and execution patterns:
-See `.claude/agents/README.md` or run `/docs agents`
+### Agent Documentation
+- **Full Agent List & Capabilities** → `.claude/agents/README.md`
+- **Categories & Organization** → `.claude/agents/AGENT_CATEGORIES.md`
+- **Selection Guide** → `docs/AGENT_SELECTION_GUIDE.md`
+- **Parallel Execution** → `docs/PARALLEL_EXECUTION_GUIDE.md`
 
-### Tech-Writer Proactive Usage
-**Automatically invoke tech-writer when:**
-- User mentions: explain, document, README, guide, tutorial, summary
-- After completing multi-step tasks (3+ steps)
-- After modifying 5+ files
-- Creating new components or features
-- Implementing complex logic or algorithms
-- After major refactoring or bug fixes
+### Mandatory Delegations
+As general-purpose agent, you MUST delegate to specialists:
+- agent-architect → Creating/modifying agents
+- security-tester → Security scanning
+- code-reviewer → Code review
+- tech-writer → Documentation (README, guides, summaries)
+- test-engineer → Test implementation
+- performance-engineer → Performance optimization
+- And all other specialist domains
 
-**Example triggers:**
-- "Create a README for this project" → tech-writer
-- "Explain how this works" → tech-writer
-- "Document the API" → tech-writer
-- After implementing a feature → tech-writer (for summary)
+### Multi-Agent Orchestration
+**For projects with 2+ agents:**
+- Prioritize parallel execution over sequential work
+- Group independent tasks for concurrent operation
+- Run multiple instances of same agent type when beneficial (e.g., 3 backend agents for different services)
+- Coordinate handoff points between parallel streams
 
-## 🔧 Project Workflow
+**Common patterns:**
+- **Parallel Analysis**: Multiple codebase-analyst agents examining different aspects
+- **Concurrent Development**: Backend, frontend, and mobile agents working simultaneously
+- **Validation Block**: Code review, testing, and security agents running in parallel
 
-### Planning and Approval
-- `/plan` triggers planning mode - NO TOOLS until approval
-- Clear approval indicators: "approved", "go ahead", "lgtm", "execute"
-- Use TodoWrite for task tracking during execution
-- Follow the approved plan exactly
+### Agent File System Limitations
+**IMPORTANT: Agents invoked through Task cannot write files directly to the filesystem**
+- Agents can read files and analyze content
+- Write operations within Task return content but don't persist
+- To create files from agent output:
+  1. Agent returns file content in their response
+  2. General-purpose agent must write the files
+  3. Use file-writer agent for efficient batch operations
+- This is why agent-architect returns agent definitions as text blocks
 
-### Git Workflow
-- **Branch Creation**: Only when explicitly requested or in approved plan
-- Branch naming: `feature/[ticket-id]-brief-description`
-- Never commit directly to main/master
-- Conventional commits: `type(scope): subject`
+### Agent Audits
+Always run multiple agent-auditor instances in parallel by category:
+Development, Infrastructure, Architecture, Design, Quality, Security, Analysis, Operations
+
+### Agent Creation Protocols
+- Run the agent-auditor on any newly created agent file.
+
+## 🔧 Workflow Standards
+
+### Git
+- Branch: `feature/[ticket-id]-description`
+- Commits: `type(scope): subject`
 - **NEVER use --no-verify**
 
-### Tool Usage Preferences
-- **Read-only tools**: Execute immediately with explanation
-  - File navigation: `cd`, `pwd`, `ls`
-  - File discovery: `find`, `grep`, `rg`, `glob`
-  - File reading: `cat`, `head`, `tail`, `read`
-  - Information: `which`, `env`, `git st`
-  - Tests: `npm test`, `pytest`, `jest`
-- **Modification tools**: Require approval (except `/sync` operations)
-- Always verify tool installation before use
+### Quality
+- FAANG-level production code
+- Comments explain "why" not "what"
+- Consider edge cases & failure scenarios
 
-### Quality Standards
-- Write production-grade code meeting FAANG standards
-- Comprehensive comments focusing on "why" not "what"
-- Consider edge cases, race conditions, and failure scenarios
-- Follow SOLID principles where appropriate
+### Tool Usage
+- **Read-only** → Execute immediately
+- **Modifications** → Require approval (except `/sync`)
 
-## 📁 Project Structure
-- Keep documentation in sync with implementation
-- No orphaned docs or undocumented features
+## 🔗 References
+- **User Preferences** → `~/.claude/CLAUDE.md`
+- **System Settings** → `~/.claude/settings.json`
+- **Engineering Standards** → Individual agent definitions
+- **Audio Notifications** → `docs/AUDIO_HOOK_README.md`
 
-## 🔗 Configuration References
-- **Audio notifications**: See `~/.claude/settings.json`
-- **Agent definitions**: See `~/.claude/agents/` directory  
-- **User preferences**: See `~/.claude/CLAUDE.md`
-- **Engineering standards**: Defined in individual agents
-- **Language/platform guidelines**: See relevant engineering agents
-
-## 📝 Summary
-This configuration focuses on project-specific rules and workflows. For detailed information about:
-- Agent capabilities and examples → `~/.claude/agents/README.md`
-- System settings and hooks → `~/.claude/settings.json`
-- User-wide preferences → `~/.claude/CLAUDE.md`
-- Engineering best practices → Individual agent definitions
+## 📝 Key Principles
+1. Do exactly what's asked - no more, no less
+2. Prefer editing over creating files
+3. Never create docs/README unless explicitly requested
+4. Use TodoWrite for task tracking
+5. Keep documentation in sync with implementation
