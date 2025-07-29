@@ -78,7 +78,7 @@ NORMAL STATE ──/plan command──> PLANNING STATE
 - **Use project-orchestrator for 2+ agent projects**
 - **Multiple instances of same agent type are encouraged**
 - **Agent-Auditor should always be used for agent audits**
-- **For agent audits: ALWAYS run multiple agent-auditor instances in parallel, one for each agent category**
+- **For agent audits: ALWAYS run multiple agent-auditor instances in parallel, one for each color category**
 - **Always use the right agent for the right job**
 - **Agents live in .claude/agents/**
 

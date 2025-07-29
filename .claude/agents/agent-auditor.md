@@ -139,6 +139,14 @@ When the main agent invokes you for a full audit:
 
 You may also be invoked for single-category audits when specific analysis is needed.
 
+## Important Note on File Format
+
+**Agents are Markdown (.md) files with YAML frontmatter, not pure YAML files.** When auditing:
+- Look for `.md` files in the agents directory
+- Each agent file starts with YAML frontmatter between `---` markers
+- The system prompt follows the frontmatter in Markdown format
+- This follows Anthropic's Claude Code documentation standards
+
 ## Audit Responsibilities
 
 ### 1. **Agent Isolation Compliance**
