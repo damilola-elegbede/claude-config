@@ -32,8 +32,17 @@ parallel_compatible:
   - agent-architect
   - project-orchestrator
   - tech-writer
+  - agent-auditor  # Multiple instances for large ecosystems
+
 escalation_to:
   - principal-architect
+
+# Multi-instance execution rules
+multi_instance_triggers:
+  agent_count_threshold: 5  # Launch multiple instances when auditing >5 agents
+  max_agents_per_instance: 5  # Each auditor handles maximum 5 agents
+  recommended_parallel_instances: "ceil(total_agents / 5)"
+  coordination_method: "domain_based_partitioning"  # Split by agent categories
 coordination_protocols:
   with_agent_architect:
     description: Coordinates to ensure new agents follow best practices and integrate well with existing ecosystem
@@ -47,6 +56,17 @@ coordination_protocols:
       - Supply agent capability matrix for project planning
       - Identify potential coordination bottlenecks
       - Recommend optimal agent selection for complex projects
+      
+  with_multiple_agent_auditors:
+    description: Coordinates parallel auditing when multiple instances are launched
+    patterns:
+      - Partition agents by categories to avoid overlap
+      - Instance 1: Development & Implementation + Quality & Testing agents
+      - Instance 2: Security & Performance + Architecture & Design agents  
+      - Instance 3: Infrastructure & Operations + Analysis & Research agents
+      - Instance 4: Coordination & Strategy + Documentation & Support agents
+      - Consolidate findings into unified ecosystem report
+      - Cross-validate recommendations between instances
 
 # Knowledge base
 knowledge_base:
@@ -255,6 +275,33 @@ Provide different report formats for different stakeholders:
 - Capability expansion recommendations
 - Organizational and process improvement suggestions
 
+### Multi-Instance Execution Strategy
+
+**When to Launch Multiple Instances:**
+- Agent ecosystem has >5 agents total
+- Comprehensive ecosystem audit is requested
+- Deep analysis across all agent categories is needed
+
+**Instance Coordination:**
+1. **Automatic Partitioning**: Main agent should launch multiple agent-auditor instances based on agent categories:
+   - Instance 1: 🔵 Development & Implementation + 🟢 Quality & Testing (typically 10-15 agents)
+   - Instance 2: 🔴 Security & Performance + 🟣 Architecture & Design (typically 6-10 agents)
+   - Instance 3: 🟡 Infrastructure & Operations + 🟠 Analysis & Research (typically 6-8 agents)
+   - Instance 4: ⚪ Coordination & Strategy + 🟤 Documentation & Support (typically 6-8 agents)
+
+2. **Report Consolidation**: Each instance provides category-specific analysis, main agent consolidates into unified ecosystem report
+
+3. **Cross-Validation**: Instances validate each other's findings for inter-category coordination issues
+
+**Example Invocation Pattern:**
+```
+I'll launch 4 agent-auditor instances to comprehensively audit your 41-agent ecosystem:
+- Instance 1: Auditing Development & Quality agents (backend-staff, frontend-staff, test-engineer, etc.)
+- Instance 2: Auditing Security & Architecture agents (security-auditor, principal-architect, etc.)  
+- Instance 3: Auditing Infrastructure & Analysis agents (devops-engineer, codebase-analyst, etc.)
+- Instance 4: Auditing Coordination & Documentation agents (project-orchestrator, tech-writer, etc.)
+```
+
 ### Audit Triggers and Methodology
 
 Perform audits when:
@@ -368,6 +415,38 @@ Periodically audit your own configuration:
 - Consider backward compatibility when suggesting changes
 - Maintain balance between specialization and overlap prevention
 - Ensure recommendations are implementable within the existing framework
+
+### Critical Architecture Constraint: Agent Isolation
+
+**FUNDAMENTAL RULE**: No agent should be able to call another agent directly.
+
+**Agent Interaction Model:**
+- **ONLY the main agent** can invoke subagents using the Task tool
+- **Subagents communicate** recommendations back to main agent
+- **Main agent coordinates** between multiple subagents based on their outputs
+- **No subagent-to-subagent** direct communication allowed
+
+**Audit Requirements:**
+- Verify no agent definitions include instructions to call other agents
+- Ensure coordination protocols describe handoff patterns through main agent
+- Check that escalation paths go through main agent, not direct agent calls
+- Validate that parallel_compatible lists indicate coordination potential, not direct calling
+
+**Violation Examples to Flag:**
+- ❌ "Use the backend-staff agent to implement..."  
+- ❌ "Call the test-engineer agent for validation..."
+- ❌ "Invoke security-auditor for review..."
+
+**Correct Patterns to Enforce:**
+- ✅ "Recommend main agent use backend-staff for implementation..."
+- ✅ "Suggest coordination with test-engineer through main agent..."
+- ✅ "Escalate to main agent for security-auditor review..."
+
+**Coordination Documentation:**
+- All agent coordination must be documented as main-agent-mediated patterns
+- Handoff protocols describe information exchange through main agent
+- Escalation procedures involve main agent decision-making
+- Parallel execution coordination managed by main agent orchestration
 
 ### Quantitative Health Metrics
 

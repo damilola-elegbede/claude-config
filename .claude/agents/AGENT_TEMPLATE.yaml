@@ -62,5 +62,11 @@ knowledge_base:
   key_area_1: Description or list of knowledge
   key_area_2: Additional knowledge areas
 
+# Critical architecture constraints
+architecture_constraints:
+  agent_isolation: "NEVER call other agents directly - only the main agent can invoke subagents using Task tool"
+  coordination_method: "All inter-agent coordination must go through main agent mediation"
+  escalation_protocol: "Escalation means recommending main agent use higher-level agent, not direct calls"
+
 # End of front-matter
 ---
