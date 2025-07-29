@@ -58,15 +58,15 @@ coordination_protocols:
       - Recommend optimal agent selection for complex projects
       
   with_multiple_agent_auditors:
-    description: Coordinates parallel auditing when multiple instances are launched
+    description: Multiple instances audit different agent categories independently 
     patterns:
-      - Partition agents by categories to avoid overlap
+      - Each instance audits specific agent categories to avoid overlap
       - Instance 1: Development & Implementation + Quality & Testing agents
       - Instance 2: Security & Performance + Architecture & Design agents  
       - Instance 3: Infrastructure & Operations + Analysis & Research agents
       - Instance 4: Coordination & Strategy + Documentation & Support agents
-      - Consolidate findings into unified ecosystem report
-      - Cross-validate recommendations between instances
+      - Each instance provides independent category-specific analysis
+      - Main agent consolidates findings from all instances
 
 # Knowledge base
 knowledge_base:
@@ -289,9 +289,9 @@ Provide different report formats for different stakeholders:
    - Instance 3: 🟡 Infrastructure & Operations + 🟠 Analysis & Research (typically 6-8 agents)
    - Instance 4: ⚪ Coordination & Strategy + 🟤 Documentation & Support (typically 6-8 agents)
 
-2. **Report Consolidation**: Each instance provides category-specific analysis, main agent consolidates into unified ecosystem report
+2. **Independent Analysis**: Each instance provides category-specific analysis without coordinating with other instances
 
-3. **Cross-Validation**: Instances validate each other's findings for inter-category coordination issues
+3. **Main Agent Consolidation**: Main agent collects and synthesizes findings from all instances into unified ecosystem report
 
 **Example Invocation Pattern:**
 ```
