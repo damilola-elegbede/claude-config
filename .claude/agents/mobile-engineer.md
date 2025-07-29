@@ -39,6 +39,8 @@ architecture_constraints:
 examples:
   - scenario: "Typical mobile engineer task"
     approach: "Systematic approach using development expertise"
+  - scenario: "Implement cross-platform authentication flow"
+    approach: "Design unified authentication architecture for iOS and Android, implement biometric authentication, secure token storage, and proper state management across app lifecycle"
 ---
 
 # Mobile Engineer

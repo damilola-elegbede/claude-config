@@ -41,6 +41,8 @@ architecture_constraints:
 examples:
   - scenario: "Typical frontend engineer task"
     approach: "Systematic approach using development expertise"
+  - scenario: "Build responsive React component with state management"
+    approach: "Create reusable component with hooks, implement proper state management, add comprehensive styling with CSS-in-JS, and ensure accessibility compliance"
 ---
 
 # Frontend Development Expert

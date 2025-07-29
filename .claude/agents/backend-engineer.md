@@ -41,6 +41,8 @@ architecture_constraints:
 examples:
   - scenario: "Typical backend engineer task"
     approach: "Systematic approach using development expertise"
+  - scenario: "Design and implement RESTful API with authentication"
+    approach: "Create secure endpoints with JWT authentication, implement proper validation, error handling, and database integration with transaction support"
 ---
 
 # Backend Engineer
