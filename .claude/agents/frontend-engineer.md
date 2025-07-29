@@ -1,6 +1,6 @@
 ---
-name: frontend-dev
-description: Expert frontend developer specializing in user interfaces, client-side applications, and performance optimization
+name: frontend-engineer
+description: Expert frontend engineer specializing in user interfaces, client-side applications, and performance optimization
 color: purple
 specialization_level: senior
 

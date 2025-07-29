@@ -1,7 +1,7 @@
 # Claude Agent Ecosystem
 
 ## Overview
-The Claude agent ecosystem consists of 36 specialized agents organized across 8 functional domains, providing comprehensive coverage of the software development lifecycle with sophisticated coordination patterns and parallel execution capabilities.
+The Claude agent ecosystem consists of 26 specialized agents organized across 8 functional domains, providing comprehensive coverage of the software development lifecycle with sophisticated coordination patterns and parallel execution capabilities.
 
 ## Table of Contents
 - [Agent Directory](#agent-directory)
@@ -29,32 +29,32 @@ The Claude agent ecosystem consists of 36 specialized agents organized across 8 
 
 ### Architecture & Design Agents
 - **principal-architect** - System architecture, technical roadmaps, implementation plans
-- **api-designer** - API design, OpenAPI specs, REST/GraphQL standards
+- **api-architect** - Comprehensive API architecture, design governance, and implementation
 - **ui-designer** - Design systems, user experience, web/desktop interfaces
+- **mobile-ui** - Mobile UI patterns, React Native, iOS/Android design
 - **data-engineer** - Data pipelines, ETL/ELT, data warehouse architecture
 - **cloud-architect** - Cloud infrastructure design, scalability, cost optimization
 
 ### Operations & Support Agents
 - **platform-engineer** - Infrastructure, Kubernetes, production reliability
-- **sre-engineer** - Site reliability, monitoring, incident response
+- **reliability-engineer** - Site reliability, monitoring, incident response
 - **devops** - CI/CD pipelines, deployment automation, build systems
-- **database-admin** - Database design, optimization, backup/recovery
-- **tech-writer** - Documentation, API docs, user guides
+- **db-admin** - Database design, optimization, backup/recovery
+- **tech-writer** - Documentation, API docs, user guides, completion summaries
 - **codebase-analyst** - Code analysis, technical debt assessment
 - **researcher** - External research, technology evaluation, best practices
 
 ### Coordination & Strategy Agents
 - **project-orchestrator** - Multi-agent coordination for 2+ agent projects
-- **product-strategy** - Product vision, roadmaps, feature prioritization
+- **product-strategist** - Product vision, roadmaps, feature prioritization
 - **business-analyst** - Requirements analysis, business logic, process mapping
 - **agent-architect** - Agent design, ecosystem improvements
 - **agent-auditor** - Agent ecosystem health, coverage gap analysis (auto-spawns multiple instances for >5 agents, max 5 agents per instance)
 
 ### Specialized Domain Agents
-- **accessibility-expert** - WCAG compliance, accessibility standards
-- **architecture-review-board** - Architecture review process and decisions
-- **doc-updater** - Documentation synchronization and updates
-- **fullstack-lead** - Full-stack coordination with quality gates
+- **accessibility-auditor** - WCAG compliance, accessibility standards
+- **arch-reviewer** - Architecture review process and decisions
+- **fullstack-dev** - Full-stack coordination with quality gates
 - **performance-engineer** - Performance optimization, load testing
 
 ## Quick Reference
@@ -87,7 +87,7 @@ The Claude agent ecosystem consists of 36 specialized agents organized across 8 
 | **Frontend Development** | frontend-engineer | Web UI, React/Vue/Angular, performance |
 | **Mobile Development** | mobile-engineer | iOS/Android apps, React Native, Flutter |
 | **System Architecture** | principal-architect | System design, technical roadmaps |
-| **API Design** | api-designer | REST/GraphQL design, OpenAPI specs |
+| **API Architecture** | api-architect | REST/GraphQL design, OpenAPI specs, implementation |
 | **Bug Investigation** | debugger | Complex bugs, memory leaks, race conditions |
 | **Code Quality Review** | code-reviewer | Pre-commit review, best practices |
 | **Security Assessment** | security-auditor | Vulnerability assessment, OWASP compliance |
@@ -103,7 +103,7 @@ The Claude agent ecosystem consists of 36 specialized agents organized across 8 
 |-------|----------------|
 | **>100k users** | backend-engineer, frontend-engineer, principal-architect |
 | **>10k requests/sec** | backend-engineer, performance-engineer, platform-engineer |
-| **3+ microservices** | backend-engineer, api-designer, principal-architect |
+| **3+ microservices** | backend-engineer, api-architect, principal-architect |
 | **2+ platforms** | Multiple mobile-engineer instances |
 | **2+ agents needed** | project-orchestrator (mandatory) |
 
@@ -111,9 +111,9 @@ The Claude agent ecosystem consists of 36 specialized agents organized across 8 
 
 ### 1. API Development Flow
 ```
-api-designer → [backend-engineer + frontend-engineer] (parallel)
+api-architect → [backend-engineer + frontend-engineer] (parallel)
      ↓                    ↓                    ↓
-OpenAPI spec      Implementation         Integration
+API Implementation  Backend Services    Frontend Integration
 ```
 
 ### 2. Feature Development
@@ -235,17 +235,15 @@ mobile-engineer #2: Android app
 # Agent-auditor automatically scales based on total agents
 # Rule: Maximum 5 agents per instance for focused analysis
 
-Total agents: 36
-Required instances: 8 (ceiling of 36/5)
+Total agents: 26
+Required instances: 6 (ceiling of 26/5)
 
 agent-auditor #1: Agents 1-5
 agent-auditor #2: Agents 6-10
 agent-auditor #3: Agents 11-15
 agent-auditor #4: Agents 16-20
 agent-auditor #5: Agents 21-25
-agent-auditor #6: Agents 26-30
-agent-auditor #7: Agents 31-35
-agent-auditor #8: Agents 36
+agent-auditor #6: Agents 26
 
 # This pattern automatically scales:
 # - 10 agents = 2 instances

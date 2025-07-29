@@ -1,6 +1,6 @@
 ---
 # Required fields
-name: mobile-designer
+name: mobile-ui
 description: Mobile UI Specialist focusing on iOS and Android design patterns, React Native, and mobile user experience
 
 # Visual and hierarchy fields

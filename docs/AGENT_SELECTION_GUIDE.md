@@ -1,26 +1,27 @@
-# Agent Selection Guide
+# Agent Selection Guide - Consolidated System
 
 ## Quick Reference Decision Matrix
 
-### Implementation Tasks
+### Implementation Tasks (Consolidated)
 
-| Task Complexity | Domain | Agent Choice | Key Indicators |
-|---|---|---|---|
-| **Staff Level** | Backend | `backend-dev` | Multi-service architecture, complex state management, performance < 2.5s |
-| **Staff Level** | Frontend | `frontend-engineer` | Real-time features, complex UI, Core Web Vitals optimization |
-| **Senior Level** | General | `fullstack-lead` | Single-service features, well-defined APIs, standard patterns |
-| **Specialist** | Mobile | `mobile-ui` | iOS/Android design, platform-specific patterns |
-| **Specialist** | Web Design | `ui-designer` | Design systems, visual hierarchy, web/desktop interfaces |
+| Task Complexity | Domain | Agent Choice | Key Indicators | Consolidation Notes |
+|---|---|---|---|---|
+| **Staff Level** | Backend | `backend-engineer` | Multi-service architecture, complex state management, performance < 2.5s | Renamed from backend-staff |
+| **Staff Level** | Frontend | `frontend-engineer` | Real-time features, complex UI, Core Web Vitals optimization | Renamed from frontend-staff |
+| **Senior Level** | General | `fullstack-lead` | Single-service features, well-defined APIs, standard patterns | Unchanged |
+| **Specialist** | Mobile Development | `mobile-engineer` | Native/cross-platform apps, platform-specific features | Renamed from mobile-dev |
+| **Specialist** | Mobile UI/UX | `mobile-ui` | iOS/Android design, platform-specific patterns | Renamed from mobile-designer |
+| **Specialist** | Web Design | `ui-designer` | Design systems, visual hierarchy, web/desktop interfaces | Unchanged |
 
 ### Analysis & Review Tasks
 
 | Task Type | Scope | Agent Choice | Key Indicators |
 |---|---|---|---|
 | **Internal Code Analysis** | Existing codebase | `codebase-analyst` | Architecture assessment, technical debt, executive summary |
-| **External Research** | Industry/technology | `researcher` | Technology comparison, standards, competitive analysis |
+| **External Research** | Industry/technology | `researcher` | Technology comparison, standards, competitive analysis | Absorbed tech-researcher |
 | **Security Review** | Security-focused | `security-auditor` | OWASP compliance, vulnerability assessment |
 | **Code Quality** | Pre-commit | `code-reviewer` | Style, best practices, PR readiness |
-| **Testing Strategy** | Test coverage | `qa-tester` | Framework selection, test architecture |
+| **Testing Strategy** | Test coverage | `test-engineer` | Framework selection, test architecture, comprehensive QA | Absorbed qa-engineer capabilities |
 | **Complex Debugging** | Mystery bugs | `debugger` | Intermittent failures, performance degradation |
 | **Performance Analysis** | System performance | `performance-engineer` | Load testing, optimization, benchmarking |
 
@@ -31,15 +32,15 @@
 | **System Architecture** | Multi-service | `principal-architect` | Technical roadmaps, architecture decisions |
 | **Product Strategy** | Business features | `product-strategist` | Feature prioritization, user experience |
 | **Project Coordination** | Multi-agent | `project-orchestrator` | Progress tracking, parallel execution |
-| **Documentation** | Knowledge transfer | `tech-writer` | API docs, technical writing |
-| **API Design** | API governance | `api-engineer` | OpenAPI specs, contract testing, API strategy |
+| **Documentation** | Knowledge transfer | `tech-writer` | API docs, technical writing, project summaries, doc updates | Absorbed doc-updater + completion-agent |
+| **API Design** | API governance | `api-architect` | OpenAPI specs, contract testing, API strategy, full lifecycle | Consolidated from api-designer + api-engineer |
 
 ### Infrastructure & Operations Tasks
 
 | Task Type | Focus Area | Agent Choice | Key Indicators |
 |---|---|---|---|
 | **Deployment Automation** | CI/CD pipelines | `devops` | Build pipelines, infrastructure provisioning |
-| **Production Reliability** | SRE practices | `platform-engineer` | Monitoring, alerting, observability |
+| **Production Reliability** | SRE practices | `platform-engineer` | Monitoring, alerting, observability, site reliability | Consolidated from sre-engineer + reliability-engineer |
 | **Performance Optimization** | System performance | `performance-engineer` | Load testing, benchmarking, optimization |
 
 ## Escalation Decision Trees
