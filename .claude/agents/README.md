@@ -1,9 +1,38 @@
 # Claude Agent Ecosystem
 
 ## Overview
-The Claude agent ecosystem consists of 26 specialized agents organized across 8 functional domains, providing comprehensive coverage of the software development lifecycle with sophisticated coordination patterns and parallel execution capabilities.
+The Claude agent ecosystem consists of 30 specialized agents organized across 8 functional domains, providing comprehensive coverage of the software development lifecycle with sophisticated coordination patterns and parallel execution capabilities.
+
+## Agent Categories
+
+The agent ecosystem is organized into 8 primary categories:
+
+1. **Development** - Core programming and implementation
+   - backend-engineer, frontend-engineer, fullstack-lead, mobile-engineer, ml-engineer
+
+2. **Infrastructure** - Systems, operations, and deployment
+   - devops, cloud-architect, platform-engineer, reliability-engineer, database-admin
+
+3. **Architecture** - System design and technical planning
+   - api-architect, principal-architect, agent-architect
+
+4. **Design** - User experience and interface design
+   - ui-designer, mobile-ui
+
+5. **Quality** - Testing, review, and validation
+   - test-engineer, performance-engineer, code-reviewer, accessibility-auditor
+
+6. **Security** - Security assessment and compliance
+   - security-auditor, security-tester, agent-auditor
+
+7. **Analysis** - Research, documentation, and analysis
+   - data-engineer, business-analyst, codebase-analyst, tech-writer, researcher
+
+8. **Operations** - Support, coordination, and strategic planning
+   - incident-commander, debugger, project-orchestrator, product-strategist, general-purpose
 
 ## Table of Contents
+- [Agent Categories](#agent-categories)
 - [Agent Directory](#agent-directory)
 - [Quick Reference](#quick-reference)
 - [Agent Selection Guide](#agent-selection-guide)
@@ -26,28 +55,36 @@ The Claude agent ecosystem consists of 26 specialized agents organized across 8 
 - **code-reviewer** - Pre-commit quality review, best practices validation
 - **debugger** - Complex bug investigation, root cause analysis
 - **security-auditor** - Security vulnerability assessment, compliance review
+- **api-contract-tester** - API contract testing, OpenAPI/GraphQL schema validation
 
 ### Architecture & Design Agents
 - **principal-architect** - System architecture, technical roadmaps, implementation plans
 - **api-architect** - Comprehensive API architecture, design governance, and implementation
 - **ui-designer** - Design systems, user experience, web/desktop interfaces
 - **mobile-ui** - Mobile UI patterns, React Native, iOS/Android design
-- **data-engineer** - Data pipelines, ETL/ELT, data warehouse architecture
 - **cloud-architect** - Cloud infrastructure design, scalability, cost optimization
 
-### Operations & Support Agents
+### Operations & Infrastructure Agents
 - **platform-engineer** - Infrastructure, Kubernetes, production reliability
 - **reliability-engineer** - Site reliability, monitoring, incident response
 - **devops** - CI/CD pipelines, deployment automation, build systems
 - **db-admin** - Database design, optimization, backup/recovery
-- **tech-writer** - Documentation, API docs, user guides, completion summaries
+- **network-engineer** - Network architecture, security, optimization, troubleshooting
+
+### Analysis & Research Agents
 - **codebase-analyst** - Code analysis, technical debt assessment
 - **researcher** - External research, technology evaluation, best practices
+- **business-analyst** - Requirements analysis, business logic, process mapping
+- **data-engineer** - Data pipelines, ETL/ELT, data warehouse architecture
+- **data-scientist** - Statistical analysis, ML model evaluation, experiment design
+
+### Documentation & Support Agents
+- **tech-writer** - Documentation, API docs, user guides, completion summaries
+- **api-documenter** - Automated API documentation, OpenAPI/Swagger generation
 
 ### Coordination & Strategy Agents
 - **project-orchestrator** - Multi-agent coordination for 2+ agent projects
 - **product-strategist** - Product vision, roadmaps, feature prioritization
-- **business-analyst** - Requirements analysis, business logic, process mapping
 - **agent-architect** - Agent design, ecosystem improvements
 - **agent-auditor** - Agent ecosystem health, coverage gap analysis (auto-spawns multiple instances for >5 agents, max 5 agents per instance)
 
@@ -94,7 +131,11 @@ The Claude agent ecosystem consists of 26 specialized agents organized across 8 
 | **Performance Issues** | performance-engineer | Optimization, load testing, profiling |
 | **Test Strategy** | test-engineer | Test planning, framework selection |
 | **Documentation** | tech-writer | Technical docs, API docs, guides |
+| **API Documentation** | api-documenter | OpenAPI/Swagger docs, endpoint reference |
 | **Code Analysis** | codebase-analyst | Code search, dependency analysis |
+| **Data Analysis** | data-scientist | Statistical analysis, A/B testing, ML evaluation |
+| **Network Infrastructure** | network-engineer | Network design, routing, security, CDN |
+| **API Contract Testing** | api-contract-tester | Schema validation, breaking change detection |
 | **Multi-Agent Projects** | project-orchestrator | Coordinate 2+ agents |
 
 ### By Scale

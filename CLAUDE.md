@@ -93,6 +93,7 @@ NORMAL STATE ──/plan command──> PLANNING STATE
   - API design/architecture → api-architect
   - Performance testing → performance-engineer
   - Code review → code-reviewer
+  - Documentation tasks → tech-writer (README, guides, API docs, work summaries, explanations)
   - Any task matching an agent's specialty
 - **Before implementing any specialized task**, ask: "Which agent handles this?" If an agent exists, you MUST use it
 - **Violations of this rule break user trust** and bypass the specialized expertise system
@@ -100,6 +101,21 @@ NORMAL STATE ──/plan command──> PLANNING STATE
 ### 📚 Full Agent Documentation
 For detailed agent capabilities, selection matrix, and execution patterns:
 See `.claude/agents/README.md` or run `/docs agents`
+
+### Tech-Writer Proactive Usage
+**Automatically invoke tech-writer when:**
+- User mentions: explain, document, README, guide, tutorial, summary
+- After completing multi-step tasks (3+ steps)
+- After modifying 5+ files
+- Creating new components or features
+- Implementing complex logic or algorithms
+- After major refactoring or bug fixes
+
+**Example triggers:**
+- "Create a README for this project" → tech-writer
+- "Explain how this works" → tech-writer
+- "Document the API" → tech-writer
+- After implementing a feature → tech-writer (for summary)
 
 ## 🔧 Project Workflow
 
