@@ -1,7 +1,7 @@
 # /test Command
 
 ## Description
-Automatically discovers and runs tests configured in any repository by analyzing the README.md and common test patterns. If no tests exist, it creates a base level test suite appropriate for the project type. This universal test runner eliminates the need to remember project-specific test commands or manually set up initial tests.
+Automatically discovers and runs tests configured in any repository by analyzing the README.md and common test patterns. If no tests exist, it creates a base level test suite appropriate for the project type. This universal test runner eliminates the need to remember project-specific test commands or manually set up initial tests. Uses the test-engineer agent for comprehensive test strategy when needed.
 
 ## Usage
 ```

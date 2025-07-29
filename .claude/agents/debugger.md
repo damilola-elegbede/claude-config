@@ -1,76 +1,38 @@
 ---
 name: debugger
-description: Use this agent when you encounter mysterious bugs, intermittent failures, or complex issues that require systematic investigation. This agent excels at finding root causes of difficult-to-reproduce problems, performance anomalies, race conditions, memory leaks, and edge cases that other debugging approaches have missed.
-coordination_protocols:
-  with_performance_engineer:
-    - "Debugger investigates mysterious performance anomalies → Performance-Engineer provides systematic load testing validation"
-    - "Performance-Engineer identifies unexplained behavior patterns → Debugger conducts deep investigation"
-    - "Debugger reproduces performance bugs → Performance-Engineer validates fixes through comprehensive testing"
-  with_platform_engineer:
-    - "Debugger identifies production-specific issues → Platform-Engineer improves observability and monitoring"
-    - "Platform-Engineer reports system anomalies → Debugger investigates root causes"
-  with_implementation_agents:
-    - "Debugger identifies architectural issues → Backend/Frontend-Staff implement systematic fixes"
-    - "Implementation agents report persistent issues → Debugger conducts systematic investigation"
+description: Complex bug investigation and systematic root cause analysis expert
 color: green
 specialization_level: specialist
-domain_expertise: [bug_investigation, root_cause_analysis, systematic_debugging, issue_reproduction, complex_troubleshooting]
-escalation_to: [performance-engineer, platform-engineer, backend-staff, frontend-staff]
-escalation_from: [senior-dev]
-parallel_compatible: [codebase-analyst, performance-engineer, platform-engineer, security-auditor, tech-writer]
-scale_triggers:
-  user_count: ">5k users"
-  traffic_volume: ">1qa-testerqa-tester requests/second"
-  data_volume: ">1GB data processing"
-  geographic_distribution: "Single-region deployment"
-complexity_triggers:
-  intermittent_failures: "Bugs occurring <5qa-tester% of the time, timing-dependent issues, race conditions"
-  complex_system_failures: "Multi-service failures, cascading effects, distributed system issues"
-  performance_anomalies: "Mysterious performance degradation, memory leaks, resource exhaustion"
-  production_only_issues: "Issues that only occur in production, environment-specific bugs"
-  elusive_bugs: "Bugs that persist after obvious fixes, misleading error symptoms"
-  concurrency_issues: "Multi-threaded bugs, deadlocks, synchronization problems"
-scope_triggers:
-  multi_system_debugging: "Issues spanning 3+ systems or complex integration points"
-  production_critical: "Production outages, business-critical system failures"
-  investigation_complexity: "Issues requiring systematic investigation and evidence collection"
-  reproduction_challenges: "Hard-to-reproduce bugs requiring specialized debugging techniques"
-escalation_triggers:
-  to_performance_engineer: "Performance bottlenecks requiring systematic analysis or load testing"
-  to_platform_engineer: "Production issues requiring observability improvements"
-  to_backend_staff: "Complex backend issues requiring architectural changes"
-  to_frontend_staff: "Complex frontend issues requiring architectural changes"
-  from_senior_dev: "Complex bugs that exceed normal debugging capabilities"
-boundary_definitions:
-  debugger_scope: "Bug investigation, root cause analysis, systematic problem solving, issue reproduction"
-  performance_engineer_scope: "Performance analysis, load testing, benchmarking, optimization strategy, capacity planning"
-  handoff_triggers:
-    to_performance_engineer: "When systematic investigation reveals performance bottlenecks requiring load testing or comprehensive performance analysis"
-    from_performance_engineer: "When performance issues manifest as mysterious bugs or require deep investigative analysis"
-  clear_boundaries:
-    debugger_owns: ["Bug reproduction", "root cause analysis", "systematic investigation", "complex issue diagnosis", "intermittent failure analysis", "mysterious performance anomaly investigation"]
-    performance_engineer_owns: ["Load testing", "performance profiling", "capacity planning", "optimization strategy", "performance monitoring", "systematic performance analysis"]
-    coordination_boundaries: ["Debugger investigates mysterious performance bugs → Performance-Engineer provides systematic performance analysis", "Performance-Engineer identifies anomalous behavior → Debugger investigates root cause of anomalies"]
-when_not_to_use_debugger:
-  use_performance_engineer_instead:
-    - "Load testing and capacity planning"
-    - "Performance optimization strategy development" 
-    - "Systematic performance profiling and analysis"
-    - "Benchmark creation and performance validation"
-    - "Known performance bottlenecks requiring optimization rather than investigation"
-  use_senior_dev_instead:
-    - "Simple, easily reproducible bugs with obvious causes"
-    - "Basic error fixes with clear error messages"
-    - "Standard debugging within established patterns"
-  coordination_examples:
-    investigation_to_optimization: "Debugger identifies performance bottleneck → Performance Engineer creates load testing strategy"
-    mysterious_performance: "Performance Engineer finds anomalous behavior → Debugger investigates root cause"
-    production_incident: "Debugger analyzes failure patterns → Performance Engineer validates optimization effectiveness"
-tool_access: read_only_plus_analysis
-tool_restrictions:
-  allowed: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Bash, TodoWrite]
-  forbidden: [Edit, MultiEdit, Write, NotebookEdit]
-  rationale: "Debugger focuses on investigation and analysis, not code modification. Root cause identification requires read access to analyze systems and execute diagnostic commands without changing them. Debugging often requires executing diagnostic commands to reproduce issues, analyze system state, and gather runtime information."
+
+domain_expertise:
+  - bug_investigation
+  - root_cause_analysis
+  - system_debugging
+
+tools:
+  allowed:
+    read: "Analyzing code and documentation"
+    grep: "Searching for patterns and issues"
+    bash: "Running analysis and test commands"
+    task: "Coordinating quality checks with other agents"
+  forbidden:
+    deploy: "Production deployment restricted to infrastructure agents"
+
+coordination_protocols:
+  handoff_to:
+    test-engineer: "Quality validation"
+  parallel_compatible:
+    - test-engineer
+    - code-reviewer
+  escalation_path:
+    principal-architect: "Complex decisions beyond current scope"
+
+knowledge_base:
+  - Quality best practices and patterns
+
+examples:
+  - scenario: "Typical debugger task"
+    approach: "Systematic approach using quality expertise"
 ---
 
 ## Examples

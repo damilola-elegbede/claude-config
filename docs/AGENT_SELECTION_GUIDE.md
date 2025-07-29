@@ -6,11 +6,11 @@
 
 | Task Complexity | Domain | Agent Choice | Key Indicators | Consolidation Notes |
 |---|---|---|---|---|
-| **Staff Level** | Backend | `backend-engineer` | Multi-service architecture, complex state management, performance < 2.5s | Renamed from backend-staff |
-| **Staff Level** | Frontend | `frontend-engineer` | Real-time features, complex UI, Core Web Vitals optimization | Renamed from frontend-staff |
+| **Staff Level** | Backend | `backend-engineer` | Multi-service architecture, complex state management, performance < 2.5s | Renamed from backend-engineer |
+| **Staff Level** | Frontend | `frontend-engineer` | Real-time features, complex UI, Core Web Vitals optimization | Renamed from frontend-engineer |
 | **Senior Level** | General | `fullstack-lead` | Single-service features, well-defined APIs, standard patterns | Unchanged |
-| **Specialist** | Mobile Development | `mobile-engineer` | Native/cross-platform apps, platform-specific features | Renamed from mobile-dev |
-| **Specialist** | Mobile UI/UX | `mobile-ui` | iOS/Android design, platform-specific patterns | Renamed from mobile-designer |
+| **Specialist** | Mobile Development | `mobile-engineer` | Native/cross-platform apps, platform-specific features | Renamed from mobile-engineer |
+| **Specialist** | Mobile UI/UX | `mobile-ui` | iOS/Android design, platform-specific patterns | Renamed from mobile-ui |
 | **Specialist** | Web Design | `ui-designer` | Design systems, visual hierarchy, web/desktop interfaces | Unchanged |
 
 ### Analysis & Review Tasks
@@ -32,7 +32,7 @@
 | **System Architecture** | Multi-service | `principal-architect` | Technical roadmaps, architecture decisions |
 | **Product Strategy** | Business features | `product-strategist` | Feature prioritization, user experience |
 | **Project Coordination** | Multi-agent | `project-orchestrator` | Progress tracking, parallel execution |
-| **Documentation** | Knowledge transfer | `tech-writer` | API docs, technical writing, project summaries, doc updates | Absorbed doc-updater + completion-agent |
+| **Documentation** | Knowledge transfer | `tech-writer` | API docs, technical writing, project summaries, doc updates | Absorbed tech-writer + completion-agent |
 | **API Design** | API governance | `api-architect` | OpenAPI specs, contract testing, API strategy, full lifecycle | Consolidated from api-designer + api-engineer |
 
 ### Infrastructure & Operations Tasks
@@ -40,7 +40,7 @@
 | Task Type | Focus Area | Agent Choice | Key Indicators |
 |---|---|---|---|
 | **Deployment Automation** | CI/CD pipelines | `devops` | Build pipelines, infrastructure provisioning |
-| **Production Reliability** | SRE practices | `platform-engineer` | Monitoring, alerting, observability, site reliability | Consolidated from sre-engineer + reliability-engineer |
+| **Production Reliability** | SRE practices | `platform-engineer` | Monitoring, alerting, observability, site reliability | Consolidated from platform-engineer + platform-engineer |
 | **Performance Optimization** | System performance | `performance-engineer` | Load testing, benchmarking, optimization |
 
 ## Escalation Decision Trees

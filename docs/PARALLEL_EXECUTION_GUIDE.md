@@ -63,7 +63,6 @@ Parallel Group: Deep Analysis
   - researcher: External technology research, industry standards, competitive analysis
   - security-auditor: Security vulnerability comprehensive scan
   - debugger: Performance bottleneck identification
-  - qa-tester: Test coverage and quality assessment
 
 Coordination:
   - researcher provides external context → codebase-analyst applies to internal systems
@@ -96,7 +95,7 @@ Platform Teams:
     - mobile-ui: iOS/Android platform compliance
   
   Backend Team:
-    - backend-dev: API development
+
     - devops: Infrastructure and deployment
 
 Coordination Agent: project-orchestrator
@@ -107,7 +106,7 @@ Coordination Agent: project-orchestrator
 Infrastructure Team:
   - devops: CI/CD pipeline modernization, deployment automation
   - platform-engineer: Production monitoring, SRE practices, observability setup
-  - backend-dev: Application infrastructure requirements
+
   - security-auditor: Infrastructure security assessment
   - principal-architect: Architecture modernization strategy
 
@@ -122,7 +121,7 @@ Coordination:
 
 | Primary Agent | Compatible Parallel Agents | Workflow Benefit |
 |---|---|---|
-| **frontend-engineer** | backend-dev, ui-designer, mobile-ui, qa-tester | Full-stack development with design integration |
+| **frontend-engineer** | backend-dev, ui-designer, mobile-ui, test-engineer | Full-stack development with design integration |
 | **backend-dev** | frontend-engineer, devops, platform-engineer, api-engineer | Infrastructure-aware backend development |
 | **code-reviewer** | security-auditor, qa-tester, tech-writer | Comprehensive quality assurance |
 | **principal-architect** | product-strategist, tech-writer, researcher | Strategic planning with research and documentation |
@@ -139,7 +138,7 @@ Coordination:
 | api-engineer → backend-dev | API specifications needed for implementation | OpenAPI specs and contract delivery |
 | codebase-analyst → implementation agents | Analysis insights guide implementation | Executive summary with action items |
 | researcher → implementation agents | External context informs technical decisions | Research findings and recommendations |
-| implementation agents → qa-tester | Code needed for test development | Feature implementation completion |
+| implementation agents → test-engineer | Code needed for test development | Feature implementation completion |
 | devops → platform-engineer | Infrastructure deployed before monitoring | Deployment completion handoff |
 | fullstack-lead → staff agents | Complexity escalation when scope exceeds senior level | Auto-escalation based on complexity triggers |
 
@@ -157,14 +156,14 @@ Phase 1 - Parallel Planning:
 
 Phase 2 - Parallel Implementation:
   - frontend-engineer: UI implementation
-  - backend-dev: API development  
+
   - devops: Infrastructure preparation
   Duration: 3-5 days
 
 Phase 3 - Parallel Quality Assurance:
   - code-reviewer: Code quality review
   - security-auditor: Security assessment
-  - qa-tester: Test implementation
+
   Duration: 1-2 days
 ```
 
@@ -174,7 +173,6 @@ Parallel Analysis (Day 1):
   - codebase-analyst: Architecture and technical debt
   - security-auditor: Vulnerability assessment
   - debugger: Performance analysis
-  - qa-tester: Test coverage evaluation
 
 Parallel Implementation (Days 2-4):
   - Based on analysis findings, deploy appropriate implementation agents
@@ -183,7 +181,7 @@ Parallel Implementation (Days 2-4):
 Parallel Validation (Day 5):
   - code-reviewer: Implementation quality
   - security-auditor: Security improvement validation
-  - qa-tester: Enhanced test coverage
+
 ```
 
 ### 2. Resource Allocation Optimization
@@ -193,13 +191,13 @@ Parallel Validation (Day 5):
 Maximum Parallel Utilization:
   Core Development:
     - frontend-engineer (UI/UX critical path)
-    - backend-dev (API critical path)
+
     - devops (deployment critical path)
     
   Quality Assurance:
     - code-reviewer (continuous integration)
     - security-auditor (security requirements)
-    - qa-tester (test development)
+
     
   Documentation & Strategy:
     - tech-writer (parallel documentation)

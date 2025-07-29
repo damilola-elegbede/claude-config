@@ -13,7 +13,7 @@ The Claude Agent Ecosystem provides 26 specialized AI agents for software develo
 ## Consolidation Summary
 
 ### Consolidation Achievements
-- **Agent Reduction**: 36 agents → 26 agents (27% reduction)
+- **Agent Reduction**: 26 agents → 26 agents (27% reduction)
 - **Selection Accuracy**: 75% → 95% (20 percentage point improvement)
 - **Functional Coverage**: 100% maintained (zero capability loss)
 - **Naming Standardization**: Consistent patterns across all agents
@@ -27,16 +27,16 @@ The Claude Agent Ecosystem provides 26 specialized AI agents for software develo
 5. **tech-researcher** → merged into `researcher` (broader scope)
 6. **doc-updater** → merged into `tech-writer` (documentation consolidation)
 7. **completion-agent** → merged into `tech-writer` (summary capabilities)
-8. **mobile-dev** → standardized to `mobile-engineer`
+8. **mobile-engineer** → standardized to `mobile-engineer`
 9. **qa-engineer** → merged into `test-engineer` (comprehensive testing)
 10. **reliability-engineer** → merged into `platform-engineer` (SRE consolidation)
 
 ### Agents Renamed (6 total)
-1. **backend-staff** → `backend-engineer` (consistent naming)
-2. **frontend-staff** → `frontend-engineer` (consistent naming)
-3. **a11y-auditor** → `accessibility-auditor` (clearer terminology)
-4. **mobile-designer** → `mobile-ui` (scope clarity)
-5. **sre-engineer** → `platform-engineer` (expanded capabilities)
+1. **backend-engineer** → `backend-engineer` (consistent naming)
+2. **frontend-engineer** → `frontend-engineer` (consistent naming)
+3. **accessibility-auditor** → `accessibility-auditor` (clearer terminology)
+4. **mobile-ui** → `mobile-ui` (scope clarity)
+5. **platform-engineer** → `platform-engineer` (expanded capabilities)
 
 ### Benefits Realized
 - **Eliminated Selection Confusion**: Clear boundaries prevent agent overlap
@@ -138,7 +138,7 @@ graph TD
 - **Members**: backend-engineer, frontend-engineer, fullstack-lead, mobile-engineer, data-engineer, ml-engineer
 - **Tool Access**: Full read/write/execute
 - **Constraints**: Cannot deploy to production
-- **Consolidation**: Standardized naming (backend-staff → backend-engineer, frontend-staff → frontend-engineer)
+- **Consolidation**: Standardized naming (backend-staff → backend-engineer, frontend-engineer → frontend-engineer)
 
 #### 2. Analysis & Research Agents (3 agents)
 - **Purpose**: Understand and evaluate code, conduct external research
@@ -152,28 +152,28 @@ graph TD
 - **Members**: test-engineer, code-reviewer, debugger, security-auditor, performance-engineer
 - **Tool Access**: Read and test execution
 - **Constraints**: Cannot modify production code
-- **Consolidation**: qa-engineer capabilities merged into test-engineer, a11y-auditor renamed to accessibility-auditor
+- **Consolidation**: qa-engineer capabilities merged into test-engineer, accessibility-auditor renamed to accessibility-auditor
 
 #### 4. Architecture & Design Agents (4 agents)
 - **Purpose**: System architecture and design across platforms
 - **Members**: principal-architect, api-architect, ui-designer, mobile-ui
 - **Tool Access**: Full access for planning and design
 - **Constraints**: Must validate with implementation agents
-- **Consolidation**: api-designer + api-engineer merged into api-architect, mobile-designer renamed to mobile-ui
+- **Consolidation**: api-designer + api-engineer merged into api-architect, mobile-ui renamed to mobile-ui
 
 #### 5. Infrastructure & Operations Agents (3 agents)
 - **Purpose**: Deployment, infrastructure, and production reliability
 - **Members**: devops, platform-engineer, cloud-architect
 - **Tool Access**: Full infrastructure access
 - **Constraints**: Require approval for production
-- **Consolidation**: sre-engineer + reliability-engineer merged into platform-engineer
+- **Consolidation**: platform-engineer + platform-engineer merged into platform-engineer
 
 #### 6. Documentation & Support Agents (3 agents)
 - **Purpose**: Documentation, coordination, and strategic guidance
 - **Members**: tech-writer, project-orchestrator, product-strategist
 - **Tool Access**: Documentation and planning tools
 - **Constraints**: Cannot modify application logic
-- **Consolidation**: doc-updater + completion-agent merged into tech-writer, product-strategy duplicate removed
+- **Consolidation**: tech-writer + completion-agent merged into tech-writer, product-strategy duplicate removed
 
 #### 7. Specialized Support Agents (2 agents)
 - **Purpose**: Specialized compliance and database management
@@ -189,7 +189,7 @@ graph TD
 | `/review` | code-reviewer | security-auditor, test-engineer | Parallel | Unchanged |
 | `/security` | security-auditor | - | Single | Unchanged |
 | `/perf` | performance-engineer | - | Single | Unchanged |
-| `/docs` | tech-writer | - | Single | Absorbed doc-updater + completion-agent |
+| `/docs` | tech-writer | - | Single | Absorbed tech-writer + completion-agent |
 | `/debug` | debugger | - | Single | Unchanged |
 | `/orchestrate` | project-orchestrator | - | Planning | Unchanged |
 | `/context` | codebase-analyst | codebase-analyst (multiple) | Parallel | Unchanged |
@@ -204,7 +204,7 @@ def select_agents(task):
         "/review": "code-reviewer",
         "/security": "security-auditor", 
         "/perf": "performance-engineer",
-        "/docs": "tech-writer",           # Absorbed doc-updater + completion-agent
+        "/docs": "tech-writer",           # Absorbed tech-writer + completion-agent
         "/debug": "debugger",
         "/orchestrate": "project-orchestrator",
         "/context": "codebase-analyst"
@@ -238,7 +238,7 @@ def select_agents(task):
         "data": "data-engineer",
         "ml": "ml-engineer",
         "test": "test-engineer",          # Absorbed qa-engineer
-        "platform": "platform-engineer", # Consolidated from sre-engineer + reliability-engineer
+        "platform": "platform-engineer", # Consolidated from platform-engineer + reliability-engineer
         "architecture": "principal-architect",
         "product": "product-strategist"   # Removed product-strategy duplicate
     }
@@ -362,7 +362,7 @@ execution:
   pipeline:
     - type: tech-writer
       task: api_documentation
-      absorbed_from: "doc-updater capabilities"
+      absorbed_from: "tech-writer capabilities"
     - type: tech-writer
       task: user_guides
       absorbed_from: "completion-agent capabilities"

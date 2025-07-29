@@ -15,7 +15,7 @@ This guide helps users transition from the original 36-agent system to the new c
 | `/review` | code-reviewer | code-reviewer | ✅ Unchanged |
 | `/security` | security-auditor | security-auditor | ✅ Unchanged |
 | `/perf` | performance-engineer | performance-engineer | ✅ Unchanged |
-| `/docs` | tech-writer | tech-writer | ✅ Enhanced (absorbed doc-updater + completion-agent) |
+| `/docs` | tech-writer | tech-writer | ✅ Enhanced (absorbed tech-writer + completion-agent) |
 | `/debug` | debugger | debugger | ✅ Unchanged |
 | `/orchestrate` | project-orchestrator | project-orchestrator | ✅ Unchanged |
 | `/context` | codebase-analyst | codebase-analyst | ✅ Unchanged |
@@ -26,8 +26,6 @@ This guide helps users transition from the original 36-agent system to the new c
 
 #### API Ecosystem Consolidation
 **Before (2 agents):**
-- `api-designer` - API design and documentation
-- `api-engineer` - API implementation and testing
 
 **After (1 agent):**
 - `api-architect` - Complete API lifecycle management
@@ -39,7 +37,7 @@ This guide helps users transition from the original 36-agent system to the new c
 
 #### Product Strategy Cleanup
 **Before (2 agents):**
-- `product-strategy` - Strategic product decisions
+
 - `product-strategist` - Strategic product guidance
 
 **After (1 agent):**
@@ -52,8 +50,8 @@ This guide helps users transition from the original 36-agent system to the new c
 
 #### Backend Development Standardization
 **Before (2 agents):**
-- `backend-dev` - Backend development
-- `backend-staff` - Backend engineering
+
+- `backend-engineer` - Backend engineering
 
 **After (1 agent):**
 - `backend-engineer` - Standardized backend development
@@ -65,7 +63,7 @@ This guide helps users transition from the original 36-agent system to the new c
 
 #### Research Consolidation
 **Before (2 agents):**
-- `tech-researcher` - Technology research
+
 - `researcher` - General research
 
 **After (1 agent):**
@@ -78,8 +76,7 @@ This guide helps users transition from the original 36-agent system to the new c
 
 #### Documentation Consolidation
 **Before (3 agents):**
-- `doc-updater` - Document updates
-- `completion-agent` - Project summaries
+
 - `tech-writer` - Technical writing
 
 **After (1 agent):**
@@ -92,7 +89,7 @@ This guide helps users transition from the original 36-agent system to the new c
 
 #### Mobile Development Standardization
 **Before (2 agents):**
-- `mobile-dev` - Mobile development
+- `mobile-engineer` - Mobile development
 - `mobile-engineer` - Mobile engineering
 
 **After (1 agent):**
@@ -118,8 +115,7 @@ This guide helps users transition from the original 36-agent system to the new c
 
 #### SRE/Platform Consolidation
 **Before (2 agents):**
-- `sre-engineer` - Site reliability engineering
-- `reliability-engineer` - System reliability
+- `platform-engineer` - Site reliability engineering
 
 **After (1 agent):**
 - `platform-engineer` - Production reliability and platform management
@@ -134,8 +130,8 @@ This guide helps users transition from the original 36-agent system to the new c
 #### Standardized Engineering Titles
 | Old Name | New Name | Reason |
 |----------|----------|--------|
-| `backend-staff` | `backend-engineer` | Consistent "engineer" naming pattern |
-| `frontend-staff` | `frontend-engineer` | Consistent "engineer" naming pattern |
+| `backend-engineer` | `backend-engineer` | Consistent "engineer" naming pattern |
+| `frontend-engineer` | `frontend-engineer` | Consistent "engineer" naming pattern |
 
 **Migration Impact:**
 - **Old commands**: `Task backend-staff` or `Task frontend-staff`
@@ -145,7 +141,7 @@ This guide helps users transition from the original 36-agent system to the new c
 #### Accessibility Clarity
 | Old Name | New Name | Reason |
 |----------|----------|--------|
-| `a11y-auditor` | `accessibility-auditor` | Clearer terminology, better searchability |
+| `accessibility-auditor` | `accessibility-auditor` | Clearer terminology, better searchability |
 
 **Migration Impact:**
 - **Old command**: `Task a11y-auditor`
@@ -155,7 +151,7 @@ This guide helps users transition from the original 36-agent system to the new c
 #### Mobile Design Scope Clarity
 | Old Name | New Name | Reason |
 |----------|----------|--------|
-| `mobile-designer` | `mobile-ui` | Clearer scope definition (UI/UX for mobile) |
+| `mobile-ui` | `mobile-ui` | Clearer scope definition (UI/UX for mobile) |
 
 **Migration Impact:**
 - **Old command**: `Task mobile-designer`
@@ -165,7 +161,7 @@ This guide helps users transition from the original 36-agent system to the new c
 #### Platform Engineering Evolution
 | Old Name | New Name | Reason |
 |----------|----------|--------|
-| `sre-engineer` | `platform-engineer` | Expanded scope beyond just SRE to full platform management |
+| `platform-engineer` | `platform-engineer` | Expanded scope beyond just SRE to full platform management |
 
 **Migration Impact:**
 - **Old command**: `Task sre-engineer`
@@ -179,11 +175,11 @@ This guide helps users transition from the original 36-agent system to the new c
 **Common Confusion Points:**
 - API work: api-designer vs api-engineer vs backend-staff
 - Research: tech-researcher vs researcher
-- Documentation: doc-updater vs completion-agent vs tech-writer
-- Backend: backend-dev vs backend-staff vs backend-engineer
-- Mobile: mobile-dev vs mobile-engineer vs mobile-designer
+- Documentation: tech-writer vs completion-agent vs tech-writer
+- Backend: backend-dev vs backend-engineer vs backend-engineer
+- Mobile: mobile-engineer vs mobile-engineer vs mobile-designer
 - Testing: qa-engineer vs test-engineer
-- Reliability: sre-engineer vs reliability-engineer vs platform-engineer
+- Reliability: platform-engineer vs platform-engineer vs platform-engineer
 
 ### After: Clear Boundaries (95% accuracy)
 
@@ -281,9 +277,9 @@ parallel_support:
 ```yaml
 # Old way: Potential naming confusion
 parallel:
-  - backend-staff: server implementation
-  - frontend-staff: client implementation
-  - mobile-dev: mobile app
+  - backend-engineer: server implementation
+  - frontend-engineer: client implementation
+  - mobile-engineer: mobile app
   - qa-engineer: quality processes
   - test-engineer: test automation
 ```
@@ -371,18 +367,14 @@ parallel:
 
 Check the consolidation map above. Your agent's capabilities are now part of a consolidated agent:
 
-- `api-designer` → `api-architect`
-- `api-engineer` → `api-architect`
-- `doc-updater` → `tech-writer`
-- `completion-agent` → `tech-writer`
 - `qa-engineer` → `test-engineer`
-- `tech-researcher` → `researcher`
-- `backend-staff` → `backend-engineer`
-- `frontend-staff` → `frontend-engineer`
-- `sre-engineer` → `platform-engineer`
-- `reliability-engineer` → `platform-engineer`
-- `a11y-auditor` → `accessibility-auditor`
-- `mobile-designer` → `mobile-ui`
+
+- `backend-engineer` → `backend-engineer`
+- `frontend-engineer` → `frontend-engineer`
+- `platform-engineer` → `platform-engineer`
+
+- `accessibility-auditor` → `accessibility-auditor`
+- `mobile-ui` → `mobile-ui`
 
 ### "The new agent seems to do too much!"
 
@@ -416,7 +408,7 @@ That's expected! The new system optimizes for:
 ## Summary
 
 The consolidated agent system provides:
-- **Simpler selection** (26 vs 36 agents)
+- **Simpler selection** (26 vs 26 agents)
 - **Higher accuracy** (95% vs 75% selection success)
 - **Same functionality** (100% capability preservation)
 - **Better workflows** (fewer handoffs, clearer boundaries)

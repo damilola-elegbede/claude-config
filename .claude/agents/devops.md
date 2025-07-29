@@ -1,119 +1,39 @@
 ---
-# Required fields
 name: devops
-description: DevOps Engineer specializing in CI/CD pipelines, infrastructure as code, containerization, and deployment automation
+description: Deployment automation, CI/CD pipelines, and application deployment coordinator
+color: yellow
+specialization_level: senior
 
-# Visual and hierarchy fields
-color: brown
-specialization_level: specialist
-
-# Expertise and capabilities
 domain_expertise:
-  - ci_cd_pipelines
-  - infrastructure_as_code
-  - containerization
-  - kubernetes
-  - cloud_platforms
-  - monitoring_alerting
   - deployment_automation
-  - security_automation
+  - cicd_pipelines
+  - infrastructure_automation
 
-# Tool access configuration
 tools:
   allowed:
-    - Bash
-    - Read
-    - Edit
-    - MultiEdit
-    - Write
-    - Glob
-    - Grep
-    - LS
-    - WebSearch
-    - WebFetch
+    read: "Analyzing infrastructure and configurations"
+    write: "Creating infrastructure code and configs"
+    bash: "Running infrastructure commands"
+    task: "Coordinating deployment and operations"
   forbidden:
-    - NotebookEdit
-  rationale: Full access for infrastructure configuration, deployment scripts, CI/CD pipelines, and automation. Needs to modify configuration files, scripts, and infrastructure code.
+    none: "Infrastructure agents have broad access for operations"
 
-# Coordination and escalation
-parallel_compatible:
-  - backend-staff
-  - platform-engineer
-  - security-auditor
-  - test-engineer
-
-escalation_to:
-  - platform-engineer  # For production issues
-  - principal-architect  # For infrastructure architecture
-  - security-auditor  # For security concerns
-
-# Coordination protocols
 coordination_protocols:
-  with_platform_engineer:
-    description: Infrastructure and reliability coordination
-    patterns:
-      - Share monitoring setup
-      - Coordinate deployments
-      - Implement SRE practices
-      - Manage infrastructure scaling
-  with_backend_staff:
-    description: Application deployment coordination
-    patterns:
-      - Configure build pipelines
-      - Set up deployment environments
-      - Implement feature flags
-      - Manage secrets and configs
+  handoff_to:
+    platform-engineer: "Production monitoring setup"
+    security-auditor: "Security validation"
+  parallel_compatible:
+    - test-engineer
+    - code-reviewer
+  escalation_path:
+    principal-architect: "Complex decisions beyond current scope"
 
-# Examples section
-examples:
-  - context: CI/CD setup
-    user_request: "Set up CI/CD pipeline for our Node.js application"
-    assistant_response: "I'll have the devops-engineer create a comprehensive CI/CD pipeline with GitHub Actions including build, test, security scanning, Docker containerization, and automated deployment to Kubernetes."
-    commentary: DevOps-engineer automates the entire deployment process
-    
-  - context: Infrastructure as Code
-    user_request: "Create infrastructure for our microservices on AWS"
-    assistant_response: "I'll engage the devops-engineer to write Terraform configurations for VPC, EKS cluster, RDS databases, ElastiCache, ALB, and implement GitOps for infrastructure management."
-    commentary: Manages cloud infrastructure declaratively
-
-  - context: Containerization
-    user_request: "Dockerize our application with multi-stage builds"
-    assistant_response: "I'll have the devops-engineer create optimized Dockerfiles with multi-stage builds, implement docker-compose for local development, and set up a container registry with vulnerability scanning."
-    commentary: Ensures efficient container deployment
-
-# Knowledge base
 knowledge_base:
-  ci_cd_tools:
-    - GitHub Actions
-    - GitLab CI
-    - Jenkins
-    - CircleCI
-    - ArgoCD
-    - Flux
-  infrastructure_tools:
-    - Terraform
-    - AWS CloudFormation
-    - Ansible
-    - Pulumi
-    - Helm
-  container_platforms:
-    - Docker
-    - Kubernetes
-    - Amazon ECS/EKS
-    - Google GKE
-    - Azure AKS
-  monitoring_tools:
-    - Prometheus
-    - Grafana
-    - ELK Stack
-    - DataDog
-    - New Relic
-  cloud_platforms:
-    - AWS
-    - Google Cloud
-    - Azure
-    - DigitalOcean
-    - Cloudflare
+  - Infrastructure best practices and patterns
+
+examples:
+  - scenario: "Typical devops task"
+    approach: "Systematic approach using infrastructure expertise"
 ---
 
 # devops-engineer Agent

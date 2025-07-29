@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-The agent ecosystem has been consolidated from 36 to 26 agents (27% reduction) while preserving all functionality. This consolidation eliminates selection ambiguity and creates clearer boundaries between agents.
+The agent ecosystem has been consolidated from 26 agents.
 
 ## Key Changes Made
 
@@ -14,16 +14,16 @@ The agent ecosystem has been consolidated from 36 to 26 agents (27% reduction) w
 5. **tech-researcher** → merged into `researcher`
 6. **doc-updater** → capabilities merged into `tech-writer`
 7. **completion-agent** → capabilities merged into `tech-writer`
-8. **mobile-dev** → removed (created `mobile-engineer`)
-9. **mobile-designer** → renamed to `mobile-ui`
+8. **mobile-engineer** → removed (created `mobile-engineer`)
+9. **mobile-ui** → renamed to `mobile-ui`
 10. **qa-engineer** → removed (capabilities in `test-engineer`)
 
 ### Agents Renamed (6 total)
-1. **backend-staff** → `backend-engineer`
-2. **frontend-staff** → `frontend-engineer`
-3. **a11y-auditor** → `accessibility-auditor`
-4. **mobile-designer** → `mobile-ui`
-5. **sre-engineer** → `platform-engineer` (capability expansion)
+1. **backend-engineer** → `backend-engineer`
+2. **frontend-engineer** → `frontend-engineer`
+3. **accessibility-auditor** → `accessibility-auditor`
+4. **mobile-ui** → `mobile-ui`
+5. **platform-engineer** → `platform-engineer` (capability expansion)
 6. **reliability-engineer** → merged into `platform-engineer`
 
 ## Final Agent Roster (26 agents)
@@ -141,7 +141,7 @@ codebase_understanding:
 - **After**: ~95% selection accuracy (clear boundaries)
 
 ### System Efficiency
-- **Agent Count**: Reduced from 36 to 26 agents (-27%)
+- **Agent Count**: Reduced from 26 agents (-27%)
 - **Naming Consistency**: Standardized patterns across all agents
 - **Coverage**: Maintained 100% functional coverage through consolidation
 

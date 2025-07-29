@@ -190,7 +190,7 @@ Cloud infrastructure → cloud-architect
 - **Use When**: Deployment pipelines, release automation, environment management
 - **Focus**: Application deployment and delivery
 
-**platform-engineer** *(Consolidated from sre-engineer + reliability-engineer)*
+**platform-engineer** *(Consolidated from platform-engineer + reliability-engineer)*
 - **Expertise**: Production reliability, monitoring, SRE practices
 - **Tools**: Monitoring systems, alerting, incident response, reliability tools
 - **Use When**: Production issues, reliability improvements, monitoring setup
@@ -211,7 +211,7 @@ Multi-agent coordination → project-orchestrator
 Product strategy → product-strategist
 ```
 
-**tech-writer** *(Expanded: absorbed doc-updater + completion-agent)*
+**tech-writer** *(Expanded: absorbed tech-writer + completion-agent)*
 - **Expertise**: Technical documentation, API docs, completion summaries
 - **Tools**: Documentation platforms, API documentation generators, writing tools
 - **Use When**: Documentation creation, API docs, project summaries
@@ -372,26 +372,26 @@ def select_multiple_agents(project_scope):
 | product-strategy | product-strategist | Standardized naming |
 | backend-dev | backend-engineer | Consistent engineer suffix |
 | tech-researcher | researcher | Broader research scope |
-| doc-updater | tech-writer | Consolidated documentation |
+| tech-writer | tech-writer | Consolidated documentation |
 | completion-agent | tech-writer | Summary capabilities included |
-| mobile-dev | mobile-engineer | Standardized naming |
-| mobile-designer | mobile-ui | Clearer scope definition |
+| mobile-engineer | mobile-engineer | Standardized naming |
+| mobile-ui | mobile-ui | Clearer scope definition |
 | qa-engineer | test-engineer | Comprehensive testing focus |
 
 ### Renamed Agents
 
 | Old Name | New Name | Reason |
 |----------|----------|--------|
-| backend-staff | backend-engineer | Consistent naming pattern |
-| frontend-staff | frontend-engineer | Consistent naming pattern |
-| a11y-auditor | accessibility-auditor | Clearer terminology |
-| sre-engineer | platform-engineer | Expanded scope |
+| backend-engineer | backend-engineer | Consistent naming pattern |
+| frontend-engineer | frontend-engineer | Consistent naming pattern |
+| accessibility-auditor | accessibility-auditor | Clearer terminology |
+| platform-engineer | platform-engineer | Expanded scope |
 
 ### Command Updates
 
 All commands remain the same, but now map to consolidated agents:
 - `/test` → test-engineer (was qa-engineer)
-- `/docs` → tech-writer (absorbed doc-updater capabilities)
+- `/docs` → tech-writer (absorbed tech-writer capabilities)
 - All other commands unchanged
 
 ### Selection Strategy Changes
@@ -440,7 +440,7 @@ All commands remain the same, but now map to consolidated agents:
 - Consolidated capabilities reduce overlap
 
 ### System Efficiency: 27% reduction
-- Agent count: 36 → 26 (10 agents eliminated)
+- Agent count: 26 agents eliminated)
 - Maintained 100% functional coverage
 - Improved parallel execution patterns
 

@@ -83,7 +83,7 @@ To enable automatic context analysis on Claude Code startup:
 
 ## Performance
 - Completes in under 5 seconds for typical repositories
-- Uses parallel analysis with subagents for large codebases
+- Uses parallel analysis with multiple codebase-analyst agents for large codebases
 - Caches results to speed up repeated analysis
 - Limits depth for extremely large repositories
 
