@@ -1,20 +1,20 @@
 # Claude Agent Ecosystem
 
 ## Overview
-The Claude agent ecosystem consists of 30 specialized agents organized across 8 functional domains, providing comprehensive coverage of the software development lifecycle with sophisticated coordination patterns and parallel execution capabilities.
+The Claude agent ecosystem consists of 40 specialized agents organized across 8 functional domains, providing comprehensive coverage of the software development lifecycle with sophisticated coordination patterns and parallel execution capabilities.
 
 ## Agent Categories
 
 The agent ecosystem is organized into 8 primary categories. For detailed category definitions and color assignments, see [AGENT_CATEGORIES.md](./AGENT_CATEGORIES.md).
 
 1. **Development** (blue) - Core programming and implementation
-   - backend-engineer, frontend-engineer, fullstack-lead, mobile-engineer, ml-engineer
+   - backend-engineer, frontend-engineer, mobile-engineer, ml-engineer, data-engineer, database-admin, database-migration-specialist, integration-specialist
 
 2. **Infrastructure** (orange) - Systems, operations, and deployment
-   - devops, cloud-architect, platform-engineer, reliability-engineer, database-admin
+   - devops, cloud-architect, network-engineer
 
 3. **Architecture** (purple) - System design and technical planning
-   - api-architect, principal-architect, agent-architect
+   - api-architect, principal-architect
 
 4. **Design** (purple) - User experience and interface design
    - ui-designer, mobile-ui
@@ -65,8 +65,6 @@ The agent ecosystem is organized into 8 primary categories. For detailed categor
 - **cloud-architect** - Cloud infrastructure design, scalability, cost optimization
 
 ### Operations & Infrastructure Agents
-- **platform-engineer** - Infrastructure, Kubernetes, production reliability
-- **reliability-engineer** - Site reliability, monitoring, incident response
 - **devops** - CI/CD pipelines, deployment automation, build systems
 - **db-admin** - Database design, optimization, backup/recovery
 - **network-engineer** - Network architecture, security, optimization, troubleshooting
@@ -85,7 +83,6 @@ The agent ecosystem is organized into 8 primary categories. For detailed categor
 ### Coordination & Strategy Agents
 - **project-orchestrator** - Multi-agent coordination for 2+ agent projects
 - **product-strategist** - Product vision, roadmaps, feature prioritization
-- **agent-architect** - Agent design, ecosystem improvements
 - **agent-auditor** - Agent ecosystem health, coverage gap analysis (auto-spawns multiple instances for >5 agents, max 5 agents per instance)
 
 ### Specialized Domain Agents
@@ -143,7 +140,7 @@ The agent ecosystem is organized into 8 primary categories. For detailed categor
 | Scale | Required Agents |
 |-------|----------------|
 | **>100k users** | backend-engineer, frontend-engineer, principal-architect |
-| **>10k requests/sec** | backend-engineer, performance-engineer, platform-engineer |
+| **>10k requests/sec** | backend-engineer, performance-engineer, devops |
 | **3+ microservices** | backend-engineer, api-architect, principal-architect |
 | **2+ platforms** | Multiple mobile-engineer instances |
 | **2+ agents needed** | project-orchestrator (mandatory) |

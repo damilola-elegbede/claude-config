@@ -6,11 +6,10 @@ color: yellow
 icon: book-open
 category: analysis
 tools:
-  - glob
-  - grep
-  - read
-  - webfetch
-  - bash
+  - Read
+  - Grep
+  - Glob
+  - WebFetch
 ---
 
 # Documentation Search Specialist

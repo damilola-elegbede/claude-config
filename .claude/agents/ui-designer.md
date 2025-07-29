@@ -10,7 +10,6 @@ tools:
   - Glob
   - LS
   - TodoWrite
-  - WebFetch
 ---
 
 ## Working with Claude Orchestration Engine

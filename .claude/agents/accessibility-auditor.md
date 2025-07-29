@@ -4,12 +4,10 @@ description: Use for WCAG compliance audits, screen reader testing, keyboard nav
 color: green
 tools:
   - Read
-  - Write
   - Grep
   - Glob
   - LS
   - TodoWrite
-  - WebFetch
 ---
 
 # Accessibility Expert

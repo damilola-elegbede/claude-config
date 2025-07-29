@@ -6,11 +6,11 @@ color: orange
 icon: settings
 category: operations
 tools:
-  - glob
-  - grep
-  - read
-  - write
-  - bash
+  - Read
+  - Write
+  - Grep
+  - Glob
+  - Bash
 ---
 
 # Configuration Specialist

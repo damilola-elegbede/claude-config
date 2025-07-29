@@ -6,12 +6,12 @@ tools:
   - Read
   - Write
   - Edit
+  - MultiEdit
   - Grep
   - Glob
   - LS
   - Bash
   - TodoWrite
-  - WebFetch
 ---
 
 ## Working with Claude Orchestration Engine

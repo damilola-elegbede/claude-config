@@ -6,11 +6,11 @@ color: orange
 icon: git-branch
 category: operations
 tools:
-  - bash
-  - read
-  - write
-  - glob
-  - grep
+  - Read
+  - Write
+  - Grep
+  - Glob
+  - Bash
 ---
 
 # Git Workflow Specialist

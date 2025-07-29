@@ -6,11 +6,10 @@ color: green
 icon: alert-circle
 category: quality
 tools:
-  - read
-  - grep
-  - glob
-  - bash
-  - write
+  - Read
+  - Grep
+  - Glob
+  - Bash
 ---
 
 # Error Resolution Specialist

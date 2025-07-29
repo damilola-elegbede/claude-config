@@ -24,7 +24,6 @@ AGENT_TO_WORK_TYPE = {
     'database-admin': 'database administration work',
     'api-architect': 'API design and architecture work',
     'principal-architect': 'system architecture work',
-    'agent-architect': 'agent design and creation work',
     'ui-designer': 'UI/UX design work',
     'test-engineer': 'testing and QA work',
     'qa-tester': 'testing and QA work',

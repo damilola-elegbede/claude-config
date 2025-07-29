@@ -4,13 +4,10 @@ description: Use for gathering requirements, stakeholder analysis, process mappi
 color: purple
 tools:
   - Read
-  - Write
   - Grep
   - Glob
   - LS
   - TodoWrite
-  - WebFetch
-  - WebSearch
 ---
 
 # Business Analyst

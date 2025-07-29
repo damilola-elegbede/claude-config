@@ -6,10 +6,9 @@ color: yellow
 icon: search
 category: analysis
 tools:
-  - grep
-  - glob
-  - bash
-  - read
+  - Grep
+  - Glob
+  - Bash
 ---
 
 # Search Coordination Specialist

@@ -7,9 +7,7 @@ tools:
   - Grep
   - Glob
   - LS
-  - Bash
   - TodoWrite
-  - WebFetch
 ---
 
 # Incident Commander

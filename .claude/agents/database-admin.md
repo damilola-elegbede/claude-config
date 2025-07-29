@@ -6,12 +6,12 @@ tools:
   - Read
   - Write
   - Edit
-  - Bash
+  - MultiEdit
   - Grep
   - Glob
   - LS
+  - Bash
   - TodoWrite
-  - WebFetch
 ---
 
 # Database Admin

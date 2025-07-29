@@ -4,11 +4,11 @@ description: Unified interface for package management across npm, pip, cargo, go
 color: orange
 enabled: true
 tools:
-  - bash
-  - read
-  - write
-  - glob
-  - grep
+  - Read
+  - Write
+  - Grep
+  - Glob
+  - Bash
 category: operations
 ---
 

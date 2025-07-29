@@ -10,14 +10,14 @@ from pathlib import Path
 from collections import defaultdict
 
 # Expected final state - Updated based on actual agent ecosystem
-EXPECTED_AGENTS = 46  # Includes efficiency agents
+EXPECTED_AGENTS = 40  # After consolidation and removals
 EXPECTED_CATEGORIES = {
-    'blue': 7,    # Development & Implementation
-    'green': 10,  # Quality & Testing (includes efficiency agents)
-    'red': 5,     # Architecture & Design
-    'purple': 4,  # Analysis & Research
-    'yellow': 7,  # Infrastructure & Operations
-    'orange': 10, # Documentation & Support (includes efficiency agents)
+    'blue': 9,    # Development & Implementation
+    'green': 9,   # Quality & Testing
+    'red': 4,     # Security
+    'purple': 4,  # Design
+    'yellow': 6,  # Analysis & Research
+    'orange': 8,  # Infrastructure & Operations
     'white': 0,   # No white agents currently
     'brown': 0,   # No brown agents currently
     'cyan': 0,    # No cyan agents currently
@@ -28,7 +28,7 @@ DEPRECATED_AGENTS = [
     'fullstack-dev', 'db-admin', 'test-data-manager', 
     'arch-reviewer', 'tech-lead'
 ]
-# Note: reliability-engineer, agent-architect, and agent-auditor are active agents
+# Note: reliability-engineer and agent-auditor are active agents
 
 COMMAND_AGENT_MAP = {
     '/test': 'test-engineer',

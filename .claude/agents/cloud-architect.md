@@ -12,8 +12,6 @@ tools:
   - LS
   - Bash
   - TodoWrite
-  - WebFetch
-  - WebSearch
 ---
 
 # Cloud Architect

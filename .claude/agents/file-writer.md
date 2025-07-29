@@ -6,10 +6,9 @@ color: orange
 emoji: 📝
 category: operations
 tools:
-  - write
-  - glob
-  - read
-  - bash
+  - Read
+  - Write
+  - Glob
 ---
 
 # File Writer

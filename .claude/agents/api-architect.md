@@ -5,14 +5,11 @@ color: red
 tools:
   - Read
   - Write
+  - Edit
   - Grep
   - Glob
   - LS
-  - Edit
-  - MultiEdit
   - TodoWrite
-  - WebFetch
-  - WebSearch
 ---
 
 ## Working with Claude Orchestration Engine

@@ -5,12 +5,11 @@ color: orange
 tools:
   - Read
   - Write
+  - Edit
   - Grep
   - Glob
   - LS
   - TodoWrite
-  - WebFetch
-  - WebSearch
 ---
 
 # specialist for product strategy work

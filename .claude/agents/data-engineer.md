@@ -12,8 +12,6 @@ tools:
   - LS
   - Bash
   - TodoWrite
-  - WebFetch
-  - WebSearch
 ---
 
 # Data Engineer

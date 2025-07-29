@@ -4,12 +4,11 @@ description: Intelligent file system exploration and navigation with context-awa
 color: orange
 enabled: true
 tools:
-  - ls
-  - find
-  - glob
-  - read
-  - grep
-  - bash
+  - Read
+  - Write
+  - Grep
+  - Glob
+  - Bash
 category: operations
 ---
 

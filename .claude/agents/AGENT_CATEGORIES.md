@@ -30,7 +30,6 @@ This document defines the official agent categories and their corresponding colo
 **Agents**:
 - api-architect
 - principal-architect
-- agent-architect
 
 ### 4. **Design** (purple)
 **Purpose**: User experience and interface design  
@@ -77,7 +76,6 @@ This document defines the official agent categories and their corresponding colo
 - incident-commander
 - debugger
 - product-strategist
-- general-purpose
 - file-navigator
 - dependency-manager
 - git-workflow

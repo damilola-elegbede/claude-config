@@ -12,8 +12,6 @@ tools:
   - LS
   - Bash
   - TodoWrite
-  - WebFetch
-  - WebSearch
 ---
 
 # Frontend Development Expert

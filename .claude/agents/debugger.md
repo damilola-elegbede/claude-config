@@ -7,8 +7,6 @@ tools:
   - Grep
   - Glob
   - LS
-  - Bash
-  - TodoWrite
 ---
 
 ## Working with Claude Orchestration Engine

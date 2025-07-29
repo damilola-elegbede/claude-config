@@ -9,7 +9,6 @@ tools:
   - Bash
   - Grep
   - Glob
-  - TodoWrite
 ---
 
 # API Contract Tester
