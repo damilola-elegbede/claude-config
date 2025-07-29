@@ -39,12 +39,12 @@ When you use `/sync`, I will:
    - Check that files were copied successfully
    - Report any errors or conflicts
    - Show summary of synced files
-   - Confirm 26 agents are present (consolidated system)
+   - Confirm 41 agents are present
 
 ## Files Synced
 - `CLAUDE.md` - Main configuration with coding standards
 - `.claude/commands/*.md` - All command files (except sync.md which is repo-specific)
-- `.claude/agents/*.md` - All 26 specialized agent configurations (consolidated system)
+- `.claude/agents/*.md` - All 41 specialized agent configurations
 - `.claude/agents/AGENT_CATEGORIES.md` - Agent category definitions and color mappings
 - `settings.json` - Claude Code settings with audio notification hooks
 
@@ -57,13 +57,13 @@ When you use `/sync`, I will:
 - Use this after pulling latest changes from the repository
 - Run from within the claude-config repository only
 - Old/deprecated agents and commands are removed to prevent confusion
-- Ensures exactly 26 agents in the consolidated system
+- Ensures exactly 41 agents in the ecosystem
 
 ## Example Output
 ```
 /sync
 Validating agent YAML compliance...
-✓ All 26 agents have valid YAML front-matter
+✓ All 41 agents have valid YAML front-matter
 
 Creating backups...
 ✓ Backed up ~/CLAUDE.md to ~/CLAUDE.md.backup
@@ -76,7 +76,7 @@ Syncing configuration files...
 ✓ Removed old agents from ~/.claude/agents/
 ✓ Removed old commands from ~/.claude/commands/
 ✓ Copied 11 command files to ~/.claude/commands/ (excluding sync.md)
-✓ Copied 26 agent files to ~/.claude/agents/ (consolidated system)
+✓ Copied 41 agent files to ~/.claude/agents/
 ✓ Copied AGENT_CATEGORIES.md to ~/.claude/agents/
 ✓ Copied settings.json to ~/.claude/settings.json
 ✓ Explicitly excluded: sync.md (repo-specific command)
@@ -119,4 +119,4 @@ rsync -av --delete --exclude='sync.md' ./.claude/commands/ ~/.claude/commands/
 - Backups are always created with timestamp if multiple syncs occur
 - If audio notifications don't work after sync, check the settings.json hooks configuration
 - Settings.json merge preserves existing configurations while adding new hooks
-- Verify exactly 26 agents are present after sync (consolidated system)
+- Verify exactly 41 agents are present after sync

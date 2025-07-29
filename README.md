@@ -45,27 +45,28 @@ This repository contains backup copies of Claude configurations for easy restora
   - Direct afplay commands for simplicity
   - Background playback (non-blocking)
 
-### 5. Agent Ecosystem (Consolidated)
-- **Documentation**: `agents/README.md`
-- **Purpose**: 26 specialized AI agents for comprehensive development tasks
+### 5. Agent Ecosystem
+- **Documentation**: `.claude/agents/README.md`
+- **Purpose**: 41 specialized AI agents for comprehensive development tasks
 - **System Benefits**: 
-  - **27% reduction** in agent count (36 → 26) with zero functional loss
-  - **95% selection accuracy** vs previous 75% (eliminated overlap confusion)
+  - **100% coverage** of software development lifecycle
   - **Clear boundaries** between agent responsibilities
-- **Categories**:
-  - **Development & Implementation** (6): backend-engineer, frontend-engineer, fullstack-lead, mobile-engineer, data-engineer, ml-engineer
-  - **Quality & Testing** (5): test-engineer, code-reviewer, debugger, security-auditor, performance-engineer  
-  - **Architecture & Design** (4): principal-architect, api-architect, ui-designer, mobile-ui
-  - **Analysis & Research** (3): codebase-analyst, researcher, business-analyst
-  - **Infrastructure & Operations** (3): devops, platform-engineer, cloud-architect
-  - **Documentation & Support** (3): tech-writer, project-orchestrator, product-strategist
-  - **Specialized Support** (2): accessibility-auditor, database-admin
-- **Consolidation Highlights**:
-  - **api-architect**: Merged api-designer + api-engineer for full API lifecycle
-  - **tech-writer**: Absorbed doc-updater + completion-agent for unified documentation
-  - **test-engineer**: Absorbed qa-engineer capabilities for comprehensive testing
-  - **platform-engineer**: Consolidated sre-engineer + reliability-engineer for production reliability
-  - **researcher**: Merged tech-researcher for broader research scope
+  - **Optimized for parallel execution** with multi-instance support
+- **Categories** (8 total):
+  - **Development** (7): backend-engineer, frontend-engineer, mobile-engineer, data-engineer, ml-engineer, database-migration-specialist, integration-specialist
+  - **Infrastructure** (4): cloud-architect, database-admin, devops, network-engineer
+  - **Architecture** (2): api-architect, principal-architect
+  - **Design** (2): ui-designer, mobile-ui
+  - **Quality** (5): test-engineer, code-reviewer, performance-engineer, accessibility-auditor, api-contract-tester
+  - **Security** (3): security-auditor, security-tester, agent-auditor
+  - **Analysis** (7): codebase-analyst, business-analyst, data-scientist, researcher, tech-writer, api-documenter, log-analyst
+  - **Operations** (11): incident-commander, debugger, product-strategist, file-navigator, config-specialist, dependency-manager, documentation-finder, error-resolver, git-workflow, search-coordinator, file-writer
+- **Key Features**:
+  - **Parallel execution by default** - Multiple agents work concurrently
+  - **Multi-instance support** - Run multiple copies of same agent type
+  - **Category-based auditing** - agent-auditor runs 8 parallel instances
+  - **Efficiency agents** - Specialized tools for common operations
+  - **100% compliance** - All agents follow standardized template
 
 ## Installation Instructions
 

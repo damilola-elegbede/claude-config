@@ -1,35 +1,76 @@
 # Claude Agent Ecosystem
 
 ## Overview
-The Claude agent ecosystem consists of 40 specialized agents organized across 8 functional domains, providing comprehensive coverage of the software development lifecycle with sophisticated coordination patterns and parallel execution capabilities.
+The Claude agent ecosystem consists of 41 specialized agents organized across 8 functional domains, providing comprehensive coverage of the software development lifecycle with sophisticated coordination patterns and parallel execution capabilities.
 
 ## Agent Categories
 
 The agent ecosystem is organized into 8 primary categories. For detailed category definitions and color assignments, see [AGENT_CATEGORIES.md](./AGENT_CATEGORIES.md).
 
-1. **Development** (blue) - Core programming and implementation
-   - backend-engineer, frontend-engineer, mobile-engineer, ml-engineer, data-engineer, database-admin, database-migration-specialist, integration-specialist
+### 1. **Development** (blue) - 7 agents
+Core programming and implementation agents
+- backend-engineer
+- data-engineer
+- database-migration-specialist
+- frontend-engineer
+- integration-specialist
+- ml-engineer
+- mobile-engineer
 
-2. **Infrastructure** (orange) - Systems, operations, and deployment
-   - devops, cloud-architect, network-engineer
+### 2. **Infrastructure** (orange) - 4 agents
+Systems, operations, and deployment agents
+- cloud-architect
+- database-admin
+- devops
+- network-engineer
 
-3. **Architecture** (purple) - System design and technical planning
-   - api-architect, principal-architect
+### 3. **Architecture** (purple) - 2 agents
+System design and technical planning agents
+- api-architect
+- principal-architect
 
-4. **Design** (purple) - User experience and interface design
-   - ui-designer, mobile-ui
+### 4. **Design** (purple) - 2 agents
+User experience and interface design agents
+- mobile-ui
+- ui-designer
 
-5. **Quality** (green) - Testing, review, and validation
-   - test-engineer, performance-engineer, code-reviewer, accessibility-auditor
+### 5. **Quality** (green) - 5 agents
+Testing, review, and validation agents
+- accessibility-auditor
+- api-contract-tester
+- code-reviewer
+- performance-engineer
+- test-engineer
 
-6. **Security** (red) - Security assessment and compliance
-   - security-auditor, security-tester, agent-auditor
+### 6. **Security** (red) - 3 agents
+Security assessment and compliance agents
+- agent-auditor
+- security-auditor
+- security-tester
 
-7. **Analysis** (yellow) - Research, documentation, and analysis
-   - data-engineer, business-analyst, codebase-analyst, tech-writer, researcher
+### 7. **Analysis** (yellow) - 7 agents
+Research, documentation, and analysis agents
+- api-documenter
+- business-analyst
+- codebase-analyst
+- data-scientist
+- log-analyst
+- researcher
+- tech-writer
 
-8. **Operations** (orange) - Support, coordination, and strategic planning
-   - incident-commander, debugger, project-orchestrator, product-strategist, general-purpose
+### 8. **Operations** (orange) - 11 agents
+Support, coordination, efficiency, and strategic planning agents
+- config-specialist
+- debugger
+- dependency-manager
+- documentation-finder
+- error-resolver
+- file-navigator
+- file-writer
+- git-workflow
+- incident-commander
+- product-strategist
+- search-coordinator
 
 ## Table of Contents
 - [Agent Categories](#agent-categories)
@@ -42,54 +83,60 @@ The agent ecosystem is organized into 8 primary categories. For detailed categor
 
 ## Agent Directory
 
-### Development & Implementation Agents
-- **backend-engineer** - Staff-level backend development (APIs, databases, microservices)
-- **frontend-engineer** - Staff-level frontend development (React, Vue, Angular)
-- **mobile-engineer** - iOS/Android native and cross-platform development
-- **tech-lead** - Full-stack development with technical leadership
-- **ml-engineer** - Machine learning models and AI/ML pipelines
+### Development & Implementation Agents (7)
+- **backend-engineer** - Server-side systems, APIs, microservices, databases, and distributed architectures
+- **frontend-engineer** - React/Vue/Angular apps, state management, and frontend optimization
+- **mobile-engineer** - iOS/Android native apps, React Native, and Flutter development
+- **ml-engineer** - ML model deployment, MLOps pipelines, and production ML systems
+- **data-engineer** - Data pipelines, ETL/ELT systems, data warehouses, and stream processing
+- **database-migration-specialist** - Database schema migrations, data migrations, and zero-downtime deployments
+- **integration-specialist** - Third-party API integrations, webhooks, OAuth, and external services
 
-### Quality & Testing Agents
-- **test-engineer** - Test strategy, framework selection, coverage analysis
-- **test-data-manager** - Test data generation, fixtures, privacy compliance
-- **code-reviewer** - Pre-commit quality review, best practices validation
-- **debugger** - Complex bug investigation, root cause analysis
-- **security-auditor** - Security vulnerability assessment, compliance review
-- **api-contract-tester** - API contract testing, OpenAPI/GraphQL schema validation
+### Infrastructure & DevOps Agents (4)
+- **devops** - CI/CD pipelines, containerization, IaC, deployment automation, and SRE practices
+- **cloud-architect** - Cloud architecture design, migration planning, and cost optimization
+- **network-engineer** - Cloud networking, API gateways, load balancing, CDN setup, and DNS
+- **database-admin** - Database optimization, security hardening, backup strategies, and tuning
 
-### Architecture & Design Agents
-- **principal-architect** - System architecture, technical roadmaps, implementation plans
-- **api-architect** - Comprehensive API architecture, design governance, and implementation
-- **ui-designer** - Design systems, user experience, web/desktop interfaces
-- **mobile-ui** - Mobile UI patterns, React Native, iOS/Android design
-- **cloud-architect** - Cloud infrastructure design, scalability, cost optimization
+### Architecture & Design Agents (4)
+- **principal-architect** - System-wide architecture design, technical roadmaps, and coordination
+- **api-architect** - API design, OpenAPI specs, governance policies, and SDK generation
+- **ui-designer** - UI/UX design, visual hierarchy, and design systems
+- **mobile-ui** - iOS Human Interface Guidelines and Android Material Design implementation
 
-### Operations & Infrastructure Agents
-- **devops** - CI/CD pipelines, deployment automation, build systems
-- **db-admin** - Database design, optimization, backup/recovery
-- **network-engineer** - Network architecture, security, optimization, troubleshooting
+### Quality & Testing Agents (5)
+- **test-engineer** - Test strategy, test implementation, execution, and quality assurance
+- **code-reviewer** - Quality review, security checks, and best practices validation
+- **performance-engineer** - Performance profiling, load testing, and bottleneck analysis
+- **accessibility-auditor** - WCAG compliance audits, screen reader testing, and remediation
+- **api-contract-tester** - API validation, breaking change detection, and contract tests
 
-### Analysis & Research Agents
-- **codebase-analyst** - Code analysis, technical debt assessment
-- **researcher** - External research, technology evaluation, best practices
-- **business-analyst** - Requirements analysis, business logic, process mapping
-- **data-engineer** - Data pipelines, ETL/ELT, data warehouse architecture
-- **data-scientist** - Statistical analysis, ML model evaluation, experiment design
+### Security & Compliance Agents (3)
+- **security-auditor** - Security audits, vulnerability assessment, and compliance reviews
+- **security-tester** - Penetration testing, security scanning, and automated testing
+- **agent-auditor** - Agent ecosystem validation, compliance checking, and gap analysis
 
-### Documentation & Support Agents
-- **tech-writer** - Documentation, API docs, user guides, completion summaries
-- **api-documenter** - Automated API documentation, OpenAPI/Swagger generation
+### Analysis & Documentation Agents (7)
+- **codebase-analyst** - Code architecture analysis, technical debt assessment, dependency mapping
+- **business-analyst** - Requirements gathering, stakeholder analysis, and process mapping
+- **data-scientist** - Statistical analysis, A/B testing, ML evaluation, and data insights
+- **researcher** - Technology evaluation, market analysis, and competitive research
+- **tech-writer** - Documentation, READMEs, API docs, and work summaries
+- **api-documenter** - API documentation generation, OpenAPI specs, and SDK docs
+- **log-analyst** - Log analysis, pattern detection, anomaly identification, and debugging insights
 
-### Coordination & Strategy Agents
-- **project-orchestrator** - Multi-agent coordination for 2+ agent projects
-- **product-strategist** - Product vision, roadmaps, feature prioritization
-- **agent-auditor** - Agent ecosystem health, coverage gap analysis (auto-spawns multiple instances for >5 agents, max 5 agents per instance)
-
-### Specialized Domain Agents
-- **accessibility-auditor** - WCAG compliance, accessibility standards
-- **arch-reviewer** - Architecture review process and decisions
-- **fullstack-dev** - Full-stack coordination with quality gates
-- **performance-engineer** - Performance optimization, load testing
+### Operations & Efficiency Agents (11)
+- **incident-commander** - Production incidents, outages, and crisis management
+- **debugger** - Complex bug investigation, race conditions, and root cause analysis
+- **product-strategist** - Product vision, feature prioritization, and go-to-market strategy
+- **file-navigator** - Intelligent file system exploration with context-aware patterns
+- **config-specialist** - Efficient configuration file management across projects
+- **dependency-manager** - Unified package management across all package managers
+- **documentation-finder** - Intelligent documentation search across all sources
+- **error-resolver** - Automated error context gathering and fix suggestions
+- **git-workflow** - Streamlined git operations with intelligent automation
+- **search-coordinator** - Complex multi-pattern search orchestration
+- **file-writer** - Batch file writing and template-based generation
 
 ## Quick Reference
 
@@ -103,13 +150,22 @@ The agent ecosystem is organized into 8 primary categories. For detailed categor
 /debug        → debugger
 /orchestrate  → project-orchestrator
 /context      → multiple codebase-analyst agents
+/find         → file-navigator
+/deps         → dependency-manager
+/git          → git-workflow
+/config       → config-specialist
+/error        → error-resolver
+/search       → search-coordinator
+/find-docs    → documentation-finder
+/agent-audit  → multiple agent-auditor instances (one per category)
 ```
 
 ### Core Rules
 1. **Parallel by Default** - Always prioritize parallel execution
 2. **Use project-orchestrator for 2+ agent projects**
 3. **Multiple instances of same agent type are encouraged**
-4. **Always use the right agent for the right job**
+4. **Agent-Auditor runs multiple instances for category-based audits**
+5. **Always use the right agent for the right job**
 
 ## Agent Selection Guide
 
@@ -121,7 +177,7 @@ The agent ecosystem is organized into 8 primary categories. For detailed categor
 | **Frontend Development** | frontend-engineer | Web UI, React/Vue/Angular, performance |
 | **Mobile Development** | mobile-engineer | iOS/Android apps, React Native, Flutter |
 | **System Architecture** | principal-architect | System design, technical roadmaps |
-| **API Architecture** | api-architect | REST/GraphQL design, OpenAPI specs, implementation |
+| **API Architecture** | api-architect | REST/GraphQL design, OpenAPI specs |
 | **Bug Investigation** | debugger | Complex bugs, memory leaks, race conditions |
 | **Code Quality Review** | code-reviewer | Pre-commit review, best practices |
 | **Security Assessment** | security-auditor | Vulnerability assessment, OWASP compliance |
@@ -131,9 +187,13 @@ The agent ecosystem is organized into 8 primary categories. For detailed categor
 | **API Documentation** | api-documenter | OpenAPI/Swagger docs, endpoint reference |
 | **Code Analysis** | codebase-analyst | Code search, dependency analysis |
 | **Data Analysis** | data-scientist | Statistical analysis, A/B testing, ML evaluation |
+| **Log Analysis** | log-analyst | Log patterns, debugging, anomaly detection |
 | **Network Infrastructure** | network-engineer | Network design, routing, security, CDN |
-| **API Contract Testing** | api-contract-tester | Schema validation, breaking change detection |
-| **Multi-Agent Projects** | project-orchestrator | Coordinate 2+ agents |
+| **Database Management** | database-admin | Query optimization, backups, performance |
+| **File Navigation** | file-navigator | Intelligent file search and exploration |
+| **Package Management** | dependency-manager | npm, pip, cargo, go mod operations |
+| **Error Diagnosis** | error-resolver | Automated error fixing suggestions |
+| **Agent Ecosystem Health** | agent-auditor | Compliance, gaps, and ecosystem validation |
 
 ### By Scale
 
@@ -143,43 +203,44 @@ The agent ecosystem is organized into 8 primary categories. For detailed categor
 | **>10k requests/sec** | backend-engineer, performance-engineer, devops |
 | **3+ microservices** | backend-engineer, api-architect, principal-architect |
 | **2+ platforms** | Multiple mobile-engineer instances |
-| **2+ agents needed** | project-orchestrator (mandatory) |
+| **Complex debugging** | debugger, log-analyst, error-resolver |
+| **Full audit** | Multiple agent-auditor instances (one per category) |
 
 ## Coordination Patterns
 
-### 1. API Development Flow
+### 1. Full Stack Feature Development
 ```
-api-architect → [backend-engineer + frontend-engineer] (parallel)
-     ↓                    ↓                    ↓
-API Implementation  Backend Services    Frontend Integration
+principal-architect → [backend-engineer + frontend-engineer + mobile-engineer] (parallel)
+         ↓                      ↓                    ↓                 ↓
+    System design         API services           Web UI          Mobile apps
 ```
 
-### 2. Feature Development
+### 2. API Development Flow
 ```
-principal-architect → project-orchestrator → [multiple specialists]
-        ↓                      ↓                       ↓
-  System design          Execution plan          Parallel work
+api-architect → backend-engineer → api-documenter → api-contract-tester
+      ↓                ↓                  ↓                ↓
+  API design    Implementation      Documentation    Validation
 ```
 
 ### 3. Quality Gate Cascade
 ```
-code-reviewer → test-engineer → security-auditor → production
-      ↓               ↓                ↓
-Code quality    Test coverage    Security check
+[code-reviewer + test-engineer + security-auditor] (parallel) → production
+        ↓               ↓                ↓
+  Code quality    Test coverage    Security check
 ```
 
-### 4. Bug Resolution
+### 4. Bug Resolution Pipeline
 ```
-test-engineer → debugger → developer → code-reviewer
-      ↓            ↓           ↓            ↓
-Find issue    Root cause    Fix impl    Validate
+log-analyst → debugger → developer → code-reviewer
+     ↓            ↓          ↓           ↓
+Log patterns  Root cause   Fix impl   Validate
 ```
 
 ### 5. Performance Investigation
 ```
-performance-engineer ←→ debugger ←→ backend-engineer
-         ↓                  ↓              ↓
-    Profiling          Analysis      Optimization
+performance-engineer ← → log-analyst ← → backend-engineer
+         ↓                    ↓               ↓
+    Profiling            Patterns       Optimization
 ```
 
 ### 6. Multi-Platform Development
@@ -189,6 +250,26 @@ project-orchestrator
          ├── frontend-engineer (Web)
          ├── mobile-engineer #1 (iOS)
          └── mobile-engineer #2 (Android)
+```
+
+### 7. Agent Ecosystem Audit
+```
+agent-auditor instances (parallel by category):
+         ├── agent-auditor #1 (Development agents)
+         ├── agent-auditor #2 (Infrastructure agents)
+         ├── agent-auditor #3 (Architecture agents)
+         ├── agent-auditor #4 (Design agents)
+         ├── agent-auditor #5 (Quality agents)
+         ├── agent-auditor #6 (Security agents)
+         ├── agent-auditor #7 (Analysis agents)
+         └── agent-auditor #8 (Operations agents)
+```
+
+### 8. Efficiency Pattern
+```
+User query → [file-navigator + documentation-finder + search-coordinator] (parallel)
+                    ↓                    ↓                    ↓
+              Find files          Find docs          Search patterns
 ```
 
 ## Quality Gates
@@ -217,17 +298,25 @@ project-orchestrator
 - Scalability
 - Regression check
 
+### Stage 5: Accessibility (accessibility-auditor)
+- WCAG compliance
+- Screen reader support
+- Keyboard navigation
+- Color contrast
+
 ## Best Practices
 
 ### Parallel Execution
 - **DO**: Launch multiple agents simultaneously when tasks are independent
 - **DO**: Use multiple instances of the same agent for different components
+- **DO**: Run all category audits in parallel for agent ecosystem health checks
 - **DON'T**: Wait for one agent to finish before starting another unnecessarily
 
 ### Agent Selection
-- **DO**: Use specialist agents for their domain (e.g., security-auditor for security)
-- **DO**: Consult project-orchestrator for 2+ agent projects
-- **DON'T**: Use generic agents when specialists exist
+- **DO**: Use specialist agents for their domain (e.g., log-analyst for log analysis)
+- **DO**: Use efficiency agents (file-navigator, error-resolver) for common tasks
+- **DO**: Run multiple agent-auditor instances for comprehensive audits
+- **DON'T**: Use generic approaches when specialists exist
 
 ### Handoff Management
 - **DO**: Provide clear context and artifacts between agents
@@ -257,6 +346,7 @@ code-reviewer: Code quality
 security-auditor: Security issues
 test-engineer: Test coverage
 performance-engineer: Performance impact
+accessibility-auditor: Accessibility compliance
 ```
 
 #### Cross-Platform Development
@@ -268,35 +358,26 @@ mobile-engineer #1: iOS app
 mobile-engineer #2: Android app
 ```
 
-#### Agent Ecosystem Audit
+#### Efficiency Boost Pattern
 ```bash
-# Agent-auditor automatically scales based on total agents
-# Rule: Maximum 5 agents per instance for focused analysis
-
-Total agents: 26
-Required instances: 6 (ceiling of 26/5)
-
-agent-auditor #1: Agents 1-5
-agent-auditor #2: Agents 6-10
-agent-auditor #3: Agents 11-15
-agent-auditor #4: Agents 16-20
-agent-auditor #5: Agents 21-25
-agent-auditor #6: Agents 26
-
-# This pattern automatically scales:
-# - 10 agents = 2 instances
-# - 25 agents = 5 instances  
-# - 50 agents = 10 instances
+# Fast file and documentation access
+file-navigator: Find relevant files
+documentation-finder: Locate docs
+search-coordinator: Complex searches
+error-resolver: Fix common errors
 ```
 
 ## Tool Permissions
 
-| Permission Level | Agents | Allowed Tools |
-|-----------------|--------|---------------|
-| **full_access** | backend-engineer, frontend-engineer, tech-lead | All tools |
-| **read_analysis** | code-reviewer, codebase-analyst | Read, Grep, Glob |
-| **design_only** | principal-architect, ui-designer | Read, Write (specs) |
-| **strategic** | project-orchestrator | Read, TodoWrite |
+Agents are granted minimal necessary permissions following the principle of least privilege:
+
+| Permission Level | Example Agents | Allowed Tools |
+|-----------------|----------------|---------------|
+| **Full Access** | backend-engineer, frontend-engineer | All tools |
+| **Read & Analysis** | code-reviewer, codebase-analyst, log-analyst | Read, Grep, Glob |
+| **Documentation** | tech-writer, api-documenter | Read, Write, Edit |
+| **Efficiency** | file-navigator, search-coordinator | Read, Grep, Glob, LS |
+| **Strategic** | product-strategist | Read, TodoWrite |
 
 ## Anti-Patterns to Avoid
 
@@ -314,10 +395,12 @@ codebase-analyst #1 + codebase-analyst #2 (parallel)
 # WRONG
 devops for code review
 backend-engineer for UI design
+general analysis for log parsing
 
 # RIGHT
 code-reviewer for code review
 ui-designer for UI design
+log-analyst for log parsing
 ```
 
 ### ❌ Skipping Orchestration
@@ -329,14 +412,28 @@ Just launch all agents randomly
 project-orchestrator → coordinated execution plan
 ```
 
+### ❌ Single Agent Auditor for Large Ecosystem
+```bash
+# WRONG
+agent-auditor (trying to audit 40+ agents alone)
+
+# RIGHT
+Multiple agent-auditor instances (one per category)
+```
+
 ## Success Metrics
-- **Coverage**: 95%+ of software development lifecycle
+- **Coverage**: 100% of software development lifecycle
+- **Total Agents**: 41 specialized agents
+- **Categories**: 8 distinct functional domains
 - **Clarity**: 100% clear agent naming and purpose
-- **Coordination**: 10+ documented handoff patterns
-- **Quality**: 4-stage quality gate process
+- **Coordination**: 15+ documented handoff patterns
+- **Quality**: 5-stage quality gate process
 - **Parallelism**: Default execution mode
+- **Efficiency**: Dedicated efficiency agents for common tasks
 
 ## Additional Resources
 - Individual agent documentation: See specific `.md` files
+- Category definitions: [AGENT_CATEGORIES.md](./AGENT_CATEGORIES.md)
+- Audit protocols: [AUDIT_VERIFICATION_PROTOCOL.md](./AUDIT_VERIFICATION_PROTOCOL.md)
 - Configuration: `~/.claude/settings.json`
 - Project settings: `CLAUDE.md` in project root
