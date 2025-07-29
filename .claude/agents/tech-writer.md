@@ -29,6 +29,11 @@ coordination_protocols:
 knowledge_base:
   - Documentation best practices and patterns
 
+
+architecture_constraints:
+  - Must use Task tool for all agent coordination
+  - Never directly invoke other agents
+  - Respect scope boundaries of other agents
 examples:
   - scenario: "Typical tech writer task"
     approach: "Systematic approach using documentation expertise"

@@ -39,19 +39,15 @@ escalation_to:
   - agent-architect
 
 coordination_protocols:
-  with_agent_architect:
-    description: Reports compliance issues for remediation
-    patterns:
-      - Identify non-compliant agents requiring updates
-      - Suggest structural improvements to agent definitions
-      - Validate newly created agents meet standards
-  
-  with_tech_writer:
-    description: Updates documentation based on audit findings
-    patterns:
-      - Report orphaned agents not in README.md
-      - Identify documentation inconsistencies
-      - Suggest documentation improvements
+  handoff_to:
+    agent-architect: "Report non-compliant agents for remediation"
+    tech-writer: "Update documentation based on audit findings"
+  parallel_compatible:
+    - agent-auditor  # Multiple instances work on different categories
+    - codebase-analyst
+    - tech-writer
+  escalation_path:
+    principal-architect: "Ecosystem-wide architecture concerns"
 
 examples:
   - context: Regular ecosystem health check

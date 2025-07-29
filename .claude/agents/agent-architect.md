@@ -35,19 +35,15 @@ escalation_to:
   - principal-architect
 
 coordination_protocols:
-  with_codebase_analyst:
-    description: Analyzes existing agent patterns before creating new ones
-    patterns:
-      - Review existing agents for naming conventions and patterns
-      - Identify gaps in agent ecosystem coverage
-      - Ensure new agents don't duplicate existing functionality
-  
-  with_tech_writer:
-    description: Documents new agents and updates ecosystem documentation
-    patterns:
-      - Create comprehensive documentation for new agents
-      - Update README.md with new agent information
-      - Maintain agent selection guide and coordination patterns
+  handoff_to:
+    tech-writer: "Document new agents and update ecosystem documentation"
+    codebase-analyst: "Analyze existing patterns before creating new agents"
+  parallel_compatible:
+    - codebase-analyst
+    - tech-writer
+    - researcher
+  escalation_path:
+    principal-architect: "Complex agent architecture decisions"
 
 examples:
   - context: User needs a specialized agent for database migrations

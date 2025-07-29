@@ -78,8 +78,24 @@ NORMAL STATE ──/plan command──> PLANNING STATE
 - **Use project-orchestrator for 2+ agent projects**
 - **Multiple instances of same agent type are encouraged**
 - **Agent-Auditor should always be used for agent audits**
+- **For agent audits: ALWAYS run multiple agent-auditor instances in parallel, one for each agent category**
 - **Always use the right agent for the right job**
 - **Agents live in .claude/agents/**
+
+### General-Purpose Agent Constraints
+- **MUST use Task tool to delegate to specialist agents for their domains** - delegation is mandatory, not optional
+- **NEVER perform specialist work directly** when a specialist agent exists for that domain
+- **Immediate delegation required for**:
+  - Creating/modifying agents → agent-architect
+  - Security testing/scanning → security-tester  
+  - Incident response → incident-commander
+  - SRE/reliability work → reliability-engineer
+  - API design/architecture → api-architect
+  - Performance testing → performance-engineer
+  - Code review → code-reviewer
+  - Any task matching an agent's specialty
+- **Before implementing any specialized task**, ask: "Which agent handles this?" If an agent exists, you MUST use it
+- **Violations of this rule break user trust** and bypass the specialized expertise system
 
 ### 📚 Full Agent Documentation
 For detailed agent capabilities, selection matrix, and execution patterns:

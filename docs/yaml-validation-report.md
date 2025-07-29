@@ -1,66 +1,46 @@
 # Agent YAML Validation Report
 
-Total agents validated: 26
+Total agents validated: 28
 
 ## Validation Issues
 
-### api-architect
-- Description too long (272 chars). Should be under 200.
+### agent-architect
+- Unknown coordination_protocols subfield: with_codebase_analyst
+- Unknown coordination_protocols subfield: patterns
+- Unknown coordination_protocols subfield: with_tech_writer
+- Unknown coordination_protocols subfield: patterns
 
-### business-analyst
-- Description too long (3334 chars). Should be under 200.
-
-### code-reviewer
-- Description too long (4158 chars). Should be under 200.
-
-### codebase-analyst
-- Description too long (5347 chars). Should be under 200.
-
-### data-engineer
-- Description too long (4671 chars). Should be under 200.
-
-### debugger
-- Description too long (321 chars). Should be under 200.
-
-### ml-engineer
-- Description too long (4669 chars). Should be under 200.
-
-### performance-engineer
-- Description too long (4457 chars). Should be under 200.
-
-### platform-engineer
-- Description too long (1292 chars). Should be under 200.
-
-### principal-architect
-- Description too long (10416 chars). Should be under 200.
-
-### project-orchestrator
-- Description too long (6793 chars). Should be under 200.
-
-### researcher
-- Description too long (2536 chars). Should be under 200.
-
-### security-auditor
-- Description too long (220 chars). Should be under 200.
-
-### tech-writer
-- Description too long (4548 chars). Should be under 200.
-
-### test-engineer
-- Description too long (3413 chars). Should be under 200.
-
-### ui-designer
-- Description too long (4150 chars). Should be under 200.
+### agent-auditor
+- Unknown coordination_protocols subfield: with_agent_architect
+- Unknown coordination_protocols subfield: patterns
+- Unknown coordination_protocols subfield: with_tech_writer
+- Unknown coordination_protocols subfield: patterns
 
 ## Valid Agents
 
 - ✅ accessibility-auditor
+- ✅ api-architect
 - ✅ backend-engineer
+- ✅ business-analyst
 - ✅ cloud-architect
+- ✅ code-reviewer
+- ✅ codebase-analyst
+- ✅ data-engineer
 - ✅ database-admin
+- ✅ debugger
 - ✅ devops
 - ✅ frontend-engineer
 - ✅ fullstack-lead
+- ✅ ml-engineer
 - ✅ mobile-engineer
 - ✅ mobile-ui
+- ✅ performance-engineer
+- ✅ platform-engineer
+- ✅ principal-architect
 - ✅ product-strategist
+- ✅ project-orchestrator
+- ✅ researcher
+- ✅ security-auditor
+- ✅ tech-writer
+- ✅ test-engineer
+- ✅ ui-designer

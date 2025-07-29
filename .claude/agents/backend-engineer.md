@@ -33,6 +33,11 @@ coordination_protocols:
 knowledge_base:
   - Development best practices and patterns
 
+
+architecture_constraints:
+  - Must use Task tool for all agent coordination
+  - Never directly invoke other agents
+  - Respect scope boundaries of other agents
 examples:
   - scenario: "Typical backend engineer task"
     approach: "Systematic approach using development expertise"
