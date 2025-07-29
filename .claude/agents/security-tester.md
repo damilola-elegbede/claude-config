@@ -1,12 +1,9 @@
 ---
 name: security-tester
 description: Use for penetration testing, security scanning, and automated security testing. MUST BE USED for SAST/DAST implementation, API security testing, and CI/CD security integration
-color: green
-tools:
-  - Read
-  - Grep
-  - Glob
-  - LS
+color: red
+category: security
+tools: Read, Grep, Glob, LS
 ---
 
 # Security Tester

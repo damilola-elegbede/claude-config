@@ -2,17 +2,8 @@
 name: integration-specialist
 description: Use for third-party API integrations, webhooks, OAuth implementation, and external service connections. MUST BE USED for payment gateways, social logins, messaging services, and enterprise system integrations
 color: blue
-tools:
-  - Read
-  - Write
-  - Edit
-  - MultiEdit
-  - Grep
-  - Glob
-  - LS
-  - Bash
-  - TodoWrite
-  - WebFetch
+category: development
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite, WebFetch
 ---
 
 # Third-Party Integration Specialist

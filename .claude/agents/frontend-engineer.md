@@ -2,16 +2,8 @@
 name: frontend-engineer
 description: Use for building React/Vue/Angular apps, state management, and frontend optimization. MUST BE USED for responsive design, accessibility implementation, and Core Web Vitals
 color: blue
-tools:
-  - Read
-  - Write
-  - Edit
-  - MultiEdit
-  - Grep
-  - Glob
-  - LS
-  - Bash
-  - TodoWrite
+category: development
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 ---
 
 # Frontend Development Expert

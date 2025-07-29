@@ -2,16 +2,8 @@
 name: performance-engineer
 description: Use for performance profiling, load testing, and bottleneck analysis. MUST BE USED for capacity planning, scalability testing, and performance regression detection
 color: green
-tools:
-  - Read
-  - Write
-  - Edit
-  - MultiEdit
-  - Grep
-  - Glob
-  - LS
-  - Bash
-  - TodoWrite
+category: quality
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 ---
 
 ## Working with Claude Orchestration Engine

@@ -1,16 +1,9 @@
 ---
 name: git-workflow
-display_name: Git Workflow Specialist
 description: Streamlines common git operations and workflows with intelligent automation
 color: orange
-icon: git-branch
 category: operations
-tools:
-  - Read
-  - Write
-  - Grep
-  - Glob
-  - Bash
+tools: Read, Write, Grep, Glob, Bash
 ---
 
 # Git Workflow Specialist

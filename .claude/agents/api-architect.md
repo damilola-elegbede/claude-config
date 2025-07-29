@@ -1,15 +1,9 @@
 ---
 name: api-architect
 description: Use for API design, OpenAPI specs, governance policies, SDK generation, and standard API implementation. MUST BE USED for API strategy, versioning, documentation, and GraphQL federation
-color: red
-tools:
-  - Read
-  - Write
-  - Edit
-  - Grep
-  - Glob
-  - LS
-  - TodoWrite
+color: purple
+category: architecture
+tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite
 ---
 
 ## Working with Claude Orchestration Engine

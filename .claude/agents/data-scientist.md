@@ -2,16 +2,8 @@
 name: data-scientist
 description: Use for statistical analysis, A/B testing, ML model evaluation, data visualization, and actionable insights. MUST BE USED for experiment design, hypothesis testing, causal inference, and data-driven decision making
 color: yellow
-tools:
-  - Read
-  - Write
-  - Edit
-  - MultiEdit
-  - Grep
-  - Glob
-  - LS
-  - Bash
-  - TodoWrite
+category: analysis
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 ---
 
 # Data Science & Analytics Specialist

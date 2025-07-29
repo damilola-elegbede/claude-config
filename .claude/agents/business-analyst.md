@@ -1,13 +1,9 @@
 ---
 name: business-analyst
 description: Use for gathering requirements, stakeholder analysis, process mapping, and business-technical translation. MUST BE USED when creating user stories, BPM diagrams, or conducting gap analysis
-color: purple
-tools:
-  - Read
-  - Grep
-  - Glob
-  - LS
-  - TodoWrite
+color: yellow
+category: analysis
+tools: Read, Grep, Glob, LS, TodoWrite
 ---
 
 # Business Analyst

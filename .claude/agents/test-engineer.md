@@ -2,16 +2,8 @@
 name: test-engineer
 description: Use for test strategy, test implementation, test execution, and quality assurance. MUST BE USED for test pyramid design, coverage analysis, framework detection, smart test running, and CI/CD test automation
 color: green
-tools:
-  - Read
-  - Write
-  - Edit
-  - MultiEdit
-  - Grep
-  - Glob
-  - LS
-  - Bash
-  - TodoWrite
+category: quality
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 ---
 
 # Test Engineering & Execution Specialist

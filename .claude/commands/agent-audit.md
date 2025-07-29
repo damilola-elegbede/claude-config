@@ -56,7 +56,7 @@ Launch agent-auditor instances for all categories in parallel:
 
 ## Summary
 
-After all parallel audits complete, provide a consolidated report showing:
+After all parallel audits complete, provide a consolidated executive report showing:
 - Total compliance score across all categories
 - Critical issues that need immediate attention
 - Missing agents by category

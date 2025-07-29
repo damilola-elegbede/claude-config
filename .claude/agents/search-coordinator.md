@@ -1,14 +1,9 @@
 ---
 name: search-coordinator
-display_name: Search Coordination Specialist
 description: Orchestrates complex multi-pattern searches with maximum efficiency
-color: yellow
-icon: search
-category: analysis
-tools:
-  - Grep
-  - Glob
-  - Bash
+color: orange
+category: operations
+tools: Grep, Glob, Bash
 ---
 
 # Search Coordination Specialist

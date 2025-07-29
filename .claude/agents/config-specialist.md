@@ -1,16 +1,9 @@
 ---
 name: config-specialist
-display_name: Configuration Specialist
 description: Efficiently finds and manages configuration files across projects
 color: orange
-icon: settings
 category: operations
-tools:
-  - Read
-  - Write
-  - Grep
-  - Glob
-  - Bash
+tools: Read, Write, Grep, Glob, Bash
 ---
 
 # Configuration Specialist

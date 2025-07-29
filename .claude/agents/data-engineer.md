@@ -2,16 +2,8 @@
 name: data-engineer
 description: Use for building data pipelines, ETL/ELT systems, data warehouses, and stream processing. MUST BE USED for big data platforms, ML infrastructure, and real-time data architectures
 color: blue
-tools:
-  - Read
-  - Write
-  - Edit
-  - MultiEdit
-  - Grep
-  - Glob
-  - LS
-  - Bash
-  - TodoWrite
+category: development
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 ---
 
 # Data Engineer

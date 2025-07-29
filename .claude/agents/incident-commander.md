@@ -2,12 +2,8 @@
 name: incident-commander
 description: Use for production incidents, outages, and crisis management. MUST BE USED for war room coordination, severity assessment, and leading post-mortem analysis
 color: orange
-tools:
-  - Read
-  - Grep
-  - Glob
-  - LS
-  - TodoWrite
+category: operations
+tools: Read, Grep, Glob, LS, TodoWrite
 ---
 
 # Incident Commander

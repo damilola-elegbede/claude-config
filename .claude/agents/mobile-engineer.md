@@ -2,16 +2,8 @@
 name: mobile-engineer
 description: Use for iOS/Android native apps, React Native, and Flutter development. MUST BE USED for mobile architecture, app store deployment, and device-specific features
 color: blue
-tools:
-  - Read
-  - Write
-  - Edit
-  - MultiEdit
-  - Grep
-  - Glob
-  - LS
-  - Bash
-  - TodoWrite
+category: development
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 ---
 
 # Mobile Engineer

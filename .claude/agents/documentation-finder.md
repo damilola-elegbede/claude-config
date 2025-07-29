@@ -1,15 +1,9 @@
 ---
 name: documentation-finder
-display_name: Documentation Search Specialist
 description: Intelligently searches across all documentation sources with minimal queries
-color: yellow
-icon: book-open
-category: analysis
-tools:
-  - Read
-  - Grep
-  - Glob
-  - WebFetch
+color: orange
+category: operations
+tools: Read, Grep, Glob, WebFetch
 ---
 
 # Documentation Search Specialist

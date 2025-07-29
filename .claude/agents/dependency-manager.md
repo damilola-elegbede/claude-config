@@ -2,14 +2,8 @@
 name: dependency-manager
 description: Unified interface for package management across npm, pip, cargo, go mod, and other package managers
 color: orange
-enabled: true
-tools:
-  - Read
-  - Write
-  - Grep
-  - Glob
-  - Bash
 category: operations
+tools: Read, Write, Grep, Glob, Bash
 ---
 
 # Dependency Manager

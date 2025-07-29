@@ -2,16 +2,8 @@
 name: database-migration-specialist
 description: Use for database schema migrations, data migrations, version control, and zero-downtime deployments. MUST BE USED for migration strategy, rollback planning, data integrity validation, and cross-database migrations
 color: blue
-tools:
-  - Read
-  - Write
-  - Edit
-  - MultiEdit
-  - Bash
-  - Grep
-  - Glob
-  - LS
-  - TodoWrite
+category: development
+tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, LS, TodoWrite
 ---
 
 # Database Migration Specialist

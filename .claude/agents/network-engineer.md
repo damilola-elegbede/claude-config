@@ -2,16 +2,8 @@
 name: network-engineer
 description: Use for cloud networking, API gateway configuration, load balancing, CDN setup, and DNS management. MUST BE USED for network architecture in AWS/GCP/Azure, service mesh configuration, and web application networking
 color: orange
-tools:
-  - Read
-  - Write
-  - Edit
-  - MultiEdit
-  - Grep
-  - Glob
-  - LS
-  - Bash
-  - TodoWrite
+category: infrastructure
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 ---
 
 # Cloud & Application Network Engineer

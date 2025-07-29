@@ -6,9 +6,6 @@
 name: agent-name  # Unique identifier (lowercase, hyphenated)
 description: Natural language purpose of the subagent
 color: blue  # Visual identifier color (blue, green, purple, orange, red, yellow)
-tools:  # List of tools this agent can use
-  - Read
-  - Grep
-  - Glob
-  # Add other tools as needed
+category: development  # Agent category (development, infrastructure, architecture, design, quality, security, analysis, operations)
+tools: Read, Grep, Glob  # Comma-separated list of tools this agent can use
 ---

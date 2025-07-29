@@ -2,14 +2,8 @@
 name: file-navigator
 description: Intelligent file system exploration and navigation with context-aware patterns and common conventions
 color: orange
-enabled: true
-tools:
-  - Read
-  - Write
-  - Grep
-  - Glob
-  - Bash
 category: operations
+tools: Read, Write, Grep, Glob, Bash
 ---
 
 # File Navigator

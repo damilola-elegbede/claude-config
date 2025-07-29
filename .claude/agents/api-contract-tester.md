@@ -2,13 +2,8 @@
 name: api-contract-tester
 description: Use for validating APIs against specifications, detecting breaking changes, and generating contract tests. MUST BE USED when testing API compliance or creating mock servers from specs
 color: green
-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Grep
-  - Glob
+category: quality
+tools: Read, Write, Edit, Bash, Grep, Glob
 ---
 
 # API Contract Tester

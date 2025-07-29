@@ -1,15 +1,9 @@
 ---
 name: error-resolver
-display_name: Error Resolution Specialist
 description: Automatically gathers context from errors and suggests targeted fixes
-color: green
-icon: alert-circle
-category: quality
-tools:
-  - Read
-  - Grep
-  - Glob
-  - Bash
+color: orange
+category: operations
+tools: Read, Grep, Glob, Bash
 ---
 
 # Error Resolution Specialist

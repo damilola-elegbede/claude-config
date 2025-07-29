@@ -1,18 +1,9 @@
 ---
 name: devops
 description: Use for CI/CD pipelines, containerization, IaC, deployment automation, SRE practices, observability, and production operations. MUST BE USED for Kubernetes, Terraform, monitoring, SLO/SLI definition, incident response, and reliability engineering
-color: yellow
-tools:
-  - Read
-  - Write
-  - Edit
-  - MultiEdit
-  - Grep
-  - Glob
-  - LS
-  - Bash
-  - TodoWrite
-  - WebFetch
+color: orange
+category: infrastructure
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite, WebFetch
 ---
 
 # DevOps & Site Reliability Engineering Specialist

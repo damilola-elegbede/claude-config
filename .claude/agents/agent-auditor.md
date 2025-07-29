@@ -2,12 +2,8 @@
 name: agent-auditor
 description: Comprehensive agent ecosystem auditor with fix suggestions, batch capabilities, and health metrics. Auto-detects issues, suggests fixes, identifies gaps with context, and tracks ecosystem health over time. Provides actionable intelligence for maintaining a high-quality agent ecosystem.
 color: red
-tools:
-  - Read
-  - Grep
-  - Glob
-  - LS
-  - TodoWrite
+category: security
+tools: Read, Grep, Glob, LS, TodoWrite
 ---
 
 ## Working with Claude Orchestration Engine

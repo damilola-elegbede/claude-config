@@ -2,16 +2,8 @@
 name: ml-engineer
 description: Use for ML model deployment, MLOps pipelines, and production ML systems. MUST BE USED for model serving, feature stores, and distributed training infrastructure
 color: blue
-tools:
-  - Read
-  - Write
-  - Edit
-  - MultiEdit
-  - Grep
-  - Glob
-  - LS
-  - Bash
-  - TodoWrite
+category: development
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 ---
 
 # ML Engineer

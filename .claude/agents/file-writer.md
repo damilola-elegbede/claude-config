@@ -1,14 +1,9 @@
 ---
 name: file-writer
-display_name: File Writer
 description: Efficient batch file writing and template-based file generation specialist
 color: orange
-emoji: 📝
 category: operations
-tools:
-  - Read
-  - Write
-  - Glob
+tools: Read, Write, Glob
 ---
 
 # File Writer

@@ -2,14 +2,8 @@
 name: api-documenter
 description: Use for generating API documentation, OpenAPI specs from code, SDK docs, and developer guides. MUST BE USED when creating interactive API docs or Postman collections
 color: yellow
-tools:
-  - Read
-  - Write
-  - Edit
-  - Grep
-  - Glob
-  - LS
-  - TodoWrite
+category: analysis
+tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite
 ---
 
 # API Documenter

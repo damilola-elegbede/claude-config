@@ -1,15 +1,9 @@
 ---
 name: ui-designer
 description: Use for UI/UX design, visual hierarchy, and design systems. MUST BE USED for accessibility compliance, responsive design, and minimalist interface optimization
-color: red
-tools:
-  - Read
-  - Write
-  - Edit
-  - Grep
-  - Glob
-  - LS
-  - TodoWrite
+color: purple
+category: design
+tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite
 ---
 
 ## Working with Claude Orchestration Engine

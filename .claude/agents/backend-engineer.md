@@ -2,16 +2,8 @@
 name: backend-engineer
 description: Use for building server-side systems, APIs, microservices, databases, and distributed architectures. MUST BE USED for high-performance optimization (>10k RPS), event-driven systems, and cloud-native backend development
 color: blue
-tools:
-  - Read
-  - Write
-  - Edit
-  - MultiEdit
-  - Grep
-  - Glob
-  - LS
-  - Bash
-  - TodoWrite
+category: development
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 ---
 
 # Backend Engineer
