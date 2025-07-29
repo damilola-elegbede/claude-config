@@ -82,6 +82,7 @@ As general-purpose agent, you MUST delegate to specialists:
   2. General-purpose agent must write the files
   3. Use file-writer agent for efficient batch operations
 - This is why agent-architect returns agent definitions as text blocks
+- **IMPORTANT NOTE**: Agents invoked through Task cannot write files, so write them yourself.
 
 ### Agent Audits
 Always run multiple agent-auditor instances in parallel by category:
