@@ -1,5 +1,5 @@
 ---
-name: sre-engineer
+name: reliability-engineer
 description: Site reliability engineering expert specializing in monitoring, incident response, SLO management, and production reliability
 
 # Visual and hierarchy fields

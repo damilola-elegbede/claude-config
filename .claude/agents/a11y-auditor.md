@@ -1,5 +1,5 @@
 ---
-name: accessibility-expert
+name: a11y-auditor
 description: Specialized agent for ensuring web and application accessibility compliance, conducting audits, and implementing inclusive design practices
 
 color: green

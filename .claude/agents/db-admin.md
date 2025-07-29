@@ -1,6 +1,6 @@
 ---
 # Database Administration Agent Configuration
-name: database-admin
+name: db-admin
 description: Expert database administrator specializing in schema design, query optimization, data integrity, and database operations management
 
 # Visual and hierarchy configuration
