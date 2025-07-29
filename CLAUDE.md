@@ -77,6 +77,7 @@ NORMAL STATE ──/plan command──> PLANNING STATE
 - **Parallel by Default**: Always prioritize parallel execution
 - **Use project-orchestrator for 2+ agent projects**
 - **Multiple instances of same agent type are encouraged**
+- **Agent-Auditor should always be used for agent audits**
 - **Always use the right agent for the right job**
 
 ### 📚 Full Agent Documentation
