@@ -1,3 +1,8 @@
+---
+name: architecture-review-board
+description: Virtual coordination pattern for critical architectural decisions with multi-perspective evaluation
+---
+
 # Architecture Review Board (ARB) Pattern
 
 ## Overview
