@@ -1,8 +1,8 @@
 ---
 name: database-admin
 description: Use for database optimization, security hardening, backup strategies, and performance tuning. MUST BE USED for query optimization, index management, and database administration
-color: blue
-category: development
+color: orange
+category: infrastructure
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 ---
 
