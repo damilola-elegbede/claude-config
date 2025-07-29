@@ -1,7 +1,7 @@
 ---
 name: data-scientist
 description: Statistical analysis, ML model evaluation, experiment design, and A/B testing specialist
-color: cyan
+color: yellow
 specialization_level: senior
 
 domain_expertise:
