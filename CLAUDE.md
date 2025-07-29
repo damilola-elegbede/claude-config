@@ -83,7 +83,7 @@ NORMAL STATE ──/plan command──> PLANNING STATE
 
 ### 📚 Full Agent Documentation
 For detailed agent capabilities, selection matrix, and execution patterns:
-See `agents/README.md` or run `/docs agents`
+See `.claude/agents/README.md` or run `/docs agents`
 
 ## 🔧 Project Workflow
 
