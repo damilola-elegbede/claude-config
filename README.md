@@ -45,6 +45,21 @@ This repository contains backup copies of Claude configurations for easy restora
   - Direct afplay commands for simplicity
   - Background playback (non-blocking)
 
+### 5. Agent Ecosystem
+- **Documentation**: `agents/README.md`
+- **Purpose**: Specialized AI agents for different development tasks
+- **Categories**:
+  - Implementation Agents (backend-staff, frontend-staff, fullstack-lead)
+  - Analysis Agents (codebase-analyst, debugger, researcher)
+  - Quality Assurance Agents (code-reviewer, security-auditor, test-engineer)
+  - Strategic Planning Agents (principal-architect, project-orchestrator)
+  - Design & Documentation Agents (ui-designer, tech-writer)
+- **Features**:
+  - Multi-agent parallel execution
+  - Automatic agent selection based on task
+  - Command shortcuts for common operations
+  - Orchestration for complex projects
+
 ## Installation Instructions
 
 To restore these configurations on a new computer:
@@ -69,10 +84,52 @@ To restore these configurations on a new computer:
 
 Once installed, you can use the following commands in Claude:
 
+### Planning & Development
 - **`/plan <task>`** - Present a detailed implementation plan before coding
   - Example: `/plan Add user authentication to the app`
   - Claude will create a comprehensive plan and wait for approval
 
+- **`/orchestrate <project>`** - Plan multi-agent execution for complex projects
+  - Example: `/orchestrate Build e-commerce platform`
+  - Optimizes parallel execution and coordinates multiple agents
+
+- **`/context`** - Get instant repository overview
+  - Analyzes project structure and technology stack
+  - Uses multiple codebase-analyst agents in parallel
+  - Auto-runs when Claude Code starts in a git repository
+
+### Quality & Testing
+- **`/test`** - Run tests in any repository
+  - Creates base level test suite if no tests exist
+  - Automatically discovers test commands from README.md
+  - Falls back to common test patterns (npm test, pytest, etc.)
+  - Generates framework-appropriate starter tests
+
+- **`/review`** - Comprehensive code review
+  - Runs code-reviewer, security-auditor, and qa-tester in parallel
+  - Checks code quality, security vulnerabilities, and test coverage
+
+- **`/security`** - Security vulnerability assessment
+  - OWASP Top 10 compliance check
+  - Authentication and authorization review
+  - Provides remediation recommendations
+
+- **`/perf`** - Performance analysis and optimization
+  - Identifies bottlenecks and optimization opportunities
+  - Provides benchmarks and performance metrics
+
+### Documentation & Debugging
+- **`/docs [type]`** - Create and update documentation
+  - `/docs api` - API documentation with OpenAPI specs
+  - `/docs spec` - Technical specification documents
+  - `/docs arch` - Architecture documentation
+  - Updates README files and maintains sync with code
+
+- **`/debug <description>`** - Investigate complex bugs
+  - Systematic root cause analysis
+  - Handles intermittent failures and race conditions
+
+### Git Operations
 - **`/commit`** - Create a properly formatted git commit
   - Automatically adds co-authorship attribution
   - Follows conventional commit format
@@ -80,18 +137,6 @@ Once installed, you can use the following commands in Claude:
 - **`/push`** - Push changes to remote repository
   - Includes safety checks for branch and working directory
   - Sets up tracking for new branches
-
-- **`/test`** - Run tests in any repository
-  - Creates base level test suite if no tests exist
-  - Automatically discovers test commands from README.md
-  - Falls back to common test patterns (npm test, pytest, etc.)
-  - Generates framework-appropriate starter tests
-  - Works with any language or framework
-
-- **`/context`** - Get instant repository overview
-  - Analyzes project structure and technology stack
-  - Summarizes documentation and available commands
-  - Auto-runs when Claude Code starts in a git repository
 
 - **`/sync`** - Sync configurations to user settings (repo-specific command)
   - Only available within the claude-config repository
@@ -107,6 +152,15 @@ Once installed, you can use the following commands in Claude:
 ```
 claude-config/
 ├── CLAUDE.md                    # Main configuration with coding standards
+├── agents/                      # Agent definitions and documentation
+│   ├── README.md               # Complete agent ecosystem guide
+│   ├── backend-staff.md        # Backend specialist agent
+│   ├── frontend-staff.md       # Frontend specialist agent
+│   ├── test-engineer.md        # Test automation agent
+│   ├── tech-writer.md          # Documentation specialist
+│   ├── security-auditor.md     # Security assessment agent
+│   ├── codebase-analyst.md     # Code analysis specialist
+│   └── project-orchestrator.md # Multi-agent coordinator
 ├── .claude/                     # Claude Code directory
 │   ├── commands/               # Custom commands
 │   │   ├── plan.md            # /plan command
@@ -130,7 +184,14 @@ claude-config/
 │   │   └── pr-checks.yml      # Pull request checks
 │   └── BRANCH_PROTECTION.md   # Branch protection setup guide
 ├── docs/                        # Repository documentation
+│   ├── index.md                # Documentation home page
+│   ├── api/                    # API documentation
+│   │   └── agent-api.md       # Agent system API reference
+│   ├── specs/                  # Technical specifications
+│   │   └── agent-ecosystem-spec.md # Agent ecosystem SPEC
 │   ├── AUDIO_HOOK_README.md    # Audio notification setup guide
+│   ├── AGENT_SELECTION_GUIDE.md # How to choose the right agent
+│   ├── PARALLEL_EXECUTION_GUIDE.md # Multi-agent parallelization
 │   └── ...                     # Other documentation files
 ├── scripts/                     # Utility scripts
 │   ├── validate_yaml.sh        # Agent YAML validation script
