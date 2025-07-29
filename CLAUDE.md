@@ -157,20 +157,19 @@ See `.claude/agents/README.md` or run `/docs agents`
 - Follow SOLID principles where appropriate
 
 ## 📁 Project Structure
-- **Trusted folders**: `/Users/damilola/Documents/Projects/`
 - Keep documentation in sync with implementation
 - No orphaned docs or undocumented features
 
 ## 🔗 Configuration References
 - **Audio notifications**: See `~/.claude/settings.json`
-- **Agent definitions**: See `agents/` directory  
+- **Agent definitions**: See `~/.claude/agents/` directory  
 - **User preferences**: See `~/.claude/CLAUDE.md`
 - **Engineering standards**: Defined in individual agents
 - **Language/platform guidelines**: See relevant engineering agents
 
 ## 📝 Summary
 This configuration focuses on project-specific rules and workflows. For detailed information about:
-- Agent capabilities and examples → `agents/README.md`
+- Agent capabilities and examples → `~/.claude/agents/README.md`
 - System settings and hooks → `~/.claude/settings.json`
 - User-wide preferences → `~/.claude/CLAUDE.md`
 - Engineering best practices → Individual agent definitions
