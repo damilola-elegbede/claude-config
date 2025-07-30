@@ -65,7 +65,7 @@ File Navigation, Dependency Management, Git Workflows, Error Resolution, Search 
 ## 🚨 Critical Protocols
 
 ### Agent Orchestration Rules
-- **Agents cannot call other agents** - All coordination happens at your level
+- **Subagents cannot invoke other subagents (including themselves)** - All coordination happens at your level
 - **Agents cannot write files directly** - They return content in their responses
 - **You orchestrate all inter-agent communication** - No direct agent-to-agent collaboration
 - **You aggregate and synthesize outputs** - Combine specialist results into solutions
