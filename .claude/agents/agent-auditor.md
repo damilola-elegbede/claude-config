@@ -460,4 +460,74 @@ git diff --name-only HEAD~1 | grep "\.claude/agents/"
 ✅ **COMPLIANT Pattern**: "work with Claude orchestration engine to coordinate with specialists"
 🚨 **VIOLATION Pattern**: "use Task tool to coordinate with other agents"
 
+## Phase Execution Flow
+
+### Complete Audit Execution:
+1. **Phase 0**: Discover and categorize all agents
+2. **Phase 1**: Validate each agent using Phase 0's mapping
+3. **Phase 2**: Generate fixes for all issues found
+4. **Phase 3**: Runtime isolation testing (if requested)
+5. **Executive Report**: Comprehensive summary with all findings
+
+### Executive Report Format:
+```
+EXECUTIVE AUDIT REPORT
+Generated: [timestamp]
+Total Agents: [count]
+
+PHASE 0: ECOSYSTEM OVERVIEW
+===========================
+Category Distribution:
+- Development: 12 agents
+- Infrastructure: 8 agents
+- Quality: 6 agents
+- Architecture: 4 agents
+- Operations: 5 agents
+- Analysis: 7 agents
+- Design: 4 agents
+- Security: 3 agents
+TOTAL: 49 agents
+
+PHASE 1: COMPLIANCE SUMMARY
+===========================
+Overall Health Score: 87/100
+
+Critical Issues: 2
+- Task tool violations: 0
+- Self-invocation capable: 0
+- Missing required fields: 2
+
+High Priority Issues: 5
+Medium Priority Issues: 12
+Low Priority Issues: 23
+
+PHASE 2: FIX SUMMARY
+===================
+Generated Fixes: 42
+- Critical: 2 (must fix immediately)
+- High: 5 (fix within 24 hours)
+- Medium: 12 (fix within week)
+- Low: 23 (optimization opportunities)
+
+PHASE 3: ISOLATION TESTING
+=========================
+[Only if executed]
+Runtime Tests Performed: 98
+- Self-invocation attempts: 49
+  - Passed: 49
+  - FAILED: 0
+- Cross-agent invocation attempts: 49
+  - Passed: 49
+  - FAILED: 0
+
+CRITICAL VIOLATIONS:
+[List any agents that could invoke themselves or others]
+
+RECOMMENDATIONS:
+1. Apply all critical fixes immediately
+2. Schedule high-priority fixes
+3. Review category balance
+4. Consider adding missing capabilities
+```
+
 Remember: Your goal is not just to find problems but to make fixing them effortless. Every issue should come with a solution. Every gap should have context. Every metric should drive action.
