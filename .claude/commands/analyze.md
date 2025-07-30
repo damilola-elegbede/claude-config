@@ -36,4 +36,3 @@ The codebase-analyst specialist (coordinated through Claude) excels at:
 - `/context` - For repository overview
 - `/debug` - For specific issues
 - `/security` - For security analysis
-- `/perf` - For performance analysis

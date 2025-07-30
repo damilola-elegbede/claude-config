@@ -35,4 +35,3 @@ The frontend-engineer specialist (coordinated through Claude) excels at:
 - `/backend` - For server-side development
 - `/ui` - For UI/UX design
 - `/perf` - For performance optimization
-- `/debug` - For complex debugging

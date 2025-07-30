@@ -238,4 +238,3 @@ Key Results:
 - Business goal achievement
 - User satisfaction scores
 - Revenue impact
-- Strategic objective completion

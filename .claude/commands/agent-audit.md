@@ -1,4 +1,6 @@
-# Agent Audit Command
+# /agent-audit Command
+
+## Description
 
 Orchestrate comprehensive agent ecosystem validation through parallel category-based audits using Claude's orchestration capabilities.
 
@@ -6,6 +8,9 @@ Orchestrate comprehensive agent ecosystem validation through parallel category-b
 ```
 /agent-audit
 ```
+
+## Behavior
+This command coordinates comprehensive validation of the entire agent ecosystem through Claude-orchestrated parallel audits.
 
 ## Purpose
 Comprehensive validation of the entire agent ecosystem through Claude-orchestrated parallel audits.
@@ -81,6 +86,7 @@ Each audit validates compliance across:
 **Health Score: XX/100** | **Agents: XX** | **Production Ready: XX%** | **Critical Issues: X**
 
 ### 2. Category Performance Matrix
+
 | Category | Agent Count | Health Score | Status | Critical Issues |
 |----------|-------------|-------------|---------|----------------|
 | Development | X | XX/100 | Status | X |
@@ -180,4 +186,3 @@ The command generates a structured markdown report containing:
 3. Anti-pattern detection results
 4. Prioritized action items with exact commands
 5. Strategic recommendations for ecosystem evolution
-6. Technical specification suitable for decision-making

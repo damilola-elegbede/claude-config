@@ -49,4 +49,3 @@ Generated: 2025-07-28T21:39:11.405496
 ### Specialized (2 agents)
 - **accessibility-auditor** (white, specialist)
 - **database-admin** (white, specialist)
-

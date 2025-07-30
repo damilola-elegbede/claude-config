@@ -241,4 +241,3 @@ When using `/docs all` or `--parallel`:
 - Creates missing SPEC files proactively
 - Ensures docs stay synchronized with code
 - Supports multiple audiences and formats
-- Aggregates results from all agents into cohesive documentation

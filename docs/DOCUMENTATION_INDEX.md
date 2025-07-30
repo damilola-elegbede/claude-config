@@ -129,5 +129,3 @@ When adding new documentation:
 3. Place documents in appropriate directories
 4. Include clear headings and sections
 5. Add to relevant category above
-
-For questions or suggestions, see the [Contributing Guidelines](../README.md#contributing).

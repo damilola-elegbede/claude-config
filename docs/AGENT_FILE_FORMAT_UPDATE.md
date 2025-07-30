@@ -49,4 +49,3 @@ This document summarizes the updates made to clarify that Claude Code agents are
 - Prevents confusion about file formats
 
 ## References
-- [Anthropic Sub-agents Documentation](https://docs.anthropic.com/en/docs/claude-code/sub-agents)

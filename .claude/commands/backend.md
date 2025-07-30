@@ -35,4 +35,3 @@ The backend-engineer specialist (coordinated through Claude) excels at:
 - `/frontend` - For client-side development
 - `/api` - For API design and architecture
 - `/perf` - For performance optimization
-- `/debug` - For complex debugging

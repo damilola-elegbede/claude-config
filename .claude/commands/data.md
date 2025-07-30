@@ -36,4 +36,3 @@ The data-engineer specialist (coordinated through Claude) excels at:
 - `/ml` - For machine learning pipelines
 - `/backend` - For application data needs
 - `/perf` - For data processing optimization
-- `/orchestrate` - For complex data workflows

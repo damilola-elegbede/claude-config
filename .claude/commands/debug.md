@@ -124,4 +124,3 @@ When you use `/debug`, I will:
 - Systematic approach to complex issues
 - Documents investigation process
 - Creates regression tests
-- Builds debugging knowledge base

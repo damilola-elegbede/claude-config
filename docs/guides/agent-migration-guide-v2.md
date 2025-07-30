@@ -68,6 +68,7 @@ category: development
 ## Step 3: Color Standardization by Category
 
 ### Category-Color Mapping
+
 | Category | Color | Agent Types |
 |----------|-------|-------------|
 | development | blue | backend, frontend, mobile, database, data engineers |
@@ -284,5 +285,3 @@ This migration ensures all agents comply with the latest ecosystem standards, pr
 - Consistent categorization
 - Standardized tool access
 - Improved maintainability
-
-Follow this guide systematically to ensure smooth migration with minimal disruption to agent operations.

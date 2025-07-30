@@ -106,4 +106,3 @@ When you use `/security`, I will:
 - Provides actionable remediation
 - Considers business impact
 - Supports incremental improvements
-- Maintains security knowledge base

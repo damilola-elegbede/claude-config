@@ -30,6 +30,7 @@ This documentation provides comprehensive information about the consolidated Cla
 ## Command Reference
 
 ### Development Commands
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `/test` | Run tests with test-engineer | `/test` |
@@ -38,6 +39,7 @@ This documentation provides comprehensive information about the consolidated Cla
 | `/perf` | Performance analysis | `/perf /api/users endpoint` |
 
 ### Planning Commands
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `/plan` | Create implementation plan | `/plan Add user authentication` |
@@ -45,6 +47,7 @@ This documentation provides comprehensive information about the consolidated Cla
 | `/context` | Repository analysis | `/context` |
 
 ### Documentation Commands
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `/docs` | Create/update documentation | `/docs api --sync` |
@@ -52,6 +55,7 @@ This documentation provides comprehensive information about the consolidated Cla
 | `/docs arch` | Architecture documentation | `/docs arch` |
 
 ### Git Commands
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `/commit` | Create formatted commit | `/commit` |
@@ -59,6 +63,7 @@ This documentation provides comprehensive information about the consolidated Cla
 | `/sync` | Sync configurations | `/sync` |
 
 ### Security Commands
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `/security` | Security assessment | `/security` |
@@ -200,4 +205,3 @@ This documentation provides comprehensive information about the consolidated Cla
 ### External Resources
 - [Claude Documentation](https://claude.ai/docs)
 - [Best Practices Guide](https://claude.ai/best-practices)
-- [Community Forums](https://community.anthropic.com)

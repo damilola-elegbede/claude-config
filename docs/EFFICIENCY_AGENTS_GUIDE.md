@@ -388,5 +388,3 @@ Task: "Use file-navigator in debug mode to trace search algorithm"
 ## Summary
 
 Efficiency agents represent a paradigm shift in development automation, reducing tool call overhead while maintaining precision and flexibility. By mastering single workflows and providing intelligent defaults, they enable developers to focus on creative problem-solving rather than repetitive operations.
-
-For specific agent details, refer to individual agent documentation in `.claude/agents/`.

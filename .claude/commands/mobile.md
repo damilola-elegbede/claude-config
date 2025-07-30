@@ -36,4 +36,3 @@ The mobile-engineer specialist (coordinated through Claude) excels at:
 - `/mobile-ui` - For mobile UI/UX design
 - `/backend` - For mobile backend APIs
 - `/perf` - For performance optimization
-- `/debug` - For mobile debugging

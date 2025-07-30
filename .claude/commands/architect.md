@@ -36,4 +36,3 @@ The principal-architect specialist (coordinated through Claude) excels at:
 - `/api` - For API architecture
 - `/orchestrate` - For project coordination
 - `/backend` - For implementation details
-- `/plan` - For project planning

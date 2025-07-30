@@ -156,5 +156,3 @@ This documentation update provides:
 - **For Developers**: Complete API documentation and integration guides
 - **For Power Users**: Advanced orchestration patterns and best practices
 - **For Maintainers**: Clear architecture and extension points
-
-The documentation now fully supports the Claude agent ecosystem, enabling efficient multi-agent development workflows with clear guidance on selection, orchestration, and best practices.

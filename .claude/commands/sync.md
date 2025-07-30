@@ -119,4 +119,3 @@ rsync -av --delete --exclude='sync.md' ./.claude/commands/ ~/.claude/commands/
 - Backups are always created with timestamp if multiple syncs occur
 - If audio notifications don't work after sync, check the settings.json hooks configuration
 - Settings.json merge preserves existing configurations while adding new hooks
-- Verify exactly 41 agents are present after sync

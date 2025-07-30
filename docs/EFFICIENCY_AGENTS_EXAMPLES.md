@@ -402,4 +402,3 @@ Task: """Use config-specialist to:
 2. **Batch Related Operations**: Combine multiple related tasks in single delegations
 3. **Trust Agent Intelligence**: Agents handle edge cases and error conditions
 4. **Use for Repetitive Tasks**: Greatest gains come from frequently-performed operations
-5. **Combine with Specialists**: Use efficiency agents for setup, specialists for complex logic

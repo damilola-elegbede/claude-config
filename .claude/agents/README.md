@@ -433,4 +433,3 @@ agent-auditor (focused file analysis)
 - Category definitions: [AGENT_CATEGORIES.md](./AGENT_CATEGORIES.md)
 - Audit protocols: [AUDIT_VERIFICATION_PROTOCOL.md](./AUDIT_VERIFICATION_PROTOCOL.md)
 - Configuration: `~/.claude/settings.json`
-- Project settings: `CLAUDE.md` in project root

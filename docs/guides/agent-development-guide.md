@@ -653,5 +653,3 @@ For additional resources:
 - Consult `AGENT_CATEGORIES.md` for categorization
 - Use `agent-auditor` for validation
 - Test thoroughly before deployment
-
-Happy agent development!

@@ -131,5 +131,3 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 3. **Scope**: Single service, multi-service, or system-wide?
 4. **Parallelization**: Can this work run concurrently with other tasks?
 5. **Specialization**: Does this need domain-specific expertise?
-
-**Use this guide to ensure optimal agent selection for maximum efficiency and quality.**

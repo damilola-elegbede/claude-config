@@ -122,5 +122,3 @@ When creating new agents, use the color associated with their primary category:
 4. The agent-auditor uses these categories for gap analysis
 
 ## Maintenance
-
-This document is the single source of truth for agent categorization. Any changes to categories or color assignments should be made here first, then propagated to individual agent files.

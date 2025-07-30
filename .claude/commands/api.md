@@ -36,4 +36,3 @@ The api-architect specialist (coordinated through Claude) excels at:
 - `/backend` - For API implementation
 - `/security` - For API security review
 - `/docs` - For API documentation
-- `/test` - For API testing strategy

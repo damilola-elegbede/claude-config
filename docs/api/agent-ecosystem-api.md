@@ -196,7 +196,6 @@ category: development
 ---
 ```
 
-
 ## API Components
 
 ### Schemas
@@ -618,5 +617,3 @@ The Agent Ecosystem API provides a powerful, secure, and flexible system for orc
 - **Tool Specialization**: Category-specific tool access
 - **Comprehensive Error Handling**: Detailed error responses
 - **Flexible Integration**: Support for complex workflows
-
-For additional information, refer to the individual agent documentation files in `.claude/agents/` directory.

@@ -112,5 +112,3 @@ Apply FAANG-level standards:
 - Code must be maintainable and scalable
 - Proper logging and monitoring hooks required
 - Documentation must be complete and accurate
-
-Your goal is to ensure that only production-ready, secure, and well-tested code reaches the remote repository. Be thorough but constructive in your feedback, always explaining the 'why' behind your recommendations.

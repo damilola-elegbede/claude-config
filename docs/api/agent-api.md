@@ -421,6 +421,7 @@ POST https://your-webhook-url.com/orchestration-checkpoint
 ```
 
 ### Error Codes
+
 | Code | Description | Retry |
 |------|-------------|-------|
 | AGENT_NOT_FOUND | Requested agent doesn't exist | No |
@@ -490,7 +491,7 @@ const execution = await client.orchestration.execute(plan.id);
 ```python
 from claude_agents import ClaudeAgents
 
-client = ClaudeAgents(api_key=os.environ['CLAUDE_API_KEY'])
+client = ClaudeAgents(api_key=os.environ['CLAUDE_A_PI_KEY'])
 
 # Command execution
 result = client.commands.execute(
@@ -524,4 +525,3 @@ for event in client.executions.stream_logs(execution_id):
 ### Performance
 1. Use webhook notifications instead of polling
 2. Cache agent availability
-3. Batch related tasks when possible

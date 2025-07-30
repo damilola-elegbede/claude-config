@@ -341,4 +341,3 @@ python scripts/validate-agent-yaml.py
 - New fields should be optional
 - Existing agents should continue working
 - Deprecation notices for removed features
-- Migration guides for changes

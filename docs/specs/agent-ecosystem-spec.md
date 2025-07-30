@@ -528,4 +528,3 @@ execution:
 - Custom agent creation
 - Domain-specific language models
 - Real-time collaboration features
-- Predictive task planning

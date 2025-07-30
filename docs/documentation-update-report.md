@@ -49,4 +49,3 @@ All documentation has been updated to reflect the consolidated 26-agent system.
 ## Next Steps
 1. Run `/sync` to update your local configuration
 2. Test new command shortcuts
-3. Verify agent selection accuracy

@@ -246,4 +246,3 @@ resource "kubernetes_deployment" "app" {
 - **Incident Detection Time**: < 5 minutes
 - **SLO Achievement**: Meet targets 99% of time
 - **Toil Reduction**: 20% quarter-over-quarter
-- **Security Scan Pass Rate**: 100% in production

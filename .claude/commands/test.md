@@ -106,4 +106,3 @@ When creating new tests, I'll generate appropriate starter tests:
 - For CI/CD environments, I'll use appropriate flags (--ci, --no-watch, etc.)
 - Test output is displayed in real-time
 - Failed tests will show detailed error information
-- Test dependencies are automatically installed if missing

@@ -36,4 +36,3 @@ The ml-engineer specialist (coordinated through Claude) excels at:
 - `/data` - For data pipeline needs
 - `/backend` - For ML API development
 - `/perf` - For inference optimization
-- `/orchestrate` - For complex ML workflows

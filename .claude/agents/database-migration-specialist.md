@@ -262,4 +262,3 @@ echo "Migration validated successfully"
 - **Performance**: No degradation post-migration
 - **Rollback Time**: < 15 minutes when needed
 - **Success Rate**: > 99% migrations without issues
-- **Automation**: 90% of migrations fully automated

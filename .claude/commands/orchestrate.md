@@ -151,4 +151,3 @@ tech-writer → Documents everything
 - Handles complex dependencies
 - Scales from 3 to 20+ agents
 - Supports multiple instances
-- Provides execution oversight

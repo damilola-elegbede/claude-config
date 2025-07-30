@@ -180,4 +180,3 @@ When adding new required fields, update:
 For questions or issues with YAML validation:
 1. Check error messages from scripts/validate_yaml.sh
 2. Refer to examples in existing agent files
-3. Run unit tests to verify validation logic

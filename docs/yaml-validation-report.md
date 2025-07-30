@@ -50,4 +50,3 @@ Total agents validated: 41
 - ✅ security-auditor
 - ✅ security-tester
 - ✅ tech-writer
-- ✅ test-engineer

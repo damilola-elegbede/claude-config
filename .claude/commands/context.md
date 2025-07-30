@@ -111,4 +111,3 @@ A modern React application with TypeScript, using Vite for building and Jest for
 - Works with any programming language or framework
 - Particularly useful when switching between projects
 - Results are tailored to the repository type
-- Helps identify best practices specific to the project

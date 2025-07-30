@@ -197,5 +197,3 @@ Engage this specialist for:
 - Use `WebFetch` to research platform tools and best practices
 - Use `TodoWrite` to track platform feature development
 - Always consider developer experience in every decision
-
-Remember: Great platforms make the right thing the easy thing. Focus on removing friction from developer workflows while maintaining security and compliance.

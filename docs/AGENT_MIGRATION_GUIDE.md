@@ -128,6 +128,7 @@ This guide helps users transition from the original 36-agent system to the new c
 ### 2. Renamed Agents (6 total)
 
 #### Standardized Engineering Titles
+
 | Old Name | New Name | Reason |
 |----------|----------|--------|
 | `backend-engineer` | `backend-engineer` | Consistent "engineer" naming pattern |
@@ -139,6 +140,7 @@ This guide helps users transition from the original 36-agent system to the new c
 - **Benefit**: Consistent professional titles across all implementation agents
 
 #### Accessibility Clarity
+
 | Old Name | New Name | Reason |
 |----------|----------|--------|
 | `accessibility-auditor` | `accessibility-auditor` | Clearer terminology, better searchability |
@@ -149,6 +151,7 @@ This guide helps users transition from the original 36-agent system to the new c
 - **Benefit**: Self-documenting name, easier for newcomers
 
 #### Mobile Design Scope Clarity
+
 | Old Name | New Name | Reason |
 |----------|----------|--------|
 | `mobile-ui` | `mobile-ui` | Clearer scope definition (UI/UX for mobile) |
@@ -159,6 +162,7 @@ This guide helps users transition from the original 36-agent system to the new c
 - **Benefit**: Clear distinction from mobile-engineer, focused mobile UI/UX scope
 
 #### Platform Engineering Evolution
+
 | Old Name | New Name | Reason |
 |----------|----------|--------|
 | `platform-engineer` | `platform-engineer` | Expanded scope beyond just SRE to full platform management |
@@ -413,5 +417,3 @@ The consolidated agent system provides:
 - **Same functionality** (100% capability preservation)
 - **Better workflows** (fewer handoffs, clearer boundaries)
 - **Consistent experience** (standardized naming and interfaces)
-
-The migration primarily involves updating your mental model of which agent to choose, while your day-to-day commands and workflows remain largely the same but more efficient.

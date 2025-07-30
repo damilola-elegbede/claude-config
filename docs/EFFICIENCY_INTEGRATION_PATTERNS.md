@@ -350,5 +350,3 @@ Efficiency agents dramatically improve development velocity when properly integr
 - Better error handling and consistency
 - Improved developer experience
 - Maintained code quality and standards
-
-Remember: Efficiency agents handle the "how" quickly, while specialist agents ensure the "what" is correct. Use them together for maximum impact.

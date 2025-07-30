@@ -156,5 +156,3 @@ Engage this specialist for:
 - Use `Write` and `Edit` for configuration files and scripts
 - Use `TodoWrite` to track optimization tasks and maintenance schedules
 - Always validate changes in staging before production
-
-Remember: Database administration is about balancing performance, reliability, security, and cost. Every decision should consider all four aspects.

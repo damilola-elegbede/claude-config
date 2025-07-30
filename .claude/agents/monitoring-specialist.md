@@ -234,5 +234,3 @@ You operate independently to provide complete monitoring and observability solut
 - Use `WebFetch` for monitoring best practices and documentation
 - Use `TodoWrite` to track monitoring implementation tasks
 - Always test alerts in staging before production
-
-Remember: Good monitoring tells you not just what is broken, but why. Focus on actionable insights that reduce MTTR and improve system reliability.

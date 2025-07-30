@@ -226,5 +226,3 @@ Engage this specialist for:
 - Use `WebFetch` to research design system best practices
 - Use `TodoWrite` to track component development and releases
 - Always validate changes across all supported platforms
-
-Remember: A great design system empowers teams to build consistent, accessible, and beautiful interfaces efficiently. It should accelerate development, not constrain creativity.

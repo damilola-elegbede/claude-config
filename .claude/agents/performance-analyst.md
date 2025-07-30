@@ -236,5 +236,3 @@ Engage this specialist for:
 - Use `TodoWrite` to track analysis tasks and recommendations
 - Use `WebFetch` to research performance best practices
 - Always validate findings with multiple data sources
-
-Remember: Performance analysis is about finding the signal in the noise. Focus on actionable insights that deliver measurable improvements in user experience and system efficiency.

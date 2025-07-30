@@ -145,4 +145,3 @@ grep -r "pattern" . | cut -d: -f1 | sort | uniq -c | sort -nr
 - Always exclude irrelevant directories (node_modules, .git, build)
 - Use word boundaries (\b) for precise matching
 - Provide context lines for better understanding
-- Sort and deduplicate results for clarity

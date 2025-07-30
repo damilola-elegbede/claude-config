@@ -58,4 +58,3 @@ description: [string or multiline string]
 ## Next Steps
 - Phase 2 will focus on standardizing the YAML format
 - Create a validation script to ensure consistency
-- Implement pre-commit hooks to prevent future issues

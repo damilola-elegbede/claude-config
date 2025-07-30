@@ -135,4 +135,3 @@ You report only what you find through systematic analysis, never making assumpti
 - **Documentation gaps**: Identify missing or inadequate documentation
 - **Implementation quality**: Assess code that needs improvement
 - **Architecture patterns**: Analyze design decisions and technical debt
-- **Testing coverage**: Evaluate test completeness and quality

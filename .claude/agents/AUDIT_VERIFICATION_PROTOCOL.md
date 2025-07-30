@@ -124,5 +124,3 @@ for f in .claude/agents/*.md; do
   grep "^description:" "$f" || echo "No description found"
 done
 ```
-
-Remember: Trust but verify. Every critical claim should be spot-checked before including in executive reports.

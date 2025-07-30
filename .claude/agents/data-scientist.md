@@ -297,4 +297,3 @@ def create_executive_dashboard(data, metrics):
 - **Turnaround Time**: < 24 hours for standard analyses
 - **Stakeholder Satisfaction**: Clear, actionable recommendations
 - **Reproducibility Rate**: 100% of analyses reproducible
-- **Decision Impact**: Measurable business improvement
