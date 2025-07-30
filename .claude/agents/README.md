@@ -29,10 +29,11 @@ System design and technical planning agents
 - api-architect
 - principal-architect
 
-### 4. **Design** (purple) - 2 agents
+### 4. **Design** (pink) - 3 agents
 User experience and interface design agents
 - mobile-ui
 - ui-designer
+- ux-researcher
 
 ### 5. **Quality** (green) - 5 agents
 Testing, review, and validation agents
@@ -148,7 +149,6 @@ Support, coordination, efficiency, and strategic planning agents
 /perf         → performance-engineer
 /docs         → tech-writer
 /debug        → debugger
-/orchestrate  → project-orchestrator
 /context      → codebase-analyst
 /find         → file-navigator
 /deps         → dependency-manager

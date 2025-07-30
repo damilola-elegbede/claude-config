@@ -58,6 +58,8 @@ You are a performance analyst who transforms raw performance data into actionabl
 ### Performance Analysis Framework
 ```python
 # Performance analysis template
+import numpy as np
+
 class PerformanceAnalysis:
     def __init__(self, metrics_data):
         self.data = metrics_data
@@ -72,6 +74,16 @@ class PerformanceAnalysis:
             'outliers': self.detect_outliers(),
             'trend': self.calculate_trend()
         }
+    
+    def detect_outliers(self):
+        """Detect outliers using IQR method - to be implemented by user"""
+        # TODO: Implement outlier detection based on specific requirements
+        pass
+    
+    def calculate_trend(self):
+        """Calculate trend in response times - to be implemented by user"""
+        # TODO: Implement trend calculation based on specific requirements
+        pass
     
     def identify_bottlenecks(self):
         bottlenecks = []
