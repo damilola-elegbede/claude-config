@@ -2,6 +2,10 @@
 """
 Standardize all agents according to the consolidated 26-agent system.
 This script ensures proper YAML front-matter and handles consolidation.
+
+CRITICAL: This script enforces the orchestration anti-pattern rule:
+NO AGENT MAY HAVE ACCESS TO THE Task TOOL. Only Claude can orchestrate agents.
+All agent-to-agent coordination MUST go through Claude as the orchestration engine.
 """
 
 import os
@@ -27,11 +31,13 @@ FINAL_AGENTS = {
     'security-auditor': {'color': 'green', 'category': 'quality', 'level': 'specialist'},
     'performance-engineer': {'color': 'green', 'category': 'quality', 'level': 'specialist'},
     
-    # 🔴 Architecture & Design (4 agents)
-    'principal-architect': {'color': 'red', 'category': 'architecture', 'level': 'principal'},
-    'api-architect': {'color': 'red', 'category': 'architecture', 'level': 'senior'},
-    'ui-designer': {'color': 'red', 'category': 'architecture', 'level': 'specialist'},
-    'mobile-ui': {'color': 'red', 'category': 'architecture', 'level': 'specialist'},
+    # 🟣 Architecture (2 agents)
+    'principal-architect': {'color': 'purple', 'category': 'architecture', 'level': 'principal'},
+    'api-architect': {'color': 'purple', 'category': 'architecture', 'level': 'senior'},
+    
+    # 🩷 Design (2 agents)
+    'ui-designer': {'color': 'pink', 'category': 'design', 'level': 'specialist'},
+    'mobile-ui': {'color': 'pink', 'category': 'design', 'level': 'specialist'},
     
     # 🟣 Analysis & Research (3 agents)
     'codebase-analyst': {'color': 'purple', 'category': 'analysis', 'level': 'specialist'},
@@ -173,25 +179,25 @@ domain_expertise:"""
         yaml_content += "\n    read: \"Analyzing existing code and documentation\""
         yaml_content += "\n    write: \"Implementing features and creating code\""
         yaml_content += "\n    bash: \"Running development commands and scripts\""
-        yaml_content += "\n    task: \"Coordinating with other agents for complex implementations\""
+        yaml_content += "\n    # NO Task tool - Claude handles all orchestration"
     elif agent_info['category'] in ['quality', 'analysis']:
         yaml_content += "\n    read: \"Analyzing code and documentation\""
         yaml_content += "\n    grep: \"Searching for patterns and issues\""
         yaml_content += "\n    bash: \"Running analysis and test commands\""
-        yaml_content += "\n    task: \"Coordinating quality checks with other agents\""
+        yaml_content += "\n    # NO Task tool - Claude handles all orchestration"
     elif agent_info['category'] == 'architecture':
         yaml_content += "\n    read: \"Reviewing existing architecture and code\""
         yaml_content += "\n    write: \"Creating architectural documentation and specs\""
-        yaml_content += "\n    task: \"Coordinating architectural decisions\""
+        yaml_content += "\n    # NO Task tool - Claude handles all orchestration"
     elif agent_info['category'] == 'infrastructure':
         yaml_content += "\n    read: \"Analyzing infrastructure and configurations\""
         yaml_content += "\n    write: \"Creating infrastructure code and configs\""
         yaml_content += "\n    bash: \"Running infrastructure commands\""
-        yaml_content += "\n    task: \"Coordinating deployment and operations\""
+        yaml_content += "\n    # NO Task tool - Claude handles all orchestration"
     else:
         yaml_content += "\n    read: \"Accessing relevant information\""
         yaml_content += "\n    write: \"Creating documentation and reports\""
-        yaml_content += "\n    task: \"Coordinating with domain experts\""
+        yaml_content += "\n    # NO Task tool - Claude handles all orchestration"
     
     yaml_content += "\n  forbidden:"
     if agent_info['category'] != 'infrastructure':

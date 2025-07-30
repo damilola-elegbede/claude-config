@@ -1,7 +1,7 @@
 # /analyze Command
 
 ## Description
-Quickly invoke the codebase-analyst agent for internal code analysis, architecture assessment, and technical reporting. This agent provides comprehensive analysis of existing codebases.
+Quickly access codebase analysis expertise through Claude orchestration for internal code analysis, architecture assessment, and technical reporting. Claude will coordinate with the codebase-analyst specialist for comprehensive analysis of existing codebases.
 
 ## Usage
 ```
@@ -15,7 +15,7 @@ Quickly invoke the codebase-analyst agent for internal code analysis, architectu
 - `/analyze performance bottlenecks`
 
 ## Capabilities
-The codebase-analyst agent excels at:
+The codebase-analyst specialist (coordinated through Claude) excels at:
 - Architecture assessment
 - Technical debt analysis
 - Code quality evaluation

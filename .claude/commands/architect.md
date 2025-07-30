@@ -1,7 +1,7 @@
 # /architect Command
 
 ## Description
-Quickly invoke the principal-architect agent for system architecture design, technical roadmaps, and strategic architectural decisions. This agent provides high-level system design and technical leadership.
+Quickly access system architecture expertise through Claude orchestration for system architecture design, technical roadmaps, and strategic architectural decisions. Claude will coordinate with the principal-architect specialist for high-level system design and technical leadership.
 
 ## Usage
 ```
@@ -15,7 +15,7 @@ Quickly invoke the principal-architect agent for system architecture design, tec
 - `/architect create technical roadmap`
 
 ## Capabilities
-The principal-architect agent excels at:
+The principal-architect specialist (coordinated through Claude) excels at:
 - System architecture design
 - Technical roadmap creation
 - Architecture decision records (ADRs)

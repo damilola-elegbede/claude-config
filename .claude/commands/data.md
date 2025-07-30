@@ -1,7 +1,7 @@
 # /data Command
 
 ## Description
-Quickly invoke the data-engineer agent for data pipeline, ETL/ELT, and data warehouse tasks. This agent specializes in building scalable data processing systems and analytics infrastructure.
+Quickly access data engineering expertise through Claude orchestration for data pipeline, ETL/ELT, and data warehouse tasks. Claude will coordinate with the data-engineer specialist for building scalable data processing systems and analytics infrastructure.
 
 ## Usage
 ```
@@ -15,7 +15,7 @@ Quickly invoke the data-engineer agent for data pipeline, ETL/ELT, and data ware
 - `/data optimize data processing performance`
 
 ## Capabilities
-The data-engineer agent excels at:
+The data-engineer specialist (coordinated through Claude) excels at:
 - ETL/ELT pipeline development
 - Data warehouse architecture
 - Real-time stream processing

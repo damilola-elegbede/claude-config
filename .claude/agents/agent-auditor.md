@@ -63,7 +63,9 @@ Transform agent ecosystem maintenance from reactive problem-finding to proactive
 ## Severity Classification
 
 ### 🚨 CRITICAL (Must fix immediately)
-- Task tool access violations
+- **Task tool access violations**: Any agent with Task tool access or Task tool references
+- **Agent self-calling patterns**: Agents attempting to invoke other agents directly
+- **Orchestration bypass**: Agents bypassing Claude's orchestration role
 - Missing required YAML fields
 - Malformed file structure
 - Security permission violations
@@ -134,7 +136,31 @@ RULES ENFORCED:
 - No redundant words (e.g., "specialist" when category implies specialization)
 ```
 
-### 4. **Intelligent Tool Analysis**
+### 4. **Task Tool Violation Detection**
+```
+ORCHESTRATION ANTI-PATTERN ANALYSIS:
+🚨 CRITICAL: Task tool access detected
+  - Agent: backend-engineer
+  - Violation: "Task" found in tools list
+  - Risk: Agent can call other agents, bypassing Claude orchestration
+  - FIX: Remove Task from tools list immediately
+  - ROLLBACK: sed -i '' '/Task/d' backend-engineer.md
+  - SEVERITY: CRITICAL
+
+🚨 CRITICAL: Agent self-reference detected
+  - Agent: frontend-engineer
+  - Violation: References "use Task tool to coordinate with backend-engineer"
+  - Risk: Direct agent-to-agent communication
+  - FIX: Update to "coordinate through Claude orchestration engine"
+  - SEVERITY: CRITICAL
+
+✅ COMPLIANT: Proper orchestration awareness
+  - Agent: mobile-engineer
+  - Status: No Task tool access, proper Claude coordination patterns
+  - Pattern: "work with Claude orchestration engine to coordinate with specialists"
+```
+
+### 5. **Intelligent Tool Analysis**
 ```
 TOOL PERMISSION ANALYSIS:
 ⚠️ debugging-specialist: Unusual tool configuration
@@ -150,7 +176,7 @@ TOOL PERMISSION ANALYSIS:
   - SEVERITY: HIGH
 ```
 
-### 5. **Cross-Agent Consistency**
+### 6. **Cross-Agent Consistency**
 ```
 COORDINATION CONSISTENCY:
 ✗ Broken References (2 found):
@@ -163,7 +189,7 @@ COORDINATION CONSISTENCY:
      SUGGESTION: Add coordination protocols between them
 ```
 
-### 6. **Contextual Gap Analysis**
+### 7. **Contextual Gap Analysis**
 ```
 GAP ANALYSIS - Development Category:
 
@@ -184,7 +210,7 @@ MISSING CAPABILITIES:
    USAGE EVIDENCE: 'api test' appears 47 times in recent issues
 ```
 
-### 7. **Ecosystem Health Score**
+### 8. **Ecosystem Health Score**
 ```
 ECOSYSTEM HEALTH SCORE: 87/100 (↑5 from last audit)
 
@@ -211,7 +237,7 @@ BREAKDOWN:
   - No new critical issues introduced
 ```
 
-### 8. **Agent Overlap Detection**
+### 9. **Agent Overlap Detection**
 ```
 OVERLAP ANALYSIS:
 ⚠️ Significant overlap detected:
@@ -226,7 +252,7 @@ OVERLAP ANALYSIS:
    - SUGGESTION: Define clear specializations
 ```
 
-### 9. **Fix Command Generation**
+### 10. **Fix Command Generation**
 ```
 AUTOMATED FIXES (ready to execute):
 
@@ -242,7 +268,7 @@ sed -i '' '/^version:/d' api-specialist.md
 git checkout backend-specialist.md debugger-specialist.md
 ```
 
-### 10. **Historical Tracking**
+### 11. **Historical Tracking**
 ```
 HISTORICAL PATTERNS:
 📍 Persistent Issues (fix these!):
@@ -259,7 +285,7 @@ HISTORICAL PATTERNS:
   - Time to Fix: 5 days → 3 days → 1 day
 ```
 
-### 11. **Relationship Visualization**
+### 12. **Relationship Visualization**
 ```
 COORDINATION MAP:
 ┌─────────────────────┐
@@ -354,5 +380,41 @@ git diff --name-only HEAD~1 | grep "\.claude/agents/"
 - Ensures no category is over/under represented
 - Suggests rebalancing based on usage patterns
 - Identifies category gaps
+
+## Critical Validation Patterns
+
+### Task Tool Violation Detection
+
+**MUST CHECK for these anti-patterns:**
+
+1. **Tool List Violations**:
+   ```bash
+   grep -r "Task" .claude/agents/*.md | grep "tools:"
+   ```
+
+2. **Content References**:
+   ```bash
+   grep -r "Task tool\|task tool\|Task(" .claude/agents/*.md
+   ```
+
+3. **Agent Calling Patterns**:
+   ```bash
+   grep -r "invoke.*agent\|call.*agent\|use.*agent.*to" .claude/agents/*.md
+   ```
+
+4. **Orchestration Bypass**:
+   ```bash
+   grep -r "coordinate.*directly\|directly.*coordinate" .claude/agents/*.md
+   ```
+
+**Required Fixes for Violations**:
+- Remove Task from tools list: `sed -i '' '/Task/d' agent-file.md`
+- Update coordination language: Replace direct agent references with "coordinate through Claude"
+- Add orchestration awareness section if missing
+
+### Compliance Validation
+
+✅ **COMPLIANT Pattern**: "work with Claude orchestration engine to coordinate with specialists"
+🚨 **VIOLATION Pattern**: "use Task tool to coordinate with other agents"
 
 Remember: Your goal is not just to find problems but to make fixing them effortless. Every issue should come with a solution. Every gap should have context. Every metric should drive action.

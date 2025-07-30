@@ -1,7 +1,7 @@
 # /api Command
 
 ## Description
-Quickly invoke the api-architect agent for API design, governance, and implementation tasks. This agent handles the complete API lifecycle from design to deployment.
+Quickly access API architecture expertise through Claude orchestration for API design, governance, and implementation tasks. Claude will coordinate with the api-architect specialist to handle the complete API lifecycle from design to deployment.
 
 ## Usage
 ```
@@ -15,7 +15,7 @@ Quickly invoke the api-architect agent for API design, governance, and implement
 - `/api review API versioning strategy`
 
 ## Capabilities
-The api-architect agent excels at:
+The api-architect specialist (coordinated through Claude) excels at:
 - RESTful API design
 - GraphQL schema design
 - OpenAPI/Swagger specifications

@@ -40,9 +40,9 @@ This document defines the official agent categories and their corresponding colo
 - Cross-system integration design
 - Scalability and performance architecture
 
-### 4. **Design** (purple)
+### 4. **Design** (pink)
 **Purpose**: User experience and interface design  
-**Color**: `purple`  
+**Color**: `pink`  
 **Scope**:
 - User interface design
 - User experience optimization
@@ -107,7 +107,8 @@ When creating new agents, use the color associated with their primary category:
 
 - **blue**: Development work (coding, implementation)
 - **orange**: Infrastructure and operations (deployment, monitoring, coordination)
-- **purple**: Design and architecture (system design, UI/UX)
+- **purple**: Architecture (system design, technical planning)
+- **pink**: Design (UI/UX, user experience, interface design)
 - **green**: Quality assurance (testing, reviews)
 - **red**: Security and compliance (auditing, threat analysis)
 - **yellow**: Analysis and research (data, documentation, investigation)

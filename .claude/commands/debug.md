@@ -1,7 +1,7 @@
 # /debug Command
 
 ## Description
-Investigates complex bugs and mysterious issues using the debugger agent to systematically find root causes of difficult-to-reproduce problems, edge cases, and intermittent failures.
+Investigates complex bugs and mysterious issues through Claude orchestration with the debugger specialist to systematically find root causes of difficult-to-reproduce problems, edge cases, and intermittent failures.
 
 ## Usage
 ```
@@ -26,7 +26,7 @@ When you use `/debug`, I will:
    - System state when issue occurs
    - Recent code changes
    
-2. **Launch debugger agent** for systematic investigation:
+2. **Coordinate with debugger specialist** through Claude for systematic investigation:
    - Root cause analysis
    - Code path tracing
    - State examination

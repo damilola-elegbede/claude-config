@@ -1,7 +1,7 @@
 # /mobile Command
 
 ## Description
-Quickly invoke the mobile-engineer agent for native and cross-platform mobile application development. This agent specializes in iOS, Android, and cross-platform frameworks.
+Quickly access mobile development expertise through Claude orchestration for native and cross-platform mobile application development. Claude will coordinate with the mobile-engineer specialist for iOS, Android, and cross-platform frameworks.
 
 ## Usage
 ```
@@ -15,7 +15,7 @@ Quickly invoke the mobile-engineer agent for native and cross-platform mobile ap
 - `/mobile debug memory leak in iOS app`
 
 ## Capabilities
-The mobile-engineer agent excels at:
+The mobile-engineer specialist (coordinated through Claude) excels at:
 - Native iOS development (Swift)
 - Native Android development (Kotlin)
 - Cross-platform frameworks (React Native, Flutter)

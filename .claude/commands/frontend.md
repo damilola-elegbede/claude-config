@@ -1,7 +1,7 @@
 # /frontend Command
 
 ## Description
-Quickly invoke the frontend-engineer agent for client-side development tasks. This agent specializes in user interfaces, web applications, and frontend performance optimization.
+Quickly access frontend development expertise through Claude orchestration for client-side development tasks. Claude will coordinate with the frontend-engineer specialist for user interfaces, web applications, and frontend performance optimization.
 
 ## Usage
 ```
@@ -15,7 +15,7 @@ Quickly invoke the frontend-engineer agent for client-side development tasks. Th
 - `/frontend debug rendering performance issues`
 
 ## Capabilities
-The frontend-engineer agent excels at:
+The frontend-engineer specialist (coordinated through Claude) excels at:
 - Modern JavaScript frameworks (React, Vue, Angular)
 - CSS and styling systems
 - Performance optimization (Core Web Vitals)

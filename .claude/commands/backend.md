@@ -1,7 +1,7 @@
 # /backend Command
 
 ## Description
-Quickly invoke the backend-engineer agent for server-side development tasks. This agent specializes in APIs, databases, microservices, and distributed systems architecture.
+Quickly access backend development expertise through Claude orchestration for server-side development tasks. Claude will coordinate with the backend-engineer specialist for APIs, databases, microservices, and distributed systems architecture.
 
 ## Usage
 ```
@@ -15,7 +15,7 @@ Quickly invoke the backend-engineer agent for server-side development tasks. Thi
 - `/backend debug API latency issues`
 
 ## Capabilities
-The backend-engineer agent excels at:
+The backend-engineer specialist (coordinated through Claude) excels at:
 - RESTful and GraphQL API development
 - Database design and optimization
 - Microservices architecture

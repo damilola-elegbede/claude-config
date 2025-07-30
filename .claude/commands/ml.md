@@ -1,7 +1,7 @@
 # /ml Command
 
 ## Description
-Quickly invoke the ml-engineer agent for machine learning and AI tasks. This agent specializes in ML model development, deployment, and MLOps practices.
+Quickly access machine learning expertise through Claude orchestration for ML and AI tasks. Claude will coordinate with the ml-engineer specialist for ML model development, deployment, and MLOps practices.
 
 ## Usage
 ```
@@ -15,7 +15,7 @@ Quickly invoke the ml-engineer agent for machine learning and AI tasks. This age
 - `/ml deploy model to production`
 
 ## Capabilities
-The ml-engineer agent excels at:
+The ml-engineer specialist (coordinated through Claude) excels at:
 - ML model development and training
 - Model optimization and deployment
 - MLOps pipeline implementation

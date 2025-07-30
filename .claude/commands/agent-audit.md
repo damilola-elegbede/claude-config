@@ -1,6 +1,6 @@
 # Agent Audit Command
 
-Run comprehensive agent ecosystem validation by launching multiple agent-auditor instances in parallel, one for each agent category.
+Orchestrate comprehensive agent ecosystem validation through parallel category-based audits using Claude's orchestration capabilities.
 
 ## Usage
 ```
@@ -8,55 +8,62 @@ Run comprehensive agent ecosystem validation by launching multiple agent-auditor
 ```
 
 ## Purpose
-Comprehensive validation of the entire agent ecosystem through parallel category-based audits.
+Comprehensive validation of the entire agent ecosystem through Claude-orchestrated parallel audits.
 
-## Execution Protocol
+## Orchestration Strategy
+
+Claude should execute the following parallel audit strategy:
 
 ### Phase 1: Parallel Category Audits
-Launch agent-auditor instances for all categories simultaneously:
+Launch agent-auditor instances for all categories simultaneously through Claude's orchestration:
 
-<function_calls>
-<invoke name="Task">
-<parameter name="description">Audit Development agents</parameter>
-<parameter name="prompt">Use the agent-auditor to validate all agents in the Development category (blue). Check for compliance with AGENT_TEMPLATE.md standards, validate YAML structure, and perform gap analysis for missing agents.</parameter>
-<parameter name="subagent_type">agent-auditor</parameter>
-</invoke>
-<invoke name="Task">
-<parameter name="description">Audit Infrastructure agents</parameter>
-<parameter name="prompt">Use the agent-auditor to validate all agents in the Infrastructure category (orange). Check for compliance with AGENT_TEMPLATE.md standards, validate YAML structure, and perform gap analysis for missing agents.</parameter>
-<parameter name="subagent_type">agent-auditor</parameter>
-</invoke>
-<invoke name="Task">
-<parameter name="description">Audit Architecture agents</parameter>
-<parameter name="prompt">Use the agent-auditor to validate all agents in the Architecture category (purple). Check for compliance with AGENT_TEMPLATE.md standards, validate YAML structure, and perform gap analysis for missing agents.</parameter>
-<parameter name="subagent_type">agent-auditor</parameter>
-</invoke>
-<invoke name="Task">
-<parameter name="description">Audit Design agents</parameter>
-<parameter name="prompt">Use the agent-auditor to validate all agents in the Design category (purple). Check for compliance with AGENT_TEMPLATE.md standards, validate YAML structure, and perform gap analysis for missing agents.</parameter>
-<parameter name="subagent_type">agent-auditor</parameter>
-</invoke>
-<invoke name="Task">
-<parameter name="description">Audit Quality agents</parameter>
-<parameter name="prompt">Use the agent-auditor to validate all agents in the Quality category (green). Check for compliance with AGENT_TEMPLATE.md standards, validate YAML structure, and perform gap analysis for missing agents.</parameter>
-<parameter name="subagent_type">agent-auditor</parameter>
-</invoke>
-<invoke name="Task">
-<parameter name="description">Audit Security agents</parameter>
-<parameter name="prompt">Use the agent-auditor to validate all agents in the Security category (red). Check for compliance with AGENT_TEMPLATE.md standards, validate YAML structure, and perform gap analysis for missing agents.</parameter>
-<parameter name="subagent_type">agent-auditor</parameter>
-</invoke>
-<invoke name="Task">
-<parameter name="description">Audit Analysis agents</parameter>
-<parameter name="prompt">Use the agent-auditor to validate all agents in the Analysis category (yellow). Check for compliance with AGENT_TEMPLATE.md standards, validate YAML structure, and perform gap analysis for missing agents.</parameter>
-<parameter name="subagent_type">agent-auditor</parameter>
-</invoke>
-<invoke name="Task">
-<parameter name="description">Audit Operations agents</parameter>
-<parameter name="prompt">Use the agent-auditor to validate all agents in the Operations category (orange). Check for compliance with AGENT_TEMPLATE.md standards, validate YAML structure, and perform gap analysis for missing agents.</parameter>
-<parameter name="subagent_type">agent-auditor</parameter>
-</invoke>
-</function_calls>
+1. **Development Category Audit** (Blue agents)
+   - Validate all agents in Development category
+   - Check AGENT_TEMPLATE.md compliance
+   - Validate YAML structure
+   - Perform gap analysis for missing agents
+
+2. **Infrastructure Category Audit** (Orange agents)
+   - Validate all agents in Infrastructure category
+   - Check AGENT_TEMPLATE.md compliance
+   - Validate YAML structure
+   - Perform gap analysis for missing agents
+
+3. **Architecture Category Audit** (Purple agents)
+   - Validate all agents in Architecture category
+   - Check AGENT_TEMPLATE.md compliance
+   - Validate YAML structure
+   - Perform gap analysis for missing agents
+
+4. **Design Category Audit** (Pink agents)
+   - Validate all agents in Design category
+   - Check AGENT_TEMPLATE.md compliance
+   - Validate YAML structure
+   - Perform gap analysis for missing agents
+
+5. **Quality Category Audit** (Green agents)
+   - Validate all agents in Quality category
+   - Check AGENT_TEMPLATE.md compliance
+   - Validate YAML structure
+   - Perform gap analysis for missing agents
+
+6. **Security Category Audit** (Red agents)
+   - Validate all agents in Security category
+   - Check AGENT_TEMPLATE.md compliance
+   - Validate YAML structure
+   - Perform gap analysis for missing agents
+
+7. **Analysis Category Audit** (Yellow agents)
+   - Validate all agents in Analysis category
+   - Check AGENT_TEMPLATE.md compliance
+   - Validate YAML structure
+   - Perform gap analysis for missing agents
+
+8. **Operations Category Audit** (Orange agents)
+   - Validate all agents in Operations category
+   - Check AGENT_TEMPLATE.md compliance
+   - Validate YAML structure
+   - Perform gap analysis for missing agents
 
 ### Phase 2: Validation Dimensions
 Each audit validates compliance across:
@@ -66,6 +73,7 @@ Each audit validates compliance across:
 - **Category Assignment**: Correct categorization and color coding
 - **Coordination Protocols**: Inter-agent communication patterns
 - **Gap Analysis**: Missing capabilities within each category
+- **Anti-Pattern Detection**: No agent self-referencing or Task tool usage
 
 ## Executive Report Structure
 
@@ -92,7 +100,13 @@ For each critical issue identified:
 - **Fix Commands**: Exact bash/sed commands to resolve
 - **Priority Level**: Critical/High/Medium/Low
 
-### 4. Gap Analysis Report
+### 4. Anti-Pattern Detection Report
+- **Task Tool Violations**: Agents referencing or using Task tool
+- **Self-Referencing**: Agents calling themselves or other agents
+- **Orchestration Violations**: Agents bypassing Claude coordination
+- **Tool Access Violations**: Agents referencing tools they don't have
+
+### 5. Gap Analysis Report
 #### Missing Critical Capabilities
 - **High Priority Gaps**: Essential missing agent types
 - **Medium Priority Gaps**: Important but not critical
@@ -104,7 +118,7 @@ For each critical issue identified:
 - Overlap analysis between similar agents
 - Specialization boundary clarity
 
-### 5. Next Steps & Action Plan
+### 6. Next Steps & Action Plan
 
 #### Immediate Actions (Execute Now)
 ```bash
@@ -123,7 +137,7 @@ sed -i '' 's/old/new/' agent-file.md
 - Ecosystem architecture improvements
 - Coordination protocol enhancements
 
-### 6. Technical Remediation Guide
+### 7. Technical Remediation Guide
 
 #### Ready-to-Execute Fixes
 Specific bash commands for each identified issue:
@@ -145,22 +159,25 @@ Issues that need human judgment:
 ✅ **Production Ready**: 95%+ agents validated for immediate use  
 ✅ **Critical Issues**: All identified with specific remediation  
 ✅ **Gap Coverage**: Comprehensive analysis of missing capabilities  
+✅ **Anti-Pattern Compliance**: No agent self-referencing or Task tool usage  
 ✅ **Action Plan**: Prioritized roadmap with timelines  
 ✅ **Technical Spec**: Executive-level decision-making support  
 
 ## Implementation Notes
 
-- All audits run in parallel for maximum efficiency
-- Results aggregated into single comprehensive report
+- Claude orchestrates all audits in parallel for maximum efficiency
+- Results aggregated by Claude into single comprehensive report
 - Each category audit is independent and can be executed separately
 - Focus on actionable recommendations over theoretical analysis
 - Executive summary suitable for technical leadership review
+- Strict enforcement of orchestration principles
 
 ## Output Format
 
 The command generates a structured markdown report containing:
 1. High-level executive summary with key metrics
 2. Detailed findings by category with specific scores
-3. Prioritized action items with exact commands
-4. Strategic recommendations for ecosystem evolution
-5. Technical specification suitable for decision-making
+3. Anti-pattern detection results
+4. Prioritized action items with exact commands
+5. Strategic recommendations for ecosystem evolution
+6. Technical specification suitable for decision-making
