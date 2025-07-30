@@ -3,7 +3,7 @@ name: error-resolver
 description: Automatically gathers context from errors and suggests targeted fixes
 color: orange
 category: operations
-tools: Read, Grep, Glob, Bash
+tools: Read, Write, Edit, Grep, Glob, Bash, TodoWrite
 ---
 
 # Error Resolution Specialist

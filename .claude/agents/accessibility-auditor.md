@@ -3,7 +3,7 @@ name: accessibility-auditor
 description: Use for WCAG compliance audits, screen reader testing, keyboard navigation checks, and accessibility remediation. MUST BE USED when implementing accessible UI components or fixing accessibility violations
 color: green
 category: quality
-tools: Read, Grep, Glob, LS, TodoWrite
+tools: Read, Edit, MultiEdit, Write, Grep, Glob, LS, WebFetch, WebSearch, TodoWrite
 ---
 
 # Accessibility Expert

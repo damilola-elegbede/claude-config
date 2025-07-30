@@ -3,7 +3,7 @@ name: cloud-architect
 description: Use for cloud architecture design, migration planning, cost optimization, and multi-cloud strategies. MUST BE USED for AWS/Azure/GCP implementations, IaC, and cloud-native patterns
 color: orange
 category: infrastructure
-tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite, WebFetch
 ---
 
 # Cloud Architect
