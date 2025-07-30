@@ -44,7 +44,7 @@ description: Use this agent... <example>Context: User needs...</example>
 
 ### 4. Very Long Single-Line Descriptions
 **Pattern**: Extremely long description values on a single line
-**Files Affected**: api-engineer.md, backend-staff.md, frontend-staff.md, others
+**Files Affected**: api-engineer.md, backend-engineer.md, frontend-engineer.md, others
 **Issue**:
 - Hard to read and maintain
 - Potential line length issues in some editors

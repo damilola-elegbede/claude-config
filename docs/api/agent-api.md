@@ -38,7 +38,7 @@ POST /api/agents/invoke
 **Request Body:**
 ```json
 {
-  "agent": "backend-staff",
+  "agent": "backend-engineer",
   "task": "Implement authentication service with JWT",
   "context": {
     "project": "e-commerce-platform",
@@ -55,7 +55,7 @@ POST /api/agents/invoke
 ```json
 {
   "execution_id": "exec_123456",
-  "agent": "backend-staff",
+  "agent": "backend-engineer",
   "status": "in_progress",
   "started_at": "2024-01-15T10:00:00Z",
   "estimated_completion": "2024-01-15T11:00:00Z"
@@ -126,12 +126,12 @@ POST /api/orchestration/plan
       "name": "Foundation",
       "agents": [
         {
-          "agent": "backend-staff",
+          "agent": "backend-engineer",
           "task": "WebSocket server setup",
           "duration": "2 days"
         },
         {
-          "agent": "frontend-staff",
+          "agent": "frontend-engineer",
           "task": "Chat UI framework",
           "duration": "2 days"
         },
@@ -148,12 +148,12 @@ POST /api/orchestration/plan
       "name": "Implementation",
       "agents": [
         {
-          "agent": "backend-staff",
+          "agent": "backend-engineer",
           "task": "Message persistence",
           "duration": "3 days"
         },
         {
-          "agent": "frontend-staff",
+          "agent": "frontend-engineer",
           "task": "Chat features",
           "duration": "3 days"
         }
@@ -191,12 +191,12 @@ POST /api/orchestration/execute
   "current_phase": 1,
   "active_agents": [
     {
-      "agent": "backend-staff",
+      "agent": "backend-engineer",
       "task": "WebSocket server setup",
       "progress": 45
     },
     {
-      "agent": "frontend-staff",
+      "agent": "frontend-engineer",
       "task": "Chat UI framework",
       "progress": 60
     }
@@ -217,13 +217,13 @@ GET /api/agents
 {
   "agents": [
     {
-      "name": "backend-staff",
+      "name": "backend-engineer",
       "category": "implementation",
       "expertise": ["distributed systems", "microservices"],
       "availability": "available"
     },
     {
-      "name": "frontend-staff",
+      "name": "frontend-engineer",
       "category": "implementation",
       "expertise": ["real-time UI", "performance"],
       "availability": "busy"
@@ -241,7 +241,7 @@ GET /api/agents/{agent_name}
 **Response:**
 ```json
 {
-  "name": "backend-staff",
+  "name": "backend-engineer",
   "category": "implementation",
   "expertise": [
     "distributed systems",
@@ -272,7 +272,7 @@ GET /api/executions/{execution_id}
 ```json
 {
   "execution_id": "exec_123456",
-  "agent": "backend-staff",
+  "agent": "backend-engineer",
   "task": "Implement authentication service",
   "status": "in_progress",
   "progress": 75,
@@ -365,7 +365,7 @@ POST https://your-webhook-url.com/agent-complete
 {
   "event": "execution.complete",
   "execution_id": "exec_123456",
-  "agent": "backend-staff",
+  "agent": "backend-engineer",
   "status": "success",
   "duration": 3600,
   "artifacts": [
@@ -395,8 +395,8 @@ POST https://your-webhook-url.com/orchestration-checkpoint
   "next_phase": 3,
   "overall_progress": 60,
   "agents_status": {
-    "backend-staff": "completed",
-    "frontend-staff": "completed",
+    "backend-engineer": "completed",
+    "frontend-engineer": "completed",
     "test-engineer": "starting"
   }
 }
@@ -411,7 +411,7 @@ POST https://your-webhook-url.com/orchestration-checkpoint
     "code": "AGENT_UNAVAILABLE",
     "message": "The requested agent is currently at capacity",
     "details": {
-      "agent": "backend-staff",
+      "agent": "backend-engineer",
       "current_load": 3,
       "max_capacity": 3,
       "retry_after": 300
@@ -469,7 +469,7 @@ const client = new ClaudeAgents({
 
 // Direct agent invocation
 const result = await client.agents.invoke({
-  agent: 'backend-staff',
+  agent: 'backend-engineer',
   task: 'Implement payment processing service',
   context: {
     gateway: 'stripe',
@@ -480,7 +480,7 @@ const result = await client.agents.invoke({
 // Multi-agent orchestration
 const plan = await client.orchestration.plan({
   project: 'E-commerce platform',
-  agents: ['backend-staff', 'frontend-staff', 'test-engineer']
+  agents: ['backend-engineer', 'frontend-engineer', 'test-engineer']
 });
 
 const execution = await client.orchestration.execute(plan.id);

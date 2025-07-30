@@ -62,24 +62,7 @@ paths:
                   description: Detailed task instructions for the agent
                 subagent_type:
                   type: string
-                  enum: [
-                    "backend-engineer", "frontend-engineer", "mobile-engineer",
-                    "database-admin", "api-architect", "ml-engineer",
-                    "cloud-architect", "devops", "network-engineer",
-                    "platform-engineer", "data-engineer", "test-engineer",
-                    "security-auditor", "code-reviewer", "performance-engineer",
-                    "accessibility-auditor", "ui-designer", "ux-researcher",
-                    "tech-writer", "api-documenter", "codebase-analyst",
-                    "business-analyst", "data-scientist", "researcher",
-                    "product-strategist", "incident-commander", "debugger",
-                    "file-writer", "file-navigator", "config-specialist",
-                    "dependency-manager", "git-workflow", "error-resolver",
-                    "search-coordinator", "documentation-finder", "log-analyst",
-                    "integration-specialist", "kubernetes-admin", "mobile-ui",
-                    "design-system", "monitoring-specialist", "api-contract-tester",
-                    "security-tester", "agent-auditor", "performance-analyst",
-                    "database-migration-specialist", "principal-architect"
-                  ]
+                  $ref: '#/components/schemas/AgentType'
       responses:
         200:
           description: Agent execution successful
@@ -90,7 +73,7 @@ paths:
                 properties:
                   status:
                     type: string
-                    enum: ["success", "partial", "failed"]
+                    $ref: '#/components/schemas/AgentType'
                   result:
                     type: string
                     description: Agent's response and findings
@@ -193,11 +176,11 @@ components:
           example: "Read, Write, Edit, Grep, Glob, LS, Bash"
         color:
           type: string
-          enum: [blue, green, purple, orange, red, yellow, pink]
+          $ref: '#/components/schemas/AgentType'
           description: Visual identifier color
         category:
           type: string
-          enum: [development, infrastructure, architecture, design, quality, security, analysis, operations]
+          $ref: '#/components/schemas/AgentType'
           description: Agent category classification
 ```
 
@@ -211,6 +194,118 @@ tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 color: blue
 category: development
 ---
+```
+
+
+## API Components
+
+### Schemas
+
+```yaml
+components:
+  schemas:
+    AgentType:
+      type: string
+      description: Available agent types in the ecosystem
+      enum:
+        - general-purpose
+        - file-writer
+        - tech-writer
+        - network-engineer
+        - mobile-engineer
+        - file-navigator
+        - backend-engineer
+        - data-engineer
+        - devops
+        - api-architect
+        - config-specialist
+        - log-analyst
+        - integration-specialist
+        - kubernetes-admin
+        - ui-designer
+        - frontend-engineer
+        - incident-commander
+        - design-system
+        - monitoring-specialist
+        - cloud-architect
+        - api-contract-tester
+        - security-auditor
+        - product-strategist
+        - business-analyst
+        - dependency-manager
+        - data-scientist
+        - documentation-finder
+        - researcher
+        - ux-researcher
+        - security-tester
+        - agent-auditor
+        - platform-engineer
+        - database-admin
+        - error-resolver
+        - git-workflow
+        - performance-analyst
+        - debugger
+        - database-migration-specialist
+        - api-documenter
+        - performance-engineer
+        - search-coordinator
+        - test-engineer
+        - ml-engineer
+        - accessibility-auditor
+        - code-reviewer
+        - codebase-analyst
+        - principal-architect
+        - mobile-ui
+    
+    AgentInfo:
+      type: object
+      required:
+        - agent_type
+        - description
+        - tools
+        - color
+        - category
+      properties:
+        agent_type:
+          type: string
+        description:
+          type: string
+        tools:
+          type: array
+          items:
+            type: string
+        color:
+          type: string
+        category:
+          type: string
+    
+    AgentInvocationRequest:
+      type: object
+      required:
+        - description
+        - prompt
+        - subagent_type
+      properties:
+        description:
+          type: string
+          description: Short description of the task
+        prompt:
+          type: string
+          description: Detailed task for the agent
+        subagent_type:
+          $ref: '#/components/schemas/AgentType'
+    
+    AgentInvocationResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        result:
+          type: string
+        agent_type:
+          type: string
+        execution_time:
+          type: number
 ```
 
 ## System Boundary & Security Model
@@ -355,14 +450,7 @@ components:
           properties:
             code:
               type: string
-              enum: [
-                "AGENT_NOT_FOUND",
-                "BOUNDARY_VIOLATION",
-                "TOOL_ACCESS_DENIED",
-                "INVALID_PROMPT",
-                "EXECUTION_TIMEOUT",
-                "AGENT_TERMINATED"
-              ]
+              $ref: '#/components/schemas/AgentType'
             message:
               type: string
             details:

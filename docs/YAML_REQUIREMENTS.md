@@ -25,7 +25,7 @@ Every agent file MUST include these fields:
 
 - **name**: Unique identifier for the agent (lowercase, hyphenated)
   - Format: `[a-z]+(-[a-z]+)*`
-  - Examples: `backend-staff`, `qa-tester`, `principal-architect`
+  - Examples: `backend-engineer`, `test-engineer`, `principal-architect`
 
 - **description**: Clear, concise description of the agent's purpose
   - Should be a single line (not multiline with `|`)

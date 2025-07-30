@@ -6,10 +6,10 @@
 Before spawning agent-auditor instances:
 ```bash
 # Verify which agents actually exist
-ls -la /Users/damilola/Documents/Projects/claude-config/.claude/agents/*.md
+ls -la .claude/agents/*.md
 
 # Check for empty files
-for file in /Users/damilola/Documents/Projects/claude-config/.claude/agents/*.md; do
+for file in .claude/agents/*.md; do
   if [ ! -s "$file" ]; then
     echo "Empty file: $file"
   fi
@@ -40,10 +40,10 @@ After receiving audit results:
 #### Verify Critical Claims
 ```bash
 # If audit claims "X agents missing", verify:
-ls -la /Users/damilola/Documents/Projects/claude-config/.claude/agents/[agent-name].md
+ls -la .claude/agents/[agent-name].md
 
 # If audit claims "agent has issue Y", spot-check:
-grep -n "pattern" /Users/damilola/Documents/Projects/claude-config/.claude/agents/[agent-name].md
+grep -n "pattern" .claude/agents/[agent-name].md
 ```
 
 #### Cross-Check Metrics

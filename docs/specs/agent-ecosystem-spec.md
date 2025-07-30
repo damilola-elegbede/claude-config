@@ -23,7 +23,7 @@ The Claude Agent Ecosystem provides 26 specialized AI agents for software develo
 1. **api-designer** → merged into `api-architect` (full API lifecycle)
 2. **api-engineer** → merged into `api-architect` (implementation included)
 3. **product-strategy** → removed duplicate (kept `product-strategist`)
-4. **backend-dev** → standardized to `backend-engineer`
+4. **backend-engineer** → standardized to `backend-engineer`
 5. **tech-researcher** → merged into `researcher` (broader scope)
 6. **doc-updater** → merged into `tech-writer` (documentation consolidation)
 7. **completion-agent** → merged into `tech-writer` (summary capabilities)
@@ -138,7 +138,7 @@ graph TD
 - **Members**: backend-engineer, frontend-engineer, fullstack-lead, mobile-engineer, data-engineer, ml-engineer
 - **Tool Access**: Full read/write/execute
 - **Constraints**: Cannot deploy to production
-- **Consolidation**: Standardized naming (backend-staff → backend-engineer, frontend-engineer → frontend-engineer)
+- **Consolidation**: Standardized naming (backend-engineer → backend-engineer, frontend-engineer → frontend-engineer)
 
 #### 2. Analysis & Research Agents (3 agents)
 - **Purpose**: Understand and evaluate code, conduct external research
@@ -232,8 +232,8 @@ def select_agents(task):
     
     # 4. Select primary agent based on consolidated categories
     domain_mapping = {
-        "backend": "backend-engineer",    # Renamed from backend-staff
-        "frontend": "frontend-engineer",  # Renamed from frontend-staff
+        "backend": "backend-engineer",    # Renamed from backend-engineer
+        "frontend": "frontend-engineer",  # Renamed from frontend-engineer
         "mobile": "mobile-engineer",      # Renamed from mobile-dev
         "data": "data-engineer",
         "ml": "ml-engineer",

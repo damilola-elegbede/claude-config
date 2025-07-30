@@ -1,7 +1,7 @@
 ---
 name: git-workflow
 description: Streamlines common git operations and workflows with intelligent automation
-color: orange
+color: teal
 category: operations
 tools: Read, Write, Grep, Glob, Bash
 ---

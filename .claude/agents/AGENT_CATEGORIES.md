@@ -88,9 +88,9 @@ This document defines the official agent categories and their corresponding colo
 - Requirements analysis
 - Performance analysis
 
-### 8. **Operations** (orange)
+### 8. **Operations** (teal)
 **Purpose**: Support, coordination, and strategic planning  
-**Color**: `orange`  
+**Color**: `teal`  
 **Scope**:
 - Incident management and response
 - Debugging and troubleshooting
@@ -106,12 +106,13 @@ This document defines the official agent categories and their corresponding colo
 When creating new agents, use the color associated with their primary category:
 
 - **blue**: Development work (coding, implementation)
-- **orange**: Infrastructure and operations (deployment, monitoring, coordination)
+- **orange**: Infrastructure (deployment, monitoring, cloud management)
 - **purple**: Architecture (system design, technical planning)
 - **pink**: Design (UI/UX, user experience, interface design)
 - **green**: Quality assurance (testing, reviews)
 - **red**: Security and compliance (auditing, threat analysis)
 - **yellow**: Analysis and research (data, documentation, investigation)
+- **teal**: Operations (coordination, strategy, workflow automation)
 
 ## Usage
 

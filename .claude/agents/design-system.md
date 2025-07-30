@@ -66,6 +66,19 @@ You are a design system architect who creates scalable, consistent design langua
 ```json
 {
   "color": {
+
+      "red": {
+        "500": "#ef4444"
+      },
+      "amber": {
+        "500": "#f59e0b"
+      },
+      "green": {
+        "500": "#10b981"
+      },
+      "blue": {
+        "500": "#3b82f6"
+      },
     "primary": {
       "50": "#e3f2fd",
       "100": "#bbdefb",

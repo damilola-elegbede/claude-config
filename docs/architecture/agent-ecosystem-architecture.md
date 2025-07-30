@@ -154,7 +154,7 @@ graph TD
         ST[security-tester]
         ACT[api-contract-tester]
         AA[agent-auditor]
-        QA[qa-tester]
+        QA[test-engineer]
     end
     
     style Development fill:#90EE90

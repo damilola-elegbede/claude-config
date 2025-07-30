@@ -17,7 +17,7 @@ This guide provides comprehensive strategies for maximizing parallel agent execu
 ```yaml
 Parallel Group: Implementation
   - frontend-engineer: UI/UX implementation with performance optimization
-  - backend-engineer: API development with database optimization (renamed from backend-dev)
+  - backend-engineer: API development with database optimization (renamed from backend-engineer)
   - devops: CI/CD pipeline setup and infrastructure preparation
   
 Sequential Handoff:
@@ -121,12 +121,12 @@ Coordination:
 
 | Primary Agent | Compatible Parallel Agents | Workflow Benefit |
 |---|---|---|
-| **frontend-engineer** | backend-dev, ui-designer, mobile-ui, test-engineer | Full-stack development with design integration |
-| **backend-dev** | frontend-engineer, devops, platform-engineer, api-engineer | Infrastructure-aware backend development |
-| **code-reviewer** | security-auditor, qa-tester, tech-writer | Comprehensive quality assurance |
+| **frontend-engineer** | backend-engineer, ui-designer, mobile-ui, test-engineer | Full-stack development with design integration |
+| **backend-engineer** | frontend-engineer, devops, platform-engineer, api-engineer | Infrastructure-aware backend development |
+| **code-reviewer** | security-auditor, test-engineer, tech-writer | Comprehensive quality assurance |
 | **principal-architect** | product-strategist, tech-writer, researcher | Strategic planning with research and documentation |
 | **debugger** | security-auditor, codebase-analyst, performance-engineer | Multi-angle problem analysis |
-| **devops** | platform-engineer, backend-dev, security-auditor | Infrastructure deployment with monitoring |
+| **devops** | platform-engineer, backend-engineer, security-auditor | Infrastructure deployment with monitoring |
 | **researcher** | codebase-analyst, api-engineer, product-strategist | External research with internal analysis |
 
 ### Sequential Dependencies (Require Handoffs)
@@ -135,7 +135,7 @@ Coordination:
 |---|---|---|
 | ui-designer → frontend-engineer | Design specs needed for implementation | Design handoff via specifications |
 | mobile-ui → frontend-engineer | Platform requirements for implementation | Platform compliance checklist |
-| api-engineer → backend-dev | API specifications needed for implementation | OpenAPI specs and contract delivery |
+| api-engineer → backend-engineer | API specifications needed for implementation | OpenAPI specs and contract delivery |
 | codebase-analyst → implementation agents | Analysis insights guide implementation | Executive summary with action items |
 | researcher → implementation agents | External context informs technical decisions | Research findings and recommendations |
 | implementation agents → test-engineer | Code needed for test development | Feature implementation completion |

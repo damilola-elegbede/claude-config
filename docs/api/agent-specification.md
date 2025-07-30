@@ -260,7 +260,7 @@ Solution: Add the tools field with appropriate permissions
 
 #### Name Mismatch
 ```
-Error: Name mismatch: YAML says 'backend-staff' but filename is 'backend-engineer.md'
+Error: Name mismatch: YAML says 'backend-engineer' but filename is 'backend-engineer.md'
 Solution: Ensure name field matches filename
 ```
 

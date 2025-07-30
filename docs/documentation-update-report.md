@@ -6,8 +6,8 @@ All documentation has been updated to reflect the consolidated 26-agent system.
 ## Key Changes Made
 
 ### Agent Name Standardization
-- backend-staff → backend-engineer
-- frontend-staff → frontend-engineer
+- backend-engineer → backend-engineer
+- frontend-engineer → frontend-engineer
 - mobile-dev → mobile-engineer
 - mobile-designer → mobile-ui
 - a11y-auditor → accessibility-auditor
@@ -16,7 +16,7 @@ All documentation has been updated to reflect the consolidated 26-agent system.
 - fullstack-dev → fullstack-lead
 
 ### Deprecated Agents Removed
-- qa-tester (merged into test-engineer)
+- test-engineer (merged into test-engineer)
 - doc-updater (merged into tech-writer)
 - reliability-engineer (merged into platform-engineer)
 - senior-dev, test-data-manager, agent-architect, agent-auditor, arch-reviewer, tech-lead (removed)

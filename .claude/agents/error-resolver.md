@@ -1,7 +1,7 @@
 ---
 name: error-resolver
 description: Automatically gathers context from errors and suggests targeted fixes
-color: orange
+color: teal
 category: operations
 tools: Read, Write, Edit, Grep, Glob, Bash, TodoWrite
 ---

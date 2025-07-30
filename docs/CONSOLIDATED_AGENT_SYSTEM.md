@@ -10,7 +10,7 @@ The agent ecosystem has been consolidated from 26 agents.
 1. **api-designer** → merged into `api-architect`
 2. **api-engineer** → merged into `api-architect` 
 3. **product-strategy** → removed (kept `product-strategist`)
-4. **backend-dev** → removed (standardized on `backend-engineer`)
+4. **backend-engineer** → removed (standardized on `backend-engineer`)
 5. **tech-researcher** → merged into `researcher`
 6. **doc-updater** → capabilities merged into `tech-writer`
 7. **completion-agent** → capabilities merged into `tech-writer`

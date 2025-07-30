@@ -19,8 +19,8 @@ This document summarizes the comprehensive documentation update performed for th
 
 #### Individual Agent Definitions
 Created detailed specifications for key agents:
-- `/agents/backend-staff.md` - Staff Backend Engineer agent
-- `/agents/frontend-staff.md` - Staff Frontend Engineer agent  
+- `/agents/backend-engineer.md` - Staff Backend Engineer agent
+- `/agents/frontend-engineer.md` - Staff Frontend Engineer agent  
 - `/agents/test-engineer.md` - Test Automation Engineer agent
 - `/agents/tech-writer.md` - Technical Documentation Specialist agent
 - `/agents/security-auditor.md` - Security Assessment Specialist agent

@@ -1,7 +1,7 @@
 ---
 name: product-strategist
 description: Use for product vision, feature prioritization, and go-to-market strategy. MUST BE USED for roadmap planning, user research, and business model design
-color: orange
+color: teal
 category: operations
 tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite
 ---

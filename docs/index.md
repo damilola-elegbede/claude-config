@@ -67,8 +67,8 @@ This documentation provides comprehensive information about the consolidated Cla
 ## Agent Categories
 
 ### 1. Implementation Agents
-- **backend-staff** - Complex backend systems
-- **frontend-staff** - Complex UI and real-time features
+- **backend-engineer** - Complex backend systems
+- **frontend-engineer** - Complex UI and real-time features
 - **fullstack-lead** - General implementation
 - **mobile-staff** - iOS/Android development
 - **api-engineer** - API design and contracts
@@ -82,7 +82,7 @@ This documentation provides comprehensive information about the consolidated Cla
 ### 3. Quality Assurance Agents
 - **code-reviewer** - Code quality and style
 - **security-auditor** - Security vulnerabilities
-- **qa-tester** - Test strategy and coverage
+- **test-engineer** - Test strategy and coverage
 - **test-engineer** - Test implementation
 
 ### 4. Strategic Planning Agents

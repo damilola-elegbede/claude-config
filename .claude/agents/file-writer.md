@@ -2,7 +2,7 @@
 name: file-writer
 description: Efficient batch file writing and template-based file generation specialist
 tools: Read, Write, Glob
-color: orange
+color: teal
 category: operations
 ---
 

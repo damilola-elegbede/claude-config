@@ -1,7 +1,7 @@
 ---
 name: search-coordinator
 description: Executes complex multi-pattern searches with maximum efficiency
-color: orange
+color: teal
 category: operations
 tools: Grep, Glob, Bash
 ---

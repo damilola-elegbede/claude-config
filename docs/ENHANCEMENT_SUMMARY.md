@@ -87,8 +87,8 @@ tool_access: [access_level]
 **Parallel Execution Groups:**
 
 #### Development Workflow
-- **Primary**: frontend-engineer + backend-dev + fullstack-lead
-- **Quality**: code-reviewer + security-auditor + qa-tester  
+- **Primary**: frontend-engineer + backend-engineer + fullstack-lead
+- **Quality**: code-reviewer + security-auditor + test-engineer  
 - **Design**: ui-designer + mobile-ui
 
 #### Analysis Workflow
@@ -107,7 +107,7 @@ tool_access: [access_level]
 **Tool Access Categories:**
 
 #### Full Access (Implementation Agents)
-- **Agents**: backend-dev, frontend-engineer, fullstack-lead, devops, platform-engineer, qa-tester
+- **Agents**: backend-engineer, frontend-engineer, fullstack-lead, devops, platform-engineer, test-engineer
 - **Tools**: All tools for complete implementation capabilities
 - **Justification**: Implementation requires code modification and system configuration
 
@@ -144,13 +144,13 @@ Phase 1 - Planning (Parallel):
   
 Phase 2 - Implementation (Parallel):
   - frontend-engineer: UI development
-  - backend-dev: API development
+  - backend-engineer: API development
   - devops: Infrastructure preparation
   
 Phase 3 - Quality (Parallel):
   - code-reviewer: Code quality
   - security-auditor: Security assessment
-  - qa-tester: Test implementation
+  - test-engineer: Test implementation
 ```
 
 #### Emergency Production Issues
@@ -158,7 +158,7 @@ Phase 3 - Quality (Parallel):
 Immediate Response (Parallel):
   - debugger: Root cause investigation
   - platform-engineer: System stability
-  - backend-dev: Quick fixes
+  - backend-engineer: Quick fixes
   - devops: Deployment coordination
 ```
 
@@ -231,9 +231,9 @@ Orchestration Level:
 
 Implementation Level:
 ├── Staff Agents (Complex implementation)
-│   ├── backend-dev
+│   ├── backend-engineer
 │   ├── frontend-engineer
-│   └── qa-tester
+│   └── test-engineer
 ├── Senior Agents (Standard implementation)
 │   └── fullstack-lead
 └── Specialist Agents (Domain expertise)

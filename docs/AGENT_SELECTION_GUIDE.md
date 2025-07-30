@@ -52,7 +52,7 @@ Task Request → fullstack-lead → [complexity assessment] → staff agents →
 
 ### Quality Assurance Workflow
 ```
-Code Complete → code-reviewer → [parallel: security-auditor, qa-tester] → implementation agents
+Code Complete → code-reviewer → [parallel: security-auditor, test-engineer] → implementation agents
 ```
 
 ### Analysis Request Flow
@@ -81,8 +81,8 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 ## Parallel Execution Groups
 
 ### Development Workflow
-- **Primary**: `frontend-engineer` + `backend-dev` + `fullstack-lead`
-- **Quality**: `code-reviewer` + `security-auditor` + `qa-tester`
+- **Primary**: `frontend-engineer` + `backend-engineer` + `fullstack-lead`
+- **Quality**: `code-reviewer` + `security-auditor` + `test-engineer`
 - **Design**: `ui-designer` + `mobile-ui` (cross-platform consistency)
 
 ### Analysis Workflow  
@@ -96,7 +96,7 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 
 | Access Level | Agents | Capabilities |
 |---|---|---|
-| **Full Access** | backend-dev, frontend-engineer, fullstack-lead | All tools for implementation |
+| **Full Access** | backend-engineer, frontend-engineer, fullstack-lead | All tools for implementation |
 | **Read + Analysis** | codebase-analyst, security-auditor, debugger | Read tools + analysis + TodoWrite |
 | **Orchestration** | principal-architect, project-orchestrator | Full access + project management |
 | **Documentation** | tech-writer | Read/write + documentation tools |
@@ -114,7 +114,7 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 - Using `general-purpose` for API design → Use `api-engineer`
 
 ### ❌ Missing Parallel Opportunities
-- Sequential code review → Run `code-reviewer` + `security-auditor` + `qa-tester` in parallel
+- Sequential code review → Run `code-reviewer` + `security-auditor` + `test-engineer` in parallel
 - Single-threaded analysis → Use multiple analysis agents concurrently
 - Independent implementation → Parallel frontend/backend development
 

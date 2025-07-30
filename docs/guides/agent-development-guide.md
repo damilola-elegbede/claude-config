@@ -69,7 +69,7 @@ Choose from the eight official categories defined in `AGENT_CATEGORIES.md`:
 | quality | green | Testing, review, and validation |
 | security | red | Security assessment and compliance |
 | analysis | yellow | Research, documentation, and analysis |
-| operations | orange | Support, coordination, and strategic planning |
+| operations | teal | Support, coordination, and strategic planning |
 
 ### Step 4: Write Agent Instructions
 

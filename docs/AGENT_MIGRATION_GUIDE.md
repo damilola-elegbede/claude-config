@@ -134,7 +134,7 @@ This guide helps users transition from the original 36-agent system to the new c
 | `frontend-engineer` | `frontend-engineer` | Consistent "engineer" naming pattern |
 
 **Migration Impact:**
-- **Old commands**: `Task backend-staff` or `Task frontend-staff`
+- **Old commands**: `Task backend-engineer` or `Task frontend-engineer`
 - **New commands**: `Task backend-engineer` or `Task frontend-engineer`
 - **Benefit**: Consistent professional titles across all implementation agents
 
@@ -173,10 +173,10 @@ This guide helps users transition from the original 36-agent system to the new c
 ### Before: Overlapping Responsibilities (75% accuracy)
 
 **Common Confusion Points:**
-- API work: api-designer vs api-engineer vs backend-staff
+- API work: api-designer vs api-engineer vs backend-engineer
 - Research: tech-researcher vs researcher
 - Documentation: tech-writer vs completion-agent vs tech-writer
-- Backend: backend-dev vs backend-engineer vs backend-engineer
+- Backend: backend-engineer vs backend-engineer vs backend-engineer
 - Mobile: mobile-engineer vs mobile-engineer vs mobile-designer
 - Testing: qa-engineer vs test-engineer
 - Reliability: platform-engineer vs platform-engineer vs platform-engineer

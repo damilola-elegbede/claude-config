@@ -10,7 +10,7 @@ This guide explains the rationale behind tool access restrictions for each agent
 **Tools**: All tools including Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit
 
 #### Implementation Agents
-- **backend-dev**: Needs full access for complex server-side implementation, database modifications, and system configuration
+- **backend-engineer**: Needs full access for complex server-side implementation, database modifications, and system configuration
 - **frontend-engineer**: Requires all tools for UI implementation, build system configuration, and performance optimization
 - **fullstack-lead**: Standard implementation agent needing complete toolset for feature development and bug fixes
 - **devops**: Essential for infrastructure automation, CI/CD configuration, and deployment scripts
@@ -64,7 +64,7 @@ This guide explains the rationale behind tool access restrictions for each agent
 **Tools**: Varies by agent role and responsibilities
 
 #### QA Agents
-- **qa-tester**: Full access needed for test implementation, framework configuration, and quality automation
+- **test-engineer**: Full access needed for test implementation, framework configuration, and quality automation
 - **code-reviewer**: Read + analysis access for objective code quality assessment without implementation bias
 
 **Justification**: Testing requires implementation capabilities while code review benefits from objective, read-only analysis.
