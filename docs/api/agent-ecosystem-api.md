@@ -61,7 +61,6 @@ paths:
                   type: string
                   description: Detailed task instructions for the agent
                 subagent_type:
-                  type: string
                   $ref: '#/components/schemas/AgentType'
       responses:
         200:
@@ -72,8 +71,7 @@ paths:
                 type: object
                 properties:
                   status:
-                    type: string
-                    $ref: '#/components/schemas/AgentType'
+                    $ref: '#/components/schemas/ExecutionStatus'
                   result:
                     type: string
                     description: Agent's response and findings
@@ -175,12 +173,10 @@ components:
           description: Comma-separated list of tools
           example: "Read, Write, Edit, Grep, Glob, LS, Bash"
         color:
-          type: string
-          $ref: '#/components/schemas/AgentType'
+          $ref: '#/components/schemas/AgentColor'
           description: Visual identifier color
         category:
-          type: string
-          $ref: '#/components/schemas/AgentType'
+          $ref: '#/components/schemas/AgentCategory'
           description: Agent category classification
 ```
 
@@ -255,6 +251,40 @@ components:
         - codebase-analyst
         - principal-architect
         - mobile-ui
+
+    ExecutionStatus:
+      type: string
+      description: Agent execution status
+      enum:
+        - pending
+        - running
+        - completed
+        - failed
+        - timeout
+
+    AgentColor:
+      type: string
+      description: Agent visual identifier colors
+      enum:
+        - blue
+        - red
+        - yellow
+        - purple
+        - teal
+        - "#FFD700"
+
+    AgentCategory:
+      type: string
+      description: Agent category classifications
+      enum:
+        - development
+        - infrastructure
+        - architecture
+        - design
+        - quality
+        - security
+        - analysis
+        - operations
     
     AgentInfo:
       type: object

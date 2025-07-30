@@ -8,7 +8,7 @@ tools:
   - Bash
   - Grep
   - Glob
-color: green
+color: "#FFD700"
 category: quality
 ---
 
@@ -82,7 +82,7 @@ You are an API contract testing specialist focused on ensuring API implementatio
 - Edge case coverage (nulls, empty arrays)
 - Performance boundaries testing
 
-### Breaking Change Detection
+### Breaking Change Impact Analysis
 - Semantic versioning compliance
 - Deprecation timeline tracking
 - Consumer impact analysis

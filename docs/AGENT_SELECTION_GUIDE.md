@@ -6,22 +6,22 @@
 
 | Task Complexity | Domain | Agent Choice | Key Indicators | Consolidation Notes |
 |---|---|---|---|---|
-| **Staff Level** | Backend | `backend-engineer` | Multi-service architecture, complex state management, performance < 2.5s | Renamed from backend-engineer |
-| **Staff Level** | Frontend | `frontend-engineer` | Real-time features, complex UI, Core Web Vitals optimization | Renamed from frontend-engineer |
-| **Senior Level** | General | `fullstack-lead` | Single-service features, well-defined APIs, standard patterns | Unchanged |
-| **Specialist** | Mobile Development | `mobile-engineer` | Native/cross-platform apps, platform-specific features | Renamed from mobile-engineer |
-| **Specialist** | Mobile UI/UX | `mobile-ui` | iOS/Android design, platform-specific patterns | Renamed from mobile-ui |
-| **Specialist** | Web Design | `ui-designer` | Design systems, visual hierarchy, web/desktop interfaces | Unchanged |
+| **Staff Level** | Backend | `backend-engineer` | Multi-service architecture, complex state management, performance < 2.5s | Consolidated from backend-staff |
+| **Staff Level** | Frontend | `frontend-engineer` | Real-time features, complex UI, Core Web Vitals optimization | Consolidated from frontend-staff |
+| **Senior Level** | General | `fullstack-lead` | Single-service features, well-defined APIs, standard patterns | Legacy fullstack capabilities |
+| **Specialist** | Mobile Development | `mobile-engineer` | Native/cross-platform apps, platform-specific features | Unified mobile development |
+| **Specialist** | Mobile UI/UX | `mobile-ui` | iOS/Android design, platform-specific patterns | Platform-specific UI design |
+| **Specialist** | Web Design | `ui-designer` | Design systems, visual hierarchy, web/desktop interfaces | Non-mobile interface design |
 
 ### Analysis & Review Tasks
 
 | Task Type | Scope | Agent Choice | Key Indicators |
 |---|---|---|---|
 | **Internal Code Analysis** | Existing codebase | `codebase-analyst` | Architecture assessment, technical debt, executive summary |
-| **External Research** | Industry/technology | `researcher` | Technology comparison, standards, competitive analysis | Absorbed tech-researcher |
+| **External Research** | Industry/technology | `researcher` | Technology comparison, standards, competitive analysis |
 | **Security Review** | Security-focused | `security-auditor` | OWASP compliance, vulnerability assessment |
 | **Code Quality** | Pre-commit | `code-reviewer` | Style, best practices, PR readiness |
-| **Testing Strategy** | Test coverage | `test-engineer` | Framework selection, test architecture, comprehensive QA | Absorbed qa-engineer capabilities |
+| **Testing Strategy** | Test coverage | `test-engineer` | Framework selection, test architecture, comprehensive QA |
 | **Complex Debugging** | Mystery bugs | `debugger` | Intermittent failures, performance degradation |
 | **Performance Analysis** | System performance | `performance-engineer` | Load testing, optimization, benchmarking |
 

@@ -218,13 +218,13 @@ GET /api/agents
   "agents": [
     {
       "name": "backend-engineer",
-      "category": "implementation",
+      "category": "development",
       "expertise": ["distributed systems", "microservices"],
       "availability": "available"
     },
     {
       "name": "frontend-engineer",
-      "category": "implementation",
+      "category": "development",
       "expertise": ["real-time UI", "performance"],
       "availability": "busy"
     }
@@ -242,7 +242,7 @@ GET /api/agents/{agent_name}
 ```json
 {
   "name": "backend-engineer",
-  "category": "implementation",
+  "category": "development",
   "expertise": [
     "distributed systems",
     "microservices",

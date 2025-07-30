@@ -41,16 +41,18 @@ tools: Read, Write, Edit, Grep, Glob
 - **Example**: `"Use for building server-side systems, APIs, microservices. MUST BE USED for high-performance optimization (>10k RPS)"`
 
 #### `color` (string, required)
-- **Type**: String (enum)
-- **Valid Values**: `blue`, `green`, `red`, `purple`, `yellow`, `orange`, `white`, `brown`, `cyan`, `pink`
+- **Type**: String (color name or hex code)
+- **Valid Color Names**: `blue`, `green`, `red`, `purple`, `yellow`, `orange`, `white`, `brown`, `cyan`, `pink`, `teal`
+- **Valid Hex Codes**: `#FFD700` (gold), `#008080` (teal), etc.
 - **Description**: Visual identifier color for the agent
-- **Constraints**: Must match the agent's category color assignment (see Category Colors section)
+- **Constraints**: Should align with the agent's category color assignment (see Category Colors section)
 
 #### `tools` (string, required)
 - **Type**: String (comma-separated list)
 - **Description**: Tools the agent has permission to use
 - **Format**: Tool names separated by commas and optional spaces
 - **Example**: `"Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite"`
+- **Empty Tools**: Use empty string or no value for agents with no tool access
 
 ### Optional Fields
 
@@ -64,8 +66,8 @@ tools: Read, Write, Edit, Grep, Glob
 
 ### Categories and Color Assignments
 
-| Category | Color | Purpose |
-|----------|-------|---------|
+| Category | Primary Color | Purpose |
+|----------|---------------|---------|
 | `development` | `blue` | Core programming and implementation |
 | `infrastructure` | `orange` | Systems, operations, and deployment |
 | `architecture` | `purple` | System design and technical planning |
@@ -73,18 +75,19 @@ tools: Read, Write, Edit, Grep, Glob
 | `quality` | `green` | Testing, review, and validation |
 | `security` | `red` | Security assessment and compliance |
 | `analysis` | `yellow` | Research, documentation, and analysis |
-| `operations` | `orange` | Support, coordination, and strategic planning |
+| `operations` | `teal` | Support, coordination, and strategic planning |
 
 ### Category Rules
-1. Each agent must be assigned to exactly one category
-2. The agent's `color` field must match their category's assigned color
+1. Each agent should be assigned to exactly one category
+2. The agent's `color` field should generally align with their category's color
 3. Categories determine the agent's primary focus area and expertise
+4. Some flexibility exists for color variations (e.g., hex codes like `#FFD700` for specialized agents)
 
 ## Tool Permissions
 
 ### Available Tools
 
-Tools define what capabilities an agent has access to. Common tools include:
+Tools define what capabilities an agent has access to. Current available tools include:
 
 #### File System Tools
 - `Read` - Read file contents
@@ -127,7 +130,17 @@ tools: Read, Grep, Glob, LS, TodoWrite
 tools: Read, Grep, Glob, LS
 ```
 
-## Complete Specification Example
+**Research Agents**: Read access with web capabilities
+```yaml
+tools: Read, Grep, Glob, LS, TodoWrite, WebFetch
+```
+
+**Specialized Tools**: Some agents may have unique tool combinations
+```yaml
+tools: Read, Edit, MultiEdit, Write, Grep, Glob, LS, WebFetch, WebSearch, TodoWrite
+```
+
+## Complete Specification Examples
 
 ### Backend Engineer Agent
 
@@ -141,10 +154,6 @@ tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 ---
 
 # Backend Engineer
-
-## Working with Claude Orchestration Engine
-
-You are a specialized agent working under the coordination of Claude...
 
 ## Identity
 You are an expert backend engineer specializing in server-side architecture...
@@ -166,11 +175,25 @@ tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite
 
 # API Documenter
 
-## Working with Claude Orchestration Engine
-[Standard orchestration section...]
-
 ## Identity
 You are an API documentation specialist...
+```
+
+### Accessibility Auditor Agent
+
+```yaml
+---
+name: accessibility-auditor
+description: Use for WCAG compliance audits, screen reader testing, keyboard navigation checks, and accessibility remediation. MUST BE USED when implementing accessible UI components or fixing accessibility violations
+color: "#FFD700"
+category: quality
+tools: Read, Edit, MultiEdit, Write, Grep, Glob, LS, WebFetch, WebSearch, TodoWrite
+---
+
+# Accessibility Expert
+
+## Identity
+You are an accessibility expert specializing in WCAG compliance...
 ```
 
 ## Agent Loading and Discovery
@@ -192,13 +215,18 @@ The following files in the agents directory are documentation, not agent definit
 - `AGENT_CATEGORIES.md`
 - `AGENT_TEMPLATE.md`
 - `AUDIT_VERIFICATION_PROTOCOL.md`
-- Other documentation files
+- `AGENT_SELECTION_GUIDE.md`
+- `ENHANCEMENT_SUMMARY.md`
+- `PARALLEL_EXECUTION_GUIDE.md`
+- `SECURITY_ACCESS_PATTERNS.md`
+- `TOOL_ACCESS_GUIDE.md`
+- `TOOL_ACCESS_STANDARDIZATION_SUMMARY.md`
 
 ## Validation Rules
 
 ### Required Field Validation
 1. All required fields must be present
-2. Fields must have non-empty values
+2. Fields must have non-empty values (except tools which can be empty)
 3. Field types must match schema
 
 ### Name Validation
@@ -212,12 +240,12 @@ The following files in the agents directory are documentation, not agent definit
 - Should include "MUST BE USED" conditions when applicable
 
 ### Color Validation
-- Must be from the valid color list
-- Should match category assignment
-- Consistency across similar agents
+- Must be from the valid color list or a valid hex code
+- Should generally align with category assignment
+- Consistency across similar agents is preferred
 
 ### Tools Validation
-- Must be comma-separated list
+- Must be comma-separated list or empty string
 - Tool names must be valid
 - No duplicate tools
 - Appropriate for agent's role
@@ -244,7 +272,7 @@ description: Use for building React/Vue/Angular apps, state management, and fron
 
 ### Category Assignment
 1. Choose the most appropriate primary category
-2. Ensure color matches category
+2. Ensure color generally matches category
 3. Consider the agent's main focus
 4. Review similar agents for consistency
 
@@ -255,7 +283,7 @@ description: Use for building React/Vue/Angular apps, state management, and fron
 #### Missing Required Field
 ```
 Error: Missing required field: tools
-Solution: Add the tools field with appropriate permissions
+Solution: Add the tools field with appropriate permissions (or empty string)
 ```
 
 #### Name Mismatch
@@ -266,8 +294,8 @@ Solution: Ensure name field matches filename
 
 #### Invalid Color
 ```
-Error: Invalid color 'teal'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan, pink
-Solution: Use a valid color from the list
+Error: Invalid color 'lime'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan, pink, teal
+Solution: Use a valid color from the list or a hex code like #FFD700
 ```
 
 #### Description Too Long
