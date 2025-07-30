@@ -76,7 +76,7 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 - **Mobile UI**: iOS HIG compliance, Android Material Design, touch interfaces
 - **UI Designer**: Web/desktop only, design systems, visual hierarchy
 - **Security Auditor**: OWASP Top 10, penetration testing, compliance
-- **QA Engineer**: Test strategy, framework setup, coverage analysis
+- **test-engineer**: Test strategy, framework setup, coverage analysis
 
 ## Parallel Execution Groups
 
