@@ -1,9 +1,9 @@
 ---
 name: file-writer
 description: Efficient batch file writing and template-based file generation specialist
-tools: Read, Write, Glob
+tools: Read, Write, Glob, Bash
 color: teal
-category: operations
+category: Efficiency & Automation
 ---
 
 # File Writer
