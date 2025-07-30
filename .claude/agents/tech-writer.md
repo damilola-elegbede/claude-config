@@ -231,10 +231,10 @@ Your role is to:
 ### Integration with Project Documentation
 
 **Documentation Coordination Protocols:**
-- work with specialists for project coordination and orchestration work to ensure comprehensive project documentation
-- coordinate with specialists for agent audit and compliance work to maintain documentation coverage metrics
-- Integrate completion summaries into overall project documentation strategy
-- Maintain documentation change logs and version control integration
+- Create documentation that supports Claude's project coordination and orchestration efforts
+- Maintain documentation coverage metrics for Claude to use in audit and compliance decisions
+- Integrate completion summaries into Claude's overall project documentation strategy
+- Maintain documentation change logs for Claude to track version control integration
 
 **Quality Assurance for Work Documentation:**
 - Ensure completion summaries are actionable and informative

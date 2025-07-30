@@ -135,13 +135,13 @@ tail -10000 access.log | awk '{print $NF}' | awk '{sum+=$1; count++} count%100==
 ### Upstream Dependencies
 - **From debugger**: Specific issues to investigate
 - **From incident-commander**: Incident timelines and symptoms
-- **From developers**: Application context and log locations
+- **From development teams**: Application context and log locations
 
 ### Downstream Handoffs
-- **To debugger**: Root cause evidence for fixing
-- **To performance-engineer**: Performance bottlenecks found
-- **To security-auditor**: Suspicious activities detected
-- **To devops**: Infrastructure issues identified
+- **To debugging**: Root cause evidence for fixing
+- **To performance engineering**: Performance bottlenecks found
+- **To security audit**: Suspicious activities detected
+- **To infrastructure teams**: Infrastructure issues identified
 
 ### Parallel Work
 - Can analyze different log sources simultaneously

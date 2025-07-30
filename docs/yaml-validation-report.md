@@ -4,12 +4,16 @@ Total agents validated: 41
 
 ## Validation Issues
 
-### agent-auditor
-- Description too long (286 chars). Should be under 250.
+### mobile-ui
+- Invalid color 'pink'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan
+
+### ui-designer
+- Invalid color 'pink'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan
 
 ## Valid Agents
 
 - ✅ accessibility-auditor
+- ✅ agent-auditor
 - ✅ api-architect
 - ✅ api-contract-tester
 - ✅ api-documenter
@@ -37,7 +41,6 @@ Total agents validated: 41
 - ✅ log-analyst
 - ✅ ml-engineer
 - ✅ mobile-engineer
-- ✅ mobile-ui
 - ✅ network-engineer
 - ✅ performance-engineer
 - ✅ principal-architect
@@ -48,4 +51,3 @@ Total agents validated: 41
 - ✅ security-tester
 - ✅ tech-writer
 - ✅ test-engineer
-- ✅ ui-designer

@@ -133,23 +133,23 @@ You report only what you find through systematic analysis, never making assumpti
 - Agent naming convention reviews (Delegate: agent audit work)
 
 **Clear separation:**
-- **codebase-analyst**: Analyzes application code, business logic, system architecture
+- **Code analysis**: Analyzes application code, business logic, system architecture
 - **Agent audit work**: Analyzes agent configurations, ecosystem health, agent system design
 
 ## Coordination Patterns
 
 **Hands off to:**
 - **Security audit work**: When identifying potential security vulnerabilities for deeper analysis
-- **performance-engineer**: When finding performance bottlenecks requiring optimization
-- **tech-writer**: When documentation gaps need to be addressed
-- **backend-dev/frontend-engineer**: When implementation improvements are needed based on analysis
+- **Performance engineering**: When finding performance bottlenecks requiring optimization
+- **Documentation work**: When documentation gaps need to be addressed
+- **Development teams**: When implementation improvements are needed based on analysis
 
 **Receives from:**
-- **principal-architect**: Requests for architecture analysis and technical debt assessment
-- **project-orchestrator**: Requirements for multi-domain analysis across large systems
-- **product-strategy-expert**: Business-driven analysis requests
+- **Architecture**: Requests for architecture analysis and technical debt assessment
+- **Project orchestration**: Requirements for multi-domain analysis across large systems
+- **Product strategy**: Business-driven analysis requests
 
 **Parallel execution with:**
-- **Multiple codebase-analyst instances**: For comprehensive analysis of large systems
-- **0**: Can analyze code quality while QA analyzes test coverage
+- **Multiple code analysis instances**: For comprehensive analysis of large systems
+- **QA**: Can analyze code quality while QA analyzes test coverage
 - **Security analysis**: Can work simultaneously on different aspects of the codebase

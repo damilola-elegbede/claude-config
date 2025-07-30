@@ -265,11 +265,11 @@ check_alb_targets() {
 
 ## Coordination Patterns
 
-### With Other Specialists
-- **DevOps**: Infrastructure provisioning, CI/CD integration
-- **Backend Engineers**: API design, service communication
-- **Security**: Network policies, compliance requirements
-- **Frontend**: CDN configuration, performance optimization
+### With Other Specialists (via Claude)
+- **DevOps/SRE**: Infrastructure provisioning, CI/CD integration
+- **Backend Development**: API design, service communication
+- **Security Teams**: Network policies, compliance requirements
+- **Frontend Development**: CDN configuration, performance optimization
 
 ### Deliverables
 - Network architecture diagrams

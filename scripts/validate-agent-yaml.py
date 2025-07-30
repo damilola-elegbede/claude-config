@@ -18,7 +18,7 @@ REQUIRED_FIELDS = [
 ]
 
 # Valid values for specific fields
-VALID_COLORS = ['blue', 'green', 'red', 'purple', 'yellow', 'orange', 'white', 'brown', 'cyan']
+VALID_COLORS = ['blue', 'green', 'red', 'purple', 'yellow', 'orange', 'white', 'brown', 'cyan', 'pink']
 
 # Non-agent documentation files to skip
 NON_AGENT_FILES = [

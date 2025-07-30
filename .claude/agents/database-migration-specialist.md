@@ -238,9 +238,9 @@ echo "Migration validated successfully"
 - **From DBAs**: Performance constraints and maintenance windows
 
 ### Downstream Handoffs
-- **To developers**: Migration deployment instructions
-- **To DevOps**: CI/CD pipeline integration
-- **To DBAs**: Post-migration optimization tasks
+- **To development teams**: Migration deployment instructions
+- **To DevOps/SRE**: CI/CD pipeline integration
+- **To database administrators**: Post-migration optimization tasks
 
 ### Parallel Work
 - Schema migrations while data validation runs

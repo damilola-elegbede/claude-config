@@ -391,11 +391,11 @@ async function callExternalAPI(endpoint, options, retries = 3) {
 
 ## Coordination Patterns
 
-### With Other Specialists
-- **Backend Engineers**: API endpoint design
-- **Security**: Authentication implementation
-- **DevOps**: Secret management, deployment
-- **Frontend**: SDK integration, error handling
+### With Other Specialists (via Claude)
+- **Backend Development**: API endpoint design
+- **Security Teams**: Authentication implementation
+- **DevOps/SRE**: Secret management, deployment
+- **Frontend Development**: SDK integration, error handling
 
 ### Deliverables
 - Integration documentation

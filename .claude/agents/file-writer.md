@@ -150,10 +150,10 @@ mkdir -p src/{components,utils,services} tests docs config
 
 ## Coordination
 
-- **With code-generator**: Receive generated code for batch creation
-- **With project-orchestrator**: Follow project structure guidelines
-- **With tech-writer**: Coordinate on documentation generation
-- **With testing specialists**: Create test file structures
+- **From Claude + code generation**: Receive generated code for batch creation
+- **From Claude + project orchestration**: Follow project structure guidelines provided by Claude
+- **From Claude + documentation**: Create files based on documentation content from Claude
+- **From Claude + testing**: Create test file structures as directed by Claude
 
 ## Example Workflows
 
