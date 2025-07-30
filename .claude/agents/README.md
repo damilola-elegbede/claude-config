@@ -1,7 +1,7 @@
 # Claude Agent Ecosystem
 
 ## Overview
-The Claude agent ecosystem consists of 41 specialized agents organized across 8 functional domains, providing comprehensive coverage of the software development lifecycle with sophisticated coordination patterns and parallel execution capabilities.
+The Claude agent ecosystem consists of 41 specialized agents organized across 8 functional domains, providing comprehensive coverage of the software development lifecycle.
 
 ## Agent Categories
 
@@ -149,7 +149,7 @@ Support, coordination, efficiency, and strategic planning agents
 /docs         → tech-writer
 /debug        → debugger
 /orchestrate  → project-orchestrator
-/context      → multiple codebase-analyst agents
+/context      → codebase-analyst
 /find         → file-navigator
 /deps         → dependency-manager
 /git          → git-workflow
@@ -157,15 +157,13 @@ Support, coordination, efficiency, and strategic planning agents
 /error        → error-resolver
 /search       → search-coordinator
 /find-docs    → documentation-finder
-/agent-audit  → multiple agent-auditor instances (one per category)
+/agent-audit  → agent-auditor
 ```
 
 ### Core Rules
-1. **Parallel by Default** - Always prioritize parallel execution
-2. **Use project-orchestrator for 2+ agent projects**
-3. **Multiple instances of same agent type are encouraged**
-4. **Agent-Auditor runs multiple instances for category-based audits**
-5. **Always use the right agent for the right job**
+1. **Use the right agent for the right job**
+2. **Use project-orchestrator for complex multi-agent projects**
+3. **Focus on outcomes over process**
 
 ## Agent Selection Guide
 
@@ -202,9 +200,9 @@ Support, coordination, efficiency, and strategic planning agents
 | **>100k users** | backend-engineer, frontend-engineer, principal-architect |
 | **>10k requests/sec** | backend-engineer, performance-engineer, devops |
 | **3+ microservices** | backend-engineer, api-architect, principal-architect |
-| **2+ platforms** | Multiple mobile-engineer instances |
+| **2+ platforms** | mobile-engineer |
 | **Complex debugging** | debugger, log-analyst, error-resolver |
-| **Full audit** | Multiple agent-auditor instances (one per category) |
+| **Full audit** | agent-auditor |
 
 ## Coordination Patterns
 
@@ -306,16 +304,15 @@ User query → [file-navigator + documentation-finder + search-coordinator] (par
 
 ## Best Practices
 
-### Parallel Execution
-- **DO**: Launch multiple agents simultaneously when tasks are independent
-- **DO**: Use multiple instances of the same agent for different components
-- **DO**: Run all category audits in parallel for agent ecosystem health checks
-- **DON'T**: Wait for one agent to finish before starting another unnecessarily
+### Task Execution
+- **DO**: Focus on completing assigned tasks efficiently
+- **DO**: Use specialized tools for domain-specific work
+- **DON'T**: Exceed your domain boundaries
 
 ### Agent Selection
 - **DO**: Use specialist agents for their domain (e.g., log-analyst for log analysis)
 - **DO**: Use efficiency agents (file-navigator, error-resolver) for common tasks
-- **DO**: Run multiple agent-auditor instances for comprehensive audits
+- **DO**: Use agent-auditor for file quality validation
 - **DON'T**: Use generic approaches when specialists exist
 
 ### Handoff Management
@@ -418,7 +415,7 @@ project-orchestrator → coordinated execution plan
 agent-auditor (trying to audit 40+ agents alone)
 
 # RIGHT
-Multiple agent-auditor instances (one per category)
+agent-auditor (focused file analysis)
 ```
 
 ## Success Metrics
