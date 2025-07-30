@@ -116,7 +116,7 @@ spec:
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
-              name: api-secrets
+              name: app-secrets
               key: database-url
         securityContext:
           runAsNonRoot: true

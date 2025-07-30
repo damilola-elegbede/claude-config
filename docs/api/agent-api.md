@@ -490,8 +490,11 @@ const execution = await client.orchestration.execute(plan.id);
 ### Python
 ```python
 from claude_agents import ClaudeAgents
+import os
 
-client = ClaudeAgents(api_key=os.environ['CLAUDE_API_KEY'])
+# Initialize client with environment variable
+key = os.getenv('CLAUDE_API_KEY')
+client = ClaudeAgents(api_key=key)
 
 # Command execution
 result = client.commands.execute(
