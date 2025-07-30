@@ -54,4 +54,3 @@ Follows conventional commit format:
 ## Notes
 - If pre-commit hooks modify files, the commit will be retried once
 - Empty commits are not created
-- Sensitive information is flagged before committing

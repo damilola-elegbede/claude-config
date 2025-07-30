@@ -76,4 +76,3 @@ The review provides:
 - Review depth scales with code complexity
 - Focuses on actionable feedback
 - Balances thoroughness with pragmatism
-- Learns from previous reviews in the project

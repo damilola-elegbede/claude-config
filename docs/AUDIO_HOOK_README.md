@@ -161,4 +161,3 @@ afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/
 - ✅ SubagentStop hooks trigger Chord.m4r audio notifications
 - ✅ Notification hooks trigger Aurora.m4r for permission/idle events
 - ✅ Direct afplay commands handle missing audio files gracefully
-- ✅ Audio playback is non-blocking

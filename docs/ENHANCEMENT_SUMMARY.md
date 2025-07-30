@@ -24,12 +24,12 @@ This document provides a comprehensive overview of the enhanced Claude Code agen
 
 **Critical Issues Resolved:**
 
-#### QA-Tester vs Code-Reviewer Boundaries
+#### QA-Engineer vs Code-Reviewer Boundaries
 - **Problem**: Overlapping responsibilities in code quality assessment
 - **Solution**: Clear ownership definition
-  - **QA-Tester**: Test strategy, framework selection, test implementation, coverage analysis
+  - **QA-Engineer**: Test strategy, framework selection, test implementation, coverage analysis
   - **Code-Reviewer**: Code style, best practices, maintainability, PR readiness
-- **Coordination Protocol**: QA-Tester provides quality metrics → Code-Reviewer evaluates overall readiness
+- **Coordination Protocol**: QA-Engineer provides quality metrics → Code-Reviewer evaluates overall readiness
 
 #### Debugger vs Performance-Engineer Boundaries  
 - **Problem**: Confusion between debugging performance issues vs systematic performance optimization
@@ -87,13 +87,13 @@ tool_access: [access_level]
 **Parallel Execution Groups:**
 
 #### Development Workflow
-- **Primary**: frontend-staff + backend-staff + senior-dev
-- **Quality**: code-reviewer + security-auditor + qa-tester  
+- **Primary**: frontend-engineer + backend-engineer + fullstack-lead
+- **Quality**: code-reviewer + security-auditor + test-engineer  
 - **Design**: ui-designer + mobile-ui
 
 #### Analysis Workflow
 - **Technical**: codebase-analyst + debugger + security-auditor + performance-engineer
-- **Strategic**: principal-architect + product-strategy-expert + project-orchestrator
+- **Strategic**: principal-architect + product-strategist + project-orchestrator
 - **Infrastructure**: devops + platform-engineer
 
 **Performance Benefits:**
@@ -107,7 +107,7 @@ tool_access: [access_level]
 **Tool Access Categories:**
 
 #### Full Access (Implementation Agents)
-- **Agents**: backend-staff, frontend-staff, senior-dev, devops, platform-engineer, qa-tester
+- **Agents**: backend-engineer, frontend-engineer, fullstack-lead, devops, platform-engineer, test-engineer
 - **Tools**: All tools for complete implementation capabilities
 - **Justification**: Implementation requires code modification and system configuration
 
@@ -117,7 +117,7 @@ tool_access: [access_level]
 - **Justification**: Objective analysis without implementation bias
 
 #### Orchestration Access (Leadership Agents)
-- **Agents**: principal-architect, project-orchestrator, product-strategy-expert
+- **Agents**: principal-architect, project-orchestrator, product-strategist
 - **Tools**: Full access + project management capabilities
 - **Justification**: Leadership requires comprehensive coordination abilities
 
@@ -139,18 +139,18 @@ tool_access: [access_level]
 ```yaml
 Phase 1 - Planning (Parallel):
   - principal-architect: System design
-  - product-strategy-expert: Requirements
+  - product-strategist: Requirements
   - ui-designer: Design specifications
   
 Phase 2 - Implementation (Parallel):
-  - frontend-staff: UI development
-  - backend-staff: API development
+  - frontend-engineer: UI development
+  - backend-engineer: API development
   - devops: Infrastructure preparation
   
 Phase 3 - Quality (Parallel):
   - code-reviewer: Code quality
   - security-auditor: Security assessment
-  - qa-tester: Test implementation
+  - test-engineer: Test implementation
 ```
 
 #### Emergency Production Issues
@@ -158,7 +158,7 @@ Phase 3 - Quality (Parallel):
 Immediate Response (Parallel):
   - debugger: Root cause investigation
   - platform-engineer: System stability
-  - backend-staff: Quick fixes
+  - backend-engineer: Quick fixes
   - devops: Deployment coordination
 ```
 
@@ -227,15 +227,15 @@ Multi-Perspective Analysis (Parallel):
 Orchestration Level:
 ├── principal-architect (System-wide decisions)
 ├── project-orchestrator (Multi-agent coordination)
-└── product-strategy-expert (Business strategy)
+└── product-strategist (Business strategy)
 
 Implementation Level:
 ├── Staff Agents (Complex implementation)
-│   ├── backend-staff
-│   ├── frontend-staff
-│   └── qa-tester
+│   ├── backend-engineer
+│   ├── frontend-engineer
+│   └── test-engineer
 ├── Senior Agents (Standard implementation)
-│   └── senior-dev
+│   └── fullstack-lead
 └── Specialist Agents (Domain expertise)
     ├── mobile-ui
     ├── ui-designer
@@ -291,5 +291,3 @@ The enhanced Claude Code agent system represents a **36% expansion** in capabili
 - **Efficient parallel execution** patterns for maximum velocity
 - **Robust security framework** with appropriate access controls
 - **Comprehensive documentation** for easy adoption
-
-This foundation enables **enterprise-scale development** with **staff-level engineering standards** across all development activities, delivering both **velocity improvements** and **quality assurance** through systematic multi-agent coordination.

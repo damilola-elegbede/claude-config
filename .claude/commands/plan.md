@@ -55,4 +55,3 @@ Use this command when you want:
 ## Notes
 - This command enforces the planning workflow from CLAUDE.md
 - Without `/plan`, I will proceed directly with implementation for straightforward tasks
-- Plans can be iteratively refined based on your feedback

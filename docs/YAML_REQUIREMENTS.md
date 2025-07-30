@@ -1,7 +1,9 @@
 # YAML Front-Matter Requirements for Agent Files
 
 ## Overview
-All agent configuration files must include valid YAML front-matter at the beginning of the file. This document specifies the requirements and best practices for YAML front-matter in agent files.
+All agent configuration files are Markdown (.md) files that must include valid YAML front-matter at the beginning of the file. This document specifies the requirements and best practices for YAML front-matter in agent files.
+
+**Important**: Per Anthropic's Claude Code documentation, agents are saved as Markdown files with YAML frontmatter, not as pure YAML files.
 
 ## Structure Requirements
 
@@ -23,7 +25,7 @@ Every agent file MUST include these fields:
 
 - **name**: Unique identifier for the agent (lowercase, hyphenated)
   - Format: `[a-z]+(-[a-z]+)*`
-  - Examples: `backend-staff`, `qa-tester`, `principal-architect`
+  - Examples: `backend-engineer`, `test-engineer`, `principal-architect`
 
 - **description**: Clear, concise description of the agent's purpose
   - Should be a single line (not multiline with `|`)
@@ -99,10 +101,10 @@ Recommended order for consistency:
 #### Using the Validation Script
 ```bash
 # Validate all agent files
-./validate_yaml.sh
+./scripts/validate_yaml.sh
 
 # Validate specific file
-./validate_yaml.sh agent-name.md
+./scripts/validate_yaml.sh agent-name.md
 ```
 
 #### Running Unit Tests
@@ -136,10 +138,10 @@ ln -s ../../.claude/agents/pre-commit-yaml-validation.sh .git/hooks/pre-commit
 **Solution**: Use proper quoting for strings with special characters
 
 ## Template
-Use `AGENT_TEMPLATE.yaml` as a starting point for new agent files:
+Use `AGENT_TEMPLATE.md` as a starting point for new agent files:
 
 ```bash
-cp AGENT_TEMPLATE.yaml new-agent.md
+cp AGENT_TEMPLATE.md new-agent.md
 # Edit the file to customize for your agent
 ```
 
@@ -160,8 +162,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Validate YAML front-matter
         run: |
-          cd .claude/agents
-          ./validate_yaml.sh
+          ./scripts/validate_yaml.sh
 ```
 
 ## Maintenance
@@ -171,12 +172,11 @@ Run validation as part of your regular CI/CD pipeline to catch issues early.
 
 ### Updating Templates
 When adding new required fields, update:
-1. AGENT_TEMPLATE.yaml
-2. validate_yaml.sh validation rules
+1. AGENT_TEMPLATE.md
+2. scripts/validate_yaml.sh validation rules
 3. This documentation
 
 ## Support
 For questions or issues with YAML validation:
-1. Check error messages from validate_yaml.sh
+1. Check error messages from scripts/validate_yaml.sh
 2. Refer to examples in existing agent files
-3. Run unit tests to verify validation logic

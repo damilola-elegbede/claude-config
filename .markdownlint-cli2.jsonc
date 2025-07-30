@@ -31,6 +31,8 @@
   // Ignore patterns
   "ignores": [
     "node_modules",
-    ".git"
+    ".git",
+    ".tmp",
+    "**/.tmp"
   ]
 }

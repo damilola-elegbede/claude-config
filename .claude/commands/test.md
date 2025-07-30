@@ -1,7 +1,7 @@
 # /test Command
 
 ## Description
-Automatically discovers and runs tests configured in any repository by analyzing the README.md and common test patterns. If no tests exist, it creates a base level test suite appropriate for the project type. This universal test runner eliminates the need to remember project-specific test commands or manually set up initial tests.
+Automatically discovers and runs tests configured in any repository by analyzing the README.md and common test patterns. If no tests exist, it creates a base level test suite appropriate for the project type. This universal test runner eliminates the need to remember project-specific test commands or manually set up initial tests. Claude coordinates with the test-engineer specialist for comprehensive test strategy when needed.
 
 ## Usage
 ```
@@ -106,4 +106,3 @@ When creating new tests, I'll generate appropriate starter tests:
 - For CI/CD environments, I'll use appropriate flags (--ci, --no-watch, etc.)
 - Test output is displayed in real-time
 - Failed tests will show detailed error information
-- Test dependencies are automatically installed if missing

@@ -7,7 +7,7 @@ This document defines the security access patterns and rationale for all Claude 
 ## Access Categories
 
 ### 1. Full Access (Staff-Level Implementation Agents)
-**Agents**: backend-staff, frontend-staff, senior-dev, qa-tester, devops
+**Agents**: backend-engineer, frontend-engineer, fullstack-lead, test-engineer, devops
 **Tools Allowed**: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit]
 **Tools Forbidden**: []
 **Security Rationale**: These agents implement production code and require comprehensive tool access to fulfill their responsibilities. They operate under the principle of "trusted implementation" with full capability to modify systems.
@@ -59,10 +59,10 @@ This document defines the security access patterns and rationale for all Claude 
 ## Agent-Specific Security Rationale
 
 ### Implementation Agents (Full Access)
-- **backend-staff**: Implements complex distributed systems requiring database and infrastructure access
-- **frontend-staff**: Manages build processes and deployment configurations requiring full system access
-- **senior-dev**: Implements features within defined scope, needs complete toolset for effectiveness
-- **qa-tester**: Creates test infrastructure and automation requiring full implementation capabilities
+- **backend-engineer**: Implements complex distributed systems requiring database and infrastructure access
+- **frontend-engineer**: Manages build processes and deployment configurations requiring full system access
+- **fullstack-lead**: Implements features within defined scope, needs complete toolset for effectiveness
+- **test-engineer**: Creates test infrastructure and automation requiring full implementation capabilities
 - **devops**: Manages infrastructure automation requiring comprehensive system access
 
 ### Analysis Agents (Read-Only Plus Analysis)
@@ -123,5 +123,3 @@ This document defines the security access patterns and rationale for all Claude 
 2. **Security Review**: Assessment of additional risks
 3. **Testing**: Validation of new access patterns in non-production
 4. **Approval**: Security team approval for production deployment
-
-This framework ensures Claude Code agents operate securely while maintaining the functionality needed for effective software development assistance.

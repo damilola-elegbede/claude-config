@@ -64,4 +64,3 @@ git push --force-with-lease
 ## Notes
 - Force pushes require explicit confirmation
 - Protected branches follow repository rules
-- Suggests creating PR after successful push to feature branch

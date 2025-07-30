@@ -7,7 +7,7 @@ Analysis of the .claude/agents/ directory reveals that while all agent files hav
 
 ### 1. Multiline String Handling
 **Pattern**: Using pipe (`|`) for multiline descriptions
-**Files Affected**: debugger.md, devops.md, mobile-ui.md, product-strategy-expert.md, security-auditor.md
+**Files Affected**: debugger.md, devops.md, mobile-ui.md, product-strategist.md, security-auditor.md
 **Issue**: While valid YAML, multiline strings can cause:
 - Indentation sensitivity issues
 - Parser compatibility problems
@@ -44,7 +44,7 @@ description: Use this agent... <example>Context: User needs...</example>
 
 ### 4. Very Long Single-Line Descriptions
 **Pattern**: Extremely long description values on a single line
-**Files Affected**: api-engineer.md, backend-staff.md, frontend-staff.md, others
+**Files Affected**: api-engineer.md, backend-engineer.md, frontend-engineer.md, others
 **Issue**:
 - Hard to read and maintain
 - Potential line length issues in some editors
@@ -98,5 +98,3 @@ All agent files should follow the same structure:
 2. **Phase 2**: Convert existing files to new format
 3. **Phase 3**: Implement validation tooling
 4. **Phase 4**: Add pre-commit hooks and CI/CD checks
-
-This documentation will guide the Phase 2 implementation of fixes.

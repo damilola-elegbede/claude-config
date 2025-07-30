@@ -83,7 +83,7 @@ To enable automatic context analysis on Claude Code startup:
 
 ## Performance
 - Completes in under 5 seconds for typical repositories
-- Uses parallel analysis with subagents for large codebases
+- Uses parallel analysis with multiple codebase-analyst agents for large codebases
 - Caches results to speed up repeated analysis
 - Limits depth for extremely large repositories
 
@@ -111,4 +111,3 @@ A modern React application with TypeScript, using Vite for building and Jest for
 - Works with any programming language or framework
 - Particularly useful when switching between projects
 - Results are tailored to the repository type
-- Helps identify best practices specific to the project

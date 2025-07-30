@@ -1,40 +1,51 @@
-# Parallel Execution Optimization Guide
+# Parallel Execution Optimization Guide - Consolidated System
 
 ## Overview
 
-This guide provides comprehensive strategies for maximizing parallel agent execution to optimize development velocity while maintaining quality standards.
+This guide provides comprehensive strategies for maximizing parallel agent execution using the consolidated 26-agent system. The consolidation improves coordination efficiency while optimizing development velocity and maintaining quality standards.
+
+**Consolidation Benefits for Parallel Execution:**
+- **Reduced coordination overhead**: Fewer agents mean simpler parallel patterns
+- **Clearer boundaries**: Less overlap between parallel agents
+- **Better resource utilization**: Consolidated agents handle broader scopes efficiently
 
 ## Parallel Execution Patterns
 
 ### 1. Development Workflow Patterns
 
-#### **Feature Development (Multi-Agent)**
+#### **Feature Development (Multi-Agent - Consolidated)**
 ```yaml
 Parallel Group: Implementation
-  - frontend-staff: UI/UX implementation with performance optimization
-  - backend-staff: API development with database optimization  
+  - frontend-engineer: UI/UX implementation with performance optimization
+  - backend-engineer: API development with database optimization (renamed from backend-engineer)
   - devops: CI/CD pipeline setup and infrastructure preparation
   
 Sequential Handoff:
   Implementation → Quality Assurance → Documentation
+  
+Consolidation Benefit: 
+  Consistent "engineer" naming eliminates selection confusion
 ```
 
-#### **Quality Assurance (Concurrent Validation)**
+#### **Quality Assurance (Concurrent Validation - Consolidated)**
 ```yaml
 Parallel Group: Quality Gates
   - code-reviewer: Style, best practices, overall code quality
   - security-auditor: Vulnerability assessment, compliance review
-  - qa-tester: Test strategy, coverage analysis, framework setup
+  - test-engineer: Comprehensive testing, QA processes, coverage analysis (absorbed qa-engineer)
 
 Coordination Point: 
   All agents provide findings to code-reviewer for final approval
+  
+Consolidation Benefit:
+  Single test-engineer handles all testing aspects, reducing handoffs
 ```
 
 #### **Architecture & Design (Collaborative Planning)**
 ```yaml
 Parallel Group: Strategic Planning
   - principal-architect: System architecture, technical decisions
-  - product-strategy-expert: Feature prioritization, user impact
+  - product-strategist: Feature prioritization, user impact
   - ui-designer: Design system, user experience specifications
   - mobile-ui: Platform-specific mobile design patterns
 
@@ -52,7 +63,6 @@ Parallel Group: Deep Analysis
   - researcher: External technology research, industry standards, competitive analysis
   - security-auditor: Security vulnerability comprehensive scan
   - debugger: Performance bottleneck identification
-  - qa-tester: Test coverage and quality assessment
 
 Coordination:
   - researcher provides external context → codebase-analyst applies to internal systems
@@ -77,15 +87,15 @@ Convergence:
 ```yaml
 Platform Teams:
   Web Team:
-    - frontend-staff: React/Vue implementation
+    - frontend-engineer: React/Vue implementation
     - ui-designer: Web-specific design optimization
   
   Mobile Team:  
-    - frontend-staff: React Native/Flutter implementation
+    - frontend-engineer: React Native/Flutter implementation
     - mobile-ui: iOS/Android platform compliance
   
   Backend Team:
-    - backend-staff: API development
+
     - devops: Infrastructure and deployment
 
 Coordination Agent: project-orchestrator
@@ -96,7 +106,7 @@ Coordination Agent: project-orchestrator
 Infrastructure Team:
   - devops: CI/CD pipeline modernization, deployment automation
   - platform-engineer: Production monitoring, SRE practices, observability setup
-  - backend-staff: Application infrastructure requirements
+
   - security-auditor: Infrastructure security assessment
   - principal-architect: Architecture modernization strategy
 
@@ -111,26 +121,26 @@ Coordination:
 
 | Primary Agent | Compatible Parallel Agents | Workflow Benefit |
 |---|---|---|
-| **frontend-staff** | backend-staff, ui-designer, mobile-ui, qa-tester | Full-stack development with design integration |
-| **backend-staff** | frontend-staff, devops, platform-engineer, api-engineer | Infrastructure-aware backend development |
-| **code-reviewer** | security-auditor, qa-tester, tech-writer | Comprehensive quality assurance |
-| **principal-architect** | product-strategy-expert, tech-writer, researcher | Strategic planning with research and documentation |
+| **frontend-engineer** | backend-engineer, ui-designer, mobile-ui, test-engineer | Full-stack development with design integration |
+| **backend-engineer** | frontend-engineer, devops, platform-engineer, api-engineer | Infrastructure-aware backend development |
+| **code-reviewer** | security-auditor, test-engineer, tech-writer | Comprehensive quality assurance |
+| **principal-architect** | product-strategist, tech-writer, researcher | Strategic planning with research and documentation |
 | **debugger** | security-auditor, codebase-analyst, performance-engineer | Multi-angle problem analysis |
-| **devops** | platform-engineer, backend-staff, security-auditor | Infrastructure deployment with monitoring |
-| **researcher** | codebase-analyst, api-engineer, product-strategy-expert | External research with internal analysis |
+| **devops** | platform-engineer, backend-engineer, security-auditor | Infrastructure deployment with monitoring |
+| **researcher** | codebase-analyst, api-engineer, product-strategist | External research with internal analysis |
 
 ### Sequential Dependencies (Require Handoffs)
 
 | Sequence | Dependency Reason | Coordination Method |
 |---|---|---|
-| ui-designer → frontend-staff | Design specs needed for implementation | Design handoff via specifications |
-| mobile-ui → frontend-staff | Platform requirements for implementation | Platform compliance checklist |
-| api-engineer → backend-staff | API specifications needed for implementation | OpenAPI specs and contract delivery |
+| ui-designer → frontend-engineer | Design specs needed for implementation | Design handoff via specifications |
+| mobile-ui → frontend-engineer | Platform requirements for implementation | Platform compliance checklist |
+| api-engineer → backend-engineer | API specifications needed for implementation | OpenAPI specs and contract delivery |
 | codebase-analyst → implementation agents | Analysis insights guide implementation | Executive summary with action items |
 | researcher → implementation agents | External context informs technical decisions | Research findings and recommendations |
-| implementation agents → qa-tester | Code needed for test development | Feature implementation completion |
+| implementation agents → test-engineer | Code needed for test development | Feature implementation completion |
 | devops → platform-engineer | Infrastructure deployed before monitoring | Deployment completion handoff |
-| senior-dev → staff agents | Complexity escalation when scope exceeds senior level | Auto-escalation based on complexity triggers |
+| fullstack-lead → staff agents | Complexity escalation when scope exceeds senior level | Auto-escalation based on complexity triggers |
 
 ## Optimization Strategies
 
@@ -140,20 +150,20 @@ Coordination:
 ```yaml
 Phase 1 - Parallel Planning:
   - principal-architect: System design
-  - product-strategy-expert: Requirements refinement
+  - product-strategist: Requirements refinement
   - ui-designer: Design system updates
   Duration: 1-2 days
 
 Phase 2 - Parallel Implementation:
-  - frontend-staff: UI implementation
-  - backend-staff: API development  
+  - frontend-engineer: UI implementation
+
   - devops: Infrastructure preparation
   Duration: 3-5 days
 
 Phase 3 - Parallel Quality Assurance:
   - code-reviewer: Code quality review
   - security-auditor: Security assessment
-  - qa-tester: Test implementation
+
   Duration: 1-2 days
 ```
 
@@ -163,7 +173,6 @@ Parallel Analysis (Day 1):
   - codebase-analyst: Architecture and technical debt
   - security-auditor: Vulnerability assessment
   - debugger: Performance analysis
-  - qa-tester: Test coverage evaluation
 
 Parallel Implementation (Days 2-4):
   - Based on analysis findings, deploy appropriate implementation agents
@@ -172,7 +181,7 @@ Parallel Implementation (Days 2-4):
 Parallel Validation (Day 5):
   - code-reviewer: Implementation quality
   - security-auditor: Security improvement validation
-  - qa-tester: Enhanced test coverage
+
 ```
 
 ### 2. Resource Allocation Optimization
@@ -181,14 +190,14 @@ Parallel Validation (Day 5):
 ```yaml
 Maximum Parallel Utilization:
   Core Development:
-    - frontend-staff (UI/UX critical path)
-    - backend-staff (API critical path)
+    - frontend-engineer (UI/UX critical path)
+
     - devops (deployment critical path)
     
   Quality Assurance:
     - code-reviewer (continuous integration)
     - security-auditor (security requirements)
-    - qa-tester (test development)
+
     
   Documentation & Strategy:
     - tech-writer (parallel documentation)
@@ -204,7 +213,7 @@ Comprehensive Analysis:
     - security-auditor (security)
     
   Strategic Assessment:
-    - product-strategy-expert (business impact)
+    - product-strategist (business impact)
     - principal-architect (technical strategy)
     
   Documentation:
@@ -236,7 +245,7 @@ Agent Status Updates:
 ```yaml
 Design → Implementation:
   - ui-designer/mobile-ui provides design specifications
-  - frontend-staff confirms design feasibility
+  - frontend-engineer confirms design feasibility
   - Implementation begins with clear requirements
 
 Analysis → Action:
@@ -326,5 +335,3 @@ Optimization Needed:
 - Using only one agent when multiple could work in parallel
 - Missing opportunities for parallel quality assurance
 - Sequential analysis when parallel investigation would be faster
-
-This guide enables maximum development velocity through strategic parallel agent utilization while maintaining code quality and system reliability.

@@ -120,4 +120,3 @@ When you use `/perf`, I will:
 - Considers business metrics
 - Provides ROI for optimizations
 - Tracks performance over time
-- Maintains optimization history

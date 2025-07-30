@@ -76,4 +76,3 @@ If checks are failing:
 1. Always create PRs for changes (never push directly to main)
 2. Wait for all checks to pass before requesting review
 3. Keep PRs focused and small for easier review
-4. Update tests when adding new features
