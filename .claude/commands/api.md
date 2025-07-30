@@ -3,6 +3,9 @@
 ## Description
 Quickly access API architecture expertise through Claude orchestration for API design, governance, and implementation tasks. Claude will coordinate with the api-architect specialist to handle the complete API lifecycle from design to deployment.
 
+## Behavior
+This command coordinates with the api-architect specialist to provide comprehensive API design and governance expertise, from initial design through deployment and management.
+
 ## Usage
 ```
 /api [task description]

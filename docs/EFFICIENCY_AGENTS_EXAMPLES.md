@@ -232,7 +232,7 @@ Task: """Use git-workflow to:
 
 ### Scenario: Debug a production error appearing across multiple services
 
-### Before (Traditional Approach): 12 tool calls**
+### Before (Traditional Approach - Error Investigation): 12 tool calls**
 ```bash
 # 1. Check main error log
 tail -n 100 logs/error.log

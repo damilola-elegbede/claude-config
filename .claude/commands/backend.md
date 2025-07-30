@@ -3,6 +3,9 @@
 ## Description
 Quickly access backend development expertise through Claude orchestration for server-side development tasks. Claude will coordinate with the backend-engineer specialist for APIs, databases, microservices, and distributed systems architecture.
 
+## Behavior
+This command coordinates with the backend-engineer specialist to implement server-side systems, APIs, microservices, and database architectures with a focus on scalability and performance.
+
 ## Usage
 ```
 /backend [task description]

@@ -3,6 +3,9 @@
 ## Description
 Quickly access machine learning expertise through Claude orchestration for ML and AI tasks. Claude will coordinate with the ml-engineer specialist for ML model development, deployment, and MLOps practices.
 
+## Behavior
+This command coordinates with the ml-engineer specialist to deploy ML models, build MLOps pipelines, and implement production-ready machine learning systems at scale.
+
 ## Usage
 ```
 /ml [task description]

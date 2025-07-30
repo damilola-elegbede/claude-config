@@ -3,6 +3,9 @@
 ## Description
 Quickly access data engineering expertise through Claude orchestration for data pipeline, ETL/ELT, and data warehouse tasks. Claude will coordinate with the data-engineer specialist for building scalable data processing systems and analytics infrastructure.
 
+## Behavior
+This command coordinates with data-engineer and data-scientist specialists to build data pipelines, perform analytics, implement ML infrastructure, and extract insights from data.
+
 ## Usage
 ```
 /data [task description]

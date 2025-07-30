@@ -32,15 +32,15 @@
 | **System Architecture** | Multi-service | `principal-architect` | Technical roadmaps, architecture decisions |
 | **Product Strategy** | Business features | `product-strategist` | Feature prioritization, user experience |
 | **Project Coordination** | Multi-agent | `project-orchestrator` | Progress tracking, parallel execution |
-| **Documentation** | Knowledge transfer | `tech-writer` | API docs, technical writing, project summaries, doc updates | Absorbed tech-writer + completion-agent |
-| **API Design** | API governance | `api-architect` | OpenAPI specs, contract testing, API strategy, full lifecycle | Consolidated from api-designer + api-engineer |
+| **Documentation** | Knowledge transfer | `tech-writer` | API docs, technical writing, project summaries, doc updates |
+| **API Design** | API governance | `api-architect` | OpenAPI specs, contract testing, API strategy, full lifecycle |
 
 ### Infrastructure & Operations Tasks
 
 | Task Type | Focus Area | Agent Choice | Key Indicators |
 |---|---|---|---|
 | **Deployment Automation** | CI/CD pipelines | `devops` | Build pipelines, infrastructure provisioning |
-| **Production Reliability** | SRE practices | `platform-engineer` | Monitoring, alerting, observability, site reliability | Consolidated from platform-engineer + platform-engineer |
+| **Production Reliability** | SRE practices | `platform-engineer` | Monitoring, alerting, observability, site reliability |
 | **Performance Optimization** | System performance | `performance-engineer` | Load testing, benchmarking, optimization |
 
 ## Escalation Decision Trees

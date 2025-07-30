@@ -49,7 +49,7 @@ validate_yaml() {
     case "$filename" in
         README.md|AGENT_SELECTION_GUIDE.md|ENHANCEMENT_SUMMARY.md|PARALLEL_EXECUTION_GUIDE.md|\
         SECURITY_ACCESS_PATTERNS.md|TOOL_ACCESS_GUIDE.md|TOOL_ACCESS_STANDARDIZATION_SUMMARY.md|\
-        YAML_*.md|AGENT_TEMPLATE.md)
+        YAML_*.md|AGENT_TEMPLATE.md|AGENT_CATEGORIES.md|AUDIT_VERIFICATION_PROTOCOL.md)
             return 0
             ;;
     esac

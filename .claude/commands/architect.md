@@ -3,6 +3,9 @@
 ## Description
 Quickly access system architecture expertise through Claude orchestration for system architecture design, technical roadmaps, and strategic architectural decisions. Claude will coordinate with the principal-architect specialist for high-level system design and technical leadership.
 
+## Behavior
+This command coordinates with the principal-architect specialist to provide system-wide architecture design, technical roadmaps, and cross-team coordination for complex architectural decisions.
+
 ## Usage
 ```
 /architect [task description]

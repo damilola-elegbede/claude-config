@@ -60,19 +60,19 @@ This triggers parallel execution of:
 
 The audit runs in parallel phases:
 
-**Phase 1: Parallel Category Audits**
+#### Phase 1: Parallel Category Audits
 - Documentation agents audit
 - Development agents audit
 - Infrastructure agents audit
 - Analysis agents audit
 - Testing agents audit
 
-**Phase 2: Cross-Cutting Analysis**
+#### Phase 2: Cross-Cutting Analysis
 - Integration pattern validation
 - Constraint consistency verification
 - Performance benchmarking
 
-**Phase 3: Synthesis & Reporting**
+#### Phase 3: Synthesis & Reporting
 - Aggregate findings
 - Calculate health scores
 - Generate remediation recommendations

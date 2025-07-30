@@ -3,6 +3,9 @@
 ## Description
 Quickly access frontend development expertise through Claude orchestration for client-side development tasks. Claude will coordinate with the frontend-engineer specialist for user interfaces, web applications, and frontend performance optimization.
 
+## Behavior
+This command coordinates with the frontend-engineer specialist to build modern web applications using React, Vue, Angular, and other frontend frameworks with focus on performance and user experience.
+
 ## Usage
 ```
 /frontend [task description]
