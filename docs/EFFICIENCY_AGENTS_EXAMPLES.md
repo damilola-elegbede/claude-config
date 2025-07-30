@@ -6,7 +6,7 @@ This document demonstrates real-world scenarios showing how efficiency agents dr
 
 ### Scenario: Create a new React component with tests, stories, and styles
 
-**Before (Traditional Approach): 12 tool calls**
+### Before (Traditional Approach): 12 tool calls**
 ```bash
 # 1. Navigate to components directory
 cd src/components
@@ -117,7 +117,7 @@ echo "export * from './UserProfile';" >> src/components/index.ts
 npm test UserProfile
 ```
 
-**After (With file-writer): 1 delegation**
+### After (With file-writer): 1 delegation**
 ```python
 Task: """Use file-writer to scaffold a UserProfile component with the following:
 - TypeScript React component with name, email, and optional avatar props
@@ -136,7 +136,7 @@ Task: """Use file-writer to scaffold a UserProfile component with the following:
 
 ### Scenario: Update React and related dependencies, run security audit, and update lock file
 
-**Before (Traditional Approach): 8 tool calls**
+### Before (Traditional Approach): 8 tool calls**
 ```bash
 # 1. Check current versions
 cat package.json | grep -E "(react|@types/react)"
@@ -163,7 +163,7 @@ npm audit fix
 npm list react react-dom @types/react @types/react-dom
 ```
 
-**After (With dependency-manager): 1 delegation**
+### After (With dependency-manager): 1 delegation**
 ```python
 Task: """Use dependency-manager to:
 - Update React and React-DOM to latest stable versions
@@ -181,7 +181,7 @@ Task: """Use dependency-manager to:
 
 ### Scenario: Create feature branch from main, incorporating latest changes and resolving conflicts
 
-**Before (Traditional Approach): 10 tool calls**
+### Before (Traditional Approach): 10 tool calls**
 ```bash
 # 1. Check current status
 git status
@@ -214,7 +214,7 @@ git add -A
 git commit -m "feat(auth): initial user authentication setup"
 ```
 
-**After (With git-workflow): 1 delegation**
+### After (With git-workflow): 1 delegation**
 ```python
 Task: """Use git-workflow to:
 - Create feature/user-authentication branch from latest main
@@ -232,7 +232,7 @@ Task: """Use git-workflow to:
 
 ### Scenario: Debug a production error appearing across multiple services
 
-**Before (Traditional Approach): 12 tool calls**
+### Before (Traditional Approach): 12 tool calls**
 ```bash
 # 1. Check main error log
 tail -n 100 logs/error.log
@@ -271,7 +271,7 @@ docker ps | grep redis
 docker logs redis-container --tail 50
 ```
 
-**After (With error-resolver): 1 delegation**
+### After (With error-resolver): 1 delegation**
 ```python
 Task: """Use error-resolver to investigate ConnectionRefused errors:
 - Analyze error patterns across all services
@@ -289,7 +289,7 @@ Task: """Use error-resolver to investigate ConnectionRefused errors:
 
 ### Scenario: Run affected tests after modifying utility functions, with coverage report
 
-**Before (Traditional Approach): 7 tool calls**
+### Before (Traditional Approach): 7 tool calls**
 ```bash
 # 1. Identify changed files
 git diff --name-only HEAD~1
@@ -313,7 +313,7 @@ cat coverage/coverage-summary.json | jq '.total'
 cat coverage/lcov.info | grep -A 5 "SF:.*helpers.js"
 ```
 
-**After (With test-runner): 1 delegation**
+### After (With test-runner): 1 delegation**
 ```python
 Task: """Use test-runner to:
 - Run all tests affected by changes to utils/helpers.js
@@ -331,7 +331,7 @@ Task: """Use test-runner to:
 
 ### Scenario: Update database configuration across all environments
 
-**Before (Traditional Approach): 9 tool calls**
+### Before (Traditional Approach): 9 tool calls**
 ```bash
 # 1. Check current dev config
 cat config/development.json
@@ -361,7 +361,7 @@ echo "DB_POOL_MAX=20" >> .env.example
 node scripts/validate-config.js
 ```
 
-**After (With config-specialist): 1 delegation**
+### After (With config-specialist): 1 delegation**
 ```python
 Task: """Use config-specialist to:
 - Update database pool settings across all environments
@@ -386,7 +386,7 @@ Task: """Use config-specialist to:
 | Test Execution | 7 | 1 | 85.7% |
 | Config Update | 9 | 1 | 88.9% |
 
-**Average Reduction: 89.25%**
+### Average Reduction: 89.25%
 
 ## Key Takeaways
 

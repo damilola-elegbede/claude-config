@@ -6,7 +6,7 @@
 ![PR Checks](https://github.com/damilola/claude-config/workflows/PR%20Checks/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**Transform complex technical challenges into efficiently orchestrated parallel workstreams**
+*Transform complex technical challenges into efficiently orchestrated parallel workstreams*
 
 [Quick Start](#-quick-start) • [Features](#-features) • [Commands](#-commands) • [Agent Ecosystem](#-agent-ecosystem) • [Installation](#-installation) • [Contributing](#-contributing)
 
@@ -622,6 +622,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Built with ❤️ by the Claude Configuration Community**
+*Built with ❤️ by the Claude Configuration Community*
 
 [Report Bug](https://github.com/damilola/claude-config/issues) • [Request Feature](https://github.com/damilola/claude-config/issues) • [Documentation](https://github.com/damilola/claude-config/wiki)

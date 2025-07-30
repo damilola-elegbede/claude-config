@@ -517,7 +517,7 @@ for event in client.executions.stream_logs(execution_id):
 2. Set appropriate parallel limits
 3. Handle partial failures gracefully
 
-### Error Handling
+### Error Recovery Strategies
 1. Implement exponential backoff for retries
 2. Log all error responses
 3. Have fallback strategies

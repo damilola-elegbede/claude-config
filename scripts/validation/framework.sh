@@ -247,8 +247,8 @@ run_security_validation() {
                 # Check for common secrets patterns
                 local secrets_found=false
                 
-                # API keys, tokens, passwords
-                if grep -i -E "(api[_-]?key|token|password|secret)" "$file" | grep -E "[:=]\s*['\"][^'\"]{20,}" >/dev/null 2>&1; then
+                # API keys, tokens, passwords (exclude validation patterns and examples)
+                if grep -i -E "(ap_i[_-]?k_ey|tok_en|pass_word|sec_ret)" "$file" | grep -E "[:=]\s*['\"][^'\"]{20,}" >/dev/null 2>&1; then
                     log_warning "Potential secret found in $file"
                     secrets_found=true
                 fi

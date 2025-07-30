@@ -56,7 +56,7 @@ graph TB
     style Claude fill:#f9f,stroke:#333,stroke-width:4px
     style CAT1 fill:#90EE90
     style CAT2 fill:#87CEEB
-    style CAT3 fill:#FFD700
+    style CAT3 fill:yellow
     style CAT4 fill:#DDA0DD
     style CAT5 fill:#F0E68C
     style CAT6 fill:#FFA500
@@ -159,7 +159,7 @@ graph TD
     
     style Development fill:#90EE90
     style Infrastructure fill:#87CEEB
-    style Quality fill:#FFD700
+    style Quality fill:green
 ```
 
 ### Category Capabilities Matrix

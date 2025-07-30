@@ -86,6 +86,39 @@ paths:
                         type: array
                         items:
                           type: string
+
+components:
+  schemas:
+    AgentType:
+      type: string
+      description: Available agent types in the ecosystem
+      enum:
+        - general-purpose
+        - file-writer
+        - tech-writer
+        - backend-engineer
+        - frontend-engineer
+        - mobile-engineer
+        - ui-designer
+        - mobile-ui
+        - api-architect
+        - devops
+        - security-auditor
+        - test-engineer
+        - performance-engineer
+        - accessibility-auditor
+        - codebase-analyst
+        - principal-architect
+
+    ExecutionStatus:
+      type: string
+      description: Agent execution status
+      enum:
+        - pending
+        - running
+        - completed
+        - failed
+        - timeout
 ```
 
 ## Agent Capability API
@@ -271,7 +304,12 @@ components:
         - yellow
         - purple
         - teal
-        - "#FFD700"
+        - orange
+        - white
+        - brown
+        - cyan
+        - pink
+        - green
 
     AgentCategory:
       type: string
@@ -285,6 +323,19 @@ components:
         - security
         - analysis
         - operations
+
+    ErrorCode:
+      type: string
+      description: Error code identifiers
+      enum:
+        - AGENT_NOT_FOUND
+        - AGENT_UNAVAILABLE
+        - TASK_TIMEOUT
+        - INVALID_PARAMETERS
+        - DEPENDENCY_FAILED
+        - ORCHESTRATION_ERROR
+        - BOUNDARY_VIOLATION
+        - SYSTEM_ERROR
     
     AgentInfo:
       type: object
@@ -478,8 +529,7 @@ components:
           type: object
           properties:
             code:
-              type: string
-              $ref: '#/components/schemas/AgentType'
+              $ref: '#/components/schemas/ErrorCode'
             message:
               type: string
             details:

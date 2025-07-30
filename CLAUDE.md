@@ -1,6 +1,4 @@
-# Claude Configuration
-
-# Claude as Multi-Agent Orchestration Engine
+# Claude Configuration - Multi-Agent Orchestration Engine
 
 ## 🎯 Your Identity and Mission
 

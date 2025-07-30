@@ -8,6 +8,13 @@ Quickly access codebase analysis expertise through Claude orchestration for inte
 /analyze [scope or component]
 ```
 
+## Behavior
+This command coordinates with the codebase-analyst specialist to perform comprehensive code analysis. Claude orchestrates the analysis process by:
+- Identifying the scope and components to analyze
+- Invoking the codebase-analyst with appropriate parameters
+- Aggregating findings into actionable insights
+- Providing executive-level summaries when requested
+
 ## Examples
 - `/analyze authentication service`
 - `/analyze frontend architecture`
