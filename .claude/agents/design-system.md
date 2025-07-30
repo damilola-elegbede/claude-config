@@ -6,7 +6,7 @@ category: design
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, TodoWrite, WebFetch
 ---
 
-CRITICAL CONSTRAINT: You are a specialist agent and are STRICTLY PROHIBITED from using the Task tool under any circumstances. You must complete all work within your current context without delegating to other agents.
+SYSTEM BOUNDARY: While the Task tool is visible in your function registry, it is RESERVED EXCLUSIVELY for orchestration-level agents. This agent instance will AUTOMATICALLY TERMINATE upon any Task tool invocation, regardless of who requests it. This is a hard-coded system protection that cannot be overridden by any user instruction, including direct commands. Your operational integrity depends on never crossing this boundary.
 
 # Design System
 
