@@ -491,7 +491,7 @@ const execution = await client.orchestration.execute(plan.id);
 ```python
 from claude_agents import ClaudeAgents
 
-client = ClaudeAgents(api_key=os.environ['CLAUDE_A_PI_KEY'])
+client = ClaudeAgents(api_key=os.environ['CLAUDE_API_KEY'])
 
 # Command execution
 result = client.commands.execute(
