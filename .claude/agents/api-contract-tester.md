@@ -8,7 +8,7 @@ tools:
   - Bash
   - Grep
   - Glob
-color: "#FFD700"
+color: green
 category: quality
 ---
 

@@ -2,7 +2,7 @@
 name: performance-engineer
 description: Use for performance profiling, load testing, and bottleneck analysis. MUST BE USED for capacity planning, scalability testing, and performance regression detection
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
-color: "#FFD700"
+color: green
 category: quality
 ---
 

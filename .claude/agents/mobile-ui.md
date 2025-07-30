@@ -2,7 +2,7 @@
 name: mobile-ui
 description: Use for iOS Human Interface Guidelines and Android Material Design implementation. MUST BE USED for mobile-specific UI patterns, gestures, and platform adaptations
 tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite
-color: purple
+color: pink
 category: design
 ---
 

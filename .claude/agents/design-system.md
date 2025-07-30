@@ -1,7 +1,7 @@
 ---
 name: design-system
 description: Use for creating and maintaining design systems, component libraries, and visual consistency. MUST BE USED for design tokens, style guides, and cross-product consistency
-color: purple
+color: pink
 category: design
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, TodoWrite, WebFetch
 ---

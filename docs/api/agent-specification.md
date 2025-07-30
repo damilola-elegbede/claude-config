@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Agent Specification format defines how AI agents are configured in the Claude Code ecosystem. Each agent is defined in a Markdown file with YAML frontmatter that specifies its metadata, capabilities, and tool permissions.
+The Agent Specification format defines how AI agents are configured in the Claude Code ecosystem. Each agent is defined in a Markdown file with YAML frontmatter that specifies its metadata, capabilities, and tool permissions. This specification supports the current ecosystem of 47 specialized agents across 8 categories.
 
 ## File Format
 
@@ -41,26 +41,28 @@ tools: Read, Write, Edit, Grep, Glob
 - **Example**: `"Use for building server-side systems, APIs, microservices. MUST BE USED for high-performance optimization (>10k RPS)"`
 
 #### `color` (string, required)
-- **Type**: String (color name or hex code)
+- **Type**: String (color name only)
 - **Valid Color Names**: `blue`, `green`, `red`, `purple`, `yellow`, `orange`, `white`, `brown`, `cyan`, `pink`, `teal`
-- **Valid Hex Codes**: `#FFD700` (gold), `#008080` (teal), etc.
 - **Description**: Visual identifier color for the agent
 - **Constraints**: Should align with the agent's category color assignment (see Category Colors section)
+- **Examples**: `"blue"`, `"green"`, `"teal"`
 
 #### `tools` (string, required)
-- **Type**: String (comma-separated list)
+- **Type**: String (comma-separated list or empty string)
 - **Description**: Tools the agent has permission to use
-- **Format**: Tool names separated by commas and optional spaces
-- **Example**: `"Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite"`
-- **Empty Tools**: Use empty string or no value for agents with no tool access
+- **Format**: Tool names separated by commas and optional spaces, or empty string for no tools
+- **Examples**: 
+  - `"Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite"`
+  - `"Read, Grep, Glob, LS, TodoWrite"`
+  - `""` (empty string for specialized agents with no tool access)
 
 ### Optional Fields
 
-#### `category` (string, recommended)
+#### `category` (string, optional but recommended)
 - **Type**: String (enum)
 - **Valid Values**: `development`, `infrastructure`, `architecture`, `design`, `quality`, `security`, `analysis`, `operations`
 - **Description**: Primary category the agent belongs to
-- **Note**: While technically optional, this field is strongly recommended for proper categorization
+- **Note**: While technically optional, this field is strongly recommended for proper categorization and agent organization
 
 ## Category System
 
@@ -75,19 +77,19 @@ tools: Read, Write, Edit, Grep, Glob
 | `quality` | `green` | Testing, review, and validation |
 | `security` | `red` | Security assessment and compliance |
 | `analysis` | `yellow` | Research, documentation, and analysis |
-| `operations` | `teal` | Support, coordination, and strategic planning |
+| `operations` | `teal` | Support, coordination, and workflow management |
 
 ### Category Rules
-1. Each agent should be assigned to exactly one category
-2. The agent's `color` field should generally align with their category's color
+1. Each agent should be assigned to exactly one category (recommended)
+2. Agents should use one of the standard color names only
 3. Categories determine the agent's primary focus area and expertise
-4. Some flexibility exists for color variations (e.g., hex codes like `#FFD700` for specialized agents)
+4. Standard color names provide consistent visual identification
 
 ## Tool Permissions
 
 ### Available Tools
 
-Tools define what capabilities an agent has access to. Current available tools include:
+Tools define what capabilities an agent has access to. Common tools include:
 
 #### File System Tools
 - `Read` - Read file contents
@@ -111,6 +113,9 @@ Tools define what capabilities an agent has access to. Current available tools i
 #### Planning Tools
 - `ExitPlanMode` - Exit planning mode when ready to implement
 
+#### Specialized Tools
+Some agents may have access to additional specialized tools not listed here.
+
 ### Tool Permission Patterns
 
 Different agent types typically have different tool access patterns:
@@ -130,17 +135,24 @@ tools: Read, Grep, Glob, LS, TodoWrite
 tools: Read, Grep, Glob, LS
 ```
 
-**Research Agents**: Read access with web capabilities
+**Infrastructure Agents**: Full system access including web tools
 ```yaml
-tools: Read, Grep, Glob, LS, TodoWrite, WebFetch
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite, WebFetch
 ```
 
-**Specialized Tools**: Some agents may have unique tool combinations
+**Documentation Agents**: File access with web research capabilities
 ```yaml
-tools: Read, Edit, MultiEdit, Write, Grep, Glob, LS, WebFetch, WebSearch, TodoWrite
+tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite, WebFetch, WebSearch
 ```
 
-## Complete Specification Examples
+**Specialized Agents**: May have no tools or very specific tool combinations
+```yaml
+tools: ""
+# or
+tools: Read, Grep, Glob
+```
+
+## Complete Specification Example
 
 ### Backend Engineer Agent
 
@@ -155,28 +167,15 @@ tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 
 # Backend Engineer
 
+## Working with Claude Orchestration Engine
+
+You are a specialized agent working under the coordination of Claude...
+
 ## Identity
 You are an expert backend engineer specializing in server-side architecture...
 
 ## Core Capabilities
 [Detailed capabilities documentation...]
-```
-
-### API Documenter Agent
-
-```yaml
----
-name: api-documenter
-description: Use for generating API documentation, OpenAPI specs from code, SDK docs, and developer guides. MUST BE USED when creating interactive API docs or Postman collections
-color: yellow
-category: analysis
-tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite
----
-
-# API Documenter
-
-## Identity
-You are an API documentation specialist...
 ```
 
 ### Accessibility Auditor Agent
@@ -185,15 +184,18 @@ You are an API documentation specialist...
 ---
 name: accessibility-auditor
 description: Use for WCAG compliance audits, screen reader testing, keyboard navigation checks, and accessibility remediation. MUST BE USED when implementing accessible UI components or fixing accessibility violations
-color: "#FFD700"
+color: yellow
 category: quality
 tools: Read, Edit, MultiEdit, Write, Grep, Glob, LS, WebFetch, WebSearch, TodoWrite
 ---
 
-# Accessibility Expert
+# Accessibility Auditor
+
+## Working with Claude Orchestration Engine
+[Standard orchestration section...]
 
 ## Identity
-You are an accessibility expert specializing in WCAG compliance...
+You are an accessibility compliance specialist...
 ```
 
 ## Agent Loading and Discovery
@@ -215,18 +217,15 @@ The following files in the agents directory are documentation, not agent definit
 - `AGENT_CATEGORIES.md`
 - `AGENT_TEMPLATE.md`
 - `AUDIT_VERIFICATION_PROTOCOL.md`
-- `AGENT_SELECTION_GUIDE.md`
-- `ENHANCEMENT_SUMMARY.md`
-- `PARALLEL_EXECUTION_GUIDE.md`
-- `SECURITY_ACCESS_PATTERNS.md`
-- `TOOL_ACCESS_GUIDE.md`
-- `TOOL_ACCESS_STANDARDIZATION_SUMMARY.md`
+- `CONSOLIDATED_AGENTS_LIST.md`
+- `ORCHESTRATION_PATTERNS.md`
+- Other documentation files
 
 ## Validation Rules
 
 ### Required Field Validation
 1. All required fields must be present
-2. Fields must have non-empty values (except tools which can be empty)
+2. Fields must have non-empty values
 3. Field types must match schema
 
 ### Name Validation
@@ -240,15 +239,16 @@ The following files in the agents directory are documentation, not agent definit
 - Should include "MUST BE USED" conditions when applicable
 
 ### Color Validation
-- Must be from the valid color list or a valid hex code
-- Should generally align with category assignment
-- Consistency across similar agents is preferred
+- Must be from the valid color list: blue, green, red, purple, yellow, orange, white, brown, cyan, pink, teal
+- Should align with category assignment
+- Consistency across similar agents
 
 ### Tools Validation
 - Must be comma-separated list or empty string
-- Tool names must be valid
+- Tool names must be valid (when provided)
 - No duplicate tools
 - Appropriate for agent's role
+- Empty string is acceptable for specialized agents
 
 ## Best Practices
 
@@ -272,7 +272,7 @@ description: Use for building React/Vue/Angular apps, state management, and fron
 
 ### Category Assignment
 1. Choose the most appropriate primary category
-2. Ensure color generally matches category
+2. Ensure color matches category
 3. Consider the agent's main focus
 4. Review similar agents for consistency
 
@@ -283,25 +283,31 @@ description: Use for building React/Vue/Angular apps, state management, and fron
 #### Missing Required Field
 ```
 Error: Missing required field: tools
-Solution: Add the tools field with appropriate permissions (or empty string)
+Solution: Add the tools field with appropriate permissions or empty string
 ```
 
 #### Name Mismatch
 ```
-Error: Name mismatch: YAML says 'backend-engineer' but filename is 'backend-engineer.md'
-Solution: Ensure name field matches filename
+Error: Name mismatch: YAML says 'backend-engineer' but filename is 'backend.md'
+Solution: Ensure name field matches filename (without .md extension)
 ```
 
 #### Invalid Color
 ```
-Error: Invalid color 'lime'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan, pink, teal
-Solution: Use a valid color from the list or a hex code like #FFD700
+Error: Invalid color format 'invalid-color'
+Solution: Use a valid color name (e.g., 'blue', 'green', 'teal')
 ```
 
 #### Description Too Long
 ```
 Error: Description too long (275 chars). Should be under 250.
 Solution: Shorten the description while keeping key information
+```
+
+#### Empty Tools Field
+```
+Note: Empty tools field is valid for specialized agents
+Action: No action required if intentional
 ```
 
 ## Integration with Claude Code
@@ -322,9 +328,12 @@ Multiple instances of the same agent can run concurrently:
 ### Command Mapping
 Some commands automatically select agents:
 - `/test` → `test-engineer`
-- `/review` → `code-reviewer`
+- `/review` → `code-reviewer` 
 - `/security` → `security-auditor`
+- `/perf` → `performance-engineer`
 - `/docs` → `tech-writer` or `api-documenter`
+- `/debug` → `debugger`
+- `/context` → `codebase-analyst` (often multiple instances)
 
 ## Version Control
 
@@ -343,7 +352,7 @@ When updating specifications:
 
 ## Validation Script
 
-A Python validation script is provided at `scripts/validate-agent-yaml.py`:
+A Python validation script is provided for agent validation:
 
 ```bash
 # Validate all agents
@@ -353,19 +362,25 @@ python scripts/validate-agent-yaml.py
 # - Validation status for each agent
 # - Detailed error messages
 # - Summary statistics
-# - Report generation
+# - Category distribution analysis
+# - Tool usage patterns
+# - Color validation results
 ```
 
 ## Future Considerations
 
 ### Potential Extensions
-- Additional metadata fields (version, dependencies)
+- Additional metadata fields (version, dependencies, priority)
 - Tool permission levels (read/write/admin)
 - Agent relationships and dependencies
-- Performance metrics and limits
-- Custom validation rules
+- Performance metrics and resource limits
+- Custom validation rules per category
+- Agent capability matrices
+- Integration testing requirements
 
 ### Backwards Compatibility
-- New fields should be optional
-- Existing agents should continue working
-- Deprecation notices for removed features
+- New fields should be optional with sensible defaults
+- Existing agents should continue working without modification
+- Deprecation notices for removed features with migration paths
+- Support for standard color names only
+- Graceful handling of empty tools fields

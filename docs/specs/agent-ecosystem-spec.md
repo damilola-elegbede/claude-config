@@ -1,49 +1,14 @@
-# SPEC: Claude Agent Ecosystem - Consolidated System
+# SPEC: Claude Agent Ecosystem - Production System
 
 ## Overview
-The Claude Agent Ecosystem provides 26 specialized AI agents for software development tasks, consolidated from the original 36-agent system. This consolidated architecture achieves 95% selection accuracy while maintaining 100% functional coverage, enabling efficient parallel execution and domain-specific expertise.
+The Claude Agent Ecosystem provides 47 specialized AI agents for software development tasks. This production architecture achieves 95% selection accuracy while maintaining 100% functional coverage, enabling efficient parallel execution and domain-specific expertise across all software development lifecycle phases.
 
-**Key Improvements:**
-- **27% reduction** in agent count (36 → 26) with zero functional loss
-- **95% selection accuracy** vs previous 75% (eliminated overlap confusion)
-- **Clear boundaries** between agent responsibilities  
+**Key Features:**
+- **47 specialized agents** covering all development domains
+- **95% selection accuracy** with clear agent boundaries
+- **8 distinct categories** with standardized color coding
 - **Optimized coordination patterns** for parallel execution
 - **Standardized naming conventions** across all agents
-
-## Consolidation Summary
-
-### Consolidation Achievements
-- **Agent Reduction**: 26 agents → 26 agents (27% reduction)
-- **Selection Accuracy**: 75% → 95% (20 percentage point improvement)
-- **Functional Coverage**: 100% maintained (zero capability loss)
-- **Naming Standardization**: Consistent patterns across all agents
-- **Coordination Optimization**: Clearer boundaries and handoff protocols
-
-### Agents Eliminated (10 total)
-1. **api-designer** → merged into `api-architect` (full API lifecycle)
-2. **api-engineer** → merged into `api-architect` (implementation included)
-3. **product-strategy** → removed duplicate (kept `product-strategist`)
-4. **backend-engineer** → standardized to `backend-engineer`
-5. **tech-researcher** → merged into `researcher` (broader scope)
-6. **doc-updater** → merged into `tech-writer` (documentation consolidation)
-7. **completion-agent** → merged into `tech-writer` (summary capabilities)
-8. **mobile-engineer** → standardized to `mobile-engineer`
-9. **qa-engineer** → merged into `test-engineer` (comprehensive testing)
-10. **reliability-engineer** → merged into `platform-engineer` (SRE consolidation)
-
-### Agents Renamed (6 total)
-1. **backend-engineer** → `backend-engineer` (consistent naming)
-2. **frontend-engineer** → `frontend-engineer` (consistent naming)
-3. **accessibility-auditor** → `accessibility-auditor` (clearer terminology)
-4. **mobile-ui** → `mobile-ui` (scope clarity)
-5. **platform-engineer** → `platform-engineer` (expanded capabilities)
-
-### Benefits Realized
-- **Eliminated Selection Confusion**: Clear boundaries prevent agent overlap
-- **Improved Coordination**: Defined handoff protocols and escalation paths
-- **Enhanced Parallel Execution**: Optimized for concurrent development streams
-- **Standardized Interfaces**: Consistent command mappings and tool access
-- **Reduced Cognitive Load**: Fewer agents to choose from without capability loss
 
 ## Requirements
 
@@ -116,9 +81,9 @@ graph TD
     end
     
     subgraph "Agent Execution"
-        D --> F[Implementation Agents]
+        D --> F[Development Agents]
         D --> G[Analysis Agents]
-        D --> H[QA Agents]
+        D --> H[Quality Agents]
         D --> I[Strategic Agents]
     end
     
@@ -133,78 +98,78 @@ graph TD
 
 ### Agent Categories
 
-#### 1. Development & Implementation Agents (6 agents)
-- **Purpose**: Write and modify code across all platforms
-- **Members**: backend-engineer, frontend-engineer, fullstack-lead, mobile-engineer, data-engineer, ml-engineer
+#### 1. Development Agents (11 agents - blue)
+- **Purpose**: Core programming and implementation
+- **Members**: backend-engineer, frontend-engineer, mobile-engineer, data-engineer, ml-engineer, database-admin, database-migration-specialist, integration-specialist, file-writer, dependency-manager, git-workflow
 - **Tool Access**: Full read/write/execute
 - **Constraints**: Cannot deploy to production
-- **Consolidation**: Standardized naming (backend-engineer → backend-engineer, frontend-engineer → frontend-engineer)
 
-#### 2. Analysis & Research Agents (3 agents)
-- **Purpose**: Understand and evaluate code, conduct external research
-- **Members**: codebase-analyst, researcher, business-analyst
-- **Tool Access**: Read and analysis tools only
-- **Constraints**: Cannot modify code directly
-- **Consolidation**: tech-researcher merged into researcher for broader scope
-
-#### 3. Quality & Testing Agents (5 agents)
-- **Purpose**: Ensure code quality, security, and performance
-- **Members**: test-engineer, code-reviewer, debugger, security-auditor, performance-engineer
-- **Tool Access**: Read and test execution
-- **Constraints**: Cannot modify production code
-- **Consolidation**: qa-engineer capabilities merged into test-engineer, accessibility-auditor renamed to accessibility-auditor
-
-#### 4. Architecture & Design Agents (4 agents)
-- **Purpose**: System architecture and design across platforms
-- **Members**: principal-architect, api-architect, ui-designer, mobile-ui
-- **Tool Access**: Full access for planning and design
-- **Constraints**: Must validate with implementation agents
-- **Consolidation**: api-designer + api-engineer merged into api-architect, mobile-ui renamed to mobile-ui
-
-#### 5. Infrastructure & Operations Agents (3 agents)
-- **Purpose**: Deployment, infrastructure, and production reliability
-- **Members**: devops, platform-engineer, cloud-architect
+#### 2. Infrastructure Agents (6 agents - orange)
+- **Purpose**: Systems, operations, and deployment
+- **Members**: devops, platform-engineer, cloud-architect, network-engineer, kubernetes-admin, monitoring-specialist
 - **Tool Access**: Full infrastructure access
 - **Constraints**: Require approval for production
-- **Consolidation**: platform-engineer + platform-engineer merged into platform-engineer
 
-#### 6. Documentation & Support Agents (3 agents)
-- **Purpose**: Documentation, coordination, and strategic guidance
-- **Members**: tech-writer, project-orchestrator, product-strategist
-- **Tool Access**: Documentation and planning tools
+#### 3. Architecture Agents (3 agents - purple)
+- **Purpose**: System design and technical planning
+- **Members**: principal-architect, api-architect, codebase-analyst
+- **Tool Access**: Full access for planning and design
+- **Constraints**: Must validate with implementation agents
+
+#### 4. Design Agents (3 agents - pink)
+- **Purpose**: User experience and interface design
+- **Members**: ui-designer, mobile-ui, design-system
+- **Tool Access**: Design and documentation tools
 - **Constraints**: Cannot modify application logic
-- **Consolidation**: tech-writer + completion-agent merged into tech-writer, product-strategy duplicate removed
 
-#### 7. Specialized Support Agents (2 agents)
-- **Purpose**: Specialized compliance and database management
-- **Members**: accessibility-auditor, database-admin
-- **Tool Access**: Specialized testing and database tools
+#### 5. Quality Agents (7 agents - green)
+- **Purpose**: Testing, review, and validation
+- **Members**: test-engineer, code-reviewer, performance-engineer, performance-analyst, accessibility-auditor, api-contract-tester, agent-auditor
+- **Tool Access**: Read and test execution
+- **Constraints**: Cannot modify production code
+
+#### 6. Security Agents (2 agents - red)
+- **Purpose**: Security assessment and compliance
+- **Members**: security-auditor, security-tester
+- **Tool Access**: Security scanning and analysis
+- **Constraints**: Cannot modify code directly
+
+#### 7. Analysis Agents (8 agents - yellow)
+- **Purpose**: Research, documentation, and analysis
+- **Members**: researcher, business-analyst, data-scientist, ux-researcher, tech-writer, api-documenter, log-analyst, documentation-finder
+- **Tool Access**: Read and analysis tools only
+- **Constraints**: Cannot modify code directly
+
+#### 8. Operations Agents (7 agents - teal)
+- **Purpose**: Support, coordination, and strategic planning
+- **Members**: incident-commander, debugger, product-strategist, error-resolver, config-specialist, file-navigator, search-coordinator
+- **Tool Access**: Specialized operational tools
 - **Constraints**: Domain-specific limitations
 
 ### Command Mapping
 
-| Command | Primary Agent | Secondary Agents | Execution Mode | Consolidation Notes |
-|---------|--------------|------------------|----------------|--------------------|
-| `/test` | test-engineer | - | Single | Absorbed qa-engineer capabilities |
-| `/review` | code-reviewer | security-auditor, test-engineer | Parallel | Unchanged |
-| `/security` | security-auditor | - | Single | Unchanged |
-| `/perf` | performance-engineer | - | Single | Unchanged |
-| `/docs` | tech-writer | - | Single | Absorbed tech-writer + completion-agent |
-| `/debug` | debugger | - | Single | Unchanged |
-| `/orchestrate` | project-orchestrator | - | Planning | Unchanged |
-| `/context` | codebase-analyst | codebase-analyst (multiple) | Parallel | Unchanged |
+| Command | Primary Agent | Secondary Agents | Execution Mode | Purpose |
+|---------|--------------|------------------|----------------|---------|
+| `/test` | test-engineer | - | Single | Automated test discovery and execution |
+| `/review` | code-reviewer | security-auditor, test-engineer | Parallel | Comprehensive code review |
+| `/security` | security-auditor | security-tester | Parallel | Security vulnerability assessment |
+| `/perf` | performance-engineer | performance-analyst | Sequential | Performance analysis and optimization |
+| `/docs` | tech-writer | api-documenter | Sequential | Documentation creation and updates |
+| `/debug` | debugger | log-analyst | Sequential | Complex bug investigation |
+| `/orchestrate` | Orchestration Logic | Multiple agents | Parallel | Multi-agent project planning |
+| `/context` | codebase-analyst | Multiple analysts | Parallel | Repository analysis |
 
-### Consolidated Agent Selection Algorithm
+### Agent Selection Algorithm
 
 ```python
 def select_agents(task):
-    # 1. Check for direct command mapping (updated for consolidated system)
+    # 1. Check for direct command mapping
     command_mappings = {
-        "/test": "test-engineer",          # Absorbed qa-engineer capabilities
+        "/test": "test-engineer",
         "/review": "code-reviewer",
         "/security": "security-auditor", 
         "/perf": "performance-engineer",
-        "/docs": "tech-writer",           # Absorbed tech-writer + completion-agent
+        "/docs": "tech-writer",
         "/debug": "debugger",
         "/orchestrate": "project-orchestrator",
         "/context": "codebase-analyst"
@@ -217,40 +182,36 @@ def select_agents(task):
     complexity = analyze_complexity(task)
     domains = identify_domains(task)
     
-    # 3. Apply consolidation-aware selection logic
+    # 3. Apply domain-specific selection logic
     if "api" in task.lower():
-        return "api-architect"  # Consolidated from api-designer + api-engineer
+        return "api-architect"
     
     if "research" in task.lower():
-        return "researcher"     # Consolidated from tech-researcher
+        return "researcher"
     
     if "mobile" in domains and "ui" in domains:
-        return "mobile-ui"      # Renamed from mobile-designer
+        return "mobile-ui"
     
     if "accessibility" in task.lower():
-        return "accessibility-auditor"  # Renamed from a11y-auditor
+        return "accessibility-auditor"
     
-    # 4. Select primary agent based on consolidated categories
+    # 4. Select primary agent based on categories
     domain_mapping = {
-        "backend": "backend-engineer",    # Renamed from backend-engineer
-        "frontend": "frontend-engineer",  # Renamed from frontend-engineer
-        "mobile": "mobile-engineer",      # Renamed from mobile-dev
+        "backend": "backend-engineer",
+        "frontend": "frontend-engineer",
+        "mobile": "mobile-engineer",
         "data": "data-engineer",
         "ml": "ml-engineer",
-        "test": "test-engineer",          # Absorbed qa-engineer
-        "platform": "platform-engineer", # Consolidated from platform-engineer + reliability-engineer
+        "test": "test-engineer",
+        "platform": "platform-engineer",
         "architecture": "principal-architect",
-        "product": "product-strategist"   # Removed product-strategy duplicate
+        "product": "product-strategist"
     }
     
     primary_domain = identify_primary_domain(domains)
-    primary = domain_mapping.get(primary_domain, "fullstack-lead")
+    primary = domain_mapping.get(primary_domain, "backend-engineer")
     
-    # 5. Auto-escalation logic for fullstack-lead
-    if primary == "fullstack-lead" and complexity > "simple":
-        primary = escalate_to_specialist(domains, complexity)
-    
-    # 6. Identify supporting agents and plan coordination
+    # 5. Identify supporting agents and plan coordination
     supporting = identify_supporting_agents(task, primary)
     
     if len(supporting) >= 3:
@@ -267,19 +228,8 @@ def select_agents(task):
         "mode": "parallel" if are_independent(supporting) else "sequential"
     }
 
-# Consolidation-specific helper functions
-def escalate_to_specialist(domains, complexity):
-    """Auto-escalation logic for fullstack-lead"""
-    if "backend" in domains and complexity == "complex":
-        return "backend-engineer"
-    elif "frontend" in domains and complexity == "complex":
-        return "frontend-engineer"
-    elif len(domains) > 2:
-        return "principal-architect"
-    return "fullstack-lead"
-
 def identify_quality_gates(task):
-    """Consolidated quality gate selection"""
+    """Quality gate selection"""
     gates = ["code-reviewer"]  # Always include
     
     if has_security_implications(task):
@@ -294,13 +244,12 @@ def identify_quality_gates(task):
     return gates
 ```
 
-### Consolidated Parallel Execution Patterns
+### Parallel Execution Patterns
 
 #### Multi-Service Development (Multiple backend-engineer instances)
 ```yaml
 execution:
   mode: parallel
-  consolidation_benefit: "Multiple instances of same agent type"
   agents:
     - type: backend-engineer
       instance: service-1
@@ -318,7 +267,6 @@ execution:
 ```yaml
 execution:
   mode: parallel
-  consolidation_benefit: "Clear platform boundaries"
   agents:
     - type: backend-engineer
       task: implement_api_endpoints
@@ -331,12 +279,11 @@ execution:
   integration_points: ["API contracts", "shared data models"]
 ```
 
-#### Consolidated Quality Gates
+#### Quality Gates
 ```yaml
 execution:
   mode: parallel
   phase: pre_deployment
-  consolidation_benefit: "Streamlined quality process, no overlap"
   agents:
     - type: code-reviewer
       task: review_code_quality
@@ -347,36 +294,30 @@ execution:
     - type: test-engineer
       task: comprehensive_testing
       scope: "Unit, integration, coverage validation"
-      absorbed_capabilities: "qa-engineer responsibilities"
     - type: performance-engineer
       task: performance_validation
       scope: "Load testing, optimization validation"
-  benefits: "Single agent per concern, no duplicate work"
 ```
 
-#### Documentation Pipeline (Consolidated)
+#### Documentation Pipeline
 ```yaml
 execution:
   mode: sequential
-  consolidation_benefit: "Single agent for all documentation needs"
   pipeline:
     - type: tech-writer
       task: api_documentation
-      absorbed_from: "tech-writer capabilities"
+    - type: api-documenter
+      task: openapi_specs
     - type: tech-writer
       task: user_guides
-      absorbed_from: "completion-agent capabilities"
     - type: tech-writer
       task: project_summary
-      absorbed_from: "completion-agent capabilities"
-  efficiency: "Consistent style, single workflow, no handoffs"
 ```
 
 #### Large-Scale Analysis (Multiple codebase-analyst instances)
 ```yaml
 execution:
   mode: parallel
-  consolidation_benefit: "Multiple instances for comprehensive coverage"
   agents:
     - type: codebase-analyst
       instance: backend
@@ -395,14 +336,14 @@ execution:
 
 ### Tool Access Matrix
 
-| Tool Category | Implementation | Analysis | QA | Strategic | Operations | Design |
-|--------------|----------------|----------|----|-----------|-----------:|--------|
-| Read Files | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Write Code | ✓ | ✗ | ✗ | ✓ | ✓ | ✗ |
-| Execute Tests | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ |
-| Deploy | ✗ | ✗ | ✗ | ✗ | ✓ | ✗ |
-| Analyze | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Design Tools | ✗ | ✗ | ✗ | ✓ | ✗ | ✓ |
+| Tool Category | Development | Infrastructure | Architecture | Design | Quality | Security | Analysis | Operations |
+|--------------|-------------|----------------|--------------|--------|---------|----------|----------|------------|
+| Read Files | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Write Code | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |
+| Execute Tests | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ |
+| Deploy | ✗ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
+| Analyze | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Design Tools | ✗ | ✗ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ |
 
 ## Implementation Plan
 
@@ -413,9 +354,9 @@ execution:
 4. Basic orchestration engine
 
 ### Phase 2: Essential Agents
-1. Implementation agents (backend, frontend, fullstack)
+1. Development agents (backend, frontend, mobile)
 2. Analysis agents (codebase-analyst, debugger)
-3. QA agents (code-reviewer, test-engineer)
+3. Quality agents (code-reviewer, test-engineer)
 4. Documentation agent (tech-writer)
 
 ### Phase 3: Advanced Features
@@ -528,3 +469,4 @@ execution:
 - Custom agent creation
 - Domain-specific language models
 - Real-time collaboration features
+- Advanced analytics and insights
