@@ -1,14 +1,26 @@
 # Agent YAML Validation Report
 
-Total agents validated: 41
+Total agents validated: 47
 
 ## Validation Issues
 
-### mobile-ui
-- Invalid color 'pink'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan
+### config-specialist
+- Invalid color 'teal'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan, pink
 
-### ui-designer
-- Invalid color 'pink'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan
+### database-migration-specialist
+- Invalid color 'teal'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan, pink
+
+### dependency-manager
+- Invalid color 'teal'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan, pink
+
+### file-navigator
+- Invalid color 'teal'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan, pink
+
+### file-writer
+- Invalid color 'teal'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan, pink
+
+### product-strategist
+- Invalid color 'teal'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan, pink
 
 ## Valid Agents
 
@@ -22,31 +34,34 @@ Total agents validated: 41
 - ✅ cloud-architect
 - ✅ code-reviewer
 - ✅ codebase-analyst
-- ✅ config-specialist
 - ✅ data-engineer
 - ✅ data-scientist
 - ✅ database-admin
-- ✅ database-migration-specialist
 - ✅ debugger
-- ✅ dependency-manager
+- ✅ design-system
 - ✅ devops
 - ✅ documentation-finder
 - ✅ error-resolver
-- ✅ file-navigator
-- ✅ file-writer
 - ✅ frontend-engineer
 - ✅ git-workflow
 - ✅ incident-commander
 - ✅ integration-specialist
+- ✅ kubernetes-admin
 - ✅ log-analyst
 - ✅ ml-engineer
 - ✅ mobile-engineer
+- ✅ mobile-ui
+- ✅ monitoring-specialist
 - ✅ network-engineer
+- ✅ performance-analyst
 - ✅ performance-engineer
+- ✅ platform-engineer
 - ✅ principal-architect
-- ✅ product-strategist
 - ✅ researcher
 - ✅ search-coordinator
 - ✅ security-auditor
 - ✅ security-tester
 - ✅ tech-writer
+- ✅ test-engineer
+- ✅ ui-designer
+- ✅ ux-researcher

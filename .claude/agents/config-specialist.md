@@ -1,7 +1,7 @@
 ---
 name: config-specialist
 description: Efficiently finds and manages configuration files across projects
-color: teal
+color: orange
 category: operations
 tools: Read, Write, Grep, Glob, Bash
 ---

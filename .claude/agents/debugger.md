@@ -1,7 +1,7 @@
 ---
 name: debugger
 description: Use for investigating complex, intermittent bugs, race conditions, and production-only issues. MUST BE USED for memory leaks, distributed system failures, and systematic root cause analysis
-color: teal
+color: orange
 category: operations
 tools: Read, Grep, Glob, LS
 ---

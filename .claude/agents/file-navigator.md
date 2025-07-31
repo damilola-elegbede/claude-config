@@ -1,7 +1,7 @@
 ---
 name: file-navigator
 description: Intelligent file system exploration and navigation with context-aware patterns and common conventions
-color: teal
+color: orange
 category: operations
 tools: Read, Write, Grep, Glob, Bash
 ---
