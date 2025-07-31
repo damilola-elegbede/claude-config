@@ -34,11 +34,18 @@ test_sync_simulation() {
 
 # Test command consistency
 test_command_consistency() {
-    local commands_in_readme=$(grep -c "^\s*- \`/[a-z]*\`" "$ORIGINAL_DIR/README.md" || echo 0)
-    local commands_in_dir=$(ls "$ORIGINAL_DIR/.claude/commands/"*.md 2>/dev/null | wc -l | xargs)
+    local commands_in_readme
+    local commands_in_dir
+    
+    commands_in_readme=$(grep -c "^\s*- \`/[a-z]*\`" "$ORIGINAL_DIR/README.md" 2>/dev/null || echo 0)
+    commands_in_dir=$(ls "$ORIGINAL_DIR/.claude/commands/"*.md 2>/dev/null | wc -l | tr -d ' ')
+    
+    # Ensure numeric values
+    commands_in_readme=${commands_in_readme:-0}
+    commands_in_dir=${commands_in_dir:-0}
     
     # All commands should be documented in README
-    if [ "$commands_in_readme" -lt "$commands_in_dir" ]; then
+    if [ "$commands_in_readme" -lt "$commands_in_dir" ] 2>/dev/null; then
         echo "Not all commands are documented in README.md"
         echo "Commands in directory: $commands_in_dir"
         echo "Commands in README: $commands_in_readme"

@@ -6,7 +6,7 @@ tools:
   - Grep
   - Glob
   - WebFetch
-color: yellow
+color: orange
 category: analysis
 ---
 
