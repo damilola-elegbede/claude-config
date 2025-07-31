@@ -119,6 +119,9 @@ PHASE 2 (Sequential):
 - `/context` → Multi-agent codebase analysis
 - `/review` → Quality assessment team
 - `/security` → Security audit team
+- `/perf` → Performance analysis
+- `/docs` → Documentation management
+- `/debug` → Bug investigation
 - `/orchestrate` → Strategic planning session
 - `/plan` → Create strategy without execution
 
