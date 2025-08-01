@@ -9,7 +9,7 @@
 ## 📚 Core Documentation
 
 ### 🏠 Project Overview
-- **[README.md](../README.md)** - Main project documentation with complete 47-agent listing
+- **[README.md](../README.md)** - Main project documentation with complete 29-agent listing
 - **[CLAUDE.md](../CLAUDE.md)** - Claude orchestration instructions and principles
 - **[LICENSE](../LICENSE)** - Project licensing information
 
@@ -82,16 +82,16 @@
 ## 🗂️ Agent Documentation
 
 ### 📁 Agent Categories
-All 47 agents are documented in the `.claude/agents/` directory:
+All 29 agents are documented in the `.claude/agents/` directory:
 
-- **Development** (6 agents): backend, frontend, mobile, ML, integration, database migration
-- **Infrastructure** (8 agents): cloud, DevOps, Kubernetes, network, monitoring, platform, database admin, data engineering
-- **Architecture** (2 agents): principal architect, API architect
-- **Design** (4 agents): UI designer, UX researcher, design system, mobile UI
-- **Quality** (6 agents): test engineer, code reviewer, accessibility auditor, performance engineer, agent auditor, performance analyst
-- **Security** (2 agents): security auditor, security tester
-- **Analysis** (8 agents): codebase analyst, business analyst, data scientist, researcher, tech writer, log analyst, API documenter
-- **Operations** (11 agents): incident commander, product strategist, debugger, error resolver, file operations, Git workflow, dependency management, configuration, documentation finding, search coordination
+- **Development** (5 agents): backend-staff, frontend-architect, mobile-platform-engineer, ml-staff, fullstack-lead
+- **Infrastructure** (5 agents): cloud-network-architect, devops-engineer, platform-engineer, site-reliability-engineer, data-platform-engineer
+- **Architecture** (2 agents): system-architect, api-specialist
+- **Design** (1 agent): ui-designer
+- **Quality** (4 agents): test-engineer, code-reviewer, qa-specialist, performance-specialist
+- **Security** (1 agent): security-auditor
+- **Analysis** (4 agents): codebase-analyst, researcher, tech-writer, debugger
+- **Operations** (7 agents): production-reliability-engineer, database-evolution-specialist, supply-chain-security-engineer, incident-commander, kubernetes-specialist, monitoring-specialist, project-orchestrator
 
 ### 📑 Templates & Standards
 - **[Agent Template](.claude/agents/AGENT_TEMPLATE.md)** - Template for new agents

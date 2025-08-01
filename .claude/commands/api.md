@@ -1,10 +1,10 @@
 # /api Command
 
 ## Description
-Quickly access API architecture expertise through Claude orchestration for API design, governance, and implementation tasks. Claude will coordinate with the api-architect specialist to handle the complete API lifecycle from design to deployment.
+Quickly access API architecture expertise through Claude orchestration for API design, governance, and implementation tasks. Claude will coordinate with the api-specialist specialist to handle the complete API lifecycle from design to deployment.
 
 ## Behavior
-This command coordinates with the api-architect specialist to provide comprehensive API design and governance expertise, from initial design through deployment and management.
+This command coordinates with the api-specialist specialist to provide comprehensive API design and governance expertise, from initial design through deployment and management.
 
 ## Usage
 ```
@@ -18,7 +18,7 @@ This command coordinates with the api-architect specialist to provide comprehens
 - `/api review API versioning strategy`
 
 ## Capabilities
-The api-architect specialist (coordinated through Claude) excels at:
+The api-specialist specialist (coordinated through Claude) excels at:
 - RESTful API design
 - GraphQL schema design
 - OpenAPI/Swagger specifications

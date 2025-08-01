@@ -1,10 +1,10 @@
 # /mobile Command
 
 ## Description
-Quickly access mobile development expertise through Claude orchestration for native and cross-platform mobile application development. Claude will coordinate with the mobile-engineer specialist for iOS, Android, and cross-platform frameworks.
+Quickly access mobile development expertise through Claude orchestration for native and cross-platform mobile application development. Claude will coordinate with the mobile-platform-engineer specialist for iOS, Android, and cross-platform frameworks.
 
 ## Behavior
-This command coordinates with mobile-engineer and mobile-ui specialists to develop native and cross-platform mobile applications for iOS and Android with platform-specific optimizations.
+This command coordinates with the mobile-platform-engineer specialist to develop native and cross-platform mobile applications for iOS and Android with platform-specific optimizations.
 
 ## Usage
 ```
@@ -18,7 +18,7 @@ This command coordinates with mobile-engineer and mobile-ui specialists to devel
 - `/mobile debug memory leak in iOS app`
 
 ## Capabilities
-The mobile-engineer specialist (coordinated through Claude) excels at:
+The mobile-platform-engineer specialist (coordinated through Claude) excels at:
 - Native iOS development (Swift)
 - Native Android development (Kotlin)
 - Cross-platform frameworks (React Native, Flutter)
@@ -36,6 +36,6 @@ The mobile-engineer specialist (coordinated through Claude) excels at:
 - Cross-platform development
 
 ## Related Commands
-- `/mobile-ui` - For mobile UI/UX design
 - `/backend` - For mobile backend APIs
 - `/perf` - For performance optimization
+- `/ui` - For UI/UX design

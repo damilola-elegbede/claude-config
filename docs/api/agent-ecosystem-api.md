@@ -422,54 +422,35 @@ components:
       type: string
       description: Available agent types in the ecosystem
       enum:
-        - general-purpose
-        - file-writer
-        - tech-writer
-        - network-engineer
-        - mobile-engineer
-        - file-navigator
-        - backend-engineer
-        - data-engineer
-        - devops
-        - api-architect
-        - config-specialist
-        - log-analyst
-        - integration-specialist
-        - kubernetes-admin
-        - ui-designer
-        - frontend-engineer
-        - incident-commander
-        - design-system
-        - monitoring-specialist
-        - cloud-architect
-        - api-contract-tester
-        - security-auditor
-        - product-strategist
-        - business-analyst
-        - dependency-manager
-        - data-scientist
-        - documentation-finder
-        - researcher
-        - ux-researcher
-        - security-tester
-        - agent-auditor
-        - platform-engineer
-        - database-admin
-        - error-resolver
-        - git-workflow
-        - performance-analyst
-        - debugger
-        - database-migration-specialist
-        - api-documenter
-        - performance-engineer
-        - search-coordinator
-        - test-engineer
-        - ml-engineer
         - accessibility-auditor
+        - api-architect
+        - backend-engineer
+        - cloud-architect
+        - cloud-network-architect
         - code-reviewer
         - codebase-analyst
+        - data-platform-engineer
+        - database-admin
+        - database-evolution-specialist
+        - debugger
+        - devops
+        - frontend-architect
+        - incident-commander
+        - integration-specialist
+        - kubernetes-admin
+        - ml-engineer
+        - mobile-platform-engineer
+        - monitoring-specialist
+        - performance-specialist
+        - platform-engineer
         - principal-architect
-        - mobile-ui
+        - production-reliability-engineer
+        - security-auditor
+        - supply-chain-security-engineer
+        - tech-writer
+        - test-engineer
+        - ui-designer
+        - ux-researcher
 
     ExecutionStatus:
       type: string

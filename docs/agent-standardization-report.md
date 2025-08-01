@@ -1,51 +1,60 @@
 # Agent Standardization Report
 
-Generated: 2025-07-28T21:39:11.405496
+Generated: 2025-08-01T00:00:00.000000
 
 ## Summary
 
-- Final agents: 26
-- Deprecated: 10
-- Target: 26
+- Final agents: 29
+- Deprecated: Multiple legacy agents
+- Target: 29
 
 ## Final Agent List
 
-### Development (6 agents)
+### Development (5 agents)
 - **backend-engineer** (blue, senior)
-- **data-engineer** (blue, senior)
-- **frontend-engineer** (blue, senior)
+- **data-platform-engineer** (blue, senior)
+- **frontend-architect** (blue, senior)
 - **fullstack-lead** (blue, senior)
-- **ml-engineer** (blue, senior)
-- **mobile-engineer** (blue, senior)
+- **mobile-platform-engineer** (blue, senior)
 
-### Quality (5 agents)
+### Quality (4 agents)
 - **code-reviewer** (green, senior)
 - **debugger** (green, specialist)
-- **performance-engineer** (green, specialist)
-- **security-auditor** (green, specialist)
+- **performance-specialist** (green, specialist)
 - **test-engineer** (green, senior)
 
-### Architecture (4 agents)
-- **api-architect** (red, senior)
-- **mobile-ui** (red, specialist)
+### Architecture (2 agents)
 - **principal-architect** (red, principal)
 - **ui-designer** (red, specialist)
 
-### Analysis (3 agents)
-- **business-analyst** (purple, specialist)
-- **codebase-analyst** (purple, specialist)
-- **researcher** (purple, specialist)
+### Design (2 agents)
+- **mobile-ui** (purple, specialist)
+- **api-architect** (purple, senior)
 
-### Infrastructure (3 agents)
-- **cloud-architect** (yellow, senior)
+### Security (2 agents)
+- **security-auditor** (orange, specialist)
+- **supply-chain-security-engineer** (orange, specialist)
+
+### Analysis (2 agents)
+- **codebase-analyst** (cyan, specialist)
+- **researcher** (cyan, specialist)
+
+### Infrastructure (5 agents)
+- **cloud-network-architect** (yellow, senior)
 - **devops** (yellow, senior)
 - **platform-engineer** (yellow, senior)
+- **database-admin** (yellow, specialist)
+- **database-evolution-specialist** (yellow, specialist)
 
-### Documentation (3 agents)
-- **product-strategist** (orange, senior)
-- **project-orchestrator** (orange, senior)
-- **tech-writer** (orange, specialist)
+### Operations (3 agents)
+- **product-strategist** (magenta, senior)
+- **project-orchestrator** (magenta, senior)
+- **production-reliability-engineer** (magenta, specialist)
 
-### Specialized (2 agents)
-- **accessibility-auditor** (white, specialist)
-- **database-admin** (white, specialist)
+### Documentation (1 agent)
+- **tech-writer** (white, specialist)
+
+### Specialized (3 agents)
+- **accessibility-auditor** (gray, specialist)
+- **ml-engineer** (gray, senior)
+- **business-analyst** (gray, specialist)

@@ -7,9 +7,9 @@
 | Task Complexity | Domain | Agent Choice | Key Indicators | Consolidation Notes |
 |---|---|---|---|---|
 | **Staff Level** | Backend | `backend-engineer` | Multi-service architecture, complex state management, performance < 2.5s | Consolidated from backend-staff |
-| **Staff Level** | Frontend | `frontend-engineer` | Real-time features, complex UI, Core Web Vitals optimization | Consolidated from frontend-staff |
+| **Staff Level** | Frontend | `frontend-architect` | Real-time features, complex UI, Core Web Vitals optimization | Consolidated from frontend-staff |
 | **Senior Level** | General | `fullstack-lead` | Single-service features, well-defined APIs, standard patterns | Legacy fullstack capabilities |
-| **Specialist** | Mobile Development | `mobile-engineer` | Native/cross-platform apps, platform-specific features | Unified mobile development |
+| **Specialist** | Mobile Development | `mobile-platform-engineer` | Native/cross-platform apps, platform-specific features | Unified mobile development |
 | **Specialist** | Mobile UI/UX | `mobile-ui` | iOS/Android design, platform-specific patterns | Platform-specific UI design |
 | **Specialist** | Web Design | `ui-designer` | Design systems, visual hierarchy, web/desktop interfaces | Non-mobile interface design |
 
@@ -18,19 +18,17 @@
 | Task Type | Scope | Agent Choice | Key Indicators |
 |---|---|---|---|
 | **Internal Code Analysis** | Existing codebase | `codebase-analyst` | Architecture assessment, technical debt, executive summary |
-| **External Research** | Industry/technology | `researcher` | Technology comparison, standards, competitive analysis |
 | **Security Review** | Security-focused | `security-auditor` | OWASP compliance, vulnerability assessment |
 | **Code Quality** | Pre-commit | `code-reviewer` | Style, best practices, PR readiness |
 | **Testing Strategy** | Test coverage | `test-engineer` | Framework selection, test architecture, comprehensive QA |
 | **Complex Debugging** | Mystery bugs | `debugger` | Intermittent failures, performance degradation |
-| **Performance Analysis** | System performance | `performance-engineer` | Load testing, optimization, benchmarking |
+| **Performance Analysis** | System performance | `performance-specialist` | Load testing, optimization, benchmarking |
 
 ### Strategic & Planning Tasks
 
 | Planning Level | Scope | Agent Choice | Key Indicators |
 |---|---|---|---|
 | **System Architecture** | Multi-service | `principal-architect` | Technical roadmaps, architecture decisions |
-| **Product Strategy** | Business features | `product-strategist` | Feature prioritization, user experience |
 | **Project Coordination** | Multi-agent | `project-orchestrator` | Progress tracking, parallel execution |
 | **Documentation** | Knowledge transfer | `tech-writer` | API docs, technical writing, project summaries, doc updates |
 | **API Design** | API governance | `api-architect` | OpenAPI specs, contract testing, API strategy, full lifecycle |
@@ -41,7 +39,7 @@
 |---|---|---|---|
 | **Deployment Automation** | CI/CD pipelines | `devops` | Build pipelines, infrastructure provisioning |
 | **Production Reliability** | SRE practices | `platform-engineer` | Monitoring, alerting, observability, site reliability |
-| **Performance Optimization** | System performance | `performance-engineer` | Load testing, benchmarking, optimization |
+| **Performance Optimization** | System performance | `performance-specialist` | Load testing, benchmarking, optimization |
 
 ## Escalation Decision Trees
 
@@ -64,7 +62,7 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 
 ### Staff Agent Triggers
 - **Backend Engineer**: 100k+ requests/sec, microservices coordination, distributed state
-- **Frontend Engineer**: Real-time data (WebSocket/SSE), complex state management, performance optimization
+- **Frontend Architect**: Real-time data (WebSocket/SSE), complex state management, performance optimization
 - **Principal Architect**: Cross-team coordination, system design changes, technology stack decisions
 
 ### Senior Agent Boundaries
@@ -81,14 +79,13 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 ## Parallel Execution Groups
 
 ### Development Workflow
-- **Primary**: `frontend-engineer` + `backend-engineer` + `fullstack-lead`
+- **Primary**: `frontend-architect` + `backend-engineer` + `fullstack-lead`
 - **Quality**: `code-reviewer` + `security-auditor` + `test-engineer`
-- **Design**: `ui-designer` + `mobile-ui` (cross-platform consistency)
+- **Design**: `ui-designer` (cross-platform consistency)
 
 ### Analysis Workflow  
-- **Technical**: `codebase-analyst` + `debugger` + `security-auditor` + `performance-engineer`
-- **Research**: `researcher` + `codebase-analyst` (external context + internal analysis)
-- **Strategic**: `principal-architect` + `product-strategist` + `project-orchestrator`
+- **Technical**: `codebase-analyst` + `debugger` + `security-auditor` + `performance-specialist`
+- **Strategic**: `principal-architect` + `project-orchestrator`
 - **Infrastructure**: `devops` + `platform-engineer` (deployment + monitoring)
 - **Documentation**: `tech-writer` + any domain expert
 
@@ -96,22 +93,20 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 
 | Access Level | Agents | Capabilities |
 |---|---|---|
-| **Full Access** | backend-engineer, frontend-engineer, fullstack-lead | All tools for implementation |
+| **Full Access** | backend-engineer, frontend-architect, fullstack-lead | All tools for implementation |
 | **Read + Analysis** | codebase-analyst, security-auditor, debugger | Read tools + analysis + TodoWrite |
 | **Orchestration** | principal-architect, project-orchestrator | Full access + project management |
 | **Documentation** | tech-writer | Read/write + documentation tools |
-| **Design** | ui-designer, mobile-ui | Read/write for design specs |
+| **Design** | ui-designer | Read/write for design specs |
 
 ## Common Anti-Patterns to Avoid
 
 ### ❌ Wrong Agent Selection
 - Using `fullstack-lead` for architecture decisions → Use `principal-architect`
-- Using `ui-designer` for mobile apps → Use `mobile-ui`
+- Using `ui-designer` for mobile apps → Use `mobile-platform-engineer`
 - Using `codebase-analyst` for implementation → Use implementation agents
 - Using `debugger` for new feature bugs → Use `fullstack-lead` or staff agents
-- Using `researcher` for internal code analysis → Use `codebase-analyst`
 - Using `devops` for production monitoring → Use `platform-engineer`
-- Using `general-purpose` for API design → Use `api-engineer`
 
 ### ❌ Missing Parallel Opportunities
 - Sequential code review → Run `code-reviewer` + `security-auditor` + `test-engineer` in parallel

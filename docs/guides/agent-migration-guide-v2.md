@@ -71,14 +71,14 @@ category: development
 
 | Category | Color | Agent Types |
 |----------|-------|-------------|
-| development | blue | backend, frontend, mobile, database, data engineers |
-| infrastructure | orange | devops, cloud, network, platform engineers |
-| architecture | purple | system, api, principal architects |
-| design | pink | ui/ux designers, design systems |
-| quality | green | testers, code reviewers, performance engineers |
-| security | red | security auditors, penetration testers |
-| analysis | yellow | business/data analysts, researchers, documenters |
-| operations | orange | incident commanders, debuggers, coordinators |
+| development | blue | backend, mobile-platform, database, data-platform engineers |
+| infrastructure | orange | devops, cloud, cloud-network, kubernetes-admin |
+| architecture | purple | frontend-architect, api-architect, system-architect |
+| design | pink | ui-designer, mobile-ui-designer |
+| quality | green | test-engineer, code-reviewer, performance-specialist |
+| security | red | security-auditor, supply-chain-security-engineer |
+| analysis | yellow | codebase-analyst, tech-writer |
+| operations | teal | incident-commander, production-reliability-engineer, database-evolution-specialist |
 
 ### Migration Actions
 1. Check current agent color
@@ -205,19 +205,19 @@ done
 ## Migration Timeline and Prioritization
 
 ### Phase 1: Critical Agents (Week 1)
-- **High Priority**: Frequently used agents (backend-engineer, frontend-engineer, test-engineer)
+- **High Priority**: Frequently used agents (backend-engineer, frontend-architect, test-engineer)
 - **Security Critical**: security-auditor, code-reviewer
 - **Infrastructure**: devops, cloud-architect
 
 ### Phase 2: Specialized Agents (Week 2)
-- **Architecture**: api-architect, principal-architect
-- **Analysis**: codebase-analyst, business-analyst
-- **Design**: ui-designer, design-system
+- **Architecture**: api-architect, system-architect
+- **Analysis**: codebase-analyst, tech-writer
+- **Design**: ui-designer, mobile-ui-designer
 
 ### Phase 3: Support Agents (Week 3)
-- **Operations**: incident-commander, debugger
-- **Efficiency**: file-navigator, dependency-manager
-- **Documentation**: tech-writer, api-documenter
+- **Operations**: incident-commander, production-reliability-engineer
+- **Specialists**: performance-specialist, supply-chain-security-engineer
+- **Infrastructure**: cloud-network-architect, database-evolution-specialist
 
 ### Phase 4: Validation & Cleanup (Week 4)
 - Complete validation suite
@@ -262,14 +262,14 @@ done
 - YAML_REQUIREMENTS.md - Detailed YAML specifications
 
 ### Validation Tools
-- agent-auditor - Automated validation agent
 - YAML validators - Syntax checking tools
 - Test suites - Functional validation
+- Manual validation procedures
 
 ### Getting Help
 1. Check troubleshooting section
 2. Review error logs
-3. Consult agent-auditor for compliance check
+3. Run manual validation procedures
 4. Escalate persistent issues
 
 ## Version History

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide provides comprehensive strategies for maximizing parallel agent execution using the consolidated 26-agent system. The consolidation improves coordination efficiency while optimizing development velocity and maintaining quality standards.
+This guide provides comprehensive strategies for maximizing parallel agent execution using the consolidated 29-agent system. The consolidation improves coordination efficiency while optimizing development velocity and maintaining quality standards.
 
 **Consolidation Benefits for Parallel Execution:**
 - **Reduced coordination overhead**: Fewer agents mean simpler parallel patterns
@@ -16,15 +16,15 @@ This guide provides comprehensive strategies for maximizing parallel agent execu
 #### **Feature Development (Multi-Agent - Consolidated)**
 ```yaml
 Parallel Group: Implementation
-  - frontend-engineer: UI/UX implementation with performance optimization
-  - backend-engineer: API development with database optimization (renamed from backend-engineer)
+  - frontend-architect: UI/UX implementation with performance optimization
+  - backend-engineer: API development with database optimization
   - devops: CI/CD pipeline setup and infrastructure preparation
   
 Sequential Handoff:
   Implementation → Quality Assurance → Documentation
   
 Consolidation Benefit: 
-  Consistent "engineer" naming eliminates selection confusion
+  Clear architect/engineer naming indicates scope and complexity
 ```
 
 #### **Quality Assurance (Concurrent Validation - Consolidated)**
@@ -45,9 +45,7 @@ Consolidation Benefit:
 ```yaml
 Parallel Group: Strategic Planning
   - principal-architect: System architecture, technical decisions
-  - product-strategist: Feature prioritization, user impact
   - ui-designer: Design system, user experience specifications
-  - mobile-ui: Platform-specific mobile design patterns
 
 Synchronization:
   Design specifications → Implementation agents
@@ -60,12 +58,10 @@ Synchronization:
 ```yaml
 Parallel Group: Deep Analysis
   - codebase-analyst: Internal code analysis, architecture assessment, technical debt
-  - researcher: External technology research, industry standards, competitive analysis
   - security-auditor: Security vulnerability comprehensive scan
   - debugger: Performance bottleneck identification
 
 Coordination:
-  - researcher provides external context → codebase-analyst applies to internal systems
   - All analysis agents share findings for comprehensive executive summary
 ```
 
@@ -87,15 +83,14 @@ Convergence:
 ```yaml
 Platform Teams:
   Web Team:
-    - frontend-engineer: React/Vue implementation
+    - frontend-architect: React/Vue implementation
     - ui-designer: Web-specific design optimization
   
   Mobile Team:  
-    - frontend-engineer: React Native/Flutter implementation
-    - mobile-ui: iOS/Android platform compliance
+    - mobile-platform-engineer: React Native/Flutter implementation
   
   Backend Team:
-
+    - backend-engineer: API and data layer implementation
     - devops: Infrastructure and deployment
 
 Coordination Agent: project-orchestrator
@@ -121,23 +116,20 @@ Coordination:
 
 | Primary Agent | Compatible Parallel Agents | Workflow Benefit |
 |---|---|---|
-| **frontend-engineer** | backend-engineer, ui-designer, mobile-ui, test-engineer | Full-stack development with design integration |
-| **backend-engineer** | frontend-engineer, devops, platform-engineer, api-engineer | Infrastructure-aware backend development |
+| **frontend-architect** | backend-engineer, ui-designer, test-engineer | Full-stack development with design integration |
+| **backend-engineer** | frontend-architect, devops, platform-engineer, api-architect | Infrastructure-aware backend development |
 | **code-reviewer** | security-auditor, test-engineer, tech-writer | Comprehensive quality assurance |
-| **principal-architect** | product-strategist, tech-writer, researcher | Strategic planning with research and documentation |
-| **debugger** | security-auditor, codebase-analyst, performance-engineer | Multi-angle problem analysis |
+| **principal-architect** | tech-writer | Strategic planning with documentation |
+| **debugger** | security-auditor, codebase-analyst, performance-specialist | Multi-angle problem analysis |
 | **devops** | platform-engineer, backend-engineer, security-auditor | Infrastructure deployment with monitoring |
-| **researcher** | codebase-analyst, api-engineer, product-strategist | External research with internal analysis |
 
 ### Sequential Dependencies (Require Handoffs)
 
 | Sequence | Dependency Reason | Coordination Method |
 |---|---|---|
-| ui-designer → frontend-engineer | Design specs needed for implementation | Design handoff via specifications |
-| mobile-ui → frontend-engineer | Platform requirements for implementation | Platform compliance checklist |
-| api-engineer → backend-engineer | API specifications needed for implementation | OpenAPI specs and contract delivery |
+| ui-designer → frontend-architect | Design specs needed for implementation | Design handoff via specifications |
+| api-architect → backend-engineer | API specifications needed for implementation | OpenAPI specs and contract delivery |
 | codebase-analyst → implementation agents | Analysis insights guide implementation | Executive summary with action items |
-| researcher → implementation agents | External context informs technical decisions | Research findings and recommendations |
 | implementation agents → test-engineer | Code needed for test development | Feature implementation completion |
 | devops → platform-engineer | Infrastructure deployed before monitoring | Deployment completion handoff |
 | fullstack-lead → staff agents | Complexity escalation when scope exceeds senior level | Auto-escalation based on complexity triggers |
@@ -150,13 +142,12 @@ Coordination:
 ```yaml
 Phase 1 - Parallel Planning:
   - principal-architect: System design
-  - product-strategist: Requirements refinement
   - ui-designer: Design system updates
   Duration: 1-2 days
 
 Phase 2 - Parallel Implementation:
-  - frontend-engineer: UI implementation
-
+  - frontend-architect: UI implementation
+  - backend-engineer: API implementation
   - devops: Infrastructure preparation
   Duration: 3-5 days
 
@@ -190,8 +181,8 @@ Parallel Validation (Day 5):
 ```yaml
 Maximum Parallel Utilization:
   Core Development:
-    - frontend-engineer (UI/UX critical path)
-
+    - frontend-architect (UI/UX critical path)
+    - backend-engineer (API critical path)
     - devops (deployment critical path)
     
   Quality Assurance:
@@ -213,7 +204,6 @@ Comprehensive Analysis:
     - security-auditor (security)
     
   Strategic Assessment:
-    - product-strategist (business impact)
     - principal-architect (technical strategy)
     
   Documentation:
@@ -244,8 +234,8 @@ Agent Status Updates:
 #### **Handoff Protocols**
 ```yaml
 Design → Implementation:
-  - ui-designer/mobile-ui provides design specifications
-  - frontend-engineer confirms design feasibility
+  - ui-designer provides design specifications
+  - frontend-architect confirms design feasibility
   - Implementation begins with clear requirements
 
 Analysis → Action:

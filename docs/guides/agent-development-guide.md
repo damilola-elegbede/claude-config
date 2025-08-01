@@ -92,8 +92,9 @@ Create comprehensive instructions following the structure demonstrated in existi
    - ❌ `tech-agent` (unclear specialization)
 
 3. **Consistency**: Follow existing naming patterns
-   - Engineers: `backend-engineer`, `frontend-engineer`, `ml-engineer`
-   - Specialists: `api-documenter`, `config-specialist`, `monitoring-specialist`
+   - Engineers: `backend-engineer`, `data-platform-engineer`, `ml-engineer`
+   - Architects: `frontend-architect`, `cloud-network-architect`, `api-architect`
+   - Specialists: `performance-specialist`, `monitoring-specialist`, `supply-chain-security-engineer`
    - Administrators: `database-admin`, `kubernetes-admin`
 
 4. **Length**: Keep names concise but descriptive
@@ -116,7 +117,7 @@ Each agent requires:
     ├── AGENT_TEMPLATE.md          # Template for new agents
     ├── AGENT_CATEGORIES.md        # Category definitions
     ├── backend-engineer.md        # Example agent
-    ├── frontend-engineer.md       # Example agent
+    ├── frontend-architect.md      # Example agent
     └── {your-new-agent}.md       # Your new agent
 ```
 
@@ -571,7 +572,7 @@ Final Output
    ```
    Orchestrator launches simultaneously:
    - Backend-engineer (API development)
-   - Frontend-engineer (UI development)
+   - Frontend-architect (UI development)
    - Test-engineer (Test creation)
    ```
 
@@ -614,7 +615,7 @@ Final Output
    API-Architect: Designs the API specification
    Backend-Engineer: Implements the specification
    Test-Engineer: Validates the implementation
-   API-Documenter: Creates user documentation
+   Tech-Writer: Creates user documentation
    ```
 
 ### Example: Multi-Agent Project
@@ -633,7 +634,7 @@ Creating a new microservice with multiple agents:
 - devops: Setup CI/CD pipeline
 
 ## Phase 3: Documentation (Sequential)
-- api-documenter: Create API docs
+- tech-writer: Create API docs
 - tech-writer: Create user guide
 ```
 

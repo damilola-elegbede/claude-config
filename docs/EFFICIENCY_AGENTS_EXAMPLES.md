@@ -117,9 +117,9 @@ echo "export * from './UserProfile';" >> src/components/index.ts
 npm test UserProfile
 ```
 
-### After (With file-writer): 1 delegation**
+### After (With frontend-architect): 1 delegation**
 ```python
-Task: """Use file-writer to scaffold a UserProfile component with the following:
+Task: """Use frontend-architect to scaffold a UserProfile component with the following:
 - TypeScript React component with name, email, and optional avatar props
 - Unit tests using React Testing Library
 - Storybook stories with default story
@@ -163,9 +163,9 @@ npm audit fix
 npm list react react-dom @types/react @types/react-dom
 ```
 
-### After (With dependency-manager): 1 delegation**
+### After (With supply-chain-security-engineer): 1 delegation**
 ```python
-Task: """Use dependency-manager to:
+Task: """Use supply-chain-security-engineer to:
 - Update React and React-DOM to latest stable versions
 - Update corresponding @types packages
 - Run security audit and apply safe fixes
@@ -214,9 +214,9 @@ git add -A
 git commit -m "feat(auth): initial user authentication setup"
 ```
 
-### After (With git-workflow): 1 delegation**
+### After (With devops): 1 delegation**
 ```python
-Task: """Use git-workflow to:
+Task: """Use devops to:
 - Create feature/user-authentication branch from latest main
 - Preserve current working changes
 - Handle any merge conflicts intelligently
@@ -271,9 +271,9 @@ docker ps | grep redis
 docker logs redis-container --tail 50
 ```
 
-### After (With error-resolver): 1 delegation**
+### After (With production-reliability-engineer): 1 delegation**
 ```python
-Task: """Use error-resolver to investigate ConnectionRefused errors:
+Task: """Use production-reliability-engineer to investigate ConnectionRefused errors:
 - Analyze error patterns across all services
 - Identify root cause (appears to be Redis connection)
 - Check configuration and runtime status
@@ -313,9 +313,9 @@ cat coverage/coverage-summary.json | jq '.total'
 cat coverage/lcov.info | grep -A 5 "SF:.*helpers.js"
 ```
 
-### After (With test-runner): 1 delegation**
+### After (With test-engineer): 1 delegation**
 ```python
-Task: """Use test-runner to:
+Task: """Use test-engineer to:
 - Run all tests affected by changes to utils/helpers.js
 - Include both unit and integration tests
 - Generate coverage report focusing on changed files
@@ -361,9 +361,9 @@ echo "DB_POOL_MAX=20" >> .env.example
 node scripts/validate-config.js
 ```
 
-### After (With config-specialist): 1 delegation**
+### After (With data-platform-engineer): 1 delegation**
 ```python
-Task: """Use config-specialist to:
+Task: """Use data-platform-engineer to:
 - Update database pool settings across all environments
 - Set appropriate limits: dev=20, staging=50, production=100
 - Update .env.example with new variable

@@ -2,7 +2,9 @@
 
 ## Overview
 
-Efficiency agents are specialized tools designed to minimize tool calls and streamline common development workflows in the Claude Code ecosystem. These agents excel at targeted, high-frequency tasks that would otherwise require multiple tool invocations, significantly reducing execution time and improving developer productivity.
+**IMPORTANT:** This document is maintained for historical reference. The efficiency agent concept has been integrated into the main 29-agent portfolio. The workflows described below are now handled by specialized agents like `production-reliability-engineer`, `supply-chain-security-engineer`, and others in the current system.
+
+Originally, efficiency agents were specialized tools designed to minimize tool calls and streamline common development workflows in the Claude Code ecosystem. These concepts have been absorbed into our streamlined agent architecture.
 
 ## Core Philosophy
 
@@ -15,7 +17,9 @@ The efficiency agent category follows these principles:
 
 ## The Efficiency Agent Suite
 
-### 1. file-navigator
+*Note: The efficiency agent category has been consolidated into the main 29-agent portfolio. The concepts below demonstrate streamlined workflow patterns now integrated into our specialized agents.*
+
+### 1. file-navigator (Consolidated)
 **Purpose**: Rapid file system exploration and navigation  
 **Reduces**: Multiple `ls`, `find`, and `cd` commands to single operations
 
@@ -40,7 +44,7 @@ ls
 Task: "Use file-navigator to find all React components and utility files in the src directory"
 ```
 
-### 2. dependency-manager
+### 2. dependency-manager (Now: supply-chain-security-engineer)
 **Purpose**: Streamlined package and dependency operations  
 **Reduces**: Multiple package manager commands and version checks
 
@@ -113,7 +117,7 @@ edit config/development.json
 Task: "Use config-specialist to update database configuration across all environments"
 ```
 
-### 5. error-resolver
+### 5. error-resolver (Now: production-reliability-engineer)
 **Purpose**: Rapid error diagnosis and resolution  
 **Reduces**: Multiple debugging and log analysis steps
 
@@ -258,19 +262,19 @@ Efficiency agents are designed to complement specialist agents:
    - Debugger tackles complex problems
 ```
 
-### Command Shortcuts
+### Command Shortcuts (Historical)
 
-These shortcuts trigger efficiency agents automatically:
+These workflows are now handled by the main agent portfolio:
 
-- `/find` → file-navigator
-- `/deps` → dependency-manager  
-- `/git` → git-workflow
-- `/config` → config-specialist
-- `/error` → error-resolver
-- `/search` → search-coordinator
-- `/run-tests` → test-runner
-- `/find-docs` → documentation-finder
-- `/scaffold` → file-writer
+- File operations → Use appropriate development agents
+- Dependencies → `supply-chain-security-engineer`
+- Git workflows → Standard git commands + development agents
+- Configuration → Infrastructure agents (`devops`, `platform-engineer`)
+- Error resolution → `production-reliability-engineer`
+- Search → Built into all analysis agents
+- Testing → `test-engineer`
+- Documentation → `tech-writer`
+- File scaffolding → Development agents with file creation capabilities
 
 ## Performance Metrics
 

@@ -1,7 +1,7 @@
 # /docs Command
 
 ## Description
-Creates and updates documentation using multiple specialized writing agents working in parallel. Orchestrates tech-writer, api-documenter, and mobile-ui agents to comprehensively document all aspects of your project including API specs, README files, architectural documentation, mobile patterns, and technical specifications.
+Creates and updates documentation using specialized tech-writer agents working in parallel. Orchestrates multiple tech-writer instances to comprehensively document all aspects of your project including API specs, README files, architectural documentation, and technical specifications.
 
 ## Usage
 ```
@@ -10,13 +10,12 @@ Creates and updates documentation using multiple specialized writing agents work
 
 ## Arguments
 - `type` (optional): Documentation type to create/update
-  - `api`: API documentation and OpenAPI specs (uses api-documenter)
+  - `api`: API documentation and OpenAPI specs (uses tech-writer)
   - `readme`: README and getting started guides (uses tech-writer)
   - `arch`: Architecture documentation (uses tech-writer)
   - `spec`: Technical specification documents (uses tech-writer)
   - `guides`: User/developer guides (uses tech-writer)
-  - `mobile`: Mobile UI documentation (uses mobile-ui)
-  - `all`: Update all documentation (default - uses all agents in parallel)
+  - `all`: Update all documentation (default - uses multiple tech-writer agents in parallel)
 
 ## Options
 - `--format <type>`: Output format (markdown, asciidoc, rst)
@@ -36,29 +35,21 @@ When you use `/docs`, I will:
    - Undocumented APIs
    - Mobile UI patterns
    
-2. **Orchestrate multiple agents in parallel**:
+2. **Orchestrate multiple tech-writer agents in parallel**:
    - **tech-writer agents** (multiple instances for different doc types):
      - README and getting started guides
      - Architecture documentation
      - Technical specifications
+     - API documentation and OpenAPI specs
      - Migration guides
      - Troubleshooting docs
-   - **api-documenter agent**:
-     - OpenAPI/Swagger specs
-     - GraphQL schema docs
-     - REST endpoint references
-     - WebSocket protocols
-     - API migration guides
-   - **mobile-ui agent** (when mobile docs needed):
-     - iOS/Android UI patterns
-     - Mobile-specific documentation
-     - Platform guidelines integration
+     - Mobile UI patterns and platform guidelines
    
 3. **Parallel execution strategy**:
    - Consult project-orchestrator for optimal agent coordination
    - Launch multiple tech-writer instances for different sections
-   - Run api-documenter concurrently for API specs
-   - Add mobile-ui for mobile-specific documentation
+   - Run specialized tech-writer for API specifications
+   - Include mobile documentation patterns when needed
    - Aggregate results into cohesive documentation
    
 4. **Ensure documentation quality**:
@@ -70,12 +61,11 @@ When you use `/docs`, I will:
 
 ## Examples
 ```
-/docs                              # Update all docs with multiple agents in parallel
-/docs api --sync                   # API docs using api-documenter agent
+/docs                              # Update all docs with multiple tech-writer agents in parallel
+/docs api --sync                   # API docs using specialized tech-writer
 /docs spec feature/auth            # Create auth SPEC with tech-writer
 /docs readme --examples            # README with examples (tech-writer)
 /docs arch --format asciidoc       # Architecture docs (tech-writer)
-/docs mobile                       # Mobile docs using mobile-ui agent
 /docs all --parallel              # Full parallel documentation update
 ```
 
@@ -192,18 +182,15 @@ Brief description and business value
 When using `/docs all` or `--parallel`:
 1. **Project-orchestrator** consulted for optimal execution plan
 2. **Parallel execution**:
-   - 2-3 tech-writer instances for different doc sections
-   - 1 api-documenter for all API specifications
-   - 1 mobile-ui for mobile documentation (if applicable)
+   - 2-4 tech-writer instances for different doc sections
+   - Specialized assignments for API specs, mobile docs, architecture
 3. **Result aggregation**:
    - Consistent formatting across all docs
    - Cross-references between sections
    - Unified glossary and terminology
 
 ## Agent Specializations
-- **tech-writer**: General documentation, README, guides, architecture
-- **api-documenter**: OpenAPI specs, REST/GraphQL docs, API contracts
-- **mobile-ui**: iOS/Android UI patterns, mobile-specific docs
+- **tech-writer**: Comprehensive documentation including README, guides, architecture, API specs, mobile patterns
 - **project-orchestrator**: Coordination for complex documentation projects
 
 ## Integration
@@ -227,15 +214,14 @@ When using `/docs all` or `--parallel`:
 # Launches in parallel:
 # - tech-writer #1: README and getting started
 # - tech-writer #2: Architecture documentation  
-# - tech-writer #3: Developer guides
-# - api-documenter: Complete API documentation
-# - mobile-ui: Mobile patterns (if mobile code detected)
+# - tech-writer #3: API documentation and specifications
+# - tech-writer #4: Developer guides and mobile patterns
 
 # Result: Comprehensive documentation updated in parallel
 ```
 
 ## Notes
-- Leverages multiple specialized agents for comprehensive coverage
+- Leverages multiple tech-writer agents for comprehensive coverage
 - Parallel execution dramatically reduces documentation time
 - Maintains consistency across all documentation types
 - Creates missing SPEC files proactively

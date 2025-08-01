@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide helps users transition from the original 36-agent system to the new consolidated 26-agent system. The consolidation eliminates redundancy, improves selection accuracy from 75% to 95%, and maintains 100% functional coverage.
+This guide helps users transition from the previous agent system to the new consolidated 29-agent system. The consolidation eliminates redundancy, improves selection accuracy from 75% to 95%, and maintains 100% functional coverage.
 
 ## Quick Reference: What Changed
 
@@ -14,7 +14,7 @@ This guide helps users transition from the original 36-agent system to the new c
 | `/test` | qa-engineer | test-engineer | ✅ Enhanced (absorbed qa-engineer) |
 | `/review` | code-reviewer | code-reviewer | ✅ Unchanged |
 | `/security` | security-auditor | security-auditor | ✅ Unchanged |
-| `/perf` | performance-engineer | performance-engineer | ✅ Unchanged |
+| `/perf` | performance-engineer | performance-specialist | ✅ Renamed for clarity |
 | `/docs` | tech-writer | tech-writer | ✅ Enhanced (absorbed tech-writer + completion-agent) |
 | `/debug` | debugger | debugger | ✅ Unchanged |
 | `/orchestrate` | project-orchestrator | project-orchestrator | ✅ Unchanged |
@@ -22,7 +22,7 @@ This guide helps users transition from the original 36-agent system to the new c
 
 ## Agent Consolidation Map
 
-### 1. Eliminated Agents (10 total)
+### 1. Eliminated Agents
 
 #### API Ecosystem Consolidation
 **Before (2 agents):**
@@ -93,11 +93,11 @@ This guide helps users transition from the original 36-agent system to the new c
 - `mobile-engineer` - Mobile engineering
 
 **After (1 agent):**
-- `mobile-engineer` - Standardized mobile development
+- `mobile-platform-engineer` - Standardized mobile development
 
 **Migration Impact:**
 - **What you used to do**: Choose between similar mobile development agents
-- **What you do now**: Always use mobile-engineer
+- **What you do now**: Always use mobile-platform-engineer
 - **Benefit**: Consistent naming pattern
 
 #### Quality Assurance Consolidation
@@ -132,11 +132,11 @@ This guide helps users transition from the original 36-agent system to the new c
 | Old Name | New Name | Reason |
 |----------|----------|--------|
 | `backend-engineer` | `backend-engineer` | Consistent "engineer" naming pattern |
-| `frontend-engineer` | `frontend-engineer` | Consistent "engineer" naming pattern |
+| `frontend-engineer` | `frontend-architect` | Elevated to architect-level naming |
 
 **Migration Impact:**
 - **Old commands**: `Task backend-engineer` or `Task frontend-engineer`
-- **New commands**: `Task backend-engineer` or `Task frontend-engineer`
+- **New commands**: `Task backend-engineer` or `Task frontend-architect`
 - **Benefit**: Consistent professional titles across all implementation agents
 
 #### Accessibility Clarity
@@ -253,7 +253,7 @@ agents:
   - test-engineer: comprehensive testing (absorbed qa-engineer)
   - code-reviewer: code quality and style
   - security-auditor: security assessment
-  - performance-engineer: performance validation
+  - performance-specialist: performance validation
 ```
 
 #### API Development (Before)
@@ -282,8 +282,8 @@ parallel_support:
 # Old way: Potential naming confusion
 parallel:
   - backend-engineer: server implementation
-  - frontend-engineer: client implementation
-  - mobile-engineer: mobile app
+  - frontend-architect: client implementation
+  - mobile-platform-engineer: mobile app
   - qa-engineer: quality processes
   - test-engineer: test automation
 ```
@@ -293,8 +293,8 @@ parallel:
 # New way: Consistent naming, clear roles
 parallel:
   - backend-engineer: server implementation
-  - frontend-engineer: client implementation  
-  - mobile-engineer: mobile app
+  - frontend-architect: client implementation  
+  - mobile-platform-engineer: mobile app
   - test-engineer: comprehensive testing
 ```
 
@@ -312,10 +312,10 @@ parallel:
   - API work → always `api-architect`
   - Research → always `researcher`
   - Backend → always `backend-engineer`
-  - Frontend → always `frontend-engineer`
+  - Frontend → always `frontend-architect`
   - Testing → always `test-engineer`
   - Documentation → always `tech-writer`
-  - Mobile development → `mobile-engineer`
+  - Mobile development → `mobile-platform-engineer`
   - Mobile UI/UX → `mobile-ui`
   - Production reliability → `platform-engineer`
   - Accessibility → `accessibility-auditor`
@@ -374,7 +374,7 @@ Check the consolidation map above. Your agent's capabilities are now part of a c
 - `qa-engineer` → `test-engineer`
 
 - `backend-engineer` → `backend-engineer`
-- `frontend-engineer` → `frontend-engineer`
+- `frontend-engineer` → `frontend-architect`
 - `platform-engineer` → `platform-engineer`
 
 - `accessibility-auditor` → `accessibility-auditor`
@@ -412,7 +412,7 @@ That's expected! The new system optimizes for:
 ## Summary
 
 The consolidated agent system provides:
-- **Simpler selection** (26 vs 26 agents)
+- **Simpler selection** (29 streamlined agents)
 - **Higher accuracy** (95% vs 75% selection success)
 - **Same functionality** (100% capability preservation)
 - **Better workflows** (fewer handoffs, clearer boundaries)
