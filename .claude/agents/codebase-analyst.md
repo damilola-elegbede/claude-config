@@ -1,7 +1,7 @@
 ---
 name: codebase-analyst
 description: Use for analyzing code architecture, technical debt assessment, and dependency mapping. MUST BE USED when evaluating codebases, creating executive summaries, or identifying risks
-tools: Read, Grep, Glob, LS, TodoWrite
+tools: Read, Write, Grep, Glob, LS, TodoWrite
 model: sonnet
 color: yellow
 category: analysis

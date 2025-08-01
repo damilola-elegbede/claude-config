@@ -1,7 +1,7 @@
 ---
 name: devops
 description: Use for CI/CD pipelines, containerization, IaC, deployment automation, SRE practices, observability, and production operations. MUST BE USED for Kubernetes, Terraform, monitoring, SLO/SLI definition, incident response, and reliability engineering
-tools: Read, Grep, Glob, LS, WebFetch
+tools: Read, Write, Edit, Grep, Glob, LS, WebFetch
 model: sonnet
 color: orange
 category: infrastructure
