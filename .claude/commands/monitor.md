@@ -48,14 +48,14 @@ When you use `/monitor`, I will coordinate in multiple phases:
    - Capacity planning metrics
 
 ### Phase 2 (Implementation)
-4. **Monitoring stack configuration**:
+1. **Monitoring stack configuration**:
    - Metrics collection (Prometheus, DataDog, New Relic)
    - Log aggregation (ELK, Splunk, Fluentd)
    - Distributed tracing (Jaeger, Zipkin)
    - Error tracking (Sentry, Rollbar)
    - Uptime monitoring (Pingdom, StatusPage)
 
-5. **Dashboard and alerting setup**:
+2. **Dashboard and alerting setup**:
    - Executive dashboards
    - Engineering dashboards
    - Service-specific views

@@ -48,13 +48,13 @@ When you use `/incident`, I will orchestrate multi-phase incident response:
    - Documentation coordination
 
 ### Phase 2 (Investigation - 5-30 min)
-3. **Coordinate with technical specialists**:
+1. **Coordinate with technical specialists**:
    - **debugger**: Root cause analysis
    - **security-auditor**: Security incident analysis
    - **performance-specialist**: Performance degradation analysis
    - **devops-sre**: Infrastructure impact assessment
 
-4. **Evidence collection and preservation**:
+2. **Evidence collection and preservation**:
    - System logs and metrics capture
    - Configuration snapshots  
    - Error message compilation
@@ -62,7 +62,7 @@ When you use `/incident`, I will orchestrate multi-phase incident response:
    - Impact quantification
 
 ### Phase 3 (Resolution - Ongoing)
-5. **Solution implementation coordination**:
+1. **Solution implementation coordination**:
    - Fix development and testing
    - Rollback preparation
    - Deployment coordination

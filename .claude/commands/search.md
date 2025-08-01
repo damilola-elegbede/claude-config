@@ -53,14 +53,14 @@ When you use `/search`, I will orchestrate intelligent search and analysis:
    - Architecture overview
 
 ### Phase 2 (Multi-Dimensional Search - 10-30 min)
-3. **Coordinate specialized search agents**:
+1. **Coordinate specialized search agents**:
    - **Pattern matching**: Exact and fuzzy code searches
    - **Semantic analysis**: Natural language understanding
    - **Relationship mapping**: Connection identification
    - **Impact analysis**: Change effect prediction
    - **Usage discovery**: Implementation examples
 
-4. **Cross-reference analysis**:
+2. **Cross-reference analysis**:
    - Code-to-documentation links
    - Test coverage mapping
    - Configuration relationships
@@ -68,7 +68,7 @@ When you use `/search`, I will orchestrate intelligent search and analysis:
    - Historical change patterns
 
 ### Phase 3 (Insight Generation - 30+ min)
-5. **Knowledge synthesis**:
+1. **Knowledge synthesis**:
    - Pattern consolidation
    - Insight extraction
    - Recommendation generation

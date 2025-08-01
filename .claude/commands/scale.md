@@ -50,14 +50,14 @@ When you use `/scale`, I will orchestrate comprehensive scalability analysis:
    - Benchmark establishment
 
 ### Phase 2 (Scaling Strategy Design - 25-50 min)
-4. **Architecture optimization**:
+1. **Architecture optimization**:
    - Microservices decomposition
    - Caching strategy design
    - Database scaling patterns
    - Load balancing optimization
    - Content delivery optimization
 
-5. **Infrastructure scaling**:
+2. **Infrastructure scaling**:
    - Auto-scaling configuration
    - Resource allocation planning
    - Geographic distribution strategy
@@ -65,7 +65,7 @@ When you use `/scale`, I will orchestrate comprehensive scalability analysis:
    - Multi-zone redundancy
 
 ### Phase 3 (Implementation Planning - 50+ min)
-6. **Execution roadmap**:
+1. **Execution roadmap**:
    - Priority-based scaling phases
    - Migration strategy planning
    - Risk mitigation procedures

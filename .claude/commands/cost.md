@@ -50,14 +50,14 @@ When you use `/cost`, I will orchestrate comprehensive cost optimization:
    - Data transfer optimization
 
 ### Phase 2 (Optimization Strategy - 30-60 min)
-4. **Cost reduction identification**:
+1. **Cost reduction identification**:
    - Unused resource elimination
    - Right-sizing recommendations
    - Reserved instance optimization
    - Spot instance opportunities
    - Storage tier optimization
 
-5. **Financial control implementation**:
+2. **Financial control implementation**:
    - Budget alerts and controls
    - Cost allocation strategies
    - Tagging standardization
@@ -65,7 +65,7 @@ When you use `/cost`, I will orchestrate comprehensive cost optimization:
    - Approval workflows
 
 ### Phase 3 (Implementation Planning - 60+ min)
-6. **Optimization execution**:
+1. **Optimization execution**:
    - Priority-based implementation
    - Risk assessment and mitigation
    - Testing and validation procedures

@@ -51,14 +51,14 @@ When you use `/accessibility`, I will coordinate comprehensive accessibility eva
    - Interactive element evaluation
 
 ### Phase 2 (Specialized Testing - 20-45 min)
-4. **Automated testing execution**:
+1. **Automated testing execution**:
    - axe-core accessibility engine
    - WAVE web accessibility evaluation
    - Lighthouse accessibility audit
    - pa11y command line testing
    - Color contrast analyzers
 
-5. **Manual testing simulation**:
+2. **Manual testing simulation**:
    - Keyboard-only navigation
    - Screen reader workflows
    - Voice control compatibility
@@ -66,7 +66,7 @@ When you use `/accessibility`, I will coordinate comprehensive accessibility eva
    - Zoom functionality validation
 
 ### Phase 3 (Remediation - 45+ min)
-6. **Issue prioritization and fixes**:
+1. **Issue prioritization and fixes**:
    - Critical barrier identification
    - Implementation recommendations
    - Code generation for fixes
