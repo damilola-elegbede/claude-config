@@ -1,20 +1,20 @@
 # Claude Configuration Documentation - Consolidated System
 
 ## Overview
-This documentation provides comprehensive information about the consolidated Claude configuration system with 26 specialized agents, optimized workflows, and enhanced development processes.
+This documentation provides comprehensive information about the consolidated Claude configuration system with 29 specialized agents, optimized workflows, and enhanced development processes.
 
 **System Highlights:**
-- **26 specialized agents** (consolidated from 36) with zero functional loss
-- **95% agent selection accuracy** vs previous 75%
+- **29 specialized agents** with clear functional boundaries
+- **95% agent selection accuracy** with standardized naming
 - **Clear boundaries** and standardized naming conventions
 - **Enhanced parallel execution** patterns and coordination
 
 ## Quick Links
 
 ### Core Documentation
-- [Agent Ecosystem Overview](../agents/README.md) - Complete guide to all 26 consolidated agents
+- [Agent Ecosystem Overview](../agents/README.md) - Complete guide to all 29 specialized agents
 - [Agent Selection Guide](AGENT_SELECTION_GUIDE.md) - How to choose the right agent in the consolidated system
-- [Agent Migration Guide](AGENT_MIGRATION_GUIDE.md) - Transition guide from the 36-agent to 26-agent system
+- [Agent Migration Guide](AGENT_MIGRATION_GUIDE.md) - Transition guide for the 29-agent system
 - [Command Reference](#command-reference) - All available slash commands (unchanged)
 
 ### Technical Specifications
@@ -72,37 +72,36 @@ This documentation provides comprehensive information about the consolidated Cla
 ## Agent Categories
 
 ### 1. Implementation Agents
-- **backend-engineer** - Complex backend systems
-- **frontend-engineer** - Complex UI and real-time features
+- **backend-staff** - Complex backend systems
+- **frontend-architect** - Complex UI and real-time features
 - **fullstack-lead** - General implementation
-- **mobile-staff** - iOS/Android development
-- **api-engineer** - API design and contracts
+- **mobile-platform-engineer** - iOS/Android development
+- **api-specialist** - API design and contracts
 
 ### 2. Analysis Agents
 - **codebase-analyst** - Code structure analysis
 - **researcher** - External technology research
 - **debugger** - Complex bug investigation
-- **performance-engineer** - Performance optimization
+- **performance-specialist** - Performance optimization
 
 ### 3. Quality Assurance Agents
 - **code-reviewer** - Code quality and style
 - **security-auditor** - Security vulnerabilities
-- **test-engineer** - Test strategy and coverage
-- **test-engineer** - Test implementation
+- **test-engineer** - Test strategy and implementation
+- **qa-specialist** - Quality assurance processes
 
 ### 4. Strategic Planning Agents
-- **principal-architect** - System architecture
-- **product-strategist** - Product planning
+- **system-architect** - System architecture
 - **project-orchestrator** - Multi-agent coordination
 
 ### 5. Operations Agents
 - **devops-engineer** - CI/CD and deployment
 - **platform-engineer** - Production reliability
-- **sre-specialist** - Site reliability
+- **site-reliability-engineer** - Site reliability
+- **production-reliability-engineer** - Production incident response
 
 ### 6. Design & Documentation Agents
 - **ui-designer** - Web/desktop UI design
-- **mobile-ui** - Mobile interface design
 - **tech-writer** - Technical documentation
 
 ## Configuration Files

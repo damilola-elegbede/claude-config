@@ -1,10 +1,10 @@
 # /ml Command
 
 ## Description
-Quickly access machine learning expertise through Claude orchestration for ML and AI tasks. Claude will coordinate with the ml-engineer specialist for ML model development, deployment, and MLOps practices.
+Quickly access machine learning expertise through Claude orchestration for ML and AI tasks. Claude will coordinate with the ml-staff specialist for ML model development, deployment, and MLOps practices.
 
 ## Behavior
-This command coordinates with the ml-engineer specialist to deploy ML models, build MLOps pipelines, and implement production-ready machine learning systems at scale.
+This command coordinates with the ml-staff specialist to deploy ML models, build MLOps pipelines, and implement production-ready machine learning systems at scale.
 
 ## Usage
 ```
@@ -18,7 +18,7 @@ This command coordinates with the ml-engineer specialist to deploy ML models, bu
 - `/ml deploy model to production`
 
 ## Capabilities
-The ml-engineer specialist (coordinated through Claude) excels at:
+The ml-staff specialist (coordinated through Claude) excels at:
 - ML model development and training
 - Model optimization and deployment
 - MLOps pipeline implementation

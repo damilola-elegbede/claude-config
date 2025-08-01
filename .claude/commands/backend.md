@@ -1,10 +1,10 @@
 # /backend Command
 
 ## Description
-Quickly access backend development expertise through Claude orchestration for server-side development tasks. Claude will coordinate with the backend-engineer specialist for APIs, databases, microservices, and distributed systems architecture.
+Quickly access backend development expertise through Claude orchestration for server-side development tasks. Claude will coordinate with the backend-staff specialist for APIs, databases, microservices, and distributed systems architecture.
 
 ## Behavior
-This command coordinates with the backend-engineer specialist to implement server-side systems, APIs, microservices, and database architectures with a focus on scalability and performance.
+This command coordinates with the backend-staff specialist to implement server-side systems, APIs, microservices, and database architectures with a focus on scalability and performance.
 
 ## Usage
 ```
@@ -18,7 +18,7 @@ This command coordinates with the backend-engineer specialist to implement serve
 - `/backend debug API latency issues`
 
 ## Capabilities
-The backend-engineer specialist (coordinated through Claude) excels at:
+The backend-staff specialist (coordinated through Claude) excels at:
 - RESTful and GraphQL API development
 - Database design and optimization
 - Microservices architecture

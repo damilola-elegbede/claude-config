@@ -1,10 +1,10 @@
 # /architect Command
 
 ## Description
-Quickly access system architecture expertise through Claude orchestration for system architecture design, technical roadmaps, and strategic architectural decisions. Claude will coordinate with the principal-architect specialist for high-level system design and technical leadership.
+Quickly access system architecture expertise through Claude orchestration for system architecture design, technical roadmaps, and strategic architectural decisions. Claude will coordinate with the system-architect specialist for high-level system design and technical leadership.
 
 ## Behavior
-This command coordinates with the principal-architect specialist to provide system-wide architecture design, technical roadmaps, and cross-team coordination for complex architectural decisions.
+This command coordinates with the system-architect specialist to provide system-wide architecture design, technical roadmaps, and cross-team coordination for complex architectural decisions.
 
 ## Usage
 ```
@@ -18,7 +18,7 @@ This command coordinates with the principal-architect specialist to provide syst
 - `/architect create technical roadmap`
 
 ## Capabilities
-The principal-architect specialist (coordinated through Claude) excels at:
+The system-architect specialist (coordinated through Claude) excels at:
 - System architecture design
 - Technical roadmap creation
 - Architecture decision records (ADRs)

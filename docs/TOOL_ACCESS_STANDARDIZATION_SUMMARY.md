@@ -3,7 +3,7 @@
 ## Standardized Tool Access Categories
 
 ### 1. Full Access
-**Agents**: backend-engineer, frontend-engineer, devops, platform-engineer
+**Agents**: backend-staff, frontend-architect, devops-engineer, platform-engineer
 **Purpose**: Implementation agents requiring complete tool access
 ```yaml
 tool_access: full_access
@@ -25,7 +25,7 @@ tool_restrictions:
 ```
 
 ### 3. Read + Analysis
-**Agents**: code-reviewer, security-auditor, researcher, product-strategist, debugger, performance-engineer, codebase-analyst
+**Agents**: code-reviewer, security-auditor, researcher, debugger, performance-specialist, codebase-analyst
 **Purpose**: Quality/assessment agents that analyze but don't modify code
 ```yaml
 tool_access: read_only_plus_analysis
@@ -36,7 +36,7 @@ tool_restrictions:
 ```
 
 ### 4. Documentation Access
-**Agents**: tech-writer, api-engineer
+**Agents**: tech-writer, api-specialist
 **Purpose**: Writing-focused agents needing file creation/editing but not code modification
 ```yaml
 tool_access: documentation_access
@@ -47,7 +47,7 @@ tool_restrictions:
 ```
 
 ### 5. Design Specification
-**Agents**: ui-designer, mobile-ui, principal-architect
+**Agents**: ui-designer, system-architect
 **Purpose**: Planning agents creating specs and designs with file creation capabilities
 ```yaml
 tool_access: design_specification
@@ -79,8 +79,8 @@ tool_restrictions:
 
 ## Files Updated
 
-✅ All 19 agent files standardized with consistent tool access documentation
-✅ Added missing tool access sections to: tech-writer, product-strategist, project-orchestrator
+✅ All 29 agent files standardized with consistent tool access documentation
+✅ Added missing tool access sections and updated agent names
 ✅ Fixed inconsistent tool lists across same access categories
 ✅ Standardized formatting and rationale explanations
 ✅ Aligned access levels with agent responsibilities

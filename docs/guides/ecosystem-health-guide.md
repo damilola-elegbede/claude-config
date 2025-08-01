@@ -38,10 +38,10 @@ The `/agent-audit` command provides a complete ecosystem health assessment by ru
 ```
 
 This triggers parallel execution of:
-- **agent-auditor** instances for each agent category
+- Category-specific auditors for each agent category
 - **codebase-analyst** for structural assessment
 - **security-auditor** for vulnerability checks
-- **performance-analyst** for efficiency metrics
+- **performance-specialist** for efficiency metrics
 
 #### Targeted Audits
 ```bash
@@ -50,7 +50,7 @@ This triggers parallel execution of:
 /agent-audit --category infrastructure
 
 # Audit specific agents
-/agent-audit --agents backend-engineer,frontend-engineer
+/agent-audit --agents backend-engineer,frontend-architect
 
 # Deep compliance check
 /agent-audit --deep --compliance-focus
@@ -169,7 +169,7 @@ upon any Task tool invocation. This is a hard-coded system protection.
 **Fix**:
 1. Identify gap through capability matrix
 2. Create new specialist using AGENT_TEMPLATE.md
-3. Validate with agent-auditor
+3. Validate with comprehensive testing
 
 ### Issue 5: Poor Integration Patterns
 **Symptom**: Sequential execution where parallel is possible
@@ -261,8 +261,8 @@ def measure_agent_performance(agent):
 
 # List of agents to benchmark
 agents = [
-    'backend-engineer', 'frontend-engineer', 'test-engineer',
-    'security-auditor', 'performance-analyst'
+    'backend-engineer', 'frontend-architect', 'test-engineer',
+    'security-auditor', 'performance-specialist'
 ]
 
 # Run parallel performance tests
@@ -285,13 +285,16 @@ import os
 import re
 from collections import defaultdict
 
-# Define expected capabilities
+# Define expected capabilities for 29-agent ecosystem
 EXPECTED_CAPABILITIES = {
-    'development': ['backend', 'frontend', 'mobile', 'database', 'api'],
-    'infrastructure': ['cloud', 'devops', 'network', 'kubernetes'],
-    'quality': ['test', 'security', 'performance', 'accessibility'],
-    'analysis': ['codebase', 'business', 'data'],
-    'documentation': ['tech-writer', 'api-documenter']
+    'development': ['backend', 'data-platform', 'database', 'mobile-platform', 'ml'],
+    'infrastructure': ['cloud', 'devops', 'cloud-network', 'kubernetes', 'monitoring'],
+    'architecture': ['frontend-architect', 'api-architect', 'system-architect'],
+    'design': ['ui-designer', 'mobile-ui'],
+    'quality': ['test', 'code-reviewer', 'performance-specialist', 'security-auditor'],
+    'security': ['security-auditor', 'supply-chain-security'],
+    'analysis': ['codebase-analyst', 'tech-writer'],
+    'operations': ['incident-commander', 'production-reliability', 'database-evolution']
 }
 
 def analyze_gaps():
@@ -408,15 +411,20 @@ Configure alerts for:
 
 Create and maintain a capability matrix:
 
-| Domain | Current Coverage | Gaps | Priority |
-|--------|-----------------|------|----------|
-| Backend Development | ✅ Full | None | Maintain |
-| Frontend Development | ✅ Full | None | Maintain |
-| Mobile Development | ✅ Full | None | Maintain |
-| Data Engineering | ✅ Full | None | Maintain |
-| Machine Learning | ⚠️ Partial | Advanced ML Ops | High |
-| Blockchain | ❌ None | Smart contracts | Medium |
-| IoT Development | ❌ None | Edge computing | Low |
+### 29-Agent Ecosystem Coverage Matrix
+
+| Domain | Current Coverage | Agents | Status |
+|--------|-----------------|--------|---------|
+| Backend Development | ✅ Full | backend-engineer | Maintain |
+| Frontend Architecture | ✅ Full | frontend-architect | Maintain |
+| Mobile Development | ✅ Full | mobile-platform-engineer | Maintain |
+| Data Engineering | ✅ Full | data-platform-engineer | Maintain |
+| Cloud Infrastructure | ✅ Full | cloud-architect, cloud-network-architect | Maintain |
+| Security Operations | ✅ Full | security-auditor, supply-chain-security-engineer | Maintain |
+| Quality Assurance | ✅ Full | test-engineer, code-reviewer, performance-specialist | Maintain |
+| System Architecture | ✅ Full | api-architect, system-architect | Maintain |
+| UI/UX Design | ✅ Full | ui-designer, mobile-ui-designer | Maintain |
+| Operations | ✅ Full | incident-commander, production-reliability-engineer | Maintain |
 
 ### 2. Gap Prioritization Framework
 
@@ -462,13 +470,13 @@ Evaluate gaps based on:
 # Before: Sequential execution
 def process_files_sequential(files):
     for file in files:
-        agent_result = invoke_agent('file-writer', file)
+        agent_result = invoke_agent('backend-engineer', file)
         process_result(agent_result)
 
 # After: Parallel execution
 def process_files_parallel(files):
     with ThreadPoolExecutor(max_workers=10) as executor:
-        futures = [executor.submit(invoke_agent, 'file-writer', f) for f in files]
+        futures = [executor.submit(invoke_agent, 'backend-engineer', f) for f in files]
         for future in futures:
             process_result(future.result())
 ```

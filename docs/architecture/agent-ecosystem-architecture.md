@@ -15,7 +15,7 @@
 
 ## Executive Summary
 
-The Claude Agent Ecosystem is a sophisticated multi-agent orchestration system designed to decompose complex tasks into parallel workstreams. At its core, Claude serves as the sole orchestration engine coordinating 47 specialized AI agents across 8 distinct categories. This architecture enables massive parallelization, clear separation of concerns, and robust security boundaries while maintaining a single point of execution control.
+The Claude Agent Ecosystem is a sophisticated multi-agent orchestration system designed to decompose complex tasks into parallel workstreams. At its core, Claude serves as the sole orchestration engine coordinating 29 specialized AI agents across 8 distinct categories. This architecture enables massive parallelization, clear separation of concerns, and robust security boundaries while maintaining a single point of execution control.
 
 ### Key Architectural Principles
 
@@ -33,14 +33,14 @@ The Claude Agent Ecosystem is a sophisticated multi-agent orchestration system d
 graph TB
     User[User] --> Claude[Claude Orchestrator<br/>Sole Executor]
     
-    Claude --> CAT1[Development Agents<br/>15 specialists]
-    Claude --> CAT2[Infrastructure Agents<br/>8 specialists]
-    Claude --> CAT3[Quality Agents<br/>6 specialists]
-    Claude --> CAT4[Architecture Agents<br/>7 specialists]
-    Claude --> CAT5[Documentation Agents<br/>3 specialists]
-    Claude --> CAT6[Coordination Agents<br/>3 specialists]
-    Claude --> CAT7[Efficiency Agents<br/>5 specialists]
-    Claude --> CAT8[Analysis Agents<br/>0 specialists]
+    Claude --> CAT1[Development Agents<br/>5 specialists]
+    Claude --> CAT2[Infrastructure Agents<br/>9 specialists]
+    Claude --> CAT3[Quality Agents<br/>4 specialists]
+    Claude --> CAT4[Architecture Agents<br/>2 specialists]
+    Claude --> CAT5[Design Agents<br/>2 specialists]
+    Claude --> CAT6[Security Agents<br/>2 specialists]
+    Claude --> CAT7[Analysis Agents<br/>2 specialists]
+    Claude --> CAT8[Operations Agents<br/>3 specialists]
     
     CAT1 --> Tools1[Code Generation<br/>Pattern Analysis]
     CAT2 --> Tools2[Infrastructure<br/>Configuration]
@@ -112,7 +112,7 @@ graph LR
 
 ### Category Structure
 
-The ecosystem organizes 47 specialized agents into 8 functional categories, each with distinct responsibilities and color coding for visual identification:
+The ecosystem organizes 29 specialized agents into 8 functional categories, each with distinct responsibilities and color coding for visual identification:
 
 ```mermaid
 graph TD

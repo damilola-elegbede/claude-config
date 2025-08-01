@@ -1,7 +1,7 @@
 # /perf Command
 
 ## Description
-Analyzes application performance using the performance-engineer agent to identify bottlenecks, optimize resource usage, and ensure scalability.
+Analyzes application performance using the performance-specialist agent to identify bottlenecks, optimize resource usage, and ensure scalability.
 
 ## Usage
 ```
@@ -31,7 +31,7 @@ When you use `/perf`, I will:
    - User-facing latencies
    - System bottlenecks
    
-2. **Launch performance-engineer agent** to analyze:
+2. **Launch performance-specialist agent** to analyze:
    - Response time metrics
    - Resource utilization
    - Scalability limits

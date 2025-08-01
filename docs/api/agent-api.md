@@ -131,12 +131,12 @@ POST /api/orchestration/plan
           "duration": "2 days"
         },
         {
-          "agent": "frontend-engineer",
+          "agent": "frontend-architect",
           "task": "Chat UI framework",
           "duration": "2 days"
         },
         {
-          "agent": "mobile-staff",
+          "agent": "mobile-platform-engineer",
           "task": "Mobile app skeleton",
           "duration": "2 days"
         }
@@ -153,7 +153,7 @@ POST /api/orchestration/plan
           "duration": "3 days"
         },
         {
-          "agent": "frontend-engineer",
+          "agent": "frontend-architect",
           "task": "Chat features",
           "duration": "3 days"
         }
@@ -196,7 +196,7 @@ POST /api/orchestration/execute
       "progress": 45
     },
     {
-      "agent": "frontend-engineer",
+      "agent": "frontend-architect",
       "task": "Chat UI framework",
       "progress": 60
     }
@@ -223,13 +223,13 @@ GET /api/agents
       "availability": "available"
     },
     {
-      "name": "frontend-engineer",
+      "name": "frontend-architect",
       "category": "development",
       "expertise": ["real-time UI", "performance"],
       "availability": "busy"
     }
   ],
-  "total": 25
+  "total": 29
 }
 ```
 
@@ -396,7 +396,7 @@ POST https://your-webhook-url.com/orchestration-checkpoint
   "overall_progress": 60,
   "agents_status": {
     "backend-engineer": "completed",
-    "frontend-engineer": "completed",
+    "frontend-architect": "completed",
     "test-engineer": "starting"
   }
 }
@@ -481,7 +481,7 @@ const result = await client.agents.invoke({
 // Multi-agent orchestration
 const plan = await client.orchestration.plan({
   project: 'E-commerce platform',
-  agents: ['backend-engineer', 'frontend-engineer', 'test-engineer']
+  agents: ['backend-engineer', 'frontend-architect', 'test-engineer']
 });
 
 const execution = await client.orchestration.execute(plan.id);

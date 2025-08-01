@@ -11,7 +11,7 @@ This guide explains the rationale behind tool access restrictions for each agent
 
 #### Implementation Agents
 - **backend-engineer**: Needs full access for complex server-side implementation, database modifications, and system configuration
-- **frontend-engineer**: Requires all tools for UI implementation, build system configuration, and performance optimization
+- **frontend-architect**: Requires all tools for UI implementation, build system configuration, and performance optimization
 - **fullstack-lead**: Standard implementation agent needing complete toolset for feature development and bug fixes
 - **devops**: Essential for infrastructure automation, CI/CD configuration, and deployment scripts
 - **platform-engineer**: Needs full access for monitoring setup, infrastructure management, and SRE automation
@@ -26,8 +26,7 @@ This guide explains the rationale behind tool access restrictions for each agent
 - **codebase-analyst**: Focuses on understanding and reporting, not modification. Read-only access prevents accidental changes while allowing comprehensive analysis
 - **security-auditor**: Analyzes for vulnerabilities without modifying code. Separation of analysis and implementation ensures objective security assessment
 - **debugger**: Investigates issues without changing code during analysis phase. Modifications happen after investigation is complete
-- **researcher**: Gathers external information and analyzes patterns. No need to modify code as this agent provides research insights
-- **performance-engineer**: Analyzes performance characteristics before recommending changes. Separation ensures objective measurement
+- **performance-specialist**: Analyzes performance characteristics before recommending changes. Separation ensures objective measurement
 
 **Justification**: Analysis agents must remain objective and focused on assessment rather than implementation. Read-only access ensures thorough analysis without bias toward immediate fixes.
 
@@ -46,7 +45,7 @@ This guide explains the rationale behind tool access restrictions for each agent
 
 #### Documentation Agents
 - **tech-writer**: Focuses on technical documentation and knowledge transfer. Notebook tools not needed for standard documentation workflows
-- **api-engineer**: Creates API specifications and documentation. Primary focus on OpenAPI specs and contract documentation
+- **api-architect**: Creates API specifications and documentation. Primary focus on OpenAPI specs and contract documentation
 
 **Justification**: Documentation agents need to read existing code and write specifications but don't typically work with data analysis notebooks.
 
@@ -56,7 +55,6 @@ This guide explains the rationale behind tool access restrictions for each agent
 
 #### Design Agents
 - **ui-designer**: Creates design specifications and visual guidelines. No need for system execution or data analysis
-- **mobile-ui**: Develops platform-specific design patterns. Limited to design specification creation
 
 **Justification**: Design agents create specifications that implementation agents execute. Direct system access could blur the design/implementation boundary.
 
@@ -135,7 +133,7 @@ Tool restrictions enable clear audit trails:
 
 ### When Design Agents Need Implementation
 1. Create comprehensive design specifications
-2. Hand off to frontend-engineer or fullstack-lead
+2. Hand off to frontend-architect or fullstack-lead
 3. Implementation agent builds according to specs
 4. Design agent reviews for fidelity
 

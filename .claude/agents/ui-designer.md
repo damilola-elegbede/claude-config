@@ -2,6 +2,7 @@
 name: ui-designer
 description: Use for UI/UX design, visual hierarchy, and design systems. MUST BE USED for accessibility compliance, responsive design, and minimalist interface optimization
 tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite
+model: sonnet
 color: purple
 category: design
 ---

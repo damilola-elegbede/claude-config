@@ -7,25 +7,25 @@ This document defines the security access patterns and rationale for all Claude 
 ## Access Categories
 
 ### 1. Full Access (Staff-Level Implementation Agents)
-**Agents**: backend-engineer, frontend-engineer, fullstack-lead, test-engineer, devops
+**Agents**: backend-engineer, frontend-architect, fullstack-lead, test-engineer, devops
 **Tools Allowed**: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit]
 **Tools Forbidden**: []
 **Security Rationale**: These agents implement production code and require comprehensive tool access to fulfill their responsibilities. They operate under the principle of "trusted implementation" with full capability to modify systems.
 
 ### 2. Read-Only Plus Analysis
-**Agents**: security-auditor, debugger, code-reviewer, codebase-analyst, performance-engineer, researcher
+**Agents**: security-auditor, debugger, code-reviewer, codebase-analyst, performance-specialist
 **Tools Allowed**: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Bash(read-only), TodoWrite]
 **Tools Forbidden**: [Edit, MultiEdit, Write, NotebookEdit]
 **Security Rationale**: Analysis agents focus on assessment and reporting without modifying production systems. This separation ensures analysis integrity and prevents accidental system modifications during security reviews.
 
 ### 3. Design Specification Access
-**Agents**: ui-designer, mobile-ui
+**Agents**: ui-designer
 **Tools Allowed**: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, Bash(read-only)]
 **Tools Forbidden**: [NotebookRead, NotebookEdit]
 **Security Rationale**: Design agents create specifications and documentation but don't need system execution capabilities or data analysis tools.
 
 ### 4. Documentation Access
-**Agents**: tech-writer, api-engineer
+**Agents**: tech-writer, api-architect
 **Tools Allowed**: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, Bash(read-only)]
 **Tools Forbidden**: [NotebookRead, NotebookEdit]
 **Security Rationale**: Documentation agents need file modification capabilities for specifications but limited system access.
@@ -60,7 +60,7 @@ This document defines the security access patterns and rationale for all Claude 
 
 ### Implementation Agents (Full Access)
 - **backend-engineer**: Implements complex distributed systems requiring database and infrastructure access
-- **frontend-engineer**: Manages build processes and deployment configurations requiring full system access
+- **frontend-architect**: Manages build processes and deployment configurations requiring full system access
 - **fullstack-lead**: Implements features within defined scope, needs complete toolset for effectiveness
 - **test-engineer**: Creates test infrastructure and automation requiring full implementation capabilities
 - **devops**: Manages infrastructure automation requiring comprehensive system access
@@ -70,15 +70,14 @@ This document defines the security access patterns and rationale for all Claude 
 - **debugger**: Investigates issues through analysis without changing production systems
 - **code-reviewer**: Reviews code quality without implementing changes
 - **codebase-analyst**: Analyzes system architecture for reporting purposes only
-- **performance-engineer**: Analyzes and tests performance without modifying implementations
+- **performance-specialist**: Analyzes and tests performance without modifying implementations
 
 ### Design Agents (Specification Access)
 - **ui-designer**: Creates design specifications and documentation for web/desktop platforms
-- **mobile-ui**: Creates mobile-specific design specifications and platform compliance guidelines
 
 ### Documentation Agents (Documentation Access)
 - **tech-writer**: Creates technical documentation and API specifications
-- **api-engineer**: Designs API contracts and specifications without implementation
+- **api-architect**: Designs API contracts and specifications without implementation
 
 ### Strategic Agents (Planning Access)
 - **principal-architect**: Coordinates strategy and creates plans for the general-purpose agent to execute

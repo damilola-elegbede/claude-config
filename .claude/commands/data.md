@@ -1,10 +1,10 @@
 # /data Command
 
 ## Description
-Quickly access data engineering expertise through Claude orchestration for data pipeline, ETL/ELT, and data warehouse tasks. Claude will coordinate with the data-engineer specialist for building scalable data processing systems and analytics infrastructure.
+Quickly access data engineering expertise through Claude orchestration for data pipeline, ETL/ELT, and data warehouse tasks. Claude will coordinate with the data-platform-engineer specialist for building scalable data processing systems and analytics infrastructure.
 
 ## Behavior
-This command coordinates with data-engineer and data-scientist specialists to build data pipelines, perform analytics, implement ML infrastructure, and extract insights from data.
+This command coordinates with data-platform-engineer specialists to build data pipelines, implement ML infrastructure, and architect enterprise-scale data platforms.
 
 ## Usage
 ```
@@ -18,7 +18,7 @@ This command coordinates with data-engineer and data-scientist specialists to bu
 - `/data optimize data processing performance`
 
 ## Capabilities
-The data-engineer specialist (coordinated through Claude) excels at:
+The data-platform-engineer specialist (coordinated through Claude) excels at:
 - ETL/ELT pipeline development
 - Data warehouse architecture
 - Real-time stream processing
