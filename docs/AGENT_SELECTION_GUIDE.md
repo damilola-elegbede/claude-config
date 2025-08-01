@@ -9,8 +9,7 @@
 | **Staff Level** | Backend | `backend-engineer` | Multi-service architecture, complex state management, performance < 2.5s | Consolidated from backend-staff |
 | **Staff Level** | Frontend | `frontend-architect` | Real-time features, complex UI, Core Web Vitals optimization | Consolidated from frontend-staff |
 | **Senior Level** | General | `fullstack-lead` | Single-service features, well-defined APIs, standard patterns | Legacy fullstack capabilities |
-| **Specialist** | Mobile Development | `mobile-platform-engineer` | Native/cross-platform apps, platform-specific features | Unified mobile development |
-| **Specialist** | Mobile UI/UX | `mobile-ui` | iOS/Android design, platform-specific patterns | Platform-specific UI design |
+| **Specialist** | Mobile Development | `mobile-platform-engineer` | Native/cross-platform apps, iOS/Android patterns | Unified mobile platform development |
 | **Specialist** | Web Design | `ui-designer` | Design systems, visual hierarchy, web/desktop interfaces | Non-mobile interface design |
 
 ### Analysis & Review Tasks
@@ -71,7 +70,7 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 - **Escalates When**: Architecture changes, new dependencies, breaking changes
 
 ### Specialist Agent Scope
-- **Mobile UI**: iOS HIG compliance, Android Material Design, touch interfaces
+- **Mobile Platform Engineer**: iOS/Android native apps, React Native, Flutter development
 - **UI Designer**: Web/desktop only, design systems, visual hierarchy
 - **Security Auditor**: OWASP Top 10, penetration testing, compliance
 - **test-engineer**: Test strategy, framework setup, coverage analysis

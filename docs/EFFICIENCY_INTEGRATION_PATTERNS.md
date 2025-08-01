@@ -17,7 +17,7 @@ This guide demonstrates how specialized agents work together to create powerful,
 workflow: analyze-and-refactor
   agents:
     - codebase-analyst: Find and analyze database access patterns
-    - backend-staff: Implement repository pattern
+    - backend-engineer: Implement repository pattern
     - test-engineer: Verify refactoring didn't break tests
 ```
 
@@ -27,7 +27,7 @@ workflow: analyze-and-refactor
 Task: "Use codebase-analyst to find and analyze database access patterns"
 
 # Step 2: Implementation
-Task: "Use backend-staff to refactor using repository pattern based on analysis"
+Task: "Use backend-engineer to refactor using repository pattern based on analysis"
 
 # Step 3: Validation
 Task: "Use test-engineer to run affected tests"
@@ -42,7 +42,7 @@ workflow: full-stack-feature
     - system-architect: Design feature architecture
   parallel_block_2:
     - frontend-architect: Implement UI components
-    - backend-staff: Create API endpoints
+    - backend-engineer: Create API endpoints
     - test-engineer: Write integration tests
 ```
 
@@ -54,7 +54,7 @@ Task: "Use system-architect to design feature architecture"
 
 # Parallel Block 2: Development (all run simultaneously)
 Task: "Use frontend-architect to build dashboard components"
-Task: "Use backend-staff to create dashboard API endpoints"
+Task: "Use backend-engineer to create dashboard API endpoints"
 Task: "Use test-engineer to write integration tests"
 ```
 
@@ -65,7 +65,7 @@ workflow: production-incident
   agents:
     - production-reliability-engineer: Quick diagnosis and mitigation
     - debugger: Deep root cause analysis
-    - site-reliability-engineer: Implement prevention measures
+    - platform-engineer: Implement prevention measures
     - tech-writer: Document incident and resolution
 ```
 
@@ -78,7 +78,7 @@ Task: "Use production-reliability-engineer to diagnose and provide quick fix for
 Task: "Use debugger to find root cause of memory leak"
 
 # Step 3: Long-term fix
-Task: "Use site-reliability-engineer to implement monitoring and prevention"
+Task: "Use platform-engineer to implement monitoring and prevention"
 
 # Step 4: Knowledge capture
 Task: "Use tech-writer to document incident, resolution, and prevention"
@@ -90,7 +90,7 @@ Task: "Use tech-writer to document incident, resolution, and prevention"
 workflow: microservice-creation
   agents:
     - system-architect: Design service structure
-    - backend-staff: Implement business logic
+    - backend-engineer: Implement business logic
     - performance-specialist: Optimize critical paths
     - devops-engineer: Setup CI/CD
 ```
@@ -101,7 +101,7 @@ workflow: microservice-creation
 Task: "Use system-architect to design microservice structure and patterns"
 
 # Step 2: Implementation
-Task: "Use backend-staff to implement order processing logic"
+Task: "Use backend-engineer to implement order processing logic"
 
 # Step 3: Optimization
 Task: "Use performance-specialist to optimize database queries and caching"
@@ -124,7 +124,7 @@ workflow: large-scale-refactoring
     - codebase-analyst[shared]: Analyze utility functions
   implementation:
     - frontend-architect: Update frontend patterns
-    - backend-staff: Update backend patterns
+    - backend-engineer: Update backend patterns
 ```
 
 ### Efficiency Agent Chains
@@ -134,10 +134,10 @@ Chain efficiency agents for complex multi-step operations:
 ```yaml
 workflow: dependency-migration
   chain:
-    - researcher: Find migration guides
+    - ux-researcher: Find migration guides
     - devops-engineer: Update packages
     - codebase-analyst: Find usage patterns
-    - backend-staff: Update code for new API
+    - backend-engineer: Update code for new API
     - test-engineer: Verify migration success
 ```
 
@@ -149,10 +149,10 @@ Combine efficiency and specialist agents based on task complexity:
 workflow: api-redesign
   analysis_phase:
     - codebase-analyst: Locate and analyze API endpoints
-    - researcher: Gather current API documentation
+    - ux-researcher: Gather current API documentation
   specialist_phase:
-    - api-specialist: Design new API structure
-    - backend-staff: Implement new endpoints
+    - api-architect: Design new API structure
+    - backend-engineer: Implement new endpoints
     - test-engineer: Create comprehensive tests
   finalization_phase:
     - tech-writer: Create migration guide
@@ -169,13 +169,13 @@ workflow: api-redesign
 analysis_result = "Found patterns: src/api/users.js, src/api/orders.js - using outdated ORM patterns"
 
 # Next agent receives precise targets
-Task: f"Use backend-staff to refactor {analysis_result}"
+Task: f"Use backend-engineer to refactor {analysis_result}"
 ```
 
 **Inefficient Handoff:**
 ```python
 # Vague results require re-analysis
-Task: "Use backend-staff to refactor API files"  # Agent must analyze again
+Task: "Use backend-engineer to refactor API files"  # Agent must analyze again
 ```
 
 ### 2. Parallel Execution Rules
@@ -262,11 +262,11 @@ Choose the right efficiency agent for the task:
 
 | Task Type | Best Agent | Alternative |
 |-----------|------------|-------------|
-| Find files by pattern | codebase-analyst | researcher |
-| Update multiple configs | devops-engineer | backend-staff |
+| Find files by pattern | codebase-analyst | ux-researcher |
+| Update multiple configs | devops | backend-engineer |
 | Fix common errors | production-reliability-engineer | debugger |
-| Run affected tests | test-engineer | qa-specialist |
-| Bulk implementation | backend-staff/frontend-architect | fullstack-lead |
+| Run affected tests | test-engineer | test-engineer |
+| Bulk implementation | backend-engineer/frontend-architect | backend-engineer/frontend-architect |
 
 ## Monitoring and Optimization
 
@@ -289,11 +289,11 @@ metrics:
 
 Look for patterns that indicate optimization potential:
 
-1. **Repeated Operations** → Use efficiency agents
+1. **Repeated Operations** → Use specialized agents
 2. **Sequential Same-Type Tasks** → Batch into single delegation  
 3. **Independent Agent Calls** → Run in parallel
-4. **Complex File Operations** → Use file-writer
-5. **Multi-Step Git Workflows** → Use git-workflow
+4. **Complex File Operations** → Use multiple agents in parallel
+5. **Multi-Step Git Workflows** → Use individual Git commands
 
 ## Example: Complete Feature Implementation
 
@@ -307,7 +307,7 @@ parallel_tasks = [
 ]
 
 # Phase 2: Implementation (2 agents, parallel where possible)
-Task: "Use backend-staff to implement Stripe payment service"
+Task: "Use backend-engineer to implement Stripe payment service"
 Task: "Use frontend-architect to create payment form component"
 
 # Phase 3: Quality Assurance (3 agents in parallel, 10 seconds)
