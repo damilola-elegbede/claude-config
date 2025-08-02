@@ -116,4 +116,4 @@ This command coordinates with the principal-architect specialist to architect an
 - `/api` - For API strategy and microservices architecture decisions
 - `/backend` - For implementation of architectural patterns and systems
 - `/security` - For security architecture reviews and compliance frameworks
-- `/orchestrate` - For complex multi-team architecture initiatives
+- `/plan` - For complex multi-team architecture initiatives and orchestration

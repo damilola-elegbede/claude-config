@@ -169,7 +169,7 @@ graph TD
 | Development | 5 | Code generation, implementation | Read, Write, Edit | None |
 | Infrastructure | 9 | Cloud, DevOps, monitoring | Read, Write, Edit | None |
 | Quality | 4 | Testing, code review, performance | Read, Write, Edit | None |
-| Security | 2 | Security auditing, compliance | Read, Write, Edit | None |
+| Security | 2 | Security auditing, compliance | Read | None |
 | Architecture | 2 | System design, API specs | Read, Write, Edit | None |
 | Design | 2 | UI/UX design, systems | Read, Write, Edit | None |
 | Analysis | 2 | Code analysis, documentation | Read, Write, Edit | None |

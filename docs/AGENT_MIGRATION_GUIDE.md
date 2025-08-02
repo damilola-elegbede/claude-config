@@ -378,7 +378,7 @@ Check the consolidation map above. Your agent's capabilities are now part of a c
 - `platform-engineer` → `platform-engineer`
 
 - `accessibility-auditor` → `accessibility-auditor`
-- `mobile-ui` → `mobile-platform-engineer`
+- `mobile-ui` → `mobile-ui` (no change - UI/UX focus retained)
 
 ### "The new agent seems to do too much!"
 

@@ -210,9 +210,9 @@ done
 - **Infrastructure**: devops, cloud-architect
 
 ### Phase 2: Specialized Agents (Week 2)
-- **Architecture**: api-architect, system-architect
+- **Architecture**: api-architect, principal-architect
 - **Analysis**: codebase-analyst, tech-writer
-- **Design**: ui-designer, mobile-ui-designer
+- **Design**: ui-designer, ux-researcher
 
 ### Phase 3: Support Agents (Week 3)
 - **Operations**: incident-commander, production-reliability-engineer
