@@ -3,7 +3,7 @@
 # Comprehensive System Validation Script
 # Ensures agent ecosystem integrity and robustness
 
-set -e
+set -euo pipefail
 
 AGENTS_DIR=".claude/agents"
 COMMANDS_DIR=".claude/commands"
@@ -92,9 +92,9 @@ for agent_file in "$AGENTS_DIR"/*.md; do
     if [[ -f "$agent_file" ]] && [[ "$basename_file" != "README.md" ]] && [[ "$basename_file" != "AGENT_TEMPLATE.md" ]] && [[ "$basename_file" != "AGENT_CATEGORIES.md" ]] && [[ "$basename_file" != "AUDIT_VERIFICATION_PROTOCOL.md" ]]; then
         agent_name=$(basename "$agent_file" .md)
         
-        # Extract category and color
-        category=$(grep "^category:" "$agent_file" | cut -d' ' -f2)
-        color=$(grep "^color:" "$agent_file" | cut -d' ' -f2)
+        # Extract category and color (handles variable spacing)
+        category=$(grep "^category:" "$agent_file" | awk -F: '{gsub(/^[ \t]+|[ \t]+$/, "", $2); print $2}')
+        color=$(grep "^color:" "$agent_file" | awk -F: '{gsub(/^[ \t]+|[ \t]+$/, "", $2); print $2}')
         
         # Check mapping
         expected_color=$(get_expected_color "$category")
