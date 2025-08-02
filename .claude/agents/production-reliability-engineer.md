@@ -3,7 +3,7 @@ name: production-reliability-engineer
 description: Use for production incident resolution, reliability engineering, and chaos engineering. MUST BE USED for service-level objective (SLO) definition, error budget management, production debugging across distributed systems, and automated recovery mechanisms. Specializes in observability stack implementation, incident response automation, and reliability patterns.
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 model: sonnet
-color: green
+color: red
 category: operations
 ---
 

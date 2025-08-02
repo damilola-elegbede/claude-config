@@ -38,8 +38,8 @@ Task: "Use test-engineer to run affected tests"
 ```yaml
 workflow: full-stack-feature
   parallel_block_1:
-    - devops-engineer: Setup project dependencies
-    - system-architect: Design feature architecture
+    - devops: Setup project dependencies
+    - principal-architect: Design feature architecture
   parallel_block_2:
     - frontend-architect: Implement UI components
     - backend-engineer: Create API endpoints
@@ -49,8 +49,8 @@ workflow: full-stack-feature
 **Example Execution:**
 ```python
 # Parallel Block 1: Setup (all run simultaneously)
-Task: "Use devops-engineer to setup project dependencies and branch"
-Task: "Use system-architect to design feature architecture"
+Task: "Use devops to setup project dependencies and branch"
+Task: "Use principal-architect to design feature architecture"
 
 # Parallel Block 2: Development (all run simultaneously)
 Task: "Use frontend-architect to build dashboard components"
@@ -89,16 +89,16 @@ Task: "Use tech-writer to document incident, resolution, and prevention"
 ```yaml
 workflow: microservice-creation
   agents:
-    - system-architect: Design service structure
+    - principal-architect: Design service structure
     - backend-engineer: Implement business logic
     - performance-specialist: Optimize critical paths
-    - devops-engineer: Setup CI/CD
+    - devops: Setup CI/CD
 ```
 
 **Example Execution:**
 ```python
 # Step 1: Design and scaffolding
-Task: "Use system-architect to design microservice structure and patterns"
+Task: "Use principal-architect to design microservice structure and patterns"
 
 # Step 2: Implementation
 Task: "Use backend-engineer to implement order processing logic"
@@ -107,7 +107,7 @@ Task: "Use backend-engineer to implement order processing logic"
 Task: "Use performance-specialist to optimize database queries and caching"
 
 # Step 4: Deployment
-Task: "Use devops-engineer to setup CI/CD pipeline"
+Task: "Use devops to setup CI/CD pipeline"
 ```
 
 ## Advanced Integration Strategies
@@ -135,7 +135,7 @@ Chain efficiency agents for complex multi-step operations:
 workflow: dependency-migration
   chain:
     - ux-researcher: Find migration guides
-    - devops-engineer: Update packages
+    - devops: Update packages
     - codebase-analyst: Find usage patterns
     - backend-engineer: Update code for new API
     - test-engineer: Verify migration success
@@ -156,7 +156,7 @@ workflow: api-redesign
     - test-engineer: Create comprehensive tests
   finalization_phase:
     - tech-writer: Create migration guide
-    - devops-engineer: Deploy and version new API
+    - devops: Deploy and version new API
 ```
 
 ## Integration Best Practices
@@ -215,10 +215,10 @@ Build resilient workflows with fallbacks:
 workflow: safe-deployment
   try:
     - test-engineer: Run all tests
-    - devops-engineer: Deploy to staging
+    - devops: Deploy to staging
   catch:
     - production-reliability-engineer: Diagnose failures
-    - devops-engineer: Revert problematic commits
+    - devops: Revert problematic commits
   finally:
     - tech-writer: Document outcome
 ```
@@ -302,7 +302,7 @@ Here's a full example showing optimal integration:
 ```python
 # Phase 1: Parallel Setup (2 agents, 5 seconds)
 parallel_tasks = [
-    "Use devops-engineer to create branch and install Stripe SDK",
+    "Use devops to create branch and install Stripe SDK",
     "Use codebase-analyst to map current payment code structure"
 ]
 
@@ -319,7 +319,7 @@ parallel_qa = [
 
 # Phase 4: Finalization (2 agents, sequential)
 Task: "Use tech-writer to document payment integration"
-Task: "Use devops-engineer to create PR with deployment"
+Task: "Use devops to create PR with deployment"
 
 # Total time: ~45 seconds
 # Traditional approach: ~5-10 minutes

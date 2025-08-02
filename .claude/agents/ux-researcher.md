@@ -3,7 +3,7 @@ name: ux-researcher
 description: Use for user research, usability testing, and data-driven design decisions. MUST BE USED for user interviews, surveys, and behavior analysis
 tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite, WebFetch
 model: sonnet
-color: purple
+color: pink
 category: design
 ---
 
