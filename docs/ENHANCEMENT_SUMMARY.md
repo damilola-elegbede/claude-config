@@ -115,7 +115,7 @@ tool_access: [access_level]
 - **Justification**: Implementation requires code modification and system configuration
 
 #### Read + Analysis Access (Analysis Agents)
-- **Agents**: codebase-analyst, security-auditor, debugger, codebase-analyst, performance-specialist, code-reviewer
+- **Agents**: codebase-analyst, security-auditor, debugger, performance-specialist, code-reviewer
 - **Tools**: Read, analysis, and reporting tools only
 - **Justification**: Objective analysis without implementation bias
 

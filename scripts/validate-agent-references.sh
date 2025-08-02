@@ -59,13 +59,9 @@ check_file() {
                [[ "$potential_agent" != "specialized" ]] && [[ "$potential_agent" != "existing" ]] && \
                [[ "$potential_agent" != "new" ]] && [[ "$potential_agent" != "missing" ]] && \
                [[ "$potential_agent" != "comprehensive" ]] && [[ "$potential_agent" != "entire" ]] && \
-               [[ "$potential_agent" != "aunch" ]] && [[ "$potential_agent" != "lue" ]] && \
-               [[ "$potential_agent" != "range" ]] && [[ "$potential_agent" != "urple" ]] && \
-               [[ "$potential_agent" != "ink" ]] && [[ "$potential_agent" != "reen" ]] && \
-               [[ "$potential_agent" != "ed" ]] && [[ "$potential_agent" != "ellow" ]] && \
-               [[ "$potential_agent" != "for" ]] && [[ "$potential_agent" != "affects" ]] && \
-               [[ "$potential_agent" != "hich" ]] && [[ "$potential_agent" != "similar" ]] && \
-               [[ "$potential_agent" != "pecific" ]] && [[ "$potential_agent" != "ew" ]] && \
+               [[ "$potential_agent" != "range" ]] && [[ "$potential_agent" != "for" ]] && \
+               [[ "$potential_agent" != "affects" ]] && [[ "$potential_agent" != "which" ]] && \
+               [[ "$potential_agent" != "similar" ]] && [[ "$potential_agent" != "specific" ]] && \
                [[ "${#potential_agent}" -gt 3 ]]; then
                 if ! is_valid_agent "$potential_agent"; then
                     echo "❌ Invalid reference in $file: '$potential_agent agent'"

@@ -37,7 +37,9 @@ for agent in "${agent_names[@]}"; do
     if [[ -n "$valid_agents_pattern" ]]; then
         valid_agents_pattern+="|"
     fi
-    valid_agents_pattern+="$agent"
+    # Escape special regex characters in agent names
+    escaped_agent=$(echo "$agent" | sed 's/[[\.*+?{}()|^$]/\\&/g')
+    valid_agents_pattern+="$escaped_agent"
 done
 
 # Function to check references in a file
@@ -51,8 +53,11 @@ check_file() {
     # Look for specific patterns that indicate agent usage
     # Pattern: "uses/deploys/coordinates/launches {agent-name} agent"
     while IFS= read -r match; do
-        # Extract just the agent name from the match
-        agent_ref=$(echo "$match" | sed -E 's/.*(uses|deploys|coordinates|launches|invokes) ([a-z][a-z0-9-]+) agent.*/\2/')
+        # Extract agent name using grep with Perl-compatible regex
+        agent_ref=$(echo "$match" | grep -oP '(?<=\b(uses|deploys|coordinates|launches|invokes) )\S+(?= agent\b)' | head -1)
+        
+        # Skip if we couldn't extract an agent name
+        [[ -z "$agent_ref" ]] && continue
         
         # Check if it's a valid agent
         if ! echo "$agent_ref" | grep -qE "^($valid_agents_pattern)$"; then

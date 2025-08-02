@@ -1,7 +1,7 @@
 # /accessibility Command
 
 ## Description
-Ensures comprehensive WCAG compliance and inclusive design through specialized accessibility-auditor and accessibility-auditor agents to identify barriers, validate compliance, and enhance user experience for all abilities.
+Ensures comprehensive WCAG compliance and inclusive design through specialized accessibility-auditor agent to identify barriers, validate compliance, and enhance user experience for all abilities.
 
 ## Usage
 ```

@@ -1,7 +1,7 @@
 # /search Command
 
 ## Description
-Performs intelligent multi-agent code search and knowledge discovery through specialized codebase-analyst and codebase-analyst agents to find patterns, understand relationships, and extract insights across complex codebases and documentation.
+Performs intelligent multi-agent code search and knowledge discovery through specialized codebase-analyst agents to find patterns, understand relationships, and extract insights across complex codebases and documentation.
 
 ## Usage
 ```

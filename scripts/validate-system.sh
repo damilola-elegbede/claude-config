@@ -222,8 +222,8 @@ fi
 # Summary
 echo
 echo -e "${BLUE}=== Validation Summary ===${NC}"
-echo -e "Total agents validated: $(ls "$AGENTS_DIR"/*.md | grep -v -E "(README|AGENT_TEMPLATE)" | wc -l)"
-echo -e "Total commands validated: $(ls "$COMMANDS_DIR"/*.md | wc -l)"
+echo -e "Total agents validated: $(find "$AGENTS_DIR" -name "*.md" -type f ! -name "README.md" ! -name "AGENT_TEMPLATE.md" ! -name "AGENT_CATEGORIES.md" | wc -l)"
+echo -e "Total commands validated: $(find "$COMMANDS_DIR" -name "*.md" -type f | wc -l)"
 echo
 
 if [[ $total_issues -eq 0 ]]; then

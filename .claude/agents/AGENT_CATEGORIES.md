@@ -88,9 +88,9 @@ This document defines the official agent categories and their corresponding colo
 - Requirements analysis
 - Performance analysis
 
-### 8. **Operations** (red)
+### 8. **Operations** (teal)
 **Purpose**: Support, coordination, and strategic planning  
-**Color**: `red`  
+**Color**: `teal`  
 **Scope**:
 - Incident management and response
 - Debugging and troubleshooting
