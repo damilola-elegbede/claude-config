@@ -88,9 +88,9 @@ This document defines the official agent categories and their corresponding colo
 - Requirements analysis
 - Performance analysis
 
-### 8. **Operations** (teal)
+### 8. **Operations** (red)
 **Purpose**: Support, coordination, and strategic planning  
-**Color**: `teal`  
+**Color**: `red`  
 **Scope**:
 - Incident management and response
 - Debugging and troubleshooting
@@ -112,7 +112,7 @@ When creating new agents, use the color associated with their primary category:
 - **green**: Quality assurance (testing, reviews)
 - **red**: Security and compliance (auditing, threat analysis)
 - **yellow**: Analysis and research (data, documentation, investigation)
-- **teal**: Operations (coordination, strategy, workflow automation)
+- **red**: Operations (coordination, strategy, workflow automation)
 
 ## Usage
 

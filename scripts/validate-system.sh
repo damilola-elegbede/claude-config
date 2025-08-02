@@ -81,7 +81,7 @@ get_expected_color() {
         "analysis") echo "yellow" ;;
         "architecture") echo "purple" ;;
         "design") echo "pink" ;;
-        "operations") echo "red" ;;
+        "operations") echo "red" ;;  # Same as security
         *) echo "unknown" ;;
     esac
 }
