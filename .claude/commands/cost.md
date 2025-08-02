@@ -1,7 +1,7 @@
 # /cost Command
 
 ## Description
-Optimizes cloud costs and resource utilization through specialized cost-optimizer and finops-analyst agents to identify savings opportunities, implement cost controls, and establish financial governance for technical infrastructure.
+Optimizes cloud costs and resource utilization through specialized cloud-architect for technical optimization and principal-architect for strategic planning to identify savings opportunities, implement cost controls, and establish financial governance for technical infrastructure.
 
 ## Usage
 ```
@@ -28,14 +28,14 @@ Optimizes cloud costs and resource utilization through specialized cost-optimize
 When you use `/cost`, I will orchestrate comprehensive cost optimization:
 
 ### Phase 1 (Cost Analysis - 0-30 min)
-1. **Launch cost-optimizer agent** for:
+1. **Launch cloud-architect agent** for:
    - Resource utilization analysis
    - Cost allocation mapping
    - Waste identification
    - Right-sizing opportunities
    - Reserved capacity analysis
 
-2. **Deploy finops-analyst agent** for:
+2. **Deploy principal-architect agent** for:
    - Financial governance assessment
    - Budget tracking and forecasting
    - Cost trend analysis
@@ -110,32 +110,32 @@ When you use `/cost`, I will orchestrate comprehensive cost optimization:
 ### Comprehensive Cost Analysis
 ```
 PHASE 1 (Parallel - 30 min):
-├── cost-optimizer: Resource utilization and waste analysis
-├── finops-analyst: Financial governance and trend analysis
+├── cloud-architect: Resource utilization and waste analysis
+├── principal-architect: Financial governance and trend analysis
 └── cloud-architect: Architecture cost impact assessment
 
 PHASE 2 (Sequential - 30 min):
-├── cost-optimizer: Optimization strategy development
-├── finops-analyst: Financial control implementation
+├── cloud-architect: Optimization strategy development
+├── principal-architect: Financial control implementation
 └── cloud-architect: Technical implementation planning
 
 PHASE 3 (Parallel - 20 min):
-├── devops-sre: Implementation execution
-├── cost-optimizer: Monitoring setup
-└── finops-analyst: Governance documentation
+├── devops: Implementation execution
+├── cloud-architect: Monitoring setup
+└── principal-architect: Governance documentation
 ```
 
 ### Provider-Specific Patterns
 ```
 AWS Cost Optimization:
-├── aws-specialist: AWS-specific cost tools and services
-├── cost-optimizer: EC2, S3, RDS optimization
-└── finops-analyst: Cost Explorer and budgets setup
+├── cloud-architect: AWS-specific cost tools and services
+├── cloud-architect: EC2, S3, RDS optimization
+└── principal-architect: Cost Explorer and budgets setup
 
 Multi-Cloud Cost Management:
 ├── cloud-architect: Cross-provider cost comparison
-├── finops-analyst: Unified cost reporting
-└── cost-optimizer: Provider-specific optimizations
+├── principal-architect: Unified cost reporting
+└── cloud-architect: Provider-specific optimizations
 ```
 
 ## Cost Analysis Framework

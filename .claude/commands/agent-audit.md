@@ -42,6 +42,7 @@ Ensure agent ecosystem maintains high standards of consistency, proper categoriz
 
 ### 5. Description Quality
 - **Actionable Triggers**: Descriptions must include "MUST BE USED" scenarios
+- **Proactive Triggers**: Include "use PROACTIVELY" for agents that should be used without explicit request
 - **Clear Scope**: Well-defined boundaries of responsibility
 - **Usage Context**: When Claude should select this agent
 - **Updated Descriptions**: Derive from agent's actual capabilities if needed
@@ -130,7 +131,7 @@ sed -i '' 's/category: wrong/category: correct/' agent.md
 ✅ **Template Adherence**: 100% AGENT_TEMPLATE.md compliance  
 ✅ **Tool Validation**: No Task tool access, appropriate permissions  
 ✅ **Anti-Pattern Free**: No orchestration or self-reference  
-✅ **Description Quality**: Clear "MUST BE USED" triggers  
+✅ **Description Quality**: Clear "MUST BE USED" and "use PROACTIVELY" triggers  
 ✅ **Tier 1 Only**: All agents at tier 1 level  
 ✅ **Documentation Sync**: All docs reflect current state  
 

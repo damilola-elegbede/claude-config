@@ -1,7 +1,7 @@
 # /search Command
 
 ## Description
-Performs intelligent multi-agent code search and knowledge discovery through specialized search-analyst and codebase-navigator agents to find patterns, understand relationships, and extract insights across complex codebases and documentation.
+Performs intelligent multi-agent code search and knowledge discovery through specialized codebase-analyst and codebase-analyst agents to find patterns, understand relationships, and extract insights across complex codebases and documentation.
 
 ## Usage
 ```
@@ -38,14 +38,14 @@ Performs intelligent multi-agent code search and knowledge discovery through spe
 When you use `/search`, I will orchestrate intelligent search and analysis:
 
 ### Phase 1 (Query Analysis - 0-10 min)
-1. **Launch search-analyst agent** for:
+1. **Launch codebase-analyst agent** for:
    - Query interpretation and expansion
    - Search strategy development
    - Pattern identification
    - Relevance scoring algorithms
    - Context understanding
 
-2. **Deploy codebase-navigator agent** for:
+2. **Deploy codebase-analyst agent** for:
    - Repository structure analysis
    - Dependency relationship mapping
    - Code organization patterns
@@ -114,8 +114,8 @@ When you use `/search`, I will orchestrate intelligent search and analysis:
 ### Comprehensive Search Pattern
 ```
 PHASE 1 (Parallel - 10 min):
-├── search-analyst: Query expansion and strategy
-├── codebase-navigator: Repository structure analysis
+├── codebase-analyst: Query expansion and strategy
+├── codebase-analyst: Repository structure analysis
 └── pattern-matcher: Initial pattern identification
 
 PHASE 2 (Parallel - 20 min):
@@ -134,12 +134,12 @@ PHASE 3 (Sequential - 15 min):
 ```
 Security Code Search:
 ├── security-auditor: Vulnerability pattern detection
-├── search-analyst: Security-specific pattern matching
+├── codebase-analyst: Security-specific pattern matching
 └── compliance-checker: Regulatory code verification
 
 Performance Code Search:
 ├── performance-specialist: Bottleneck pattern identification
-├── search-analyst: Performance-related code discovery
+├── codebase-analyst: Performance-related code discovery
 └── optimization-advisor: Improvement recommendations
 ```
 

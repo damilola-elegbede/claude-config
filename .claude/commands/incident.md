@@ -1,7 +1,7 @@
 # /incident Command
 
 ## Description
-Coordinates comprehensive incident response through specialized incident-commander and crisis-management agents to manage production outages, security breaches, and critical system failures with structured command and control procedures.
+Coordinates comprehensive incident response through specialized incident-commander and incident-commander agents to manage production outages, security breaches, and critical system failures with structured command and control procedures.
 
 ## Usage
 ```
@@ -40,7 +40,7 @@ When you use `/incident`, I will orchestrate multi-phase incident response:
    - Resource mobilization
    - Command structure establishment
 
-2. **Deploy crisis-management agent** for:
+2. **Deploy incident-commander agent** for:
    - Stakeholder notification protocols
    - External communication strategy
    - Regulatory compliance checks
@@ -52,7 +52,7 @@ When you use `/incident`, I will orchestrate multi-phase incident response:
    - **debugger**: Root cause analysis
    - **security-auditor**: Security incident analysis
    - **performance-specialist**: Performance degradation analysis
-   - **devops-sre**: Infrastructure impact assessment
+   - **devops**: Infrastructure impact assessment
 
 2. **Evidence collection and preservation**:
    - System logs and metrics capture
@@ -98,8 +98,8 @@ When you use `/incident`, I will orchestrate multi-phase incident response:
 ```
 PHASE 1 (Parallel - 0-5 min):
 ├── incident-commander: War room setup, initial assessment
-├── crisis-management: Stakeholder notifications
-└── devops-sre: System status verification
+├── incident-commander: Stakeholder notifications
+└── devops: System status verification
 
 PHASE 2 (Parallel - 5-15 min):
 ├── debugger: Root cause investigation
@@ -109,8 +109,8 @@ PHASE 2 (Parallel - 5-15 min):
 
 PHASE 3 (Sequential - 15+ min):
 ├── Appropriate specialist: Solution implementation
-├── devops-sre: Deployment and rollback readiness
-└── crisis-management: Recovery communications
+├── devops: Deployment and rollback readiness
+└── incident-commander: Recovery communications
 ```
 
 ### Standard Incident Pattern (SEV3/SEV4)
@@ -121,7 +121,7 @@ PHASE 1 (Sequential - 0-30 min):
 
 PHASE 2 (As needed):
 ├── Development specialist: Fix implementation
-└── crisis-management: Stakeholder updates
+└── incident-commander: Stakeholder updates
 ```
 
 ## Communication Protocols

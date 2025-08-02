@@ -23,7 +23,7 @@ Creates and updates documentation using specialized tech-writer agents working i
 - `--sync`: Ensure docs match current implementation
 - `--examples`: Include code examples and tutorials
 - `--parallel`: Force parallel execution with multiple agents (default for 'all')
-- `--orchestrate`: Use project-orchestrator for complex documentation projects
+- `--comprehensive`: Create comprehensive documentation across all areas
 
 ## Behavior
 When you use `/docs`, I will:
@@ -46,7 +46,7 @@ When you use `/docs`, I will:
      - Mobile UI patterns and platform guidelines
    
 3. **Parallel execution strategy**:
-   - Consult project-orchestrator for optimal agent coordination
+   - Claude orchestrates optimal agent coordination
    - Launch multiple tech-writer instances for different sections
    - Run specialized tech-writer for API specifications
    - Include mobile documentation patterns when needed
@@ -191,7 +191,7 @@ When using `/docs all` or `--parallel`:
 
 ## Agent Specializations
 - **tech-writer**: Comprehensive documentation including README, guides, architecture, API specs, mobile patterns
-- **project-orchestrator**: Coordination for complex documentation projects
+- **Claude orchestration**: Coordination for complex documentation projects
 
 ## Integration
 - Auto-generates from code comments

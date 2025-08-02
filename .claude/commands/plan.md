@@ -1,7 +1,7 @@
 # /plan Command
 
 ## Description
-Creates comprehensive implementation plans and multi-agent orchestration strategies for projects of any complexity. For simple tasks, provides detailed implementation plans. For complex projects (3+ agents), automatically engages project-orchestrator agent to optimize parallel execution strategies.
+Creates comprehensive implementation plans and multi-agent orchestration strategies for projects of any complexity. For simple tasks, provides detailed implementation plans. For complex projects (3+ agents), Claude automatically optimizes parallel execution strategies.
 
 ## Usage
 ```
@@ -47,7 +47,7 @@ When complexity warrants orchestration, I will:
    - Task dependencies
    - Integration points
 
-2. **Launch project-orchestrator agent** to create:
+2. **Use Claude's orchestration capabilities** to create:
    - Optimal execution strategy
    - Parallel execution plan
    - Agent coordination timeline
@@ -81,7 +81,7 @@ When complexity warrants orchestration, I will:
 ```
 principal-architect → Creates master plan
     ↓
-project-orchestrator → Optimizes execution
+Claude's orchestration capabilities → Optimizes execution
     ↓
 [Multiple Agents Execute in Parallel]
     ↓
