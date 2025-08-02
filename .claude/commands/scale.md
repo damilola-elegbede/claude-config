@@ -1,7 +1,7 @@
 # /scale Command
 
 ## Description
-Analyzes system scalability and provides comprehensive scaling recommendations through specialized scaling-architect and capacity-planner agents to handle growth, optimize performance, and ensure reliable system expansion.
+Analyzes system scalability and provides comprehensive scaling recommendations through specialized cloud-architect and principal-architect agents to handle growth, optimize performance, and ensure reliable system expansion.
 
 ## Usage
 ```
@@ -28,14 +28,14 @@ Analyzes system scalability and provides comprehensive scaling recommendations t
 When you use `/scale`, I will orchestrate comprehensive scalability analysis:
 
 ### Phase 1 (Current State Analysis - 0-25 min)
-1. **Launch scaling-architect agent** for:
+1. **Launch cloud-architect agent** for:
    - System architecture assessment
    - Bottleneck identification
    - Scaling pattern analysis
    - Technology stack evaluation
    - Performance baseline establishment
 
-2. **Deploy capacity-planner agent** for:
+2. **Deploy principal-architect agent** for:
    - Resource utilization analysis
    - Growth projection modeling
    - Capacity requirement forecasting
@@ -110,18 +110,18 @@ When you use `/scale`, I will orchestrate comprehensive scalability analysis:
 ### Comprehensive Scaling Analysis
 ```
 PHASE 1 (Parallel - 25 min):
-├── scaling-architect: Architecture bottleneck analysis
-├── capacity-planner: Growth modeling and forecasting
+├── cloud-architect: Architecture bottleneck analysis
+├── principal-architect: Growth modeling and forecasting
 └── performance-specialist: Load testing and profiling
 
 PHASE 2 (Sequential - 25 min):
-├── scaling-architect: Scaling strategy design
-├── capacity-planner: Resource requirement planning
-└── devops-sre: Infrastructure implementation planning
+├── cloud-architect: Scaling strategy design
+├── principal-architect: Resource requirement planning
+└── devops: Infrastructure implementation planning
 
 PHASE 3 (Parallel - 20 min):
-├── scaling-architect: Migration roadmap creation
-├── capacity-planner: Cost optimization analysis
+├── cloud-architect: Migration roadmap creation
+├── principal-architect: Cost optimization analysis
 └── tech-writer: Documentation and runbook creation
 ```
 
@@ -129,8 +129,8 @@ PHASE 3 (Parallel - 20 min):
 ```
 Cloud Scaling (AWS/GCP/Azure):
 ├── cloud-architect: Cloud-native scaling patterns
-├── capacity-planner: Cloud cost optimization
-└── devops-sre: Auto-scaling configuration
+├── principal-architect: Cloud cost optimization
+└── devops: Auto-scaling configuration
 
 Database Scaling:
 ├── database-specialist: Sharding and replication design

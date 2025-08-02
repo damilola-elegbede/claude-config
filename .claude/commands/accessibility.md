@@ -1,7 +1,7 @@
 # /accessibility Command
 
 ## Description
-Ensures comprehensive WCAG compliance and inclusive design through specialized accessibility-auditor and ux-accessibility agents to identify barriers, validate compliance, and enhance user experience for all abilities.
+Ensures comprehensive WCAG compliance and inclusive design through specialized accessibility-auditor agent to identify barriers, validate compliance, and enhance user experience for all abilities.
 
 ## Usage
 ```
@@ -35,7 +35,7 @@ When you use `/accessibility`, I will coordinate comprehensive accessibility eva
    - Screen reader compatibility
    - Color contrast analysis
 
-2. **Deploy ux-accessibility agent** for:
+2. **Deploy accessibility-auditor agent** for:
    - User experience evaluation
    - Inclusive design assessment
    - Cognitive load analysis
@@ -108,12 +108,12 @@ When you use `/accessibility`, I will coordinate comprehensive accessibility eva
 ```
 PHASE 1 (Parallel - 20 min):
 ├── accessibility-auditor: WCAG compliance testing
-├── ux-accessibility: User experience evaluation
+├── accessibility-auditor: User experience evaluation
 └── frontend-specialist: Technical implementation review
 
 PHASE 2 (Sequential - 25 min):
 ├── accessibility-auditor: Automated tool execution
-├── ux-accessibility: Manual testing simulation
+├── accessibility-auditor: Manual testing simulation
 └── content-specialist: Content accessibility review
 
 PHASE 3 (Parallel - 20 min):
@@ -127,7 +127,7 @@ PHASE 3 (Parallel - 20 min):
 Mobile Accessibility (iOS/Android):
 ├── mobile-specialist: Platform-specific guidelines
 ├── accessibility-auditor: Mobile WCAG testing
-└── ux-accessibility: Touch accessibility evaluation
+└── accessibility-auditor: Touch accessibility evaluation
 
 API Accessibility:
 ├── api-specialist: Accessible data structure

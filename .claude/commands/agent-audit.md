@@ -2,7 +2,7 @@
 
 ## Description
 
-Orchestrate comprehensive agent ecosystem validation through parallel category-based audits using Claude's orchestration capabilities.
+Comprehensive validation of agent ecosystem to ensure category integrity, template compliance, and system consistency.
 
 ## Usage
 ```
@@ -10,179 +10,136 @@ Orchestrate comprehensive agent ecosystem validation through parallel category-b
 ```
 
 ## Behavior
-This command coordinates comprehensive validation of the entire agent ecosystem through Claude-orchestrated parallel audits.
+This command performs thorough validation of all agents across multiple dimensions, executed in parallel by category for maximum efficiency.
 
 ## Purpose
-Comprehensive validation of the entire agent ecosystem through Claude-orchestrated parallel audits.
+Ensure agent ecosystem maintains high standards of consistency, proper categorization, and adherence to system design principles.
 
-## Orchestration Strategy
+## Validation Scope
 
-Claude should execute the following parallel audit strategy:
+### 1. Category Validation
+- **Maximum Categories**: Ensure ≤ 8 categories exist
+- **Category Assignment**: Verify each agent is in the correct category based on its role
+- **Color Consistency**: Validate color assignments match category standards
+- **Category Balance**: Report on distribution (not enforced, informational only)
+
+### 2. Template Compliance
+- **AGENT_TEMPLATE.md Format**: All agents must follow the standard template
+- **Required Sections**: Verify presence of all mandatory sections
+- **YAML Frontmatter**: Validate structure and field completeness
+- **System Boundary**: Ensure anti-pattern warning is present
+
+### 3. Tool Assignment Validation
+- **Tool Appropriateness**: Verify tools match agent responsibilities
+- **No Task Tool**: Ensure no agent has access to Task tool (Claude exclusive)
+- **Tool Categories**: Validate read-only vs write vs execute permissions
+
+### 4. Anti-Pattern Enforcement
+- **No Orchestration**: Agents must not attempt to coordinate other agents
+- **No Self-Reference**: Agents cannot reference themselves
+- **No Task Tool Usage**: Task tool is reserved exclusively for Claude
+- **Clear Boundaries**: Agents stay within their domain expertise
+
+### 5. Description Quality
+- **Actionable Triggers**: Descriptions must include "MUST BE USED" scenarios
+- **Proactive Triggers**: Include "use PROACTIVELY" for agents that should be used without explicit request
+- **Clear Scope**: Well-defined boundaries of responsibility
+- **Usage Context**: When Claude should select this agent
+- **Updated Descriptions**: Derive from agent's actual capabilities if needed
+
+### 6. Tier Validation
+- **Tier 1 Only**: All agents must be tier 1 (no tier 2 agents allowed)
+- **Model Assignment**: Verify appropriate model selection
+- **Performance Optimization**: Ensure efficient agent deployment
+
+## Execution Strategy
 
 ### Phase 1: Parallel Category Audits
-Launch agent-auditor instances for all categories simultaneously through Claude's orchestration:
+Execute validation for each category simultaneously:
 
-1. **Development Category Audit** (Blue agents)
-   - Validate all agents in Development category
-   - Check AGENT_TEMPLATE.md compliance
-   - Validate YAML structure
-   - Perform gap analysis for missing agents
-
-2. **Infrastructure Category Audit** (Orange agents)
-   - Validate all agents in Infrastructure category
-   - Check AGENT_TEMPLATE.md compliance
-   - Validate YAML structure
-   - Perform gap analysis for missing agents
-
-3. **Architecture Category Audit** (Purple agents)
-   - Validate all agents in Architecture category
-   - Check AGENT_TEMPLATE.md compliance
-   - Validate YAML structure
-   - Perform gap analysis for missing agents
-
-4. **Design Category Audit** (Pink agents)
-   - Validate all agents in Design category
-   - Check AGENT_TEMPLATE.md compliance
-   - Validate YAML structure
-   - Perform gap analysis for missing agents
-
-5. **Quality Category Audit** (Green agents)
-   - Validate all agents in Quality category
-   - Check AGENT_TEMPLATE.md compliance
-   - Validate YAML structure
-   - Perform gap analysis for missing agents
-
-6. **Security Category Audit** (Red agents)
-   - Validate all agents in Security category
-   - Check AGENT_TEMPLATE.md compliance
-   - Validate YAML structure
-   - Perform gap analysis for missing agents
-
-7. **Analysis Category Audit** (Yellow agents)
-   - Validate all agents in Analysis category
-   - Check AGENT_TEMPLATE.md compliance
-   - Validate YAML structure
-   - Perform gap analysis for missing agents
-
-8. **Operations Category Audit** (Orange agents)
-   - Validate all agents in Operations category
-   - Check AGENT_TEMPLATE.md compliance
-   - Validate YAML structure
-   - Perform gap analysis for missing agents
-
-### Phase 2: Validation Dimensions
-Each audit validates compliance across:
-- **YAML Structure**: Required fields, proper formatting, valid syntax
-- **Template Adherence**: Compliance with AGENT_TEMPLATE.md standards
-- **Tool Permissions**: Appropriate tools for agent responsibilities
-- **Category Assignment**: Correct categorization and color coding
-- **Coordination Protocols**: Inter-agent communication patterns
-- **Gap Analysis**: Missing capabilities within each category
-- **Anti-Pattern Detection**: No agent self-referencing or Task tool usage
-
-## Executive Report Structure
-
-### 1. Executive Summary
-**Health Score: XX/100** | **Agents: XX** | **Production Ready: XX%** | **Critical Issues: X**
-
-### 2. Category Performance Matrix
-
-| Category | Agent Count | Health Score | Status | Critical Issues |
-|----------|-------------|-------------|---------|----------------|
-| Development | X | XX/100 | Status | X |
-| Infrastructure | X | XX/100 | Status | X |
-| Quality | X | XX/100 | Status | X |
-| Security | X | XX/100 | Status | X |
-| Analysis | X | XX/100 | Status | X |
-| Architecture | X | XX/100 | Status | X |
-| Design | X | XX/100 | Status | X |
-| Operations | X | XX/100 | Status | X |
-
-### 3. Critical Issues Analysis
-For each critical issue identified:
-- **Issue Description**: Specific problem found
-- **Impact Assessment**: How it affects agent functionality
-- **Affected Agents**: Which agents are impacted
-- **Fix Commands**: Exact bash/sed commands to resolve
-- **Priority Level**: Critical/High/Medium/Low
-
-### 4. Anti-Pattern Detection Report
-- **Task Tool Violations**: Agents referencing or using Task tool
-- **Self-Referencing**: Agents calling themselves or other agents
-- **Orchestration Violations**: Agents bypassing Claude coordination
-- **Tool Access Violations**: Agents referencing tools they don't have
-
-### 5. Gap Analysis Report
-#### Missing Critical Capabilities
-- **High Priority Gaps**: Essential missing agent types
-- **Medium Priority Gaps**: Important but not critical
-- **Low Priority Gaps**: Nice-to-have capabilities
-- **Justification**: Why each gap matters for ecosystem completeness
-
-#### Coverage Assessment
-- Domain coverage percentage by category
-- Overlap analysis between similar agents
-- Specialization boundary clarity
-
-### 6. Next Steps & Action Plan
-
-#### Immediate Actions (Execute Now)
-```bash
-# Critical fixes with specific commands
-sed -i '' 's/old/new/' agent-file.md
-# Additional fixes...
+```yaml
+parallel_execution:
+  - category: development
+    validations: [template, tools, description, tier]
+  - category: infrastructure  
+    validations: [template, tools, description, tier]
+  - category: quality
+    validations: [template, tools, description, tier]
+  - category: security
+    validations: [template, tools, description, tier]
+  - category: analysis
+    validations: [template, tools, description, tier]
+  - category: architecture
+    validations: [template, tools, description, tier]
+  - category: design
+    validations: [template, tools, description, tier]
+  - category: operations
+    validations: [template, tools, description, tier]
 ```
 
-#### Short-term Actions (Next Sprint)
-- Specific agent improvements needed
-- Category reorganization requirements
-- Tool permission optimizations
+### Phase 2: Cross-Category Analysis
+- Category count validation
+- Color assignment consistency
+- Coverage gap identification
+- Redundancy detection
 
-#### Strategic Actions (Next Quarter)
-- New agent creation priorities
-- Ecosystem architecture improvements
-- Coordination protocol enhancements
+### Phase 3: Remediation
+- Auto-fix where possible (formatting, tier updates)
+- Generate specific fix commands for manual issues
+- Update descriptions based on capabilities
+- Document all changes made
 
-### 7. Technical Remediation Guide
+## Report Structure
 
-#### Ready-to-Execute Fixes
-Specific bash commands for each identified issue:
-```bash
-# Example fixes
-sed -i '' '6s/.*/tools: Read, Write, Edit/' agent.md
-git add . && git commit -m "fix: agent compliance issues"
+### Executive Summary
+```
+Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 ```
 
-#### Manual Review Required
-Issues that need human judgment:
-- Content quality assessments
-- Strategic capability decisions
-- Category boundary clarifications
+### Category Health Matrix
+
+| Category | Agent Count | Compliance | Color | Issues |
+|----------|------------|------------|-------|--------|
+| development | X | XX% | blue | X |
+| infrastructure | X | XX% | orange | X |
+| quality | X | XX% | green | X |
+| security | X | XX% | red | X |
+
+### Critical Issues
+1. **Task Tool Violations**: [List any agents with Task tool access]
+2. **Orchestration Attempts**: [Agents trying to coordinate others]
+3. **Missing Templates**: [Non-compliant agent formats]
+4. **Tier 2 Agents**: [Any agents not at tier 1]
+
+### Auto-Remediation Log
+```bash
+# Fixes applied automatically:
+- Updated agent-name: Set tier to 1
+- Fixed agent-name: Removed Task tool access
+- Updated agent-name: Added SYSTEM BOUNDARY warning
+```
+
+### Manual Remediation Required
+```bash
+# Execute these commands to fix remaining issues:
+sed -i '' 's/category: wrong/category: correct/' agent.md
+# Additional manual fixes...
+```
 
 ## Success Criteria
 
-✅ **Ecosystem Health**: Minimum 85/100 overall score  
-✅ **Production Ready**: 95%+ agents validated for immediate use  
-✅ **Critical Issues**: All identified with specific remediation  
-✅ **Gap Coverage**: Comprehensive analysis of missing capabilities  
-✅ **Anti-Pattern Compliance**: No agent self-referencing or Task tool usage  
-✅ **Action Plan**: Prioritized roadmap with timelines  
-✅ **Technical Spec**: Executive-level decision-making support  
+✅ **Category Compliance**: ≤ 8 categories with proper color mapping  
+✅ **Template Adherence**: 100% AGENT_TEMPLATE.md compliance  
+✅ **Tool Validation**: No Task tool access, appropriate permissions  
+✅ **Anti-Pattern Free**: No orchestration or self-reference  
+✅ **Description Quality**: Clear "MUST BE USED" and "use PROACTIVELY" triggers  
+✅ **Tier 1 Only**: All agents at tier 1 level  
+✅ **Documentation Sync**: All docs reflect current state  
 
 ## Implementation Notes
 
-- Claude orchestrates all audits in parallel for maximum efficiency
-- Results aggregated by Claude into single comprehensive report
-- Each category audit is independent and can be executed separately
-- Focus on actionable recommendations over theoretical analysis
-- Executive summary suitable for technical leadership review
-- Strict enforcement of orchestration principles
-
-## Output Format
-
-The command generates a structured markdown report containing:
-1. High-level executive summary with key metrics
-2. Detailed findings by category with specific scores
-3. Anti-pattern detection results
-4. Prioritized action items with exact commands
-5. Strategic recommendations for ecosystem evolution
+- Claude executes all validations directly (no agent-auditor needed)
+- Parallel execution by category for efficiency
+- Auto-fix safe issues, provide commands for complex ones
+- Focus on maintaining established categories (avoid frequent refactoring)
+- Generate actionable report suitable for immediate implementation

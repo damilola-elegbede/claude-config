@@ -11,7 +11,7 @@ This guide helps users transition from the previous agent system to the new cons
 
 | Command | Old Agent | New Agent | Status |
 |---------|-----------|-----------|--------|
-| `/test` | qa-engineer | test-engineer | ✅ Enhanced (absorbed qa-engineer) |
+| `/test` | test-engineer | test-engineer | ✅ Enhanced (absorbed test-engineer) |
 | `/review` | code-reviewer | code-reviewer | ✅ Unchanged |
 | `/security` | security-auditor | security-auditor | ✅ Unchanged |
 | `/perf` | performance-engineer | performance-specialist | ✅ Renamed for clarity |
@@ -102,7 +102,7 @@ This guide helps users transition from the previous agent system to the new cons
 
 #### Quality Assurance Consolidation
 **Before (2 agents):**
-- `qa-engineer` - Quality assurance engineering
+- `test-engineer` - Quality assurance engineering
 - `test-engineer` - Test automation and strategy
 
 **After (1 agent):**
@@ -182,7 +182,7 @@ This guide helps users transition from the previous agent system to the new cons
 - Documentation: tech-writer vs completion-agent vs tech-writer
 - Backend: backend-engineer vs backend-engineer vs backend-engineer
 - Mobile: mobile-engineer vs mobile-engineer vs mobile-designer
-- Testing: qa-engineer vs test-engineer
+- Testing: test-engineer vs test-engineer
 - Reliability: platform-engineer vs platform-engineer vs platform-engineer
 
 ### After: Clear Boundaries (95% accuracy)
@@ -240,7 +240,7 @@ Production reliability, monitoring, SRE → platform-engineer
 ```yaml
 # Old way: Potential overlap and confusion
 agents:
-  - qa-engineer: quality processes
+  - test-engineer: quality processes
   - test-engineer: test automation
   - code-reviewer: code quality
   - security-auditor: security review
@@ -250,7 +250,7 @@ agents:
 ```yaml
 # New way: Clear responsibilities, no overlap
 agents:
-  - test-engineer: comprehensive testing (absorbed qa-engineer)
+  - test-engineer: comprehensive testing (absorbed test-engineer)
   - code-reviewer: code quality and style
   - security-auditor: security assessment
   - performance-specialist: performance validation
@@ -284,7 +284,7 @@ parallel:
   - backend-engineer: server implementation
   - frontend-architect: client implementation
   - mobile-platform-engineer: mobile app
-  - qa-engineer: quality processes
+  - test-engineer: quality processes
   - test-engineer: test automation
 ```
 
@@ -371,7 +371,7 @@ parallel:
 
 Check the consolidation map above. Your agent's capabilities are now part of a consolidated agent:
 
-- `qa-engineer` → `test-engineer`
+- `test-engineer` → `test-engineer`
 
 - `backend-engineer` → `backend-engineer`
 - `frontend-engineer` → `frontend-architect`

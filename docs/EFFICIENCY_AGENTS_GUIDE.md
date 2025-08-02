@@ -341,7 +341,7 @@ workflow: create-feature-component
   steps:
     - file-navigator: Locate component directory
     - dependency-manager: Ensure required packages
-    - file-writer: Scaffold component structure
+    - file-writer: Scaffold component structure (now: frontend-architect/backend-engineer)
     - test-runner: Verify initial tests pass
     - git-workflow: Create feature branch and commit
 ```

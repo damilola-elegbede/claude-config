@@ -1,7 +1,7 @@
 # /monitor Command
 
 ## Description
-Establishes comprehensive production monitoring and observability stack using specialized devops-sre and monitoring-specialist agents to ensure system health, performance visibility, and proactive incident prevention.
+Establishes comprehensive production monitoring and observability stack using specialized devops and monitoring-specialist agents to ensure system health, performance visibility, and proactive incident prevention.
 
 ## Usage
 ```
@@ -27,7 +27,7 @@ Establishes comprehensive production monitoring and observability stack using sp
 When you use `/monitor`, I will coordinate in multiple phases:
 
 ### Phase 1 (Parallel Analysis)
-1. **Launch devops-sre agent** to assess:
+1. **Launch devops agent** to assess:
    - Current monitoring gaps
    - Infrastructure topology
    - Service dependencies
@@ -100,18 +100,18 @@ When you use `/monitor`, I will coordinate in multiple phases:
 ### Agent Coordination Pattern
 ```
 PHASE 1 (Parallel - 15 min):
-├── devops-sre: Infrastructure assessment
+├── devops: Infrastructure assessment
 ├── monitoring-specialist: Metrics design
 └── performance-specialist: Baseline establishment
 
 PHASE 2 (Sequential - 30 min):
-├── devops-sre: Stack deployment
+├── devops: Stack deployment
 ├── monitoring-specialist: Dashboard creation
 └── quality-assurance: Validation testing
 
 PHASE 3 (Parallel - 10 min):
 ├── monitoring-specialist: Alert tuning
-└── devops-sre: Documentation creation
+└── devops: Documentation creation
 ```
 
 ## Advanced Features

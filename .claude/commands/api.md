@@ -1,10 +1,10 @@
 # /api Command
 
 ## Description
-Quickly access expert API architecture through Claude orchestration for enterprise-scale API ecosystems. Claude coordinates with the api-specialist who specializes in designing APIs handling 100K+ RPS with sub-50ms response times, implementing comprehensive API governance across 50+ microservices, and building contract-first development workflows supporting teams of 100+ developers.
+Quickly access expert API architecture through Claude orchestration for enterprise-scale API ecosystems. Claude coordinates with the api-architect who specializes in designing APIs handling 100K+ RPS with sub-50ms response times, implementing comprehensive API governance across 50+ microservices, and building contract-first development workflows supporting teams of 100+ developers.
 
 ## Behavior
-This command coordinates with the api-specialist to architect and implement mission-critical API ecosystems including multi-version API management, advanced rate limiting with quota enforcement, comprehensive security policies (OAuth2, mTLS, JWT validation), and observability frameworks providing detailed SLI/SLO tracking across service meshes.
+This command coordinates with the api-architect to architect and implement mission-critical API ecosystems including multi-version API management, advanced rate limiting with quota enforcement, comprehensive security policies (OAuth2, mTLS, JWT validation), and observability frameworks providing detailed SLI/SLO tracking across service meshes.
 
 ## Usage
 ```

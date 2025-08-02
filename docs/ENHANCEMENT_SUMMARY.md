@@ -110,12 +110,12 @@ tool_access: [access_level]
 **Tool Access Categories:**
 
 #### Full Access (Implementation Agents)
-- **Agents**: backend-engineer, frontend-engineer, fullstack-lead, devops, platform-engineer, test-engineer
+- **Agents**: backend-engineer, frontend-architect, fullstack-lead, devops, platform-engineer, test-engineer
 - **Tools**: All tools for complete implementation capabilities
 - **Justification**: Implementation requires code modification and system configuration
 
 #### Read + Analysis Access (Analysis Agents)
-- **Agents**: codebase-analyst, security-auditor, debugger, researcher, performance-specialist, code-reviewer
+- **Agents**: codebase-analyst, security-auditor, debugger, performance-specialist, code-reviewer
 - **Tools**: Read, analysis, and reporting tools only
 - **Justification**: Objective analysis without implementation bias
 
@@ -146,7 +146,7 @@ Phase 1 - Planning (Parallel):
   - ui-designer: Design specifications
   
 Phase 2 - Implementation (Parallel):
-  - frontend-engineer: UI development
+  - frontend-architect: UI development
   - backend-engineer: API development
   - devops: Infrastructure preparation
   
@@ -171,7 +171,7 @@ Multi-Perspective Analysis (Parallel):
   - codebase-analyst: Architecture assessment
   - security-auditor: Vulnerability scan
   - performance-specialist: Performance analysis
-  - researcher: Industry best practices
+  - codebase-analyst: Industry best practices
 ```
 
 ### 8. Quality Assurance Improvements
@@ -235,7 +235,7 @@ Orchestration Level:
 Implementation Level:
 ├── Staff Agents (Complex implementation)
 │   ├── backend-engineer
-│   ├── frontend-engineer
+│   ├── frontend-architect
 │   └── test-engineer
 ├── Senior Agents (Standard implementation)
 │   └── fullstack-lead
@@ -253,7 +253,7 @@ Implementation Level:
 Analysis Level:
 ├── codebase-analyst (Internal analysis)
 ├── code-reviewer (Quality assessment)
-└── researcher (External research)
+└── codebase-analyst (External research)
 ```
 
 ### Tool Access Matrix
