@@ -97,6 +97,7 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 ```
 
 ### Category Health Matrix
+
 | Category | Agent Count | Compliance | Color | Issues |
 |----------|------------|------------|-------|--------|
 | development | X | XX% | blue | X |
