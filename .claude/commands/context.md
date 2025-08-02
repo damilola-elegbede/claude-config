@@ -5,11 +5,16 @@ Quickly analyzes and understands any repository by scanning its structure, depen
 
 ## Usage
 ```
-/context
+/context [scope or component]
 ```
 
+## Arguments
+- `scope or component` (optional): Specific area to analyze deeply. If omitted, provides full repository overview.
+
 ## Behavior
-When you use `/context`, I will:
+
+### Full Repository Analysis (no arguments)
+When you use `/context` without arguments, I will:
 
 1. **Analyze repository structure**:
    - Identify project type and technology stack
@@ -37,6 +42,24 @@ When you use `/context`, I will:
    - Key dependencies
    - Recent development activity
    - Development workflow
+
+### Focused Component Analysis (with scope argument)
+When you use `/context <scope>`, I will coordinate with codebase-analyst agents to:
+
+1. **Deep dive into specific areas**:
+   - Architecture assessment of the component
+   - Technical debt analysis
+   - Code quality evaluation
+   - Dependency analysis
+   - Security vulnerability scanning
+   - Performance profiling
+
+2. **Provide targeted insights**:
+   - Component-specific design patterns
+   - Integration points with other systems
+   - Potential refactoring opportunities
+   - Risk assessment
+   - Executive-level summaries
 
 ## Output Format
 ```
@@ -89,8 +112,14 @@ To enable automatic context analysis on Claude Code startup:
 
 ## Examples
 ```
-# In any repository
+# Full repository overview
 /context
+
+# Specific component analysis
+/context authentication service
+/context frontend architecture
+/context technical debt
+/context performance bottlenecks
 
 # Output for a React app:
 ## Repository Context: my-react-app

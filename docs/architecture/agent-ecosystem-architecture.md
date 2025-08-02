@@ -166,14 +166,14 @@ graph TD
 
 | Category | Count | Primary Focus | Tool Access | Execution Rights |
 |----------|-------|---------------|-------------|------------------|
-| Development & Implementation | 15 | Code generation, UI/UX design | Read, Analyze | None |
-| Infrastructure & Operations | 8 | Cloud, DevOps, monitoring | Read, Config generation | None |
-| Quality & Security | 6 | Testing, security, compliance | Read, Scan, Analyze | None |
-| Architecture & Design | 7 | System design, API specs | Read, Design | None |
-| Documentation & Communication | 3 | Docs, guides, communication | Read, Generate content | None |
-| Coordination & Support | 3 | Incident response, debugging | Read, Analyze, Plan | None |
-| Efficiency & Automation | 5 | Workflow optimization | Read, Pattern matching | None |
-| Analysis & Research | 0 | Reserved for future | TBD | None |
+| Development | 5 | Code generation, implementation | Read, Write, Edit | None |
+| Infrastructure | 9 | Cloud, DevOps, monitoring | Read, Write, Edit | None |
+| Quality | 4 | Testing, code review, performance | Read, Write, Edit | None |
+| Security | 2 | Security auditing, compliance | Read | None |
+| Architecture | 2 | System design, API specs | Read, Write, Edit | None |
+| Design | 2 | UI/UX design, systems | Read, Write, Edit | None |
+| Analysis | 2 | Code analysis, documentation | Read, Write, Edit | None |
+| Operations | 3 | Incident response, debugging | Read, Write, Edit | None |
 
 ## Security Architecture
 

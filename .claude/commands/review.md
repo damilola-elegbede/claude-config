@@ -27,9 +27,9 @@ When you use `/review`, I will:
    - Test coverage quality
    
 3. **Coordinate with other quality agents** if needed:
-   - qa-tester for test coverage analysis
+   - test-engineer for test coverage analysis
    - security-auditor for security concerns
-   - performance-engineer for performance issues
+   - performance-specialist for performance issues
    
 4. **Generate comprehensive report** including:
    - Overall code quality assessment

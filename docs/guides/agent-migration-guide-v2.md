@@ -72,9 +72,9 @@ category: development
 | Category | Color | Agent Types |
 |----------|-------|-------------|
 | development | blue | backend, mobile-platform, database, data-platform engineers |
-| infrastructure | orange | devops, cloud, cloud-network, kubernetes-admin |
-| architecture | purple | frontend-architect, api-architect, system-architect |
-| design | pink | ui-designer, mobile-ui-designer |
+| infrastructure | orange | devops, cloud-architect, cloud-network, kubernetes-admin |
+| architecture | purple | frontend-architect, api-architect, principal-architect |
+| design | pink | ui-designer |
 | quality | green | test-engineer, code-reviewer, performance-specialist |
 | security | red | security-auditor, supply-chain-security-engineer |
 | analysis | yellow | codebase-analyst, tech-writer |
@@ -210,9 +210,9 @@ done
 - **Infrastructure**: devops, cloud-architect
 
 ### Phase 2: Specialized Agents (Week 2)
-- **Architecture**: api-architect, system-architect
+- **Architecture**: api-architect, principal-architect
 - **Analysis**: codebase-analyst, tech-writer
-- **Design**: ui-designer, mobile-ui-designer
+- **Design**: ui-designer, ux-researcher
 
 ### Phase 3: Support Agents (Week 3)
 - **Operations**: incident-commander, production-reliability-engineer

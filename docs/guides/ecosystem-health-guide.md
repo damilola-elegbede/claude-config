@@ -289,8 +289,8 @@ from collections import defaultdict
 EXPECTED_CAPABILITIES = {
     'development': ['backend', 'data-platform', 'database', 'mobile-platform', 'ml'],
     'infrastructure': ['cloud', 'devops', 'cloud-network', 'kubernetes', 'monitoring'],
-    'architecture': ['frontend-architect', 'api-architect', 'system-architect'],
-    'design': ['ui-designer', 'mobile-ui'],
+    'architecture': ['frontend-architect', 'api-architect', 'principal-architect'],
+    'design': ['ui-designer'],
     'quality': ['test', 'code-reviewer', 'performance-specialist', 'security-auditor'],
     'security': ['security-auditor', 'supply-chain-security'],
     'analysis': ['codebase-analyst', 'tech-writer'],
@@ -422,8 +422,8 @@ Create and maintain a capability matrix:
 | Cloud Infrastructure | ✅ Full | cloud-architect, cloud-network-architect | Maintain |
 | Security Operations | ✅ Full | security-auditor, supply-chain-security-engineer | Maintain |
 | Quality Assurance | ✅ Full | test-engineer, code-reviewer, performance-specialist | Maintain |
-| System Architecture | ✅ Full | api-architect, system-architect | Maintain |
-| UI/UX Design | ✅ Full | ui-designer, mobile-ui-designer | Maintain |
+| System Architecture | ✅ Full | api-architect, principal-architect | Maintain |
+| UI/UX Design | ✅ Full | ui-designer | Maintain |
 | Operations | ✅ Full | incident-commander, production-reliability-engineer | Maintain |
 
 ### 2. Gap Prioritization Framework
