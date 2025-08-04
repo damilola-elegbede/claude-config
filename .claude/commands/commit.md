@@ -16,16 +16,27 @@ When you use `/commit`, I will:
    - `git diff` to see staged and unstaged changes
    - `git log` to match repository's commit style
 
-2. **Analyze changes** to:
+2. **Run code review** using code-reviewer agent:
+   - Analyze all staged and unstaged changes
+   - Check for code quality issues
+   - Identify critical problems that must be fixed
+   - Generate review report with actionable feedback
+
+3. **Review gate enforcement**:
+   - If critical issues found: Block commit and require fixes
+   - If only warnings/suggestions: Proceed with commit after confirmation
+   - Display review summary before proceeding
+
+4. **Analyze changes** to:
    - Summarize the nature of changes
    - Check for sensitive information
    - Draft a concise commit message
 
-3. **Stage appropriate files**:
+5. **Stage appropriate files**:
    - Add relevant untracked files
    - Exclude files that shouldn't be committed
 
-4. **Create commit** with:
+6. **Create commit** with:
    - Descriptive message following conventional format
    - Claude co-authorship attribution:
      ```
@@ -34,7 +45,7 @@ When you use `/commit`, I will:
      Co-Authored-By: Claude <noreply@anthropic.com>
      ```
 
-5. **Verify success** by checking git status after commit
+7. **Verify success** by checking git status after commit
 
 ## Commit Message Format
 Follows conventional commit format:
@@ -47,10 +58,25 @@ Follows conventional commit format:
 - `fix(auth): resolve login timeout issue`
 - `docs(readme): update installation instructions`
 
+## Code Review Requirements
+The code review will check for:
+- **Critical Issues**: Security vulnerabilities, breaking changes, data loss risks
+- **Code Quality**: Maintainability, readability, proper error handling
+- **Style Compliance**: Formatting, naming conventions, project standards
+- **Test Coverage**: Adequate tests for new/modified functionality
+
+### Review Outcomes
+1. **No Issues**: Commit proceeds automatically
+2. **Warnings Only**: Asks for confirmation before committing
+3. **Critical Issues**: Blocks commit until issues are resolved
+
 ## Prerequisites
 - Git must be initialized in the repository
 - Changes must exist (staged or unstaged)
+- Code must pass review checks (no critical issues)
 
 ## Notes
 - If pre-commit hooks modify files, the commit will be retried once
 - Empty commits are not created
+- Code review is mandatory and cannot be skipped
+- Review results are displayed before commit confirmation
