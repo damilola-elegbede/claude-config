@@ -16,16 +16,19 @@ When you use `/commit`, I will:
    - `git diff` to see staged and unstaged changes
    - `git log` to match repository's commit style
 
-2. **Run code review** using code-reviewer agent:
+2. **Run STRICT MODE code review** using code-reviewer agent:
+   - Execute ALL applicable linters (ESLint, Prettier, etc.)
    - Analyze all staged and unstaged changes
-   - Check for code quality issues
-   - Identify critical problems that must be fixed
-   - Generate review report with actionable feedback
+   - Enforce zero-tolerance quality standards
+   - Block commit for ANY violations (no warnings)
+   - Generate strict review report with required fixes
 
-3. **Review gate enforcement**:
-   - If critical issues found: Block commit and require fixes
-   - If only warnings/suggestions: Proceed with commit after confirmation
-   - Display review summary before proceeding
+3. **Strict review gate enforcement**:
+   - ANY linter errors: Block commit (zero tolerance)
+   - ANY code quality issues: Block commit 
+   - No warnings mode: ALL issues are blocking
+   - Display full review report with required fixes
+   - Commit only proceeds with 100% compliance
 
 4. **Analyze changes** to:
    - Summarize the nature of changes
@@ -58,17 +61,21 @@ Follows conventional commit format:
 - `fix(auth): resolve login timeout issue`
 - `docs(readme): update installation instructions`
 
-## Code Review Requirements
-The code review will check for:
-- **Critical Issues**: Security vulnerabilities, breaking changes, data loss risks
-- **Code Quality**: Maintainability, readability, proper error handling
-- **Style Compliance**: Formatting, naming conventions, project standards
-- **Test Coverage**: Adequate tests for new/modified functionality
+## Strict Mode Code Review Requirements
+The STRICT MODE review enforces:
+- **Linter Compliance**: 0 errors, 0 warnings from ALL linters
+- **Security**: Zero vulnerabilities tolerated
+- **Code Quality**: No complexity, duplication, or maintainability issues
+- **Style Compliance**: 100% adherence to style guides
+- **Test Coverage**: Minimum 80% coverage required
+- **Documentation**: All public APIs must be documented
+- **Performance**: No inefficient algorithms allowed
+- **Error Handling**: EVERY function must handle errors
 
-### Review Outcomes
-1. **No Issues**: Commit proceeds automatically
-2. **Warnings Only**: Asks for confirmation before committing
-3. **Critical Issues**: Blocks commit until issues are resolved
+### Strict Mode Outcomes
+1. **100% Compliance**: Commit proceeds automatically
+2. **ANY Violation**: Commit BLOCKED - must fix ALL issues
+3. **No Warnings**: Everything is either PASS or BLOCK
 
 ## Prerequisites
 - Git must be initialized in the repository

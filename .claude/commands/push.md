@@ -30,17 +30,19 @@ When you use `/push`, I will:
    - Ensure 100% test pass rate
    - Block push if any tests fail
 
-5. **Run code review** using code-reviewer agent:
+5. **Run STRICT MODE code review** using code-reviewer agent:
+   - Execute ALL applicable linters with zero-tolerance
    - Review all changes to be pushed
-   - Check for critical issues or regressions
-   - Ensure production readiness
-   - Generate quality report
+   - Block push for ANY quality violations
+   - Ensure 100% compliance with all standards
+   - Generate strict compliance report
 
-6. **Quality gate enforcement**:
+6. **Strict quality gate enforcement**:
    - All tests must pass (100% success rate)
-   - No critical code review issues
-   - If warnings exist, require confirmation
-   - Display quality summary before push
+   - Zero linter errors or warnings allowed
+   - Zero code quality violations allowed
+   - No partial compliance - 100% or blocked
+   - Display strict compliance report before push
 
 7. **Push to remote**:
    - Use `-u` flag if branch needs upstream tracking
@@ -79,12 +81,15 @@ git push origin $(git branch --show-current)
 git push --force-with-lease
 ```
 
-## Quality Gates
+## Strict Quality Gates
 Before push is allowed:
 1. **Test Suite**: 100% of tests must pass
-2. **Code Review**: No critical issues identified
-3. **Working Directory**: Must be clean (no uncommitted changes)
-4. **Branch Protection**: Respects repository branch rules
+2. **Linter Compliance**: 0 errors, 0 warnings from ALL linters
+3. **Code Review**: 100% compliance with strict standards
+4. **Working Directory**: Must be clean (no uncommitted changes)
+5. **Branch Protection**: Respects repository branch rules
+6. **Documentation**: All changes must be documented
+7. **Performance**: No performance regressions allowed
 
 ## Prerequisites
 - Git repository with remote configured
