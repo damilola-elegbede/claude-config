@@ -2,7 +2,7 @@
 name: data-platform-engineer
 description: Use for building data platforms, streaming architectures, and real-time analytics systems. MUST BE USED for data pipelines processing >1M records/day, event streaming (Kafka, Pulsar), data lake/warehouse implementations, and ETL/ELT at enterprise scale. Specializes in Apache Spark, Flink, Airflow, dbt, and modern data stack orchestration.
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
-model: sonnet
+model: opus
 color: blue
 category: development
 ---

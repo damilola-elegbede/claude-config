@@ -2,7 +2,7 @@
 name: frontend-architect
 description: Use for architecting complex frontend systems, micro-frontends, state management at scale, and performance optimization for high-traffic applications. MUST BE USED for applications with >100k DAU, complex state management (Redux, Zustand, Jotai), advanced React patterns, Web Workers, and Core Web Vitals optimization. Specializes in module federation, bundle optimization, and frontend infrastructure.
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
-model: sonnet
+model: opus
 color: blue
 category: development
 ---
