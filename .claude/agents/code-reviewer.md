@@ -1,7 +1,7 @@
 ---
 name: code-reviewer
 description: Use PROACTIVELY after code changes for quality review, security checks, and best practices validation. MUST BE USED before commits to ensure production-ready code and prevent vulnerabilities
-tools: Read, Grep, Glob, LS, Bash
+tools: Read, Write, Grep, Glob, LS, Bash
 model: opus
 color: green
 category: quality

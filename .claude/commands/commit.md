@@ -17,11 +17,11 @@ When you use `/commit`, I will:
    - `git log` to match repository's commit style
 
 2. **Run STRICT MODE code review** using code-reviewer agent:
-   - Execute ALL applicable linters (ESLint, Prettier, etc.)
-   - Analyze all staged and unstaged changes
-   - Enforce zero-tolerance quality standards
-   - Block commit for ANY violations (no warnings)
-   - Generate strict review report with required fixes
+   - Execute ALL applicable linters (ESLint, Prettier, etc.) on staged files only
+   - Analyze only staged changes (files in `git diff --cached --name-only`)
+   - Enforce zero-tolerance quality standards for staged files
+   - Block commit for ANY violations in staged files (no warnings)
+   - Generate strict review report with required fixes for staged changes
 
 3. **Strict review gate enforcement**:
    - ANY linter errors: Block commit (zero tolerance)
