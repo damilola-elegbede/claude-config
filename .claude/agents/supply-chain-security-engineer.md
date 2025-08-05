@@ -2,7 +2,7 @@
 name: supply-chain-security-engineer
 description: Use for software supply chain security, dependency vulnerability management, and compliance automation. MUST BE USED for SBOM generation, license compliance across large codebases, automated security scanning, and dependency risk assessment. Specializes in vulnerability remediation strategies, supply chain attack prevention, and enterprise compliance requirements.
 tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, LS, TodoWrite
-model: sonnet
+model: opus
 color: red
 category: security
 ---

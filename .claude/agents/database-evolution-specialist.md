@@ -2,7 +2,7 @@
 name: database-evolution-specialist
 description: Use for database evolution strategy, zero-downtime migrations, and data architecture transitions. MUST BE USED for multi-terabyte migrations, database modernization (monolith to microservices), schema evolution patterns, and data consistency across distributed systems. Specializes in blue-green deployments, data replication strategies, and legacy system modernization.
 tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, LS, TodoWrite
-model: sonnet
+model: opus
 color: orange
 category: infrastructure
 ---

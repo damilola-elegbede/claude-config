@@ -2,7 +2,7 @@
 name: monitoring-specialist
 description: Use for observability infrastructure, monitoring systems, and alerting strategies. MUST BE USED for metrics, logs, traces, and SRE practices
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite, WebFetch
-model: sonnet
+model: haiku
 color: orange
 category: infrastructure
 ---

@@ -2,7 +2,7 @@
 name: security-auditor
 description: Use for security audits, vulnerability assessment, and compliance reviews. MUST BE USED for OWASP Top 10 checks, threat modeling, and security remediation guidance
 tools: Read, Grep, Glob, LS, TodoWrite
-model: sonnet
+model: haiku
 color: red
 category: security
 ---

@@ -2,7 +2,7 @@
 name: accessibility-auditor
 description: Use for WCAG compliance audits, screen reader testing, keyboard navigation checks, and accessibility remediation. MUST BE USED when implementing accessible UI components or fixing accessibility violations
 tools: Read, Edit, MultiEdit, Write, Grep, Glob, LS, WebFetch, WebSearch, TodoWrite
-model: sonnet
+model: haiku
 color: green
 category: quality
 ---

@@ -2,7 +2,7 @@
 
 ## Description
 
-Comprehensive validation of agent ecosystem to ensure category integrity, template compliance, and system consistency.
+Comprehensive validation of agent ecosystem to ensure category integrity, template compliance, and system consistency. **This command generates a REPORT ONLY - it provides recommendations but does not make changes automatically (except for safe formatting fixes).**
 
 ## Usage
 ```
@@ -52,6 +52,14 @@ Ensure agent ecosystem maintains high standards of consistency, proper categoriz
 - **Model Assignment**: Verify appropriate model selection
 - **Performance Optimization**: Ensure efficient agent deployment
 
+### 7. Model Appropriateness Analysis
+- **Strategic Tasks → Opus**: Complex reasoning, cross-domain expertise, high-stakes decisions
+- **Technical Tasks → Sonnet**: Implementation, analysis, specialized domain work
+- **Rule-Based Tasks → Haiku**: Pattern matching, compliance checking, structured validation
+- **Cost Optimization**: Identify over-provisioned agents (using higher model than needed)
+- **Capability Gaps**: Identify under-provisioned agents (needing higher model)
+- **Usage Patterns**: Review actual complexity vs assigned model
+
 ## Execution Strategy
 
 ### Phase 1: Parallel Category Audits
@@ -60,21 +68,21 @@ Execute validation for each category simultaneously:
 ```yaml
 parallel_execution:
   - category: development
-    validations: [template, tools, description, tier]
+    validations: [template, tools, description, tier, modelAppropriateness]
   - category: infrastructure  
-    validations: [template, tools, description, tier]
+    validations: [template, tools, description, tier, modelAppropriateness]
   - category: quality
-    validations: [template, tools, description, tier]
+    validations: [template, tools, description, tier, modelAppropriateness]
   - category: security
-    validations: [template, tools, description, tier]
+    validations: [template, tools, description, tier, modelAppropriateness]
   - category: analysis
-    validations: [template, tools, description, tier]
+    validations: [template, tools, description, tier, modelAppropriateness]
   - category: architecture
-    validations: [template, tools, description, tier]
+    validations: [template, tools, description, tier, modelAppropriateness]
   - category: design
-    validations: [template, tools, description, tier]
+    validations: [template, tools, description, tier, modelAppropriateness]
   - category: operations
-    validations: [template, tools, description, tier]
+    validations: [template, tools, description, tier, modelAppropriateness]
 ```
 
 ### Phase 2: Cross-Category Analysis
@@ -88,6 +96,7 @@ parallel_execution:
 - Generate specific fix commands for manual issues
 - Update descriptions based on capabilities
 - Document all changes made
+- **Model changes are RECOMMENDATIONS ONLY** (not auto-applied)
 
 ## Report Structure
 
@@ -111,6 +120,22 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 3. **Missing Templates**: [Non-compliant agent formats]
 4. **Tier 2 Agents**: [Any agents not at tier 1]
 
+### Model Appropriateness Analysis
+
+| Agent | Current Model | Suggested Model | Reasoning | Cost Impact |
+|-------|---------------|-----------------|-----------|-------------|
+| agent-name | opus | sonnet | Technical task, no strategic reasoning needed | -40% |
+| agent-name | haiku | sonnet | Complex analysis requires more capability | +20% |
+
+**Model Distribution**:
+- Opus: X agents (Y% - Target: 15-20%)
+- Sonnet: X agents (Y% - Target: 60-70%)  
+- Haiku: X agents (Y% - Target: 15-20%)
+
+**Optimization Opportunities**:
+- Over-provisioned agents: X (potential savings: $Y/month)
+- Under-provisioned agents: X (recommended upgrades)
+
 ### Auto-Remediation Log
 ```bash
 # Fixes applied automatically:
@@ -123,7 +148,12 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 ```bash
 # Execute these commands to fix remaining issues:
 sed -i '' 's/category: wrong/category: correct/' agent.md
-# Additional manual fixes...
+
+# Model optimization suggestions (review before applying):
+# Downgrade over-provisioned agents:
+sed -i '' 's/model: opus/model: sonnet/' agent-name.md  # Save 40% cost
+# Upgrade under-provisioned agents:
+sed -i '' 's/model: haiku/model: sonnet/' agent-name.md  # Better capability
 ```
 
 ## Success Criteria
@@ -134,6 +164,7 @@ sed -i '' 's/category: wrong/category: correct/' agent.md
 ✅ **Anti-Pattern Free**: No orchestration or self-reference  
 ✅ **Description Quality**: Clear "MUST BE USED" and "use PROACTIVELY" triggers  
 ✅ **Tier 1 Only**: All agents at tier 1 level  
+✅ **Model Appropriateness**: Each agent uses optimal model for its complexity  
 ✅ **Documentation Sync**: All docs reflect current state  
 
 ## Implementation Notes

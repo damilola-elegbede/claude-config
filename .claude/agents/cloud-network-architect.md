@@ -2,7 +2,7 @@
 name: cloud-network-architect
 description: Use for cloud networking architecture, service mesh implementation, and distributed system networking. MUST BE USED for multi-cloud networking, Kubernetes networking (Istio, Linkerd), CDN optimization, API gateway architecture, and network security at scale. Specializes in zero-trust networking, edge computing, and network observability.
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
-model: sonnet
+model: opus
 color: orange
 category: infrastructure
 ---
