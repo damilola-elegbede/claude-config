@@ -176,7 +176,7 @@ When running linters, use these flags for MAXIMUM strictness:
 - **ESLint**: `--max-warnings 0`
 - **Prettier**: `--check`
 - **TypeScript**: `--strict --noImplicitAny`
-- **Python**: `ruff check --select ALL`
+- **Python**: `ruff check --select I,D,E,F,B,N,W,C90,S,T,A,ARG,RET,SIM,PL,RUF`
 - **Go**: `golangci-lint run --enable-all`
 
 Remember: In STRICT MODE, there are NO acceptable violations. Every issue blocks the commit.

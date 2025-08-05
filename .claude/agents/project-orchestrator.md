@@ -2,7 +2,7 @@
 name: project-orchestrator
 description: Orchestrates multi-agent execution strategies for complex projects. MUST BE USED for planning parallel agent execution, optimizing resource allocation, and coordinating 3+ agent workflows
 tools: Read, Write, Grep, Glob, LS, TodoWrite
-model: sonnet
+model: opus
 color: purple
 category: operations
 ---

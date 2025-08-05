@@ -1,7 +1,7 @@
 ---
 name: quality-gatekeeper
 description: Enforces comprehensive quality gates across CI/CD pipelines. MUST BE USED for defining quality metrics, implementing quality gates, managing technical debt, and enforcing SLAs
-tools: Read, Write, Bash, Grep, Glob, LS, TodoWrite
+tools: Read, Write, Bash, Grep, Glob, LS
 model: sonnet
 color: green
 category: quality

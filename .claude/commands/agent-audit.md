@@ -52,7 +52,7 @@ Ensure agent ecosystem maintains high standards of consistency, proper categoriz
 - **Model Assignment**: Verify appropriate model selection
 - **Performance Optimization**: Ensure efficient agent deployment
 
-### 7. Model Appropriateness Review
+### 7. Model Appropriateness Analysis
 - **Strategic Tasks → Opus**: Complex reasoning, cross-domain expertise, high-stakes decisions
 - **Technical Tasks → Sonnet**: Implementation, analysis, specialized domain work
 - **Rule-Based Tasks → Haiku**: Pattern matching, compliance checking, structured validation
@@ -68,21 +68,21 @@ Execute validation for each category simultaneously:
 ```yaml
 parallel_execution:
   - category: development
-    validations: [template, tools, description, tier, model]
+    validations: [template, tools, description, tier, modelAppropriateness]
   - category: infrastructure  
-    validations: [template, tools, description, tier, model]
+    validations: [template, tools, description, tier, modelAppropriateness]
   - category: quality
-    validations: [template, tools, description, tier, model]
+    validations: [template, tools, description, tier, modelAppropriateness]
   - category: security
-    validations: [template, tools, description, tier, model]
+    validations: [template, tools, description, tier, modelAppropriateness]
   - category: analysis
-    validations: [template, tools, description, tier, model]
+    validations: [template, tools, description, tier, modelAppropriateness]
   - category: architecture
-    validations: [template, tools, description, tier, model]
+    validations: [template, tools, description, tier, modelAppropriateness]
   - category: design
-    validations: [template, tools, description, tier, model]
+    validations: [template, tools, description, tier, modelAppropriateness]
   - category: operations
-    validations: [template, tools, description, tier, model]
+    validations: [template, tools, description, tier, modelAppropriateness]
 ```
 
 ### Phase 2: Cross-Category Analysis

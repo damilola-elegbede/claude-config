@@ -67,7 +67,7 @@ The STRICT MODE review enforces:
 - **Security**: Zero vulnerabilities tolerated
 - **Code Quality**: No complexity, duplication, or maintainability issues
 - **Style Compliance**: 100% adherence to style guides
-- **Test Coverage**: Minimum 80% coverage required
+- **Test Coverage**: Minimum 80% coverage required (coverage < 80% = ERROR, not warning)
 - **Documentation**: All public APIs must be documented
 - **Performance**: No inefficient algorithms allowed
 - **Error Handling**: EVERY function must handle errors
