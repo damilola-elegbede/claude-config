@@ -57,6 +57,7 @@ Based on context analysis:
 - `refactor/` - Code restructuring without behavior change
 
 ### Name Generation Examples
+
 | Context | Generated Branch Name |
 |---------|----------------------|
 | "Add user authentication" | `feature/user-authentication` |
