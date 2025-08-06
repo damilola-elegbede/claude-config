@@ -28,21 +28,30 @@ When you use `/push`, I will:
    - Discover and execute all test suites
    - Check test coverage requirements
    - Ensure 100% test pass rate
-   - Block push if any tests fail
+   - If tests fail: Deploy test-engineer to fix or add missing tests
+   - Re-run tests after fixes
 
-5. **Run STRICT MODE code review** using code-reviewer agent:
-   - Execute ALL applicable linters with zero-tolerance
-   - Review all changes to be pushed
-   - Block push for ANY quality violations
-   - Ensure 100% compliance with all standards
-   - Generate strict compliance report
+5. **Run ENHANCED code review** with automated remediation:
+   - **Phase 1**: code-reviewer identifies all issues
+   - **Phase 2**: Deploy specialist agents in parallel:
+     - backend-engineer for server-side fixes
+     - frontend-architect for client-side improvements
+     - security-auditor for vulnerability patches
+     - performance-specialist for optimizations
+     - test-engineer for coverage gaps
+   - **Phase 3**: Re-review after remediation
+   - **Phase 4**: Document rationales for unfixed issues
 
-6. **Strict quality gate enforcement**:
-   - All tests must pass (100% success rate)
-   - Zero linter errors or warnings allowed
-   - Zero code quality violations allowed
-   - No partial compliance - 100% or blocked
-   - Display strict compliance report before push
+6. **Smart quality gate enforcement**:
+   - After remediation attempts, evaluate remaining issues:
+     - **Critical/Security**: Must be fixed (no push until resolved)
+     - **With Rationale**: Log warning but allow push
+     - **Without Rationale**: Block push until justified
+   - Generate comprehensive report:
+     - Issues fixed by agents
+     - Remaining issues with rationales
+     - Test results and coverage
+   - User confirmation required if issues remain
 
 7. **Push to remote**:
    - Use `-u` flag if branch needs upstream tracking
@@ -81,15 +90,41 @@ git push origin $(git branch --show-current)
 git push --force-with-lease
 ```
 
-## Strict Quality Gates
-Before push is allowed:
-1. **Test Suite**: 100% of tests must pass
-2. **Linter Compliance**: 0 errors, 0 warnings from ALL linters
-3. **Code Review**: 100% compliance with strict standards
-4. **Working Directory**: Must be clean (no uncommitted changes)
-5. **Branch Protection**: Respects repository branch rules
-6. **Documentation**: All changes must be documented
-7. **Performance**: No performance regressions allowed
+## Enhanced Quality Gates with Remediation
+
+### Automated Fix Process
+Before push, agents automatically attempt to fix issues:
+1. **Test Failures**: test-engineer debugs and fixes failing tests
+2. **Linter Issues**: Auto-fix with appropriate formatters
+3. **Code Quality**: Refactor using backend/frontend engineers
+4. **Security**: security-auditor patches vulnerabilities
+5. **Documentation**: tech-writer generates missing docs
+6. **Performance**: performance-specialist optimizes bottlenecks
+
+### Quality Gate Levels
+1. **Critical (Blocking)**:
+   - Security vulnerabilities
+   - Breaking test failures
+   - Data corruption risks
+   - Must be fixed before push
+
+2. **Important (Fix or Justify)**:
+   - Code quality issues
+   - Missing documentation
+   - Performance degradation
+   - Fix automatically or provide rationale
+
+3. **Advisory (Document)**:
+   - Style preferences
+   - Optional optimizations
+   - Future improvements
+   - Document for technical debt tracking
+
+### Push Decision Matrix
+- **All Fixed**: Push proceeds automatically
+- **Critical Issues**: Push blocked until resolved
+- **Non-critical + Rationale**: Push with warnings and documentation
+- **Non-critical No Rationale**: Request justification or fix
 
 ## Prerequisites
 - Git repository with remote configured
@@ -101,6 +136,8 @@ Before push is allowed:
 ## Notes
 - Force pushes require explicit confirmation
 - Protected branches follow repository rules
-- Test failures will block push with detailed error report
-- Code review issues must be resolved before retry
-- Quality gates cannot be bypassed
+- Critical issues (security, breaking tests) always block push
+- Non-critical issues are auto-fixed when possible
+- Unfixed issues require documented rationale
+- User can override non-critical blocks with justification
+- All remediation attempts are logged for audit trail
