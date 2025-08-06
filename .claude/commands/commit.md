@@ -16,14 +16,13 @@ When you use `/commit`, I will:
    - `git diff` to see staged and unstaged changes
    - `git log` to match repository's commit style
 
-2. **Run STRICT MODE code review** using code-reviewer agent:
+2. **Run ENHANCED code review** using code-reviewer agent:
    - Execute ALL applicable linters (ESLint, Prettier, etc.) on staged files only
    - Analyze only staged changes (files in `git diff --cached --name-only`)
-   - Enforce zero-tolerance quality standards for staged files
-   - Block commit for ANY violations in staged files (no warnings)
-   - Generate strict review report with required fixes for staged changes
+   - Identify all quality issues in staged files
+   - Generate comprehensive review report with required fixes for staged changes
 
-3. **Automated review remediation** (NEW):
+3. **Automated review remediation**:
    - Deploy specialized agents to address review comments:
      - backend-engineer for API and server-side issues
      - frontend-architect for UI/UX and client-side problems
@@ -43,12 +42,12 @@ When you use `/commit`, I will:
    - Store rationale in commit message or `.review-rationale.md`
    - Include context for future maintainers
 
-5. **Strict review gate enforcement**:
+5. **Smart review gate enforcement**:
    - After remediation attempts, re-run code review
-   - If issues remain with documented rationale: Proceed with warning
-   - If issues remain without rationale: Block commit
-   - Display final compliance report with fixes applied
-   - Show any remaining issues with their rationales
+   - **Critical issues** (security, breaking changes): Must be fixed (commit blocked until resolved)
+   - **Non-critical issues** with documented rationale: Proceed with warning
+   - **Non-critical issues** without rationale: Block commit until justified
+   - Display final compliance report with fixes applied and rationales
 
 6. **Analyze changes** to:
    - Summarize the nature of changes
@@ -104,7 +103,7 @@ The enhanced review enforces:
 - **Security**: Must fix all vulnerabilities (no exceptions)
 - **Code Quality**: Fix complexity issues or justify design
 - **Style Compliance**: Auto-format with tools
-- **Test Coverage**: Add tests or document why not needed
+- **Test Coverage**: Maintain minimum 80% coverage on critical paths (coverage < 80% triggers remediation or requires documented justification)
 - **Documentation**: Generate missing docs automatically
 - **Performance**: Optimize or document trade-offs
 - **Error Handling**: Add error handling or explain edge cases
@@ -123,9 +122,9 @@ The enhanced review enforces:
 ## Notes
 - If pre-commit hooks modify files, the commit will be retried once
 - Empty commits are not created
-- Code review with automated remediation is mandatory
-- Critical issues (security) must be fixed before commit
-- Non-critical issues are auto-fixed or require rationale
-- User explicitly requested features override style warnings
-- All remediation attempts are tracked in commit message
-- Review results displayed with fixes applied and rationales
+- Enhanced code review with automated remediation is mandatory
+- **Critical issues** (security, breaking changes) must be fixed before commit
+- **Non-critical issues** are auto-fixed when possible or require documented rationale
+- User explicitly requested features can override style warnings with justification
+- All remediation attempts and rationales are tracked in commit message
+- Final review results displayed with applied fixes and accepted rationales
