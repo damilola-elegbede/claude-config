@@ -29,6 +29,7 @@ When you use `/commit`, I will:
      - test-engineer for missing tests or coverage gaps
      - security-auditor for vulnerability fixes
      - performance-specialist for optimization issues
+     - tech-writer for missing documentation
    - Agents work in parallel when possible
    - Each agent focuses on their domain expertise
    - Automatic re-review after fixes applied
