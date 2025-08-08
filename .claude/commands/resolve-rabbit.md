@@ -32,6 +32,7 @@ When you use `/resolve-rabbit`, I will:
 2. **Fetch CodeRabbit comments**:
    - Query PR comments via GitHub API
    - Filter for CodeRabbit bot comments
+   - Search all comment levels (top-level and nested review comments)
    - Extract ONLY "Prompts for AI Agents" sections
    - Parse actionable suggestions from those sections exclusively
 
@@ -194,12 +195,14 @@ Typically parses comments containing:
 ## Comment Parsing
 
 Recognizes CodeRabbit patterns:
-- "**Prompts for AI Agents:**"
+- "**Prompts for AI Agents:**" (may be nested within review comments)
 - "Consider adding error handling..."
 - "Missing null check for..."
 - "Potential security issue..."
 - "Performance could be improved by..."
 - Inline code suggestions with diffs
+
+**Note:** CodeRabbit may embed "Prompts for AI Agents" sections within nested review comments rather than top-level PR comments. The command searches all comment levels to find these sections.
 
 ## Commit Message Format
 
@@ -242,8 +245,10 @@ Handles common scenarios:
 - Unparseable suggestions
 
 ## Notes
-- Only resolves comments from CodeRabbit bot user
+- Verifies CodeRabbit bot user or app ID before processing comments to prevent spoofed comment submissions
+- Only resolves comments from authenticated CodeRabbit bot user
 - **EXCLUSIVELY processes "Prompts for AI Agents" sections** - ignores all other comment content
+- Searches nested review comments (CodeRabbit often embeds "Prompts for AI Agents" within review comment threads)
 - Provides comprehensive summary before making any changes
 - Creates atomic commits for traceability
 - Preserves code style and formatting
