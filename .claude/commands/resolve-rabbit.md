@@ -32,25 +32,75 @@ When you use `/resolve-rabbit`, I will:
 2. **Fetch CodeRabbit comments**:
    - Query PR comments via GitHub API
    - Filter for CodeRabbit bot comments
-   - Extract "Prompts for AI Agents" sections
-   - Parse actionable suggestions and code improvements
+   - Extract ONLY "Prompts for AI Agents" sections
+   - Parse actionable suggestions from those sections exclusively
 
-3. **Analyze suggestions**:
+3. **Present pre-resolution summary**:
+   - Display total count of "Prompts for AI Agents" sections found
+   - Show number of affected files
+   - Categorize findings by type:
+     • Security issues
+     • Error handling gaps
+     • Type safety problems
+     • Performance improvements
+     • Code quality issues
+     • Documentation needs
+   - List affected files with issue counts per file
+   - Show priority distribution of issues
+
+4. **Analyze suggestions** (after summary):
    - Group related suggestions by file
    - Identify priority fixes (security, bugs, performance)
    - Determine execution order for dependent changes
 
-4. **Execute resolutions**:
+5. **Execute resolutions**:
    - Apply suggested code changes
    - Run relevant tests after each change
    - Verify changes don't break existing functionality
    - Document what was changed and why
 
-5. **Create resolution summary**:
+6. **Create resolution summary**:
    - List all addressed comments
    - Show files modified
    - Highlight any suggestions that couldn't be auto-resolved
    - Prepare commit message summarizing fixes
+
+## Pre-Resolution Summary Format
+
+When the command runs, you'll first see:
+
+```
+═══════════════════════════════════════════════════════════
+🔍 CodeRabbit PR Analysis Summary
+═══════════════════════════════════════════════════════════
+
+📊 Total "Prompts for AI Agents" sections found: 12
+📁 Files affected: 5
+
+📝 Issue Categories:
+• Security issues: 2
+• Error handling gaps: 4  
+• Type safety problems: 3
+• Performance improvements: 2
+• Code quality issues: 1
+• Documentation needs: 0
+
+📂 Affected Files:
+• src/api/user.ts (3 issues)
+• src/services/auth.js (2 issues)
+• lib/database.ts (4 issues)
+• components/Dashboard.tsx (2 issues)
+• utils/helpers.js (1 issue)
+
+🎯 Priority Distribution:
+• High (Security/Bugs): 6 issues
+• Medium (Type safety/Performance): 5 issues
+• Low (Code quality): 1 issue
+
+═══════════════════════════════════════════════════════════
+Proceeding with automated resolution...
+═══════════════════════════════════════════════════════════
+```
 
 ## CodeRabbit Comment Structure
 
@@ -193,7 +243,8 @@ Handles common scenarios:
 
 ## Notes
 - Only resolves comments from CodeRabbit bot user
-- Focuses on "Prompts for AI Agents" section
+- **EXCLUSIVELY processes "Prompts for AI Agents" sections** - ignores all other comment content
+- Provides comprehensive summary before making any changes
 - Creates atomic commits for traceability
 - Preserves code style and formatting
 - Can be re-run safely (idempotent)
