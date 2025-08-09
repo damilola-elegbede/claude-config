@@ -1,94 +1,79 @@
 # /ship Command
 
 ## Description
-Streamlined workflow command that executes the complete code delivery pipeline: commits changes, pushes to remote, and creates a pull request - all in one command. Perfect for when your code is ready to ship.
+
+Streamlined workflow command that executes the complete code delivery pipeline: 
+commits changes, pushes to remote, and creates a pull request - all in one command. 
+Perfect for when your code is ready to ship.
+
+## Prerequisites
+
+Before using `/ship`, ensure you have:
+- Git installed and configured
+- GitHub CLI (`gh`) installed
+- Current working directory is a Git repository
+- Logged in to GitHub via `gh auth`
+- Appropriate branch permissions
+- Resolved any pending merge conflicts
 
 ## Usage
-```
+
+```bash
 /ship [commit-message]
 ```
 
 ## Arguments
-- `commit-message` (optional): Custom commit message. If not provided, will auto-generate based on changes.
+
+- `commit-message` (optional): Custom commit message. If not provided, 
+  will auto-generate based on changes.
+
+## Implementation Note
+
+This command implements a hard-coded logic for delivering code, 
+reading specific command documentation files to ensure comprehensive 
+execution of commit, push, and PR creation steps.
 
 ## Behavior
-When you use `/ship`, I will execute three user commands in sequence:
 
-1. **Execute `/commit` command**:
-   - Runs comprehensive code review with automated remediation
-   - Performs file cleanup (removes temp files, build artifacts)
-   - Stages appropriate changes
-   - Creates commit with proper message format
-   - Includes all quality gates and safety checks from /commit
-   - Auto-generates message if not provided
+The `/ship` command executes a comprehensive code delivery workflow:
 
-2. **Execute `/push` command**:
-   - Runs comprehensive tests using test-engineer agent
-   - Performs enhanced code review with automated remediation
-   - Enforces quality gates (blocks critical issues)
-   - Pushes current branch to remote with all safety checks
-   - Sets upstream tracking if needed
-   - Includes all validation logic from /push
+1. **Commit Changes**:
+   - Perform enhanced code review
+   - Clean up temporary files
+   - Stage appropriate changes
+   - Create commit with proper message
+   - Enforce quality gates
 
-3. **Execute `/pr` command**:
-   - **Checks for existing PR** for current branch first
-   - If PR exists: Shows existing PR URL and skips creation
-   - If no PR exists: Creates new PR to main/master branch
-   - Auto-generates PR title and description
-   - Includes commit history in PR body
-   - Returns PR URL for review
+2. **Push to Remote**:
+   - Run comprehensive tests
+   - Perform additional code review
+   - Push current branch to remote
+   - Set upstream tracking if needed
 
-## Execution Flow
-
-### Step 1: Execute `/commit` Command
-- **Invokes actual `/commit` user command** (not raw git commands)
-- Inherits ALL `/commit` functionality:
-  - Enhanced code review with automated remediation
-  - File cleanup (temp files, build artifacts, system files)
-  - Quality gate enforcement (blocks critical issues)
-  - Specialist agent deployment for fixes
-  - Proper commit message formatting
-  - Co-author attribution
-- If `/commit` fails: `/ship` stops execution
-- Pass through commit message parameter if provided
-
-### Step 2: Execute `/push` Command  
-- **Invokes actual `/push` user command** (not raw git commands)
-- Inherits ALL `/push` functionality:
-  - Comprehensive test execution via test-engineer agent
-  - Enhanced code review with automated remediation
-  - Quality gate enforcement (blocks for critical issues)
-  - Branch safety checks
-  - Upstream tracking setup
-  - Force push protection
-- If `/push` fails: `/ship` stops execution
-
-### Step 3: Execute `/pr` Command
-- **Invokes actual `/pr` user command** (not raw git commands)  
-- Inherits ALL `/pr` functionality:
-  - Existing PR detection and duplicate prevention
-  - PR template usage if configured
-  - Auto-generated titles and descriptions
-  - Commit history inclusion
-  - Label and reviewer assignment
-- If PR creation fails: Reports error but doesn't fail `/ship`
-- Returns final PR URL or existing PR info
+3. **Create Pull Request**:
+   - Check for existing PRs
+   - Create new PR to main/master branch
+   - Auto-generate PR title and description
+   - Include commit history
 
 ## Examples
 
 ### Basic usage (auto-generated message)
+
 ```bash
 /ship
 # Analyzes changes, creates commit, pushes, and opens PR
 ```
 
 ### With custom commit message
+
 ```bash
 /ship "feat: add user authentication system"
 # Uses provided message for commit, then pushes and creates PR
 ```
 
-### After feature completion
+### Typical Development Workflow
+
 ```bash
 # Complete your feature development
 /test                    # Run tests
@@ -96,148 +81,94 @@ When you use `/ship`, I will execute three user commands in sequence:
 /ship                    # Ship it!
 ```
 
-### Multiple runs on same branch
-```bash
-# First run - creates PR
-/ship "feat: initial implementation"
-# ✅ PR created: https://github.com/org/repo/pull/123
-
-# Make more changes, then run again
-/ship "feat: add error handling" 
-# ✅ Commits and pushes changes
-# ℹ️  PR already exists - no new PR created
-```
-
 ## Success Criteria
 
 The command succeeds when:
-- ✅ All changes are committed
-- ✅ Branch is pushed to remote
-- ✅ PR is created successfully
-- ✅ PR URL is returned
+- All changes are committed
+- Branch is pushed to remote
+- PR is created successfully
+- PR URL is returned
 
-## Failure Handling
+## Troubleshooting
 
-If any step fails:
-- Stops execution at failed step
-- Reports specific error
-- Provides recovery instructions
-- Does not proceed to next step
+### Common Issues
 
-Common failure scenarios:
-- **Commit fails**: Pre-commit hooks or validation errors
-- **Push fails**: Network issues or permissions
-- **PR fails**: PR already exists or API issues
+1. **Commit Failures**
+   - Check pre-commit hooks
+   - Verify code review comments
+   - Ensure no sensitive information is staged
 
-## Integration with Other Commands
+2. **Push Failures**
+   - Verify network connection
+   - Check GitHub permissions
+   - Confirm branch is not protected
 
-### Prerequisites
-These commands are often used before `/ship`:
-- `/test` - Ensure tests pass
-- `/review` - Get code review
-- `/resolve-rabbit` - Fix PR comments
+3. **PR Creation Issues**
+   - Ensure GitHub CLI is authenticated
+   - Check branch naming conventions
+   - Verify no existing open PRs
 
-### Command Execution Sequence
-Instead of running raw git commands, `/ship` executes:
-```bash
-/commit [message]  # Full /commit command with all checks
-/push              # Full /push command with all validations  
-/pr                # Full /pr command with duplicate prevention
-```
+### Recovery Steps
 
-This ensures ALL command-specific logic is preserved:
-- `/commit`: Code review, file cleanup, quality gates
-- `/push`: Test execution, code review, safety checks  
-- `/pr`: Duplicate prevention, template usage, auto-assignment
+- If `/ship` fails, run individual commands:
+  1. `/commit` to stage changes
+  2. `/push` to update remote
+  3. `/pr` to create pull request
 
 ## Safety Features
 
-**Inherits ALL safety features from constituent commands:**
+### Commit Safety
+- Automatic file cleanup
+- Comprehensive code review
+- Quality gate enforcement
+- Change verification
 
-### From `/commit` command:
-- **File cleanup**: Automatic removal of temp files, build artifacts
-- **Code review**: Comprehensive review with automated remediation
-- **Quality gates**: Blocks commits with critical issues
-- **Change verification**: Shows diff before committing
+### Push Safety
+- Test suite execution
+- Branch protection checks
+- Force push prevention
+- Upstream verification
 
-### From `/push` command:
-- **Test execution**: Comprehensive test suite via test-engineer agent
-- **Code review**: Enhanced review with quality gate enforcement
-- **Branch protection**: Won't push from main/master
-- **Force push protection**: Requires explicit confirmation
-- **Upstream verification**: Ensures remote branch exists
-
-### From `/pr` command:
-- **PR duplicate prevention**: Checks for existing PR before creation
-- **Template usage**: Uses PR templates if configured
-- **Review assignment**: Auto-assigns reviewers if configured
-
-### Additional `/ship` safety:
-- **Command failure handling**: Stops execution if any step fails
-- **Clean state guarantee**: Each step completes fully before next step
-- **Full traceability**: All command outputs preserved and displayed
-
-## Configuration
-
-Respects repository settings for:
-- Default branch name (main/master)
-- PR templates if they exist
-- Branch protection rules
-- Required PR reviewers
-- CI/CD integration
+### PR Safety
+- Duplicate PR prevention
+- Template usage
+- Automatic reviewer assignment
 
 ## Smart Features
 
-### Auto-generated PR Description
-Includes:
-- Summary of changes
-- List of modified files
-- Test plan checklist
-- Related issues/tickets (if mentioned)
-
-### Commit Message Intelligence
-When auto-generating:
+### Commit Message Generation
 - Follows conventional commits format
 - Groups related changes
-- Includes scope when identifiable
-- References issues if found
+- Includes identifiable scope
+- References related issues
 
-### PR Title Generation
-Creates descriptive titles:
-- Uses commit message for single commits
-- Summarizes for multiple commits
-- Includes ticket numbers if found
-- Follows team conventions
+### PR Description Intelligence
+- Summarizes changes
+- Lists modified files
+- Generates test plan
+- Links related tickets
 
-## Typical Workflow
+## Configuration
 
-```bash
-# Development complete
-/test                    # Ensure tests pass
-/review                  # Optional: pre-review
-/ship "feat: new feature" # Ship it!
-
-# First time returns:
-✅ Committed: feat: new feature
-✅ Pushed to origin/feature-branch  
-✅ PR created: https://github.com/org/repo/pull/123
-
-# Second time on same branch returns:
-✅ Committed: additional changes
-✅ Pushed to origin/feature-branch  
-ℹ️  PR already exists: https://github.com/org/repo/pull/123 (Open)
-```
+Respects repository settings:
+- Default branch name
+- PR templates
+- Branch protection rules
+- Required reviewers
+- CI/CD integrations
 
 ## Notes
 
-- **Executes actual user commands**: Calls `/commit`, `/push`, `/pr` (not raw git)
-- **Inherits full functionality**: All quality gates, safety checks, and automation
-- **Perfect for rapid deployment**: Reduces workflow to single command
-- **Maintains best practices**: Leverages all built-in command logic
-- **Complete traceability**: Full output from all three commands preserved
-- **Ideal for feature branches**: Supports GitHub Flow and Git Flow
-- **Safe to run multiple times**: Won't create duplicate PRs
-- **Failure handling**: Stops at first command failure for safety
-- **Can be interrupted**: Ctrl+C stops execution cleanly
-- **Real-time feedback**: All command outputs displayed as they execute
-- **Parameter passing**: Commit message passed through to `/commit`
+- Reads and implements command documentation
+- Preserves all quality gates and safety checks
+- Supports GitHub Flow and Git Flow
+- Safe to run multiple times
+- Provides real-time feedback
+- Stops at first critical failure
+
+## Integration with Other Commands
+
+Recommended pre-`/ship` commands:
+- `/test` - Ensure tests pass
+- `/review` - Get code review
+- `/resolve-rabbit` - Fix PR comments
