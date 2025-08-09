@@ -1,7 +1,7 @@
 # /resolve-rabbit Command
 
 ## Description
-Automatically fetches and resolves all CodeRabbit AI review comments from the current PR, specifically focusing on the "Prompts for AI Agents" section that contains actionable suggestions for code improvements.
+Automatically fetches and resolves ALL CodeRabbit AI review comments from the PR associated with the current branch, specifically focusing on EVERY "Prompts for AI Agents" section that contains actionable suggestions for code improvements. The command searches PR review comments (inline code comments) NOT issue comments, and processes ALL review comments found - there are ALWAYS multiple review comments present, not just one.
 
 ## Usage
 ```
@@ -25,16 +25,25 @@ When you use `/resolve-rabbit`, I will:
 **Workflow Steps**:
 
 1. **Identify the PR**:
-   - Use current branch's PR if no argument provided
-   - Or use the specified PR number
+   - Always look for the PR associated with the current branch first
+   - Or use the specified PR number if provided
    - Verify PR exists and is accessible
 
-2. **Fetch CodeRabbit comments**:
-   - Query PR comments via GitHub API
-   - Filter for CodeRabbit bot comments
-   - Search all comment levels (top-level and nested review comments)
-   - Extract ONLY "Prompts for AI Agents" sections
-   - Parse actionable suggestions from those sections exclusively
+2. **Fetch ALL CodeRabbit REVIEW comments** (ALWAYS multiple comments present):
+   - Query PR **review comments** via GitHub API (NOT issue comments)
+   - Use `gh api repos/{owner}/{repo}/pulls/{pr}/reviews` and `gh api repos/{owner}/{repo}/pulls/{pr}/comments`
+   - Filter for CodeRabbit bot review comments (@coderabbitai)
+   - **IMPORTANT: Focus on REVIEW comments, not issue/conversation comments**
+   - Do NOT stop after finding the first comment
+   - Collect comments specifically from:
+     • All PR review comments (inline code comments)
+     • All review comment threads on specific lines
+     • All file-level review comments
+     • All nested review discussion threads
+     • NOT general issue comments or PR conversation
+   - Extract EVERY "Prompts for AI Agents" section from ALL review comments
+   - Process ALL found prompts, not just the first one
+   - Use the language from ALL sections to guide code changes
 
 3. **Present pre-resolution summary**:
    - Display total count of "Prompts for AI Agents" sections found
@@ -49,27 +58,31 @@ When you use `/resolve-rabbit`, I will:
    - List affected files with issue counts per file
    - Show priority distribution of issues
 
-4. **Analyze suggestions** (after summary):
-   - Group related suggestions by file
-   - Identify priority fixes (security, bugs, performance)
+4. **Post initial resolution comment** (immediately after summary):
+   - Post "@coderabbitai resolve" comment on the PR
+   - This notifies CodeRabbit that issues are being addressed
+   - Posted BEFORE starting actual work on the fixes
+
+5. **Analyze ALL suggestions**:
+   - Process EVERY "Prompts for AI Agents" section found
+   - Group ALL suggestions by file (from all comments)
+   - Identify priority fixes across ALL comments (security, bugs, performance)
    - Determine execution order for dependent changes
+   - Use exact language from ALL "Prompts for AI Agents" sections
 
-5. **Execute resolutions**:
-   - Apply suggested code changes
-   - Run relevant tests after each change
+6. **Execute resolutions for ALL comments**:
+   - Apply code changes from ALL "Prompts for AI Agents" sections
+   - Follow the specific instructions in EVERY prompt section found
+   - Address ALL comments, not just the first one
+   - Run relevant tests after each batch of changes
    - Verify changes don't break existing functionality
-   - Document what was changed and why
+   - Document what was changed from each comment
 
-6. **Create resolution summary**:
+7. **Create final resolution summary**:
    - List all addressed comments
    - Show files modified
    - Highlight any suggestions that couldn't be auto-resolved
    - Prepare commit message summarizing fixes
-
-7. **Post resolution comment**:
-   - After successfully resolving all issues
-   - Post "@coderabbitai resolve" comment on the PR
-   - Notifies CodeRabbit that issues have been addressed
 
 ## Pre-Resolution Summary Format
 
@@ -108,14 +121,14 @@ Proceeding with automated resolution...
 ═══════════════════════════════════════════════════════════
 ```
 
-## CodeRabbit Comment Structure
+## CodeRabbit Review Comment Structure
 
-Typically parses comments containing:
-- **Summary**: Overview of issues found
-- **Prompts for AI Agents**: Specific actionable fixes
-- **Code suggestions**: Inline diff proposals
-- **Security concerns**: Vulnerability fixes
-- **Performance improvements**: Optimization suggestions
+Typically parses review comments containing:
+- **Summary**: Overview of issues found in specific code sections
+- **Prompts for AI Agents**: Specific actionable fixes (found in review comments)
+- **Code suggestions**: Inline diff proposals on specific lines
+- **Security concerns**: Vulnerability fixes in reviewed code
+- **Performance improvements**: Optimization suggestions for specific functions
 
 ## Resolution Categories
 
@@ -163,10 +176,11 @@ Typically parses comments containing:
 6. Documentation
 
 ### Batch Processing
-- Groups related changes by file
-- Applies all changes to a file at once
-- Runs file-specific tests after changes
-- Commits in logical chunks if many changes
+- Collects ALL comments before starting any work
+- Groups ALL changes from ALL comments by file
+- Applies changes from ALL comments to each file
+- Runs file-specific tests after processing ALL comments for that file
+- Commits ALL changes from ALL comments in logical chunks
 
 ### Safety Checks
 - Creates backup branch before changes
@@ -191,7 +205,7 @@ Typically parses comments containing:
 ### Typical usage
 ```bash
 # After CodeRabbit reviews your PR
-/resolve-rabbit          # Auto-fix CodeRabbit suggestions and post resolution comment
+/resolve-rabbit          # Finds PR comments, posts @coderabbitai resolve, then auto-fixes suggestions
 /test                    # Verify fixes work
 /commit                  # Commit the fixes
 /push                    # Update PR
@@ -207,7 +221,7 @@ Recognizes CodeRabbit patterns:
 - "Performance could be improved by..."
 - Inline code suggestions with diffs
 
-**Note:** CodeRabbit may embed "Prompts for AI Agents" sections within nested review comments rather than top-level PR comments. The command searches all comment levels to find these sections.
+**Note:** CodeRabbit embeds "Prompts for AI Agents" sections within PR review comments (inline code review comments) rather than issue/conversation comments. The command specifically searches review comments using the GitHub review API endpoints.
 
 ## Commit Message Format
 
@@ -243,21 +257,26 @@ Planned features (not yet implemented):
 ## Error Handling
 
 Handles common scenarios:
-- No CodeRabbit comments found
+- Early termination after first comment (prevented - must process ALL)
 - PR not accessible
 - Merge conflicts during resolution
 - Test failures after changes
 - Unparseable suggestions
 
 ## Notes
+- **CRITICAL: Must process ALL review comments, not just the first one found**
+- **Searches PR REVIEW comments (inline code comments) NOT issue/conversation comments**
+- Uses GitHub API endpoints: `/pulls/{pr}/reviews` and `/pulls/{pr}/comments` for review comments
+- ALWAYS multiple CodeRabbit review comments present - continue searching until all are found
 - Verifies CodeRabbit bot user or app ID before processing comments to prevent spoofed comment submissions
-- Only resolves comments from authenticated CodeRabbit bot user
-- **EXCLUSIVELY processes "Prompts for AI Agents" sections** - ignores all other comment content
-- Searches nested review comments (CodeRabbit often embeds "Prompts for AI Agents" within review comment threads)
-- Provides comprehensive summary before making any changes
+- Only resolves comments from authenticated CodeRabbit bot user (@coderabbitai)
+- **EXCLUSIVELY processes "Prompts for AI Agents" sections** - uses exact language from ALL sections
+- Exhaustively searches ALL review comment threads until every comment is found
+- Provides comprehensive summary of ALL comments THEN posts "@coderabbitai resolve" BEFORE making changes
+- Uses the specific language from ALL "Prompts for AI Agents" sections to guide code modifications
+- Processes EVERY review comment found - early termination after first comment is a failure
 - Creates atomic commits for traceability
 - Preserves code style and formatting
 - Can be re-run safely (idempotent)
-- **Automatically posts "@coderabbitai resolve" comment on PR after successful resolution**
 - Integrates with `/test` and `/commit` commands
 - Supports GitHub PRs (via GitHub CLI)
