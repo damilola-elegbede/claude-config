@@ -39,7 +39,7 @@ test_plan_content() {
     assert_file_contains "$plan_file" "comprehensive implementation plan" \
         "Should mention comprehensive planning"
     
-    assert_file_contains "$plan_file" "wait for your explicit approval" \
+    assert_file_contains "$plan_file" "Wait for explicit approval" \
         "Should mention waiting for approval"
     
     assert_file_contains "$plan_file" "Executive Summary" \
