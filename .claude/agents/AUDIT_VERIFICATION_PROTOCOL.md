@@ -1,5 +1,13 @@
 # Audit Verification Protocol for General-Purpose Agent
 
+## Agent Standards Compliance
+
+When auditing agents, verify compliance with Claude Code documentation standards:
+- Agents use "MUST BE USED for" pattern for critical use cases
+- Agents include "Use PROACTIVELY" for automatic deployment triggers
+- Agents leverage Sonnet 4.1 capabilities with enhanced AI reasoning
+- Agent descriptions follow required language patterns and specialization statements
+
 ## When Running Agent Audits
 
 ### 1. Pre-Audit Verification
@@ -21,6 +29,9 @@ When requesting audits:
 - Explicitly list which agents to audit
 - Include the category being audited
 - Request file existence verification first
+- Verify compliance with Claude Code documentation standards
+- Check for proper "MUST BE USED" and "Use PROACTIVELY" language patterns
+- Validate Sonnet 4.1 capability descriptions
 
 Example:
 ```
@@ -44,6 +55,11 @@ ls -la .claude/agents/[agent-name].md
 
 # If audit claims "agent has issue Y", spot-check:
 grep -n "pattern" .claude/agents/[agent-name].md
+
+# Verify documentation standards compliance:
+grep -n "MUST BE USED for" .claude/agents/[agent-name].md
+grep -n "Use PROACTIVELY" .claude/agents/[agent-name].md
+grep -n "Sonnet 4.1" .claude/agents/[agent-name].md
 ```
 
 #### Cross-Check Metrics
@@ -122,5 +138,17 @@ grep -A5 -B5 "pattern" .claude/agents/specific-agent.md
 for f in .claude/agents/*.md; do
   echo "=== $(basename $f) ==="
   grep "^description:" "$f" || echo "No description found"
+done
+
+# Verify Claude Code documentation standards
+for f in .claude/agents/*.md; do
+  echo "=== $(basename $f) ==="
+  echo "MUST BE USED pattern:"
+  grep -q "MUST BE USED for" "$f" && echo "✅ Found" || echo "❌ Missing"
+  echo "Use PROACTIVELY pattern:"
+  grep -q "Use PROACTIVELY" "$f" && echo "✅ Found" || echo "❌ Missing"
+  echo "Sonnet 4.1 capabilities:"
+  grep -q "Sonnet 4.1" "$f" && echo "✅ Found" || echo "❌ Missing"
+  echo "---"
 done
 ```
