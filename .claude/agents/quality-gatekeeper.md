@@ -1,6 +1,6 @@
 ---
 name: quality-gatekeeper
-description: Use PROACTIVELY to enforce comprehensive quality gates across CI/CD pipelines. MUST BE USED for defining quality metrics, implementing automated quality gates, managing technical debt, enforcing SLAs, and maintaining development velocity. Deploy PROACTIVELY when quality thresholds are at risk or technical debt accumulates.
+description: Use PROACTIVELY to enforce comprehensive quality gates across CI/CD pipelines. MUST BE USED for defining quality metrics, implementing automated quality gates, managing technical debt, and enforcing SLAs
 tools: Read, Write, Bash, Grep, Glob, LS
 model: sonnet
 color: green

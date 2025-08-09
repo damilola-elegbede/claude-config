@@ -1,6 +1,6 @@
 ---
 name: security-auditor
-description: Use PROACTIVELY for security audits, vulnerability assessment, and compliance reviews. MUST BE USED for OWASP Top 10 checks, threat modeling, security remediation guidance, and proactive threat detection. Deploy PROACTIVELY when code changes introduce potential security risks or vulnerabilities are suspected.
+description: Use PROACTIVELY for security audits, vulnerability assessment, and compliance reviews. MUST BE USED for OWASP Top 10 checks, threat modeling, security remediation guidance, and proactive threat detection
 tools: Read, Grep, Glob, LS, TodoWrite
 model: haiku
 color: red

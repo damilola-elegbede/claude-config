@@ -1,6 +1,6 @@
 ---
 name: devops
-description: MUST BE USED for complex CI/CD pipeline orchestration, enterprise Kubernetes clusters, Infrastructure as Code at scale, and advanced SRE practices. Use PROACTIVELY when detecting deployment bottlenecks, reliability issues, or observability gaps. Essential for multi-cloud Terraform deployments, SLO/SLI optimization, incident command coordination, and production system reliability engineering.
+description: MUST BE USED for complex CI/CD pipeline orchestration, enterprise Kubernetes clusters, and Infrastructure as Code at scale. Use PROACTIVELY for deployment bottlenecks, reliability issues, and multi-cloud Terraform deployments
 tools: Read, Write, Edit, Grep, Glob, LS, WebFetch
 model: sonnet
 color: orange

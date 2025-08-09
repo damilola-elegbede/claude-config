@@ -1,6 +1,6 @@
 ---
 name: frontend-architect
-description: MUST BE USED for architecting complex frontend systems with >100k DAU, micro-frontend orchestration, and enterprise-scale state management. Use PROACTIVELY when detecting performance bottlenecks, Core Web Vitals degradation, or complex state synchronization requirements. Essential for module federation architectures, advanced React patterns, Web Workers implementation, and sophisticated bundle optimization strategies.
+description: MUST BE USED for architecting complex frontend systems >100k DAU and micro-frontend orchestration. Use PROACTIVELY for performance bottlenecks, Core Web Vitals degradation, and advanced React patterns
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 model: opus
 color: blue

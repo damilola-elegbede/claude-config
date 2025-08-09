@@ -1,6 +1,6 @@
 ---
 name: database-evolution-specialist
-description: MUST BE USED for complex database evolution strategies, zero-downtime migrations exceeding 1TB, and enterprise data architecture transformations. Use PROACTIVELY when detecting monolith-to-microservices transitions, distributed system consistency requirements, or legacy database modernization needs. Essential for blue-green deployments, real-time data replication, and mission-critical schema evolution with zero business disruption.
+description: MUST BE USED for complex database evolution strategies, zero-downtime migrations >1TB, and enterprise data transformations. Use PROACTIVELY for monolith-to-microservices transitions and legacy database modernization
 tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, LS, TodoWrite
 model: opus
 color: orange

@@ -1,6 +1,6 @@
 ---
 name: cloud-network-architect
-description: MUST BE USED for advanced cloud networking architecture, service mesh orchestration, and distributed system networking optimization. Use PROACTIVELY for multi-cloud network topology design, Kubernetes networking (Istio, Linkerd), CDN strategy implementation, API gateway architecture, and enterprise network security. Specializes in zero-trust networking, edge computing, network observability, and high-performance networking at scale
+description: MUST BE USED for advanced cloud networking, service mesh orchestration, and distributed networking optimization. Use PROACTIVELY for multi-cloud topology design, Kubernetes networking, CDN strategy, and zero-trust architecture
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 model: opus
 color: orange

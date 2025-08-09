@@ -1,6 +1,6 @@
 ---
 name: ux-researcher
-description: MUST BE USED for comprehensive user research strategy, advanced usability testing methodologies, and AI-enhanced behavioral analysis. Use PROACTIVELY when detecting user experience friction, conversion optimization opportunities, or user feedback patterns requiring investigation. Specializes in predictive user modeling, automated research synthesis, and data-driven design validation.
+description: MUST BE USED for comprehensive user research strategy and advanced usability testing methodologies. Use PROACTIVELY for user experience friction, conversion optimization opportunities, and user feedback patterns
 tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite, WebFetch
 model: sonnet
 color: pink

@@ -1,6 +1,6 @@
 ---
 name: ui-designer
-description: MUST BE USED for comprehensive UI/UX design optimization, advanced design system architecture, and accessibility-first interface development. Use PROACTIVELY when detecting design inconsistencies, accessibility violations, or user experience friction points. Specializes in minimalist aesthetics, design token management, and cross-platform design excellence.
+description: MUST BE USED for comprehensive UI/UX design optimization and advanced design system architecture. Use PROACTIVELY for design inconsistencies, accessibility violations, and user experience friction points
 tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite
 model: sonnet
 color: pink

@@ -1,6 +1,6 @@
 ---
 name: migration-specialist
-description: MUST BE USED for complex technology migrations, critical framework upgrades, and enterprise codebase modernization. Use PROACTIVELY for major version upgrades, framework transitions, legacy system modernization, and multi-system integration migrations
+description: MUST BE USED for complex technology migrations and critical framework upgrades. Use PROACTIVELY for major version upgrades, framework transitions, and legacy system modernization
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 model: sonnet
 color: blue

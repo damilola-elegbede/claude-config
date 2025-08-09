@@ -1,6 +1,6 @@
 ---
 name: backend-engineer
-description: MUST BE USED for server-side system architecture, microservices implementation, distributed systems, and database engineering. Use PROACTIVELY for high-performance optimization (>10k RPS), event-driven architecture, cloud-native development, and complex backend infrastructure. Specializes in scalable system design and production-grade implementation
+description: MUST BE USED for server-side architecture, microservices, distributed systems, and database engineering. Use PROACTIVELY for high-performance optimization (>10k RPS), event-driven architecture, and complex backend infrastructure
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 model: sonnet
 color: blue

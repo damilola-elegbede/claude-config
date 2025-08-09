@@ -1,6 +1,6 @@
 ---
 name: data-platform-engineer
-description: Use PROACTIVELY for building enterprise-scale data platforms, streaming architectures, and real-time analytics systems. MUST BE USED for data pipelines processing >1M records/day, event streaming architectures (Kafka, Pulsar), data lake/warehouse implementations, ETL/ELT at enterprise scale, and modern data stack orchestration. Deploy immediately for complex data infrastructure design, performance optimization, and data governance implementation
+description: Use PROACTIVELY for building enterprise-scale data platforms and streaming architectures. MUST BE USED for data pipelines processing >1M records/day, event streaming (Kafka, Pulsar), data lake/warehouse implementations, and ETL/ELT
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 model: opus
 color: blue

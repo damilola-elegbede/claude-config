@@ -1,6 +1,6 @@
 ---
 name: codebase-analyst
-description: Use PROACTIVELY for comprehensive code architecture analysis, technical debt assessment, and dependency mapping. MUST BE USED for evaluating codebases, creating executive summaries, identifying security risks, performance bottlenecks, and architectural anti-patterns. Deploy immediately when analyzing system complexity or technical risk assessment is required
+description: Use PROACTIVELY for comprehensive code architecture analysis and technical debt assessment. MUST BE USED for evaluating codebases, creating executive summaries, and identifying security risks and performance bottlenecks
 tools: Read, Write, Grep, Glob, LS, TodoWrite
 model: sonnet
 color: yellow

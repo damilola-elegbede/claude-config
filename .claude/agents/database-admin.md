@@ -1,6 +1,6 @@
 ---
 name: database-admin
-description: Use PROACTIVELY for database optimization, security hardening, backup strategies, and performance tuning. MUST BE USED for query optimization, index management, database administration, high-availability configuration, disaster recovery planning, and production database operations. Deploy immediately for performance bottlenecks, security vulnerabilities, or operational issues
+description: Use PROACTIVELY for database optimization, security hardening, and performance tuning. MUST BE USED for query optimization, index management, high-availability configuration, and disaster recovery planning
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 model: sonnet
 color: orange

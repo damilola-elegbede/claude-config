@@ -1,6 +1,6 @@
 ---
 name: performance-specialist
-description: Use PROACTIVELY for comprehensive performance engineering including advanced analysis, optimization, and load testing strategies. MUST BE USED for capacity planning, scalability testing, performance regression detection, bottleneck analysis, and performance monitoring implementation. Deploy PROACTIVELY for system-wide performance optimization combining analytical assessment with hands-on implementation expertise.
+description: Use PROACTIVELY for comprehensive performance engineering and optimization. MUST BE USED for capacity planning, scalability testing, performance regression detection, and bottleneck analysis
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 model: sonnet
 color: green

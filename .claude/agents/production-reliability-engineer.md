@@ -1,6 +1,6 @@
 ---
 name: production-reliability-engineer
-description: Use PROACTIVELY for production incident resolution, reliability engineering, and chaos engineering. MUST BE USED for service-level objective (SLO) definition, error budget management, production debugging across distributed systems, automated recovery mechanisms, and observability stack implementation. Deploy PROACTIVELY when detecting reliability issues, incident response needs, or distributed system failures.
+description: Use PROACTIVELY for production incident resolution and reliability engineering. MUST BE USED for SLO definition, error budget management, production debugging across distributed systems, and automated recovery mechanisms
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 model: opus
 color: red

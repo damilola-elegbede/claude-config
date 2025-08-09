@@ -1,6 +1,6 @@
 ---
 name: project-orchestrator
-description: Use PROACTIVELY to orchestrate multi-agent execution strategies for complex projects. MUST BE USED for planning parallel agent execution, optimizing resource allocation, coordinating 3+ agent workflows, and maximizing team efficiency through strategic delegation. Deploy PROACTIVELY when detecting opportunities for parallel execution or multi-agent coordination.
+description: Use PROACTIVELY to orchestrate multi-agent execution strategies. MUST BE USED for planning parallel agent execution, optimizing resource allocation, coordinating 3+ agent workflows, and maximizing team efficiency
 tools: Read, Write, Grep, Glob, LS, TodoWrite
 model: opus
 color: purple

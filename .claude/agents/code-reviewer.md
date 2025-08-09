@@ -1,6 +1,6 @@
 ---
 name: code-reviewer
-description: Use PROACTIVELY after code changes for quality review, security checks, and best practices validation. MUST BE USED for pre-commit code reviews, security vulnerability detection, performance optimization analysis, and production readiness assessment. Mandatory deployment before any commits to prevent production incidents
+description: Use PROACTIVELY after code changes for quality review, security checks, and best practices validation. MUST BE USED for pre-commit reviews, vulnerability detection, and production readiness assessment
 tools: Read, Write, Grep, Glob, LS, Bash
 model: opus
 color: green

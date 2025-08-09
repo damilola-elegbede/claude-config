@@ -1,6 +1,6 @@
 ---
 name: supply-chain-security-engineer
-description: MUST BE USED for software supply chain security auditing, dependency vulnerability assessments, SBOM generation across complex codebases, and automated compliance validation. Use PROACTIVELY when detecting dependency management workflows, CI/CD security gaps, or license compliance requirements. Specializes in supply chain attack prevention, zero-day response protocols, and enterprise-grade security automation.
+description: MUST BE USED for software supply chain security auditing, dependency vulnerability assessments, and SBOM generation. Use PROACTIVELY for dependency management workflows, CI/CD security gaps, and license compliance requirements
 tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, LS, TodoWrite
 model: sonnet
 color: red

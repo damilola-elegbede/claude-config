@@ -1,6 +1,6 @@
 ---
 name: test-engineer
-description: MUST BE USED for comprehensive test strategy design, intelligent test implementation across frameworks, and automated quality assurance workflows. Use PROACTIVELY when detecting untested code paths, CI/CD pipeline changes, or quality gate failures. Specializes in test pyramid optimization, coverage-driven development, and performance-aware testing strategies.
+description: MUST BE USED for comprehensive test strategy design and intelligent test implementation across frameworks. Use PROACTIVELY for untested code paths, CI/CD pipeline changes, and quality gate failures
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 model: sonnet
 color: green

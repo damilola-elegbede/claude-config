@@ -1,6 +1,6 @@
 ---
 name: mobile-platform-engineer
-description: Use PROACTIVELY for mobile platform architecture, cross-platform strategies, and mobile DevOps solutions. MUST BE USED for app store optimization, mobile CI/CD pipelines, React Native/Flutter architecture, mobile security implementation, and platform-specific integrations (Apple Pay, Google Pay, biometrics). Deploy PROACTIVELY for mobile performance optimization, offline-first architecture, and mobile analytics implementation.
+description: Use PROACTIVELY for mobile platform architecture and cross-platform strategies. MUST BE USED for app store optimization, mobile CI/CD pipelines, React Native/Flutter architecture, and mobile security implementation
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 model: sonnet
 color: blue

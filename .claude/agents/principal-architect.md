@@ -1,6 +1,6 @@
 ---
 name: principal-architect
-description: Use PROACTIVELY for system-wide architecture design, comprehensive technical roadmaps, and strategic cross-team coordination. MUST BE USED for complex architectural decisions, enterprise-scale implementation planning, technical strategy development, and high-level system design. Deploy PROACTIVELY for technical leadership initiatives and architectural governance.
+description: Use PROACTIVELY for system-wide architecture design and comprehensive technical roadmaps. MUST BE USED for complex architectural decisions, enterprise-scale implementation planning, and technical strategy development
 color: purple
 category: architecture
 tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite

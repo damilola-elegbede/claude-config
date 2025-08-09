@@ -1,6 +1,6 @@
 ---
 name: api-architect
-description: MUST BE USED for comprehensive API architecture, OpenAPI specifications, governance policy implementation, and multi-language SDK generation. Use PROACTIVELY for API strategy development, versioning management, GraphQL federation, and enterprise API standardization. Specializes in developer experience optimization and API lifecycle management
+description: MUST BE USED for comprehensive API architecture, OpenAPI specs, and governance policy implementation. Use PROACTIVELY for API strategy, versioning management, GraphQL federation, and enterprise standardization
 color: purple
 category: architecture
 tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite

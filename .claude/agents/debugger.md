@@ -1,6 +1,6 @@
 ---
 name: debugger
-description: MUST BE USED for investigating complex intermittent bugs, race conditions, memory leaks, and production-only failures that occur <50% of the time. Use PROACTIVELY when detecting distributed system cascading failures, timing-dependent bugs, or concurrency issues requiring systematic forensic analysis. Essential for production emergencies, security breach investigations, and elusive bugs with misleading symptoms.
+description: MUST BE USED for investigating complex intermittent bugs, race conditions, and production-only failures. Use PROACTIVELY for distributed system failures, timing-dependent bugs, and concurrency issues requiring forensic analysis
 tools: Read, Grep, Glob, LS
 model: sonnet
 color: red

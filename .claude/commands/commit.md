@@ -61,8 +61,8 @@ When you use `/commit`, I will:
 
 7. **Clean up and stage appropriate files**:
    - **Clean up temporary files** before staging:
-     - Remove temporary HTML files (*.tmp.html, *.temp.html)
-     - Delete temporary script files (*.tmp.js, *.temp.py, *.tmp.sh)
+     - Remove temporary HTML files (\*.tmp.html, \*.temp.html)
+     - Delete temporary script files (\*.tmp.js, \*.temp.py, \*.tmp.sh)
      - Clean up generated documentation (if not meant for commit)
      - Remove build artifacts and cache files
      - Delete debug/test output files

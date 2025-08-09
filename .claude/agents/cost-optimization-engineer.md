@@ -1,6 +1,6 @@
 ---
 name: cost-optimization-engineer
-description: Use PROACTIVELY for cloud cost optimization, resource utilization analysis, and infrastructure efficiency improvements. MUST BE USED for AWS/Azure/GCP cost analysis, resource right-sizing, architectural cost optimization, FinOps strategy implementation, and budget variance analysis. Deploy immediately when cloud costs exceed thresholds or resource utilization is suboptimal
+description: Use PROACTIVELY for cloud cost optimization and resource utilization analysis. MUST BE USED for AWS/Azure/GCP cost analysis, resource right-sizing, FinOps strategy implementation, and budget variance analysis
 tools: Read, Write, Grep, Glob, LS, Bash, TodoWrite, WebFetch
 model: sonnet
 color: orange

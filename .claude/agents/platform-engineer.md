@@ -1,6 +1,6 @@
 ---
 name: platform-engineer
-description: Use PROACTIVELY for platform engineering, developer experience optimization, internal tooling development, and self-service infrastructure design. MUST BE USED for building comprehensive platforms that empower development teams, implementing developer portals, creating standardized workflows, and establishing platform-as-a-service capabilities.
+description: Use PROACTIVELY for platform engineering and developer experience optimization. MUST BE USED for building comprehensive platforms that empower development teams, implementing developer portals, and standardized workflows
 color: orange
 category: infrastructure
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite, WebFetch

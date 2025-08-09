@@ -1,6 +1,6 @@
 ---
 name: regulatory-compliance-specialist
-description: Use PROACTIVELY for regulatory compliance automation, audit preparation, and policy enforcement. MUST BE USED for SOC2, GDPR, HIPAA, PCI-DSS, ISO27001 certification requirements, evidence collection, and continuous compliance monitoring. Deploy PROACTIVELY when compliance gaps are detected or audit deadlines approach.
+description: Use PROACTIVELY for regulatory compliance automation and audit preparation. MUST BE USED for SOC2, GDPR, HIPAA, PCI-DSS, ISO27001 certification requirements, evidence collection, and continuous compliance monitoring
 tools: Read, Write, Grep, Glob, LS, TodoWrite
 model: haiku
 color: red
