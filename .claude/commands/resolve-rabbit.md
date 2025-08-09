@@ -1,7 +1,7 @@
 # /resolve-rabbit Command
 
 ## Description
-Automatically fetches and resolves ALL CodeRabbit AI review comments from the PR associated with the current branch, specifically focusing on EVERY "Prompts for AI Agents" section that contains actionable suggestions for code improvements. The command exhaustively searches all comment levels and processes ALL comments found - there are ALWAYS multiple comments present, not just one.
+Automatically fetches and resolves ALL CodeRabbit AI review comments from the PR associated with the current branch, specifically focusing on EVERY "Prompts for AI Agents" section that contains actionable suggestions for code improvements. The command searches PR review comments (inline code comments) NOT issue comments, and processes ALL review comments found - there are ALWAYS multiple review comments present, not just one.
 
 ## Usage
 ```
@@ -29,18 +29,19 @@ When you use `/resolve-rabbit`, I will:
    - Or use the specified PR number if provided
    - Verify PR exists and is accessible
 
-2. **Fetch ALL CodeRabbit comments** (ALWAYS multiple comments present):
-   - Query ALL PR comments via GitHub API (top-level, review, and nested)
-   - Filter for CodeRabbit bot comments (@coderabbitai)
-   - **IMPORTANT: Continue searching until ALL comments are found**
+2. **Fetch ALL CodeRabbit REVIEW comments** (ALWAYS multiple comments present):
+   - Query PR **review comments** via GitHub API (NOT issue comments)
+   - Use `gh api repos/{owner}/{repo}/pulls/{pr}/reviews` and `gh api repos/{owner}/{repo}/pulls/{pr}/comments`
+   - Filter for CodeRabbit bot review comments (@coderabbitai)
+   - **IMPORTANT: Focus on REVIEW comments, not issue/conversation comments**
    - Do NOT stop after finding the first comment
-   - Collect comments from:
-     • All top-level PR comments
-     • All review comment threads
-     • All conversation items
-     • All inline code review comments
-     • All nested reply threads
-   - Extract EVERY "Prompts for AI Agents" section from ALL comments
+   - Collect comments specifically from:
+     • All PR review comments (inline code comments)
+     • All review comment threads on specific lines
+     • All file-level review comments
+     • All nested review discussion threads
+     • NOT general issue comments or PR conversation
+   - Extract EVERY "Prompts for AI Agents" section from ALL review comments
    - Process ALL found prompts, not just the first one
    - Use the language from ALL sections to guide code changes
 
@@ -120,14 +121,14 @@ Proceeding with automated resolution...
 ═══════════════════════════════════════════════════════════
 ```
 
-## CodeRabbit Comment Structure
+## CodeRabbit Review Comment Structure
 
-Typically parses comments containing:
-- **Summary**: Overview of issues found
-- **Prompts for AI Agents**: Specific actionable fixes
-- **Code suggestions**: Inline diff proposals
-- **Security concerns**: Vulnerability fixes
-- **Performance improvements**: Optimization suggestions
+Typically parses review comments containing:
+- **Summary**: Overview of issues found in specific code sections
+- **Prompts for AI Agents**: Specific actionable fixes (found in review comments)
+- **Code suggestions**: Inline diff proposals on specific lines
+- **Security concerns**: Vulnerability fixes in reviewed code
+- **Performance improvements**: Optimization suggestions for specific functions
 
 ## Resolution Categories
 
@@ -220,7 +221,7 @@ Recognizes CodeRabbit patterns:
 - "Performance could be improved by..."
 - Inline code suggestions with diffs
 
-**Note:** CodeRabbit may embed "Prompts for AI Agents" sections within nested review comments rather than top-level PR comments. The command searches all comment levels to find these sections.
+**Note:** CodeRabbit embeds "Prompts for AI Agents" sections within PR review comments (inline code review comments) rather than issue/conversation comments. The command specifically searches review comments using the GitHub review API endpoints.
 
 ## Commit Message Format
 
@@ -263,15 +264,17 @@ Handles common scenarios:
 - Unparseable suggestions
 
 ## Notes
-- **CRITICAL: Must process ALL comments, not just the first one found**
-- ALWAYS multiple CodeRabbit comments present - continue searching until all are found
+- **CRITICAL: Must process ALL review comments, not just the first one found**
+- **Searches PR REVIEW comments (inline code comments) NOT issue/conversation comments**
+- Uses GitHub API endpoints: `/pulls/{pr}/reviews` and `/pulls/{pr}/comments` for review comments
+- ALWAYS multiple CodeRabbit review comments present - continue searching until all are found
 - Verifies CodeRabbit bot user or app ID before processing comments to prevent spoofed comment submissions
 - Only resolves comments from authenticated CodeRabbit bot user (@coderabbitai)
 - **EXCLUSIVELY processes "Prompts for AI Agents" sections** - uses exact language from ALL sections
-- Exhaustively searches ALL comment levels until every comment is found
+- Exhaustively searches ALL review comment threads until every comment is found
 - Provides comprehensive summary of ALL comments THEN posts "@coderabbitai resolve" BEFORE making changes
 - Uses the specific language from ALL "Prompts for AI Agents" sections to guide code modifications
-- Processes EVERY comment found - early termination after first comment is a failure
+- Processes EVERY review comment found - early termination after first comment is a failure
 - Creates atomic commits for traceability
 - Preserves code style and formatting
 - Can be re-run safely (idempotent)
