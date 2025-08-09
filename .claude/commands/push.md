@@ -31,7 +31,22 @@ When you use `/push`, I will:
    - If tests fail: Deploy test-engineer to fix or add missing tests
    - Re-run tests after fixes
 
-5. **Run ENHANCED code review** with automated remediation:
+5. **Run linting checks** across all changed files:
+   - **Auto-detect linters**: ESLint, Prettier, Black, RuboCop, etc.
+   - **Execute all applicable linters** on modified files
+   - **Auto-fix violations** where possible:
+     - JavaScript/TypeScript: ESLint --fix, Prettier --write
+     - Python: Black, autopep8, isort
+     - Ruby: RuboCop --auto-correct
+     - Go: gofmt, goimports
+     - Markdown: markdownlint --fix
+   - **Deploy agents for complex fixes**:
+     - backend-engineer for server-side linting
+     - frontend-architect for client-side linting
+   - **Block push if unfixable violations** remain
+   - Stage and commit any auto-fixes
+
+6. **Run ENHANCED code review** with automated remediation:
    - **Phase 1**: code-reviewer identifies all issues
    - **Phase 2**: Deploy specialist agents in parallel:
      - backend-engineer for server-side fixes
@@ -42,7 +57,7 @@ When you use `/push`, I will:
    - **Phase 3**: Re-review after remediation
    - **Phase 4**: Document rationales for unfixed issues
 
-6. **Smart quality gate enforcement**:
+7. **Smart quality gate enforcement**:
    - After remediation attempts, evaluate remaining issues:
      - **Critical/Security**: Must be fixed (no push until resolved)
      - **With Rationale**: Log warning but allow push
@@ -51,14 +66,15 @@ When you use `/push`, I will:
      - Issues fixed by agents
      - Remaining issues with rationales
      - Test results and coverage
+     - Linting compliance status
    - User confirmation required if issues remain
 
-7. **Push to remote**:
+8. **Push to remote**:
    - Use `-u` flag if branch needs upstream tracking
    - Push to appropriate remote (usually origin)
    - Always specify current branch explicitly: `git push origin <current-branch>`
 
-8. **Confirm success**:
+9. **Confirm success**:
    - Verify push completed
    - Show updated status
    - Display pushed commit summary
@@ -69,6 +85,7 @@ When you use `/push`, I will:
 - Sets up branch tracking automatically
 - Shows what will be pushed before pushing
 - Requires all tests to pass (100% success rate)
+- **Enforces linting standards** with auto-fix capabilities
 - Blocks push if critical code issues detected
 - Enforces code review before any push
 - Provides quality gate summary before push confirmation
@@ -95,7 +112,11 @@ git push --force-with-lease
 ### Automated Fix Process
 Before push, agents automatically attempt to fix issues:
 1. **Test Failures**: test-engineer debugs and fixes failing tests
-2. **Linter Issues**: Auto-fix with appropriate formatters
+2. **Linting Violations**: Auto-fix with language-specific formatters
+   - ESLint --fix for JavaScript/TypeScript
+   - Black/autopep8 for Python
+   - gofmt for Go
+   - Prettier for multiple formats
 3. **Code Quality**: Refactor using backend/frontend engineers
 4. **Security**: security-auditor patches vulnerabilities
 5. **Documentation**: tech-writer generates missing docs
@@ -131,13 +152,16 @@ Before push, agents automatically attempt to fix issues:
 - Commits to push
 - Clean working directory (or explicit override)
 - All tests passing (100% success rate)
+- **Linting compliance** (auto-fixed where possible)
 - Code review approval (no critical issues)
 
 ## Notes
 - Force pushes require explicit confirmation
 - Protected branches follow repository rules
-- Critical issues (security, breaking tests) always block push
+- **Linting is automatically run and fixed** before push
+- Critical issues (security, breaking tests, unfixable linting) always block push
 - Non-critical issues are auto-fixed when possible
 - Unfixed issues require documented rationale
 - User can override non-critical blocks with justification
 - All remediation attempts are logged for audit trail
+- Linting auto-fixes are committed before push

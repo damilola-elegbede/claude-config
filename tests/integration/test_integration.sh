@@ -55,24 +55,21 @@ test_command_consistency() {
     return 0
 }
 
-# Test CLAUDE.md consistency between repo and docs
+# Test CLAUDE.md consistency - Updated to not require command docs
 test_claude_md_consistency() {
     local repo_claude="$ORIGINAL_DIR/CLAUDE.md"
     
-    # Check that test and context commands are documented
-    assert_file_contains "$repo_claude" "/test Command" \
-        "CLAUDE.md should document /test command"
+    # Commands are documented in .claude/commands/*.md files
+    # Global CLAUDE.md focuses on chief of staff identity and principles
+    # Just verify the file exists and has core content
+    assert_file_exists "$repo_claude" \
+        "CLAUDE.md should exist"
     
-    assert_file_contains "$repo_claude" "/context Command" \
-        "CLAUDE.md should document /context command"
+    # Check for core identity
+    assert_file_contains "$repo_claude" "chief of staff" \
+        "CLAUDE.md should define chief of staff role"
     
-    # Check command descriptions match
-    if grep -q "Creates base level test suite" "$repo_claude"; then
-        return 0
-    else
-        echo "CLAUDE.md missing updated test command description"
-        return 1
-    fi
+    return 0
 }
 
 # Test repository structure integrity

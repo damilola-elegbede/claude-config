@@ -1,6 +1,6 @@
 # Agent Categories and Color Assignments
 
-This document defines the official agent categories and their corresponding color assignments for the Claude Code agent ecosystem.
+This document defines the official agent categories and their corresponding color assignments for the Claude Code agent ecosystem. All agents should follow Claude Code documentation standards using "MUST BE USED for" and "Use PROACTIVELY" language patterns.
 
 ## Categories
 
@@ -112,7 +112,7 @@ When creating new agents, use the color associated with their primary category:
 - **green**: Quality assurance (testing, reviews)
 - **red**: Security and compliance (auditing, threat analysis)
 - **yellow**: Analysis and research (data, documentation, investigation)
-- **red**: Operations (coordination, strategy, workflow automation)
+- **teal**: Operations (coordination, strategy, workflow automation)
 
 ## Usage
 
@@ -120,5 +120,26 @@ When creating new agents, use the color associated with their primary category:
 2. The agent's color field must match their category's color
 3. When creating new agents, consult this document for proper categorization
 4. The agent-auditor uses these categories for gap analysis
+5. All agent descriptions must use "MUST BE USED for" pattern for critical use cases
+6. Include "Use PROACTIVELY" for automatic deployment triggers
+7. Upgrade agents to Sonnet 4.1 capabilities with enhanced AI reasoning descriptions
+
+## Documentation Standards
+
+### Required Language Patterns
+- **Critical Use Cases**: "MUST BE USED for [specific capability]"
+- **Proactive Deployment**: "Use PROACTIVELY when [trigger condition]"
+- **AI Enhancement**: Describe Sonnet 4.1 advanced reasoning capabilities
+- **Specialization**: "Specializes in [key differentiators]"
+
+### Agent Enhancement Guidelines
+- Upgrade model specifications to leverage Sonnet 4.1 capabilities
+- Include "Advanced AI Capabilities" section highlighting 4.1 features
+- Add "Proactive Deployment Triggers" for automatic agent invocation
+- Enhance success metrics with AI-powered improvements
 
 ## Maintenance
+
+- Regular review of agent capabilities alignment with Claude 4.1 features
+- Validation of language pattern compliance across all agents
+- Category assignments reviewed quarterly for optimal organization

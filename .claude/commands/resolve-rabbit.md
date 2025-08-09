@@ -66,6 +66,11 @@ When you use `/resolve-rabbit`, I will:
    - Highlight any suggestions that couldn't be auto-resolved
    - Prepare commit message summarizing fixes
 
+7. **Post resolution comment**:
+   - After successfully resolving all issues
+   - Post "@coderabbitai resolve" comment on the PR
+   - Notifies CodeRabbit that issues have been addressed
+
 ## Pre-Resolution Summary Format
 
 When the command runs, you'll first see:
@@ -186,7 +191,7 @@ Typically parses comments containing:
 ### Typical usage
 ```bash
 # After CodeRabbit reviews your PR
-/resolve-rabbit          # Auto-fix CodeRabbit suggestions
+/resolve-rabbit          # Auto-fix CodeRabbit suggestions and post resolution comment
 /test                    # Verify fixes work
 /commit                  # Commit the fixes
 /push                    # Update PR
@@ -253,5 +258,6 @@ Handles common scenarios:
 - Creates atomic commits for traceability
 - Preserves code style and formatting
 - Can be re-run safely (idempotent)
+- **Automatically posts "@coderabbitai resolve" comment on PR after successful resolution**
 - Integrates with `/test` and `/commit` commands
 - Supports GitHub PRs (via GitHub CLI)

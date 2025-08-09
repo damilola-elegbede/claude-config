@@ -28,25 +28,35 @@ When you use `/sync`, I will:
    - Copy `./CLAUDE.md` to `~/CLAUDE.md`
    - **Remove old agents**: Delete `~/.claude/agents/` directory completely
    - **Remove old commands**: Delete all files in `~/.claude/commands/` (preserving the directory)
-   - Copy all files from `./.claude/agents/` to `~/.claude/agents/`
+   - Copy only actual agent files from `./.claude/agents/` to `~/.claude/agents/` (excluding documentation/template files)
    - Copy all files from `./.claude/commands/` to `~/.claude/commands/` (explicitly excluding `sync.md`)
    - Copy `./settings.json` to `~/.claude/settings.json` (merge with existing settings)
-   - **Important**: This ensures no deprecated agents or commands remain. Use methods like:
-     - `rm -rf ~/.claude/agents/ && cp -r ./.claude/agents/ ~/.claude/agents/`
-     - `rm -f ~/.claude/commands/*.md && rsync -av --exclude='sync.md' ./.claude/commands/ ~/.claude/commands/`
+   - **Important**: This ensures no deprecated agents or commands remain, and only actual agents are synced
+   - **Excluded from agents sync**:
+     - `AGENT_TEMPLATE.md` (template file, not an agent)
+     - `AGENT_CATEGORIES.md` (documentation file)
+     - `AUDIT_VERIFICATION_PROTOCOL.md` (documentation file)
+     - `README.md` (documentation file)
+     - Any other non-agent documentation files
 
 4. **Verify the sync**:
    - Check that files were copied successfully
    - Report any errors or conflicts
    - Show summary of synced files
-   - Confirm 41 agents are present
+   - Confirm actual agent files are present (excluding documentation)
 
 ## Files Synced
 - `CLAUDE.md` - Main configuration with coding standards
 - `.claude/commands/*.md` - All command files (except sync.md which is repo-specific)
-- `.claude/agents/*.md` - All 41 specialized agent configurations
-- `.claude/agents/AGENT_CATEGORIES.md` - Agent category definitions and color mappings
+- `.claude/agents/*.md` - Only actual agent configurations (excludes documentation/template files)
 - `settings.json` - Claude Code settings with audio notification hooks
+
+## Files NOT Synced
+- `.claude/agents/AGENT_TEMPLATE.md` - Template file for creating new agents
+- `.claude/agents/AGENT_CATEGORIES.md` - Documentation of agent categories
+- `.claude/agents/AUDIT_VERIFICATION_PROTOCOL.md` - Audit documentation
+- `.claude/agents/README.md` - Agent directory documentation
+- `.claude/commands/sync.md` - Repository-specific sync command
 
 ## Important Notes
 - **This command is specific to the claude-config repository**
@@ -57,13 +67,13 @@ When you use `/sync`, I will:
 - Use this after pulling latest changes from the repository
 - Run from within the claude-config repository only
 - Old/deprecated agents and commands are removed to prevent confusion
-- Ensures exactly 41 agents in the ecosystem
+- Ensures only actual agent files are synced (excludes documentation)
 
 ## Example Output
 ```
 /sync
 Validating agent YAML compliance...
-✓ All 41 agents have valid YAML front-matter
+✓ All 35 agents have valid YAML front-matter
 
 Creating backups...
 ✓ Backed up ~/CLAUDE.md to ~/CLAUDE.md.backup
@@ -76,17 +86,17 @@ Syncing configuration files...
 ✓ Removed old agents from ~/.claude/agents/
 ✓ Removed old commands from ~/.claude/commands/
 ✓ Copied 11 command files to ~/.claude/commands/ (excluding sync.md)
-✓ Copied 41 agent files to ~/.claude/agents/
-✓ Copied AGENT_CATEGORIES.md to ~/.claude/agents/
+✓ Copied 35 agent files to ~/.claude/agents/
 ✓ Copied settings.json to ~/.claude/settings.json
-✓ Explicitly excluded: sync.md (repo-specific command)
+✓ Excluded documentation files: AGENT_TEMPLATE.md, AGENT_CATEGORIES.md, AUDIT_VERIFICATION_PROTOCOL.md, README.md
+✓ Excluded repo-specific: sync.md
 
 Sync completed successfully!
 Audio notifications and specialized agents are now configured and ready to use.
 ```
 
 ## Implementation Details
-When implementing the sync, ensure validation passes and old files are removed:
+When implementing the sync, ensure validation passes and only actual agent files are copied:
 ```bash
 # First validate YAML compliance
 python3 scripts/validate-agent-yaml.py || exit 1
@@ -94,8 +104,20 @@ python3 scripts/validate-agent-yaml.py || exit 1
 # Remove old agents directory completely
 rm -rf ~/.claude/agents/
 
-# Copy new agents directory (includes AGENT_CATEGORIES.md)
-cp -r ./.claude/agents/ ~/.claude/agents/
+# Create fresh agents directory
+mkdir -p ~/.claude/agents/
+
+# Copy only actual agent files (exclude documentation/template files)
+for file in ./.claude/agents/*.md; do
+    filename=$(basename "$file")
+    # Skip non-agent files
+    if [[ "$filename" != "AGENT_TEMPLATE.md" && \
+          "$filename" != "AGENT_CATEGORIES.md" && \
+          "$filename" != "AUDIT_VERIFICATION_PROTOCOL.md" && \
+          "$filename" != "README.md" ]]; then
+        cp "$file" ~/.claude/agents/
+    fi
+done
 
 # Remove old command files (but preserve directory)
 rm -f ~/.claude/commands/*.md
@@ -107,9 +129,6 @@ for file in ./.claude/commands/*.md; do
         cp "$file" ~/.claude/commands/
     fi
 done
-
-# Or use rsync with deletion and exclusion
-rsync -av --delete --exclude='sync.md' ./.claude/commands/ ~/.claude/commands/
 ```
 
 ## Troubleshooting
