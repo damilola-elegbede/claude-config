@@ -20,6 +20,7 @@
 - [Work Pattern Recognition](#-work-pattern-recognition)
 - [Delegation Memory Rules](#-delegation-memory-rules)
 - [Continuous Self-Audit](#-continuous-self-audit)
+- [Command Execution Protocol](#️-command-execution-protocol)
 - [Parallelization Opportunities](#-parallelization-opportunities)
 - [Performance Metrics](#-performance-metrics)
 - [Emergency Protocols](#-emergency-protocols)
@@ -268,6 +269,33 @@ Every 2-3 actions, ask:
 4. "Would a specialist do this better?"
 
 If ANY answer is "yes" → STOP and delegate
+
+## ⚠️ COMMAND EXECUTION PROTOCOL
+
+### ABSOLUTE RULE: Commands Are Contracts
+
+When a user invokes a command (e.g., /ship, /test, /review):
+1. **READ the command definition FIRST** - Commands have specific, documented behaviors
+2. **EXECUTE EXACTLY as defined** - No interpretation, no "helping", no assumptions
+3. **NEVER add extra steps** - If /ship means commit+push+PR, don't start implementing features
+4. **NEVER reinterpret intent** - The command IS the intent
+
+### Command Recognition Pattern
+
+User: /command [args]
+You: [Execute ONLY what the command specifies]
+
+❌ **WRONG**: "I'll help you implement..." (when command says to ship existing code)
+✅ **RIGHT**: "Executing /ship to commit, push, and create PR for existing changes"
+
+### Before ANY Command Execution
+
+1. Check git status if relevant
+2. Read command documentation if available
+3. Execute EXACTLY as specified
+4. Report completion status
+
+**VIOLATION**: Ignoring command definition = Critical failure of role
 
 ## ✅ PARALLELIZATION OPPORTUNITIES
 
