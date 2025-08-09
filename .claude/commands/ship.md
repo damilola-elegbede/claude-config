@@ -26,7 +26,9 @@ When you use `/ship`, I will execute three commands in sequence:
    - Handles force push if necessary (with confirmation)
 
 3. **Pull Request** (`/pr`):
-   - Creates PR to main/master branch
+   - **Checks for existing PR** for current branch first
+   - If PR exists: Skips creation and shows existing PR URL
+   - If no PR exists: Creates new PR to main/master branch
    - Auto-generates PR title and description
    - Includes commit history in PR body
    - Returns PR URL for review
@@ -51,10 +53,16 @@ When you use `/ship`, I will execute three commands in sequence:
 - Handle any push conflicts
 
 ### Phase 4: Pull Request
-- Create PR with comprehensive description
-- Include test plan
-- Add relevant labels if available
-- Return PR URL
+- **Check for existing PR** using `gh pr view` for current branch
+- If PR already exists:
+  - Display existing PR URL and status
+  - Skip PR creation step
+  - Show "PR already exists" message
+- If no PR exists:
+  - Create PR with comprehensive description
+  - Include test plan
+  - Add relevant labels if available
+  - Return new PR URL
 
 ## Examples
 
@@ -76,6 +84,18 @@ When you use `/ship`, I will execute three commands in sequence:
 /test                    # Run tests
 /review                  # Code review
 /ship                    # Ship it!
+```
+
+### Multiple runs on same branch
+```bash
+# First run - creates PR
+/ship "feat: initial implementation"
+# ✅ PR created: https://github.com/org/repo/pull/123
+
+# Make more changes, then run again
+/ship "feat: add error handling" 
+# ✅ Commits and pushes changes
+# ℹ️  PR already exists - no new PR created
 ```
 
 ## Success Criteria
@@ -118,7 +138,10 @@ These commands are often used before `/ship`:
 
 - **Branch protection**: Won't ship from main/master
 - **Change verification**: Shows diff before committing
-- **PR duplicate check**: Won't create duplicate PRs
+- **PR duplicate prevention**: Checks for existing PR before creation
+  - Uses `gh pr view --json url,state,title` to check current branch
+  - If PR exists (open/closed), shows existing PR info instead of creating new one
+  - Prevents GitHub API errors from duplicate PR attempts
 - **Upstream verification**: Ensures remote branch exists
 - **Clean working tree**: Ensures no uncommitted changes remain
 
@@ -162,10 +185,15 @@ Creates descriptive titles:
 /review                  # Optional: pre-review
 /ship "feat: new feature" # Ship it!
 
-# Returns something like:
+# First time returns:
 ✅ Committed: feat: new feature
 ✅ Pushed to origin/feature-branch  
 ✅ PR created: https://github.com/org/repo/pull/123
+
+# Second time on same branch returns:
+✅ Committed: additional changes
+✅ Pushed to origin/feature-branch  
+ℹ️  PR already exists: https://github.com/org/repo/pull/123 (Open)
 ```
 
 ## Notes
@@ -176,6 +204,8 @@ Creates descriptive titles:
 - Provides complete traceability
 - Ideal for feature branches
 - Supports GitHub Flow and Git Flow
+- **Safe to run multiple times**: Won't create duplicate PRs
+- **Idempotent PR creation**: Checks existing PR before attempting to create
 - All sub-commands use their standard behavior
 - Can be interrupted with Ctrl+C if needed
 - Each step's output is displayed in real-time
