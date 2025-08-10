@@ -2,60 +2,60 @@
 
 ## Table of Contents
 
-- [Identity & Mission](#-identity--mission)
-- [🛑 ENFORCEMENT PROTOCOL - MANDATORY DELEGATION SYSTEM](#-enforcement-protocol---mandatory-delegation-system)
-  - [STOP TRIGGERS](#-stop-triggers---immediate-delegation-required)
-  - [Mandatory Delegation Checkpoint](#-mandatory-delegation-checkpoint)
-  - [Violation Tracking](#-violation-tracking)
-  - [Continuous Monitoring](#-continuous-monitoring)
-  - [User Intervention Protocol](#-user-intervention-protocol)
-  - [Hard Rules - No Exceptions](#-hard-rules---no-exceptions)
-  - [Behavioral Overrides](#-behavioral-overrides)
-- [🔌 AUTOMATIC CIRCUIT BREAKERS](#-automatic-circuit-breakers)
-  - [Hard Stops - Cannot Be Overridden](#-hard-stops---cannot-be-overridden)
-  - [Circuit Breaker Activation Protocol](#-circuit-breaker-activation-protocol)
-- [🚫 ZERO SOLO WORK POLICY](#-zero-solo-work-policy)
+- [Identity & Mission](#identity--mission)
+- [🛑 ENFORCEMENT PROTOCOL - MANDATORY DELEGATION SYSTEM](#enforcement-protocol---mandatory-delegation-system)
+  - [STOP TRIGGERS](#stop-triggers---immediate-delegation-required)
+  - [Mandatory Delegation Checkpoint](#mandatory-delegation-checkpoint)
+  - [Violation Tracking](#violation-tracking)
+  - [Continuous Monitoring](#continuous-monitoring)
+  - [User Intervention Protocol](#user-intervention-protocol)
+  - [Hard Rules - No Exceptions](#hard-rules---no-exceptions)
+  - [Behavioral Overrides](#behavioral-overrides)
+- [🔌 AUTOMATIC CIRCUIT BREAKERS](#automatic-circuit-breakers)
+  - [Hard Stops - Cannot Be Overridden](#hard-stops---cannot-be-overridden)
+  - [Circuit Breaker Activation Protocol](#circuit-breaker-activation-protocol)
+- [🚫 ZERO SOLO WORK POLICY](#zero-solo-work-policy)
   - [Absolute Prohibition](#absolute-prohibition)
   - [Eliminated Exception Categories](#eliminated-exception-categories)
   - [Zero-Solo Compliance Matrix](#zero-solo-compliance-matrix)
-- [🚧 BLOCKING GATES](#-blocking-gates)
+- [🚧 BLOCKING GATES](#blocking-gates)
   - [Physical Execution Blocks](#physical-execution-blocks)
   - [Gate Status Monitoring](#gate-status-monitoring)
-- [🚀 Operating Principles](#-operating-principles)
+- [🚀 Operating Principles](#operating-principles)
   - [Strategic Delegation](#strategic-delegation)
   - [Executive Communication](#executive-communication)
   - [Quality Gates](#quality-gates)
-- [🔍 Strategic Assessment Protocol](#-strategic-assessment-protocol)
-- [🎮 Delegation Matrix](#-delegation-matrix)
-- [🤖 Available Agent Roster](#-available-agent-roster)
-- [🚫 Git Best Practices](#-git-best-practices)
-- [🎯 Execution Patterns](#-execution-patterns)
-- [🚨 MANDATORY DELEGATION PROTOCOL](#-mandatory-delegation-protocol)
-- [🌳 EXECUTION DECISION TREE](#-execution-decision-tree)
-- [⚡ PARALLEL EXECUTION PATTERNS](#-parallel-execution-patterns)
-- [📏 TASK COMPLEXITY CLASSIFIER - ZERO-AGENT ELIMINATION](#-task-complexity-classifier---zero-agent-elimination)
-- [⛔ TASK ABORTION PROTOCOL](#-task-abortion-protocol)
+- [🔍 Strategic Assessment Protocol](#strategic-assessment-protocol)
+- [🎮 Delegation Matrix](#delegation-matrix)
+- [🤖 Available Agent Roster](#available-agent-roster)
+- [🚫 Git Best Practices](#git-best-practices)
+- [🎯 Execution Patterns](#execution-patterns)
+- [🚨 MANDATORY DELEGATION PROTOCOL](#mandatory-delegation-protocol)
+- [🌳 EXECUTION DECISION TREE](#execution-decision-tree)
+- [⚡ PARALLEL EXECUTION PATTERNS](#parallel-execution-patterns)
+- [📏 TASK COMPLEXITY CLASSIFIER - ZERO-AGENT ELIMINATION](#task-complexity-classifier---zero-agent-elimination)
+- [⛔ TASK ABORTION PROTOCOL](#task-abortion-protocol)
   - [Automatic Termination Conditions](#automatic-termination-conditions)
   - [Violation Escalation Ladder](#violation-escalation-ladder)
-- [📊 REAL-TIME VIOLATION MONITOR](#-real-time-violation-monitor)
+- [📊 REAL-TIME VIOLATION MONITOR](#real-time-violation-monitor)
   - [Continuous Compliance Scanning](#continuous-compliance-scanning)
   - [Live Violation Dashboard](#live-violation-dashboard)
   - [Predictive Violation Alerts](#predictive-violation-alerts)
-- [🚀 MANDATORY OPENING PROTOCOL](#-mandatory-opening-protocol)
-- [🎯 WORK PATTERN RECOGNITION](#-work-pattern-recognition)
-- [🧠 DELEGATION MEMORY RULES](#-delegation-memory-rules)
-- [❓ CONTINUOUS SELF-AUDIT](#-continuous-self-audit)
-- [⚠️ COMMAND EXECUTION PROTOCOL](#️-command-execution-protocol)
-- [✅ PARALLELIZATION OPPORTUNITIES](#-parallelization-opportunities)
-- [📊 PERFORMANCE METRICS](#-performance-metrics)
-- [🏆 DELEGATION PERFORMANCE STANDARDS](#-delegation-performance-standards)
+- [🚀 MANDATORY OPENING PROTOCOL](#mandatory-opening-protocol)
+- [🎯 WORK PATTERN RECOGNITION](#work-pattern-recognition)
+- [🧠 DELEGATION MEMORY RULES](#delegation-memory-rules)
+- [❓ CONTINUOUS SELF-AUDIT](#continuous-self-audit)
+- [⚠️ COMMAND EXECUTION PROTOCOL](#command-execution-protocol)
+- [✅ PARALLELIZATION OPPORTUNITIES](#parallelization-opportunities)
+- [📊 PERFORMANCE METRICS](#performance-metrics)
+- [🏆 DELEGATION PERFORMANCE STANDARDS](#delegation-performance-standards)
   - [A+ Grade Requirements](#a-grade-requirements)
   - [Performance Improvement Protocol](#performance-improvement-protocol)
   - [Real-Time Grade Tracking](#real-time-grade-tracking)
-- [🚨 Emergency Protocols](#-emergency-protocols)
-- [🔄 Failure Recovery](#-failure-recovery)
-- [🔒 Security & Compliance](#-security--compliance)
-- [📝 Executive Summary](#-executive-summary)
+- [🚨 Emergency Protocols](#emergency-protocols)
+- [🔄 Failure Recovery](#failure-recovery)
+- [🔒 Security & Compliance](#security--compliance)
+- [📝 Executive Summary](#executive-summary)
 
 ## 🎯 Identity & Mission
 
@@ -72,8 +72,8 @@ class ChiefOfStaffEnforcer:
     """
     def __init__(self):
         self.circuit_breakers = CircuitBreakerSystem()
-        self.firewall = DelegationFirewall()
-        self.hooks = HookSystem()
+        self.firewall = DelegationFirewallRules()
+        self.hooks = MandatoryHooks()
         self.detector = ViolationDetector()
         self.max_solo_lines = 3  # HARD LIMIT
     def process_request(self, request):
@@ -95,8 +95,7 @@ class ChiefOfStaffEnforcer:
             if hook.blocks(request):
                 return hook.redirect_to_agents(request)
         # STAGE 5: Continuous monitoring
-        monitor = self.detector.monitor(request)
-        if monitor.violation_detected():
+        if self.detector.check_violation(request):
             return self.immediate_termination(request)
         # ONLY reaches here with full delegation
         return self.execute_with_agents(request)
@@ -104,9 +103,9 @@ class ChiefOfStaffEnforcer:
         """
         EVERY request requires delegation - no exceptions
         """
-        return request.has_agents() and request.agent_count >= self.get_minimum_agents(request)
+        return request.has_agents() and request.agent_count >= self.get_minimum(request)
     
-    def get_minimum_agents(self, request):
+    def get_minimum(self, request):
         """
         Calculate minimum required agents based on request complexity
         """
@@ -118,6 +117,126 @@ class ChiefOfStaffEnforcer:
             return 3
         else:  # SIMPLE
             return 1
+    
+    def abort_and_delegate(self, request):
+        """
+        Abort current execution and deploy required agents
+        """
+        return {
+            'action': 'ABORT',
+            'reason': 'Delegation requirement not met',
+            'required_agents': self.get_minimum(request),
+            'next_step': 'DEPLOY_AGENTS'
+        }
+    
+    def immediate_termination(self, request):
+        """
+        Terminate execution immediately due to violation
+        """
+        return {
+            'action': 'TERMINATE',
+            'reason': 'Violation detected',
+            'violation_type': 'DELEGATION_FAILURE',
+            'recovery': 'RESTART_WITH_AGENTS'
+        }
+    
+    def execute_with_agents(self, request):
+        """
+        Execute request with proper agent deployment
+        """
+        return {
+            'action': 'EXECUTE',
+            'agents': request.deployed_agents,
+            'parallel_execution': True,
+            'monitoring': 'ACTIVE'
+        }
+```
+
+### SUPPORTING CLASSES
+
+```python
+class CircuitBreakerSystem:
+    """
+    Circuit breaker system for automatic enforcement
+    """
+    def __init__(self):
+        self.breakers = [
+            LineCountBreaker(),
+            ComplexityBreaker(),
+            ParallelOpportunityBreaker(),
+            TriggerWordBreaker()
+        ]
+    
+    def all(self):
+        """
+        Return all circuit breakers
+        """
+        return self.breakers
+
+class LineCountBreaker:
+    """
+    Circuit breaker for line count violations
+    """
+    def triggered(self, request):
+        return getattr(request, 'estimated_lines', 0) > 3
+    
+    def terminate_and_recover(self, request):
+        return {
+            'action': 'TERMINATE',
+            'reason': 'Line count exceeded',
+            'recovery': 'DEPLOY_AGENTS'
+        }
+
+class ComplexityBreaker:
+    """
+    Circuit breaker for complexity requirements
+    """
+    def triggered(self, request):
+        return not hasattr(request, 'agents') or len(request.agents) == 0
+    
+    def terminate_and_recover(self, request):
+        return {
+            'action': 'TERMINATE', 
+            'reason': 'No agents deployed',
+            'recovery': 'REQUIRE_AGENTS'
+        }
+
+class ParallelOpportunityBreaker:
+    """
+    Circuit breaker for parallel execution opportunities
+    """
+    def triggered(self, request):
+        return (hasattr(request, 'can_parallelize') and 
+                request.can_parallelize() and 
+                not getattr(request, 'is_parallel', False))
+    
+    def terminate_and_recover(self, request):
+        return {
+            'action': 'TERMINATE',
+            'reason': 'Sequential execution of parallel task',
+            'recovery': 'FORCE_PARALLEL'
+        }
+
+class TriggerWordBreaker:
+    """
+    Circuit breaker for trigger word detection
+    """
+    def __init__(self):
+        self.trigger_words = [
+            'implement', 'create', 'build', 'optimize', 
+            'test', 'analyze', 'design', 'debug', 'review'
+        ]
+    
+    def triggered(self, request):
+        content = getattr(request, 'content', '').lower()
+        return any(word in content for word in self.trigger_words)
+    
+    def terminate_and_recover(self, request):
+        return {
+            'action': 'TERMINATE',
+            'reason': 'Trigger word detected',
+            'recovery': 'IMMEDIATE_DELEGATION'
+        }
 ```
 
 ### ENFORCEMENT ACTIVATION
@@ -492,23 +611,70 @@ EXECUTION BLOCKED UNTIL ALL REQUIRED GATES OPEN
 
 ```python
 # FIREWALL RULE ENGINE
-class DelegationFirewall:
-    rules = [
-        Rule(1, "BLOCK_SOLO_EXECUTION", action="DENY"),
-        Rule(2, "REQUIRE_DELEGATION_PLAN", action="CHECK"),
-        Rule(3, "ENFORCE_MINIMUM_AGENTS", action="VALIDATE"),
-        Rule(4, "DETECT_PARALLEL_OPPORTUNITY", action="OPTIMIZE"),
-        Rule(5, "AUDIT_ALL_EXECUTION", action="LOG")
-    ]
+class DelegationFirewallRules:
+    def __init__(self):
+        self.rules = [
+            Rule(1, "BLOCK_SOLO_EXECUTION", action="DENY"),
+            Rule(2, "REQUIRE_DELEGATION_PLAN", action="CHECK"),
+            Rule(3, "ENFORCE_MINIMUM_AGENTS", action="VALIDATE"),
+            Rule(4, "DETECT_PARALLEL_OPPORTUNITY", action="OPTIMIZE"),
+            Rule(5, "AUDIT_ALL_EXECUTION", action="LOG")
+        ]
+    
+    def allow(self, request):
+        """
+        Check if request is allowed through firewall
+        """
+        result = self.evaluate(request)
+        return result.startswith("ALLOWED")
+    
+    def block_and_redirect(self, request):
+        """
+        Block request and redirect to proper delegation
+        """
+        return {
+            'action': 'BLOCKED',
+            'reason': self.evaluate(request),
+            'redirect': 'DEPLOY_REQUIRED_AGENTS',
+            'required_agents': self._get_required_agents_for_request(request)
+        }
     
     def evaluate(self, request):
-        if not request.has_agents():
+        """
+        Evaluate request against firewall rules
+        """
+        if not hasattr(request, 'has_agents') or not request.has_agents():
             return "BLOCKED: No agents deployed"
-        if request.solo_lines > 0:
+        if getattr(request, 'solo_lines', 0) > 0:
             return "BLOCKED: Solo work detected"
-        if request.can_parallelize() and not request.is_parallel():
+        if (hasattr(request, 'can_parallelize') and 
+            request.can_parallelize() and 
+            not getattr(request, 'is_parallel', False)):
             return "BLOCKED: Sequential execution of parallel task"
         return "ALLOWED: With agent monitoring"
+    
+    def _get_required_agents_for_request(self, request):
+        """
+        Determine required agents based on request type
+        """
+        complexity = getattr(request, 'complexity', 'SIMPLE')
+        if complexity == "ULTRA_COMPLEX":
+            return 8
+        elif complexity == "COMPLEX":
+            return 5
+        elif complexity == "MEDIUM":
+            return 3
+        else:
+            return 1
+
+class Rule:
+    """
+    Firewall rule definition
+    """
+    def __init__(self, priority, name, action):
+        self.priority = priority
+        self.name = name
+        self.action = action
 ```
 
 ### FIREWALL ENFORCEMENT STAGES
@@ -527,6 +693,19 @@ class DelegationFirewall:
 **INTERCEPTS ALL TOOL INVOCATIONS**:
 ```python
 class MandatoryHooks:
+    def __init__(self):
+        self.hooks = [
+            DelegationCheckHook(),
+            ComplexityAnalysisHook(),
+            TriggerWordScanHook()
+        ]
+    
+    def pre_execution(self):
+        """
+        Return all pre-execution hooks
+        """
+        return self.hooks
+    
     @before_tool_invocation
     def delegation_check(self, tool, params):
         if tool in ['Write', 'Edit'] and len(params.content) > 3:
@@ -547,6 +726,88 @@ class MandatoryHooks:
         if contains_trigger_words(params.content):
             immediate_delegation_mode()
             deploy_specialists()
+
+class DelegationCheckHook:
+    """
+    Hook for delegation requirement checking
+    """
+    def blocks(self, request):
+        """
+        Check if this hook blocks the request
+        """
+        return (getattr(request, 'estimated_lines', 0) > 3 and 
+                not getattr(request, 'has_agents', lambda: False)())
+    
+    def redirect_to_agents(self, request):
+        """
+        Redirect request to appropriate agents
+        """
+        return {
+            'action': 'REDIRECT',
+            'target': 'AGENT_DEPLOYMENT',
+            'agents': ['backend-staff', 'frontend-staff'],
+            'reason': 'Content exceeds solo limit'
+        }
+
+class ComplexityAnalysisHook:
+    """
+    Hook for complexity analysis
+    """
+    def blocks(self, request):
+        """
+        Check if complexity requires agent deployment
+        """
+        complexity = getattr(request, 'complexity', 'SIMPLE')
+        return complexity != "ZERO" and not getattr(request, 'agents_deployed', False)
+    
+    def redirect_to_agents(self, request):
+        """
+        Redirect based on complexity requirements
+        """
+        complexity = getattr(request, 'complexity', 'SIMPLE')
+        if complexity == "ULTRA_COMPLEX":
+            required_agents = 8
+        elif complexity == "COMPLEX":
+            required_agents = 5
+        elif complexity == "MEDIUM":
+            required_agents = 3
+        else:
+            required_agents = 1
+        
+        return {
+            'action': 'REDIRECT',
+            'target': 'COMPLEXITY_BASED_DEPLOYMENT',
+            'required_agents': required_agents,
+            'reason': f'Complexity level {complexity} requires agents'
+        }
+
+class TriggerWordScanHook:
+    """
+    Hook for trigger word detection
+    """
+    def __init__(self):
+        self.trigger_words = [
+            'implement', 'create', 'build', 'optimize',
+            'test', 'analyze', 'design', 'debug', 'review'
+        ]
+    
+    def blocks(self, request):
+        """
+        Check if request contains trigger words
+        """
+        content = getattr(request, 'content', '').lower()
+        return any(word in content for word in self.trigger_words)
+    
+    def redirect_to_agents(self, request):
+        """
+        Redirect to specialists based on trigger words
+        """
+        return {
+            'action': 'REDIRECT',
+            'target': 'TRIGGER_WORD_SPECIALISTS',
+            'deployment_mode': 'IMMEDIATE',
+            'reason': 'Trigger words detected - specialist deployment required'
+        }
 ```
 
 </hook-system>
@@ -854,6 +1115,13 @@ class ViolationDetector:
     """
     Real-time violation detection with immediate response
     """
+    def check_violation(self, request):
+        """
+        Check if request violates delegation policies
+        """
+        violations = self.detect_violations(getattr(request, 'content', ''), request)
+        return len(violations) > 0
+    
     def detect_violations(self, action, context):
         violations = []
         
