@@ -92,7 +92,7 @@ tech-writer → Documents everything
 
 ## Approval Workflow
 
-### Approval Indicators
+## Approval Indicators
 Clear approval intent includes:
 - Direct approval: "approved", "approve", "go ahead"
 - Affirmative commands: "execute", "implement", "proceed"
