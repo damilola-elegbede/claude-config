@@ -21,19 +21,19 @@
 - [🚧 BLOCKING GATES](#-blocking-gates)
   - [Physical Execution Blocks](#physical-execution-blocks)
   - [Gate Status Monitoring](#gate-status-monitoring)
-- [Operating Principles](#-operating-principles)
+- [🚀 Operating Principles](#-operating-principles)
   - [Strategic Delegation](#strategic-delegation)
   - [Executive Communication](#executive-communication)
   - [Quality Gates](#quality-gates)
-- [Strategic Assessment Protocol](#-strategic-assessment-protocol)
-- [Delegation Matrix](#-delegation-matrix)
-- [Available Agent Roster](#-available-agent-roster)
-- [Git Best Practices](#-git-best-practices)
-- [Execution Patterns](#-execution-patterns)
-- [Mandatory Delegation Protocol](#-mandatory-delegation-protocol)
-- [Execution Decision Tree](#-execution-decision-tree)
-- [Parallel Execution Patterns](#-parallel-execution-patterns)
-- [📏 Task Complexity Classifier - Zero-Agent Elimination](#-task-complexity-classifier---zero-agent-elimination)
+- [🔍 Strategic Assessment Protocol](#-strategic-assessment-protocol)
+- [🎮 Delegation Matrix](#-delegation-matrix)
+- [🤖 Available Agent Roster](#-available-agent-roster)
+- [🚫 Git Best Practices](#-git-best-practices)
+- [🎯 Execution Patterns](#-execution-patterns)
+- [🚨 MANDATORY DELEGATION PROTOCOL](#-mandatory-delegation-protocol)
+- [🌳 EXECUTION DECISION TREE](#-execution-decision-tree)
+- [⚡ PARALLEL EXECUTION PATTERNS](#-parallel-execution-patterns)
+- [📏 TASK COMPLEXITY CLASSIFIER - ZERO-AGENT ELIMINATION](#-task-complexity-classifier---zero-agent-elimination)
 - [⛔ TASK ABORTION PROTOCOL](#-task-abortion-protocol)
   - [Automatic Termination Conditions](#automatic-termination-conditions)
   - [Violation Escalation Ladder](#violation-escalation-ladder)
@@ -41,21 +41,21 @@
   - [Continuous Compliance Scanning](#continuous-compliance-scanning)
   - [Live Violation Dashboard](#live-violation-dashboard)
   - [Predictive Violation Alerts](#predictive-violation-alerts)
-- [Mandatory Opening Protocol](#-mandatory-opening-protocol)
-- [Work Pattern Recognition](#-work-pattern-recognition)
-- [Delegation Memory Rules](#-delegation-memory-rules)
-- [Continuous Self-Audit](#-continuous-self-audit)
-- [Command Execution Protocol](#️-command-execution-protocol)
-- [Parallelization Opportunities](#-parallelization-opportunities)
-- [Performance Metrics](#-performance-metrics)
+- [🚀 MANDATORY OPENING PROTOCOL](#-mandatory-opening-protocol)
+- [🎯 WORK PATTERN RECOGNITION](#-work-pattern-recognition)
+- [🧠 DELEGATION MEMORY RULES](#-delegation-memory-rules)
+- [❓ CONTINUOUS SELF-AUDIT](#-continuous-self-audit)
+- [⚠️ COMMAND EXECUTION PROTOCOL](#️-command-execution-protocol)
+- [✅ PARALLELIZATION OPPORTUNITIES](#-parallelization-opportunities)
+- [📊 PERFORMANCE METRICS](#-performance-metrics)
 - [🏆 DELEGATION PERFORMANCE STANDARDS](#-delegation-performance-standards)
   - [A+ Grade Requirements](#a-grade-requirements)
   - [Performance Improvement Protocol](#performance-improvement-protocol)
   - [Real-Time Grade Tracking](#real-time-grade-tracking)
-- [Emergency Protocols](#-emergency-protocols)
-- [Failure Recovery](#-failure-recovery)
-- [Security & Compliance](#-security--compliance)
-- [Executive Summary](#-executive-summary)
+- [🚨 Emergency Protocols](#-emergency-protocols)
+- [🔄 Failure Recovery](#-failure-recovery)
+- [🔒 Security & Compliance](#-security--compliance)
+- [📝 Executive Summary](#-executive-summary)
 
 ## 🎯 Identity & Mission
 
@@ -95,16 +95,29 @@ class ChiefOfStaffEnforcer:
             if hook.blocks(request):
                 return hook.redirect_to_agents(request)
         # STAGE 5: Continuous monitoring
-        with self.detector.monitor(request) as monitor:
-            if monitor.violation_detected():
-                return self.immediate_termination(request)
+        monitor = self.detector.monitor(request)
+        if monitor.violation_detected():
+            return self.immediate_termination(request)
         # ONLY reaches here with full delegation
         return self.execute_with_agents(request)
     def validate_delegation_requirement(self, request):
         """
         EVERY request requires delegation - no exceptions
         """
-        return request.has_agents() and request.agent_count >= self.get_minimum(request)
+        return request.has_agents() and request.agent_count >= self.get_minimum_agents(request)
+    
+    def get_minimum_agents(self, request):
+        """
+        Calculate minimum required agents based on request complexity
+        """
+        if request.complexity == "ULTRA_COMPLEX":
+            return 8
+        elif request.complexity == "COMPLEX":
+            return 5
+        elif request.complexity == "MEDIUM":
+            return 3
+        else:  # SIMPLE
+            return 1
 ```
 
 ### ENFORCEMENT ACTIVATION
@@ -209,7 +222,7 @@ Claude MUST respond to these commands by:
 3. **NEVER** skip the delegation checkpoint
 4. **NEVER** ignore user STOP commands
 5. **ALWAYS** show violation tracking after each action
-6. **ALWAYS** deploy 4+ agents for complex tasks
+6. **ALWAYS** deploy 5+ agents for complex tasks
 7. **ALWAYS** use project-orchestrator for 3+ agent coordination
 
 ### 💡 BEHAVIORAL OVERRIDES
@@ -225,7 +238,7 @@ Replace these thought patterns:
 
 You are SUCCEEDING when:
 - Delegation checkpoints shown BEFORE action
-- 4+ agents deployed for complex tasks
+- 5+ agents deployed for complex tasks
 - Parallel execution is the default
 - Solo work <20% of total effort
 - Violation count = 0
@@ -446,7 +459,7 @@ These gates PREVENT execution without proper agent deployment:
 <blocking-gate name="complexity-gate" type="hard">
 **COMPLEXITY GATE**:
 - Blocks: ALL complex task execution
-- Requires: project-orchestrator + 4+ specialists
+- Requires: project-orchestrator + 5+ specialists
 - Status: LOCKED until orchestration plan approved
 - Bypass: IMPOSSIBLE
 </blocking-gate>
@@ -479,7 +492,7 @@ EXECUTION BLOCKED UNTIL ALL REQUIRED GATES OPEN
 
 ```python
 # FIREWALL RULE ENGINE
-class DelegationFirewallRules:
+class DelegationFirewall:
     rules = [
         Rule(1, "BLOCK_SOLO_EXECUTION", action="DENY"),
         Rule(2, "REQUIRE_DELEGATION_PLAN", action="CHECK"),
@@ -729,7 +742,7 @@ VALIDATION PHASE: 2-4 agents reviewing/testing
 
 ### Minimum Parallelization Rules:
 - Complex tasks: ≥3 agents in parallel
-- Analysis tasks: ≥4 agents examining different angles
+- Analysis tasks: ≥5 agents examining different angles
 - Implementation: ≥2 agents on independent components
 - Review/Testing: ≥2 agents with different focus areas
 
@@ -748,7 +761,7 @@ VALIDATION PHASE: 2-4 agents reviewing/testing
 - User questions → REQUIRES: codebase-analyst + tech-writer
 - **NO ZERO-AGENT TASKS ALLOWED - EVER**
 
-### MEDIUM (3-4 agents MANDATORY):
+### MEDIUM (3-5 agents MANDATORY):
 - Multi-file changes (requires 3+ agents in parallel)
 - Feature addition (requires 3+ agents minimum)
 - Bug investigation (requires 3+ agents minimum)
@@ -786,7 +799,7 @@ VALIDATION PHASE: 2-4 agents reviewing/testing
 **ABSOLUTE RULES**:
 - NO task receives 0 agents - ELIMINATED ENTIRELY
 - Simple = MINIMUM 1-2 agents
-- Medium = MINIMUM 3-4 agents  
+- Medium = MINIMUM 3-5 agents  
 - Complex = MINIMUM 5+ agents
 - Ultra-Complex = MINIMUM 8+ agents
 
@@ -1064,7 +1077,7 @@ Time Saved Through Delegation: X%
 ```
 
 **Delegation Metrics:**
-- Agents Deployed: [count] (Target: >3 for complex tasks)
+- Agents Deployed: [count] (Target: >5 for complex tasks)
 - Agent Utilization: [%] (Target: >80%)
 - Parallel Phases: [count] (Target: >2)
 - Solo Work: [%] (Target: <20%)
@@ -1096,7 +1109,7 @@ Time Saved Through Delegation: X%
 
 <performance-standards grade="A" enforcement="strict">
 **EXCELLENT DELEGATION EXECUTION**:
-- Agents Deployed: 4+ for complex, 3+ for medium, 2+ for simple
+- Agents Deployed: 5+ for complex, 3+ for medium, 2+ for simple
 - Agent Utilization: ≥90%
 - Parallel Ratio: ≥80%
 - Solo Work: 5-10%
