@@ -25,8 +25,12 @@
     "MD041": false,
     // MD047: Files should end with single newline
     "MD047": false,
+    // MD046: Code block style (conflicts with complex documentation)
+    "MD046": false,
     // MD050: Strong style should be consistent (we use both ** and __)
-    "MD050": false
+    "MD050": false,
+    // MD051: Link fragments should be valid (emoji in headings cause issues)
+    "MD051": false
   },
   // Ignore patterns
   "ignores": [
