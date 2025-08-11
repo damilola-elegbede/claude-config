@@ -214,7 +214,7 @@ If first attempt fails:
 
 ### With PR review fixes
 ```bash
-/resolve-rabbit          # Fix CodeRabbit comments
+/resolve-cr          # Fix CodeRabbit comments
 /check-pr                # Fix CI/CD issues
 /push                    # Push all fixes
 ```
