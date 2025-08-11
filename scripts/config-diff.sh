@@ -66,20 +66,20 @@ main() {
     # Compare Commands
     echo -e "${CYAN}Commands:${NC}"
     
-    # Count command files (excluding sync.md which is repo-only)
+    # Count command files (excluding sync.md and config-diff.md which are repo-only)
     repo_cmd_count=0
     user_cmd_count=0
     
     if [[ -d "$REPO_COMMANDS_DIR" ]]; then
-        # Count all except sync.md for comparison
-        repo_cmd_count=$(ls -1 "$REPO_COMMANDS_DIR"/*.md 2>/dev/null | grep -v "sync.md$" | wc -l | tr -d ' ')
+        # Count all except sync.md and config-diff.md for comparison
+        repo_cmd_count=$(ls -1 "$REPO_COMMANDS_DIR"/*.md 2>/dev/null | grep -v -E "(sync|config-diff)\.md$" | wc -l | tr -d ' ')
     fi
     
     if [[ -d "$USER_COMMANDS_DIR" ]]; then
         user_cmd_count=$(ls -1 "$USER_COMMANDS_DIR"/*.md 2>/dev/null | wc -l | tr -d ' ')
     fi
     
-    echo "  Repository: $repo_cmd_count files (excluding sync.md)"
+    echo "  Repository: $repo_cmd_count files (excluding sync.md and config-diff.md)"
     echo "  User: $user_cmd_count files"
     
     if [[ $repo_cmd_count -eq $user_cmd_count ]]; then
@@ -95,7 +95,7 @@ main() {
         missing_cmds=""
         for cmd in "$REPO_COMMANDS_DIR"/*.md; do
             basename_cmd=$(basename "$cmd")
-            if [[ "$basename_cmd" != "sync.md" ]] && [[ ! -f "$USER_COMMANDS_DIR/$basename_cmd" ]]; then
+            if [[ "$basename_cmd" != "sync.md" ]] && [[ "$basename_cmd" != "config-diff.md" ]] && [[ ! -f "$USER_COMMANDS_DIR/$basename_cmd" ]]; then
                 missing_cmds="$missing_cmds    - $basename_cmd\n"
                 ((MISSING_FILES++))
             fi

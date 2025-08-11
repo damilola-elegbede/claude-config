@@ -29,7 +29,7 @@ When you use `/sync`, I will:
    - **Remove old agents**: Delete `~/.claude/agents/` directory completely
    - **Remove old commands**: Delete all files in `~/.claude/commands/` (preserving the directory)
    - Copy only actual agent files from `./.claude/agents/` to `~/.claude/agents/` (excluding documentation/template files)
-   - Copy all files from `./.claude/commands/` to `~/.claude/commands/` (explicitly excluding `sync.md`)
+   - Copy all files from `./.claude/commands/` to `~/.claude/commands/` (explicitly excluding `sync.md` and `config-diff.md`)
    - Copy `./settings.json` to `~/.claude/settings.json` (merge with existing settings)
    - **Important**: This ensures no deprecated agents or commands remain, and only actual agents are synced
    - **Excluded from agents sync**:
@@ -47,8 +47,7 @@ When you use `/sync`, I will:
 
 ## Files Synced
 - `CLAUDE.md` - Main configuration with coding standards
-- `.claude/commands/*.md` - All command files (except sync.md which is repo-specific)
-  - **Includes**: config-diff.md and all other user commands
+- `.claude/commands/*.md` - All command files (except repo-specific commands below)
 - `.claude/agents/*.md` - Only actual agent configurations (excludes documentation/template files)
 - `settings.json` - Claude Code settings with audio notification hooks
 
@@ -57,7 +56,8 @@ When you use `/sync`, I will:
 - `.claude/agents/AGENT_CATEGORIES.md` - Documentation of agent categories
 - `.claude/agents/AUDIT_VERIFICATION_PROTOCOL.md` - Audit documentation
 - `.claude/agents/README.md` - Agent directory documentation
-- `.claude/commands/sync.md` - Repository-specific sync command (this file itself)
+- `.claude/commands/sync.md` - Repository-specific sync command
+- `.claude/commands/config-diff.md` - Repository-specific config comparison command
 
 ## Important Notes
 - **This command is specific to the claude-config repository**
@@ -86,11 +86,11 @@ Syncing configuration files...
 ✓ Copied CLAUDE.md to ~/CLAUDE.md
 ✓ Removed old agents from ~/.claude/agents/
 ✓ Removed old commands from ~/.claude/commands/
-✓ Copied 36 command files to ~/.claude/commands/ (excluding sync.md)
+✓ Copied 35 command files to ~/.claude/commands/ (excluding sync.md and config-diff.md)
 ✓ Copied 35 agent files to ~/.claude/agents/
 ✓ Copied settings.json to ~/.claude/settings.json
 ✓ Excluded documentation files: AGENT_TEMPLATE.md, AGENT_CATEGORIES.md, AUDIT_VERIFICATION_PROTOCOL.md, README.md
-✓ Excluded repo-specific: sync.md
+✓ Excluded repo-specific: sync.md, config-diff.md
 
 Sync completed successfully!
 Audio notifications and specialized agents are now configured and ready to use.
@@ -123,10 +123,10 @@ done
 # Remove old command files (but preserve directory)
 rm -f ~/.claude/commands/*.md
 
-# Copy commands except sync.md
+# Copy commands except sync.md and config-diff.md
 for file in ./.claude/commands/*.md; do
     filename=$(basename "$file")
-    if [ "$filename" != "sync.md" ]; then
+    if [ "$filename" != "sync.md" ] && [ "$filename" != "config-diff.md" ]; then
         cp "$file" ~/.claude/commands/
     fi
 done
