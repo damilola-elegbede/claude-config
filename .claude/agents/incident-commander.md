@@ -1,7 +1,7 @@
 ---
 name: incident-commander
 description: MUST BE USED for production incidents, system outages, and crisis management. Use PROACTIVELY for war room coordination, severity assessment, and leading comprehensive post-mortem analysis
-tools: Read, Grep, Glob, LS, TodoWrite, Write, Edit
+tools: Read, Grep, Glob, LS, Write, Edit
 model: sonnet
 color: red
 category: operations

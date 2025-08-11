@@ -1,7 +1,7 @@
 ---
 name: test-engineer
 description: MUST BE USED for comprehensive test strategy design and intelligent test implementation across frameworks. Use PROACTIVELY for untested code paths, CI/CD pipeline changes, and quality gate failures
-tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash
 model: sonnet
 color: green
 category: quality

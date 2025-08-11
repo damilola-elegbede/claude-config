@@ -1,7 +1,7 @@
 ---
 name: backend-engineer
 description: MUST BE USED for server-side architecture, microservices, distributed systems, and database engineering. Use PROACTIVELY for high-performance optimization (>10k RPS), event-driven architecture, and complex backend infrastructure
-tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash
 model: sonnet
 color: blue
 category: development

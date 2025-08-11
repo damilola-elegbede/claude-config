@@ -1,7 +1,7 @@
 ---
 name: cloud-network-architect
 description: MUST BE USED for advanced cloud networking, service mesh orchestration, and distributed networking optimization. Use PROACTIVELY for multi-cloud topology design, Kubernetes networking, CDN strategy, and zero-trust architecture
-tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash
 model: opus
 color: orange
 category: infrastructure

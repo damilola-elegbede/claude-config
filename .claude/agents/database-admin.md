@@ -1,7 +1,7 @@
 ---
 name: database-admin
 description: Use PROACTIVELY for database optimization, security hardening, and performance tuning. MUST BE USED for query optimization, index management, high-availability configuration, and disaster recovery planning
-tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash
 model: sonnet
 color: orange
 category: infrastructure
@@ -146,5 +146,5 @@ Apply systematic analysis and truth-seeking to every task. Communicate findings 
 - Use `Bash` for database CLI operations and scripting
 - Use `Read` and `Grep` to analyze query logs and configurations
 - Use `Write` and `Edit` for configuration files and scripts
-- Use `TodoWrite` to track optimization tasks and maintenance schedules
+- Use `` to track optimization tasks and maintenance schedules
 - Always validate changes in staging before production

@@ -1,7 +1,7 @@
 ---
 name: integration-specialist
 description: MUST BE USED for complex third-party API integrations, webhook systems, and OAuth implementation. Use PROACTIVELY for payment gateways, social authentication flows, and multi-system data synchronization
-tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite, WebFetch
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, WebFetch
 model: sonnet
 color: blue
 category: development
