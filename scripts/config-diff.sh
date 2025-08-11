@@ -72,11 +72,22 @@ main() {
     
     if [[ -d "$REPO_COMMANDS_DIR" ]]; then
         # Count all except sync.md and config-diff.md for comparison
-        repo_cmd_count=$(ls -1 "$REPO_COMMANDS_DIR"/*.md 2>/dev/null | grep -v -E "(sync|config-diff)\.md$" | wc -l | tr -d ' ')
+        shopt -s nullglob
+        repo_commands=("$REPO_COMMANDS_DIR"/*.md)
+        for cmd in "${repo_commands[@]}"; do
+            basename_cmd=$(basename "$cmd")
+            if [[ "$basename_cmd" != "sync.md" ]] && [[ "$basename_cmd" != "config-diff.md" ]]; then
+                ((repo_cmd_count++))
+            fi
+        done
+        shopt -u nullglob
     fi
     
     if [[ -d "$USER_COMMANDS_DIR" ]]; then
-        user_cmd_count=$(ls -1 "$USER_COMMANDS_DIR"/*.md 2>/dev/null | wc -l | tr -d ' ')
+        shopt -s nullglob
+        user_commands=("$USER_COMMANDS_DIR"/*.md)
+        user_cmd_count=${#user_commands[@]}
+        shopt -u nullglob
     fi
     
     echo "  Repository: $repo_cmd_count files (excluding sync.md and config-diff.md)"
@@ -93,13 +104,18 @@ main() {
     # List any missing commands
     if [[ -d "$REPO_COMMANDS_DIR" ]] && [[ -d "$USER_COMMANDS_DIR" ]]; then
         missing_cmds=""
-        for cmd in "$REPO_COMMANDS_DIR"/*.md; do
-            basename_cmd=$(basename "$cmd")
-            if [[ "$basename_cmd" != "sync.md" ]] && [[ "$basename_cmd" != "config-diff.md" ]] && [[ ! -f "$USER_COMMANDS_DIR/$basename_cmd" ]]; then
-                missing_cmds="$missing_cmds    - $basename_cmd\n"
-                ((MISSING_FILES++))
-            fi
-        done
+        shopt -s nullglob
+        repo_commands=("$REPO_COMMANDS_DIR"/*.md)
+        if [[ ${#repo_commands[@]} -gt 0 ]]; then
+            for cmd in "${repo_commands[@]}"; do
+                basename_cmd=$(basename "$cmd")
+                if [[ "$basename_cmd" != "sync.md" ]] && [[ "$basename_cmd" != "config-diff.md" ]] && [[ ! -f "$USER_COMMANDS_DIR/$basename_cmd" ]]; then
+                    missing_cmds="$missing_cmds    - $basename_cmd\n"
+                    ((MISSING_FILES++))
+                fi
+            done
+        fi
+        shopt -u nullglob
         if [[ -n "$missing_cmds" ]]; then
             echo "  Missing in user config:"
             echo -e "$missing_cmds"
@@ -117,13 +133,22 @@ main() {
     
     if [[ -d "$REPO_AGENTS_DIR" ]]; then
         # Exclude documentation files
-        repo_agent_count=$(ls -1 "$REPO_AGENTS_DIR"/*.md 2>/dev/null | \
-            grep -v -E "(AGENT_TEMPLATE|AGENT_CATEGORIES|AUDIT_VERIFICATION|README)" | \
-            wc -l | tr -d ' ')
+        shopt -s nullglob
+        repo_agents=("$REPO_AGENTS_DIR"/*.md)
+        for agent in "${repo_agents[@]}"; do
+            basename_agent=$(basename "$agent")
+            if [[ ! "$basename_agent" =~ (AGENT_TEMPLATE|AGENT_CATEGORIES|AUDIT_VERIFICATION|README) ]]; then
+                ((repo_agent_count++))
+            fi
+        done
+        shopt -u nullglob
     fi
     
     if [[ -d "$USER_AGENTS_DIR" ]]; then
-        user_agent_count=$(ls -1 "$USER_AGENTS_DIR"/*.md 2>/dev/null | wc -l | tr -d ' ')
+        shopt -s nullglob
+        user_agents=("$USER_AGENTS_DIR"/*.md)
+        user_agent_count=${#user_agents[@]}
+        shopt -u nullglob
     fi
     
     echo "  Repository: $repo_agent_count files (excluding docs)"
@@ -163,7 +188,7 @@ main() {
     echo -e "${BLUE}=== Summary ===${NC}"
     
     # Calculate sync status
-    if [[ $DIFFERENT_FILES -eq 0 ]] && [[ $MISSING_FILES -eq 0 ]]; then
+    if [[ $DIFFERENT_FILES -eq 0 ]] && [[ $MISSING_FILES -eq 0 ]] && [[ $EXTRA_FILES -eq 0 ]]; then
         echo -e "${GREEN}✅ Your configuration is fully synchronized!${NC}"
     else
         echo -e "${YELLOW}⚠️  Configuration differences detected:${NC}"

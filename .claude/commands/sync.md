@@ -124,9 +124,10 @@ done
 rm -f ~/.claude/commands/*.md
 
 # Copy commands except sync.md and config-diff.md
+shopt -s nullglob
 for file in ./.claude/commands/*.md; do
     filename=$(basename "$file")
-    if [ "$filename" != "sync.md" ] && [ "$filename" != "config-diff.md" ]; then
+    if [[ -f "$file" ]] && [[ "$filename" != "sync.md" && "$filename" != "config-diff.md" ]]; then
         cp "$file" ~/.claude/commands/
     fi
 done
