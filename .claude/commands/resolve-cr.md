@@ -22,15 +22,16 @@ When you use `/resolve-cr`, I will:
 - **NEVER** assume comments are already resolved without explicit verification
 - **NEVER** stop after finding zero comments on first attempt - ALWAYS retry with different search methods
 - **MUST** check ALL comment types: review comments, inline comments, conversation comments
-- **MUST** use multiple GitHub API endpoints to ensure complete coverage:
+- **MUST** use PARALLEL API calls for performance:
   - `/pulls/{pr}/reviews` (review-level comments)  
   - `/pulls/{pr}/comments` (inline review comments)
   - `/issues/{pr}/comments` (conversation comments as backup)
-- **REQUIRED** search patterns:
-  - Primary: exact string "@coderabbitai" 
-  - Secondary: "coderabbitai" (without @)
-  - Tertiary: check comment author/user fields for CodeRabbit bot
-- **MANDATORY** verification: If 0 comments found, MUST attempt at least 3 different search approaches
+  - All three endpoints queried simultaneously, not sequentially
+- **OPTIMIZED** search using pre-compiled pattern: `(@coderabbitai|coderabbitai\[bot\]|Prompts for AI Agents)`
+- **DIRECT JSON FILTERING**: Use `--jq` for immediate filtering instead of grep post-processing
+- **GRAPHQL FALLBACK**: If REST APIs return no results, use single GraphQL query for comprehensive search
+- **BATCH PROCESSING**: Apply all file changes using MultiEdit pattern, not individual edits
+- **MANDATORY** verification: If 0 comments found, MUST attempt GraphQL query as secondary approach
 - **FORBIDDEN**: Giving up search without exhaustive verification across all endpoints
 
 **Agent Deployment**: Uses specialized agents for different fix types:
@@ -86,9 +87,36 @@ When you use `/resolve-cr`, I will:
    - Show priority distribution of issues
 
 4. **Post initial resolution comment** (immediately after summary):
-   - Post "@coderabbitai resolve" comment on the PR
+   - Post "@coderabbitai resolve" comment on the PR with detailed summary:
+     • Total number of issues being addressed
+     • Breakdown by category (Security, Error Handling, Performance, etc.)
+     • List of affected files with specific changes planned
+     • Clear indication that automated resolution is in progress
    - This notifies CodeRabbit that issues are being addressed
    - Posted BEFORE starting actual work on the fixes
+   - Example format:
+     ```markdown
+     @coderabbitai resolve
+     
+     ## 📋 Planned Changes Summary
+     
+     **Addressing 6 CodeRabbit review comments**
+     
+     ### 📊 Issues by Category
+     - **Security**: 2 issues
+     - **Code Quality**: 2 issues
+     - **Documentation**: 2 issues
+     
+     ### 📁 Changes by File
+     #### `security-auditor.md` (1 change)
+     - Add safety guardrails for testing environments
+     
+     #### `incident-commander.md` (1 change)
+     - Add explicit blameless qualifier for incident communications
+     
+     ---
+     *🤖 Automated resolution in progress using Claude Code...*
+     ```
 
 5. **Analyze ALL suggestions**:
    - Process EVERY "Prompts for AI Agents" section found
@@ -380,6 +408,58 @@ Planned features (not yet implemented):
    - Parse "Consider adding..." patterns
 
 **EXECUTION REQUIREMENT**: MUST attempt ALL patterns above before concluding no CodeRabbit comments exist.
+
+## Optimized Implementation
+
+### Performance Enhancements
+The command uses several optimization strategies for 3x faster execution:
+
+#### 1. Parallel API Calls
+```bash
+# All three endpoints queried simultaneously
+gh api /pulls/{pr}/reviews &
+gh api /pulls/{pr}/comments &
+gh api /issues/{pr}/comments &
+wait
+```
+
+#### 2. Direct JSON Filtering
+```bash
+# Immediate filtering with jq instead of post-processing
+gh api ... --jq '.[] | select(.user.login == "coderabbitai[bot]")'
+```
+
+#### 3. Pre-compiled Search Pattern
+```bash
+# Single regex for all CodeRabbit signatures
+PATTERN='(@coderabbitai|coderabbitai\[bot\]|Prompts for AI Agents)'
+```
+
+#### 4. GraphQL Fallback
+```graphql
+# Single query for comprehensive search if REST fails
+query {
+  repository(owner, name) {
+    pullRequest(number) {
+      reviews { nodes { body author { login } } }
+      reviewThreads { nodes { comments { nodes { body path line } } } }
+    }
+  }
+}
+```
+
+#### 5. Batch File Updates
+```python
+# Apply all changes in one operation
+MultiEdit(files=[
+  (file1, edits1),
+  (file2, edits2),
+  ...
+])
+```
+
+### Implementation Script
+Optimized implementation available at: `scripts/resolve-cr-optimized.sh`
 
 ## Notes
 
