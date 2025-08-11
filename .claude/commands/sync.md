@@ -48,6 +48,7 @@ When you use `/sync`, I will:
 ## Files Synced
 - `CLAUDE.md` - Main configuration with coding standards
 - `.claude/commands/*.md` - All command files (except sync.md which is repo-specific)
+  - **Includes**: config-diff.md and all other user commands
 - `.claude/agents/*.md` - Only actual agent configurations (excludes documentation/template files)
 - `settings.json` - Claude Code settings with audio notification hooks
 
@@ -56,7 +57,7 @@ When you use `/sync`, I will:
 - `.claude/agents/AGENT_CATEGORIES.md` - Documentation of agent categories
 - `.claude/agents/AUDIT_VERIFICATION_PROTOCOL.md` - Audit documentation
 - `.claude/agents/README.md` - Agent directory documentation
-- `.claude/commands/sync.md` - Repository-specific sync command
+- `.claude/commands/sync.md` - Repository-specific sync command (this file itself)
 
 ## Important Notes
 - **This command is specific to the claude-config repository**
@@ -85,7 +86,7 @@ Syncing configuration files...
 ✓ Copied CLAUDE.md to ~/CLAUDE.md
 ✓ Removed old agents from ~/.claude/agents/
 ✓ Removed old commands from ~/.claude/commands/
-✓ Copied 11 command files to ~/.claude/commands/ (excluding sync.md)
+✓ Copied 36 command files to ~/.claude/commands/ (excluding sync.md)
 ✓ Copied 35 agent files to ~/.claude/agents/
 ✓ Copied settings.json to ~/.claude/settings.json
 ✓ Excluded documentation files: AGENT_TEMPLATE.md, AGENT_CATEGORIES.md, AUDIT_VERIFICATION_PROTOCOL.md, README.md
