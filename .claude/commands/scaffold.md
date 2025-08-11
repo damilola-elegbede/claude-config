@@ -1,5 +1,9 @@
 # /scaffold Command
 
+## Description
+
+Intelligent multi-framework project and component scaffolding system that generates production-ready boilerplate code with tests, documentation, and best practices. Orchestrates multiple agents in parallel to analyze patterns, generate code, and integrate results across React, Vue, Angular, Node.js, Python, and other frameworks.
+
 <description>
 Intelligent multi-framework project and component scaffolding system that generates production-ready boilerplate code with tests, documentation, and best practices. Orchestrates multiple agents in parallel to analyze patterns, generate code, and integrate results across React, Vue, Angular, Node.js, Python, and other frameworks.
 </description>
