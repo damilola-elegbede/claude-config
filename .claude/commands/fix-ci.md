@@ -1,18 +1,18 @@
-# /check-pr Command
+# /fix-ci Command
 
 ## Description
 Automatically analyzes CI/CD failures on the current PR and deploys specialist agents to resolve issues. MUST BE USED when CI/CD checks fail. Use PROACTIVELY after push to ensure PR passes all automated checks.
 
 ## Usage
 ```
-/check-pr [pr-number]
+/fix-ci [pr-number]
 ```
 
 ## Arguments
 - `pr-number` (optional): Specific PR number to check. If not provided, uses the current branch's PR.
 
 ## Behavior
-When you use `/check-pr`, I will:
+When you use `/fix-ci`, I will:
 
 1. **Identify the PR**:
    - Use current branch's PR if no argument provided
@@ -173,7 +173,7 @@ If first attempt fails:
 
 ### Simple linting fix
 ```bash
-/check-pr
+/fix-ci
 # Detects ESLint violations
 # Deploys frontend-architect
 # Auto-formats code
@@ -183,7 +183,7 @@ If first attempt fails:
 
 ### Complex multi-failure scenario
 ```bash
-/check-pr 123
+/fix-ci 123
 # Detects: build failure + 3 test failures + security issue
 # Deploys: devops + debugger + security-auditor (parallel)
 # Fixes: dependency issue + test assertions + CVE patch
@@ -194,7 +194,7 @@ If first attempt fails:
 
 ### Persistent failure handling
 ```bash
-/check-pr
+/fix-ci
 # Initial fix attempt
 # Some checks still failing
 # Analyzes new failure pattern
@@ -208,15 +208,15 @@ If first attempt fails:
 ### Typical workflow
 ```bash
 /push                    # Push changes (includes linting)
-/check-pr                # Fix any CI/CD failures
+/fix-ci                  # Fix any CI/CD failures
 /ship                    # Complete deployment pipeline
 ```
 
 ### With PR review fixes
 ```bash
-/resolve-rabbit          # Fix CodeRabbit comments
-/check-pr                # Fix CI/CD issues
-/push                    # Push all fixes
+/resolve-cr          # Fix CodeRabbit comments
+/fix-ci              # Fix CI/CD issues
+/push                # Push all fixes
 ```
 
 ## Configuration
