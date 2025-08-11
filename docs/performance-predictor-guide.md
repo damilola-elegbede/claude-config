@@ -41,7 +41,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
       - Performance trend analysis and forecasting
     </capabilities>
   </domain>
-  
+
   <domain name="predictive-modeling">
     <capabilities>
       - Time-series forecasting using LSTM and Transformer models
@@ -50,7 +50,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
       - Statistical process control for performance monitoring
     </capabilities>
   </domain>
-  
+
   <domain name="optimization-recommendations">
     <capabilities>
       - Multi-objective optimization for resource allocation
@@ -74,14 +74,14 @@ The performance-predictor agent leverages advanced machine learning models to fo
       - Network I/O (packets/sec, bandwidth, latency)
       - Agent execution metrics (queue depth, processing time)
     </input-features>
-    
+
     <model-architecture>
       - Feature engineering: Rolling statistics (5min, 15min, 1hr windows)
       - Primary model: XGBoost with 500 trees and early stopping
       - Secondary model: LSTM neural network (2 layers, 128 units)
       - Ensemble: Weighted average (70% XGBoost, 30% LSTM)
     </model-architecture>
-    
+
     <output-predictions>
       - Bottleneck probability (0.0-1.0) for each resource type
       - Time to bottleneck (minutes ahead)
@@ -89,7 +89,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
       - Confidence interval (95% bounds)
     </output-predictions>
   </architecture>
-  
+
   <performance-metrics>
     - Accuracy: 96.3% on validation set
     - Precision: 94.1% (low false positives)
@@ -109,14 +109,14 @@ The performance-predictor agent leverages advanced machine learning models to fo
       - Maintain SLA compliance (>99.9% uptime)
       - Optimize energy efficiency
     </optimization-objectives>
-    
+
     <input-context>
       - Historical resource usage patterns
       - Agent workload characteristics
       - Cost models (cloud pricing, on-premise TCO)
       - Performance requirements and constraints
     </input-context>
-    
+
     <recommendation-engine>
       - Multi-objective optimization using NSGA-II
       - Constraint satisfaction with genetic algorithms
@@ -124,7 +124,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
       - Monte Carlo simulation for uncertainty quantification
     </recommendation-engine>
   </architecture>
-  
+
   <optimization-outcomes>
     - Resource allocation recommendations (CPU, memory, storage)
     - Scaling strategies (horizontal vs vertical)
@@ -143,7 +143,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
       - Statistical process control (3-sigma rules)
       - Time-series anomaly detection using Prophet
     </anomaly-detection>
-    
+
     <failure-classification>
       - Binary classification: failure/no-failure in next 4 hours
       - Multi-class: failure type (OOM, disk full, network timeout)
@@ -151,7 +151,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
       - Root cause attribution with SHAP explanations
     </failure-classification>
   </architecture>
-  
+
   <early-warning-system>
     - Alert thresholds: 80% probability for critical failures
     - Escalation levels: warning (60%), critical (80%), emergency (95%)
@@ -177,7 +177,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
             - memory_usage_bytes
             - disk_io_ops_per_sec
             - network_bytes_per_sec
-            
+
         - name: agent-metrics
           type: custom
           collection_interval: 5s
@@ -188,7 +188,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
             - resource_consumption
       ```
     </metrics-collection>
-    
+
     <feature-computation>
       ```python
       # Real-time feature engineering pipeline
@@ -199,14 +199,14 @@ The performance-predictor agent leverages advanced machine learning models to fo
               .window(duration=300)  # 5-minute windows
               .aggregate(['mean', 'max', 'std', 'percentile_95'])
               .with_derived_features([
-                  'cpu_trend', 'memory_growth_rate', 
+                  'cpu_trend', 'memory_growth_rate',
                   'io_intensity', 'network_congestion'
               ])
           )
       ```
     </feature-computation>
   </data-pipeline>
-  
+
   <prediction-serving>
     <real-time-api>
       ```python
@@ -217,10 +217,10 @@ The performance-predictor agent leverages advanced machine learning models to fo
               entity_id=request.system_id,
               feature_names=['cpu_metrics', 'memory_metrics', 'io_metrics']
           )
-          
+
           # Generate prediction
           prediction = model.predict(features)
-          
+
           return {
               'bottleneck_probability': prediction.probability,
               'time_to_bottleneck': prediction.minutes_ahead,
@@ -230,7 +230,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
           }
       ```
     </real-time-api>
-    
+
     <streaming-predictions>
       ```python
       # WebSocket streaming for live updates
@@ -239,14 +239,14 @@ The performance-predictor agent leverages advanced machine learning models to fo
           while True:
               current_metrics = await get_live_metrics()
               prediction = await model.predict_async(current_metrics)
-              
+
               if prediction.probability > 0.6:  # Warning threshold
                   await websocket.send({
                       'type': 'performance_alert',
                       'prediction': prediction.dict(),
                       'timestamp': datetime.utcnow()
                   })
-              
+
               await asyncio.sleep(30)  # Update every 30 seconds
       ```
     </streaming-predictions>
@@ -262,13 +262,13 @@ The performance-predictor agent leverages advanced machine learning models to fo
       class PerformanceAwareOrchestrator:
           def __init__(self, performance_predictor):
               self.predictor = performance_predictor
-          
+
           async def select_agent(self, task_requirements):
               # Get current system predictions
               bottleneck_forecast = await self.predictor.predict_bottlenecks(
                   horizon_minutes=30
               )
-              
+
               # Filter agents based on predicted performance
               available_agents = []
               for agent in self.get_available_agents():
@@ -277,20 +277,20 @@ The performance-predictor agent leverages advanced machine learning models to fo
                       task_type=task_requirements.type,
                       current_load=agent.current_load
                   )
-                  
+
                   if expected_performance.success_probability > 0.9:
                       available_agents.append({
                           'agent': agent,
                           'expected_performance': expected_performance
                       })
-              
+
               # Select optimal agent
-              return max(available_agents, 
+              return max(available_agents,
                         key=lambda x: x['expected_performance'].efficiency_score)
       ```
     </performance-aware-routing>
   </agent-selection>
-  
+
   <resource-optimization>
     <dynamic-scaling>
       ```python
@@ -300,14 +300,14 @@ The performance-predictor agent leverages advanced machine learning models to fo
               workload_forecast = await self.predictor.forecast_workload(
                   horizon_hours=4
               )
-              
+
               # Calculate optimal resource allocation
               optimization = await self.predictor.optimize_resources(
                   current_allocation=self.get_current_allocation(),
                   predicted_workload=workload_forecast,
                   constraints=self.scaling_constraints
               )
-              
+
               # Apply scaling recommendations
               if optimization.confidence > 0.85:
                   await self.apply_scaling_recommendations(
@@ -337,7 +337,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
             - disk_io
             - network_io
             - agent_metrics
-          
+
         resource_optimizer:
           optimization_objectives:
             - minimize_cost: 0.3
@@ -346,7 +346,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
           constraints:
             max_cost_increase: 0.1  # 10% maximum cost increase
             min_performance_level: 0.95
-          
+
         failure_predictor:
           alert_thresholds:
             warning: 0.6
@@ -355,7 +355,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
           time_horizons: [15, 60, 240]  # minutes
     ```
   </model-parameters>
-  
+
   <feature-engineering>
     ```yaml
     feature_engineering:
@@ -364,22 +364,22 @@ The performance-predictor agent leverages advanced machine learning models to fo
         - 15_minutes
         - 1_hour
         - 4_hours
-      
+
       aggregations:
         - mean
         - max
         - std
         - percentile_95
-      
+
       derived_features:
         cpu_trend:
           type: linear_regression_slope
           window: 15_minutes
-        
+
         memory_growth_rate:
           type: percentage_change
           window: 1_hour
-        
+
         io_intensity:
           type: composite
           formula: "sqrt(disk_read_iops^2 + disk_write_iops^2)"
@@ -398,26 +398,26 @@ The performance-predictor agent leverages advanced machine learning models to fo
           webhook_url: "${SLACK_WEBHOOK_URL}"
           channel: "#performance-alerts"
           mention_users: ["@devops", "@sre-team"]
-        
+
         email:
           smtp_server: "smtp.company.com"
           recipients: ["ops@company.com", "alerts@company.com"]
-        
+
         pagerduty:
           integration_key: "${PAGERDUTY_KEY}"
           escalation_policy: "performance-escalation"
-      
+
       rules:
         critical_bottleneck:
           condition: "bottleneck_probability > 0.9"
           channels: ["slack", "pagerduty"]
           frequency: "immediate"
-        
+
         resource_optimization:
           condition: "optimization_opportunity > 0.2"
           channels: ["slack"]
           frequency: "daily"
-          
+
         failure_warning:
           condition: "failure_probability > 0.8"
           channels: ["slack", "email", "pagerduty"]
@@ -434,26 +434,26 @@ The performance-predictor agent leverages advanced machine learning models to fo
   ```python
   # Initialize performance predictor agent
   from claude_agents import PerformancePredictorAgent
-  
+
   predictor = PerformancePredictorAgent()
-  
+
   # Get current system bottleneck prediction
   bottleneck_prediction = await predictor.predict_bottleneck(
       system_id="prod-cluster-01",
       horizon_minutes=30
   )
-  
+
   print(f"Bottleneck Probability: {bottleneck_prediction.probability:.2f}")
   print(f"Time to Bottleneck: {bottleneck_prediction.minutes_ahead}")
   print(f"Predicted Resource: {bottleneck_prediction.resource_type}")
   print(f"Severity: {bottleneck_prediction.severity}/10")
-  
+
   # Get optimization recommendations
   if bottleneck_prediction.probability > 0.7:
       optimization = await predictor.get_optimization_recommendations(
           current_state=bottleneck_prediction.current_state
       )
-      
+
       for recommendation in optimization.recommendations:
           print(f"- {recommendation.action}: {recommendation.description}")
           print(f"  Expected Impact: {recommendation.expected_impact}")
@@ -467,16 +467,16 @@ The performance-predictor agent leverages advanced machine learning models to fo
   # Comprehensive resource optimization
   async def optimize_system_resources():
       predictor = PerformancePredictorAgent()
-      
+
       # Get current resource utilization
       current_resources = await predictor.analyze_current_utilization()
-      
+
       # Forecast workload for next 24 hours
       workload_forecast = await predictor.forecast_workload(
           horizon_hours=24,
           confidence_level=0.9
       )
-      
+
       # Generate optimization recommendations
       optimization = await predictor.optimize_resources(
           current_allocation=current_resources,
@@ -487,7 +487,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
               'maintain_reliability': 0.3
           }
       )
-      
+
       # Present recommendations with cost-benefit analysis
       for rec in optimization.recommendations:
           print(f"\nRecommendation: {rec.type}")
@@ -496,7 +496,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
           print(f"Expected Performance Impact: {rec.performance_impact:+.1%}")
           print(f"Implementation Effort: {rec.implementation_complexity}")
           print(f"Confidence: {rec.confidence:.1%}")
-      
+
       return optimization
   ```
 </usage-example>
@@ -510,7 +510,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
       def __init__(self):
           self.predictor = PerformancePredictorAgent()
           self.alert_manager = AlertManager()
-      
+
       async def monitor_system_health(self):
           while True:
               # Check for potential failures
@@ -518,21 +518,21 @@ The performance-predictor agent leverages advanced machine learning models to fo
                   time_horizons=[15, 60, 240],  # 15min, 1hr, 4hr
                   severity_threshold=0.6
               )
-              
+
               for prediction in failure_predictions:
                   if prediction.probability > 0.8:  # Critical threshold
                       await self.handle_critical_prediction(prediction)
                   elif prediction.probability > 0.6:  # Warning threshold
                       await self.handle_warning_prediction(prediction)
-              
+
               await asyncio.sleep(60)  # Check every minute
-      
+
       async def handle_critical_prediction(self, prediction):
           # Generate detailed analysis
           root_cause_analysis = await self.predictor.analyze_root_cause(
               prediction.failure_signature
           )
-          
+
           # Create incident with recommendations
           incident = {
               'type': 'predicted_failure',
@@ -542,10 +542,10 @@ The performance-predictor agent leverages advanced machine learning models to fo
               'root_cause': root_cause_analysis,
               'recommended_actions': prediction.mitigation_strategies
           }
-          
+
           # Alert operations team
           await self.alert_manager.create_incident(incident)
-          
+
           # Attempt automated mitigation if confidence is high
           if prediction.confidence > 0.95:
               await self.attempt_automated_mitigation(prediction)
@@ -564,14 +564,14 @@ The performance-predictor agent leverages advanced machine learning models to fo
       - Use temporal cross-validation for time-series data
       - Monitor model drift and trigger retraining when needed
     </practice>
-    
+
     <practice name="data-quality">
       - Validate input data quality before model training
       - Handle missing values and outliers appropriately
-      - Maintain feature store data freshness (< 5 minutes lag)
+      - Maintain feature store data freshness (&lt; 5 minutes lag)
       - Implement data lineage tracking for reproducibility
     </practice>
-    
+
     <practice name="model-validation">
       - Use backtesting on historical incidents for validation
       - Implement A/B testing for model comparison
@@ -591,7 +591,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
       - Implement batch prediction for multiple systems
       - Pre-compute features where possible to reduce real-time overhead
     </practice>
-    
+
     <practice name="resource-management">
       - Monitor model serving resource consumption
       - Implement auto-scaling for inference services
@@ -611,14 +611,14 @@ The performance-predictor agent leverages advanced machine learning models to fo
       - Implement comprehensive logging for debugging
       - Create dashboards for system performance insights
     </practice>
-    
+
     <practice name="incident-management">
       - Define clear escalation procedures for predictions
       - Implement feedback loops to improve false positive rates
       - Document post-incident analysis including prediction accuracy
       - Create runbooks for common predicted failure scenarios
     </practice>
-    
+
     <practice name="security-compliance">
       - Implement proper access controls for prediction APIs
       - Audit model predictions for bias and fairness
@@ -666,7 +666,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
       </solution>
     </solutions>
   </issue>
-  
+
   <issue category="performance" severity="medium">
     <problem>High prediction latency affecting real-time operations</problem>
     <symptoms>
@@ -691,7 +691,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
       </solution>
     </solutions>
   </issue>
-  
+
   <issue category="data" severity="high">
     <problem>Feature store connection failures</problem>
     <symptoms>
@@ -723,38 +723,38 @@ The performance-predictor agent leverages advanced machine learning models to fo
     ```bash
     # Test model prediction accuracy on recent data
     python scripts/validate-model-accuracy.py --model=bottleneck_predictor --days=7
-    
+
     # Check feature store data quality
     python scripts/check-feature-quality.py --start-date=2024-01-01
-    
+
     # Benchmark prediction latency
     python scripts/benchmark-prediction-latency.py --iterations=1000
-    
+
     # Validate integration with orchestration system
     python scripts/test-orchestration-integration.py
     ```
   </validation-scripts>
-  
+
   <monitoring-queries>
     ```sql
     -- Check prediction accuracy over time
-    SELECT 
+    SELECT
         date_trunc('hour', prediction_time) as hour,
         AVG(accuracy_score) as avg_accuracy,
         COUNT(*) as prediction_count
-    FROM prediction_logs 
+    FROM prediction_logs
     WHERE prediction_time > NOW() - INTERVAL '24 hours'
     GROUP BY hour
     ORDER BY hour;
-    
+
     -- Identify high false positive periods
-    SELECT 
+    SELECT
         prediction_time,
         system_id,
         predicted_probability,
         actual_outcome,
         false_positive
-    FROM prediction_logs 
+    FROM prediction_logs
     WHERE false_positive = true
     AND prediction_time > NOW() - INTERVAL '7 days'
     ORDER BY prediction_time DESC;
@@ -766,7 +766,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
 
 <implementation-checklist>
   <deployment-validation>
-    - [ ] Model serving endpoints responding within SLA (<100ms p99)
+    - [ ] Model serving endpoints responding within SLA (&lt;100ms p99)
     - [ ] Feature store integration working correctly
     - [ ] Alert notifications configured and tested
     - [ ] Prediction accuracy monitoring in place

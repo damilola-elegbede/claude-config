@@ -17,25 +17,25 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
   <service-endpoints>
     <category name="prediction-services">
       - `/predict/bottleneck` - Performance bottleneck prediction
-      - `/predict/resource-optimization` - Resource allocation optimization  
+      - `/predict/resource-optimization` - Resource allocation optimization
       - `/predict/failure-prevention` - System failure prevention
       - `/predict/workload-forecast` - Agent workload forecasting
     </category>
-    
+
     <category name="model-management">
       - `/models` - Model registry operations
       - `/models/{id}/deploy` - Model deployment management
       - `/models/{id}/metrics` - Model performance metrics
       - `/models/{id}/drift` - Model drift analysis
     </category>
-    
+
     <category name="system-analytics">
       - `/analytics/performance` - System performance analytics
       - `/analytics/trends` - Historical trend analysis
       - `/analytics/insights` - AI-generated insights
       - `/analytics/recommendations` - Optimization recommendations
     </category>
-    
+
     <category name="monitoring-observability">
       - `/health` - Service health checks
       - `/metrics` - Prometheus metrics endpoint
@@ -55,7 +55,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
       - Role-based access control (RBAC) integration
       - Automatic refresh token mechanism
     </method>
-    
+
     <method name="api-key" security-level="medium">
       - API keys for service-to-service communication
       - Scoped permissions per API key
@@ -63,20 +63,20 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
       - Audit logging for all API key usage
     </method>
   </auth-methods>
-  
+
   <rate-limiting>
     <tier name="basic" requests-per-minute="100">
       - Standard prediction endpoints
       - Basic analytics queries
       - Model status checks
     </tier>
-    
+
     <tier name="premium" requests-per-minute="1000">
       - High-frequency prediction requests
       - Bulk analytics operations
       - Real-time streaming endpoints
     </tier>
-    
+
     <tier name="enterprise" requests-per-minute="10000">
       - Unlimited prediction requests
       - Priority queue processing
@@ -91,7 +91,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
 
 <api-endpoint name="POST /predict/bottleneck" category="prediction">
   <description>Predict system performance bottlenecks before they occur</description>
-  
+
   <request-specification>
     <headers>
       ```
@@ -100,7 +100,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
       X-Request-ID: {unique_request_id}
       ```
     </headers>
-    
+
     <request-body>
       ```json
       {
@@ -109,7 +109,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
         "confidence_level": 0.95,
         "features": {
           "cpu_utilization": [65.2, 72.1, 68.5],
-          "memory_usage": [78.9, 82.3, 80.1], 
+          "memory_usage": [78.9, 82.3, 80.1],
           "disk_io": [1200, 1350, 1275],
           "network_io": [850, 920, 890],
           "agent_queue_depth": 15,
@@ -124,7 +124,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
       ```
     </request-body>
   </request-specification>
-  
+
   <response-specification>
     <success-response code="200">
       ```json
@@ -148,7 +148,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
             "implementation_effort": "low"
           },
           {
-            "action": "optimize_agent_allocation", 
+            "action": "optimize_agent_allocation",
             "description": "Redistribute agents to balance load",
             "expected_impact": 0.45,
             "implementation_effort": "medium"
@@ -168,7 +168,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
       }
       ```
     </success-response>
-    
+
     <error-responses>
       <error code="400" type="validation_error">
         ```json
@@ -183,7 +183,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
         }
         ```
       </error>
-      
+
       <error code="429" type="rate_limit_exceeded">
         ```json
         {
@@ -204,7 +204,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
 
 <api-endpoint name="POST /predict/resource-optimization" category="prediction">
   <description>Get intelligent resource allocation recommendations</description>
-  
+
   <request-specification>
     <request-body>
       ```json
@@ -240,7 +240,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
       ```
     </request-body>
   </request-specification>
-  
+
   <response-specification>
     <success-response code="200">
       ```json
@@ -301,7 +301,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
 
 <api-endpoint name="POST /predict/failure-prevention" category="prediction">
   <description>Predict and prevent system failures before they impact operations</description>
-  
+
   <request-specification>
     <request-body>
       ```json
@@ -323,7 +323,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
       ```
     </request-body>
   </request-specification>
-  
+
   <response-specification>
     <success-response code="200">
       ```json
@@ -375,7 +375,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
           "overall_trend": "degrading",
           "key_indicators": {
             "resource_pressure": "increasing",
-            "error_patterns": "stable", 
+            "error_patterns": "stable",
             "performance": "degrading"
           }
         }
@@ -389,7 +389,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
 
 <api-endpoint name="POST /predict/workload-forecast" category="prediction">
   <description>Forecast agent workload and resource demands</description>
-  
+
   <request-specification>
     <request-body>
       ```json
@@ -398,7 +398,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
         "granularity": "hourly",
         "agent_types": [
           "backend-staff",
-          "frontend-architect", 
+          "frontend-architect",
           "ml-engineer",
           "performance-specialist"
         ],
@@ -421,7 +421,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
       ```
     </request-body>
   </request-specification>
-  
+
   <response-specification>
     <success-response code="200">
       ```json
@@ -441,7 +441,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
               }
             },
             {
-              "timestamp": "2024-01-15T11:00:00Z", 
+              "timestamp": "2024-01-15T11:00:00Z",
               "predicted_load": 0.85,
               "confidence_interval": [0.79, 0.91],
               "agent_demand": {
@@ -498,7 +498,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
 
 <api-endpoint name="GET /models" category="model-management">
   <description>List all registered models with metadata and status</description>
-  
+
   <request-specification>
     <query-parameters>
       ```
@@ -506,7 +506,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
       ```
     </query-parameters>
   </request-specification>
-  
+
   <response-specification>
     <success-response code="200">
       ```json
@@ -553,14 +553,14 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
 
 <api-endpoint name="POST /models/{id}/deploy" category="model-management">
   <description>Deploy a model version to production with deployment strategy</description>
-  
+
   <request-specification>
     <path-parameters>
       ```
       {id}: bottleneck_predictor_v1.2.0
       ```
     </path-parameters>
-    
+
     <request-body>
       ```json
       {
@@ -585,7 +585,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
       ```
     </request-body>
   </request-specification>
-  
+
   <response-specification>
     <success-response code="202">
       ```json
@@ -614,7 +614,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
 
 <api-endpoint name="GET /models/{id}/metrics" category="model-management">
   <description>Retrieve detailed performance metrics for a deployed model</description>
-  
+
   <request-specification>
     <query-parameters>
       ```
@@ -622,7 +622,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
       ```
     </query-parameters>
   </request-specification>
-  
+
   <response-specification>
     <success-response code="200">
       ```json
@@ -684,7 +684,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
 
 <api-endpoint name="GET /analytics/performance" category="analytics">
   <description>Get comprehensive system performance analytics and insights</description>
-  
+
   <request-specification>
     <query-parameters>
       ```
@@ -692,7 +692,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
       ```
     </query-parameters>
   </request-specification>
-  
+
   <response-specification>
     <success-response code="200">
       ```json
@@ -758,7 +758,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
           ],
           "optimization_opportunities": [
             {
-              "type": "resource_reallocation", 
+              "type": "resource_reallocation",
               "potential_savings": "15% CPU reduction",
               "implementation_effort": "low"
             }
@@ -774,7 +774,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
 
 <api-endpoint name="GET /analytics/insights" category="analytics">
   <description>Get AI-generated insights and recommendations for system optimization</description>
-  
+
   <response-specification>
     <success-response code="200">
       ```json
@@ -802,7 +802,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
               {
                 "action": "optimize_model_loading",
                 "description": "Use lazy loading for infrequently used models",
-                "effort": "low", 
+                "effort": "low",
                 "timeline": "3 days"
               }
             ],
@@ -863,18 +863,18 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
     pip install claude-ml-client
     ```
   </installation>
-  
+
   <usage-examples>
     <example name="basic-prediction">
       ```python
       from claude_ml import MLClient
-      
-      # Initialize client
+
+      # Initialize client with environment variable
       client = MLClient(
-          api_key="your-api-key",
+          api_key=os.environ["ML_API_KEY"],
           base_url="https://ml-api.claude.local/v1"
       )
-      
+
       # Performance bottleneck prediction
       prediction = await client.predict_bottleneck(
           system_id="prod-cluster-01",
@@ -885,10 +885,10 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
           },
           horizon_minutes=30
       )
-      
+
       print(f"Bottleneck probability: {prediction.probability}")
       print(f"Time to bottleneck: {prediction.time_to_bottleneck} minutes")
-      
+
       # Resource optimization
       optimization = await client.optimize_resources(
           system_id="prod-cluster-01",
@@ -901,13 +901,13 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
               "maximize_performance": 0.7
           }
       )
-      
+
       for recommendation in optimization.recommendations:
           print(f"Action: {recommendation.action}")
           print(f"Expected impact: {recommendation.expected_impact}")
       ```
     </example>
-    
+
     <example name="streaming-predictions">
       ```python
       # Real-time streaming predictions
@@ -921,12 +921,12 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
                   await handle_bottleneck_alert(prediction)
               elif prediction.type == "failure_prevention" and prediction.severity == "critical":
                   await handle_failure_alert(prediction)
-      
+
       # Run streaming predictions
       asyncio.run(stream_predictions())
       ```
     </example>
-    
+
     <example name="batch-operations">
       ```python
       # Batch prediction operations
@@ -937,26 +937,26 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
           }
           for i in range(1, 11)
       ]
-      
+
       # Process batch predictions
       batch_results = await client.batch_predict_bottlenecks(batch_requests)
-      
+
       for result in batch_results:
           if result.prediction.probability > 0.7:
               print(f"Alert: {result.system_id} - {result.prediction.probability:.2f}")
       ```
     </example>
   </usage-examples>
-  
+
   <error-handling>
     ```python
     from claude_ml.exceptions import (
-        MLClientError, 
-        RateLimitError, 
+        MLClientError,
+        RateLimitError,
         AuthenticationError,
         ValidationError
     )
-    
+
     try:
         prediction = await client.predict_bottleneck(
             system_id="prod-cluster-01",
@@ -982,17 +982,17 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
     npm install claude-ml-client
     ```
   </installation>
-  
+
   <usage-examples>
     <example name="basic-usage">
       ```javascript
       const { MLClient } = require('claude-ml-client');
-      
+
       const client = new MLClient({
-          apiKey: 'your-api-key',
+          apiKey: process.env.ML_API_KEY,
           baseUrl: 'https://ml-api.claude.local/v1'
       });
-      
+
       // Performance prediction
       async function checkSystemHealth() {
           try {
@@ -1005,12 +1005,12 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
                   },
                   horizonMinutes: 30
               });
-              
+
               if (prediction.probability > 0.8) {
                   console.log('High bottleneck probability detected!');
                   console.log(`Recommendations: ${prediction.recommendations}`);
               }
-              
+
           } catch (error) {
               if (error.name === 'RateLimitError') {
                   console.log(`Rate limited. Retry after: ${error.retryAfter}s`);
@@ -1019,11 +1019,11 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
               }
           }
       }
-      
+
       checkSystemHealth();
       ```
     </example>
-    
+
     <example name="websocket-streaming">
       ```javascript
       // Real-time WebSocket streaming
@@ -1032,19 +1032,19 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
           predictionTypes: ['bottleneck', 'failure_prevention'],
           updateInterval: 30
       });
-      
+
       stream.on('prediction', (prediction) => {
           console.log(`New prediction: ${prediction.type}`);
-          
+
           if (prediction.type === 'bottleneck' && prediction.probability > 0.8) {
               handleBottleneckAlert(prediction);
           }
       });
-      
+
       stream.on('error', (error) => {
           console.error('Stream error:', error);
       });
-      
+
       stream.connect();
       ```
     </example>
@@ -1057,7 +1057,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
 
 <api-endpoint name="GET /health" category="monitoring">
   <description>Service health check endpoint for load balancers and monitoring</description>
-  
+
   <response-specification>
     <success-response code="200">
       ```json
@@ -1096,7 +1096,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
       }
       ```
     </success-response>
-    
+
     <degraded-response code="200">
       ```json
       {
@@ -1121,14 +1121,14 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
 
 <api-endpoint name="GET /metrics" category="monitoring">
   <description>Prometheus metrics endpoint for monitoring and alerting</description>
-  
+
   <response-specification>
     <metrics-format>
       ```
       # HELP ml_predictions_total Total number of predictions made
       # TYPE ml_predictions_total counter
       ml_predictions_total{model="bottleneck_predictor",version="v1.2.0"} 15234
-      
+
       # HELP ml_prediction_duration_seconds Time spent on predictions
       # TYPE ml_prediction_duration_seconds histogram
       ml_prediction_duration_seconds_bucket{model="bottleneck_predictor",le="0.01"} 1234
@@ -1136,17 +1136,17 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
       ml_prediction_duration_seconds_bucket{model="bottleneck_predictor",le="0.1"} 12456
       ml_prediction_duration_seconds_sum{model="bottleneck_predictor"} 756.78
       ml_prediction_duration_seconds_count{model="bottleneck_predictor"} 15234
-      
+
       # HELP ml_model_accuracy Current model accuracy
       # TYPE ml_model_accuracy gauge
       ml_model_accuracy{model="bottleneck_predictor",metric="overall"} 0.963
-      
+
       # HELP ml_api_requests_total Total API requests
       # TYPE ml_api_requests_total counter
       ml_api_requests_total{endpoint="/predict/bottleneck",status="200"} 14890
       ml_api_requests_total{endpoint="/predict/bottleneck",status="400"} 23
       ml_api_requests_total{endpoint="/predict/bottleneck",status="429"} 45
-      
+
       # HELP ml_cache_hit_rate Cache hit rate for predictions
       # TYPE ml_cache_hit_rate gauge
       ml_cache_hit_rate 0.847
@@ -1166,15 +1166,15 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
     - Prometheus for metrics collection
     - Load balancer with health check support
   </deployment-requirements>
-  
+
   <performance-characteristics>
-    - API response time: p99 < 100ms
+    - API response time: p99 &lt; 100ms
     - Throughput: 10K+ requests/second
     - Availability: 99.9% uptime SLA
     - Cache hit rate: >85% for repeated requests
-    - Model serving latency: p95 < 50ms
+    - Model serving latency: p95 &lt; 50ms
   </performance-characteristics>
-  
+
   <security-features>
     - JWT authentication with automatic rotation
     - API key management with scoped permissions
