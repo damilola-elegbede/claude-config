@@ -414,7 +414,7 @@ Planned features (not yet implemented):
 ### Performance Enhancements
 The command uses several optimization strategies for 3x faster execution:
 
-**1. Parallel API Calls**
+#### 1. Parallel API Calls
 ```bash
 # All three endpoints queried simultaneously
 gh api /pulls/{pr}/reviews &
@@ -423,19 +423,19 @@ gh api /issues/{pr}/comments &
 wait
 ```
 
-**2. Direct JSON Filtering**
+#### 2. Direct JSON Filtering
 ```bash
 # Immediate filtering with jq instead of post-processing
 gh api ... --jq '.[] | select(.user.login == "coderabbitai[bot]")'
 ```
 
-**3. Pre-compiled Search Pattern**
+#### 3. Pre-compiled Search Pattern
 ```bash
 # Single regex for all CodeRabbit signatures
 PATTERN='(@coderabbitai|coderabbitai\[bot\]|Prompts for AI Agents)'
 ```
 
-**4. GraphQL Fallback**
+#### 4. GraphQL Fallback
 ```graphql
 # Single query for comprehensive search if REST fails
 query {
@@ -448,7 +448,7 @@ query {
 }
 ```
 
-**5. Batch File Updates**
+#### 5. Batch File Updates
 ```python
 # Apply all changes in one operation
 MultiEdit(files=[
