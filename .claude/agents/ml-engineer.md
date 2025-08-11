@@ -1,7 +1,7 @@
 ---
 name: ml-engineer
 description: MUST BE USED for enterprise ML model deployment and advanced MLOps pipelines. Use PROACTIVELY for complex model serving architectures, feature store design, and distributed training infrastructure
-tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash
 model: sonnet
 color: blue
 category: development

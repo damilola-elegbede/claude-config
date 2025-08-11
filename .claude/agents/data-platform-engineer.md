@@ -1,7 +1,7 @@
 ---
 name: data-platform-engineer
 description: Use PROACTIVELY for building enterprise-scale data platforms and streaming architectures. MUST BE USED for data pipelines processing >1M records/day, event streaming (Kafka, Pulsar), data lake/warehouse implementations, and ETL/ELT
-tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash
 model: opus
 color: blue
 category: development
@@ -87,7 +87,7 @@ Apply systematic analysis and truth-seeking to every task. Communicate findings 
 - LS
 - WebFetch
 - WebSearch
-- TodoWrite
+- 
 
 **Integration Considerations:**
 

@@ -3,7 +3,7 @@ name: api-architect
 description: MUST BE USED for comprehensive API architecture, OpenAPI specs, and governance policy implementation. Use PROACTIVELY for API strategy, versioning management, GraphQL federation, and enterprise standardization
 color: purple
 category: architecture
-tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite
+tools: Read, Write, Edit, Grep, Glob, LS
 model: opus
 ---
 

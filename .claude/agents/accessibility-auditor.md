@@ -1,7 +1,7 @@
 ---
 name: accessibility-auditor
 description: MUST BE USED for WCAG compliance audits and accessibility violations remediation. Use PROACTIVELY for inclusive design validation, screen reader testing, keyboard navigation, and color contrast issues
-tools: Read, Edit, MultiEdit, Write, Grep, Glob, LS, WebFetch, WebSearch, TodoWrite
+tools: Read, Edit, MultiEdit, Write, Grep, Glob, LS, WebFetch, WebSearch
 model: sonnet
 color: green
 category: quality

@@ -1,7 +1,7 @@
 ---
 name: tech-writer
 description: Use PROACTIVELY for documentation, READMEs, API docs, and work summaries. MUST BE USED after complex implementations, code changes, or when explaining technical concepts
-tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite, WebFetch
+tools: Read, Write, Edit, Grep, Glob, LS, WebFetch
 model: sonnet
 color: yellow
 category: analysis

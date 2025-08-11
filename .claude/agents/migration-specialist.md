@@ -1,7 +1,7 @@
 ---
 name: migration-specialist
 description: MUST BE USED for complex technology migrations and critical framework upgrades. Use PROACTIVELY for major version upgrades, framework transitions, and legacy system modernization
-tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash
 model: sonnet
 color: blue
 category: development

@@ -1,7 +1,7 @@
 ---
 name: mobile-platform-engineer
 description: Use PROACTIVELY for mobile platform architecture and cross-platform strategies. MUST BE USED for app store optimization, mobile CI/CD pipelines, React Native/Flutter architecture, and mobile security implementation
-tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash
 model: sonnet
 color: blue
 category: development

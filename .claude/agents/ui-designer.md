@@ -1,7 +1,7 @@
 ---
 name: ui-designer
 description: MUST BE USED for comprehensive UI/UX design optimization and advanced design system architecture. Use PROACTIVELY for design inconsistencies, accessibility violations, and user experience friction points
-tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite
+tools: Read, Write, Edit, Grep, Glob, LS
 model: sonnet
 color: pink
 category: design

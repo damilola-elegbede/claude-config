@@ -3,7 +3,7 @@ name: platform-engineer
 description: Use PROACTIVELY for platform engineering and developer experience optimization. MUST BE USED for building comprehensive platforms that empower development teams, implementing developer portals, and standardized workflows
 color: orange
 category: infrastructure
-tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite, WebFetch
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, WebFetch
 model: opus
 ---
 
@@ -200,5 +200,5 @@ Apply systematic analysis and truth-seeking to every task. Communicate findings 
 - Use `Write` and `Edit` for creating platform configurations and templates
 - Use `Grep` and `Glob` to analyze existing codebases for patterns
 - Use `WebFetch` to research platform tools and best practices
-- Use `TodoWrite` to track platform feature development
+- Use `` to track platform feature development
 - Always consider developer experience in every decision

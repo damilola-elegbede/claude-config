@@ -1,7 +1,7 @@
 ---
 name: kubernetes-admin
 description: MUST BE USED for enterprise Kubernetes cluster management, advanced workload orchestration, and production container platform operations. Use PROACTIVELY for complex K8s deployments, auto-scaling strategies, and critical troubleshooting scenarios
-tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite, WebFetch
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, WebFetch
 model: sonnet
 color: orange
 category: infrastructure
@@ -269,5 +269,5 @@ Apply systematic analysis and truth-seeking to every task. Communicate findings 
 - Use `Write` and `Edit` for creating and modifying manifests
 - Use `Grep` and `Glob` to search through Kubernetes configurations
 - Use `WebFetch` to reference Kubernetes documentation
-- Use `TodoWrite` to track cluster maintenance and upgrades
+- Use `` to track cluster maintenance and upgrades
 - Always validate manifests before applying to production

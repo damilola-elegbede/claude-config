@@ -1,7 +1,7 @@
 ---
 name: database-evolution-specialist
 description: MUST BE USED for complex database evolution strategies, zero-downtime migrations >1TB, and enterprise data transformations. Use PROACTIVELY for monolith-to-microservices transitions and legacy database modernization
-tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, LS, TodoWrite
+tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, LS
 model: opus
 color: orange
 category: infrastructure
