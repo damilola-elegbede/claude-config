@@ -190,6 +190,8 @@ cp -r .claude ~/.claude
 # Integrates with /test and /commit workflow
 ```
 
+Note: Previously named `/resolve-rabbit`.
+
 ### Git Operations
 
 #### `/commit` - Smart Git Commits
