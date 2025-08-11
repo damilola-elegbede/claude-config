@@ -362,8 +362,10 @@ Planned features (not yet implemented):
    - `comment.user.login === "coderabbitai"`
    - `comment.user.type === "Bot"`
 2. **App/Bot ID Verification**:
-   - Check for CodeRabbit app_id in comment metadata
-   - Verify GitHub App association with CodeRabbit
+   - **Primary**: Check for CodeRabbit app_id in comment metadata using GraphQL API when available
+   - **REST API Limitation**: GitHub REST API has limited app_id visibility in comment metadata
+   - **Fallback**: Verify `user.login === "coderabbitai"` and `user.type === "Bot"` for REST API calls
+   - Verify GitHub App association with CodeRabbit through available metadata
 3. **Comment Source Verification**:
    - Ensure comment originates from CodeRabbit GitHub App
    - Validate comment structure matches CodeRabbit patterns
