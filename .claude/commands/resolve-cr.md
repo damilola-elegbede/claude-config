@@ -87,9 +87,36 @@ When you use `/resolve-cr`, I will:
    - Show priority distribution of issues
 
 4. **Post initial resolution comment** (immediately after summary):
-   - Post "@coderabbitai resolve" comment on the PR
+   - Post "@coderabbitai resolve" comment on the PR with detailed summary:
+     • Total number of issues being addressed
+     • Breakdown by category (Security, Error Handling, Performance, etc.)
+     • List of affected files with specific changes planned
+     • Clear indication that automated resolution is in progress
    - This notifies CodeRabbit that issues are being addressed
    - Posted BEFORE starting actual work on the fixes
+   - Example format:
+     ```markdown
+     @coderabbitai resolve
+     
+     ## 📋 Planned Changes Summary
+     
+     **Addressing 6 CodeRabbit review comments**
+     
+     ### 📊 Issues by Category
+     - **Security**: 2 issues
+     - **Code Quality**: 2 issues
+     - **Documentation**: 2 issues
+     
+     ### 📁 Changes by File
+     #### `security-auditor.md` (1 change)
+     - Add safety guardrails for testing environments
+     
+     #### `incident-commander.md` (1 change)
+     - Add explicit blameless qualifier for incident communications
+     
+     ---
+     *🤖 Automated resolution in progress using Claude Code...*
+     ```
 
 5. **Analyze ALL suggestions**:
    - Process EVERY "Prompts for AI Agents" section found

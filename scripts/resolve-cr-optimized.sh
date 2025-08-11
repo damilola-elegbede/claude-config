@@ -185,10 +185,69 @@ echo "────────────────────────�
 echo "Proceeding with automated resolution..."
 echo "────────────────────────────────────────────────────────────"
 
-# Step 4: Post resolution comment
-echo -e "\n${BLUE}📝 Posting resolution notification...${NC}"
-gh pr comment "$PR_NUMBER" --body "@coderabbitai resolve"
-echo -e "${GREEN}✓ Posted @coderabbitai resolve comment${NC}"
+# Step 4: Post resolution comment with summary of planned changes
+echo -e "\n${BLUE}📝 Posting resolution notification with summary...${NC}"
+
+# Generate summary of planned changes with better formatting
+SUMMARY=$(echo "$PROMPTS" | jq -r '
+    # Extract key action from each prompt
+    def extract_action: 
+        .prompt | 
+        split("\n") | 
+        map(select(length > 0)) | 
+        (
+            if any(contains("add") or contains("append")) then
+                map(select(contains("add") or contains("append")))[0] // .[0]
+            elif any(contains("update") or contains("modify")) then
+                map(select(contains("update") or contains("modify")))[0] // .[0]
+            elif any(contains("fix") or contains("change")) then
+                map(select(contains("fix") or contains("change")))[0] // .[0]
+            else
+                .[0]
+            end
+        ) |
+        # Clean up the action text
+        gsub("^\\s+|\\s+$"; "") |
+        # Truncate if too long
+        if length > 120 then .[0:117] + "..." else . end;
+    
+    # Count issues by category
+    def categorize:
+        if .body | test("security|vulnerability|safety"; "i") then "Security"
+        elif .body | test("error|exception|handling"; "i") then "Error Handling"
+        elif .body | test("performance|optimization"; "i") then "Performance"
+        elif .body | test("documentation|comment"; "i") then "Documentation"
+        elif .body | test("test|coverage"; "i") then "Testing"
+        else "Code Quality"
+        end;
+    
+    # Build summary
+    "## 📋 Planned Changes Summary\n\n" +
+    "**Addressing " + (length | tostring) + " CodeRabbit review comments**\n\n" +
+    
+    # Category breakdown
+    "### 📊 Issues by Category\n" +
+    (group_by(categorize) | 
+     map("- **" + .[0].categorize + "**: " + (length | tostring) + " issue" + (if length > 1 then "s" else "" end)) | 
+     join("\n")) + "\n\n" +
+    
+    # File-specific changes
+    "### 📁 Changes by File\n" +
+    (group_by(.file) | 
+     map(
+         "#### `" + .[0].file + "` (" + (length | tostring) + " change" + (if length > 1 then "s" else "" end) + ")\n" + 
+         (map("- " + extract_action) | join("\n"))
+     ) | join("\n\n")) +
+    
+    "\n\n---\n" +
+    "*🤖 Automated resolution in progress using Claude Code...*"
+')
+
+# Post comment with summary
+gh pr comment "$PR_NUMBER" --body "@coderabbitai resolve
+
+$SUMMARY"
+echo -e "${GREEN}✓ Posted @coderabbitai resolve comment with change summary${NC}"
 
 # Step 5: Prepare batch updates
 echo -e "\n${BLUE}🔧 Preparing batch file updates...${NC}"
