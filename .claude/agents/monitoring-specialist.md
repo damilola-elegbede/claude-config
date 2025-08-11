@@ -2,7 +2,7 @@
 name: monitoring-specialist
 description: Use PROACTIVELY for observability infrastructure and monitoring systems. MUST BE USED for comprehensive metrics collection, distributed tracing implementation, log aggregation systems, and SRE best practices
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, WebFetch
-model: haiku
+model: sonnet
 color: orange
 category: infrastructure
 ---

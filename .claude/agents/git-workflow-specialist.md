@@ -3,7 +3,7 @@ name: git-workflow-specialist
 description: MUST BE USED for complex git workflow orchestration and advanced branching strategies. Use PROACTIVELY for merge conflicts, repository performance issues, and git-flow implementations at enterprise scale
 tools: Bash, Read, Write, Grep, Glob, LS
 model: sonnet
-color: green
+color: blue
 category: development
 ---
 
