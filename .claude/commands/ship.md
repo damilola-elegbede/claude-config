@@ -171,4 +171,4 @@ Respects repository settings:
 Recommended pre-`/ship` commands:
 - `/test` - Ensure tests pass
 - `/review` - Get code review
-- `/resolve-rabbit` - Fix PR comments
+- `/resolve-cr` - Fix PR comments

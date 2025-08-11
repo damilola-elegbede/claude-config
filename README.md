@@ -181,9 +181,9 @@ cp -r .claude ~/.claude
 # Optimization recommendations
 ```
 
-#### `/resolve-rabbit` - CodeRabbit Review Resolution
+#### `/resolve-cr` - CodeRabbit Review Resolution
 ```bash
-/resolve-rabbit [pr-number]
+/resolve-cr [pr-number]
 # Automatically fetches and resolves CodeRabbit PR comments
 # Parses "Prompts for AI Agents" section
 # Deploys specialized agents for fixes
