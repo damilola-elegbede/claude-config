@@ -30,7 +30,7 @@ describe('MCPDiscoveryService', () => {
       github: {
         command: 'python',
         args: ['-m', 'github_server'],
-        env: { API_KEY: '${GITHUB_TOKEN}' }
+        env: { API_KEY: '${GH_AUTH}' }
       },
       'non-existent': {
         command: 'invalid-command',
@@ -161,7 +161,7 @@ describe('MCPDiscoveryService', () => {
     });
 
     it('should expand environment variables in server config', async () => {
-      process.env.GITHUB_TOKEN = 'mock_gh_value_for_testing';
+      process.env['GH_AUTH'] = 'mock_value_for_testing';
       
       await discoveryService.discoverServers();
 
@@ -175,7 +175,7 @@ describe('MCPDiscoveryService', () => {
         })
       );
 
-      delete process.env.GITHUB_TOKEN;
+      delete process.env.GH_AUTH;
     });
 
     it('should measure discovery performance', async () => {
