@@ -1296,6 +1296,352 @@ export interface RedisClient {
 }
 
 // =============================================================================
+// Performance Monitoring Types (SPEC_05)
+// =============================================================================
+
+/**
+ * Real-time performance metrics for PRD validation
+ */
+export interface PerformanceMetrics {
+  /** Metric timestamp */
+  timestamp: number;
+  /** Code analysis time in seconds (target: 18-24s, 60% improvement) */
+  codeAnalysisTime: number;
+  /** UI workflow duration in minutes (target: 4.8-7.2min, 40% improvement) */
+  uiWorkflowDuration: number;
+  /** MCP server utilization percentage (target: 80%+) */
+  mcpServerUtilization: number;
+  /** System response time in milliseconds (target: 200-400ms) */
+  systemResponseTime: number;
+  /** System uptime percentage (target: 99.5%) */
+  systemUptime: number;
+  /** Cache hit rate percentage (target: >90%) */
+  cacheHitRate: number;
+  /** Overall workflow efficiency improvement (target: 40-50%) */
+  workflowEfficiency: number;
+}
+
+/**
+ * Performance monitoring alert
+ */
+export interface MonitoringAlert {
+  /** Alert type */
+  type: 'performance' | 'availability' | 'security';
+  /** Alert severity */
+  severity: 'info' | 'warning' | 'critical' | 'emergency';
+  /** Alert message */
+  message: string;
+  /** Alert timestamp */
+  timestamp: number;
+  /** Metric that triggered alert */
+  metric: string;
+  /** Metric value that triggered alert */
+  value: number;
+}
+
+/**
+ * Benchmark test configuration
+ */
+export interface BenchmarkTest {
+  /** Test identifier */
+  id: string;
+  /** Test name */
+  name: string;
+  /** Test description */
+  description: string;
+  /** Test executor configuration */
+  executor: {
+    type: 'code-analysis' | 'ui-workflow' | 'load-test' | 'cache-test' | 'custom';
+    config: any;
+    script?: string;
+  };
+  /** Expected test result */
+  expectedResult: {
+    duration: number;
+    success: boolean;
+    metrics: Record<string, number>;
+    timestamp: number;
+  };
+  /** Test weight for scoring */
+  weight: number;
+}
+
+/**
+ * Benchmark run results
+ */
+export interface BenchmarkRun {
+  /** Run identifier */
+  id: string;
+  /** Test suite identifier */
+  suiteId: string;
+  /** Test suite name */
+  suiteName: string;
+  /** Run start time */
+  startTime: number;
+  /** Run end time */
+  endTime: number;
+  /** Test results */
+  results: Array<{
+    testId: string;
+    result: {
+      duration: number;
+      success: boolean;
+      metrics: Record<string, number>;
+      errors?: string[];
+      timestamp: number;
+    };
+  }>;
+  /** Run summary */
+  summary: {
+    totalTests: number;
+    passedTests: number;
+    failedTests: number;
+    avgDuration: number;
+    regressionDetected: boolean;
+    prdValidation: {
+      codeAnalysisImprovement: boolean;
+      uiWorkflowImprovement: boolean;
+      overallEfficiency: boolean;
+      mcpUtilization: boolean;
+      systemUptime: boolean;
+    };
+  };
+}
+
+/**
+ * Analytics insight
+ */
+export interface AnalyticsInsight {
+  /** Insight type */
+  type: 'trend' | 'anomaly' | 'correlation' | 'pattern';
+  /** Insight description */
+  description: string;
+  /** Insight severity */
+  severity: 'info' | 'warning' | 'critical';
+  /** Confidence level (0-1) */
+  confidence: number;
+  /** Supporting evidence */
+  evidence: any[];
+}
+
+/**
+ * Optimization recommendation
+ */
+export interface OptimizationRecommendation {
+  /** Recommendation identifier */
+  id: string;
+  /** Recommendation category */
+  category: 'performance-tuning' | 'resource-scaling' | 'workflow-optimization' | 'technology-updates' | 'cost-reduction';
+  /** Recommendation title */
+  title: string;
+  /** Recommendation description */
+  description: string;
+  /** Priority level */
+  priority: 'low' | 'medium' | 'high' | 'critical';
+  /** Expected impact */
+  impact: {
+    /** Performance improvement percentage */
+    performance: number;
+    /** Cost impact (positive = savings) */
+    cost: number;
+    /** Implementation effort */
+    effort: 'low' | 'medium' | 'high';
+  };
+  /** Implementation details */
+  implementation: {
+    /** Implementation steps */
+    steps: string[];
+    /** Estimated time */
+    estimatedTime: string;
+    /** Prerequisites */
+    prerequisites: string[];
+  };
+  /** Success validation */
+  validation: {
+    /** Metrics to monitor */
+    metrics: string[];
+    /** Success criteria */
+    successCriteria: string[];
+  };
+}
+
+/**
+ * Monitoring system configuration
+ */
+export interface MonitoringSystemConfig {
+  /** Dashboard configuration */
+  dashboard: {
+    /** Metrics refresh interval in ms */
+    refreshInterval: number;
+    /** Alert thresholds */
+    alertThresholds: {
+      codeAnalysisTimeMax: number;
+      uiWorkflowMax: number;
+      mcpUtilizationMin: number;
+      responseTimeMax: number;
+      uptimeMin: number;
+      cacheHitRateMin: number;
+    };
+    /** Data retention configuration */
+    retentionPeriods: {
+      realTime: number;
+      hourly: number;
+      daily: number;
+      monthly: number;
+    };
+  };
+  /** Benchmarking configuration */
+  benchmarking: {
+    /** Test suites configuration */
+    testSuites: Array<{
+      id: string;
+      name: string;
+      category: 'system' | 'workflow' | 'scalability' | 'reliability' | 'cost';
+      tests: BenchmarkTest[];
+      enabled: boolean;
+      timeout: number;
+    }>;
+    /** Benchmark schedules */
+    schedules: Array<{
+      id: string;
+      suiteIds: string[];
+      cronExpression: string;
+      enabled: boolean;
+      retries: number;
+    }>;
+    /** Performance thresholds */
+    thresholds: {
+      codeAnalysisMax: number;
+      uiWorkflowMax: number;
+      systemResponseMax: number;
+      cacheHitRateMin: number;
+      uptimeMin: number;
+      regressionThreshold: number;
+    };
+  };
+  /** Analytics configuration */
+  analytics: {
+    /** Data sources */
+    dataSources: Array<{
+      id: string;
+      type: 'prometheus' | 'logs' | 'metrics' | 'external-api';
+      endpoint: string;
+      queryInterval: number;
+      retentionDays: number;
+    }>;
+    /** Analytics models */
+    models: Array<{
+      id: string;
+      name: string;
+      type: 'trend-analysis' | 'anomaly-detection' | 'correlation' | 'forecasting' | 'optimization';
+      inputs: string[];
+      outputs: string[];
+      parameters: Record<string, any>;
+      enabled: boolean;
+    }>;
+    /** Reporting framework */
+    reporting: {
+      /** Report templates */
+      templates: Array<{
+        id: string;
+        name: string;
+        type: 'executive' | 'performance' | 'system-health' | 'optimization' | 'capacity';
+        format: 'html' | 'pdf' | 'json';
+        sections: Array<{
+          id: string;
+          title: string;
+          type: 'metrics' | 'charts' | 'table' | 'analysis' | 'recommendations';
+          config: any;
+        }>;
+      }>;
+    };
+  };
+  /** Server configuration */
+  server: {
+    /** Server port */
+    port: number;
+    /** Server host */
+    host: string;
+    /** Enable CORS */
+    enableCORS: boolean;
+  };
+  /** Integration configuration */
+  integrations: {
+    /** Webhook configurations */
+    webhooks: Array<{
+      id: string;
+      url: string;
+      events: Array<'performance-alert' | 'benchmark-completed' | 'regression-detected' | 'analytics-insight' | 'optimization-recommendation' | 'system-status-change'>;
+      authentication?: {
+        type: 'bearer' | 'api-key';
+        token: string;
+      };
+      enabled: boolean;
+    }>;
+    /** Notification configuration */
+    notifications: {
+      slack: {
+        enabled: boolean;
+        webhookUrl?: string;
+        channels: {
+          alerts: string;
+          reports: string;
+          maintenance: string;
+        };
+      };
+      email: {
+        enabled: boolean;
+        smtpConfig?: any;
+        recipients: {
+          alerts: string[];
+          reports: string[];
+          critical: string[];
+        };
+      };
+    };
+  };
+}
+
+/**
+ * System status information
+ */
+export interface SystemStatus {
+  /** Overall system status */
+  status: 'healthy' | 'degraded' | 'critical' | 'maintenance';
+  /** System uptime timestamp */
+  uptime: number;
+  /** System version */
+  version: string;
+  /** Component status */
+  components: {
+    dashboard: ComponentStatus;
+    benchmarking: ComponentStatus;
+    analytics: ComponentStatus;
+  };
+  /** Last status update */
+  lastUpdated: number;
+}
+
+/**
+ * Component status information
+ */
+export interface ComponentStatus {
+  /** Component status */
+  status: 'running' | 'stopped' | 'error';
+  /** Last update timestamp */
+  lastUpdate: number;
+  /** Component metrics */
+  metrics: {
+    /** Memory usage in MB */
+    memoryUsage: number;
+    /** CPU usage percentage */
+    cpuUsage: number;
+    /** Error count */
+    errorCount: number;
+  };
+}
+
+// =============================================================================
 // Exports
 // =============================================================================
 
