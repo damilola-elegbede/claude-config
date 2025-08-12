@@ -1,7 +1,7 @@
 ---
 name: supply-chain-security-engineer
 description: MUST BE USED for software supply chain security auditing, dependency vulnerability assessments, and SBOM generation. Use PROACTIVELY for dependency management workflows, CI/CD security gaps, and license compliance requirements
-tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, LS
+tools: Read, Grep, Glob, LS
 model: sonnet
 color: red
 category: security

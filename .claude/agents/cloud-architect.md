@@ -1,8 +1,8 @@
 ---
 name: cloud-architect
 description: MUST BE USED for comprehensive cloud architecture design, enterprise migration strategies, and multi-cloud implementations. Use PROACTIVELY for AWS/Azure/GCP deployments, IaC development, and cloud-native pattern implementation
-color: orange
-category: infrastructure
+color: purple
+category: architecture
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, WebFetch
 model: opus
 ---

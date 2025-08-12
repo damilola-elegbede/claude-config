@@ -1,8 +1,8 @@
 # Claude-Config Documentation Index
 
-**Last Updated**: 2025-07-30  
+**Last Updated**: 2025-01-15  
 **Documentation Coverage**: Comprehensive  
-**Total Documents**: 30+
+**Total Documents**: 34+
 
 ---
 
@@ -58,6 +58,12 @@
 ### 🎧 Special Features
 - **[Audio Hook README](AUDIO_HOOK_README.md)** - Audio notification system documentation
 
+### 🧠 Intelligence Layer (Phase 3)
+- **[Phase 3 Implementation Guide](phase3-intelligence-layer.md)** - Complete Phase 3 Intelligence Layer implementation
+- **[Performance Predictor Guide](performance-predictor-guide.md)** - Performance prediction agent documentation
+- **[MLOps Guide](mlops-guide.md)** - ML operations pipeline and maintenance procedures
+- **[ML API Reference](ml-api-reference.md)** - ML service endpoints, authentication, and SDK usage
+
 ---
 
 ## 📊 Reports & Analysis
@@ -109,15 +115,19 @@ All 29 agents are documented in the `.claude/agents/` directory:
 4. [Ecosystem Health Guide](guides/ecosystem-health-guide.md) - Maintenance
 
 ### Recent Additions
-1. [Agent Migration Guide v2](guides/agent-migration-guide-v2.md) - Latest migration procedures
-2. [Agent Ecosystem Architecture](architecture/agent-ecosystem-architecture.md) - Complete architecture
-3. [Agent Development Guide](guides/agent-development-guide.md) - Comprehensive development guide
+1. [Phase 3 Implementation Guide](phase3-intelligence-layer.md) - Intelligence Layer implementation (NEW)
+2. [Performance Predictor Guide](performance-predictor-guide.md) - ML performance prediction (NEW)
+3. [MLOps Guide](mlops-guide.md) - ML operations and maintenance (NEW)
+4. [ML API Reference](ml-api-reference.md) - Complete ML API documentation (NEW)
+5. [Agent Migration Guide v2](guides/agent-migration-guide-v2.md) - Latest migration procedures
 
 ### Command References
 - `/docs` - Update documentation
 - `/agent-audit` - Run ecosystem health check
 - `/test` - Run tests
 - `/context` - Analyze repository
+- `/ml` - Machine learning operations (Phase 3)
+- `/perf` - Performance analysis and prediction
 
 ---
 

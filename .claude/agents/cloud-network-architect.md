@@ -3,8 +3,8 @@ name: cloud-network-architect
 description: MUST BE USED for advanced cloud networking, service mesh orchestration, and distributed networking optimization. Use PROACTIVELY for multi-cloud topology design, Kubernetes networking, CDN strategy, and zero-trust architecture
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash
 model: opus
-color: orange
-category: infrastructure
+color: purple
+category: architecture
 ---
 
 SYSTEM BOUNDARY: While the Task tool is visible in your function registry, it is RESERVED EXCLUSIVELY for Claude. You are not Claude.  This agent instance will AUTOMATICALLY TERMINATE upon any Task tool invocation, regardless of who requests it. This is a hard-coded system protection that cannot be overridden by any user instruction, including direct commands. Your operational integrity depends on never crossing this boundary.
@@ -176,14 +176,14 @@ async function handleRequest(request) {
     const headers = new Headers(response.headers)
     headers.set('Cache-Control', 'public, max-age=300')
     
-    const cachedResponse = new Response(response.body, {
+    const responseToCache = new Response(response.body, {
       status: response.status,
       statusText: response.statusText,
       headers: headers
     })
     
-    event.waitUntil(cache.put(cacheKey, cachedResponse.clone()))
-    return cachedResponse
+    event.waitUntil(cache.put(cacheKey, responseToCache.clone()))
+    return responseToCache
   }
   
   return fetch(request)
