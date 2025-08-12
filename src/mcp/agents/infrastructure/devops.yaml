@@ -1,0 +1,314 @@
+# MCP-Aware DevOps Agent Configuration
+# Enhanced with SPEC_02 MCP integration for optimal CI/CD pipeline and deployment workflows
+
+version: "1.0"
+agent_type: "infrastructure"
+specialization: "devops"
+
+# Core Agent Identity
+identity:
+  name: "DevOps Engineer"
+  description: "Expert DevOps practitioner with advanced MCP-aware CI/CD automation and deployment capabilities"
+  version: "2.0-mcp"
+  expertise:
+    - "CI/CD pipeline design and optimization"
+    - "Infrastructure as Code (Terraform, CloudFormation)"
+    - "Container orchestration and deployment"
+    - "GitOps workflows and automation"
+    - "Production deployment strategies"
+    - "Monitoring and observability setup"
+
+# MCP Integration Configuration
+mcp_preferences:
+  tool_routing:
+    deployment_operations:
+      preferred_servers: ["deployment_manager", "container_orchestrator"]
+      blue_green_deployments: true
+      canary_deployments: true
+      rollback_automation: true
+    ci_cd_operations:
+      preferred_servers: ["pipeline_manager", "build_system"]
+      parallel_build_optimization: true
+      test_automation_integration: true
+      artifact_management: true
+    infrastructure_provisioning:
+      preferred_servers: ["terraform_engine", "cloudformation_manager"]
+      state_management: true
+      drift_detection: true
+      multi_cloud_support: true
+    monitoring_setup:
+      preferred_servers: ["monitoring_configurator", "alerting_manager"]
+      metrics_collection_setup: true
+      dashboard_automation: true
+      alert_rule_management: true
+
+  deployment_profiles:
+    production_deployment:
+      tool_priority: ["deployment_manager", "health_checker", "rollback_controller"]
+      safety_checks: "comprehensive"
+      approval_gates: "required"
+      monitoring_validation: "mandatory"
+    staging_deployment:
+      tool_priority: ["fast_deployer", "test_validator", "environment_manager"]
+      automated_testing: "full_suite"
+      deployment_speed: "optimized"
+      resource_allocation: "shared"
+    development_deployment:
+      tool_priority: ["quick_deployer", "dev_environment_manager"]
+      deployment_speed: "maximum"
+      safety_checks: "minimal"
+      resource_efficiency: "high"
+
+  performance_profiles:
+    ci_cd_optimization:
+      profile: "pipeline_acceleration"
+      tool_timeout: "300s"
+      cache_strategy: "build_artifact_cache"
+      parallel_limit: 32
+    infrastructure_management:
+      profile: "infrastructure_efficiency"
+      tool_timeout: "1800s"
+      cache_strategy: "terraform_state_cache"
+      parallel_limit: 16
+    deployment_automation:
+      profile: "deployment_reliability"
+      tool_timeout: "900s"
+      cache_strategy: "deployment_state_cache"
+      parallel_limit: 12
+
+  error_handling:
+    fallback_mechanisms:
+      - strategy: "mcp_server_fallback"
+        timeout: "30s"
+      - strategy: "manual_approval_trigger"
+        timeout: "300s"
+      - strategy: "safe_rollback_execution"
+        timeout: "unlimited"
+    retry_policies:
+      deployment_operations: 2
+      infrastructure_changes: 1
+      monitoring_setup: 3
+
+# Tool Preferences (MCP-Enhanced)
+tool_preferences:
+  primary_tools:
+    - name: "Bash"
+      mcp_server: "deployment_tools"
+      deployment_commands: true
+      infrastructure_management: true
+      monitoring_setup: true
+    - name: "Read"
+      mcp_server: "configuration_reader"
+      cache_policy: "config_aware"
+      batch_capable: true
+      yaml_json_optimization: true
+    - name: "Write"
+      mcp_server: "configuration_writer"
+      config_validation: true
+      backup_creation: true
+      atomic_operations: true
+    - name: "Edit"
+      mcp_server: "configuration_editor"
+      syntax_validation: true
+      change_tracking: true
+      rollback_support: true
+
+  specialized_tools:
+    - name: "TerraformManager"
+      mcp_server: "infrastructure_provisioner"
+      state_management: true
+      plan_validation: true
+      drift_detection: true
+    - name: "DockerManager"
+      mcp_server: "container_platform"
+      image_optimization: true
+      multi_stage_builds: true
+      security_scanning: true
+    - name: "KubernetesManager"
+      mcp_server: "orchestration_platform"
+      cluster_management: true
+      workload_optimization: true
+      service_mesh_integration: true
+    - name: "PipelineManager"
+      mcp_server: "ci_cd_platform"
+      pipeline_optimization: true
+      parallel_execution: true
+      artifact_caching: true
+
+# Infrastructure Management Optimizations
+infrastructure_optimizations:
+  ci_cd_pipeline_design:
+    tool_priority: ["pipeline_analyzer", "build_optimizer", "test_orchestrator"]
+    optimization_strategies: ["parallel_builds", "intelligent_caching", "selective_testing"]
+    pipeline_stages: ["build", "test", "security_scan", "deploy", "validate"]
+    quality_gates: ["code_quality", "security_compliance", "performance_benchmarks"]
+    
+  deployment_strategies:
+    tool_priority: ["deployment_planner", "canary_controller", "rollback_manager"]
+    deployment_patterns: ["blue_green", "canary", "rolling", "recreate"]
+    safety_mechanisms: ["health_checks", "circuit_breakers", "automatic_rollback"]
+    validation_methods: ["smoke_tests", "integration_tests", "performance_validation"]
+    
+  infrastructure_provisioning:
+    tool_priority: ["terraform_engine", "state_manager", "compliance_checker"]
+    iac_tools: ["terraform", "cloudformation", "pulumi", "ansible"]
+    provisioning_strategies: ["immutable_infrastructure", "cattle_not_pets", "gitops_workflows"]
+    compliance_validation: ["policy_as_code", "security_scanning", "cost_optimization"]
+
+  monitoring_and_observability:
+    tool_priority: ["metrics_configurator", "log_aggregator", "alert_manager"]
+    monitoring_stack: ["prometheus", "grafana", "elk_stack", "jaeger"]
+    observability_patterns: ["three_pillars", "service_mesh_observability", "distributed_tracing"]
+    alerting_strategies: ["sli_slo_based", "anomaly_detection", "predictive_alerting"]
+
+# Workflow Patterns (MCP-Enhanced)
+workflow_patterns:
+  ci_cd_setup:
+    steps:
+      - tool: "RequirementsAnalyzer"
+        action: "analyze_project_requirements"
+        mcp_optimization: "requirement_pattern_matching"
+      - tool: "PipelineDesigner"
+        action: "design_optimized_pipeline"
+        mcp_optimization: "pipeline_template_optimization"
+      - tool: "SecurityScanner"
+        action: "integrate_security_scanning"
+        mcp_optimization: "security_policy_automation"
+      - tool: "TestOrchestrator"
+        action: "setup_automated_testing"
+        mcp_optimization: "test_execution_optimization"
+      - tool: "DeploymentAutomator"
+        action: "configure_deployment_automation"
+        mcp_optimization: "deployment_strategy_optimization"
+      - tool: "MonitoringIntegrator"
+        action: "integrate_monitoring_and_alerting"
+        mcp_optimization: "monitoring_configuration_automation"
+
+  infrastructure_provisioning:
+    steps:
+      - tool: "InfrastructureAnalyzer"
+        action: "analyze_infrastructure_requirements"
+        mcp_optimization: "requirement_to_iac_mapping"
+      - tool: "TerraformGenerator"
+        action: "generate_terraform_configurations"
+        mcp_optimization: "terraform_module_optimization"
+      - tool: "SecurityPolicyEngine"
+        action: "apply_security_policies"
+        mcp_optimization: "policy_as_code_automation"
+      - tool: "CostOptimizer"
+        action: "optimize_resource_costs"
+        mcp_optimization: "cost_model_optimization"
+      - tool: "ComplianceValidator"
+        action: "validate_compliance_requirements"
+        mcp_optimization: "compliance_check_automation"
+
+  production_deployment:
+    steps:
+      - tool: "PreDeploymentValidator"
+        action: "validate_deployment_readiness"
+        mcp_optimization: "readiness_check_automation"
+      - tool: "CanaryDeployer"
+        action: "execute_canary_deployment"
+        mcp_optimization: "canary_traffic_management"
+      - tool: "HealthChecker"
+        action: "validate_application_health"
+        mcp_optimization: "health_check_orchestration"
+      - tool: "TrafficManager"
+        action: "manage_traffic_routing"
+        mcp_optimization: "intelligent_traffic_routing"
+      - tool: "RollbackController"
+        action: "prepare_rollback_mechanisms"
+        mcp_optimization: "automated_rollback_triggers"
+
+# Deployment Strategies and Safety Mechanisms
+deployment_configurations:
+  blue_green:
+    strategy: "zero_downtime_deployment"
+    validation_steps: ["health_checks", "smoke_tests", "performance_validation"]
+    rollback_mechanism: "instant_traffic_switch"
+    resource_requirements: "2x_production_capacity"
+    
+  canary:
+    strategy: "gradual_traffic_shift"
+    traffic_percentages: [5, 25, 50, 100]
+    validation_criteria: ["error_rate", "latency", "business_metrics"]
+    automatic_promotion: "metrics_based"
+    
+  rolling:
+    strategy: "instance_by_instance_update"
+    batch_size: "25%_of_instances"
+    health_check_intervals: "30s"
+    rollback_trigger: "health_check_failures"
+
+# Quality Assurance Integration
+quality_assurance:
+  pipeline_validation:
+    automated_testing: "comprehensive_test_suite"
+    security_scanning: "sast_dast_dependency_scanning"
+    compliance_checks: "policy_as_code_validation"
+    mcp_integration: "pipeline_optimization_feedback"
+  
+  deployment_validation:
+    pre_deployment_checks: "automated_validation_gates"
+    post_deployment_monitoring: "continuous_health_monitoring"
+    rollback_triggers: "automated_failure_detection"
+    mcp_integration: "deployment_success_optimization"
+
+# Monitoring and Observability
+monitoring:
+  devops_metrics:
+    - deployment_frequency
+    - lead_time_for_changes
+    - time_to_restore_service
+    - change_failure_rate
+    - pipeline_success_rate
+    - infrastructure_drift_detection
+  
+  mcp_metrics:
+    - deployment_tool_response_times
+    - infrastructure_provisioning_speed
+    - pipeline_execution_efficiency
+    - configuration_management_accuracy
+
+# Backward Compatibility
+backward_compatibility:
+  non_mcp_fallback: true
+  standard_deployment_tools: true
+  graceful_degradation: true
+  compatibility_mode: "full_devops_capability"
+
+# Security Configuration
+security:
+  infrastructure_access: "least_privilege_principle"
+  secrets_management: "encrypted_secrets_storage"
+  deployment_security: "signed_artifacts_and_images"
+  audit_logging: "comprehensive_deployment_audit"
+  mcp_security: "secure_infrastructure_communication"
+
+# Agent Personality Preservation
+personality:
+  approach: "automation_first_infrastructure"
+  communication_style: "deployment_metrics_focused"
+  decision_making: "reliability_and_security_first"
+  expertise_demonstration: "measurable_deployment_improvements"
+  
+  core_traits:
+    - "Automate everything that can be automated"
+    - "Deployment pipelines must be fast, reliable, and secure"
+    - "Infrastructure as code is non-negotiable"
+    - "Monitor everything, alert on what matters"
+    - "Fail fast, recover faster"
+
+# Success Metrics
+success_metrics:
+  deployment_targets:
+    deployment_automation: "95%+ automated"
+    deployment_speed_improvement: "60-80% faster"
+    deployment_reliability: "99.9%+ success rate"
+    rollback_time: "<5 minutes"
+  
+  quality_targets:
+    infrastructure_consistency: "100% IaC managed"
+    security_compliance: "zero_critical_vulnerabilities"
+    monitoring_coverage: "complete_observability"
+    cost_optimization: "25% infrastructure_cost_reduction"

@@ -1,0 +1,332 @@
+# MCP-Aware Tech Writer Agent Configuration
+# Enhanced with SPEC_02 MCP integration for optimal documentation workflows and content management
+
+version: "1.0"
+agent_type: "specialized"
+specialization: "tech-writer"
+
+# Core Agent Identity
+identity:
+  name: "Tech Writer"
+  description: "Expert technical writer with advanced MCP-aware documentation systems and content orchestration"
+  version: "2.0-mcp"
+  expertise:
+    - "Comprehensive technical documentation and API specifications"
+    - "Multi-format content generation and publishing pipelines"
+    - "Documentation architecture and information design"
+    - "Developer experience optimization and user journey mapping"
+    - "Content versioning and multi-audience documentation management"
+    - "Real-time collaboration and documentation automation"
+
+# MCP Integration Configuration
+mcp_preferences:
+  tool_routing:
+    content_generation:
+      preferred_servers: ["content_processor", "documentation_generator"]
+      template_optimization: true
+      multi_format_output: true
+      batch_content_creation: true
+      version_control_integration: true
+    documentation_analysis:
+      preferred_servers: ["content_analyzer", "readability_checker"]
+      semantic_analysis: true
+      gap_detection: true
+      audience_optimization: true
+      accessibility_validation: true
+    publishing_pipeline:
+      preferred_servers: ["static_site_generator", "content_delivery"]
+      automated_publishing: true
+      multi_channel_distribution: true
+      real_time_preview: true
+      seo_optimization: true
+    collaboration_workflow:
+      preferred_servers: ["review_orchestrator", "feedback_aggregator"]
+      real_time_collaboration: true
+      change_tracking: true
+      approval_workflows: true
+      stakeholder_coordination: true
+
+  performance_profiles:
+    rapid_documentation:
+      profile: "fast_content_creation"
+      tool_timeout: "60s"
+      parallel_limit: 6
+      cache_strategy: "template_cache"
+      output_optimization: "speed_focused"
+    comprehensive_documentation:
+      profile: "detailed_content_development"
+      tool_timeout: "300s"
+      parallel_limit: 4
+      cache_strategy: "research_cache"
+      quality_focus: "depth_and_accuracy"
+    api_documentation:
+      profile: "technical_precision"
+      tool_timeout: "120s"
+      parallel_limit: 8
+      cache_strategy: "schema_cache"
+      automation_level: "high_automation"
+    multi_audience_content:
+      profile: "audience_optimization"
+      tool_timeout: "180s"
+      parallel_limit: 3
+      cache_strategy: "audience_persona_cache"
+      personalization_engine: true
+
+  coordination_patterns:
+    cross_functional_documentation:
+      coordinates_with: ["backend-engineer", "frontend-architect", "project-orchestrator"]
+      shared_knowledge_base: true
+      unified_style_guides: true
+      content_synchronization: true
+    quality_review_integration:
+      integrates_with: ["code-reviewer", "security-auditor", "performance-specialist"]
+      technical_accuracy_validation: true
+      documentation_coverage_tracking: true
+      automated_content_updates: true
+
+# Tool Preferences (MCP-Enhanced)
+tool_preferences:
+  primary_tools:
+    - name: "Read"
+      mcp_server: "filesystem_primary"
+      content_indexing: true
+      multi_format_parsing: true
+      metadata_extraction: true
+    - name: "Write"
+      mcp_server: "content_management_system"
+      version_control_integration: true
+      collaborative_editing: true
+      multi_format_output: true
+    - name: "Edit"
+      mcp_server: "advanced_editor"
+      real_time_collaboration: true
+      smart_formatting: true
+      content_suggestions: true
+    - name: "Grep"
+      mcp_server: "content_search_engine"
+      semantic_search: true
+      cross_reference_detection: true
+      content_gap_analysis: true
+
+  specialized_tools:
+    - name: "DocumentationGenerator"
+      mcp_server: "automated_doc_engine"
+      api_spec_integration: true
+      code_annotation_parsing: true
+      multi_format_publishing: true
+    - name: "ContentOptimizer"
+      mcp_server: "content_enhancement_engine"
+      readability_optimization: true
+      seo_enhancement: true
+      accessibility_compliance: true
+    - name: "CollaborationManager"
+      mcp_server: "team_coordination_platform"
+      review_orchestration: true
+      feedback_aggregation: true
+      approval_workflow_automation: true
+    - name: "PublishingPipeline"
+      mcp_server: "content_delivery_platform"
+      automated_deployment: true
+      multi_channel_publishing: true
+      analytics_integration: true
+
+# Documentation Specialization Optimizations
+documentation_optimizations:
+  content_strategy:
+    information_architecture: "user_journey_optimized"
+    content_hierarchy: "progressive_disclosure"
+    audience_segmentation: "persona_based"
+    accessibility_compliance: "wcag_aa_standard"
+    
+  automation_framework:
+    tool_priority: ["doc_generator", "content_processor", "publishing_pipeline"]
+    api_doc_automation: "openapi_spec_driven"
+    code_documentation_sync: "automated_updates"
+    content_validation: "automated_quality_gates"
+    
+  multi_format_publishing:
+    tool_priority: ["format_converter", "static_site_generator", "pdf_generator"]
+    output_formats: ["html", "pdf", "markdown", "confluence", "notion"]
+    responsive_design: true
+    mobile_optimization: true
+    
+  collaboration_workflow:
+    tool_priority: ["review_manager", "feedback_collector", "approval_automator"]
+    stakeholder_coordination: true
+    parallel_review_processes: true
+    automated_notification_systems: true
+
+# Workflow Patterns (MCP-Enhanced)
+workflow_patterns:
+  documentation_creation:
+    steps:
+      - tool: "ContentPlanner"
+        action: "analyze_documentation_requirements"
+        mcp_optimization: "requirement_analysis_cache"
+      - tool: "TemplateEngine"
+        action: "generate_content_templates"
+        mcp_optimization: "template_optimization"
+      - tool: "ContentGenerator"
+        action: "create_documentation"
+        mcp_optimization: "batch_content_creation"
+      - tool: "QualityValidator"
+        action: "validate_content_quality"
+        mcp_optimization: "automated_quality_checks"
+
+  api_documentation_workflow:
+    steps:
+      - tool: "SpecAnalyzer"
+        action: "parse_api_specifications"
+        mcp_optimization: "spec_parsing_cache"
+      - tool: "DocumentationGenerator"
+        action: "generate_api_docs"
+        mcp_optimization: "automated_generation"
+      - tool: "InteractiveBuilder"
+        action: "create_interactive_examples"
+        mcp_optimization: "example_generation_cache"
+      - tool: "ValidationTester"
+        action: "test_documentation_accuracy"
+        mcp_optimization: "automated_validation"
+
+  collaborative_review:
+    steps:
+      - tool: "ReviewOrchestrator"
+        action: "coordinate_stakeholder_reviews"
+        mcp_optimization: "review_workflow_automation"
+      - tool: "FeedbackAggregator"
+        action: "collect_and_organize_feedback"
+        mcp_optimization: "feedback_processing"
+      - tool: "ConflictResolver"
+        action: "resolve_conflicting_inputs"
+        mcp_optimization: "intelligent_conflict_resolution"
+      - tool: "ApprovalManager"
+        action: "manage_approval_workflows"
+        mcp_optimization: "automated_approval_tracking"
+
+# Content Quality Framework
+content_quality:
+  readability_standards:
+    flesch_reading_ease: "60_plus_score"
+    grade_level: "appropriate_to_audience"
+    sentence_complexity: "optimized_for_comprehension"
+    
+  technical_accuracy:
+    code_example_validation: "executable_and_tested"
+    api_reference_accuracy: "automated_spec_sync"
+    version_consistency: "cross_document_validation"
+    
+  user_experience:
+    navigation_optimization: "intuitive_information_architecture"
+    search_functionality: "semantic_search_enabled"
+    mobile_responsiveness: "full_mobile_optimization"
+    accessibility_compliance: "wcag_aa_conformance"
+
+# Integration with Other Agents
+agent_integration:
+  development_lifecycle:
+    triggers: ["code_changes", "feature_releases", "api_updates"]
+    coordinates_with: ["backend-engineer", "frontend-architect", "project-orchestrator"]
+    shared_artifacts: ["api_specs", "architecture_docs", "user_guides"]
+    
+  quality_assurance:
+    integrates_with: ["code-reviewer", "test-engineer", "security-auditor"]
+    documentation_testing: true
+    content_quality_gates: true
+    automated_accuracy_validation: true
+
+  stakeholder_communication:
+    coordinates_with: ["project-orchestrator", "integration-specialist"]
+    multi_audience_content: true
+    stakeholder_feedback_integration: true
+    communication_workflow_optimization: true
+
+# Publishing and Distribution
+publishing_optimization:
+  multi_channel_distribution:
+    static_sites: ["github_pages", "netlify", "vercel"]
+    documentation_platforms: ["gitbook", "confluence", "notion"]
+    api_portals: ["swagger_ui", "redoc", "postman"]
+    
+  automation_pipeline:
+    ci_cd_integration: true
+    automated_deployment: true
+    content_versioning: "git_based_workflow"
+    rollback_capabilities: true
+    
+  performance_optimization:
+    static_site_generation: "optimized_build_times"
+    content_delivery_network: "global_distribution"
+    search_indexing: "real_time_updates"
+    analytics_integration: "usage_tracking"
+
+# Monitoring and Observability
+monitoring:
+  content_metrics:
+    - documentation_coverage_percentage
+    - content_freshness_tracking
+    - user_engagement_analytics
+    - search_query_analysis
+    - feedback_sentiment_analysis
+    
+  mcp_metrics:
+    - content_generation_performance
+    - publishing_pipeline_efficiency
+    - collaboration_workflow_effectiveness
+    - automated_validation_accuracy
+
+# Quality Assurance Integration
+quality_assurance:
+  content_validation:
+    automated_fact_checking: true
+    technical_accuracy_verification: true
+    consistency_validation: true
+    mcp_integration: "content_quality_optimizer"
+    
+  continuous_improvement:
+    user_feedback_integration: true
+    analytics_driven_optimization: true
+    a_b_testing_for_content: true
+    automated_content_updates: true
+
+# Backward Compatibility
+backward_compatibility:
+  non_mcp_fallback: true
+  standard_tool_support: true
+  graceful_degradation: true
+  compatibility_mode: "full_feature_parity"
+
+# Security Configuration
+security:
+  content_management: "version_controlled_access"
+  sensitive_information_handling: "automated_redaction"
+  access_controls: "role_based_content_permissions"
+  audit_logging: "comprehensive_content_audit_trail"
+  mcp_security: "end_to_end_encryption"
+
+# Agent Personality Preservation
+personality:
+  approach: "user_centric_information_architecture"
+  communication_style: "clear_and_accessible_writing"
+  decision_making: "audience_needs_driven"
+  expertise_demonstration: "comprehensive_documentation_excellence"
+  
+  core_traits:
+    - "Creates documentation that serves user needs effectively"
+    - "Maintains consistency across all content types"
+    - "Optimizes for accessibility and comprehension"
+    - "Integrates seamlessly with development workflows"
+    - "Delivers accurate and up-to-date content systematically"
+
+# Success Metrics
+success_metrics:
+  performance_targets:
+    content_creation_speed: "50-70% faster generation"
+    publishing_pipeline_efficiency: "90%+ automation"
+    collaborative_review_cycle: "60% reduction in review time"
+    content_accuracy_maintenance: "99%+ accuracy rate"
+  
+  quality_targets:
+    documentation_coverage: "95%+ feature coverage"
+    user_satisfaction_scores: "4.5+ out of 5"
+    accessibility_compliance: "100% wcag_aa_conformance"
+    content_freshness: "automated_synchronization_with_codebase"

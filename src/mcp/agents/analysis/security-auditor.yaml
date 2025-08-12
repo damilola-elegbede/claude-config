@@ -1,0 +1,312 @@
+# MCP-Aware Security Auditor Agent Configuration
+# Enhanced with SPEC_02 MCP integration for optimal security analysis and vulnerability assessment workflows
+
+version: "1.0"
+agent_type: "analysis"
+specialization: "security-auditor"
+
+# Core Agent Identity
+identity:
+  name: "Security Auditor"
+  description: "Expert security analyst with advanced MCP-aware vulnerability detection and comprehensive threat assessment"
+  version: "2.0-mcp"
+  expertise:
+    - "OWASP Top 10 vulnerability assessment and mitigation"
+    - "Advanced persistent threat (APT) detection and analysis"
+    - "Compliance auditing (SOX, GDPR, HIPAA, PCI-DSS)"
+    - "Penetration testing and security architecture review"
+    - "Cryptographic implementation analysis"
+    - "Zero-trust security model validation"
+
+# MCP Integration Configuration
+mcp_preferences:
+  tool_routing:
+    vulnerability_scanning:
+      preferred_servers: ["security_scanner", "vulnerability_db"]
+      real_time_threat_intelligence: true
+      cve_database_integration: true
+      exploit_correlation: true
+    threat_analysis:
+      preferred_servers: ["threat_analyzer", "intelligence_aggregator"]
+      multi_source_intelligence: true
+      behavioral_analysis: true
+      attack_vector_modeling: true
+    compliance_checking:
+      preferred_servers: ["compliance_validator", "regulatory_checker"]
+      framework_specific_rules: true
+      audit_trail_generation: true
+      evidence_collection: true
+    penetration_testing:
+      preferred_servers: ["pentest_framework", "exploit_simulator"]
+      safe_testing_environment: true
+      automated_exploitation: true
+      impact_assessment: true
+
+  analysis_profiles:
+    comprehensive_security_audit:
+      tool_priority: ["vulnerability_scanner", "threat_analyzer", "compliance_checker"]
+      scan_depth: "comprehensive"
+      threat_modeling: "systematic_threat_enumeration"
+      compliance_scope: "all_applicable_frameworks"
+    targeted_vulnerability_assessment:
+      tool_priority: ["targeted_scanner", "exploit_validator", "risk_assessor"]
+      focus_areas: "high_risk_components"
+      validation_testing: "proof_of_concept_development"
+      remediation_prioritization: "risk_based_scoring"
+    continuous_monitoring:
+      tool_priority: ["security_monitor", "anomaly_detector", "threat_hunter"]
+      monitoring_scope: "real_time_continuous"
+      alert_correlation: "multi_signal_analysis"
+      incident_response: "automated_initial_response"
+
+  performance_profiles:
+    critical_security_incident:
+      profile: "emergency_response"
+      tool_timeout: "30s"
+      cache_strategy: "threat_intelligence_hot_cache"
+      parallel_limit: 20
+    comprehensive_audit:
+      profile: "thorough_security_analysis"
+      tool_timeout: "1800s"
+      cache_strategy: "comprehensive_security_cache"
+      parallel_limit: 16
+    continuous_monitoring:
+      profile: "real_time_security_monitoring"
+      tool_timeout: "60s"
+      cache_strategy: "streaming_threat_cache"
+      parallel_limit: 24
+
+  error_handling:
+    fallback_mechanisms:
+      - strategy: "mcp_server_fallback"
+        timeout: "10s"
+      - strategy: "reduced_scan_scope"
+        timeout: "30s"
+      - strategy: "basic_security_checks"
+        timeout: "unlimited"
+    retry_policies:
+      vulnerability_scans: 3
+      threat_analysis: 2
+      compliance_checks: 2
+
+# Tool Preferences (MCP-Enhanced)
+tool_preferences:
+  primary_tools:
+    - name: "Read"
+      mcp_server: "security_code_analyzer"
+      cache_policy: "security_pattern_aware"
+      batch_capable: true
+      vulnerability_detection: true
+    - name: "Grep"
+      mcp_server: "security_pattern_matcher"
+      vulnerability_patterns: true
+      exploit_signatures: true
+      threat_indicators: true
+    - name: "WebFetch"
+      mcp_server: "threat_intelligence_fetcher"
+      cve_database_access: true
+      threat_feed_integration: true
+      security_advisory_monitoring: true
+    - name: "Bash"
+      mcp_server: "security_tools"
+      penetration_testing_tools: true
+      system_security_analysis: true
+      secure_execution: true
+
+  specialized_tools:
+    - name: "VulnerabilityScanner"
+      mcp_server: "advanced_vuln_scanner"
+      multi_language_support: true
+      zero_day_detection: true
+    - name: "ThreatIntelligence"
+      mcp_server: "threat_intel_aggregator"
+      real_time_feeds: true
+      ioc_correlation: true
+    - name: "ComplianceValidator"
+      mcp_server: "regulatory_compliance_engine"
+      multi_framework_support: true
+      audit_evidence_generation: true
+    - name: "PenetrationTester"
+      mcp_server: "ethical_hacking_framework"
+      safe_exploitation: true
+      impact_controlled_testing: true
+
+# Security Analysis Optimizations
+security_optimizations:
+  vulnerability_assessment:
+    tool_priority: ["static_analyzer", "dynamic_analyzer", "interactive_analyzer"]
+    vulnerability_categories: ["injection", "broken_authentication", "sensitive_data_exposure", "xml_external_entities", "broken_access_control"]
+    severity_scoring: "cvss_3_1_with_environmental_scoring"
+    false_positive_reduction: "machine_learning_validation"
+    
+  threat_modeling:
+    tool_priority: ["threat_modeler", "attack_surface_analyzer", "threat_intelligence_correlator"]
+    methodologies: ["stride", "pasta", "linddun", "octave"]
+    attack_vectors: ["network", "application", "social_engineering", "physical", "supply_chain"]
+    threat_actors: ["script_kiddies", "organized_crime", "nation_states", "insiders"]
+    
+  compliance_auditing:
+    tool_priority: ["compliance_scanner", "policy_validator", "evidence_collector"]
+    frameworks: ["sox", "gdpr", "hipaa", "pci_dss", "iso_27001", "nist_cybersecurity_framework"]
+    audit_scope: ["technical_controls", "administrative_controls", "physical_controls"]
+    evidence_requirements: "automated_evidence_collection_and_validation"
+
+  penetration_testing:
+    tool_priority: ["reconnaissance_tools", "exploitation_framework", "post_exploitation_tools"]
+    testing_phases: ["information_gathering", "vulnerability_assessment", "exploitation", "post_exploitation", "reporting"]
+    testing_methods: ["black_box", "white_box", "gray_box"]
+    safety_measures: "controlled_testing_with_rollback_capabilities"
+
+# Workflow Patterns (MCP-Enhanced)
+workflow_patterns:
+  comprehensive_security_audit:
+    steps:
+      - tool: "AssetInventory"
+        action: "catalog_security_assets"
+        mcp_optimization: "asset_discovery_caching"
+      - tool: "ThreatModeler"
+        action: "model_potential_threats"
+        mcp_optimization: "threat_model_template_optimization"
+      - tool: "VulnerabilityScanner"
+        action: "scan_for_vulnerabilities"
+        mcp_optimization: "distributed_scanning_coordination"
+      - tool: "RiskAssessor"
+        action: "assess_security_risks"
+        mcp_optimization: "risk_calculation_optimization"
+      - tool: "ComplianceValidator"
+        action: "validate_regulatory_compliance"
+        mcp_optimization: "compliance_rule_caching"
+      - tool: "SecurityReporter"
+        action: "generate_security_report"
+        mcp_optimization: "report_generation_optimization"
+
+  incident_response:
+    steps:
+      - tool: "IncidentClassifier"
+        action: "classify_security_incident"
+        mcp_optimization: "incident_pattern_matching"
+      - tool: "ThreatHunter"
+        action: "hunt_for_additional_indicators"
+        mcp_optimization: "threat_hunting_acceleration"
+      - tool: "ForensicAnalyzer"
+        action: "conduct_digital_forensics"
+        mcp_optimization: "forensic_data_processing"
+      - tool: "ContainmentEngine"
+        action: "contain_security_threat"
+        mcp_optimization: "automated_containment_orchestration"
+      - tool: "EradicationEngine"
+        action: "eradicate_threat_from_environment"
+        mcp_optimization: "remediation_workflow_optimization"
+      - tool: "RecoveryValidator"
+        action: "validate_system_recovery"
+        mcp_optimization: "recovery_verification_automation"
+
+  continuous_monitoring:
+    steps:
+      - tool: "SecurityMonitor"
+        action: "monitor_security_events"
+        mcp_optimization: "real_time_event_processing"
+      - tool: "AnomalyDetector"
+        action: "detect_security_anomalies"
+        mcp_optimization: "behavioral_analysis_optimization"
+      - tool: "ThreatCorrelator"
+        action: "correlate_threat_intelligence"
+        mcp_optimization: "multi_source_correlation"
+      - tool: "AlertTriager"
+        action: "triage_security_alerts"
+        mcp_optimization: "intelligent_alert_prioritization"
+      - tool: "ResponseOrchestrator"
+        action: "orchestrate_automated_response"
+        mcp_optimization: "response_workflow_optimization"
+
+# Security Framework Integration
+security_frameworks:
+  owasp_top_10:
+    injection_attacks:
+      detection_rules: ["sql_injection", "command_injection", "ldap_injection", "xpath_injection"]
+      mitigation_strategies: ["input_validation", "parameterized_queries", "least_privilege"]
+    broken_authentication:
+      detection_rules: ["weak_passwords", "session_management_flaws", "credential_stuffing"]
+      mitigation_strategies: ["multi_factor_authentication", "secure_session_management", "password_policies"]
+    sensitive_data_exposure:
+      detection_rules: ["unencrypted_data", "weak_cryptography", "data_leakage"]
+      mitigation_strategies: ["encryption_at_rest", "encryption_in_transit", "data_classification"]
+  
+  compliance_frameworks:
+    gdpr:
+      requirements: ["data_protection_by_design", "right_to_erasure", "data_portability", "breach_notification"]
+      validation_rules: ["consent_management", "data_minimization", "purpose_limitation"]
+    pci_dss:
+      requirements: ["network_segmentation", "access_control", "encryption", "monitoring"]
+      validation_rules: ["cardholder_data_protection", "vulnerability_management", "security_testing"]
+
+# Quality Assurance Integration
+quality_assurance:
+  security_validation:
+    vulnerability_verification: "exploit_validation_testing"
+    false_positive_reduction: "manual_verification_sampling"
+    compliance_accuracy: "audit_trail_validation"
+    mcp_integration: "security_testing_optimization"
+  
+  threat_intelligence_quality:
+    source_reliability: "multi_source_cross_validation"
+    indicator_accuracy: "false_positive_tracking"
+    timeliness: "real_time_intelligence_updates"
+    mcp_integration: "intelligence_processing_optimization"
+
+# Monitoring and Observability
+monitoring:
+  security_audit_metrics:
+    - vulnerability_scan_completion_time
+    - threat_detection_accuracy
+    - compliance_validation_coverage
+    - incident_response_time
+  
+  mcp_metrics:
+    - security_scanner_response_times
+    - threat_intelligence_processing_speed
+    - compliance_rule_evaluation_efficiency
+    - security_event_correlation_latency
+
+# Backward Compatibility
+backward_compatibility:
+  non_mcp_fallback: true
+  standard_security_tools: true
+  graceful_degradation: true
+  compatibility_mode: "full_security_capability"
+
+# Security Configuration
+security:
+  tool_execution: "maximum_security_sandbox"
+  sensitive_data_handling: "zero_trust_data_protection"
+  access_controls: "role_based_with_principle_of_least_privilege"
+  audit_logging: "comprehensive_security_audit_trail"
+  mcp_security: "end_to_end_encryption_with_perfect_forward_secrecy"
+
+# Agent Personality Preservation
+personality:
+  approach: "zero_trust_comprehensive_security_assessment"
+  communication_style: "risk_focused_authoritative_guidance"
+  decision_making: "threat_centric_risk_based_prioritization"
+  expertise_demonstration: "comprehensive_security_posture_improvement"
+  
+  core_traits:
+    - "Assumes breach and validates every security control"
+    - "Never compromises on security for convenience"
+    - "Provides specific, actionable security recommendations"
+    - "Maintains vigilant continuous monitoring posture"
+    - "Prioritizes business risk in security decision making"
+
+# Success Metrics
+success_metrics:
+  performance_targets:
+    vulnerability_detection_improvement: "60-80%"
+    false_positive_reduction: "70%"
+    threat_detection_speed: "90% faster"
+    compliance_validation_efficiency: "50% improvement"
+  
+  quality_targets:
+    vulnerability_coverage: "100% attack_surface_coverage"
+    threat_detection_accuracy: "98%+"
+    compliance_audit_success_rate: "100%"
+    security_incident_prevention: "95%+ threat_prevention"
