@@ -56,11 +56,11 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
       - Automatic refresh token mechanism
     </method>
 
-    <method name="api-key" security-level="medium">
-      - API keys for service-to-service communication
-      - Scoped permissions per API key
-      - Rate limiting by API key
-      - Audit logging for all API key usage
+    <method name="service-token" security-level="medium">
+      - Service tokens for service-to-service communication
+      - Scoped permissions per service token
+      - Rate limiting by service token
+      - Audit logging for all service token usage
     </method>
   </auth-methods>
 
@@ -871,7 +871,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
 
       # Initialize client with environment variable
       client = MLClient(
-          api_key=os.environ["ML_API_KEY"],
+          service_token=os.environ["ML_SERVICE_TOKEN"],
           base_url="https://ml-api.claude.local/v1"
       )
 
@@ -1185,4 +1185,4 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
   </security-features>
 </implementation-notes>
 
-*ML API Reference v1.0 - Production Ready Enterprise API*
+## ML API Reference v1.0 - Production Ready Enterprise API

@@ -1564,4 +1564,4 @@ This comprehensive MLOps guide covers the complete machine learning operations p
   </emergency-procedures>
 </operational-runbook>
 
-*MLOps Guide v1.0 - Enterprise Production Operations*
+## MLOps Guide v1.0 - Enterprise Production Operations
