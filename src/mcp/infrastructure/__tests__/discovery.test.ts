@@ -161,7 +161,7 @@ describe('MCPDiscoveryService', () => {
     });
 
     it('should expand environment variables in server config', async () => {
-      process.env.GITHUB_TOKEN = 'test-token-123';
+      process.env.GITHUB_TOKEN = 'mock_gh_value_for_testing';
       
       await discoveryService.discoverServers();
 

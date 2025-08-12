@@ -20,8 +20,8 @@ Your dashboard will be accessible at the ngrok URL shown!
 
 ### 2. Get Free Ngrok Account (Recommended)
 
-1. Sign up at https://ngrok.com/signup
-2. Get your auth token from https://dashboard.ngrok.com/auth
+1. Sign up at <https://ngrok.com/signup>
+2. Get your auth token from <https://dashboard.ngrok.com/auth>
 3. Configure ngrok:
    ```bash
    ngrok authtoken YOUR_AUTH_TOKEN

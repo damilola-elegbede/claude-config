@@ -221,7 +221,7 @@ console.log(`Break-even: ${roi.breakEvenMonths} months`);
 console.log(`NPV: $${roi.netPresentValue.toLocaleString()}`);
 ```
 
-### Trend Analysis
+### Performance Trend Analysis
 ```typescript
 // Analyze performance trends
 const trends = await system.getTrendAnalysis({

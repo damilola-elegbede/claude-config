@@ -34,7 +34,7 @@ tail -f ~/Library/Logs/mcp-dashboard.log
 Once installed, the dashboard will:
 - **Auto-start on system boot**
 - **Restart automatically if it crashes**
-- **Always be available at:** http://localhost:3003
+- **Always be available at:** <http://localhost:3003>
 
 ## 🛠️ Service Management Commands
 
@@ -150,6 +150,6 @@ launchctl start com.claude.mcp.dashboard
 
 You know it's working when:
 - ✅ `launchctl list` shows the service with PID
-- ✅ http://localhost:3003 loads the dashboard
+- ✅ <http://localhost:3003> loads the dashboard
 - ✅ Dashboard survives system restarts
 - ✅ Logs show successful startup in `~/Library/Logs/mcp-dashboard.log`

@@ -362,7 +362,7 @@ engine.on('routingError', (error) => {
 
 ## Best Practices
 
-### Configuration
+### Best Practice Configuration
 
 1. **Start Conservative**: Begin with default settings and tune based on observed performance
 2. **Monitor Metrics**: Use real-time metrics to guide configuration adjustments

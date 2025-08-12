@@ -17,7 +17,7 @@ This directory contains the intelligent tool preference engine implementation ac
 - **Agent-specific routing profiles** and tool-specific strategies
 - **Performance requirements** filtering (response time, success rate, load)
 
-#### Key Features:
+#### Router Key Features:
 - Weighted scoring considering latency, success rate, load, and agent preferences
 - Configurable routing strategies per tool type and agent
 - Automatic fallback and circuit breaker integration
@@ -32,7 +32,7 @@ This directory contains the intelligent tool preference engine implementation ac
 - **Manual preference overrides** with expiration support
 - **Historical performance tracking** per server/tool/agent combination
 
-#### Key Features:
+#### Engine Key Features:
 - Continuous learning from response time, success rate, and user satisfaction
 - Agent profiles with tool usage patterns and preferences
 - Preference overrides (prefer, avoid, require, exclude) with expiration
@@ -49,7 +49,7 @@ This directory contains the intelligent tool preference engine implementation ac
 - **Pattern-based invalidation** for cache coherence
 - **Comprehensive statistics** and monitoring
 
-#### Key Features:
+#### Cache Key Features:
 - Multiple eviction policies (LRU, LFU, TTL, Random)
 - Cache warming and background refresh capabilities
 - Configurable compression for large values
