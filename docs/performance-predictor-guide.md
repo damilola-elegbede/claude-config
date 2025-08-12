@@ -437,7 +437,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
 
   predictor = PerformancePredictorAgent()
 
-  # Get current system bottleneck prediction
+  # Step 1: Get current system bottleneck prediction
   bottleneck_prediction = await predictor.predict_bottleneck(
       system_id="prod-cluster-01",
       horizon_minutes=30
@@ -448,7 +448,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
   print(f"Predicted Resource: {bottleneck_prediction.resource_type}")
   print(f"Severity: {bottleneck_prediction.severity}/10")
 
-  # Get optimization recommendations
+  # Step 2: Get optimization recommendations
   if bottleneck_prediction.probability > 0.7:
       optimization = await predictor.get_optimization_recommendations(
           current_state=bottleneck_prediction.current_state

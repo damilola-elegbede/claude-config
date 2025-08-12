@@ -871,7 +871,7 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
 
       # Initialize client with environment variable
       client = MLClient(
-          service_token=os.environ["ML_SERVICE_TOKEN"],
+          auth_token=os.getenv("ML_SERVICE_TOKEN"),
           base_url="https://ml-api.claude.local/v1"
       )
 
