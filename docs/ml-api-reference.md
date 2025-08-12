@@ -56,11 +56,11 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
       - Automatic refresh token mechanism
     </method>
 
-    <method name="service-token" security-level="medium">
-      - Service tokens for service-to-service communication
-      - Scoped permissions per service token
-      - Rate limiting by service token
-      - Audit logging for all service token usage
+    <method name="service-credentials" security-level="medium">
+      - Service credentials for service-to-service communication
+      - Scoped permissions per service credential
+      - Rate limiting by service credential
+      - Audit logging for all service credential usage
     </method>
   </auth-methods>
 
