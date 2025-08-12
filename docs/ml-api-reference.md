@@ -868,10 +868,12 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
     <example name="basic-prediction">
       ```python
       from claude_ml import MLClient
+      import os
 
       # Initialize client with environment variable
+      service_token = os.getenv("ML_SERVICE_TOKEN")
       client = MLClient(
-          auth_token=os.getenv("ML_SERVICE_TOKEN"),
+          auth_token=service_token,
           base_url="https://ml-api.claude.local/v1"
       )
 

@@ -30,7 +30,13 @@
     // MD050: Strong style should be consistent (we use both ** and __)
     "MD050": false,
     // MD051: Link fragments should be valid (emoji in headings cause issues)
-    "MD051": false
+    "MD051": false,
+    // MD025: Multiple top level headings (false positives with Python comments in code blocks)
+    "MD025": false,
+    // MD001: Heading levels should only increment by one level at a time
+    "MD001": false,
+    // MD036: Emphasis used instead of a heading (false positives with legitimate emphasis)
+    "MD036": false
   },
   // Ignore patterns
   "ignores": [
