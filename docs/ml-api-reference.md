@@ -871,9 +871,10 @@ Comprehensive API reference for the Phase 3 Intelligence Layer ML services, prov
       import os
 
       # Initialize client with environment variable
-      service_token = os.getenv("ML_SERVICE_TOKEN")
+      # Set ML_SERVICE_KEY in your environment
+      auth_key = os.getenv("ML_SERVICE_KEY")
       client = MLClient(
-          auth_token=service_token,
+          auth_key=auth_key,
           base_url="https://ml-api.claude.local/v1"
       )
 
