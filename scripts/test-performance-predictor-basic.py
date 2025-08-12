@@ -7,8 +7,7 @@ Validates agent format, integration points, and core ML concepts without externa
 import json
 import yaml
 import re
-from datetime import datetime
-import os
+import tempfile
 
 def test_agent_format():
     """Test agent YAML frontmatter format and structure"""
@@ -47,7 +46,7 @@ def test_agent_format():
         
         all_valid = all(validations.values())
         
-        print(f"✅ Agent Format Validation:")
+        print("✅ Agent Format Validation:")
         for key, valid in validations.items():
             print(f"   - {key}: {'PASS' if valid else 'FAIL'}")
         
@@ -73,7 +72,7 @@ def test_system_boundary():
         task_tool_protection = 'Task tool' in content and 'RESERVED EXCLUSIVELY for Claude' in content
         termination_protection = 'AUTOMATICALLY TERMINATE' in content
         
-        print(f"✅ System Boundary Protection:")
+        print("✅ System Boundary Protection:")
         print(f"   - SYSTEM BOUNDARY section: {'PASS' if boundary_present else 'FAIL'}")
         print(f"   - Task tool protection: {'PASS' if task_tool_protection else 'FAIL'}")
         print(f"   - Auto-termination clause: {'PASS' if termination_protection else 'FAIL'}")
@@ -106,7 +105,7 @@ def test_ml_capabilities():
         
         all_concepts_present = all(ml_concepts.values())
         
-        print(f"✅ ML Capabilities Coverage:")
+        print("✅ ML Capabilities Coverage:")
         for concept, present in ml_concepts.items():
             print(f"   - {concept.replace('_', ' ').title()}: {'PASS' if present else 'FAIL'}")
         
@@ -140,7 +139,7 @@ def test_integration_points():
         
         integration_count = sum(integrations.values())
         
-        print(f"✅ Integration Points Coverage:")
+        print("✅ Integration Points Coverage:")
         for integration, present in integrations.items():
             print(f"   - {integration.replace('_', ' ').title()}: {'PASS' if present else 'FAIL'}")
         
@@ -179,7 +178,7 @@ def test_code_examples():
         
         implementation_complete = sum(implementation_details.values()) >= 3
         
-        print(f"✅ Implementation Examples:")
+        print("✅ Implementation Examples:")
         for detail, present in implementation_details.items():
             print(f"   - {detail.replace('_', ' ').title()}: {'PASS' if present else 'FAIL'}")
         
@@ -213,7 +212,7 @@ def test_performance_metrics():
         
         metrics_complete = sum(metrics.values()) >= 4
         
-        print(f"✅ Performance Metrics Definition:")
+        print("✅ Performance Metrics Definition:")
         for metric, present in metrics.items():
             print(f"   - {metric.replace('_', ' ').title()}: {'PASS' if present else 'FAIL'}")
         
@@ -249,7 +248,7 @@ def test_deployment_triggers():
         
         trigger_coverage = sum(trigger_types.values())
         
-        print(f"✅ Deployment Triggers:")
+        print("✅ Deployment Triggers:")
         print(f"   - Triggers Section Present: {'PASS' if triggers_section else 'FAIL'}")
         print(f"   - Multiple Conditions: {'PASS' if trigger_conditions else 'FAIL'}")
         print(f"   - Automatic Deployment: {'PASS' if automatic_deployment else 'FAIL'}")
@@ -293,7 +292,6 @@ def run_comprehensive_test():
     for test_name, test_result in results.items():
         if isinstance(test_result, dict) and 'error' not in test_result:
             # Find main validation keys
-            main_keys = [k for k in test_result.keys() if not k.endswith('s') and not k.startswith('_')]
             for key, value in test_result.items():
                 if key in ['format_valid', 'boundary_protection', 'ml_concepts_complete', 
                           'integration_coverage', 'implementation_complete', 'metrics_complete',
@@ -315,11 +313,11 @@ def run_comprehensive_test():
     success_rate = (passes / total * 100) if total > 0 else 0
     
     print(f"\n🎯 Validation Success Rate: {passes}/{total} ({success_rate:.1f}%)")
-    print(f"🎯 Target Success Rate: 90%")
+    print("🎯 Target Success Rate: 90%")
     print(f"🎯 Overall Assessment: {'EXCELLENT' if success_rate >= 95 else 'PASS' if success_rate >= 90 else 'NEEDS IMPROVEMENT'}")
     
     # Agent readiness assessment
-    print(f"\n📋 Agent Readiness Assessment:")
+    print("\n📋 Agent Readiness Assessment:")
     readiness_factors = [
         ("YAML Format", results.get('agent_format', {}).get('format_valid', False)),
         ("System Security", results.get('system_boundary', {}).get('boundary_protection', False)),
@@ -337,7 +335,7 @@ def run_comprehensive_test():
     print(f"\n🚀 Production Readiness: {'✅ READY FOR DEPLOYMENT' if all_ready else '⚠️  REQUIRES UPDATES'}")
     
     # Save results
-    results_file = '/tmp/performance_predictor_validation.json'
+    results_file = tempfile.gettempdir() + '/performance_predictor_validation.json'
     with open(results_file, 'w') as f:
         json.dump(results, f, indent=2, default=str)
     

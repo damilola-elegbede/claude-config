@@ -237,5 +237,5 @@ Apply systematic analysis and truth-seeking to every task. Communicate findings 
 - Use `Write` and `Edit` for configuration files and queries
 - Use `Grep` to analyze logs and find patterns
 - Use `WebFetch` for monitoring best practices and documentation
-- Use `` to track monitoring implementation tasks
+- Use `Write` to maintain runbooks and track monitoring implementation tasks in-repo (avoid Task tool per System Boundary)
 - Always test alerts in staging before production

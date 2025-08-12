@@ -18,10 +18,7 @@ import yaml
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Any
-import statistics
 import random
-import socket
-import threading
 from contextlib import contextmanager
 
 # Configure logging
@@ -234,7 +231,7 @@ class MLInfrastructureTestSuite:
                 'health_check_success_rate': health_checks['health_check_success_rate'],
                 'avg_health_check_latency_ms': health_checks['avg_latency_ms'],
                 'resource_limits_defined': resource_management['resource_limits_defined'],
-                'cpu_request_mb': resource_management['cpu_request_mb'],
+                'cpu_request_millicores': resource_management['cpu_request_millicores'],
                 'memory_request_mb': resource_management['memory_request_mb'],
                 'pods_ready': health_checks['pods_ready'],
                 'pods_desired': health_checks['pods_desired']
@@ -828,7 +825,7 @@ class MLInfrastructureTestSuite:
         return {
             'resource_limits_defined': random.choice([True, True, False]),
             'requests_appropriate': random.choice([True, False]),
-            'cpu_request_mb': random.randint(500, 2000),
+            'cpu_request_millicores': random.randint(500, 2000),
             'memory_request_mb': random.randint(1000, 4000),
             'qos_class_appropriate': random.choice([True, False])
         }
@@ -1003,7 +1000,7 @@ class MLInfrastructureTestSuite:
         return {
             'utilization': random.uniform(0.45, 0.80),
             'memory_leaks_detected': random.choice([False, False, True]),
-            'no_memory_leaks': random.choice([True, True, False]),
+            'no_memory_leaks': not random.choice([False, False, True]),
             'limits_configured': random.choice([True, False])
         }
     
@@ -1099,14 +1096,13 @@ class MLInfrastructureTestSuite:
             self.test_disaster_recovery_failover
         ]
         
-        test_results = []
         for test_method in test_methods:
             try:
                 result = await test_method()
-                test_results.append(result)
+                self.test_results.append(result)
             except Exception as e:
                 logger.error(f"Infrastructure test method {test_method.__name__} failed: {str(e)}")
-                test_results.append(False)
+                self.test_results.append(False)
         
         end_time = time.time()
         total_duration = end_time - start_time

@@ -6,8 +6,7 @@ Demonstrates key features without requiring external ML dependencies
 
 import json
 import time
-from datetime import datetime, timedelta
-import random
+import tempfile
 
 def simulate_metrics_collection():
     """Simulate metrics collection from various monitoring systems"""
@@ -257,12 +256,12 @@ def demonstrate_agent_workflow():
     print(f"✅ Processing Time: {summary['total_processing_time']} (Real-time capable)")
     print(f"✅ Overall Confidence: {summary['confidence_level']}")
     
-    print(f"\n🎯 Agent Status: FULLY OPERATIONAL")
-    print(f"🎯 Production Ready: YES")
-    print(f"🎯 Integration Coverage: 95%")
+    print("\n🎯 Agent Status: FULLY OPERATIONAL")
+    print("🎯 Production Ready: YES")
+    print("🎯 Integration Coverage: 95%")
     
     # Save demo results
-    demo_results_file = '/tmp/performance_predictor_demo.json'
+    demo_results_file = tempfile.gettempdir() + '/performance_predictor_demo.json'
     with open(demo_results_file, 'w') as f:
         json.dump(workflow_results, f, indent=2, default=str)
     

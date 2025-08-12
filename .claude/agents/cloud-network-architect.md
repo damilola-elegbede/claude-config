@@ -176,14 +176,14 @@ async function handleRequest(request) {
     const headers = new Headers(response.headers)
     headers.set('Cache-Control', 'public, max-age=300')
     
-    const cachedResponse = new Response(response.body, {
+    const responseToCache = new Response(response.body, {
       status: response.status,
       statusText: response.statusText,
       headers: headers
     })
     
-    event.waitUntil(cache.put(cacheKey, cachedResponse.clone()))
-    return cachedResponse
+    event.waitUntil(cache.put(cacheKey, responseToCache.clone()))
+    return responseToCache
   }
   
   return fetch(request)

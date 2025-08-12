@@ -1,7 +1,7 @@
 ---
 name: performance-predictor
 description: MUST BE USED for ML-powered performance forecasting and capacity planning. Use PROACTIVELY for predictive system bottleneck analysis, intelligent scaling recommendations, and anomaly detection before incidents occur
-tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash
+tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS
 model: sonnet
 color: yellow
 category: analysis

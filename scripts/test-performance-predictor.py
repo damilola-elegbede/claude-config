@@ -6,10 +6,10 @@ Validates forecasting accuracy, anomaly detection, and capacity planning
 
 import pandas as pd
 import numpy as np
-from datetime import datetime, timedelta
 import json
 import subprocess
 import sys
+import tempfile
 
 def generate_test_metrics():
     """Generate synthetic performance metrics for testing ML capabilities"""
@@ -97,7 +97,7 @@ def test_prophet_forecasting():
         # Root Mean Square Error (RMSE)
         rmse = np.sqrt(np.mean((validation_data['cpu_usage'] - forecast_validation['yhat']) ** 2))
         
-        print(f"✅ Prophet Forecast Results:")
+        print("✅ Prophet Forecast Results:")
         print(f"   - MAPE: {mape:.2f}% (Target: <15%)")
         print(f"   - RMSE: {rmse:.2f} (Target: <5% of range)")
         print(f"   - Accuracy: {'PASS' if mape < 15 else 'FAIL'}")
@@ -152,7 +152,6 @@ def test_anomaly_detection():
         )
         
         predictions = iso_forest.fit_predict(features_scaled)
-        anomaly_scores = iso_forest.score_samples(features_scaled)
         
         # Evaluate detection accuracy
         detected_anomalies = np.where(predictions == -1)[0]
@@ -164,7 +163,7 @@ def test_anomaly_detection():
         recall = true_positives / (true_positives + false_negatives) if (true_positives + false_negatives) > 0 else 0
         f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
         
-        print(f"✅ Anomaly Detection Results:")
+        print("✅ Anomaly Detection Results:")
         print(f"   - Precision: {precision:.3f} (Target: >0.8)")
         print(f"   - Recall: {recall:.3f} (Target: >0.7)")
         print(f"   - F1-Score: {f1_score:.3f} (Target: >0.75)")
@@ -220,8 +219,8 @@ def test_capacity_planning():
                 cost_per_unit = 100  # $100 per capacity unit
                 additional_cost = (recommended_capacity - current_capacity) * cost_per_unit
                 
-                print(f"✅ Capacity Planning Results:")
-                print(f"   - Scaling Required: YES")
+                print("✅ Capacity Planning Results:")
+                print("   - Scaling Required: YES")
                 print(f"   - Days Until Threshold Breach: {days_until_breach}")
                 print(f"   - Recommended Scale Factor: {scale_factor:.2f}x")
                 print(f"   - Additional Monthly Cost: ${additional_cost:.2f}")
@@ -235,9 +234,9 @@ def test_capacity_planning():
                     'planning_pass': True
                 }
             else:
-                print(f"✅ Capacity Planning Results:")
-                print(f"   - Scaling Required: NO")
-                print(f"   - Current capacity sufficient for projection period")
+                print("✅ Capacity Planning Results:")
+                print("   - Scaling Required: NO")
+                print("   - Current capacity sufficient for projection period")
                 
                 return {
                     'scaling_needed': False,
@@ -279,11 +278,11 @@ def test_metrics_integration():
             'period': 300
         }
         
-        print(f"✅ Metrics Integration Tests:")
-        print(f"   - Prometheus Query Format: VALID")
-        print(f"   - Datadog API Format: VALID")  
-        print(f"   - CloudWatch Parameters: VALID")
-        print(f"   - Integration Points: PASS")
+        print("✅ Metrics Integration Tests:")
+        print("   - Prometheus Query Format: VALID")
+        print("   - Datadog API Format: VALID")  
+        print("   - CloudWatch Parameters: VALID")
+        print("   - Integration Points: PASS")
         
         return {
             'prometheus_valid': True,
@@ -341,14 +340,15 @@ def run_comprehensive_test():
     success_rate = (passes / total * 100) if total > 0 else 0
     
     print(f"\n🎯 Success Rate: {passes}/{total} ({success_rate:.1f}%)")
-    print(f"🎯 Target Success Rate: 85%")
+    print("🎯 Target Success Rate: 85%")
     print(f"🎯 Overall Assessment: {'PASS' if success_rate >= 85 else 'NEEDS IMPROVEMENT'}")
     
     # Save results
-    with open('/tmp/performance_predictor_test_results.json', 'w') as f:
+    results_file = tempfile.gettempdir() + '/performance_predictor_test_results.json'
+    with open(results_file, 'w') as f:
         json.dump(results, f, indent=2, default=str)
     
-    print(f"\n📁 Detailed results saved to: /tmp/performance_predictor_test_results.json")
+    print(f"\n📁 Detailed results saved to: {results_file}")
     
     return results
 

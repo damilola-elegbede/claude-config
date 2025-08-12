@@ -328,7 +328,7 @@ class MLModelTestSuite:
             quality_pass = quality_results['overall_quality_score'] >= 0.90
             feature_pass = feature_results['feature_completeness'] >= 0.95
             schema_pass = schema_results['schema_compliance'] >= 0.98
-            drift_pass = drift_results['drift_detected'] == False or drift_results['drift_severity'] <= 0.1
+            drift_pass = not drift_results['drift_detected'] or drift_results['drift_severity'] <= 0.1
             
             all_validations_pass = all([quality_pass, feature_pass, schema_pass, drift_pass])
             
