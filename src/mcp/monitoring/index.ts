@@ -101,7 +101,9 @@ export type MonitoringEvent =
   | 'regression-detected'
   | 'analytics-insight'
   | 'optimization-recommendation'
-  | 'system-status-change';
+  | 'system-status-change'
+  | 'report-generated'
+  | 'kpis-updated';
 
 // System Status
 export interface SystemStatus {

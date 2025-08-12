@@ -37,7 +37,7 @@ const DEMO_CONFIG: Partial<MonitoringSystemConfig> = {
       {
         id: 'demo-webhook',
         url: 'https://httpbin.org/post',
-        events: ['report-generated', 'kpis-updated', 'analytics-insight'],
+        events: ['report-generated', 'kpis-updated', 'analytics-insight'] as any,
         enabled: true
       }
     ],
