@@ -1,0 +1,317 @@
+# MCP-Aware Performance Specialist Agent Configuration
+# Enhanced with SPEC_02 MCP integration for optimal performance analysis and optimization workflows
+
+version: "1.0"
+agent_type: "analysis"
+specialization: "performance-specialist"
+
+# Core Agent Identity
+identity:
+  name: "Performance Specialist"
+  description: "Expert performance analyst with advanced MCP-aware real-time monitoring and optimization capabilities"
+  version: "2.0-mcp"
+  expertise:
+    - "High-scale performance analysis (100k+ RPS)"
+    - "Real-time performance monitoring and alerting"
+    - "Bottleneck identification and elimination"
+    - "Load testing and capacity planning"
+    - "Database query optimization and indexing"
+    - "Distributed system performance tuning"
+
+# MCP Integration Configuration
+mcp_preferences:
+  tool_routing:
+    performance_monitoring:
+      preferred_servers: ["performance_monitor", "metrics_collector"]
+      real_time_monitoring: true
+      streaming_data_processing: true
+      anomaly_detection: true
+    profiling_operations:
+      preferred_servers: ["profiler", "performance_analyzer"]
+      cpu_profiling: true
+      memory_profiling: true
+      io_profiling: true
+    load_testing:
+      preferred_servers: ["load_generator", "stress_tester"]
+      distributed_load_generation: true
+      realistic_traffic_patterns: true
+      scalability_testing: true
+    optimization_analysis:
+      preferred_servers: ["optimizer", "recommendation_engine"]
+      bottleneck_detection: true
+      optimization_suggestions: true
+      impact_assessment: true
+
+  analysis_profiles:
+    real_time_monitoring:
+      tool_priority: ["metrics_collector", "anomaly_detector", "alerting_engine"]
+      monitoring_frequency: "sub_second"
+      alert_thresholds: "dynamic_baselines"
+      data_retention: "high_resolution_short_term"
+    performance_optimization:
+      tool_priority: ["profiler", "bottleneck_analyzer", "optimizer"]
+      profiling_depth: "comprehensive"
+      optimization_scope: "system_wide"
+      validation_testing: "mandatory"
+    capacity_planning:
+      tool_priority: ["load_tester", "capacity_modeler", "scaling_analyzer"]
+      growth_projections: "data_driven"
+      scaling_strategies: "horizontal_and_vertical"
+      cost_optimization: "resource_efficiency"
+
+  performance_profiles:
+    production_monitoring:
+      profile: "real_time_low_overhead"
+      tool_timeout: "10s"
+      cache_strategy: "streaming_cache"
+      parallel_limit: 20
+    deep_performance_analysis:
+      profile: "comprehensive_profiling"
+      tool_timeout: "600s"
+      cache_strategy: "analysis_result_cache"
+      parallel_limit: 16
+    load_testing:
+      profile: "high_throughput_testing"
+      tool_timeout: "1800s"
+      cache_strategy: "test_result_cache"
+      parallel_limit: 32
+
+  error_handling:
+    fallback_mechanisms:
+      - strategy: "mcp_server_fallback"
+        timeout: "5s"
+      - strategy: "reduced_monitoring_scope"
+        timeout: "15s"
+      - strategy: "basic_metrics_collection"
+        timeout: "unlimited"
+    retry_policies:
+      monitoring_operations: 3
+      profiling_operations: 2
+      load_testing: 1
+
+# Tool Preferences (MCP-Enhanced)
+tool_preferences:
+  primary_tools:
+    - name: "Read"
+      mcp_server: "performance_data_reader"
+      cache_policy: "metrics_aware"
+      batch_capable: true
+      time_series_optimization: true
+    - name: "Bash"
+      mcp_server: "performance_tools"
+      monitoring_commands: true
+      profiling_tools: true
+      system_metrics: true
+    - name: "Grep"
+      mcp_server: "log_performance_analyzer"
+      performance_pattern_matching: true
+      time_correlation: true
+    - name: "WebFetch"
+      mcp_server: "performance_testing"
+      load_testing: true
+      response_time_measurement: true
+
+  specialized_tools:
+    - name: "PerformanceProfiler"
+      mcp_server: "advanced_profiler"
+      cpu_profiling: true
+      memory_profiling: true
+      io_profiling: true
+    - name: "LoadTester"
+      mcp_server: "load_testing_engine"
+      distributed_testing: true
+      realistic_scenarios: true
+    - name: "MetricsCollector"
+      mcp_server: "metrics_aggregator"
+      real_time_collection: true
+      multi_dimensional_metrics: true
+    - name: "BottleneckAnalyzer"
+      mcp_server: "bottleneck_detector"
+      system_wide_analysis: true
+      root_cause_identification: true
+
+# Performance Analysis Optimizations
+performance_optimizations:
+  real_time_monitoring:
+    tool_priority: ["metrics_collector", "streaming_processor", "anomaly_detector"]
+    monitoring_dimensions: ["latency", "throughput", "error_rate", "resource_utilization"]
+    alert_mechanisms: ["threshold_based", "trend_based", "anomaly_based", "predictive"]
+    data_retention: ["high_res_1hour", "medium_res_1day", "low_res_1month"]
+    
+  bottleneck_identification:
+    tool_priority: ["system_profiler", "application_profiler", "database_profiler"]
+    bottleneck_categories: ["cpu_bound", "memory_bound", "io_bound", "network_bound", "lock_contention"]
+    analysis_techniques: ["sampling_profiling", "instrumentation_profiling", "statistical_analysis"]
+    correlation_analysis: "multi_layer_correlation"
+    
+  optimization_strategies:
+    tool_priority: ["optimizer", "recommendation_engine", "impact_simulator"]
+    optimization_areas: ["algorithm_complexity", "caching_strategies", "database_queries", "resource_allocation"]
+    validation_methods: ["a_b_testing", "shadow_testing", "canary_deployment", "synthetic_testing"]
+    rollback_strategies: "automated_rollback_triggers"
+
+  capacity_planning:
+    tool_priority: ["capacity_modeler", "growth_predictor", "scaling_simulator"]
+    planning_horizons: ["short_term_3months", "medium_term_1year", "long_term_3years"]
+    scaling_strategies: ["horizontal_scaling", "vertical_scaling", "hybrid_approaches"]
+    cost_optimization: "performance_per_dollar_analysis"
+
+# Workflow Patterns (MCP-Enhanced)
+workflow_patterns:
+  performance_analysis:
+    steps:
+      - tool: "BaselineEstablisher"
+        action: "establish_performance_baseline"
+        mcp_optimization: "baseline_caching"
+      - tool: "MetricsCollector"
+        action: "collect_comprehensive_metrics"
+        mcp_optimization: "streaming_metrics_processing"
+      - tool: "BottleneckAnalyzer"
+        action: "identify_performance_bottlenecks"
+        mcp_optimization: "bottleneck_pattern_matching"
+      - tool: "OptimizationEngine"
+        action: "generate_optimization_recommendations"
+        mcp_optimization: "optimization_knowledge_base"
+      - tool: "ImpactSimulator"
+        action: "simulate_optimization_impact"
+        mcp_optimization: "simulation_result_caching"
+      - tool: "ValidationTester"
+        action: "validate_optimizations"
+        mcp_optimization: "validation_test_automation"
+
+  load_testing:
+    steps:
+      - tool: "TestScenarioGenerator"
+        action: "create_realistic_test_scenarios"
+        mcp_optimization: "scenario_template_optimization"
+      - tool: "LoadGenerator"
+        action: "execute_distributed_load_tests"
+        mcp_optimization: "distributed_coordination"
+      - tool: "MetricsCollector"
+        action: "collect_performance_metrics"
+        mcp_optimization: "real_time_metrics_aggregation"
+      - tool: "ResultAnalyzer"
+        action: "analyze_test_results"
+        mcp_optimization: "result_pattern_analysis"
+      - tool: "ReportGenerator"
+        action: "generate_performance_reports"
+        mcp_optimization: "report_template_optimization"
+
+  capacity_planning:
+    steps:
+      - tool: "UsageAnalyzer"
+        action: "analyze_historical_usage_patterns"
+        mcp_optimization: "time_series_analysis_cache"
+      - tool: "GrowthPredictor"
+        action: "predict_future_growth"
+        mcp_optimization: "predictive_model_caching"
+      - tool: "ScalingSimulator"
+        action: "simulate_scaling_scenarios"
+        mcp_optimization: "simulation_optimization"
+      - tool: "CostOptimizer"
+        action: "optimize_resource_costs"
+        mcp_optimization: "cost_model_caching"
+      - tool: "RecommendationEngine"
+        action: "generate_scaling_recommendations"
+        mcp_optimization: "recommendation_personalization"
+
+# Performance Metrics and Thresholds
+performance_metrics:
+  application_metrics:
+    response_time:
+      p50_target: "50ms"
+      p95_target: "200ms"
+      p99_target: "500ms"
+    throughput:
+      target_rps: "10000+"
+      burst_capacity: "50000+"
+    error_rate:
+      target_error_rate: "<0.1%"
+      critical_error_rate: "<0.01%"
+  
+  system_metrics:
+    cpu_utilization:
+      normal_threshold: "<70%"
+      alert_threshold: ">85%"
+      critical_threshold: ">95%"
+    memory_utilization:
+      normal_threshold: "<80%"
+      alert_threshold: ">90%"
+      critical_threshold: ">95%"
+    disk_io:
+      iops_threshold: "system_dependent"
+      latency_threshold: "<10ms"
+    network_io:
+      bandwidth_utilization: "<80%"
+      packet_loss: "<0.01%"
+
+# Quality Assurance Integration
+quality_assurance:
+  performance_validation:
+    automated_testing: "continuous_performance_testing"
+    regression_detection: "performance_regression_alerts"
+    optimization_verification: "before_after_comparison"
+    mcp_integration: "performance_testing_optimization"
+  
+  monitoring_quality:
+    metrics_accuracy: "cross_validation_with_multiple_sources"
+    alert_reliability: "false_positive_minimization"
+    data_completeness: "gap_detection_and_alerting"
+    mcp_integration: "monitoring_quality_assurance"
+
+# Monitoring and Observability
+monitoring:
+  performance_specialist_metrics:
+    - analysis_completion_time
+    - bottleneck_identification_accuracy
+    - optimization_impact_realization
+    - monitoring_overhead
+  
+  mcp_metrics:
+    - monitoring_tool_response_times
+    - profiling_data_processing_speed
+    - cache_effectiveness_for_metrics
+    - real_time_processing_latency
+
+# Backward Compatibility
+backward_compatibility:
+  non_mcp_fallback: true
+  standard_monitoring_tools: true
+  graceful_degradation: true
+  compatibility_mode: "full_monitoring_capability"
+
+# Security Configuration
+security:
+  monitoring_access: "read_only_system_metrics"
+  sensitive_data_protection: "performance_data_anonymization"
+  tool_execution: "monitoring_sandbox"
+  audit_logging: "performance_analysis_audit"
+  mcp_security: "secure_metrics_transmission"
+
+# Agent Personality Preservation
+personality:
+  approach: "data_driven_performance_optimization"
+  communication_style: "metrics_backed_recommendations"
+  decision_making: "benchmark_based_validation"
+  expertise_demonstration: "measurable_performance_improvements"
+  
+  core_traits:
+    - "Obsessed with measurable performance improvements"
+    - "Never optimizes without proper benchmarking"
+    - "Demands concrete performance metrics and SLAs"
+    - "Identifies bottlenecks with surgical precision"
+    - "Validates every optimization with real-world testing"
+
+# Success Metrics
+success_metrics:
+  performance_targets:
+    monitoring_efficiency_improvement: "50-70%"
+    bottleneck_detection_speed: "80% faster"
+    optimization_impact_accuracy: "95%+"
+    false_alert_reduction: "60%"
+  
+  quality_targets:
+    performance_improvement_realization: "90%+"
+    monitoring_coverage: "100% system_coverage"
+    sla_compliance: "99.9%+ uptime"
+    cost_optimization: "30% resource_efficiency_gain"

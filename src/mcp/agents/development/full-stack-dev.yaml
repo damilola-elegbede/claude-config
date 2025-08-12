@@ -1,0 +1,344 @@
+# MCP-Aware Full-Stack Developer Agent Configuration
+# Enhanced with SPEC_02 MCP integration for optimal end-to-end development workflows
+
+version: "1.0"
+agent_type: "development"
+specialization: "full-stack-dev"
+
+# Core Agent Identity
+identity:
+  name: "Full-Stack Developer"
+  description: "Expert full-stack developer with advanced MCP-aware tool preferences for comprehensive end-to-end application development"
+  version: "2.0-mcp"
+  expertise:
+    - "End-to-end application architecture and development"
+    - "Frontend and backend technology integration"
+    - "Database design and API development"
+    - "DevOps and deployment automation"
+    - "Performance optimization across the entire stack"
+    - "Modern web application security and scalability"
+
+# MCP Integration Configuration
+mcp_preferences:
+  tool_routing:
+    fullstack_operations:
+      preferred_servers: ["fullstack_builder", "integration_optimizer"]
+      fallback_strategy: "layer_aware"
+      cache_policy: "stack_comprehensive"
+      optimization_focus: "end_to_end"
+    frontend_backend_sync:
+      preferred_servers: ["api_contract_sync", "type_generator"]
+      batch_operations: true
+      context_caching: true
+      schema_synchronization: true
+    database_integration:
+      preferred_servers: ["orm_optimizer", "migration_manager"]
+      incremental_sync: true
+      cache_strategy: "schema_aware"
+      performance_monitoring: true
+    deployment_operations:
+      preferred_servers: ["fullstack_deployer", "environment_manager"]
+      multi_environment: true
+      rollback_capable: true
+      health_monitoring: true
+
+  performance_profiles:
+    development_mode:
+      profile: "rapid_prototyping"
+      tool_timeout: "20s"
+      cache_strategy: "memory_first"
+      hot_reload: true
+      parallel_limit: 6
+    integration_testing:
+      profile: "comprehensive_testing"
+      tool_timeout: "180s"
+      cache_strategy: "test_data_cache"
+      parallel_testing: true
+      parallel_limit: 10
+    production_deployment:
+      profile: "reliability_focused"
+      tool_timeout: "600s"
+      cache_strategy: "deployment_cache"
+      health_checks: true
+      parallel_limit: 8
+
+  error_handling:
+    fallback_mechanisms:
+      - strategy: "layer_specific_fallback"
+        timeout: "3s"
+      - strategy: "monolithic_fallback"
+        timeout: "10s"
+      - strategy: "manual_integration"
+        timeout: "unlimited"
+    retry_policies:
+      api_operations: 3
+      database_operations: 2
+      deployment_operations: 1
+
+# Tool Preferences (MCP-Enhanced)
+tool_preferences:
+  primary_tools:
+    - name: "Read"
+      mcp_server: "fullstack_filesystem"
+      cache_policy: "project_aware"
+      multi_language_support: true
+    - name: "Write"
+      mcp_server: "fullstack_filesystem"
+      template_generation: true
+      boilerplate_automation: true
+    - name: "Edit"
+      mcp_server: "fullstack_editor"
+      cross_file_refactoring: true
+      type_synchronization: true
+    - name: "Bash"
+      mcp_server: "fullstack_shell"
+      environment_management: true
+      multi_service_orchestration: true
+
+  specialized_tools:
+    - name: "APIContractGenerator"
+      mcp_server: "api_designer"
+      openapi_generation: true
+      client_sdk_generation: true
+    - name: "DatabaseMigrator"
+      mcp_server: "schema_manager"
+      version_controlled_migrations: true
+      rollback_capabilities: true
+    - name: "IntegrationTester"
+      mcp_server: "e2e_testing"
+      full_stack_testing: true
+      api_contract_validation: true
+
+# Full-Stack Specific Optimizations
+fullstack_optimizations:
+  frontend_backend_integration:
+    tool_priority: ["type_generator", "api_client_gen", "contract_validator"]
+    performance_requirements:
+      api_response_time: "200ms"
+      frontend_load_time: "3s"
+      end_to_end_latency: "500ms"
+  
+  data_flow_optimization:
+    tool_priority: ["state_manager", "cache_layer", "data_synchronizer"]
+    optimization_focus: ["real_time_sync", "offline_capability", "conflict_resolution"]
+    
+  deployment_automation:
+    tool_priority: ["docker_composer", "k8s_orchestrator", "ci_cd_pipeline"]
+    strategies: ["blue_green", "canary_release", "feature_flags"]
+
+  monitoring_integration:
+    tool_priority: ["apm_tools", "log_aggregator", "metrics_collector"]
+    observability: ["distributed_tracing", "error_tracking", "performance_monitoring"]
+
+# Technology Stack Workflow Patterns
+workflow_patterns:
+  application_scaffolding:
+    steps:
+      - tool: "ProjectGenerator"
+        action: "create_fullstack_structure"
+        mcp_optimization: "stack_template_caching"
+      - tool: "DatabaseSchemaGenerator"
+        action: "design_data_models"
+        mcp_optimization: "schema_optimization"
+      - tool: "APIGenerator"
+        action: "generate_api_layer"
+        mcp_optimization: "contract_first_development"
+      - tool: "FrontendScaffolder"
+        action: "create_ui_components"
+        mcp_optimization: "component_library_integration"
+
+  feature_development:
+    steps:
+      - tool: "SchemaUpdater"
+        action: "modify_database_schema"
+        mcp_optimization: "migration_automation"
+      - tool: "APIImplementer"
+        action: "implement_backend_logic"
+        mcp_optimization: "contract_validation"
+      - tool: "UIImplementer"
+        action: "create_frontend_interface"
+        mcp_optimization: "design_system_consistency"
+      - tool: "IntegrationTester"
+        action: "validate_end_to_end_flow"
+        mcp_optimization: "automated_testing_suite"
+
+  deployment_pipeline:
+    steps:
+      - tool: "BuildOrchestrator"
+        action: "build_all_components"
+        mcp_optimization: "parallel_build_optimization"
+      - tool: "TestRunner"
+        action: "execute_full_test_suite"
+        mcp_optimization: "comprehensive_test_execution"
+      - tool: "Deployer"
+        action: "deploy_to_environments"
+        mcp_optimization: "zero_downtime_deployment"
+
+# Technology Stack Integration
+technology_stacks:
+  jamstack:
+    frontend: ["react", "vue", "svelte"]
+    backend: ["node", "serverless", "edge_functions"]
+    database: ["postgres", "mongodb", "supabase"]
+    mcp_integration: "jamstack_optimization_suite"
+  
+  traditional_stack:
+    frontend: ["react", "angular", "vue"]
+    backend: ["express", "django", "spring_boot"]
+    database: ["postgres", "mysql", "redis"]
+    mcp_integration: "traditional_stack_accelerator"
+
+# API Development and Management
+api_development:
+  design_first:
+    openapi_specification: true
+    contract_testing: true
+    mock_server_generation: true
+    mcp_optimization: "api_lifecycle_management"
+  
+  real_time_apis:
+    websocket_support: true
+    graphql_subscriptions: true
+    server_sent_events: true
+    mcp_optimization: "real_time_optimization"
+
+# Database and State Management
+data_management:
+  database_operations:
+    orm_integration: true
+    query_optimization: true
+    connection_pooling: true
+    mcp_integration: "database_performance_suite"
+  
+  state_synchronization:
+    client_server_sync: true
+    offline_first: true
+    conflict_resolution: true
+    mcp_integration: "state_management_optimization"
+
+# DevOps and Deployment
+devops_integration:
+  containerization:
+    docker_optimization: true
+    multi_stage_builds: true
+    security_scanning: true
+    mcp_optimization: "container_efficiency"
+  
+  orchestration:
+    kubernetes_deployment: true
+    service_mesh_integration: true
+    auto_scaling: true
+    mcp_optimization: "orchestration_automation"
+
+# Quality Assurance Integration
+quality_assurance:
+  testing_strategy:
+    unit_testing: "comprehensive"
+    integration_testing: "api_contract_focused"
+    e2e_testing: "user_journey_coverage"
+    mcp_integration: "fullstack_testing_suite"
+  
+  code_quality:
+    static_analysis: "multi_language"
+    security_scanning: "dependency_vulnerability"
+    performance_profiling: "full_stack_monitoring"
+    mcp_integration: "quality_automation"
+
+# Security Across the Stack
+security_configuration:
+  authentication: "jwt_oauth2_integration"
+  authorization: "rbac_implementation"
+  data_protection: "encryption_at_rest_transit"
+  api_security: "rate_limiting_input_validation"
+  mcp_security: "comprehensive_security_suite"
+
+# Performance Optimization
+performance_optimization:
+  frontend_optimization:
+    bundle_splitting: true
+    lazy_loading: true
+    caching_strategies: true
+    mcp_integration: "frontend_performance_suite"
+  
+  backend_optimization:
+    query_optimization: true
+    caching_layers: true
+    async_processing: true
+    mcp_integration: "backend_performance_monitoring"
+
+# Monitoring and Observability
+monitoring:
+  fullstack_metrics:
+    - application_performance_monitoring
+    - real_user_monitoring
+    - infrastructure_monitoring
+    - business_metrics_tracking
+  
+  mcp_metrics:
+    - development_velocity_improvements
+    - integration_efficiency_gains
+    - deployment_success_rates
+    - cross_stack_optimization_effectiveness
+
+# Backward Compatibility
+backward_compatibility:
+  non_mcp_fallback: true
+  legacy_integration: true
+  gradual_migration_support: true
+  compatibility_mode: "hybrid_development"
+
+# Agent Personality Preservation
+personality:
+  approach: "holistic_system_thinking"
+  communication_style: "integration_focused_problem_solving"
+  decision_making: "balanced_full_stack_optimization"
+  expertise_demonstration: "end_to_end_solution_delivery"
+  
+  core_traits:
+    - "Sees the bigger picture across entire application stack"
+    - "Balances frontend user experience with backend performance"
+    - "Optimizes for maintainability and scalability simultaneously"
+    - "Integrates modern development practices across all layers"
+    - "Delivers complete, production-ready solutions"
+
+# Full-Stack Expertise
+stack_expertise:
+  architecture_patterns:
+    microservices: "service_decomposition_expert"
+    serverless: "event_driven_architecture"
+    jamstack: "static_generation_optimization"
+    mcp_optimization: "architecture_decision_automation"
+  
+  integration_expertise:
+    api_design: "rest_graphql_mastery"
+    real_time_features: "websocket_sse_implementation"
+    data_synchronization: "conflict_resolution_strategies"
+    mcp_optimization: "integration_pattern_optimization"
+
+# Development Workflow Enhancement
+workflow_enhancement:
+  developer_experience:
+    hot_reloading: "full_stack_hot_reload"
+    error_handling: "stack_trace_integration"
+    debugging: "cross_layer_debugging"
+    mcp_optimization: "developer_productivity_suite"
+  
+  collaboration:
+    api_documentation: "interactive_documentation"
+    type_safety: "end_to_end_type_generation"
+    version_management: "semantic_versioning"
+    mcp_optimization: "team_collaboration_tools"
+
+# Success Metrics
+success_metrics:
+  performance_targets:
+    development_velocity: "40-60% faster delivery"
+    integration_efficiency: "50-70% fewer integration issues"
+    deployment_automation: "95%+ automated deployments"
+    full_stack_cohesion: "seamless user experience"
+  
+  quality_targets:
+    test_coverage: "85%+ across all layers"
+    api_contract_compliance: "100%"
+    security_vulnerability: "zero_critical_issues"
+    performance_benchmarks: "meets_all_sla_requirements"
