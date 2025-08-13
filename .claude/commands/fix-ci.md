@@ -73,6 +73,8 @@ I automatically apply these fixes when confidence is >90%:
 2. **Import sorting** - Organize and fix import statements
 3. **Dependency updates** - Add missing packages to manifests
 4. **Snapshot updates** - Update test snapshots after verification
+   - Only after confirming UI/output changes are intentional
+   - For broad diffs, require manual approval or linked design sign-off
 5. **Timeout increases** - Adjust timeouts for slow tests
 6. **Environment variables** - Add missing vars to CI config
 

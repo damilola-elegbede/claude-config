@@ -67,6 +67,7 @@ I classify bugs into categories to determine the investigation approach:
 I gather all available information in parallel:
 
 - **Logs**: Application, system, error, and audit logs
+- **PII Handling**: Redact sensitive data in logs/traces; avoid exporting raw production data
 - **Stack Traces**: All available error traces and core dumps
 - **Metrics**: CPU, memory, disk, network utilization
 - **User Reports**: Symptoms, reproduction steps, affected users

@@ -79,11 +79,14 @@ Before writing any files, I present a comprehensive preview including:
 
 After presenting the preview:
 
-1. **Exit plan mode** using ExitPlanMode tool
-2. **Wait for your response**:
+1. **Wait for your response**:
    - **"yes" or approval**: Proceed to write all files
    - **"modify" or changes**: Adjust plan and re-present
    - **"cancel" or rejection**: Abort without writing files
+2. **Exit plan mode** using ExitPlanMode tool with your decision
+   - On approval: Exit with intent=write, plan_id=<id>, approved=true
+   - On modify: Stay in plan mode, re-present updated preview
+   - On cancel: Exit with intent=discard, approved=false (no writes)
 3. **Execute approved plan**: Write files only after confirmation
 4. **Report completion**: Show where files were written
 

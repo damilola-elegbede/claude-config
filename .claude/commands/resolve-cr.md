@@ -49,6 +49,9 @@ I search for CodeRabbit comments using multiple methods in parallel:
 - **Never assume comments are resolved** without verification
 - **Always retry** with different methods if initial search returns empty
 - **Use GraphQL** as fallback for comprehensive search
+- **Paginate through all results** for every REST/GraphQL endpoint
+- **Respect rate limits** with exponential backoff and retry-after headers
+- **Deduplicate comments** across endpoints by comment id/url
 
 ### Comment Types Processed
 

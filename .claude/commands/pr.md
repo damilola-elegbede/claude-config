@@ -141,6 +141,12 @@ I generate comprehensive descriptions with:
 - [ ] Inline comments added for complex logic
 - [ ] CHANGELOG updated
 
+## 🗺️ Plan Summary (if generated via /plan)
+- Plan reference/ID: [link or identifier]
+- ExitPlanMode approval: [link or status]
+- Scope agreed: [key steps/tasks]
+- Diff-of-intent: [attach or link non-destructive preview]
+
 ## ✅ Pre-merge Checklist
 - [ ] Code follows project style guidelines
 - [ ] Self-review completed
@@ -170,18 +176,18 @@ I automatically assign labels based on changes:
 
 | Change Type | Labels Applied |
 |-------------|---------------|
-| New features | `enhancement`, `feature` |
-| Bug fixes | `bug`, `fix` |
+| New features | `enhancement` |
+| Bug fixes | `bug` |
 | Documentation | `documentation` |
 | Dependencies | `dependencies` |
-| Performance | `performance` |
-| Security fixes | `security`, `priority` |
-| Breaking changes | `breaking-change`, `major` |
-| Database changes | `database`, `migration` |
-| UI changes | `frontend`, `ui/ux` |
-| API changes | `api`, `backend` |
-| Test additions | `tests` |
-| Work in progress | `draft`, `wip` |
+| Performance | `enhancement` |
+| Security fixes | `bug` |
+| Breaking changes | `enhancement` |
+| Database changes | `dependencies` |
+| UI changes | `enhancement` |
+| API changes | `enhancement` |
+| Test additions | `enhancement` |
+| Work in progress | `enhancement` |
 
 ## Smart Reviewer Assignment
 
@@ -222,7 +228,7 @@ I assign reviewers based on:
 Before creating the PR, I verify:
 
 1. **Branch is up to date** with target branch
-2. **All tests pass** locally
+2. **/test run executed** with passing results (attach summary). If `--draft` is set, allow creation even if tests fail, but surface results prominently.
 3. **No merge conflicts** exist
 4. **Commit messages** follow conventions
 5. **Required files** are included (tests, docs)
@@ -313,6 +319,7 @@ Works seamlessly with:
 
 - `/commit` - Ensures commits are ready for PR
 - `/test` - Validates tests before PR creation
+- `/plan` - Uses Plan Preview Mode; requires explicit ExitPlanMode approval before any file writes and before PR creation. The accepted plan summary is embedded in the PR description.
 - `/review` - Can trigger review after PR creation
 - `/push` - Pushes changes before PR
 - `/fix-ci` - Fixes issues before creating PR

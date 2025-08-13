@@ -24,7 +24,7 @@ Manages dependencies intelligently across all package managers with security sca
 When you invoke `/deps`, I will:
 
 1. **Detect all package managers** in the codebase
-2. **Deploy dependency-strategist agent** as the primary coordinator
+2. **Deploy dependency-manager agent** as the primary coordinator
 3. **Analyze the requested action** and deploy appropriate specialists
 4. **Execute the action** across all detected ecosystems
 5. **Provide consolidated results** with actionable recommendations
@@ -119,6 +119,8 @@ I perform safe, intelligent updates:
 - Compatibility verification between packages
 - Test suite validation after each change
 - Rollback capability at each stage
+- Dry-run diff preview for all changes (show lockfile and manifest diffs)
+- Require ExitPlanMode approval for major/breaking updates before write operations
 
 ### /deps clean
 
@@ -131,6 +133,7 @@ I remove unnecessary dependencies:
 - **Test coverage** - dependencies only used in dead code
 - **Build analysis** - unnecessary build dependencies
 - **Transitive analysis** - duplicated sub-dependencies
+- **Peer/optional dependency awareness** - avoid false positives in removal
 
 #### Cleanup Process
 
@@ -140,6 +143,7 @@ I remove unnecessary dependencies:
 4. Remove packages incrementally
 5. Run full test suite
 6. Update lock files
+7. Create a reversible PR per removal batch with rollback plan
 
 ### /deps analyze
 
@@ -239,7 +243,7 @@ I analyze dependency differences:
 
 ### Primary Coordinator
 
-- **dependency-strategist**: Orchestrates the analysis and updates
+- **dependency-manager**: Orchestrates the analysis and updates
 
 ### Specialist Support
 

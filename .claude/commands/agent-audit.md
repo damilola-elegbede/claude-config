@@ -2,7 +2,7 @@
 
 ## Description
 
-Comprehensive validation of agent ecosystem to ensure category integrity, template compliance, and system consistency. **This command generates a REPORT ONLY - it provides recommendations but does not make changes automatically (except for safe formatting fixes).**
+Comprehensive validation of agent ecosystem to ensure category integrity, template compliance, and system consistency. **This command generates a REPORT ONLY - it provides recommendations and optional patch snippets; it does not make any changes automatically.**
 
 ## Usage
 
