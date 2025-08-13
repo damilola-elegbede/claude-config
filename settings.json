@@ -75,7 +75,7 @@
         "command": "uv",
         "args": [
           "--directory",
-          "/Users/damilola/Documents/Projects/spotify-mcp",
+          "$HOME/Documents/Projects/spotify-mcp",
           "run",
           "spotify-mcp"
         ],

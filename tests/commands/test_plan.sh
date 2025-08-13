@@ -24,11 +24,11 @@ test_plan_structure() {
     assert_file_contains "$plan_file" "## Usage" \
         "Should have Usage section"
     
-    assert_file_contains "$plan_file" "## Behavior" \
-        "Should have Behavior section"
+    assert_file_contains "$plan_file" "## Command Execution Flow" \
+        "Should have Command Execution Flow section"
     
-    assert_file_contains "$plan_file" "## Approval Indicators" \
-        "Should have Approval Indicators section"
+    assert_file_contains "$plan_file" "## Strategic Plan Format" \
+        "Should have Strategic Plan Format section"
 }
 
 # Test plan command content
@@ -36,11 +36,11 @@ test_plan_content() {
     local plan_file="$ORIGINAL_DIR/.claude/commands/plan.md"
     
     # Check for key behavior descriptions
-    assert_file_contains "$plan_file" "comprehensive implementation plan" \
-        "Should mention comprehensive planning"
+    assert_file_contains "$plan_file" "TDD methodology" \
+        "Should mention TDD methodology"
     
-    assert_file_contains "$plan_file" "Wait for explicit approval" \
-        "Should mention waiting for approval"
+    assert_file_contains "$plan_file" "phased implementation" \
+        "Should mention phased implementation"
     
     assert_file_contains "$plan_file" "Executive Summary" \
         "Should include plan template sections"

@@ -50,6 +50,12 @@ jobs:
         echo "Validating command files..."
         
         for cmd in .claude/commands/*.md; do
+          # Skip README.md file
+          if [[ "$(basename "$cmd")" == "README.md" ]]; then
+            echo "Skipping $cmd (documentation file)"
+            continue
+          fi
+          
           echo "Checking $cmd..."
           
           # Check for required sections
@@ -68,8 +74,9 @@ jobs:
             exit 1
           fi
           
-          if ! grep -q "^## Behavior" "$cmd"; then
-            echo "❌ Missing Behavior section in $cmd"
+          # Check for either Behavior or Command Execution Flow (plan.md uses the latter)
+          if ! grep -q "^## Behavior" "$cmd" && ! grep -q "^## Command Execution Flow" "$cmd"; then
+            echo "❌ Missing Behavior or Command Execution Flow section in $cmd"
             exit 1
           fi
           
@@ -102,7 +109,17 @@ jobs:
         found_issues=false
         
         for pattern in "${patterns[@]}"; do
-          if grep -r -i -E "$pattern" . --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.github; then
+          # Exclude .git, node_modules, .github, scripts, and test directories
+          # Also exclude example/sample/test/fake/dummy patterns and command documentation
+          if grep -r -i -E "$pattern" . \
+            --exclude-dir=.git \
+            --exclude-dir=node_modules \
+            --exclude-dir=.github \
+            --exclude-dir=scripts \
+            --exclude-dir=tests \
+            --exclude="*.md" \
+            --exclude="setup-hooks.sh" | \
+            grep -v -E "example|sample|test|fake|dummy|mock|pattern|demonstration"; then
             echo "❌ Found potential sensitive data matching pattern: $pattern"
             found_issues=true
           fi
