@@ -1,15 +1,18 @@
 # /plan Command
 
 ## Description
+
 Generates comprehensive strategic requirements and tactical implementation broken down into individual PR files. Each PR is independently reviewable, contains complete implementation details, and follows TDD methodology. Creates a roadmap of small, focused PRs that can be developed in parallel when possible.
 
 ## Usage
+
 ```bash
 /plan <task_description>
 /plan simple <task_description>  # For tasks <100 LOC
 ```
 
 ## Complexity Determination
+
 - **Simple tasks** (<100 LOC): Single PR, no phases, minimal orchestration
 - **Medium tasks** (100-1000 LOC): 2-3 phases, 4-7 PRs
 - **Complex tasks** (>1000 LOC): Full phase breakdown, 8+ PRs
@@ -18,7 +21,8 @@ Generates comprehensive strategic requirements and tactical implementation broke
 ## Command Execution Flow
 
 ### 1. Task Analysis & Orchestration (5-15 seconds based on complexity)
-```
+
+```text
 Input → Complexity Analysis → Mode Selection (simple/medium/complex)
    ↓
 Simple Mode: Direct Implementation → Single PR File
@@ -31,6 +35,7 @@ File Writing with Parallel Execution Plans
 ```
 
 ### 2. Complexity Analysis
+
 ```javascript
 function analyzeComplexity(taskDescription) {
     // Check for explicit simple mode
@@ -58,6 +63,7 @@ function analyzeComplexity(taskDescription) {
 ```
 
 ### 3. Agent Selection (Consulting Principal-Architect)
+
 ```javascript
 async function selectAgents(taskDescription, complexity) {
     // Simple mode - minimal agents
