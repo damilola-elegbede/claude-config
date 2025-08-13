@@ -390,12 +390,13 @@ function generateFeatureName(description) {
     const keywords = extractKeywords(description);
     const feature = keywords.slice(0, 3).join('-');
     
-    // Ensure uniqueness
+    // Ensure uniqueness for reproducible docs/tests
     const timestamp = Date.now().toString(36);
-    return `${feature}-${timestamp}`.toLowerCase()
+    const uniqueId = feature.length > 0 ? `${feature}-${timestamp}` : `task-${timestamp}`;
+    return uniqueId.toLowerCase()
         .replace(/[^a-z0-9-]/g, '-')
         .replace(/-+/g, '-')
-        .slice(0, 50);  // Max 50 chars
+        .slice(0, 50);  // Max 50 chars for filesystem compatibility
 }
 
 ```text
@@ -483,11 +484,19 @@ graph LR
 async function manageReviewQueue(pr) {
     const reviewerLoad = await getReviewerWorkload();
     
-    // If code-reviewer has >5 PRs queued
+    // If code-reviewer has >5 PRs queued, use alternative reviewers
     if (reviewerLoad['code-reviewer'] > 5) {
-        // Allow senior-engineer or principal-architect to review
-        pr.reviewers.push('senior-engineer');
-        console.warn('code-reviewer overloaded, added senior-engineer as backup');
+        // Primary alternatives: senior-engineer, principal-architect
+        // Fallback alternatives: backend-engineer (for implementation PRs)
+        const alternatives = ['senior-engineer', 'principal-architect', 'backend-engineer'];
+        const availableReviewer = alternatives.find(agent => 
+            reviewerLoad[agent] < 3
+        );
+        
+        if (availableReviewer) {
+            pr.reviewers.push(availableReviewer);
+            console.warn(`code-reviewer overloaded, using ${availableReviewer} as alternative reviewer`);
+        }
     }
     
     // Stagger PR submissions to avoid bottlenecks
@@ -531,7 +540,7 @@ async function manageReviewQueue(pr) {
 
 -**Medium PR**: 150-400 LOC (typical feature implementation)
 
--**Large PR**: 400-600 LOC (complex features, requires splitting discussion)
+-**Large PR**: 400-500 LOC (complex features, requires splitting discussion)
 
 ### Merge Strategy
 
@@ -628,7 +637,7 @@ Execution Group 3 (After Group 2):
 
 -**Principal-architect**: Defined testing architecture and framework choices
 
--**Project-orchestrator**: Optimized task parallelization, estimated 35-45% time reduction (not the optimistic 50%)
+-**Project-orchestrator**: Optimized task parallelization, estimated 35-45% time reduction (capped at ~50%)
 
 -**Critical path**: T1.1.1 → T1.1.2 → T1.1.5 (60-90 min with buffers)
 
@@ -1367,7 +1376,7 @@ async function handlePlanCommand(taskDescription) {
         
         // Step 1: Select agents
         monitor.start('agent_selection');
-        const agents = selectAgents(taskDescription);
+        const agents = await selectAgents(taskDescription);
         monitor.end('agent_selection');
         
         // Step 2: Generate strategic plan
