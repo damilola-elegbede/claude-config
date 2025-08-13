@@ -60,14 +60,14 @@ test_claude_md_consistency() {
     local repo_claude="$ORIGINAL_DIR/CLAUDE.md"
     
     # Commands are documented in .claude/commands/*.md files
-    # Global CLAUDE.md focuses on chief of staff identity and principles
+    # Global CLAUDE.md focuses on orchestration principles
     # Just verify the file exists and has core content
     assert_file_exists "$repo_claude" \
         "CLAUDE.md should exist"
     
-    # Check for core identity
-    assert_file_contains "$repo_claude" "chief of staff" \
-        "CLAUDE.md should define chief of staff role"
+    # Check for core orchestration requirements
+    assert_file_contains "$repo_claude" "MANDATORY Delegations" \
+        "CLAUDE.md should define mandatory delegation rules"
     
     return 0
 }

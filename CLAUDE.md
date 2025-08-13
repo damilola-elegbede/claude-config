@@ -40,7 +40,7 @@
 
 - File operations (read, write, basic edits)
 - User communication
-- Agent coordination (as chief of staff)
+- Agent coordination
 - Emergency triage
 
 ## Consequences

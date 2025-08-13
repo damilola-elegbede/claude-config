@@ -18,12 +18,9 @@ test_claude_md_structure() {
     assert_file_contains "$claude_file" "# Claude Configuration" \
         "Should have main header"
     
-    # Check for core principle (chief of staff role)
-    assert_file_contains "$claude_file" "Core Principle" \
-        "Should have Core Principle section"
-    
-    assert_file_contains "$claude_file" "chief of staff" \
-        "Should define chief of staff role"
+    # Check for mandatory delegations section
+    assert_file_contains "$claude_file" "MANDATORY Delegations" \
+        "Should have MANDATORY Delegations section"
     
     # Check for decision framework
     assert_file_contains "$claude_file" "Decision Framework" \
