@@ -238,6 +238,7 @@ I assess:
 
 ### Comprehensive Review Report
 
+<!-- markdownlint-disable MD040 -->
 ```markdown
 ## Code Review Report
 
@@ -339,6 +340,7 @@ Run `/review --fix` to automatically fix:
 5. Re-run `/review` to verify fixes
 
 ```
+<!-- markdownlint-enable -->
 
 ## Fix Suggestions
 
