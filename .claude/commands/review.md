@@ -104,7 +104,7 @@ I evaluate:
 - Missing abstractions
 - Poor organization
 
-#### Best Practices
+#### Code Best Practices
 
 - SOLID principles
 - DRY violations
@@ -387,7 +387,9 @@ Add as PR check:
 ```yaml
 - name: Claude Code Review
   run: |
-    claude /review ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}
+    claude /review \
+      ${{ github.event.pull_request.base.sha }}..\
+      ${{ github.event.pull_request.head.sha }}
     claude /review --security  # Additional security focus
 ```
 
@@ -435,7 +437,7 @@ Review effectiveness measured by:
 - **Time to review**: <30 seconds for most files
 - **Developer satisfaction**: Helpful, not annoying
 
-## Best Practices
+## Review Best Practices
 
 1. **Review early and often** - Don't wait until PR time
 2. **Fix critical issues immediately** - Security and bugs first
