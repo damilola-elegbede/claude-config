@@ -132,7 +132,7 @@ Each PR file (`phase_X.YY_description.md`) contains comprehensive task breakdown
 
 2. **Detailed Task Breakdown**
    - **Granular task list** with specific implementation steps
-   - **Task IDs** for tracking (e.g., T1.01.1, T1.01.2)
+   - **Task IDs** for tracking (e.g., T1.01.01, T1.01.02)
    - **Assigned agents** for each task
    - **Time estimates** per task (in minutes)
    - **Dependencies** between tasks
@@ -160,10 +160,10 @@ Each PR file (`phase_X.YY_description.md`) contains comprehensive task breakdown
 Example task detail level:
 
 ```text
-Task T1.02.3: Implement password hashing in User model
+Task T1.02.03: Implement password hashing in User model
 - Agent: backend-engineer
 - Time: 25-30 minutes
-- Dependencies: T1.02.1 (User schema complete)
+- Dependencies: T1.02.01 (User schema complete)
 - Details:
   * Add bcrypt dependency to package.json
   * Create pre-save hook in src/models/User.js
