@@ -10,7 +10,7 @@ test_sync_simulation() {
     setup_test_env
     
     # Create mock source structure
-    mkdir -p .claude/commands
+    mkdir -p system-configs/.claude/commands
     create_mock_claude_md
     create_mock_command "test" "Test command content"
     create_mock_command "plan" "Plan command content"
@@ -18,9 +18,9 @@ test_sync_simulation() {
     # Create mock destination
     mkdir -p mock_home/.claude/commands
     
-    # Simulate sync operation
-    cp CLAUDE.md mock_home/CLAUDE.md
-    cp .claude/commands/*.md mock_home/.claude/commands/
+    # Simulate sync operation - copying from system-configs
+    cp system-configs/CLAUDE.md mock_home/CLAUDE.md 2>/dev/null || cp CLAUDE.md mock_home/CLAUDE.md
+    cp system-configs/.claude/commands/*.md mock_home/.claude/commands/ 2>/dev/null || echo "No commands to copy"
     
     # Verify sync results
     assert_file_exists "mock_home/CLAUDE.md" \
@@ -38,7 +38,7 @@ test_command_consistency() {
     local commands_in_dir
     
     commands_in_readme=$(grep -c "^\s*- \`/[a-z]*\`" "$ORIGINAL_DIR/README.md" 2>/dev/null || echo 0)
-    commands_in_dir=$(ls "$ORIGINAL_DIR/.claude/commands/"*.md 2>/dev/null | wc -l | tr -d ' ')
+    commands_in_dir=$(ls "$ORIGINAL_DIR/system-configs/.claude/commands/"*.md 2>/dev/null | wc -l | tr -d ' ')
     
     # Ensure numeric values
     commands_in_readme=${commands_in_readme:-0}
@@ -55,19 +55,24 @@ test_command_consistency() {
     return 0
 }
 
-# Test CLAUDE.md consistency - Updated to not require command docs
+# Test CLAUDE.md consistency - Check both project and system configs
 test_claude_md_consistency() {
-    local repo_claude="$ORIGINAL_DIR/CLAUDE.md"
+    local project_claude="$ORIGINAL_DIR/CLAUDE.md"
+    local system_claude="$ORIGINAL_DIR/system-configs/CLAUDE.md"
     
-    # Commands are documented in .claude/commands/*.md files
-    # Global CLAUDE.md focuses on orchestration principles
-    # Just verify the file exists and has core content
-    assert_file_exists "$repo_claude" \
-        "CLAUDE.md should exist"
+    # Check project CLAUDE.md exists and has repository info
+    assert_file_exists "$project_claude" \
+        "Project CLAUDE.md should exist"
     
-    # Check for core orchestration requirements
-    assert_file_contains "$repo_claude" "MANDATORY Delegations" \
-        "CLAUDE.md should define mandatory delegation rules"
+    assert_file_contains "$project_claude" "Configuration Repository" \
+        "Project CLAUDE.md should describe configuration repository"
+    
+    # Check system CLAUDE.md exists and has orchestration rules
+    assert_file_exists "$system_claude" \
+        "System CLAUDE.md should exist in system-configs/"
+    
+    assert_file_contains "$system_claude" "MANDATORY Delegations" \
+        "System CLAUDE.md should define mandatory delegation rules"
     
     return 0
 }
@@ -75,11 +80,11 @@ test_claude_md_consistency() {
 # Test repository structure integrity
 test_repo_structure() {
     # Check all expected directories exist
-    assert_dir_exists "$ORIGINAL_DIR/.claude" \
-        ".claude directory should exist"
+    assert_dir_exists "$ORIGINAL_DIR/system-configs/.claude" \
+        "system-configs/.claude directory should exist"
     
-    assert_dir_exists "$ORIGINAL_DIR/.claude/commands" \
-        "commands directory should exist"
+    assert_dir_exists "$ORIGINAL_DIR/system-configs/.claude/commands" \
+        "system-configs commands directory should exist"
     
     assert_dir_exists "$ORIGINAL_DIR/tests" \
         "tests directory should exist"
@@ -97,7 +102,7 @@ test_repo_structure() {
 
 # Test that sync command is excluded from global commands
 test_sync_exclusion() {
-    local sync_file="$ORIGINAL_DIR/.claude/commands/sync.md"
+    local sync_file="$ORIGINAL_DIR/system-configs/.claude/commands/sync.md"
     
     # Verify sync.md exists
     assert_file_exists "$sync_file" \

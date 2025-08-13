@@ -76,7 +76,7 @@ while IFS= read -r -d '' file; do
     else
         ((invalid_count++))
     fi
-done < <(find .claude/agents -name "*.md" -not -name "README.md" -not -name "AGENT_*.md" -not -path "*/.tmp/*" -not -name "AUDIT_*.md" -print0 2>/dev/null)
+done < <(find system-configs/.claude/agents -name "*.md" -not -name "README.md" -not -name "AGENT_*.md" -not -path "*/.tmp/*" -not -name "AUDIT_*.md" -print0 2>/dev/null)
 
 # Summary
 echo ""

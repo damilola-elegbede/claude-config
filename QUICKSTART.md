@@ -1,123 +1,157 @@
-# Pre-Commit Strategy Quick Start Guide
+# Claude Configuration Quick Start Guide
 
 ## 🚀 Get Started in 2 Minutes
 
-This guide gets you up and running with the complete pre-commit validation system.
+This guide gets you up and running with the Claude configuration management system.
 
-### Step 1: Complete Setup
+### Step 1: Install Claude Code CLI
 ```bash
-make setup
-```
-This installs all dependencies and git hooks across macOS, Linux, and Windows.
+# Install via npm
+npm install -g @anthropic/claude-code
 
-### Step 2: Verify Installation
-```bash
-make doctor
+# Or via Homebrew (macOS)
+brew install claude-code
 ```
-Checks your environment and reports any issues.
 
-### Step 3: Test the System
+### Step 2: Clone and Setup Configuration
 ```bash
-make validate-all
-```
-Runs the complete validation suite on your repository.
+# Clone the repository
+git clone https://github.com/damilola/claude-config.git
+cd claude-config
 
-### Step 4: Try a Commit
-```bash
-# Make a small test change
-echo "# Test" >> test-file.md
-git add test-file.md
-git commit -m "Test pre-commit validation"
+# Quick setup using the sync command
+claude-code
+/sync
 ```
-This will trigger automatic validation before the commit completes.
+This deploys 40 agents and 14 commands to your system.
+
+### Step 3: Verify Installation
+```bash
+# Check agent configurations
+/agent-audit
+
+# Test repository analysis
+/context
+```
+
+### Step 4: Try the System
+```bash
+# Run tests with auto-discovery
+/test
+
+# Get comprehensive code review
+/review
+
+# Smart git operations
+/commit
+/push
+```
 
 ## 🔧 Essential Commands
 
 | Command | Purpose |
 |---------|---------|
-| `make help` | Show all available commands |
-| `make status` | Quick repository health check |
-| `make validate-all` | Run all validations manually |
-| `make fix-all` | Auto-fix common issues |
-| `make clean` | Clean temporary files |
+| `/sync` | Deploy configurations from repository to system |
+| `/agent-audit` | Validate all 40 agent configurations |
+| `/context` | Analyze repository structure and purpose |
+| `/test` | Auto-discover and run tests |
+| `/review` | Comprehensive code quality review |
 
 ## 🆘 Common Issues
 
-**If validation fails:**
+**If sync fails:**
 ```bash
-make fix-all      # Auto-fix issues
-make validate-all # Verify fixes
+# Ensure you're in the claude-config repository
+pwd
+
+# Check repository status
+git status
+
+# Force sync
+/sync
 ```
 
-**If hooks aren't working:**
+**If agents aren't available:**
 ```bash
-make install-hooks
+# Check if configurations synced
+ls ~/.claude/agents/
+
+# Re-sync configurations
+/sync
+
+# Validate agent configurations
+/agent-audit
 ```
 
-**If environment has issues:**
+**If commands don't work:**
 ```bash
-make setup
-make doctor
-```
+# Check command directory
+ls ~/.claude/commands/
 
-**Emergency bypass (use sparingly):**
-```bash
-git commit --no-verify -m "Emergency commit"
+# Re-sync all configurations
+/sync
 ```
 
 ## 📚 What Happens Now
 
-### Automatic Validation
-Every `git commit` now runs:
-- ✅ YAML front-matter validation
-- ✅ File format checks  
-- ✅ Security scanning
-- ✅ Documentation consistency
+### Enhanced Claude Experience
+You now have access to:
+- 🎭 40 specialized agents covering all development domains
+- 🔧 14 essential commands for common workflows
+- 🔊 Audio notifications for task completion
+- 🔄 Easy configuration synchronization
 
-### Before Push
-Every `git push` runs:
-- ✅ Final validation sweep
-- ✅ Security verification
-- ✅ Repository health check
+### Available Agent Categories
+- **Development**: Backend, frontend, mobile, ML engineering
+- **Infrastructure**: Cloud, DevOps, Kubernetes, monitoring
+- **Quality**: Testing, code review, performance, accessibility
+- **Security**: Auditing, compliance, vulnerability assessment
+- **Analysis**: Documentation, research, metrics, debugging
 
-### Continuous Monitoring
-The system tracks:
-- 📊 Validation success rates
-- ⏱️ Performance metrics
-- 🔍 Error patterns
-- 📈 Adoption progress
+### Smart Commands
+- `/test` - Auto-discovers and runs tests
+- `/context` - Comprehensive repository analysis
+- `/review` - Multi-dimensional code quality checks
+- `/agent-audit` - Validates all agent configurations
 
 ## 🎯 What This Gives You
 
-### Code Quality
-- **100% YAML validation** on agent files
-- **Zero security vulnerabilities** in commits
-- **Consistent documentation** across the repository
-- **Standardized file formats** for all scripts
+### Enhanced Productivity
+- **Specialized expertise** for every development task
+- **Automated workflows** for common operations
+- **Quality gates** built into every process
+- **Consistent standards** across all projects
 
-### Developer Experience
-- **Instant feedback** on validation issues
-- **Auto-fix capabilities** for common problems
-- **Clear error messages** with remediation steps
-- **Emergency bypass** for critical situations
+### Development Efficiency
+- **Parallel agent execution** for complex tasks
+- **Context-aware analysis** of any codebase
+- **Smart test discovery** and execution
+- **Automated code review** with security checks
 
-### Team Benefits
-- **Reduced code review time** through pre-validation
-- **Consistent quality standards** across all contributors
-- **Automated compliance** with repository standards
-- **Historical metrics** for continuous improvement
+### Configuration Management
+- **Centralized configuration** for all Claude settings
+- **Version-controlled agents** and commands
+- **Easy updates** through git pull and sync
+- **Backup protection** for existing configurations
 
 ## 📖 Learn More
 
-- **Full Documentation**: `/docs/devops/pre-commit-implementation-plan.md`
-- **Implementation Summary**: `/docs/devops/implementation-summary.md`
-- **Command Reference**: `make help`
-- **Troubleshooting**: Run `make doctor` for diagnostics
+- **Repository Documentation**: [README.md](README.md)
+- **Agent Overview**: [system-configs/.claude/agents/README.md](system-configs/.claude/agents/README.md)
+- **Command Reference**: All commands documented in [system-configs/.claude/commands/](system-configs/.claude/commands/)
+- **Documentation Index**: [docs/DOCUMENTATION_INDEX.md](docs/DOCUMENTATION_INDEX.md)
 
 ## 🎉 You're Ready!
 
-Your repository now has enterprise-grade validation automation. The system will:
-- Guide you through fixing issues
-- Prevent common problems from reaching production
-- Provide metrics on code quality trends
-- Scale with your team as it grows
+Your Claude Code CLI now has comprehensive agent and command support. The system provides:
+- **40 specialized agents** for every development scenario
+- **14 essential commands** for streamlined workflows
+- **Quality validation** for all configurations
+- **Easy maintenance** through repository updates
+
+### Next Steps
+
+1. **Explore agents**: Run `/agent-audit` to see all available agents
+2. **Try commands**: Use `/test`, `/context`, `/review` on your projects
+3. **Stay updated**: Periodically run `git pull` and `/sync` in this repository
+4. **Contribute**: Add new agents or improve existing ones

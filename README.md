@@ -1,4 +1,4 @@
-# Claude Multi-Agent Orchestration System
+# Claude Configuration Repository
 
 <div align="center">
 
@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <!-- markdownlint-disable-next-line MD036 -->
-*Transform complex technical challenges into efficiently orchestrated parallel workstreams*
+*Clean, validated Claude configurations for enhanced development workflows*
 
 [Quick Start](#-quick-start) • [Features](#-features) • [Commands](#-commands) • [Agent Ecosystem](#-agent-ecosystem) • [Installation](#-installation) • [Contributing](#-contributing)
 
@@ -15,25 +15,26 @@
 
 ## 🎯 Overview
 
-The Claude Multi-Agent Orchestration System is a sophisticated AI-powered development ecosystem that coordinates **41 specialized agents** across 8 functional domains. By leveraging intelligent parallel execution and dynamic task decomposition, this system delivers comprehensive solutions faster and more effectively than any single agent could achieve.
+This repository provides a comprehensive configuration management system for Claude Code CLI, featuring **40 specialized agents** and **14 essential commands**. After a major cleanup that removed 85+ bloat files, this repository now maintains clean, validated configurations for enhanced development workflows.
 
-### 🌟 What Makes This System Unique
+### 🌟 What Makes This Configuration System Unique
 
-This isn't just another AI tool—it's a complete paradigm shift in how complex technical work gets done:
+This repository transforms how you work with Claude Code CLI:
 
-- **Sole Executor Model**: Claude acts as the intelligent orchestrator, coordinating specialized agents who provide expertise while Claude maintains full execution control
-- **Parallel-First Architecture**: Every task is analyzed for parallelization opportunities, dramatically reducing time-to-completion
-- **SYSTEM BOUNDARY Protection**: Enhanced security model prevents unauthorized agent self-invocation or cross-agent communication
-- **Multi-Instance Orchestration**: Run multiple instances of the same agent type for massive parallel operations
+- **Clean Repository Structure**: Organized after removing 85+ bloat files, keeping only essential configurations
+- **41 Validated Agents**: Each agent includes YAML front-matter validation and SYSTEM BOUNDARY protection
+- **Synchronized Configurations**: `/sync` command seamlessly deploys configurations from repository to `~/.claude/`
+- **Quality Assurance**: Built-in validation ensures all configurations meet strict quality standards
+- **Documentation-First Approach**: Comprehensive documentation for every component
 
 ### Key Benefits
 
-- **🚀 Parallel-First Execution**: Maximize throughput with concurrent agent operations
+- **🧹 Clean Organization**: Essential files only - no bloat or redundancy
 - **🎭 41 Specialized Agents**: Complete coverage of the software development lifecycle
-- **🎼 Intelligent Orchestration**: Smart task decomposition and dependency management
-- **🔧 Efficiency Tools**: Dedicated agents for common operations and automation
-- **🛡️ Quality Gates**: Comprehensive review, testing, and security validation
-- **📊 100% Coverage**: Every aspect of development, from architecture to deployment
+- **🔄 Easy Synchronization**: One command syncs all configurations to your system
+- **🛡️ Quality Gates**: YAML validation and compliance checking
+- **📚 Comprehensive Documentation**: 26 essential documentation files
+- **🔧 14 Essential Commands**: Carefully curated for maximum utility
 
 ## 🚀 Quick Start
 
@@ -59,8 +60,9 @@ claude-code
 /sync
 
 # Or manual setup
-cp CLAUDE.md ~/CLAUDE.md
-cp -r .claude ~/.claude
+cp system-configs/CLAUDE.md ~/CLAUDE.md
+cp -r system-configs/.claude ~/.claude
+cp system-configs/settings.json ~/.claude/settings.json
 ```
 
 ### 3. Try Core Commands
@@ -75,18 +77,18 @@ cp -r .claude ~/.claude
 # Comprehensive code review
 /review
 
-# Create documentation
-/docs
+# Validate agent configurations
+/agent-audit
 ```
 
 ## ✨ Features
 
-### 🎼 Multi-Agent Orchestration
+### 🔄 Configuration Management
 
-- **Parallel Execution by Default**: Launch multiple specialists simultaneously
-- **Multi-Instance Support**: Run multiple copies of the same agent type
-- **Smart Task Decomposition**: Break complex requests into specialized workstreams
-- **Dynamic Agent Selection**: Match work to specialist capabilities automatically
+- **Centralized Configuration**: All agent and command definitions in one place
+- **One-Command Sync**: Deploy configurations from repository to system with `/sync`
+- **Automatic Validation**: YAML compliance checking before deployment
+- **Backup Management**: Automatic backups of existing configurations during sync
 
 ### 🛠️ Core Commands (14 Essential Tools)
 
@@ -121,11 +123,11 @@ cp -r .claude ~/.claude
 
 ### Command Quality Summary
 
-- **Total Commands**: 14 essential commands (reduced from 40+)
+- **Total Commands**: 14 essential commands (cleaned from 40+)
 - **5-Star Commands**: 10 (71%) - Excellent behavioral instructions, comprehensive functionality
 - **4-Star Commands**: 4 (29%) - Good quality with minor improvement opportunities
 - **Average Rating**: 4.7/5.0
-- **Design Philosophy**: Commands solve real problems beyond simple agent delegation
+- **Design Philosophy**: Each command solves real problems and provides substantial value
 
 ### Core Development Commands
 
@@ -241,7 +243,7 @@ Note: Previously named `/resolve-rabbit`.
 
 ## 🎭 Agent Ecosystem
 
-The system includes **41 specialized agents** organized across 8 functional domains:
+The system includes **40 specialized agents** organized across multiple functional domains:
 
 ### 📊 Agent Categories Overview
 
@@ -408,91 +410,84 @@ Parallel Execution (8 instances):
 
 ```text
 claude-config/
-├── CLAUDE.md                    # Core orchestration principles
-├── .claude/                     # Claude Code configuration
-│   ├── agents/                  # 29 specialized agent definitions
-│   │   ├── README.md           # Complete agent ecosystem guide
-│   │   ├── AGENT_CATEGORIES.md # Category definitions
-│   │   └── *.md                # Individual agent specs
-│   ├── commands/               # Custom command implementations
-│   └── settings.json           # Audio hooks and preferences
-├── docs/                       # Comprehensive documentation
-│   ├── AUDIO_HOOK_README.md   # Audio notification setup
-│   ├── AGENT_SELECTION_GUIDE.md # Choosing the right agent
-│   └── PARALLEL_EXECUTION_GUIDE.md # Parallelization patterns
-├── scripts/                    # Utility and validation scripts
-└── tests/                      # Test suite for all components
+├── CLAUDE.md                    # Project configuration
+├── README.md                    # This documentation
+├── QUICKSTART.md               # Quick setup guide
+├── system-configs/             # Source configurations
+│   ├── CLAUDE.md              # Core configuration file
+│   ├── .claude/               # Claude Code configuration
+│   │   ├── agents/            # 40 agent definitions + 4 docs
+│   │   │   ├── README.md      # Agent ecosystem guide
+│   │   │   └── *.md           # Individual agent specs
+│   │   └── commands/          # 14 command definitions
+│   └── settings.json          # Audio hooks and preferences
+├── docs/                      # 26 documentation files
+├── scripts/                   # 17 utility and validation scripts
+└── tests/                     # Test suite for all components
 ```
 
-### Orchestration Flow
+### Configuration Flow
 
 ```mermaid
 graph TB
-    A[User Request] --> B[Claude Orchestrator]
-    B --> C{Task Analysis}
-    C --> D[Parallel Workstreams]
-    D --> E1[Specialist 1]
-    D --> E2[Specialist 2]
-    D --> E3[Specialist N]
-    E1 --> F[Aggregation]
-    E2 --> F
-    E3 --> F
-    F --> G[Unified Solution]
+    A[Repository] --> B[/sync Command]
+    B --> C{Validation}
+    C --> D[Backup Existing]
+    D --> E[Deploy to ~/.claude/]
+    E --> F[41 Agents Available]
+    E --> G[14 Commands Available]
+    F --> H[Enhanced Claude CLI]
+    G --> H
 ```
 
 ## 💡 Real-World Use Cases
 
-### Full-Stack Application Development
+### Setting Up Claude for a New Project
 
 ```bash
-/orchestrate Build a real-time chat application with React frontend and Node.js backend
+# Clone this repository to your new project
+git clone https://github.com/damilola/claude-config.git
+cd claude-config
 
-# Claude orchestrates:
-# - backend-engineer: WebSocket server, REST API, database schema
-# - frontend-engineer: React UI, state management, real-time updates
-# - mobile-engineer: React Native mobile app
-# - test-engineer: E2E tests, unit tests, integration tests
-# - security-auditor: Authentication, data encryption, vulnerability scan
+# Deploy all configurations
+/sync
+
+# Now you have access to 40 agents and 14 commands
+# Use /context to analyze your project
+# Use /test to run tests
+# Use /review for code quality checks
 ```
 
-### Production Incident Response
+### Repository Configuration Management
 
 ```bash
-/orchestrate Production API is returning 500 errors intermittently
+# Keep your Claude configurations up to date
+cd claude-config
+git pull origin main
+/sync
 
-# Claude orchestrates:
-# - incident-commander: Coordinate response, severity assessment
-# - log-analyst: Analyze error patterns in logs
-# - debugger: Root cause analysis
-# - performance-analyst: Resource utilization check
-# - devops: Deploy hotfix, rollback if needed
+# Validate all agent configurations
+/agent-audit
+
+# Run comprehensive repository tests
+/test
 ```
 
-### Enterprise Migration Project
+### Agent Development Workflow
 
 ```bash
-/orchestrate Migrate monolithic Java app to microservices on Kubernetes
+# Create a new agent using the template
+cp system-configs/.claude/agents/AGENT_TEMPLATE.md system-configs/.claude/agents/my-new-agent.md
 
-# Claude orchestrates:
-# - principal-architect: Microservices design, boundary definition
-# - backend-engineer (x3): Service implementation (parallel)
-# - database-migration-specialist: Data migration strategy
-# - kubernetes-admin: Cluster setup, deployment configs
-# - monitoring-specialist: Observability setup
-# - api-architect: Service mesh, API gateway design
-```
+# Edit the agent configuration
+# Validate the configuration
+./scripts/validate-agent-yaml.py
 
-### Comprehensive Security Audit
+# Deploy to your system
+/sync
 
-```bash
-/security
-
-# Claude orchestrates in parallel:
-# - security-auditor: OWASP Top 10 compliance
-# - security-tester: Penetration testing
-# - code-reviewer: Security-focused code review
-# - api-contract-tester: API security validation
-# - accessibility-auditor: Security of accessible features
+# Test the new agent
+/agent-audit
 ```
 
 ## 💻 Installation
@@ -523,27 +518,27 @@ git clone https://github.com/damilola/claude-config.git
 cd claude-config
 
 # Copy core configuration
-cp CLAUDE.md ~/CLAUDE.md
+cp system-configs/CLAUDE.md ~/CLAUDE.md
 
 # Copy Claude settings and commands
-cp -r .claude ~/.claude
-cp settings.json ~/.claude/settings.json
-
-# Set up audio notifications
-cp docs/AUDIO_HOOK_README.md ~/.claude/
+cp -r system-configs/.claude ~/.claude
+cp system-configs/settings.json ~/.claude/settings.json
 ```
 
 ### Option 3: Selective Installation
 
 ```bash
-# Just the orchestration configuration
-cp CLAUDE.md ~/CLAUDE.md
+# Just the main configuration
+cp system-configs/CLAUDE.md ~/CLAUDE.md
 
 # Just the commands
-cp -r .claude/commands ~/.claude/commands
+cp -r system-configs/.claude/commands ~/.claude/commands
 
 # Just the agent definitions
-cp -r .claude/agents ~/.claude/agents
+cp -r system-configs/.claude/agents ~/.claude/agents
+
+# Just the audio settings
+cp system-configs/settings.json ~/.claude/settings.json
 ```
 
 ## 🧪 Testing
@@ -578,11 +573,14 @@ cp -r .claude/agents ~/.claude/agents
 #### Agent Not Found
 
 ```bash
-# List all available agents
-/agents list
+# Check if configurations are synced
+/sync
 
-# Search for specific capability
-/agents suggest "database optimization"
+# Run agent audit to validate configurations
+/agent-audit
+
+# Check agent directory
+ls ~/.claude/agents/
 ```
 
 #### SYSTEM BOUNDARY Violation
@@ -602,11 +600,18 @@ cat ~/.claude/settings.json | grep -A 10 "hooks"
 afplay /System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r
 ```
 
-#### Parallel Execution Not Happening
+#### Configuration Sync Issues
 
-- Ensure you're using `/orchestrate` for complex tasks
-- Check that tasks are truly independent
-- Verify no sequential dependencies blocking parallelization
+```bash
+# Ensure you're in the claude-config repository
+pwd  # Should show .../claude-config
+
+# Check repository status
+git status
+
+# Force sync with validation
+/sync
+```
 
 ## 🤝 Contributing
 
@@ -624,12 +629,12 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ### Adding New Agents
 
-1. Use the agent template: `.claude/agents/AGENT_TEMPLATE.md`
+1. Use the agent template: `system-configs/.claude/agents/AGENT_TEMPLATE.md`
 2. Follow naming conventions (descriptive, lowercase, hyphenated)
-3. Assign appropriate category and color
+3. Include valid YAML front-matter with all required fields
 4. Include SYSTEM BOUNDARY protection in your agent
-5. Update documentation
-6. Run validation: `./tests/test.sh` and agent audit
+5. Run validation: `./scripts/validate-agent-yaml.py`
+6. Deploy and test: `/sync` then `/agent-audit`
 
 ### Contribution Areas
 
@@ -643,11 +648,11 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ### Core Documentation
 
-- [Agent Ecosystem Overview](.claude/agents/README.md)
-- [Agent Categories](.claude/agents/AGENT_CATEGORIES.md)
+- [Agent Ecosystem Overview](system-configs/.claude/agents/README.md)
+- [Agent Categories](system-configs/.claude/agents/AGENT_CATEGORIES.md)
 - [Audio Notifications](docs/AUDIO_HOOK_README.md)
-- [Parallel Execution Guide](docs/PARALLEL_EXECUTION_GUIDE.md)
 - [Agent Selection Guide](docs/AGENT_SELECTION_GUIDE.md)
+- [Documentation Index](docs/DOCUMENTATION_INDEX.md)
 
 ### External Resources
 
@@ -657,21 +662,21 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ## ❓ Frequently Asked Questions
 
-### Q: How do agents communicate with each other?
+### Q: How do I deploy configurations from this repository?
 
-**A:** They don't! Claude is the sole orchestrator. Agents provide expertise and content, but Claude handles all execution and coordination.
+**A:** Use the `/sync` command from within the claude-config repository. It will validate and deploy all configurations to your `~/.claude/` directory.
 
-### Q: Can I run multiple instances of the same agent?
+### Q: How often should I update my configurations?
 
-**A:** Yes! This is a key feature. You can run multiple backend-engineers working on different services, multiple analysts examining different codebases, etc.
+**A:** Run `git pull` in the claude-config repository periodically, then `/sync` to get the latest agent definitions and commands.
 
-### Q: What's the difference between `/plan` and `/orchestrate`?
+### Q: What's the difference between the repository CLAUDE.md and system-configs/CLAUDE.md?
 
-**A:** `/plan` creates a strategy without executing anything. `/orchestrate` actively coordinates agents to complete the task.
+**A:** The repository CLAUDE.md describes this configuration repository. The system-configs/CLAUDE.md is deployed to your home directory for global Claude configuration.
 
 ### Q: How do I know which agent to use?
 
-**A:** Use `/agents suggest <task description>` or check our [Agent Selection Guide](docs/AGENT_SELECTION_GUIDE.md).
+**A:** Check the [Agent Selection Guide](docs/AGENT_SELECTION_GUIDE.md) or use `/agent-audit` to see all available agents.
 
 ### Q: Why did my agent task fail with "SYSTEM BOUNDARY" error?
 
@@ -683,7 +688,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ### Q: How can I contribute a new agent?
 
-**A:** Follow our agent template, ensure it includes SYSTEM BOUNDARY protection, and submit a PR. See [Contributing](#-contributing).
+**A:** Use the template in `system-configs/.claude/agents/AGENT_TEMPLATE.md`, ensure valid YAML front-matter and SYSTEM BOUNDARY protection, then submit a PR.
 
 ## 🔒 Security
 

@@ -28,12 +28,12 @@ When you use `/sync`, I will:
    - Create backups of `~/.claude/settings.json` as `~/.claude/settings.json.backup`
 
 3. **Replace configuration directories**:
-   - Copy `./CLAUDE.md` to `~/CLAUDE.md`
+   - Copy `./system-configs/CLAUDE.md` to `~/CLAUDE.md`
    - **Remove old agents**: Delete `~/.claude/agents/` directory completely
    - **Remove old commands**: Delete all files in `~/.claude/commands/` (preserving the directory)
-   - Copy only actual agent files from `./.claude/agents/` to `~/.claude/agents/` (excluding documentation/template files)
-   - Copy all files from `./.claude/commands/` to `~/.claude/commands/` (explicitly excluding `sync.md` and `config-diff.md`)
-   - Copy `./settings.json` to `~/.claude/settings.json` (merge with existing settings)
+   - Copy only actual agent files from `./system-configs/.claude/agents/` to `~/.claude/agents/` (excluding documentation/template files)
+   - Copy all files from `./system-configs/.claude/commands/` to `~/.claude/commands/` (explicitly excluding `sync.md` and `config-diff.md`)
+   - Copy `./system-configs/settings.json` to `~/.claude/settings.json` (merge with existing settings)
    - **Important**: This ensures no deprecated agents or commands remain, and only actual agents are synced
    - **Excluded from agents sync**:
      - `AGENT_TEMPLATE.md` (template file, not an agent)
@@ -50,19 +50,19 @@ When you use `/sync`, I will:
 
 ## Files Synced
 
-- `CLAUDE.md` - Main configuration with coding standards
-- `.claude/commands/*.md` - All command files (except repo-specific commands below)
-- `.claude/agents/*.md` - Only actual agent configurations (excludes documentation/template files)
-- `settings.json` - Claude Code settings with audio notification hooks
+- `system-configs/CLAUDE.md` - Main configuration with coding standards
+- `system-configs/.claude/commands/*.md` - All command files (except repo-specific commands below)
+- `system-configs/.claude/agents/*.md` - Only actual agent configurations (excludes documentation/template files)
+- `system-configs/settings.json` - Claude Code settings with audio notification hooks
 
 ## Files NOT Synced
 
-- `.claude/agents/AGENT_TEMPLATE.md` - Template file for creating new agents
-- `.claude/agents/AGENT_CATEGORIES.md` - Documentation of agent categories
-- `.claude/agents/AUDIT_VERIFICATION_PROTOCOL.md` - Audit documentation
-- `.claude/agents/README.md` - Agent directory documentation
-- `.claude/commands/sync.md` - Repository-specific sync command
-- `.claude/commands/config-diff.md` - Repository-specific config comparison command
+- `system-configs/.claude/agents/AGENT_TEMPLATE.md` - Template file for creating new agents
+- `system-configs/.claude/agents/AGENT_CATEGORIES.md` - Documentation of agent categories
+- `system-configs/.claude/agents/AUDIT_VERIFICATION_PROTOCOL.md` - Audit documentation
+- `system-configs/.claude/agents/README.md` - Agent directory documentation
+- `system-configs/.claude/commands/sync.md` - Repository-specific sync command
+- `system-configs/.claude/commands/config-diff.md` - Repository-specific config comparison command
 
 ## Important Notes
 
@@ -90,12 +90,12 @@ Creating backups...
 ✓ Backed up ~/.claude/settings.json to ~/.claude/settings.json.backup
 
 Syncing configuration files...
-✓ Copied CLAUDE.md to ~/CLAUDE.md
+✓ Copied system-configs/CLAUDE.md to ~/CLAUDE.md
 ✓ Removed old agents from ~/.claude/agents/
 ✓ Removed old commands from ~/.claude/commands/
 ✓ Copied 35 command files to ~/.claude/commands/ (excluding sync.md and config-diff.md)
 ✓ Copied 35 agent files to ~/.claude/agents/
-✓ Copied settings.json to ~/.claude/settings.json
+✓ Copied system-configs/settings.json to ~/.claude/settings.json
 ✓ Excluded documentation files: AGENT_TEMPLATE.md, AGENT_CATEGORIES.md, AUDIT_VERIFICATION_PROTOCOL.md, README.md
 ✓ Excluded repo-specific: sync.md, config-diff.md
 
@@ -118,7 +118,7 @@ rm -rf ~/.claude/agents/
 mkdir -p ~/.claude/agents/
 
 # Copy only actual agent files (exclude documentation/template files)
-for file in ./.claude/agents/*.md; do
+for file in ./system-configs/.claude/agents/*.md; do
     filename=$(basename "$file")
     # Skip non-agent files
     if [[ "$filename" != "AGENT_TEMPLATE.md" && \
@@ -134,7 +134,7 @@ rm -f ~/.claude/commands/*.md
 
 # Copy commands except sync.md and config-diff.md
 shopt -s nullglob
-for file in ./.claude/commands/*.md; do
+for file in ./system-configs/.claude/commands/*.md; do
     filename=$(basename "$file")
     if [[ -f "$file" ]] && [[ "$filename" != "sync.md" && "$filename" != "config-diff.md" ]]; then
         cp "$file" ~/.claude/commands/

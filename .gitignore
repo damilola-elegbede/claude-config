@@ -59,3 +59,22 @@ __pycache__/
 dist/
 build/
 out/
+# Prevent build artifacts and temporary files
+__pycache__/
+*.pyc
+*.log
+.tmp/
+.validation-metrics/
+tests/results/*.log
+
+# Prevent backup files
+*.backup
+*.bak
+*~
+
+# Prevent fix/migration scripts from being re-added
+scripts/fix-*.py
+scripts/check-*.py
+scripts/test-phase*.sh
+scripts/*migration*.py
+scripts/*update*.py

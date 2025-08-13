@@ -279,18 +279,22 @@ Claude: 📋 Entering plan mode...
 - **Complexity**: Simple (~5 LOC)
 - **Files**: 1 implementation file
 
-Ready to proceed?
+Ready to proceed with file generation?
+
+[Exiting plan mode, awaiting approval...]
 
 User: yes
 
-Claude: ✅ Writing: .tmp/fix-typo-2x1/implementation.md
+Claude: ✅ Plan approved! Writing files...
+📁 Files written to: .tmp/fix-typo-2x1/implementation.md
 ```
 
 ## Notes
 
-- Plan mode ensures no files are written without explicit approval
+- Plan mode ensures no files are written without explicit approval for ALL tasks (including simple ones)
 - All planning happens in memory until approval is received
 - Complex plans can involve 10+ PR files but are only written if approved
 - The preview checkpoint prevents filesystem clutter
-- Users maintain full control over the planning process
+- Users maintain full control over the planning process for both simple and complex tasks
 - Supports iterative refinement without generating unwanted files
+- **Even simple tasks require explicit approval before file generation**

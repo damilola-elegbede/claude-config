@@ -4,7 +4,7 @@
 
 # Get the repository root
 REPO_ROOT=$(git rev-parse --show-toplevel)
-AGENTS_DIR="$REPO_ROOT/.claude/agents"
+AGENTS_DIR="$REPO_ROOT/system-configs/.claude/agents"
 VALIDATION_SCRIPT="$REPO_ROOT/scripts/validate_yaml.sh"
 
 # Check if validation script exists
@@ -15,7 +15,7 @@ if [ ! -f "$VALIDATION_SCRIPT" ]; then
 fi
 
 # Get list of staged .md files in agents directory
-STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep "^\.claude/agents/.*\.md$" || true)
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep "^system-configs/\.claude/agents/.*\.md$" || true)
 
 if [ -z "$STAGED_FILES" ]; then
     # No agent files staged, nothing to validate
