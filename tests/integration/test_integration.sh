@@ -71,8 +71,8 @@ test_claude_md_consistency() {
     assert_file_exists "$system_claude" \
         "System CLAUDE.md should exist in system-configs/"
     
-    assert_file_contains "$system_claude" "MANDATORY Delegations" \
-        "System CLAUDE.md should define mandatory delegation rules"
+    assert_file_contains "$system_claude" "Non-Negotiable Rules" \
+        "System CLAUDE.md should define non-negotiable orchestration rules"
     
     return 0
 }
