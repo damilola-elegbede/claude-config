@@ -32,7 +32,7 @@ jobs:
         ./tests/test.sh
         
     - name: Check if sync needed
-      if: contains(steps.changed-files.outputs.all_changed_files, 'CLAUDE.md') || contains(steps.changed-files.outputs.all_changed_files, '.claude/commands/')
+      if: contains(steps.changed-files.outputs.all_changed_files, 'system-configs/CLAUDE.md') || contains(steps.changed-files.outputs.all_changed_files, 'system-configs/.claude/commands/')
       run: |
         echo "⚠️ Changes detected in configuration files!"
         echo "Remember to run /sync command after merging to update your local configuration."
@@ -49,7 +49,7 @@ jobs:
       run: |
         echo "Validating command files..."
         
-        for cmd in .claude/commands/*.md; do
+        for cmd in system-configs/.claude/commands/*.md; do
           # Skip README.md file
           if [[ "$(basename "$cmd")" == "README.md" ]]; then
             echo "Skipping $cmd (documentation file)"

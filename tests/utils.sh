@@ -123,8 +123,8 @@ create_mock_command() {
     local name=$1
     local content=$2
     
-    mkdir -p .claude/commands
-    cat > ".claude/commands/${name}.md" << EOF
+    mkdir -p system-configs/.claude/commands
+    cat > "system-configs/.claude/commands/${name}.md" << EOF
 # /${name} Command
 
 ## Description

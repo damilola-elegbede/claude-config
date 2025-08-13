@@ -64,48 +64,16 @@ export class MCPAgentManager extends EventEmitter {
 
   /**
    * Load all agent configurations
+   * Note: Agent directories were removed. This loader is now deprecated.
+   * The primary agent system uses the .claude/agents/ directory with Markdown format.
    */
   async loadAgents(): Promise<void> {
-    console.log('🚀 Loading MCP-enhanced agents...');
+    console.log('⚠️ MCP YAML agent loader is deprecated. Agent directories removed.');
+    console.log('📝 Primary agent system is now in system-configs/.claude/agents/ (Markdown format)');
     
-    const categories = Object.values(AgentCategory);
-    let totalAgents = 0;
-
-    for (const category of categories) {
-      const categoryPath = path.join(this.agentsPath, category);
-      
-      if (!fs.existsSync(categoryPath)) {
-        console.log(`⚠️ Category directory not found: ${category}`);
-        continue;
-      }
-
-      const files = fs.readdirSync(categoryPath).filter(f => f.endsWith('.yaml'));
-      
-      for (const file of files) {
-        try {
-          const filePath = path.join(categoryPath, file);
-          const content = fs.readFileSync(filePath, 'utf-8');
-          const config = yaml.load(content) as AgentConfig;
-          
-          // Add category if not present
-          if (!config.category) {
-            config.category = category;
-          }
-          
-          this.agents.set(config.id, config);
-          this.agentsByCategory.get(category)?.add(config.id);
-          
-          this.emit('agentLoaded', { agent: config });
-          totalAgents++;
-        } catch (error) {
-          console.error(`Failed to load agent ${file}:`, error);
-        }
-      }
-    }
-
     this.isInitialized = true;
-    console.log(`✅ Loaded ${totalAgents} MCP-enhanced agents`);
-    this.emit('agentsLoaded', { count: totalAgents });
+    console.log(`✅ MCP agent manager initialized (no YAML agents loaded)`);
+    this.emit('agentsLoaded', { count: 0 });
   }
 
   /**

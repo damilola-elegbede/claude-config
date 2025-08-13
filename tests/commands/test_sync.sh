@@ -6,13 +6,13 @@ source "$(dirname "$0")/../utils.sh"
 
 # Test sync command file exists
 test_sync_file_exists() {
-    assert_file_exists "$ORIGINAL_DIR/.claude/commands/sync.md" \
+    assert_file_exists "$ORIGINAL_DIR/system-configs/.claude/commands/sync.md" \
         "Sync command file should exist"
 }
 
 # Test sync command structure
 test_sync_structure() {
-    local sync_file="$ORIGINAL_DIR/.claude/commands/sync.md"
+    local sync_file="$ORIGINAL_DIR/system-configs/.claude/commands/sync.md"
     
     # Check required sections
     assert_file_contains "$sync_file" "# /sync Command" \
@@ -33,7 +33,7 @@ test_sync_structure() {
 
 # Test sync command content
 test_sync_content() {
-    local sync_file="$ORIGINAL_DIR/.claude/commands/sync.md"
+    local sync_file="$ORIGINAL_DIR/system-configs/.claude/commands/sync.md"
     
     # Check for key behavior descriptions
     assert_file_contains "$sync_file" "Repository-specific command" \

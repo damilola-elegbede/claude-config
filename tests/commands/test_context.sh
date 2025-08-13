@@ -6,13 +6,13 @@ source "$(dirname "$0")/../utils.sh"
 
 # Test context command file exists
 test_context_file_exists() {
-    assert_file_exists "$ORIGINAL_DIR/.claude/commands/context.md" \
+    assert_file_exists "$ORIGINAL_DIR/system-configs/.claude/commands/context.md" \
         "Context command file should exist"
 }
 
 # Test context command structure
 test_context_structure() {
-    local context_file="$ORIGINAL_DIR/.claude/commands/context.md"
+    local context_file="$ORIGINAL_DIR/system-configs/.claude/commands/context.md"
     
     # Check required sections
     assert_file_contains "$context_file" "# /context Command" \
@@ -33,7 +33,7 @@ test_context_structure() {
 
 # Test context command content
 test_context_content() {
-    local context_file="$ORIGINAL_DIR/.claude/commands/context.md"
+    local context_file="$ORIGINAL_DIR/system-configs/.claude/commands/context.md"
     
     # Check for key behavior descriptions
     assert_file_contains "$context_file" "analyzes and understands any repository" \

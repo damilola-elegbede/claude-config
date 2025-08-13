@@ -6,13 +6,13 @@ source "$(dirname "$0")/../utils.sh"
 
 # Test commit command file exists
 test_commit_file_exists() {
-    assert_file_exists "$ORIGINAL_DIR/.claude/commands/commit.md" \
+    assert_file_exists "$ORIGINAL_DIR/system-configs/.claude/commands/commit.md" \
         "Commit command file should exist"
 }
 
 # Test commit command structure
 test_commit_structure() {
-    local commit_file="$ORIGINAL_DIR/.claude/commands/commit.md"
+    local commit_file="$ORIGINAL_DIR/system-configs/.claude/commands/commit.md"
     
     # Check required sections
     assert_file_contains "$commit_file" "# /commit Command" \
@@ -30,7 +30,7 @@ test_commit_structure() {
 
 # Test commit command content
 test_commit_content() {
-    local commit_file="$ORIGINAL_DIR/.claude/commands/commit.md"
+    local commit_file="$ORIGINAL_DIR/system-configs/.claude/commands/commit.md"
     
     # Check for key behavior descriptions
     assert_file_contains "$commit_file" "git commit" \

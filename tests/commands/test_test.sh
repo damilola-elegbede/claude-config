@@ -6,13 +6,13 @@ source "$(dirname "$0")/../utils.sh"
 
 # Test test command file exists
 test_test_file_exists() {
-    assert_file_exists "$ORIGINAL_DIR/.claude/commands/test.md" \
+    assert_file_exists "$ORIGINAL_DIR/system-configs/.claude/commands/test.md" \
         "Test command file should exist"
 }
 
 # Test test command structure
 test_test_structure() {
-    local test_file="$ORIGINAL_DIR/.claude/commands/test.md"
+    local test_file="$ORIGINAL_DIR/system-configs/.claude/commands/test.md"
     
     # Check required sections
     assert_file_contains "$test_file" "# /test Command" \
@@ -33,7 +33,7 @@ test_test_structure() {
 
 # Test test command content
 test_test_content() {
-    local test_file="$ORIGINAL_DIR/.claude/commands/test.md"
+    local test_file="$ORIGINAL_DIR/system-configs/.claude/commands/test.md"
     
     # Check for key behavior descriptions
     assert_file_contains "$test_file" "discovers and runs tests" \

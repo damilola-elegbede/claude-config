@@ -4,15 +4,15 @@
 # Source test utilities
 source "$(dirname "$0")/../utils.sh"
 
-# Test CLAUDE.md exists
+# Test CLAUDE.md exists - check system config version for orchestration rules
 test_claude_md_exists() {
-    assert_file_exists "$ORIGINAL_DIR/CLAUDE.md" \
-        "CLAUDE.md should exist in repository root"
+    assert_file_exists "$ORIGINAL_DIR/system-configs/CLAUDE.md" \
+        "System CLAUDE.md should exist in system-configs directory"
 }
 
-# Test CLAUDE.md effectiveness criteria
+# Test CLAUDE.md effectiveness criteria - check system config for orchestration
 test_claude_md_effectiveness() {
-    local claude_file="$ORIGINAL_DIR/CLAUDE.md"
+    local claude_file="$ORIGINAL_DIR/system-configs/CLAUDE.md"
     local line_count=$(wc -l < "$claude_file")
     local word_count=$(wc -w < "$claude_file")
     local score=10

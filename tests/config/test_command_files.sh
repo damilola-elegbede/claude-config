@@ -6,7 +6,7 @@ source "$(dirname "$0")/../utils.sh"
 
 # Test all command files exist
 test_all_commands_exist() {
-    local commands_dir="$ORIGINAL_DIR/.claude/commands"
+    local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
     
     assert_dir_exists "$commands_dir" \
         "Commands directory should exist"
@@ -22,7 +22,7 @@ test_all_commands_exist() {
 
 # Test command file structure
 test_command_structure() {
-    local commands_dir="$ORIGINAL_DIR/.claude/commands"
+    local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
     
     # Test each command file has proper structure
     for cmd_file in "$commands_dir"/*.md; do
@@ -47,7 +47,7 @@ test_command_structure() {
 
 # Test specific command requirements
 test_command_specifics() {
-    local commands_dir="$ORIGINAL_DIR/.claude/commands"
+    local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
     
     # Test /test command has generation templates
     assert_file_contains "$commands_dir/test.md" "## Test Generation Templates" \
@@ -68,7 +68,7 @@ test_command_specifics() {
 
 # Test no missing documentation
 test_documentation_completeness() {
-    local commands_dir="$ORIGINAL_DIR/.claude/commands"
+    local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
     
     for cmd_file in "$commands_dir"/*.md; do
         local cmd_name=$(basename "$cmd_file" .md)

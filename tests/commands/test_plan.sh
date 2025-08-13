@@ -6,13 +6,13 @@ source "$(dirname "$0")/../utils.sh"
 
 # Test plan command file exists
 test_plan_file_exists() {
-    assert_file_exists "$ORIGINAL_DIR/.claude/commands/plan.md" \
+    assert_file_exists "$ORIGINAL_DIR/system-configs/.claude/commands/plan.md" \
         "Plan command file should exist"
 }
 
 # Test plan command structure
 test_plan_structure() {
-    local plan_file="$ORIGINAL_DIR/.claude/commands/plan.md"
+    local plan_file="$ORIGINAL_DIR/system-configs/.claude/commands/plan.md"
     
     # Check required sections
     assert_file_contains "$plan_file" "# /plan Command" \
@@ -33,7 +33,7 @@ test_plan_structure() {
 
 # Test plan command content
 test_plan_content() {
-    local plan_file="$ORIGINAL_DIR/.claude/commands/plan.md"
+    local plan_file="$ORIGINAL_DIR/system-configs/.claude/commands/plan.md"
     
     # Check for key behavior descriptions
     assert_file_contains "$plan_file" "TDD methodology" \

@@ -90,6 +90,34 @@ After presenting the preview:
 3. **Execute approved plan**: Write files only after confirmation
 4. **Report completion**: Show where files were written
 
+## Approval Indicators
+
+The command recognizes these approval signals:
+
+### Positive Approval
+- "yes" - Standard approval
+- "approve" - Formal approval
+- "proceed" - Go ahead approval
+- "👍" - Emoji approval
+- "looks good" - Informal approval
+- "generate" - Direct generation request
+- "create files" - Explicit file creation request
+
+### Modification Requests
+- "modify" - Request changes
+- "update" - Request updates
+- "change" - Request modifications
+- "revise" - Request revision
+- "adjust" - Request adjustments
+
+### Rejection Signals
+- "no" - Standard rejection
+- "cancel" - Cancellation request
+- "abort" - Abort operation
+- "stop" - Stop processing
+- "reject" - Formal rejection
+- "👎" - Emoji rejection
+
 ## Strategic Plan Format
 
 The strategic plan includes:
@@ -112,17 +140,17 @@ When approved, files are written to `.tmp/<feature-name>/`:
 **Complex tasks** generate:
 
 - `plan.md` - Strategic requirements document
-- `phase_1.1_<description>.md` - Phase 1, PR 1
-- `phase_1.2_<description>.md` - Phase 1, PR 2
-- `phase_1.3_<description>.md` - Phase 1, PR 3
-- `phase_2.1_<description>.md` - Phase 2, PR 1
-- `phase_2.2_<description>.md` - Phase 2, PR 2
-- (continues for all PRs with phase_X.Y_description.md format)
+- `phase_1.01_<description>.md` - Phase 1, PR 1
+- `phase_1.02_<description>.md` - Phase 1, PR 2
+- `phase_1.03_<description>.md` - Phase 1, PR 3
+- `phase_2.01_<description>.md` - Phase 2, PR 1
+- `phase_2.02_<description>.md` - Phase 2, PR 2
+- (continues for all PRs with phase_X.YY_description.md format)
 - `rollback.md` - Rollback procedures
 
 ### PR File Contents (Detailed Task Descriptions)
 
-Each PR file (`phase_X.Y_description.md`) contains comprehensive task breakdowns:
+Each PR file (`phase_X.YY_description.md`) contains comprehensive task breakdowns:
 
 #### Required Sections in Each PR File
 
@@ -132,7 +160,7 @@ Each PR file (`phase_X.Y_description.md`) contains comprehensive task breakdowns
 
 2. **Detailed Task Breakdown**
    - **Granular task list** with specific implementation steps
-   - **Task IDs** for tracking (e.g., T1.1.1, T1.1.2)
+   - **Task IDs** for tracking (e.g., T1.01.01, T1.01.02)
    - **Assigned agents** for each task
    - **Time estimates** per task (in minutes)
    - **Dependencies** between tasks
@@ -160,10 +188,10 @@ Each PR file (`phase_X.Y_description.md`) contains comprehensive task breakdowns
 Example task detail level:
 
 ```text
-Task T1.2.3: Implement password hashing in User model
+Task T1.02.03: Implement password hashing in User model
 - Agent: backend-engineer
 - Time: 25-30 minutes
-- Dependencies: T1.2.1 (User schema complete)
+- Dependencies: T1.02.01 (User schema complete)
 - Details:
   * Add bcrypt dependency to package.json
   * Create pre-save hook in src/models/User.js
@@ -183,7 +211,7 @@ Phases follow a logical progression:
 
 Within each phase:
 
-- PRs are numbered sequentially (1.1, 1.2, 1.3...)
+- PRs are numbered sequentially (1.01, 1.02, 1.03...)
 - Dependencies are clearly marked
 - Parallel execution opportunities identified
 - Each PR is independently mergeable
@@ -279,18 +307,51 @@ Claude: 📋 Entering plan mode...
 - **Complexity**: Simple (~5 LOC)
 - **Files**: 1 implementation file
 
-Ready to proceed?
+Ready to proceed with file generation?
+
+[Exiting plan mode, awaiting approval...]
 
 User: yes
 
-Claude: ✅ Writing: .tmp/fix-typo-2x1/implementation.md
+Claude: ✅ Plan approved! Writing files...
+📁 Files written to: .tmp/fix-typo-2x1/implementation.md
 ```
+
+## Behavior
+
+The /plan command follows these behavioral patterns:
+
+### Planning Phase
+1. **Immediate plan mode entry**: Switches to strategic planning mode
+2. **Comprehensive analysis**: Evaluates task complexity and requirements
+3. **Agent orchestration**: Identifies optimal agent assignments
+4. **Preview generation**: Creates detailed plan preview without writing files
+5. **Approval waiting**: Pauses for explicit user confirmation
+
+### Execution Phase
+1. **File generation**: Only occurs after explicit approval
+2. **Structured output**: Writes files to `.tmp/<feature-name>/` directory
+3. **Progress reporting**: Shows exactly where files were created
+4. **Error handling**: Gracefully handles planning failures with fallbacks
+
+### Quality Assurance
+1. **TDD methodology**: Emphasizes test-driven development patterns
+2. **Phased implementation**: Breaks complex work into manageable phases
+3. **Parallel optimization**: Identifies concurrent execution opportunities
+4. **Review requirements**: Specifies required reviewers and quality gates
+
+### User Control
+1. **Preview first**: Never writes files without approval
+2. **Iterative refinement**: Supports plan modifications before generation
+3. **Cancellation support**: Allows aborting without file creation
+4. **Transparency**: Shows complete plan structure before execution
 
 ## Notes
 
-- Plan mode ensures no files are written without explicit approval
+- Plan mode ensures no files are written without explicit approval for ALL tasks (including simple ones)
 - All planning happens in memory until approval is received
 - Complex plans can involve 10+ PR files but are only written if approved
 - The preview checkpoint prevents filesystem clutter
-- Users maintain full control over the planning process
+- Users maintain full control over the planning process for both simple and complex tasks
 - Supports iterative refinement without generating unwanted files
+- **Even simple tasks require explicit approval before file generation**
