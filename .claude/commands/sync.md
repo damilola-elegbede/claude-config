@@ -1,14 +1,17 @@
 # /sync Command
 
 ## Description
+
 Repository-specific command that synchronizes Claude configuration files from this repository to your user settings. This command copies the latest CLAUDE.md and command files to your home directory, ensuring your global Claude configuration stays up-to-date with the repository version.
 
 ## Usage
-```
+
+```bash
 /sync
 ```
 
 ## Behavior
+
 When you use `/sync`, I will:
 
 1. **Validate agent YAML compliance**:
@@ -46,12 +49,14 @@ When you use `/sync`, I will:
    - Confirm actual agent files are present (excluding documentation)
 
 ## Files Synced
+
 - `CLAUDE.md` - Main configuration with coding standards
 - `.claude/commands/*.md` - All command files (except repo-specific commands below)
 - `.claude/agents/*.md` - Only actual agent configurations (excludes documentation/template files)
 - `settings.json` - Claude Code settings with audio notification hooks
 
 ## Files NOT Synced
+
 - `.claude/agents/AGENT_TEMPLATE.md` - Template file for creating new agents
 - `.claude/agents/AGENT_CATEGORIES.md` - Documentation of agent categories
 - `.claude/agents/AUDIT_VERIFICATION_PROTOCOL.md` - Audit documentation
@@ -60,6 +65,7 @@ When you use `/sync`, I will:
 - `.claude/commands/config-diff.md` - Repository-specific config comparison command
 
 ## Important Notes
+
 - **This command is specific to the claude-config repository**
 - It will NOT be copied to your global commands during sync
 - Always creates backups before overwriting existing files
@@ -71,7 +77,8 @@ When you use `/sync`, I will:
 - Ensures only actual agent files are synced (excludes documentation)
 
 ## Example Output
-```
+
+```text
 /sync
 Validating agent YAML compliance...
 ✓ All 35 agents have valid YAML front-matter
@@ -97,7 +104,9 @@ Audio notifications and specialized agents are now configured and ready to use.
 ```
 
 ## Implementation Details
+
 When implementing the sync, ensure validation passes and only actual agent files are copied:
+
 ```bash
 # First validate YAML compliance
 python3 scripts/validate-agent-yaml.py || exit 1
@@ -134,6 +143,7 @@ done
 ```
 
 ## Troubleshooting
+
 - If sync fails, check file permissions
 - If YAML validation fails, run `python3 scripts/fix-agent-descriptions.py`
 - Ensure you're in the claude-config repository

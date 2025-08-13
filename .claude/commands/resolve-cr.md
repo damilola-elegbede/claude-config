@@ -1,503 +1,328 @@
 # /resolve-cr Command
 
 ## Description
-Automatically fetches and resolves ALL CodeRabbit AI review comments from the PR associated with the current branch, specifically focusing on EVERY "Prompts for AI Agents" section that contains actionable suggestions for code improvements. The command searches PR review comments (inline code comments) NOT issue comments, and processes ALL review comments found - there are ALWAYS multiple review comments present, not just one.
+
+Automatically fetches and resolves ALL CodeRabbit AI review comments from the PR associated with the current branch. Focuses on every "Prompts for AI Agents" section containing actionable code improvement suggestions.
 
 ## Usage
-```
+
+```bash
 /resolve-cr [pr-number]
 ```
 
 ## Arguments
-- `pr-number` (optional): Specific PR number to resolve comments from. If not provided, uses the current branch's PR. Returns an error if no PR exists for the current branch.
+
+- `pr-number` (optional): Specific PR number to resolve comments from. If not provided, uses the current branch's PR.
 
 ## Behavior
-When you use `/resolve-cr`, I will:
 
-## CRITICAL SEARCH REQUIREMENTS
+When you invoke `/resolve-cr`, I will:
 
-**ABSOLUTE REQUIREMENTS - NO EXCEPTIONS:**
-- **MUST** exhaustively search for ALL @coderabbitai comments across ALL comment types
-- **NEVER** assume comments don't exist without thorough, multi-endpoint searching
-- **NEVER** assume comments are already resolved without explicit verification
-- **NEVER** stop after finding zero comments on first attempt - ALWAYS retry with different search methods
-- **MUST** check ALL comment types: review comments, inline comments, conversation comments
-- **MUST** use PARALLEL API calls for performance:
-  - `/pulls/{pr}/reviews` (review-level comments)  
-  - `/pulls/{pr}/comments` (inline review comments)
-  - `/issues/{pr}/comments` (conversation comments as backup)
-  - All three endpoints queried simultaneously, not sequentially
-- **OPTIMIZED** search using pre-compiled pattern: `(@coderabbitai|coderabbitai\[bot\]|Prompts for AI Agents)`
-- **DIRECT JSON FILTERING**: Use `--jq` for immediate filtering instead of grep post-processing
-- **GRAPHQL FALLBACK**: If REST APIs return no results, use single GraphQL query for comprehensive search
-- **BATCH PROCESSING**: Apply all file changes using MultiEdit pattern, not individual edits
-- **MANDATORY** verification: If 0 comments found, MUST attempt GraphQL query as secondary approach
-- **FORBIDDEN**: Giving up search without exhaustive verification across all endpoints
+1. **Identify repository and target PR** from current branch or provided number
+2. **Exhaustively search** for ALL CodeRabbit review comments
+3. **Extract improvement suggestions** from "Prompts for AI Agents" sections
+4. **Verify comment authenticity** with user confirmation
+5. **Deploy specialized agents** to implement fixes
+6. **Apply all changes** in organized commits
+7. **Report completion** with summary of resolutions
 
-**Agent Deployment**: Uses specialized agents for different fix types:
-- `backend-engineer`: Server-side and API fixes
-- `frontend-architect`: UI/UX and client-side fixes
-- `test-engineer`: Missing test coverage
-- `security-auditor`: Security vulnerability patches
-- `performance-specialist`: Performance optimizations
-- `tech-writer`: Documentation updates
+## Search Strategy
 
-**Workflow Steps**:
+### Repository Identification
 
-1. **Identify the PR**:
-   - Always look for the PR associated with the current branch first
-   - Or use the specified PR number if provided
-   - Verify PR exists and is accessible
+Before searching for comments, I must establish proper repository context:
 
-2. **Fetch ALL CodeRabbit REVIEW comments** (EXHAUSTIVE SEARCH - NO SHORTCUTS):
-   - **NEVER GIVE UP** - Continue searching until ALL @coderabbitai comments found
-   - Query PR **review comments** via GitHub API (NOT issue comments)  
-   - **MANDATORY API calls** (use ALL of these endpoints):
-     • `gh api repos/{owner}/{repo}/pulls/{pr}/reviews` (review-level comments)
-     • `gh api repos/{owner}/{repo}/pulls/{pr}/comments` (inline review comments) 
-     • `gh api repos/{owner}/{repo}/issues/{pr}/comments` (conversation backup)
-   - **REQUIRED search criteria:**
-     • Primary filter: exact "@coderabbitai" string match
-     • Secondary filter: "coderabbitai" without @ symbol
-     • User/author field verification for CodeRabbit bot identity
-   - **CRITICAL**: If 0 comments found, MUST retry search with different parameters
-   - **NEVER assume "already resolved"** - Always verify current comment state
-   - **MANDATORY verification**: Check multiple times with different API calls if needed
-   - Collect comments specifically from:
-     • All PR review comments (inline code comments) - PRIMARY SOURCE
-     • All review comment threads on specific lines
-     • All file-level review comments  
-     • All nested review discussion threads
-     • Conversation comments as backup verification
-   - Extract EVERY "Prompts for AI Agents" section from ALL review comments found
-   - Process ALL found prompts across ALL comment sources
-   - **ABSOLUTE REQUIREMENT**: Use language from ALL sections to guide code changes
+1. **Extract repository owner/name** from git remote or current directory
+2. **Verify repository exists** via GitHub API
+3. **Confirm PR exists** and belongs to the identified repository
+4. **Handle common issues**:
+   - Fork vs upstream repository confusion
+   - Private repository access requirements
+   - Cross-organization PR references
 
-3. **Present pre-resolution summary**:
-   - Display total count of "Prompts for AI Agents" sections found
-   - Show number of affected files
-   - Categorize findings by type:
-     • Security issues
-     • Error handling gaps
-     • Type safety problems
-     • Performance improvements
-     • Code quality issues
-     • Documentation needs
-   - List affected files with issue counts per file
-   - Show priority distribution of issues
+### Comprehensive Comment Discovery
 
-4. **Post initial resolution comment** (immediately after summary):
-   - Post "@coderabbitai resolve" comment on the PR with detailed summary:
-     • Total number of issues being addressed
-     • Breakdown by category (Security, Error Handling, Performance, etc.)
-     • List of affected files with specific changes planned
-     • Clear indication that automated resolution is in progress
-   - This notifies CodeRabbit that issues are being addressed
-   - Posted BEFORE starting actual work on the fixes
-   - Example format:
-     ```markdown
-     @coderabbitai resolve
-     
-     ## 📋 Planned Changes Summary
-     
-     **Addressing 6 CodeRabbit review comments**
-     
-     ### 📊 Issues by Category
-     - **Security**: 2 issues
-     - **Code Quality**: 2 issues
-     - **Documentation**: 2 issues
-     
-     ### 📁 Changes by File
-     #### `security-auditor.md` (1 change)
-     - Add safety guardrails for testing environments
-     
-     #### `incident-commander.md` (1 change)
-     - Add explicit blameless qualifier for incident communications
-     
-     ---
-     *🤖 Automated resolution in progress using Claude Code...*
-     ```
+I search for CodeRabbit comments using multiple methods in prioritized order:
 
-5. **Analyze ALL suggestions**:
-   - Process EVERY "Prompts for AI Agents" section found
-   - Group ALL suggestions by file (from all comments)
-   - Identify priority fixes across ALL comments (security, bugs, performance)
-   - Determine execution order for dependent changes
-   - Use exact language from ALL "Prompts for AI Agents" sections
+#### Primary Search Endpoints (Sequential Execution)
 
-6. **Execute resolutions for ALL comments**:
-   - Apply code changes from ALL "Prompts for AI Agents" sections
-   - Follow the specific instructions in EVERY prompt section found
-   - Address ALL comments, not just the first one
-   - Run relevant tests after each batch of changes
-   - Verify changes don't break existing functionality
-   - Document what was changed from each comment
+- `/pulls/{pr}/comments` - **Start here** - Inline review comments (most common location)
+- `/pulls/{pr}/reviews` - Review-level comments
+- `/issues/{pr}/comments` - Conversation comments (backup location)
 
-7. **Create final resolution summary**:
-   - List all addressed comments
-   - Show files modified
-   - Highlight any suggestions that couldn't be auto-resolved
-   - Prepare commit message summarizing fixes
+#### Search Patterns
 
-## Common Failure Modes to AVOID
+- Primary: `coderabbitai[bot]` user comments
+- Secondary: `@coderabbitai` mentions in comment body
+- Tertiary: `Prompts for AI Agents` section headers
 
-**FORBIDDEN BEHAVIORS - These are command execution FAILURES:**
+#### Comment Verification Process
 
-1. **Premature Search Termination**:
-   - ❌ Stopping after finding no comments on first API call attempt
-   - ❌ Only checking one endpoint (e.g., only `/pulls/{pr}/reviews`)
-   - ❌ Giving up search without trying all 3+ API endpoints
-   - ❌ Not retrying with different search parameters when 0 results found
+I verify found comments with the user:
 
-2. **False Resolution Assumptions**:
-   - ❌ Assuming comments are "already resolved" without explicit verification
-   - ❌ Concluding "no work needed" based on single API call result
-   - ❌ Trusting that 0 results = no CodeRabbit comments exist
-   - ❌ Not verifying comment current state before making assumptions
+1. **Display comment preview** with author, timestamp, and file location
+2. **Show "Prompts for AI Agents" sections** found in each comment
+3. **Request user confirmation** before proceeding with fixes
+4. **Allow selective processing** if user wants to skip certain comments
 
-3. **Incomplete Comment Discovery**:
-   - ❌ Only checking review comments (must also check inline and conversation)
-   - ❌ Only searching for "@coderabbitai" pattern (must also try "coderabbitai")
-   - ❌ Not checking comment author/user fields for CodeRabbit bot identity
-   - ❌ Missing nested or threaded review comments
+#### Search Troubleshooting
 
-4. **Search Pattern Failures**:
-   - ❌ Using only one search pattern instead of multiple required patterns
-   - ❌ Not performing case-sensitive AND case-insensitive searches
-   - ❌ Failing to check comment metadata (author, app_id, etc.)
-   - ❌ Not examining comment body content thoroughly for CodeRabbit signatures
+Common issues and solutions:
 
-**CORRECT BEHAVIOR**: If 0 comments found initially, MUST attempt additional searches using different endpoints, search patterns, and verification methods before concluding no comments exist.
+- **Empty results**: Check different endpoints, verify repository access
+- **JSON parsing errors**: Handle Unicode control characters with error recovery
+- **Rate limits**: Use exponential backoff with retry-after headers
+- **Pagination**: Always check for `next` links and process all pages
+- **Authentication**: Ensure GitHub token has proper repository access
 
-## Pre-Resolution Summary Format
+### Comment Types Processed
 
-When the command runs, you'll first see this analysis summary displayed in the Claude chat window:
+I process ALL comment types:
 
+- **Inline code comments** on specific lines
+- **File-level comments** on entire files
+- **Review summary comments** at PR level
+- **Discussion thread comments** in conversations
+- **Nested reply comments** in threads
+
+## Resolution Process
+
+### Phase 1: Discovery and Analysis
+
+I gather all CodeRabbit feedback:
+
+1. **Fetch all comments** from all sources
+2. **Extract actionable items** from "Prompts for AI Agents" sections
+3. **Categorize by type**:
+   - Security vulnerabilities
+   - Performance optimizations
+   - Code quality improvements
+   - Missing tests
+   - Documentation needs
+   - Bug fixes
+   - Style/formatting issues
+
+### Phase 2: Agent Deployment
+
+I deploy appropriate specialists based on issue type:
+
+| Issue Type | Primary Agent | Supporting Agents |
+|------------|---------------|-------------------|
+| Security vulnerabilities | security-auditor | backend-engineer |
+| Performance issues | performance-specialist | monitoring-specialist |
+| Missing tests | test-engineer | code-reviewer |
+| Code quality | code-reviewer | backend-engineer |
+| Documentation | tech-writer | - |
+| UI/UX issues | frontend-architect | ui-designer |
+| API problems | api-architect | backend-engineer |
+| Type errors | backend-engineer | - |
+
+### Phase 3: Implementation
+
+I apply fixes systematically:
+
+1. **Group related changes** by file and type
+2. **Apply fixes in logical order**:
+   - Security fixes first
+   - Breaking changes next
+   - Quality improvements
+   - Documentation updates last
+3. **Use batch operations** for efficiency:
+   - MultiEdit for multiple changes in same file
+   - Parallel processing for independent files
+4. **Validate each change**:
+   - Ensure tests still pass
+   - Verify no new issues introduced
+
+### Phase 4: Commit Organization
+
+I create organized commits:
+
+```text
+fix: address CodeRabbit security findings
+- Fix SQL injection vulnerability in user query
+- Add input validation for API endpoints
+- Escape HTML in template rendering
+
+refactor: improve code quality per CodeRabbit review
+- Extract complex logic into separate functions
+- Add type hints to all public methods
+- Reduce cyclomatic complexity in auth module
+
+test: add missing test coverage identified by CodeRabbit
+- Add unit tests for error handling paths
+- Add integration tests for new endpoints
+- Increase coverage to meet 80% threshold
+
+docs: update documentation per CodeRabbit suggestions
+- Add API endpoint documentation
+- Update README with new features
+- Add inline comments for complex logic
 ```
-🔍 CodeRabbit PR Analysis Summary
-────────────────────────────────────────────────────────────
-
-PR Analysis Complete
-
-📊 Total "Prompts for AI Agents" sections found: 12
-📁 Files affected: 5
-
-📝 Issue Categories:
-• Security issues: 2
-• Error handling gaps: 4  
-• Type safety problems: 3
-• Performance improvements: 2
-• Code quality issues: 1
-• Documentation needs: 0
-
-📂 Affected Files:
-• src/api/user.ts (3 issues)
-• src/services/auth.js (2 issues)
-• lib/database.ts (4 issues)
-• components/Dashboard.tsx (2 issues)
-• utils/helpers.js (1 issue)
-
-🎯 Priority Distribution:
-• High (Security/Bugs): 6 issues
-• Medium (Type safety/Performance): 5 issues
-• Low (Code quality): 1 issue
-
-────────────────────────────────────────────────────────────
-Proceeding with automated resolution...
-────────────────────────────────────────────────────────────
-```
-
-## CodeRabbit Review Comment Structure
-
-Typically parses review comments containing:
-- **Summary**: Overview of issues found in specific code sections
-- **Prompts for AI Agents**: Specific actionable fixes (found in review comments)
-- **Code suggestions**: Inline diff proposals on specific lines
-- **Security concerns**: Vulnerability fixes in reviewed code
-- **Performance improvements**: Optimization suggestions for specific functions
 
 ## Resolution Categories
 
-### Auto-resolvable
-- Missing error handling
-- Type safety issues
-- Null/undefined checks
-- Simple refactoring
-- Import optimizations
-- Dead code removal
-- Documentation additions
+### Security Fixes
 
-### Requires Review
-- Architectural changes
-- Breaking API changes
-- Complex refactoring
-- Security-critical modifications
-- Performance trade-offs
+- Input validation
+- SQL injection prevention
+- XSS protection
+- Authentication improvements
+- Authorization checks
+- Sensitive data handling
 
-## Prerequisites
+### Performance Optimizations
 
-- GitHub CLI (`gh`) installed and authenticated
-- Git repository with GitHub remote
-- Valid PR associated with current branch (or specified PR number)
-- Read/write access to the repository
+- Query optimization
+- Caching implementation
+- Algorithm improvements
+- Memory leak fixes
+- Lazy loading
+- Bundle size reduction
 
-## Examples
+### Code Quality
 
-```bash
-/resolve-cr
-# Fetches PR for current branch and resolves CodeRabbit suggestions
+- Reduce complexity
+- Extract methods
+- Remove duplication
+- Fix type issues
+- Improve naming
+- Add error handling
 
-/resolve-cr 123
-# Fetches PR #123 and applies fixes to current branch
+### Test Coverage
+
+- Add unit tests
+- Add integration tests
+- Test edge cases
+- Test error paths
+- Add test documentation
+
+### Documentation
+
+- Add missing JSDoc/docstrings
+- Update README
+- Add inline comments
+- Document APIs
+- Add examples
+
+## Output Format
+
+After resolution, I provide:
+
+```text
+## CodeRabbit Resolution Summary
+
+### Comments Processed
+- Total comments found: 15
+- Actionable items: 12
+- Successfully resolved: 11
+- Manual intervention needed: 1
+
+### Changes Applied
+#### Security (3 fixes)
+✅ Fixed SQL injection in user.js
+✅ Added input validation to api.js
+✅ Escaped HTML in template.jsx
+
+#### Performance (2 optimizations)
+✅ Optimized database query in posts.js
+✅ Added caching to expensive computation
+
+#### Code Quality (4 improvements)
+✅ Extracted complex logic in auth.js
+✅ Reduced cyclomatic complexity
+✅ Added type hints to utils.ts
+✅ Removed code duplication
+
+#### Tests (2 additions)
+✅ Added unit tests for error cases
+✅ Added integration test suite
+
+### Manual Action Required
+⚠️ Architecture change suggested in payment.js
+   Requires team discussion before implementation
+
+### Commits Created
+- fix: address CodeRabbit security findings
+- refactor: improve code quality per review
+- test: add missing coverage per CodeRabbit
 ```
 
-## Smart Resolution Features
+## Troubleshooting Guide
 
-### Priority Ordering
-1. Security vulnerabilities
-2. Bug fixes
-3. Type safety issues
-4. Performance improvements
-5. Code style/quality
-6. Documentation
+### Critical Error Resolution
 
-### Batch Processing
-- Collects ALL comments before starting any work
-- Groups ALL changes from ALL comments by file
-- Applies changes from ALL comments to each file
-- Runs file-specific tests after processing ALL comments for that file
-- Commits ALL changes from ALL comments in logical chunks
+| Issue | Root Cause | Solution |
+|-------|------------|----------|
+| **404 Not Found** | Wrong repository identified | Verify git remote, check repository access, confirm PR number |
+| **Empty comment results** | Searching wrong endpoint | Try `/pulls/{pr}/comments` first, then `/pulls/{pr}/reviews` |
+| **JSON parsing failure** | Unicode control characters | Use error recovery, strip invalid characters, request raw content |
+| **Rate limit exceeded** | Too many API calls | Implement exponential backoff, use authenticated requests |
+| **No "Prompts for AI Agents"** | CodeRabbit didn't generate suggestions | Verify CodeRabbit ran, check if PR has code changes |
 
-### Safety Checks
-- Creates backup branch before changes
-- Runs tests after each file modification
-- Reverts changes if tests fail
-- Flags manual review needed items
+### Verification Steps
 
-## Integration Workflow
+Before processing comments:
 
-### Relationship to Other Commands
+1. **Confirm repository context**: Display "owner/repo" for user verification
+2. **Show PR details**: Title, number, status, and branch information
+3. **Preview found comments**: Author, timestamp, file location, and content snippet
+4. **Validate suggestions**: Ensure "Prompts for AI Agents" sections contain actionable items
 
-**With `/review` command**:
-- `/review` performs general code review on local changes
-- `/resolve-cr` specifically addresses CodeRabbit PR comments
-- Can use both: `/review` for pre-PR check, `/resolve-cr` for post-PR fixes
+### Recovery Procedures
 
-**With `/commit` command**:
-- `/commit` includes automated review and remediation for local changes
-- `/resolve-cr` focuses on external CodeRabbit feedback from PRs
-- Use `/resolve-cr` → `/test` → `/commit` workflow for PR fixes
+When searches fail:
 
-### Typical usage
-```bash
-# After CodeRabbit reviews your PR
-/resolve-cr              # Finds PR comments, posts @coderabbitai resolve, then auto-fixes suggestions
-/test                    # Verify fixes work
-/commit                  # Commit the fixes
-/push                    # Update PR
-```
+1. **Try alternative endpoints** in sequence
+2. **Check authentication** and repository access
+3. **Verify PR exists** and is accessible
+4. **Request manual comment URL** as fallback
+5. **Offer to process specific files** if bulk search fails
 
-## Comment Parsing
+## Best Practices
 
-Recognizes CodeRabbit patterns:
-- "**Prompts for AI Agents:**" (may be nested within review comments)
-- "Consider adding error handling..."
-- "Missing null check for..."
-- "Potential security issue..."
-- "Performance could be improved by..."
-- Inline code suggestions with diffs
+### Pre-Execution Checklist
 
-**Note:** CodeRabbit embeds "Prompts for AI Agents" sections within PR review comments (inline code review comments) rather than issue/conversation comments. The command specifically searches review comments using the GitHub review API endpoints.
+1. **Verify repository context** before starting search
+2. **Run tests first** to ensure clean baseline
+3. **Check git status** for uncommitted changes
+4. **Confirm PR is current** and contains recent CodeRabbit reviews
 
-## Commit Message Format
+### During Execution
 
-Auto-generated commits follow:
-```
-fix: address CodeRabbit review comments
+1. **Always show found comments** for user verification
+2. **Process comments in priority order** (security first)
+3. **Group related fixes** in logical commits
+4. **Validate each change** against original suggestion
 
-- Add error handling to API calls
-- Fix potential null reference in user service
-- Improve type safety in data models
-- Optimize database queries
+### Post-Execution
 
-Resolves CodeRabbit suggestions from PR #123
-```
+1. **Review applied changes** before committing
+2. **Run tests after each commit** to catch regressions
+3. **Document resolution reasoning** in commit messages
+4. **Check CI status** after pushing changes
+5. **Verify CodeRabbit marks items as resolved** (if applicable)
 
-## Configuration
+## Important Notes
 
-Respects settings for:
-- Auto-commit after resolution
-- Test running preferences
-- Batch size for changes
-- Manual review triggers
-- Excluded file patterns
+### Critical Success Factors
 
-## Future Enhancements
+- **Repository identification is essential** - 404 errors are usually caused by wrong repository context
+- **Start with `/pulls/{pr}/comments` endpoint** - this contains most CodeRabbit inline comments
+- **Always verify comments with user** - prevents processing wrong or outdated suggestions
+- **Handle JSON parsing gracefully** - Unicode control characters can break parsing
 
-Planned features (not yet implemented):
-- Selective resolution by category
-- Dry run mode for preview
-- Interactive mode for manual approval
-- File-specific resolution
+### Processing Guidelines
 
-## Error Handling
+- The command processes ALL comments found, not just unresolved ones
+- Some suggestions may require human judgment and are flagged for manual review
+- Complex architectural changes are identified but not automatically applied
+- The command respects existing code style and conventions
+- User confirmation is required before applying any changes
 
-**MANDATORY ERROR HANDLING - Required Retry Logic:**
+### Fallback Strategies
 
-### No Comments Found (0 Results)
-**REQUIRED ACTIONS** when initial search returns 0 comments:
-1. **MUST retry** with different API endpoint (`/pulls/{pr}/comments` if started with `/pulls/{pr}/reviews`)
-2. **MUST attempt** backup conversation search (`/issues/{pr}/comments`) 
-3. **MUST try** alternative search patterns ("coderabbitai" without @)
-4. **MUST verify** comment author fields for CodeRabbit bot identity
-5. **MUST check** if PR has been updated/merged since last CodeRabbit review
-6. **Only after 3+ search attempts** can conclude no comments exist
-
-### "Already Resolved" Assumptions  
-**FORBIDDEN**: Assuming comments resolved without verification
-**REQUIRED**: 
-- Verify current comment state via API calls
-- Check if comments have been marked as resolved/outdated
-- Confirm no new CodeRabbit comments since last resolution
-- Re-verify comment content and current applicability
-
-### Standard Error Scenarios:
-- Early termination after first comment (prevented - must process ALL)
-- PR not accessible  
-- Merge conflicts during resolution
-- Test failures after changes
-- Unparseable suggestions
-
-### Retry Strategy Requirements:
-- **Search Failures**: Minimum 3 different API endpoint attempts
-- **Parse Failures**: Try alternative comment parsing methods  
-- **API Failures**: Exponential backoff with 3 retry attempts
-- **Authentication Failures**: Verify GitHub CLI auth status and retry
-
-## Explicit Search Pattern Requirements
-
-**MANDATORY SEARCH PATTERNS** (MUST attempt ALL patterns):
-
-### Primary Patterns (REQUIRED)
-1. **Exact String Match**: `"@coderabbitai"` (case-sensitive)
-2. **Without @ Symbol**: `"coderabbitai"` (case-sensitive)  
-3. **Case-Insensitive Variants**: 
-   - `"@CodeRabbitAI"` 
-   - `"CodeRabbitAI"`
-   - `"@CODERABBITAI"`
-
-### Metadata Verification (REQUIRED)
-1. **Comment Author Check**: 
-   - `comment.user.login === "coderabbitai"`
-   - `comment.user.type === "Bot"`
-2. **App/Bot ID Verification**:
-   - Check for CodeRabbit app_id in comment metadata
-   - Verify GitHub App association with CodeRabbit
-3. **Comment Source Verification**:
-   - Ensure comment originates from CodeRabbit GitHub App
-   - Validate comment structure matches CodeRabbit patterns
-
-### Content Pattern Matching (REQUIRED)
-1. **Signature Patterns**:
-   - `"Prompts for AI Agents:"` (exact match)
-   - `"**Prompts for AI Agents:**"` (markdown bold)
-   - CodeRabbit-specific comment formatting
-2. **Content Structure Verification**:
-   - Look for CodeRabbit review summaries
-   - Identify structured suggestion formats
-   - Parse "Consider adding..." patterns
-
-**EXECUTION REQUIREMENT**: MUST attempt ALL patterns above before concluding no CodeRabbit comments exist.
-
-## Optimized Implementation
-
-### Performance Enhancements
-The command uses several optimization strategies for 3x faster execution:
-
-#### 1. Parallel API Calls
-```bash
-# All three endpoints queried simultaneously
-gh api /pulls/{pr}/reviews &
-gh api /pulls/{pr}/comments &
-gh api /issues/{pr}/comments &
-wait
-```
-
-#### 2. Direct JSON Filtering
-```bash
-# Immediate filtering with jq instead of post-processing
-gh api ... --jq '.[] | select(.user.login == "coderabbitai[bot]")'
-```
-
-#### 3. Pre-compiled Search Pattern
-```bash
-# Single regex for all CodeRabbit signatures
-PATTERN='(@coderabbitai|coderabbitai\[bot\]|Prompts for AI Agents)'
-```
-
-#### 4. GraphQL Fallback
-```graphql
-# Single query for comprehensive search if REST fails
-query {
-  repository(owner, name) {
-    pullRequest(number) {
-      reviews { nodes { body author { login } } }
-      reviewThreads { nodes { comments { nodes { body path line } } } }
-    }
-  }
-}
-```
-
-#### 5. Batch File Updates
-```python
-# Apply all changes in one operation
-MultiEdit(files=[
-  (file1, edits1),
-  (file2, edits2),
-  ...
-])
-```
-
-### Implementation Script
-Optimized implementation available at: `scripts/resolve-cr-optimized.sh`
-
-## Notes
-
-### CRITICAL EXECUTION REQUIREMENTS
-- **ABSOLUTE**: Must process ALL review comments - early termination is COMMAND FAILURE
-- **MANDATORY**: Exhaustive search across ALL GitHub API endpoints before concluding no comments exist
-- **REQUIRED**: NEVER assume comments are "already resolved" without explicit verification
-- **FORBIDDEN**: Stopping search after finding 0 results on first attempt
-
-### SEARCH AND DISCOVERY REQUIREMENTS  
-- **PRIMARY FOCUS**: PR REVIEW comments (inline code comments) via `/pulls/{pr}/reviews` and `/pulls/{pr}/comments`
-- **BACKUP VERIFICATION**: Conversation comments via `/issues/{pr}/comments` as secondary check
-- **SEARCH PATTERNS**: Must attempt ALL required patterns (@coderabbitai, coderabbitai, case variants)
-- **METADATA VERIFICATION**: Must verify CodeRabbit bot identity via user.login, user.type, and app_id
-- **RETRY LOGIC**: Minimum 3 different API endpoint attempts before concluding no comments exist
-
-### COMMENT PROCESSING REQUIREMENTS
-- **MULTIPLE COMMENTS**: ALWAYS multiple CodeRabbit review comments present - continue searching until ALL found
-- **AUTHENTICATION**: Verifies CodeRabbit bot user or app ID before processing comments (prevents spoofed submissions)  
-- **AUTHORIZED SOURCE**: Only resolves comments from authenticated CodeRabbit bot user (@coderabbitai)
-- **CONTENT FOCUS**: EXCLUSIVELY processes "Prompts for AI Agents" sections - uses exact language from ALL sections
-- **COMPREHENSIVE COVERAGE**: Exhaustively searches ALL review comment threads until every comment is found
-
-### EXECUTION FLOW REQUIREMENTS
-- **PRE-WORK SUMMARY**: Provides comprehensive summary of ALL comments found
-- **NOTIFICATION**: Posts "@coderabbitai resolve" BEFORE making any changes  
-- **LANGUAGE FIDELITY**: Uses specific language from ALL "Prompts for AI Agents" sections to guide modifications
-- **NO SHORTCUTS**: Processes EVERY review comment found - partial processing is execution failure
-
-### OPERATIONAL CHARACTERISTICS
-- **ATOMICITY**: Creates atomic commits for traceability
-- **PRESERVATION**: Preserves code style and formatting
-- **IDEMPOTENCY**: Can be re-run safely (idempotent)
-- **INTEGRATION**: Integrates with `/test` and `/commit` commands
-- **PLATFORM**: Supports GitHub PRs via GitHub CLI
-
-### FAILURE PREVENTION
-- **NEVER**: Give up search without exhaustive verification across all endpoints
-- **NEVER**: Assume resolution status without current state verification  
-- **NEVER**: Process only first comment found (must find and process ALL)
-- **ALWAYS**: Attempt multiple search patterns and API endpoints before concluding no comments exist
+- If automated search fails, request direct comment URLs from user
+- If repository access fails, verify authentication and permissions
+- If no "Prompts for AI Agents" found, check if CodeRabbit ran successfully
+- If JSON parsing fails, request raw comment content and process manually

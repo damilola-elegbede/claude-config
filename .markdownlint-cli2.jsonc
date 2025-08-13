@@ -5,12 +5,14 @@
     "default": true,
     // MD009: Trailing spaces (sometimes needed for formatting)
     "MD009": false,
-    // MD013: Line length (our commands have long descriptions)
+    // MD013: Line length (disabled - too restrictive for documentation)
     "MD013": false,
     // MD022: Headings should be surrounded by blank lines
     "MD022": false,
     // MD023: Headings must start at beginning of line
     "MD023": false,
+    // MD024: No duplicate headings - each heading should be unique
+    "MD024": false,
     // MD026: Trailing punctuation in heading (we use colons)
     "MD026": false,
     // MD031: Fenced code blocks should be surrounded by blank lines
@@ -21,6 +23,8 @@
     "MD033": false,
     // MD040: Fenced code blocks should have language specified
     "MD040": false,
+    // MD058: Tables should be surrounded by blank lines 
+    "MD058": false,
     // MD041: First line in file should be a top level heading
     "MD041": false,
     // MD047: Files should end with single newline

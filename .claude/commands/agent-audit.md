@@ -2,45 +2,53 @@
 
 ## Description
 
-Comprehensive validation of agent ecosystem to ensure category integrity, template compliance, and system consistency. **This command generates a REPORT ONLY - it provides recommendations but does not make changes automatically (except for safe formatting fixes).**
+Comprehensive validation of agent ecosystem to ensure category integrity, template compliance, and system consistency. **This command generates a REPORT ONLY - it provides recommendations and optional patch snippets; it does not make any changes automatically.**
 
 ## Usage
-```
+
+```bash
 /agent-audit
 ```
 
 ## Behavior
+
 This command performs thorough validation of all agents across multiple dimensions, executed in parallel by category for maximum efficiency.
 
 ## Purpose
+
 Ensure agent ecosystem maintains high standards of consistency, proper categorization, and adherence to system design principles.
 
 ## Validation Scope
 
 ### 1. Category Validation
+
 - **Maximum Categories**: Ensure ≤ 8 categories exist
 - **Category Assignment**: Verify each agent is in the correct category based on its role
 - **Color Consistency**: Validate color assignments match category standards
 - **Category Balance**: Report on distribution (not enforced, informational only)
 
 ### 2. Template Compliance
+
 - **AGENT_TEMPLATE.md Format**: All agents must follow the standard template
 - **Required Sections**: Verify presence of all mandatory sections
 - **YAML Frontmatter**: Validate structure and field completeness
 - **System Boundary**: Ensure anti-pattern warning is present
 
 ### 3. Tool Assignment Validation
+
 - **Tool Appropriateness**: Verify tools match agent responsibilities
 - **No Task Tool**: Ensure no agent has access to Task tool (Claude exclusive)
 - **Tool Categories**: Validate read-only vs write vs execute permissions
 
 ### 4. Anti-Pattern Enforcement
+
 - **No Orchestration**: Agents must not attempt to coordinate other agents
 - **No Self-Reference**: Agents cannot reference themselves
 - **No Task Tool Usage**: Task tool is reserved exclusively for Claude
 - **Clear Boundaries**: Agents stay within their domain expertise
 
 ### 5. Description Quality
+
 - **Actionable Triggers**: Descriptions must include "MUST BE USED" scenarios
 - **Proactive Triggers**: Include "use PROACTIVELY" for agents that should be used without explicit request
 - **Clear Scope**: Well-defined boundaries of responsibility
@@ -48,11 +56,13 @@ Ensure agent ecosystem maintains high standards of consistency, proper categoriz
 - **Updated Descriptions**: Derive from agent's actual capabilities if needed
 
 ### 6. Tier Validation
+
 - **Tier 1 Only**: All agents must be tier 1 (no tier 2 agents allowed)
 - **Model Assignment**: Verify appropriate model selection
 - **Performance Optimization**: Ensure efficient agent deployment
 
 ### 7. Model Appropriateness Analysis
+
 - **Strategic Tasks → Opus**: Complex reasoning, cross-domain expertise, high-stakes decisions
 - **Technical Tasks → Sonnet**: Implementation, analysis, specialized domain work
 - **Rule-Based Tasks → Haiku**: Pattern matching, compliance checking, structured validation
@@ -63,6 +73,7 @@ Ensure agent ecosystem maintains high standards of consistency, proper categoriz
 ## Execution Strategy
 
 ### Phase 1: Parallel Category Audits
+
 Execute validation for each category simultaneously:
 
 ```yaml
@@ -86,12 +97,14 @@ parallel_execution:
 ```
 
 ### Phase 2: Cross-Category Analysis
+
 - Category count validation
 - Color assignment consistency
 - Coverage gap identification
 - Redundancy detection
 
 ### Phase 3: Remediation
+
 - Auto-fix where possible (formatting, tier updates)
 - Generate specific fix commands for manual issues
 - Update descriptions based on capabilities
@@ -101,7 +114,8 @@ parallel_execution:
 ## Report Structure
 
 ### Executive Summary
-```
+
+```text
 Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 ```
 
@@ -115,6 +129,7 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 | security | X | XX% | red | X |
 
 ### Critical Issues
+
 1. **Task Tool Violations**: [List any agents with Task tool access]
 2. **Orchestration Attempts**: [Agents trying to coordinate others]
 3. **Missing Templates**: [Non-compliant agent formats]
@@ -128,15 +143,18 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 | agent-name | haiku | sonnet | Complex analysis requires more capability | +20% |
 
 **Model Distribution**:
+
 - Opus: X agents (Y% - Target: 15-20%)
 - Sonnet: X agents (Y% - Target: 60-70%)  
 - Haiku: X agents (Y% - Target: 15-20%)
 
 **Optimization Opportunities**:
+
 - Over-provisioned agents: X (potential savings: $Y/month)
 - Under-provisioned agents: X (recommended upgrades)
 
 ### Auto-Remediation Log
+
 ```bash
 # Fixes applied automatically:
 - Updated agent-name: Set tier to 1
@@ -145,6 +163,7 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 ```
 
 ### Manual Remediation Required
+
 ```bash
 # Execute these commands to fix remaining issues:
 sed -i '' 's/category: wrong/category: correct/' agent.md

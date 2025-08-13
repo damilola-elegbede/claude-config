@@ -38,6 +38,7 @@ This isn't just another AI tool—it's a complete paradigm shift in how complex 
 ## 🚀 Quick Start
 
 ### 1. Install Claude Code CLI
+
 ```bash
 # Install via npm
 npm install -g @anthropic/claude-code
@@ -47,6 +48,7 @@ brew install claude-code
 ```
 
 ### 2. Clone and Setup Configuration
+
 ```bash
 # Clone the repository
 git clone https://github.com/damilola/claude-config.git
@@ -62,6 +64,7 @@ cp -r .claude ~/.claude
 ```
 
 ### 3. Try Core Commands
+
 ```bash
 # Get repository overview
 /context
@@ -79,29 +82,36 @@ cp -r .claude ~/.claude
 ## ✨ Features
 
 ### 🎼 Multi-Agent Orchestration
+
 - **Parallel Execution by Default**: Launch multiple specialists simultaneously
 - **Multi-Instance Support**: Run multiple copies of the same agent type
 - **Smart Task Decomposition**: Break complex requests into specialized workstreams
 - **Dynamic Agent Selection**: Match work to specialist capabilities automatically
 
 ### 🛠️ Core Commands (14 Essential Tools)
-- **`/test`** ⭐⭐⭐⭐⭐ - Auto-discovers and runs tests, creates starter tests if none exist
-- **`/context`** ⭐⭐⭐⭐⭐ - Repository analysis with parallel agents, auto-runs on startup
-- **`/review`** ⭐⭐⭐⭐ - Comprehensive code review with quality gates
-- **`/plan`** ⭐⭐⭐⭐ - Strategic + tactical planning with TDD, prevents massive PRs
-- **`/debug`** ⭐⭐⭐ - Systematic debugging for complex issues
-- **`/deps`** ⭐⭐⭐ - Security-focused dependency management
-- **`/fix-ci`** ⭐⭐⭐ - Auto-fixes CI failures, gets PRs green
-- **`/agent-audit`** ⭐⭐⭐ - Validates agent configurations
 
-- **`/resolve-cr`** ⭐⭐⭐ - Addresses code review comments
-- **`/pr`** ⭐⭐⭐ - Creates pull requests with proper formatting
-- **`/commit`** ⭐⭐⭐ - Git commit with conventional format
-- **`/push`** ⭐⭐⭐ - Safe git push with checks
-- **`/branch`** ⭐⭐⭐ - Creates semantic branches
-- **`/sync`** ⭐⭐⭐ - Syncs Claude config files
+#### ⭐⭐⭐⭐⭐ Five-Star Commands (10)
+
+- **`/test`** - Auto-discovers and runs tests, creates starter tests if none exist
+- **`/context`** - Repository analysis with parallel agents, auto-runs on startup
+- **`/plan`** - Strategic planning with preview mode, TDD methodology, prevents file spam
+- **`/agent-audit`** - Comprehensive agent validation with parallel execution
+- **`/resolve-cr`** - Exhaustive CodeRabbit comment resolution with multi-agent deployment
+- **`/debug`** - Systematic investigation for complex bugs, race conditions, memory leaks
+- **`/pr`** - Intelligent PR creation with comprehensive descriptions and smart reviewer assignment
+- **`/review`** - Multi-dimensional code analysis with security, performance, and quality checks
+- **`/deps`** - Security-focused dependency management across all package managers
+- **`/fix-ci`** - Pattern recognition and auto-fix for CI failures
+
+#### ⭐⭐⭐⭐ Four-Star Commands (4)
+
+- **`/commit`** - Smart commits with quality gates and auto-remediation
+- **`/push`** - Safe push with comprehensive quality checks
+- **`/branch`** - Intelligent branch naming from context
+- **`/sync`** - Repository-specific configuration synchronization
 
 ### 🔊 Audio Notifications
+
 - Task completion sounds (Swish.m4r)
 - Stop event notifications (Chord.m4r)
 - Permission request alerts (Aurora.m4r)
@@ -109,9 +119,18 @@ cp -r .claude ~/.claude
 
 ## 📋 Commands
 
+### Command Quality Summary
+
+- **Total Commands**: 14 essential commands (reduced from 40+)
+- **5-Star Commands**: 10 (71%) - Excellent behavioral instructions, comprehensive functionality
+- **4-Star Commands**: 4 (29%) - Good quality with minor improvement opportunities
+- **Average Rating**: 4.7/5.0
+- **Design Philosophy**: Commands solve real problems beyond simple agent delegation
+
 ### Core Development Commands
 
 #### `/test` - Intelligent Test Execution
+
 ```bash
 /test
 # Automatically discovers and runs tests
@@ -120,6 +139,7 @@ cp -r .claude ~/.claude
 ```
 
 #### `/context` - Repository Analysis
+
 ```bash
 /context
 # Runs multiple codebase-analyst agents in parallel
@@ -128,6 +148,7 @@ cp -r .claude ~/.claude
 ```
 
 #### `/review` - Code Quality Review
+
 ```bash
 /review [file|directory]
 # Runs code-reviewer + security-auditor + test-engineer
@@ -136,6 +157,7 @@ cp -r .claude ~/.claude
 ```
 
 #### `/debug` - Systematic Debugging
+
 ```bash
 /debug "app crashes when user logs out"
 # Gathers evidence from logs and traces
@@ -146,6 +168,7 @@ cp -r .claude ~/.claude
 ### Planning & Orchestration
 
 #### `/plan` - Strategic & Tactical Planning
+
 ```bash
 /plan "Add user authentication"
 # Creates strategic requirements document
@@ -155,6 +178,7 @@ cp -r .claude ~/.claude
 ```
 
 #### `/fix-ci` - Auto-Fix CI Failures
+
 ```bash
 /fix-ci [pr_number]
 # Analyzes CI failure logs
@@ -166,6 +190,7 @@ cp -r .claude ~/.claude
 ### Quality & Security
 
 #### `/deps` - Security-Focused Dependency Management
+
 ```bash
 /deps audit    # Find and fix vulnerabilities
 /deps update   # Safe updates with testing
@@ -174,6 +199,7 @@ cp -r .claude ~/.claude
 ```
 
 #### `/agent-audit` - Agent Ecosystem Validation
+
 ```bash
 /agent-audit
 # Validates all 41 agent configurations
@@ -182,6 +208,7 @@ cp -r .claude ~/.claude
 ```
 
 #### `/resolve-cr` - CodeRabbit Review Resolution
+
 ```bash
 /resolve-cr [pr-number]
 # Automatically fetches and resolves CodeRabbit PR comments
@@ -195,6 +222,7 @@ Note: Previously named `/resolve-rabbit`.
 ### Git Operations
 
 #### `/commit` - Smart Git Commits
+
 ```bash
 /commit
 # Analyzes changes comprehensively
@@ -203,6 +231,7 @@ Note: Previously named `/resolve-rabbit`.
 ```
 
 #### `/push` - Safe Push to Remote
+
 ```bash
 /push
 # Safety checks for branch status
@@ -230,6 +259,7 @@ The system includes **41 specialized agents** organized across 8 functional doma
 ### 🚀 Parallel Execution Examples
 
 #### Multi-Platform Development
+
 ```yaml
 Project: Mobile App with Backend
 Parallel Execution:
@@ -242,6 +272,7 @@ Parallel Execution:
 ```
 
 #### Cloud Infrastructure Deployment
+
 ```yaml
 Project: Kubernetes-based Microservices Platform
 Parallel Execution:
@@ -253,6 +284,7 @@ Parallel Execution:
 ```
 
 #### Comprehensive Code Audit
+
 ```yaml
 Project: Security and Quality Review
 Parallel Execution:
@@ -264,6 +296,7 @@ Parallel Execution:
 ```
 
 #### Agent Ecosystem Health Check
+
 ```yaml
 Project: Full Agent Audit
 Parallel Execution (8 instances):
@@ -280,6 +313,7 @@ Parallel Execution (8 instances):
 ### 🎯 Complete Agent Roster
 
 #### Development Specialists (6 agents)
+
 - **backend-engineer**: Server-side systems, APIs, microservices, databases, distributed architectures
 - **frontend-engineer**: React/Vue/Angular apps, state management, frontend optimization
 - **mobile-engineer**: iOS/Android native, React Native, Flutter development
@@ -288,6 +322,7 @@ Parallel Execution (8 instances):
 - **integration-specialist**: Third-party APIs, webhooks, OAuth, external service connections
 
 #### Infrastructure & Platform (8 agents)
+
 - **platform-engineer**: Platform architecture, developer experience, internal tooling
 - **kubernetes-admin**: K8s cluster management, workload orchestration, container operations
 - **monitoring-specialist**: Observability infrastructure, metrics, logging, alerting strategies
@@ -298,16 +333,19 @@ Parallel Execution (8 instances):
 - **database-admin**: Database optimization, security hardening, performance tuning
 
 #### Architecture & Planning (2 agents)
+
 - **principal-architect**: System-wide architecture, technical roadmaps, cross-team coordination
 - **api-architect**: API design, OpenAPI specs, governance policies, GraphQL federation
 
 #### Design & User Experience (4 agents)
+
 - **design-system**: Component libraries, design tokens, visual consistency
 - **ux-researcher**: User research, usability testing, data-driven design decisions
 - **ui-designer**: UI/UX design, visual hierarchy, accessibility compliance
 - **mobile-ui**: iOS/Android specific patterns, gestures, platform adaptations
 
 #### Quality & Testing (6 agents)
+
 - **test-engineer**: Test strategy, implementation, execution, CI/CD automation
 - **code-reviewer**: Quality review, security checks, best practices validation
 - **performance-engineer**: Performance profiling, load testing, bottleneck analysis
@@ -316,10 +354,12 @@ Parallel Execution (8 instances):
 - **agent-auditor**: Agent file auditing, compliance validation, quality standards
 
 #### Security & Compliance (2 agents)
+
 - **security-auditor**: Security audits, vulnerability assessment, OWASP compliance
 - **security-tester**: Penetration testing, SAST/DAST implementation, API security
 
 #### Analysis & Documentation (8 agents)
+
 - **performance-analyst**: System metrics analysis, bottleneck identification, optimization
 - **data-scientist**: Statistical analysis, A/B testing, ML model evaluation
 - **codebase-analyst**: Architecture analysis, technical debt assessment, risk identification
@@ -330,6 +370,7 @@ Parallel Execution (8 instances):
 - **api-documenter**: API documentation generation, OpenAPI specs, developer guides
 
 #### Operations & Support (11 agents)
+
 - **debugger**: Complex bug investigation, race conditions, systematic root cause analysis
 - **file-navigator**: Intelligent file system exploration with context-aware patterns
 - **incident-commander**: Production incidents, outages, crisis management
@@ -345,6 +386,7 @@ Parallel Execution (8 instances):
 ## 🆕 Recent Updates
 
 ### Enhanced Command System (Latest)
+
 - **Streamlined Commands**: Reduced from 40 to 14 essential commands
 - **TDD Planning**: `/plan` now generates test-driven development phases
 - **CI/CD Integration**: `/fix-ci` automatically resolves build failures
@@ -354,6 +396,7 @@ Parallel Execution (8 instances):
 - **Automatic Termination**: Any attempt at agent self-invocation triggers immediate termination
 
 ### Recent Enhancements
+
 - **Audit System**: Comprehensive agent ecosystem health checks with parallel execution
 - **Multi-Instance Support**: Run multiple instances of same agent type for massive parallelization
 - **Improved Error Handling**: Enhanced boundary violation detection and reporting
@@ -363,7 +406,7 @@ Parallel Execution (8 instances):
 
 ### System Components
 
-```
+```text
 claude-config/
 ├── CLAUDE.md                    # Core orchestration principles
 ├── .claude/                     # Claude Code configuration
@@ -400,6 +443,7 @@ graph TB
 ## 💡 Real-World Use Cases
 
 ### Full-Stack Application Development
+
 ```bash
 /orchestrate Build a real-time chat application with React frontend and Node.js backend
 
@@ -412,6 +456,7 @@ graph TB
 ```
 
 ### Production Incident Response
+
 ```bash
 /orchestrate Production API is returning 500 errors intermittently
 
@@ -424,6 +469,7 @@ graph TB
 ```
 
 ### Enterprise Migration Project
+
 ```bash
 /orchestrate Migrate monolithic Java app to microservices on Kubernetes
 
@@ -437,6 +483,7 @@ graph TB
 ```
 
 ### Comprehensive Security Audit
+
 ```bash
 /security
 
@@ -451,11 +498,13 @@ graph TB
 ## 💻 Installation
 
 ### Prerequisites
+
 - Node.js 16+ or Python 3.8+
 - Git
 - Claude Code CLI
 
 ### Option 1: Quick Install with Sync Command
+
 ```bash
 # Clone repository
 git clone https://github.com/damilola/claude-config.git
@@ -467,6 +516,7 @@ claude-code
 ```
 
 ### Option 2: Manual Installation
+
 ```bash
 # Clone repository
 git clone https://github.com/damilola/claude-config.git
@@ -484,6 +534,7 @@ cp docs/AUDIO_HOOK_README.md ~/.claude/
 ```
 
 ### Option 3: Selective Installation
+
 ```bash
 # Just the orchestration configuration
 cp CLAUDE.md ~/CLAUDE.md
@@ -498,6 +549,7 @@ cp -r .claude/agents ~/.claude/agents
 ## 🧪 Testing
 
 ### Running Tests
+
 ```bash
 # Run all tests
 ./tests/test.sh
@@ -512,6 +564,7 @@ cp -r .claude/agents ~/.claude/agents
 ```
 
 ### Test Coverage
+
 - ✅ Command validation
 - ✅ Configuration structure
 - ✅ Agent definition compliance
@@ -523,6 +576,7 @@ cp -r .claude/agents ~/.claude/agents
 ### Common Issues
 
 #### Agent Not Found
+
 ```bash
 # List all available agents
 /agents list
@@ -532,11 +586,14 @@ cp -r .claude/agents ~/.claude/agents
 ```
 
 #### SYSTEM BOUNDARY Violation
+
 If you see "SYSTEM BOUNDARY: operation not permitted", this means:
+
 - An agent attempted to invoke itself or another agent
 - Solution: Let Claude handle all agent coordination
 
 #### Audio Notifications Not Working
+
 ```bash
 # Check audio hook configuration
 cat ~/.claude/settings.json | grep -A 10 "hooks"
@@ -546,6 +603,7 @@ afplay /System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resour
 ```
 
 #### Parallel Execution Not Happening
+
 - Ensure you're using `/orchestrate` for complex tasks
 - Check that tasks are truly independent
 - Verify no sequential dependencies blocking parallelization
@@ -555,6 +613,7 @@ afplay /System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resour
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
 ### Quick Contribution Steps
+
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
@@ -564,6 +623,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 7. Open a Pull Request
 
 ### Adding New Agents
+
 1. Use the agent template: `.claude/agents/AGENT_TEMPLATE.md`
 2. Follow naming conventions (descriptive, lowercase, hyphenated)
 3. Assign appropriate category and color
@@ -572,6 +632,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 6. Run validation: `./tests/test.sh` and agent audit
 
 ### Contribution Areas
+
 - **New Agents**: Identify gaps in current capabilities
 - **Command Enhancements**: Improve existing commands
 - **Documentation**: Enhance guides and examples
@@ -581,6 +642,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 ## 📚 Documentation
 
 ### Core Documentation
+
 - [Agent Ecosystem Overview](.claude/agents/README.md)
 - [Agent Categories](.claude/agents/AGENT_CATEGORIES.md)
 - [Audio Notifications](docs/AUDIO_HOOK_README.md)
@@ -588,6 +650,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 - [Agent Selection Guide](docs/AGENT_SELECTION_GUIDE.md)
 
 ### External Resources
+
 - [Claude Code CLI Reference](https://docs.anthropic.com/en/docs/claude-code/cli-reference)
 - [Sub-agents Guide](https://docs.anthropic.com/en/docs/claude-code/sub-agents)
 - [Available Tools](https://docs.anthropic.com/en/docs/claude-code/settings#tools-available-to-claude)
@@ -595,24 +658,31 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 ## ❓ Frequently Asked Questions
 
 ### Q: How do agents communicate with each other?
+
 **A:** They don't! Claude is the sole orchestrator. Agents provide expertise and content, but Claude handles all execution and coordination.
 
 ### Q: Can I run multiple instances of the same agent?
+
 **A:** Yes! This is a key feature. You can run multiple backend-engineers working on different services, multiple analysts examining different codebases, etc.
 
 ### Q: What's the difference between `/plan` and `/orchestrate`?
+
 **A:** `/plan` creates a strategy without executing anything. `/orchestrate` actively coordinates agents to complete the task.
 
 ### Q: How do I know which agent to use?
+
 **A:** Use `/agents suggest <task description>` or check our [Agent Selection Guide](docs/AGENT_SELECTION_GUIDE.md).
 
 ### Q: Why did my agent task fail with "SYSTEM BOUNDARY" error?
+
 **A:** This security feature prevents agents from invoking themselves or other agents. Always let Claude handle agent coordination.
 
 ### Q: Can agents write files directly?
+
 **A:** No. Agents generate content, Claude writes files. This maintains security and consistency.
 
 ### Q: How can I contribute a new agent?
+
 **A:** Follow our agent template, ensure it includes SYSTEM BOUNDARY protection, and submit a PR. See [Contributing](#-contributing).
 
 ## 🔒 Security

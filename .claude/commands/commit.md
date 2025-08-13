@@ -1,15 +1,18 @@
 # /commit Command
 
 ## Description
+
 Creates a git commit following Claude's standards with proper formatting
 and co-authorship attribution.
 
 ## Usage
-```
+
+```bash
 /commit
 ```
 
 ## Behavior
+
 When you use `/commit`, I will:
 
 1. **Check repository status** by running:
@@ -111,6 +114,7 @@ Follows conventional commit format:
 Before staging files for commit, the command automatically cleans up temporary and unwanted files:
 
 ### Automatic Cleanup Patterns
+
 The following files are automatically detected and removed:
 
 **Temporary Files**:
@@ -137,6 +141,7 @@ The following files are automatically detected and removed:
 - Test outputs: `test-results/`, `reports/`
 
 ### Smart Cleanup Logic
+
 - **Preserve intentional files**: Files explicitly tracked in git are never cleaned
 - **Respect .gitignore**: Uses existing ignore patterns as guidance
 - **Project-aware**: Recognizes framework-specific temp files (React, Vue, Node, Python, etc.)
@@ -144,7 +149,9 @@ The following files are automatically detected and removed:
 - **Backup before delete**: Creates `.cleanup-backup/` for recovered files if needed
 
 ### Cleanup Override
+
 Use these patterns to prevent cleanup of specific temp files:
+
 - Add to `.gitkeep-temp` file in project root
 - Use `# KEEP` comment in file header
 - Prefix filename with `keep_` (e.g., `keep_temp_analysis.html`)
@@ -152,6 +159,7 @@ Use these patterns to prevent cleanup of specific temp files:
 ## Enhanced Review & Remediation Process
 
 ### Automated Remediation Workflow
+
 1. **Initial Review**: code-reviewer identifies all issues
 2. **Agent Deployment**: Specialized agents fix issues in parallel:
    - **Linter Issues**: backend-engineer or frontend-architect auto-fix
@@ -163,7 +171,9 @@ Use these patterns to prevent cleanup of specific temp files:
 4. **Rationale Check**: Document why any remaining issues are acceptable
 
 ### Review Requirements
+
 The enhanced review enforces:
+
 - **Linter Compliance**: Auto-fix or document rationale
 - **Security**: Must fix all vulnerabilities (no exceptions)
 - **Code Quality**: Fix complexity issues or justify design
@@ -175,17 +185,20 @@ The enhanced review enforces:
 - **Error Handling**: Add error handling or explain edge cases
 
 ### Review Outcomes
+
 1. **100% Fixed**: All issues remediated → Commit proceeds
 2. **Partial Fix + Rationale**: Some issues remain with valid reasons → Commit proceeds with documentation
 3. **Unfixed Without Rationale**: Issues remain unexplained → Commit BLOCKED
 4. **Security/Critical Issues**: Must be fixed (no rationale accepted) → Commit BLOCKED until resolved
 
 ## Prerequisites
+
 - Git must be initialized in the repository
 - Changes must exist (staged or unstaged)
 - Code must pass review checks (no critical issues)
 
 ## Notes
+
 - **Automatic file cleanup** removes temporary files before staging (with safety checks)
 - If pre-commit hooks modify files, the commit will be retried once
 - Empty commits are not created
