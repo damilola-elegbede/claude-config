@@ -2,21 +2,29 @@
 
 ## Description
 
-Generates comprehensive strategic requirements and tactical implementation broken down into individual PR files. Each PR is independently reviewable, contains complete implementation details, and follows TDD methodology. Creates a roadmap of small, focused PRs that can be developed in parallel when possible.
+Generates comprehensive strategic requirements and tactical implementation
+broken down into individual PR files. Each PR is independently reviewable,
+contains complete implementation details, and follows TDD methodology.
+Creates a roadmap of small, focused PRs that can be developed in parallel
+when possible.
 
 ## Usage
 
 ```bash
 /plan <task_description>
 /plan simple <task_description>  # For tasks <100 LOC
-```
+
+```text
 
 ## Complexity Determination
 
 - **Simple tasks** (<100 LOC): Single PR, no phases, minimal orchestration
-- **Medium tasks** (100-1000 LOC): 2-3 phases, 4-7 PRs
-- **Complex tasks** (>1000 LOC): Full phase breakdown, 8+ PRs
-- Use "simple" keyword to force simple mode for quick tasks
+
+-**Medium tasks** (100-1000 LOC): 2-3 phases, 4-7 PRs
+
+-**Complex tasks** (>1000 LOC): Full phase breakdown, 8+ PRs
+
+-Use "simple" keyword to force simple mode for quick tasks
 
 ## Command Execution Flow
 
@@ -32,7 +40,8 @@ Complex Mode: Agent Selection → Strategic Planning (principal-architect)
 Phase Breakdown → PR Generation → Task Assignment (project-orchestrator)
    ↓
 File Writing with Parallel Execution Plans
-```
+
+```text
 
 ### 2. Complexity Analysis
 
@@ -60,7 +69,8 @@ function analyzeComplexity(taskDescription) {
     if (estimatedLOC < 1000) return { mode: 'medium', estimatedLOC };
     return { mode: 'complex', estimatedLOC };
 }
-```
+
+```text
 
 ### 3. Agent Selection (Consulting Principal-Architect)
 
@@ -101,11 +111,13 @@ async function selectAgents(taskDescription, complexity) {
     
     return agents.slice(0, 8); // Max 8 agents
 }
-```
+
+```text
 
 ### 4. Task Orchestration Process with Realistic Time Estimates
 
 **How Principal-Architect and Project-Orchestrator Collaborate:**
+
 ```javascript
 async function orchestrateTasks(pr, complexity) {
     // Principal-architect determines technical approach
@@ -159,11 +171,13 @@ async function orchestrateTasks(pr, complexity) {
         warning: actualSavings > 60 ? 'Time savings may be optimistic' : null
     };
 }
-```
+
+```text
 
 ### 5. Error Handling, Failure Modes & Escape Hatches
 
 **Command Failures and Recovery:**
+
 ```javascript
 try {
     const complexity = analyzeComplexity(taskDescription);
@@ -236,31 +250,43 @@ const escapeHatches = {
     'AGENT_OVERLOAD': 'Redistribute tasks to available agents',
     'CIRCULAR_DEPENDENCY': 'Break cycle, serialize execution'
 };
-```
+
+```text
 
 ## File Organization
 
 ### Simple Mode Output (Single PR)
 For simple tasks, generates a single PR file:
-```
+
+```text
+
 ./.tmp/<feature-name>/
 ├── implementation.md           # Single PR with all changes
 └── .cleanup                    # Auto-cleanup metadata
-```
+
+```text
 
 #### Simple PR Format: `implementation.md`
+
 ```markdown
+
 # Simple Implementation: <Task Description>
 
 ## Task Summary
-- **Complexity**: Simple (<100 LOC)
-- **Primary Agent**: backend-engineer (selected by principal-architect)
-- **Reviewer**: code-reviewer
-- **Estimated Time**: 30-45 min (with buffer)
+
+-**Complexity**: Simple (<100 LOC)
+
+-**Primary Agent**: backend-engineer (selected by principal-architect)
+
+-**Reviewer**: code-reviewer
+
+-**Estimated Time**: 30-45 min (with buffer)
 
 ## Implementation
+
 ### Files to Modify
-- `src/components/Button.js` - Add logout functionality
+
+-`src/components/Button.js` - Add logout functionality
 
 ### Changes
 \```javascript
@@ -272,20 +298,29 @@ const handleLogout = () => {
 \```
 
 ## Testing
-- Manual test: Click logout button
-- Verify session cleared
-- Verify redirect to login
+
+-Manual test: Click logout button
+
+-Verify session cleared
+
+-Verify redirect to login
 
 ## Checklist
-- [ ] Implementation complete
-- [ ] Manually tested
-- [ ] Code review passed
-```
+
+-[ ] Implementation complete
+
+-[ ] Manually tested
+
+-[ ] Code review passed
+
+```text
 
 ### Complex Mode Output (Multiple Phases/PRs)
 
 ### Directory Structure
-```
+
+```text
+
 ./.tmp/<feature-name>/
 ├── plan.md                           # Strategic requirements (2-4 pages)
 ├── phase_1.1_test_scaffolding.md    # Phase 1, PR 1: Test environment setup
@@ -299,25 +334,35 @@ const handleLogout = () => {
 ├── phase_3.2_validation.md          # Phase 3, PR 2: E2E validation
 ├── rollback.md                      # Rollback procedures
 └── .cleanup                          # Auto-cleanup metadata
-```
+
+```text
 
 ### PR File Naming Convention
-```
+
+```text
+
 phase_<phase_number>.<pr_number>_<description>.md
-```
+
+```text
 
 **Examples:**
 - `phase_1.1_test_scaffolding.md` - Phase 1, PR 1: Setting up test infrastructure
-- `phase_2.3_api_endpoints.md` - Phase 2, PR 3: API endpoint implementation
-- `phase_3.2_validation.md` - Phase 3, PR 2: End-to-end validation
+
+-`phase_2.3_api_endpoints.md` - Phase 2, PR 3: API endpoint implementation
+
+-`phase_3.2_validation.md` - Phase 3, PR 2: End-to-end validation
 
 **Naming Rules:**
 - Phase number: Single digit (1-9)
-- PR number: Sequential within phase (1, 2, 3...)
-- Description: Snake_case, descriptive of PR content
-- Each PR should be independently reviewable and mergeable
+
+-PR number: Sequential within phase (1, 2, 3...)
+
+-Description: Snake_case, descriptive of PR content
+
+-Each PR should be independently reviewable and mergeable
 
 ### Auto-Cleanup Strategy
+
 ```javascript
 // .cleanup file contains:
 {
@@ -334,9 +379,11 @@ phase_<phase_number>.<pr_number>_<description>.md
     "status": "in-progress",
     "cleanup_on_merge": true
 }
-```
+
+```text
 
 ### Feature Name Generation
+
 ```javascript
 function generateFeatureName(description) {
     // Extract core functionality
@@ -350,20 +397,28 @@ function generateFeatureName(description) {
         .replace(/-+/g, '-')
         .slice(0, 50);  // Max 50 chars
 }
-```
+
+```text
 
 ## Strategic Plan Format
 
 ### Requirements Document Template
+
 ```markdown
+
 # <Feature Name> - Strategic Requirements
 
 ## Executive Summary
-- **Objective**: [Clear business goal]
-- **Scope**: [What's included/excluded]
-- **Success Metrics**: [Measurable outcomes]
-- **Estimated PRs**: [Total number of PRs across all phases]
-- **Estimated Effort**: [Phase-based time estimates]
+
+-**Objective**: [Clear business goal]
+
+-**Scope**: [What's included/excluded]
+
+-**Success Metrics**: [Measurable outcomes]
+
+-**Estimated PRs**: [Total number of PRs across all phases]
+
+-**Estimated Effort**: [Phase-based time estimates]
 
 ## Functional Requirements
 | ID | Requirement | Priority | Acceptance Criteria |
@@ -376,10 +431,14 @@ function generateFeatureName(description) {
 | NFR-001 | Performance | [Requirement] | [SLA/metric] |
 
 ## Technical Architecture
-- **Pattern**: [Architecture pattern]
-- **Stack**: [Technology choices with rationale]
-- **Dependencies**: [External systems/libraries]
-- **Security**: [Security considerations]
+
+-**Pattern**: [Architecture pattern]
+
+-**Stack**: [Technology choices with rationale]
+
+-**Dependencies**: [External systems/libraries]
+
+-**Security**: [Security considerations]
 
 ## Risk Assessment
 | Risk | Probability | Impact | Mitigation | Affected PRs |
@@ -389,6 +448,7 @@ function generateFeatureName(description) {
 ## PR Dependencies & Coordination
 
 ### Critical Path
+
 ```mermaid
 graph LR
     PR1.1[Test Setup] --> PR1.2[Unit Tests]
@@ -396,21 +456,29 @@ graph LR
     PR2.1 --> PR2.2[Logic]
     PR2.2 --> PR2.3[APIs]
     PR2.3 --> PR3.1[Integration]
-```
+
+```text
 
 ### Parallel Opportunities
-- Phase 1: PRs 1.2 and 1.3 can be developed in parallel after 1.1
+
+-Phase 1: PRs 1.2 and 1.3 can be developed in parallel after 1.1
 - Phase 2: PRs 2.3 and 2.4 can be developed in parallel after 2.2
 - Phase 3: PRs 3.2 and 3.3 can be developed in parallel after 3.1
 
 ### Review Requirements & Bottleneck Management
-- Each PR requires 2 reviews minimum
-- **code-reviewer** reviews ALL PRs for quality, best practices, and maintainability
-- Security-critical PRs require security-auditor review
-- API changes require api-architect review
-- Test PRs require test-engineer review
+
+-Each PR requires 2 reviews minimum
+
+-**code-reviewer** reviews ALL PRs for quality, best practices, and maintainability
+
+-Security-critical PRs require security-auditor review
+
+-API changes require api-architect review
+
+-Test PRs require test-engineer review
 
 #### Review Load Balancing
+
 ```javascript
 async function manageReviewQueue(pr) {
     const reviewerLoad = await getReviewerWorkload();
@@ -432,12 +500,14 @@ async function manageReviewQueue(pr) {
     
     return { delay: 0 };
 }
-```
+
+```text
 
 ## Implementation Roadmap
 
 ### Phase Overview
-1. **Phase 1 - Test Foundation**: 3-4 PRs
+
+1.**Phase 1 - Test Foundation**: 3-4 PRs
    - PR 1.1: Test environment setup
    - PR 1.2: Unit test scaffolding
    - PR 1.3: Integration test framework
@@ -456,21 +526,29 @@ async function manageReviewQueue(pr) {
    - PR 3.3: Performance optimization
 
 ### PR Sizing Guidelines
-- **Small PR**: <150 LOC (configuration, simple features)
-- **Medium PR**: 150-400 LOC (typical feature implementation)
-- **Large PR**: 400-600 LOC (complex features, requires splitting discussion)
+
+-**Small PR**: <150 LOC (configuration, simple features)
+
+-**Medium PR**: 150-400 LOC (typical feature implementation)
+
+-**Large PR**: 400-600 LOC (complex features, requires splitting discussion)
 
 ### Merge Strategy
-- Sequential within phases (PR 1.1 → 1.2 → 1.3)
-- Phase dependencies (All Phase 1 → Phase 2 starts)
-- Feature flags for partial deployments
-```
+
+-Sequential within phases (PR 1.1 → 1.2 → 1.3)
+
+-Phase dependencies (All Phase 1 → Phase 2 starts)
+
+-Feature flags for partial deployments
+
+```text
 
 ## Tactical Phase Format
 
 Each phase is broken down into independently reviewable PRs. Each PR gets its own file with complete implementation details.
 
 ### Phase Structure Overview
+
 ```markdown
 Phase 1: Test-First Development
 ├── PR 1: Test environment setup
@@ -489,20 +567,28 @@ Phase 3: Integration & Validation
 ├── PR 1: Service integration
 ├── PR 2: End-to-end tests
 └── PR 3: Performance validation
-```
+
+```text
 
 ### PR File Format Example: `phase_1.1_test_scaffolding.md`
+
 ```markdown
+
 # Phase 1, PR 1: Test Environment Setup
 
 ## PR Metadata
-- **Phase**: 1 (Test-First Development)
-- **PR Number**: 1 of 4
+
+-**Phase**: 1 (Test-First Development)
+
+-**PR Number**: 1 of 4
 - **PR Title**: "feat: Add test environment setup and configuration"
-- **Estimated LOC**: ~150
+
+-**Estimated LOC**: ~150
 - **Dependencies**: None
-- **Reviewers**: @test-engineer, @backend-engineer, @code-reviewer
-- **Merge Order**: Must merge before phase_1.2
+
+-**Reviewers**: @test-engineer, @backend-engineer, @code-reviewer
+
+-**Merge Order**: Must merge before phase_1.2
 - **Orchestration**: Determined by @principal-architect and @project-orchestrator
 
 ## PR Description
@@ -521,7 +607,9 @@ This PR sets up the foundational test environment and configuration needed for T
 | T1.1.6 | Add CI test configuration | devops | T1.1.2, T1.1.4 | 20 min |
 
 ### Parallel Execution Plan
-```
+
+```text
+
 Execution Group 1 (Parallel):
 ├── backend-engineer: T1.1.1 - Create directory structure
 └── devops: T1.1.4 - Create environment config
@@ -533,24 +621,35 @@ Execution Group 2 (After Group 1):
 Execution Group 3 (After Group 2):
 ├── test-engineer: T1.1.5 - Helper functions
 └── devops: T1.1.6 - CI configuration
-```
+
+```text
 
 ### Agent Coordination Notes
-- **Principal-architect**: Defined testing architecture and framework choices
-- **Project-orchestrator**: Optimized task parallelization, estimated 35-45% time reduction (not the optimistic 50%)
-- **Critical path**: T1.1.1 → T1.1.2 → T1.1.5 (60-90 min with buffers)
-- **Conflict Resolution**: Principal-architect has final decision authority on technical approaches
+
+-**Principal-architect**: Defined testing architecture and framework choices
+
+-**Project-orchestrator**: Optimized task parallelization, estimated 35-45% time reduction (not the optimistic 50%)
+
+-**Critical path**: T1.1.1 → T1.1.2 → T1.1.5 (60-90 min with buffers)
+
+-**Conflict Resolution**: Principal-architect has final decision authority on technical approaches
 
 ## Files Changed
-- `test/setup.js` - Test environment configuration (test-engineer)
-- `test/helpers/database.js` - Database test utilities (backend-engineer)
-- `package.json` - Test dependencies (test-engineer)
-- `.env.test` - Test environment variables (devops)
-- `.github/workflows/test.yml` - CI configuration (devops)
+
+-`test/setup.js` - Test environment configuration (test-engineer)
+
+-`test/helpers/database.js` - Database test utilities (backend-engineer)
+
+-`package.json` - Test dependencies (test-engineer)
+
+-`.env.test` - Test environment variables (devops)
+
+-`.github/workflows/test.yml` - CI configuration (devops)
 
 ## Implementation Details
 
 ### File: `test/setup.js`
+
 ```javascript
 // Environment configuration
 process.env.NODE_ENV = 'test';
@@ -570,35 +669,52 @@ global.sinon = sinon;
 afterEach(() => {
     sinon.restore();
 });
-```
+
+```text
 
 **Rationale**: Test environment must be isolated from production configs. Using lower bcrypt rounds speeds up test execution without compromising test validity.
 
-## PR Checklist
-- [ ] All tests pass
-- [ ] Code follows project style guide
-- [ ] Documentation updated
-- [ ] No console.logs or debug code
-- [ ] Security considerations addressed
+## PR Completion Checklist
 
-## Merge Instructions
-1. Ensure CI passes
-2. Merge to main
-3. No deployment needed (test infrastructure only)
-```
+-[ ] All tests pass
+
+-[ ] Code follows project style guide
+
+-[ ] Documentation updated
+
+-[ ] No console.logs or debug code
+
+-[ ] Security considerations addressed
+
+## PR Merge Instructions
+
+1.Ensure CI passes
+
+2.Merge to main
+
+3.No deployment needed (test infrastructure only)
+
+```text
 
 ### PR File Format Example: `phase_1.2_model_tests.md`
+
 ```markdown
+
 # Phase 1, PR 2: Model Unit Tests
 
 ## PR Metadata
-- **Phase**: 1 (Test-First Development)
-- **PR Number**: 2 of 4
+
+-**Phase**: 1 (Test-First Development)
+
+-**PR Number**: 2 of 4
 - **PR Title**: "test: Add comprehensive model unit tests for TDD"
-- **Estimated LOC**: ~300
+
+-**Estimated LOC**: ~300
 - **Dependencies**: phase_1.1 (test environment)
-- **Reviewers**: @test-engineer, @security-auditor, @code-reviewer
-- **Merge Order**: After phase_1.1, before phase_2.1
+
+-**Reviewers**: @test-engineer, @security-auditor, @code-reviewer
+
+-**Merge Order**: After phase_1.1, before phase_2.1
 - **Orchestration**: Determined by @principal-architect and @project-orchestrator
 
 ## PR Description
@@ -617,7 +733,9 @@ Implements comprehensive unit tests for the User model following TDD principles.
 | T1.2.6 | Write integration test stubs | test-engineer | T1.2.3, T1.2.5 | 20 min |
 
 ### Parallel Execution Plan
-```
+
+```text
+
 Execution Group 1 (Parallel):
 ├── test-engineer: T1.2.1 - Design test scenarios
 └── backend-engineer: T1.2.5 - Create fixtures
@@ -629,21 +747,29 @@ Execution Group 2 (After T1.2.1):
 
 Execution Group 3 (After Group 2):
 └── test-engineer: T1.2.6 - Integration stubs
-```
+
+```text
 
 ### Agent Coordination Notes
-- **Principal-architect**: Defined test coverage requirements and security test priorities
-- **Project-orchestrator**: Identified parallel test writing opportunities, reducing time from 145 min to ~75 min
-- **Critical path**: T1.2.1 → T1.2.3 → T1.2.6 (65 min)
+
+-**Principal-architect**: Defined test coverage requirements and security test priorities
+
+-**Project-orchestrator**: Identified parallel test writing opportunities, reducing time from 145 min to ~75 min
+
+-**Critical path**: T1.2.1 → T1.2.3 → T1.2.6 (65 min)
 
 ## Files Changed
-- `test/models/user.test.js` - User model tests (test-engineer, security-auditor)
-- `test/fixtures/users.js` - Test fixtures (backend-engineer)
-- `test/helpers/assertions.js` - Custom assertions (test-engineer)
+
+-`test/models/user.test.js` - User model tests (test-engineer, security-auditor)
+
+-`test/fixtures/users.js` - Test fixtures (backend-engineer)
+
+-`test/helpers/assertions.js` - Custom assertions (test-engineer)
 
 ## Implementation Details
 
 ### File: `test/models/user.test.js`
+
 ```javascript
 const User = require('../../src/models/User'); // Will fail initially
 const ValidationError = require('../../src/errors/ValidationError');
@@ -679,32 +805,48 @@ describe('User Model', () => {
         });
     });
 });
-```
 
-## PR Checklist
-- [ ] Tests written following TDD principles
-- [ ] All tests are initially failing (red)
-- [ ] No implementation code included
-- [ ] Documentation complete
+```text
 
-## Merge Instructions
-1. Review test coverage and scenarios
-2. Ensure tests align with requirements
-3. Merge after approval from test-engineer
-```
+## Final PR Checklist
+
+-[ ] Tests written following TDD principles
+
+-[ ] All tests are initially failing (red)
+
+-[ ] No implementation code included
+
+-[ ] Documentation complete
+
+## Final Merge Instructions
+
+1.Review test coverage and scenarios
+
+2.Ensure tests align with requirements
+
+3.Merge after approval from test-engineer
+
+```text
 
 ### PR File Format Example: `phase_2.1_data_models.md`
+
 ```markdown
+
 # Phase 2, PR 1: Database Models and Schemas
 
 ## PR Metadata
-- **Phase**: 2 (Core Implementation)
-- **PR Number**: 1 of 5
+
+-**Phase**: 2 (Core Implementation)
+
+-**PR Number**: 1 of 5
 - **PR Title**: "feat: Implement User model with secure password handling"
-- **Estimated LOC**: ~250
+
+-**Estimated LOC**: ~250
 - **Dependencies**: phase_1.2 (tests must be failing)
-- **Reviewers**: @backend-engineer, @security-auditor, @code-reviewer
-- **Merge Order**: First PR in Phase 2
+
+-**Reviewers**: @backend-engineer, @security-auditor, @code-reviewer
+
+-**Merge Order**: First PR in Phase 2
 - **Orchestration**: Determined by @principal-architect and @project-orchestrator
 
 ## PR Description
@@ -725,7 +867,9 @@ Implements the User model with bcrypt password hashing, validation rules, and se
 | T2.1.8 | Code quality review | code-reviewer | T2.1.2, T2.1.3, T2.1.4, T2.1.5 | 20 min |
 
 ### Parallel Execution Plan
-```
+
+```text
+
 Execution Group 1 (Parallel):
 ├── backend-engineer: T2.1.1 - Create schema
 └── devops: T2.1.6 - Configure database
@@ -739,23 +883,33 @@ Execution Group 2 (After T2.1.1):
 Execution Group 3 (After Group 2):
 ├── test-engineer: T2.1.7 - Verify tests pass
 └── code-reviewer: T2.1.8 - Code quality review
-```
+
+```text
 
 ### Agent Coordination Notes
-- **Principal-architect**: Designed model architecture with security-first approach
-- **Project-orchestrator**: Parallelized independent tasks, realistic reduction from 150 min to ~95 min (37% savings)
-- **Critical path**: T2.1.1 → T2.1.2 → T2.1.7 (70 min)
-- **Risk**: Security features must be implemented correctly first time
+
+-**Principal-architect**: Designed model architecture with security-first approach
+
+-**Project-orchestrator**: Parallelized independent tasks, realistic reduction from 150 min to ~95 min (37% savings)
+
+-**Critical path**: T2.1.1 → T2.1.2 → T2.1.7 (70 min)
+
+-**Risk**: Security features must be implemented correctly first time
 
 ## Files Changed
-- `src/models/User.js` - User model implementation (backend-engineer, security-auditor)
-- `src/models/index.js` - Model exports (backend-engineer)
-- `src/config/database.js` - Database configuration (devops)
-- `src/utils/security.js` - Security utilities (security-auditor)
+
+-`src/models/User.js` - User model implementation (backend-engineer, security-auditor)
+
+-`src/models/index.js` - Model exports (backend-engineer)
+
+-`src/config/database.js` - Database configuration (devops)
+
+-`src/utils/security.js` - Security utilities (security-auditor)
 
 ## Implementation Details
 
 ### File: `src/models/User.js`
+
 ```javascript
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
@@ -786,33 +940,48 @@ userSchema.methods.comparePassword = async function(plaintext) {
 };
 
 module.exports = mongoose.model('User', userSchema);
-```
+
+```text
 
 ## PR Checklist
-- [ ] All Phase 1 tests now pass
-- [ ] Security best practices implemented
-- [ ] Code follows project conventions
-- [ ] No hardcoded secrets
+
+-[ ] All Phase 1 tests now pass
+
+-[ ] Security best practices implemented
+
+-[ ] Code follows project conventions
+
+-[ ] No hardcoded secrets
 
 ## Merge Instructions
-1. Run Phase 1 tests to verify they pass
-2. Security review required
-3. Merge after approval
 
-```
+1.Run Phase 1 tests to verify they pass
+
+2.Security review required
+
+3.Merge after approval
+
+```text
 
 ### PR File Format Example: `phase_3.1_integration.md`
+
 ```markdown
+
 # Phase 3, PR 1: Service Integration
 
 ## PR Metadata
-- **Phase**: 3 (Integration & Validation)
-- **PR Number**: 1 of 3
+
+-**Phase**: 3 (Integration & Validation)
+
+-**PR Number**: 1 of 3
 - **PR Title**: "feat: Integrate authentication service with API endpoints"
-- **Estimated LOC**: ~200
+
+-**Estimated LOC**: ~200
 - **Dependencies**: All Phase 2 PRs merged
-- **Reviewers**: @principal-architect, @test-engineer, @code-reviewer
-- **Merge Order**: First PR in Phase 3
+
+-**Reviewers**: @principal-architect, @test-engineer, @code-reviewer
+
+-**Merge Order**: First PR in Phase 3
 - **Orchestration**: Determined by @principal-architect and @project-orchestrator
 
 ## PR Description
@@ -833,7 +1002,9 @@ Integrates the authentication components into the main application, connecting m
 | T3.1.8 | Final code review | code-reviewer | All tasks | 25 min |
 
 ### Parallel Execution Plan
-```
+
+```text
+
 Execution Group 1:
 └── backend-engineer: T3.1.1 - Express setup
 
@@ -849,24 +1020,35 @@ Execution Group 3 (After dependencies):
 
 Execution Group 4 (Final):
 └── code-reviewer: T3.1.8 - Final code review
-```
+
+```text
 
 ### Agent Coordination Notes
-- **Principal-architect**: Defined integration patterns and middleware ordering
-- **Project-orchestrator**: Identified 4 parallel tasks in Group 2, reducing time from 135 min to ~65 min
-- **Critical path**: T3.1.1 → T3.1.3 → T3.1.4 (55 min)
-- **Note**: Security configuration can run parallel to route integration
+
+-**Principal-architect**: Defined integration patterns and middleware ordering
+
+-**Project-orchestrator**: Identified 4 parallel tasks in Group 2, reducing time from 135 min to ~65 min
+
+-**Critical path**: T3.1.1 → T3.1.3 → T3.1.4 (55 min)
+
+-**Note**: Security configuration can run parallel to route integration
 
 ## Files Changed
-- `src/app.js` - Application setup (backend-engineer)
-- `src/routes/index.js` - Route registration (backend-engineer)
-- `src/server.js` - Server configuration (backend-engineer)
-- `src/middleware/logging.js` - Request logging (monitoring-specialist)
-- `src/middleware/security.js` - Security headers (security-auditor)
+
+-`src/app.js` - Application setup (backend-engineer)
+
+-`src/routes/index.js` - Route registration (backend-engineer)
+
+-`src/server.js` - Server configuration (backend-engineer)
+
+-`src/middleware/logging.js` - Request logging (monitoring-specialist)
+
+-`src/middleware/security.js` - Security headers (security-auditor)
 
 ## Implementation Details
 
 ### File: `src/app.js`
+
 ```javascript
 const express = require('express');
 const authRoutes = require('./routes/auth');
@@ -883,25 +1065,37 @@ app.use('/api/auth', authRoutes);
 app.use(errorHandler);
 
 module.exports = app;
-```
+
+```text
 
 ## PR Checklist
-- [ ] Integration tests pass
-- [ ] End-to-end flow verified
-- [ ] API documentation updated
-- [ ] No breaking changes
+
+-[ ] Integration tests pass
+
+-[ ] End-to-end flow verified
+
+-[ ] API documentation updated
+
+-[ ] No breaking changes
 
 ## Merge Instructions
-1. Run full test suite
-2. Deploy to staging environment
-3. Smoke test critical paths
-4. Merge and monitor
-```
+
+1.Run full test suite
+
+2.Deploy to staging environment
+
+3.Smoke test critical paths
+
+4.Merge and monitor
+
+```text
 
 ## Phase Overview and PR Dependencies
 
 ### Phase Dependency Chain
-```
+
+```text
+
 Phase 1 PRs (Tests/TDD):
   phase_1.1 → phase_1.2 → phase_1.3 → phase_1.4
                                           ↓
@@ -910,18 +1104,23 @@ Phase 2 PRs (Implementation):
                                                       ↓
 Phase 3 PRs (Integration):
   phase_3.1 → phase_3.2 → phase_3.3
-```
+
+```text
 
 ### Rollback Procedures
 
 Each PR can be independently rolled back if issues arise:
 
 1. **PR-level rollback**: Revert individual PR merges
-2. **Phase-level rollback**: Revert all PRs in a phase
-3. **Feature rollback**: Complete feature removal
+
+2.**Phase-level rollback**: Revert all PRs in a phase
+
+3.**Feature rollback**: Complete feature removal
 
 ### PR Rollback Commands
+
 ```bash
+
 # Rollback specific PR
 git revert <pr-merge-commit>
 
@@ -930,7 +1129,8 @@ git revert <first-pr-commit>..<last-pr-commit>
 
 # Emergency rollback
 ./scripts/rollback.sh phase_2.3
-```
+
+```text
 
 ## Phase 3 Completion Criteria
 ✅ All API endpoints implemented and tested
@@ -940,18 +1140,27 @@ git revert <first-pr-commit>..<last-pr-commit>
 ✅ Ready for production deployment
 
 ## Deployment Readiness Checklist
-- [ ] Environment variables configured
-- [ ] SSL certificates installed
-- [ ] Rate limiting configured
-- [ ] Monitoring alerts set up
-- [ ] Backup strategy implemented
-- [ ] Rollback procedure documented
-```
+
+-[ ] Environment variables configured
+
+-[ ] SSL certificates installed
+
+-[ ] Rate limiting configured
+
+-[ ] Monitoring alerts set up
+
+-[ ] Backup strategy implemented
+
+-[ ] Rollback procedure documented
+
+```text
 
 ## Rollback Procedures
 
 ### Rollback Strategy Document
+
 ```markdown
+
 # Rollback Procedures
 
 ## Phase Rollback Matrix
@@ -963,8 +1172,10 @@ git revert <first-pr-commit>..<last-pr-commit>
 | Phase 3 | Revert routes, maintain tests | 10min | Low |
 
 ## Emergency Rollback Script
+
 ```bash
 #!/bin/bash
+
 # rollback.sh - Emergency rollback for authentication feature
 
 PHASE=$1
@@ -1000,11 +1211,14 @@ case $PHASE in
 esac
 
 echo "Rollback complete for Phase $PHASE"
-```
+
+```text
 
 ## Monitoring Script
+
 ```bash
 #!/bin/bash
+
 # monitor.sh - Monitor feature implementation progress
 
 check_phase() {
@@ -1027,8 +1241,10 @@ echo "=== Feature Implementation Status ==="
 check_phase 1 "test/models/user.test.js"
 check_phase 2 "src/models/User.js"
 check_phase 3 "test/integration/auth.test.js"
-```
-```
+
+```text
+
+```text
 
 ## Performance Specifications
 
@@ -1041,6 +1257,7 @@ check_phase 3 "test/integration/auth.test.js"
 | Total execution | <20s | 45s | End-to-end timing |
 
 ### Resource Limits
+
 ```javascript
 const RESOURCE_LIMITS = {
     maxAgents: 8,              // Maximum concurrent agents
@@ -1050,11 +1267,13 @@ const RESOURCE_LIMITS = {
     maxFilesPerPhase: 15,       // Maximum files per phase
     timeoutSeconds: 45          // Total command timeout
 };
-```
+
+```text
 
 ## Agent Conflict Resolution
 
 ### Conflict Detection and Resolution
+
 ```javascript
 function resolveAgentConflicts(opinions) {
     const conflicts = detectConflicts(opinions);
@@ -1089,12 +1308,15 @@ function resolveAgentConflicts(opinions) {
     
     return applyResolutions(opinions, conflicts);
 }
-```
+
+```text
 
 ## Security Configurations
 
 ### Environment Variables
+
 ```bash
+
 # .env.example
 NODE_ENV=development
 JWT_PRIVATE_KEY_PATH=./keys/private.pem  # Generated, not stored
@@ -1105,11 +1327,14 @@ RATE_LIMIT_WINDOW=60000                  # 1 minute
 RATE_LIMIT_MAX_ATTEMPTS=5
 COOKIE_SECURE=true                        # Production only
 COOKIE_SAMESITE=strict
-```
+
+```text
 
 ### Key Generation Script
+
 ```bash
 #!/bin/bash
+
 # generate-keys.sh - Generate RSA keys for JWT signing
 
 mkdir -p keys
@@ -1125,11 +1350,13 @@ chmod 600 keys/private.pem
 chmod 644 keys/public.pem
 
 echo "✅ RSA keys generated in ./keys/"
-```
+
+```text
 
 ## Command Integration
 
 ### Implementation Hook
+
 ```javascript
 // Implementation in Claude Code command handler
 async function handlePlanCommand(taskDescription) {
@@ -1187,33 +1414,51 @@ async function handlePlanCommand(taskDescription) {
         };
     }
 }
-```
+
+```text
 
 ## Success Metrics
 
 ### Quality Gates
-- ✅ All examples follow TDD (tests before implementation)
-- ✅ Error handling comprehensive with specific error types
-- ✅ Security vulnerabilities addressed (environment variables, validation)
-- ✅ Performance specifications defined with measurable SLAs
-- ✅ Rollback procedures documented for each phase
-- ✅ Agent selection algorithm deterministic
-- ✅ File cleanup strategy implemented
-- ✅ Conflict resolution strategy defined
-- ✅ Resource limits enforced
-- ✅ Monitoring and observability built-in
+
+-✅ All examples follow TDD (tests before implementation)
+
+-✅ Error handling comprehensive with specific error types
+
+-✅ Security vulnerabilities addressed (environment variables, validation)
+
+-✅ Performance specifications defined with measurable SLAs
+
+-✅ Rollback procedures documented for each phase
+
+-✅ Agent selection algorithm deterministic
+
+-✅ File cleanup strategy implemented
+
+-✅ Conflict resolution strategy defined
+
+-✅ Resource limits enforced
+
+-✅ Monitoring and observability built-in
 
 ## Real-World Considerations
 
 ### Common Reality Checks
-- **Merge Conflicts**: Will happen, especially in Phase 2-3 PRs
-- **Flaky Tests**: Add retry logic, don't assume tests always pass
-- **External API Limits**: Rate limiting will affect integration tests
-- **Review Delays**: Humans take time, add 24-48 hour buffer for reviews
-- **Dependency Updates**: May break between PR creation and merge
-- **CI/CD Queues**: Shared resources cause delays
+
+-**Merge Conflicts**: Will happen, especially in Phase 2-3 PRs
+
+-**Flaky Tests**: Add retry logic, don't assume tests always pass
+
+-**External API Limits**: Rate limiting will affect integration tests
+
+-**Review Delays**: Humans take time, add 24-48 hour buffer for reviews
+
+-**Dependency Updates**: May break between PR creation and merge
+
+-**CI/CD Queues**: Shared resources cause delays
 
 ### Deployment Strategy (Not Covered in PRs)
+
 ```javascript
 // Add deployment phase after Phase 3
 const deploymentPhase = {
@@ -1229,29 +1474,47 @@ const deploymentPhase = {
         time: '4-8 hours with validation'
     }
 };
-```
+
+```text
 
 ## Notes
 
 ### PR-Based Implementation Strategy
-- **One PR = One File**: Each PR gets its own dedicated markdown file with complete implementation details
-- **PR Size**: Each PR is designed to be independently reviewable (typically 150-400 LOC)
-- **Dependencies**: Clear dependency chain between PRs ensures proper merge order
-- **Naming Convention**: `phase_<phase>.<pr>_<description>.md` for easy identification
-- **Rollback Friendly**: Each PR can be independently reverted without breaking the system
+
+-**One PR = One File**: Each PR gets its own dedicated markdown file with complete implementation details
+
+-**PR Size**: Each PR is designed to be independently reviewable (typically 150-400 LOC)
+
+-**Dependencies**: Clear dependency chain between PRs ensures proper merge order
+
+-**Naming Convention**: `phase_<phase>.<pr>_<description>.md` for easy identification
+
+-**Rollback Friendly**: Each PR can be independently reverted without breaking the system
 
 ### Agent Orchestration Within PRs
-- **Principal-Architect**: Determines technical approach and suggests agent assignments for each task
-- **Project-Orchestrator**: Optimizes task parallelization and identifies the critical path
-- **Task Assignment**: Each task within a PR is assigned to a specific agent based on expertise
-- **Parallel Execution**: Independent tasks run simultaneously, reducing total execution time by 40-60%
-- **Dependencies Tracked**: Task-level dependencies ensure correct execution order
-- **Time Optimization**: Shows both sequential and parallel execution times for transparency
+
+-**Principal-Architect**: Determines technical approach and suggests agent assignments for each task
+
+-**Project-Orchestrator**: Optimizes task parallelization and identifies the critical path
+
+-**Task Assignment**: Each task within a PR is assigned to a specific agent based on expertise
+
+-**Parallel Execution**: Independent tasks run simultaneously, reducing total execution time by 40-60%
+
+-**Dependencies Tracked**: Task-level dependencies ensure correct execution order
+
+-**Time Optimization**: Shows both sequential and parallel execution times for transparency
 
 ### Core Principles
-- **TDD Discipline**: Tests MUST be written before implementation code
-- **Security First**: All examples use environment variables, never hardcoded values
-- **Error Recovery**: Every operation has defined error handling and rollback
-- **Performance**: Caching strategies and resource limits prevent system overload
-- **Maintainability**: Clear phase separation enables incremental development
-- **Production Ready**: Examples include monitoring, logging, and observability
+
+-**TDD Discipline**: Tests MUST be written before implementation code
+
+-**Security First**: All examples use environment variables, never hardcoded values
+
+-**Error Recovery**: Every operation has defined error handling and rollback
+
+-**Performance**: Caching strategies and resource limits prevent system overload
+
+-**Maintainability**: Clear phase separation enables incremental development
+
+-**Production Ready**: Examples include monitoring, logging, and observability
