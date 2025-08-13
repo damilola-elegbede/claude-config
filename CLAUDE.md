@@ -28,101 +28,95 @@
 
 ## Agent Selection Guide
 
-<agent-roster total="41" categories="9">
-The complete orchestration platform with 41 specialized agents organized by domain expertise.
+<agent-roster total="41" categories="8">
+The complete orchestration platform with 41 specialized agents organized by domain expertise across 8 core categories.
 </agent-roster>
 
-### Development & Implementation
-<development-agents count="4">
+### Development (blue)
+<development-agents count="7">
 - **backend-engineer**: APIs, databases, server logic, microservices, business logic implementation
-- **frontend-architect**: UI/UX design, component architecture, user experience optimization
+- **frontend-architect**: UI/UX design, component architecture, user experience optimization  
 - **mobile-platform-engineer**: iOS/Android development, cross-platform solutions, mobile-specific optimizations
 - **platform-engineer**: Infrastructure as code, developer tooling, platform abstractions
-</development-agents>
-
-### Architecture & Design
-<architecture-agents count="5">
-- **principal-architect**: System-wide design decisions, technology strategy, architectural governance
-- **cloud-architect**: Cloud infrastructure design, multi-cloud strategy, serverless architectures
-- **cloud-network-architect**: Network topology, security groups, load balancing, CDN optimization
-- **api-architect**: API design patterns, versioning strategies, integration architectures
-- **ui-designer**: Visual design, design systems, accessibility compliance, brand consistency
-</architecture-agents>
-
-### Quality & Security
-<quality-security-agents count="8">
-- **code-reviewer**: Code quality assessment, best practices enforcement, maintainability review
-- **security-auditor**: Vulnerability assessment, threat modeling, security compliance auditing
-- **supply-chain-security-engineer**: Dependency vulnerabilities, SBOM analysis, third-party risk assessment
-- **accessibility-auditor**: WCAG compliance, assistive technology compatibility, inclusive design validation
-- **quality-gatekeeper**: Release readiness assessment, quality metrics validation, deployment approval
-- **test-engineer**: Test strategy, automation frameworks, quality gates implementation
-- **regulatory-compliance-specialist**: GDPR, HIPAA, SOX compliance, audit preparation, legal requirements
-- **debugger**: Complex bug investigation, root cause analysis, performance debugging
-</quality-security-agents>
-
-### Infrastructure & Platform
-<infrastructure-agents count="6">
-- **devops**: CI/CD pipelines, deployment automation, infrastructure management
-- **kubernetes-admin**: Container orchestration, cluster management, workload optimization
-- **database-admin**: Query optimization, schema design, performance tuning, backup strategies
-- **production-reliability-engineer**: Site reliability, incident response, service level objectives
-- **monitoring-specialist**: Observability implementation, alerting configuration, metrics collection
-- **incident-commander**: Crisis management, war room coordination, post-incident analysis
-</infrastructure-agents>
-
-### Analytics & Monitoring
-<analytics-agents count="4">
-- **performance-specialist**: Application profiling, optimization strategies, scalability analysis
-- **performance-predictor**: Capacity planning, load forecasting, performance modeling
-- **metrics-analyst**: Data analysis, KPI tracking, business intelligence, trend identification
-- **cost-optimization-engineer**: Cloud cost analysis, resource optimization, budget forecasting
-</analytics-agents>
-
-### Data & Machine Learning
-<data-ml-agents count="2">
 - **data-platform-engineer**: Data pipelines, ETL processes, data warehouse design, streaming architectures
 - **ml-engineer**: Machine learning model deployment, MLOps, feature engineering, model monitoring
-</data-ml-agents>
+- **database-admin**: Query optimization, schema design, performance tuning, backup strategies
+</development-agents>
 
-### Operations & Maintenance
-<operations-agents count="6">
+### Infrastructure (orange)
+<infrastructure-agents count="7">
+- **devops**: CI/CD pipelines, deployment automation, infrastructure management
+- **kubernetes-admin**: Container orchestration, cluster management, workload optimization
+- **production-reliability-engineer**: Site reliability, incident response, service level objectives
+- **monitoring-specialist**: Observability implementation, alerting configuration, metrics collection
+- **cloud-architect**: Cloud infrastructure design, multi-cloud strategy, serverless architectures
+- **cloud-network-architect**: Network topology, security groups, load balancing, CDN optimization
+- **cost-optimization-engineer**: Cloud cost analysis, resource optimization, budget forecasting
+</infrastructure-agents>
+
+### Architecture (purple)
+<architecture-agents count="4">
+- **principal-architect**: System-wide design decisions, technology strategy, architectural governance
+- **api-architect**: API design patterns, versioning strategies, integration architectures
+- **integration-specialist**: Third-party integrations, webhook implementation, API gateway configuration
+- **codebase-analyst**: Architecture review, technical debt assessment, dependency analysis
+</architecture-agents>
+
+### Design (pink)
+<design-agents count="3">
+- **ui-designer**: Visual design, design systems, accessibility compliance, brand consistency
+- **ux-researcher**: User behavior analysis, usability testing, customer journey mapping
+- **accessibility-auditor**: WCAG compliance, assistive technology compatibility, inclusive design validation
+</design-agents>
+
+### Quality (green)
+<quality-agents count="6">
+- **code-reviewer**: Code quality assessment, best practices enforcement, maintainability review
+- **test-engineer**: Test strategy, automation frameworks, quality gates implementation
+- **quality-gatekeeper**: Release readiness assessment, quality metrics validation, deployment approval
+- **performance-specialist**: Application profiling, optimization strategies, scalability analysis
+- **performance-predictor**: Capacity planning, load forecasting, performance modeling
+- **api-analyst**: API usage analytics, developer experience optimization, documentation effectiveness
+</quality-agents>
+
+### Security (red)
+<security-agents count="4">
+- **security-auditor**: Vulnerability assessment, threat modeling, security compliance auditing
+- **supply-chain-security-engineer**: Dependency vulnerabilities, SBOM analysis, third-party risk assessment
+- **regulatory-compliance-specialist**: GDPR, HIPAA, SOX compliance, audit preparation, legal requirements
+- **incident-commander**: Crisis management, war room coordination, post-incident analysis
+</security-agents>
+
+### Analysis (yellow)
+<analysis-agents count="6">
+- **metrics-analyst**: Data analysis, KPI tracking, business intelligence, trend identification
 - **dependency-analyst**: Dependency mapping, version compatibility, security vulnerability tracking
+- **code-archaeologist**: Legacy code analysis, technical debt archaeology, historical context recovery
+- **tech-writer**: Technical documentation, API documentation, architectural documentation
+- **debugger**: Complex bug investigation, root cause analysis, performance debugging
 - **dependency-strategist**: Upgrade planning, migration strategies, vendor evaluation
+</analysis-agents>
+
+### Operations (teal)
+<operations-agents count="4">
+- **project-orchestrator**: Multi-agent coordination, task prioritization, resource allocation
 - **migration-specialist**: Technology migrations, data migrations, legacy system modernization
 - **database-evolution-specialist**: Schema migrations, data model evolution, zero-downtime deployments
 - **git-workflow-specialist**: Branching strategies, merge conflict resolution, repository optimization
-- **code-archaeologist**: Legacy code analysis, technical debt archaeology, historical context recovery
 </operations-agents>
-
-### User Experience & Research
-<ux-agents count="2">
-- **ux-researcher**: User behavior analysis, usability testing, customer journey mapping
-- **api-analyst**: API usage analytics, developer experience optimization, documentation effectiveness
-</ux-agents>
-
-### Coordination & Documentation
-<coordination-agents count="4">
-- **project-orchestrator**: Multi-agent coordination, task prioritization, resource allocation
-- **tech-writer**: Technical documentation, API documentation, architectural documentation
-- **integration-specialist**: Third-party integrations, webhook implementation, API gateway configuration
-- **codebase-analyst**: Architecture review, technical debt assessment, dependency analysis
-</coordination-agents>
 
 ## Agent Selection Strategies
 
 ### By Task Type
 <task-mapping>
-  <implementation>backend-engineer, frontend-architect, mobile-platform-engineer</implementation>
-  <architecture>principal-architect, cloud-architect, api-architect</architecture>
-  <quality>code-reviewer, security-auditor, test-engineer, quality-gatekeeper</quality>
-  <investigation>debugger, codebase-analyst, dependency-analyst, code-archaeologist</investigation>
-  <performance>performance-specialist, performance-predictor, cost-optimization-engineer</performance>
-  <security>security-auditor, supply-chain-security-engineer, regulatory-compliance-specialist</security>
-  <infrastructure>devops, kubernetes-admin, platform-engineer, cloud-network-architect</infrastructure>
-  <data>data-platform-engineer, ml-engineer, metrics-analyst</data>
-  <operations>production-reliability-engineer, monitoring-specialist, incident-commander</operations>
-  <coordination>project-orchestrator, integration-specialist, migration-specialist</coordination>
+  <development>backend-engineer, frontend-architect, mobile-platform-engineer, platform-engineer, data-platform-engineer, ml-engineer, database-admin</development>
+  <infrastructure>devops, kubernetes-admin, production-reliability-engineer, monitoring-specialist, cloud-architect, cloud-network-architect, cost-optimization-engineer</infrastructure>
+  <architecture>principal-architect, api-architect, integration-specialist, codebase-analyst</architecture>
+  <design>ui-designer, ux-researcher, accessibility-auditor</design>
+  <quality>code-reviewer, test-engineer, quality-gatekeeper, performance-specialist, performance-predictor, api-analyst</quality>
+  <security>security-auditor, supply-chain-security-engineer, regulatory-compliance-specialist, incident-commander</security>
+  <analysis>metrics-analyst, dependency-analyst, code-archaeologist, tech-writer, debugger, dependency-strategist</analysis>
+  <operations>project-orchestrator, migration-specialist, database-evolution-specialist, git-workflow-specialist</operations>
 </task-mapping>
 
 ### Specialized Use Cases
@@ -135,7 +129,8 @@ The complete orchestration platform with 41 specialized agents organized by doma
 **Performance-Critical Systems:**
 - Primary: performance-specialist, performance-predictor
 - Supporting: cost-optimization-engineer, monitoring-specialist
-- Infrastructure: cloud-architect, database-admin
+- Infrastructure: cloud-architect
+- Development: database-admin
 
 **Large-Scale Migrations:**
 - Primary: migration-specialist, database-evolution-specialist
@@ -158,9 +153,10 @@ The complete orchestration platform with 41 specialized agents organized by doma
 - Operations: production-reliability-engineer, monitoring-specialist
 
 **Data-Intensive Projects:**
-- Primary: data-platform-engineer, database-admin
-- Supporting: ml-engineer, metrics-analyst
-- Performance: performance-specialist, cost-optimization-engineer
+- Primary: data-platform-engineer, database-admin, ml-engineer
+- Supporting: metrics-analyst
+- Quality: performance-specialist
+- Infrastructure: cost-optimization-engineer
 
 ### Agent Combination Patterns
 
@@ -265,15 +261,14 @@ Track these observable behaviors:
 ## Agent Quick Reference
 
 <quick-reference-matrix>
-**Implementation**: backend-engineer, frontend-architect, mobile-platform-engineer, platform-engineer
-**Architecture**: principal-architect, cloud-architect, api-architect, cloud-network-architect, ui-designer
-**Quality & Security**: code-reviewer, security-auditor, supply-chain-security-engineer, accessibility-auditor, quality-gatekeeper, test-engineer, regulatory-compliance-specialist
-**Infrastructure**: devops, kubernetes-admin, database-admin, production-reliability-engineer, monitoring-specialist, incident-commander
-**Analytics**: performance-specialist, performance-predictor, metrics-analyst, cost-optimization-engineer
-**Data & ML**: data-platform-engineer, ml-engineer
-**Operations**: dependency-analyst, dependency-strategist, migration-specialist, database-evolution-specialist, git-workflow-specialist, code-archaeologist
-**User Experience**: ux-researcher, api-analyst
-**Coordination**: project-orchestrator, tech-writer, integration-specialist, codebase-analyst, debugger
+**Development**: backend-engineer, frontend-architect, mobile-platform-engineer, platform-engineer, data-platform-engineer, ml-engineer, database-admin
+**Infrastructure**: devops, kubernetes-admin, production-reliability-engineer, monitoring-specialist, cloud-architect, cloud-network-architect, cost-optimization-engineer
+**Architecture**: principal-architect, api-architect, integration-specialist, codebase-analyst
+**Design**: ui-designer, ux-researcher, accessibility-auditor
+**Quality**: code-reviewer, test-engineer, quality-gatekeeper, performance-specialist, performance-predictor, api-analyst
+**Security**: security-auditor, supply-chain-security-engineer, regulatory-compliance-specialist, incident-commander
+**Analysis**: metrics-analyst, dependency-analyst, code-archaeologist, tech-writer, debugger, dependency-strategist
+**Operations**: project-orchestrator, migration-specialist, database-evolution-specialist, git-workflow-specialist
 </quick-reference-matrix>
 
 ### Emergency Response Teams
