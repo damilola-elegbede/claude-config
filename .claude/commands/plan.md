@@ -644,14 +644,14 @@ module.exports = {
 
 **Rationale**: Middleware includes token caching for performance, multiple token sources, and optional authentication for mixed content.
 
-## Phase Completion Criteria
+## Phase 2 Completion Criteria
 ✅ All Phase 1 tests passing
 ✅ Security features implemented (rate limiting, hashing)
 ✅ Performance optimizations (caching)
 ✅ Error handling comprehensive
 ✅ 100% test coverage maintained
 
-## Next Phase Trigger
+## Phase 2 to 3 Trigger
 Once all Phase 2 implementations pass tests, proceed to Phase 3 for integration.
 ```
 
@@ -912,7 +912,7 @@ describe('Authentication API', () => {
 
 **Rationale**: Integration tests validate the complete authentication flow end-to-end, ensuring all components work together correctly.
 
-## Phase Completion Criteria
+## Phase 3 Completion Criteria
 ✅ All API endpoints implemented and tested
 ✅ Integration tests passing
 ✅ Security headers configured
