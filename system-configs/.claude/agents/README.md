@@ -20,6 +20,7 @@
 ---
 
 ## Overview
+
 The Claude agent ecosystem consists of 40+ specialized agents organized across 8 functional domains, providing comprehensive coverage of the software development lifecycle. This system follows the **"Right tool for the job"** principle with a **parallel-first execution strategy** for maximum efficiency.
 
 ## Agent Categories
@@ -27,7 +28,9 @@ The Claude agent ecosystem consists of 40+ specialized agents organized across 8
 The agent ecosystem is organized into 8 primary categories. For detailed category definitions and color assignments, see [AGENT_CATEGORIES.md](./AGENT_CATEGORIES.md).
 
 ### 1. **Development** (blue) - 10 agents
+
 Core programming and implementation agents
+
 - backend-engineer
 - data-platform-engineer
 - database-evolution-specialist
@@ -40,7 +43,9 @@ Core programming and implementation agents
 - supply-chain-security-engineer
 
 ### 2. **Infrastructure** (orange) - 8 agents
+
 Systems, operations, and deployment agents
+
 - cloud-architect
 - cloud-network-architect
 - cost-optimization-engineer
@@ -51,19 +56,25 @@ Systems, operations, and deployment agents
 - monitoring-specialist
 
 ### 3. **Architecture** (purple) - 4 agents
+
 System design and technical planning agents
+
 - api-architect
 - principal-architect
 - project-orchestrator
 - api-analyst
 
 ### 4. **Design** (pink) - 2 agents
+
 User experience and interface design agents
+
 - ui-designer
 - ux-researcher
 
 ### 5. **Quality** (green) - 7 agents
+
 Testing, review, and validation agents
+
 - accessibility-auditor
 - code-reviewer
 - performance-specialist
@@ -73,27 +84,32 @@ Testing, review, and validation agents
 - metrics-analyst
 
 ### 6. **Security** (red) - 2 agents
+
 Security assessment and compliance agents
+
 - security-auditor
 - regulatory-compliance-specialist
 
 ### 7. **Analysis** (yellow) - 4 agents
+
 Research, documentation, and analysis agents
+
 - code-archaeologist
 - codebase-analyst
 - dependency-analyst
 - tech-writer
 
-### 8. **Operations** (teal) - 6 agents
+### 8. **Operations** (teal) - 4 agents
+
 Support, coordination, and strategic planning agents
+
 - debugger
 - dependency-strategist
 - git-workflow-specialist
 - incident-commander
-- dependency-analyst
-- tech-writer
 
 ## Table of Contents
+
 - [Agent Categories](#agent-categories)
 - [Agent Directory](#agent-directory)
 - [Quick Reference](#quick-reference)
@@ -105,6 +121,7 @@ Support, coordination, and strategic planning agents
 ## Agent Directory
 
 ### Development & Implementation Agents (10)
+
 - **backend-engineer** - Server-side systems, APIs, microservices, databases, and distributed architectures
 - **frontend-architect** - Advanced React/Vue/Angular architectures, state management, and performance optimization
 - **mobile-platform-engineer** - Cross-platform development, native iOS/Android, React Native, and Flutter
@@ -117,6 +134,7 @@ Support, coordination, and strategic planning agents
 - **supply-chain-security-engineer** - Dependency security, software supply chain, and vulnerability management
 
 ### Infrastructure & DevOps Agents (8)
+
 - **devops** - CI/CD pipelines, containerization, IaC, deployment automation, and SRE practices
 - **cloud-architect** - Multi-cloud architecture design, migration planning, and optimization
 - **cloud-network-architect** - Advanced cloud networking, API gateways, CDN, and traffic management
@@ -127,16 +145,19 @@ Support, coordination, and strategic planning agents
 - **cost-optimization-engineer** - Cloud cost analysis, resource optimization, and financial governance
 
 ### Architecture & Design Agents (4)
+
 - **principal-architect** - System-wide architecture design, technical roadmaps, and strategic coordination
 - **api-architect** - API design, OpenAPI specs, governance policies, and SDK generation
 - **project-orchestrator** - Multi-agent coordination, parallel execution planning, and workflow optimization
 - **api-analyst** - API analysis, contract validation, and integration assessment
 
 ### Design & User Experience Agents (2)
+
 - **ui-designer** - UI/UX design, design systems, visual hierarchy, and user interface optimization
 - **ux-researcher** - User research, usability testing, analytics, and experience optimization
 
 ### Quality & Testing Agents (7)
+
 - **test-engineer** - Test strategy, automation, coverage analysis, and quality assurance
 - **code-reviewer** - Code quality review, security checks, and best practices validation
 - **performance-specialist** - Performance profiling, load testing, optimization, and bottleneck analysis
@@ -146,16 +167,19 @@ Support, coordination, and strategic planning agents
 - **metrics-analyst** - Performance metrics analysis, trend identification, and optimization insights
 
 ### Security & Compliance Agents (2)
+
 - **security-auditor** - Security audits, vulnerability assessment, OWASP compliance, and threat modeling
 - **regulatory-compliance-specialist** - Compliance frameworks (SOC2, GDPR, HIPAA), audit preparation, and governance
 
 ### Analysis & Documentation Agents (4)
+
 - **codebase-analyst** - Code architecture analysis, technical debt assessment, and dependency mapping
 - **code-archaeologist** - Legacy code analysis, historical change patterns, and technical archaeology
 - **dependency-analyst** - Dependency analysis, security scanning, and supply chain assessment
 - **tech-writer** - Technical documentation, API docs, guides, and knowledge management
 
 ### Operations & Coordination Agents (6)
+
 - **incident-commander** - Production incidents, crisis management, and post-mortem coordination
 - **debugger** - Complex bug investigation, race conditions, memory leaks, and root cause analysis
 - **dependency-strategist** - Strategic dependency management, upgrade planning, and risk assessment
@@ -182,6 +206,7 @@ Support, coordination, and strategic planning agents
 ### Non-Negotiable Agent Requirements
 
 ✅ **ALWAYS use agents for:**
+
 - Authentication/Authorization code → security-auditor
 - Database migrations → database-evolution-specialist + database-admin
 - Production incidents → incident-commander
@@ -190,6 +215,7 @@ Support, coordination, and strategic planning agents
 - 3+ parallel tasks → Deploy in parallel, use project-orchestrator for coordination
 
 ### Command Shortcuts
+
 ```bash
 /test         → test-engineer
 /review       → code-reviewer  
@@ -202,6 +228,7 @@ Support, coordination, and strategic planning agents
 ```
 
 ### Core Orchestration Rules
+
 1. **Right tool for the job** - Specialists for expertise, direct action for simplicity
 2. **Parallel-first execution** - Default to parallel when tasks are independent
 3. **Use project-orchestrator for 3+ agent coordination**
@@ -232,6 +259,7 @@ Support, coordination, and strategic planning agents
 ### Multi-Agent Patterns by Scenario
 
 #### New Feature Development
+
 ```yaml
 Pattern: Architecture → Parallel Implementation → Quality Gates
 Phase 1: principal-architect (design)
@@ -240,6 +268,7 @@ Phase 3: [test-engineer + code-reviewer + security-auditor] (parallel)
 ```
 
 #### Performance Optimization
+
 ```yaml
 Pattern: Analysis → Optimization → Validation
 Phase 1: [performance-specialist + monitoring-specialist + metrics-analyst] (parallel)
@@ -248,6 +277,7 @@ Phase 3: performance-predictor (validation)
 ```
 
 #### Security Audit
+
 ```yaml
 Pattern: Assessment → Remediation → Compliance
 Phase 1: security-auditor (vulnerability assessment)
@@ -256,6 +286,7 @@ Phase 3: regulatory-compliance-specialist (compliance validation)
 ```
 
 #### Migration Project
+
 ```yaml
 Pattern: Analysis → Planning → Execution → Validation
 Phase 1: [codebase-analyst + dependency-analyst] (parallel)
@@ -280,17 +311,20 @@ Phase 4: [test-engineer + performance-specialist] (parallel)
 ### Resource Optimization Guidelines
 
 #### Cost vs. Speed Trade-offs
+
 - **High Priority/Urgent**: Use Opus agents (project-orchestrator, principal-architect)
 - **Standard Development**: Use Sonnet agents (most specialists)
 - **Analysis/Documentation**: Use Haiku agents when available
 - **Parallel Execution**: Balance cost with time savings
 
 #### Token Management
+
 - **Large Codebases**: Use codebase-analyst for initial mapping, then targeted specialists
 - **Documentation**: Use tech-writer for comprehensive docs, avoid multiple agents on same content
 - **Code Reviews**: Use code-reviewer for full review, security-auditor for security-specific concerns
 
 #### Agent Instance Optimization
+
 ```yaml
 Single Instance: Most development and analysis tasks
 Multiple Instances:
@@ -303,6 +337,7 @@ Multiple Instances:
 ## Coordination Patterns
 
 ### 1. Feature Development (Parallel-First)
+
 ```yaml
 project-orchestrator (coordination)
 ├── Phase 1: Architecture & Design
@@ -318,6 +353,7 @@ project-orchestrator (coordination)
 ```
 
 ### 2. Performance Optimization (Parallel Analysis)
+
 ```yaml
 Phase 1: Multi-dimensional Analysis (parallel)
 ├── performance-specialist (profiling & bottlenecks)
@@ -333,6 +369,7 @@ Phase 3: Validation
 ```
 
 ### 3. Security Assessment (Comprehensive)
+
 ```yaml
 Phase 1: Security Analysis
 ├── security-auditor (vulnerability assessment)
@@ -347,6 +384,7 @@ Phase 3: Validation
 ```
 
 ### 4. Incident Response (Rapid Coordination)
+
 ```yaml
 incident-commander (orchestration)
 ├── Phase 1: Investigation (parallel)
@@ -361,6 +399,7 @@ incident-commander (orchestration)
 ```
 
 ### 5. Migration Project (Phased Approach)
+
 ```yaml
 Phase 1: Analysis (parallel)
 ├── code-archaeologist (legacy analysis)
@@ -380,6 +419,7 @@ Phase 3: Validation & Optimization
 ```
 
 ### 6. Multi-Platform Development (Platform-Parallel)
+
 ```yaml
 project-orchestrator
 ├── Shared Architecture
@@ -397,6 +437,7 @@ project-orchestrator
 ```
 
 ### 7. Large-Scale Code Analysis (Domain Parallel)
+
 ```yaml
 codebase-analyst instances (parallel by domain):
 ├── codebase-analyst #1 (Backend services)
@@ -408,6 +449,7 @@ codebase-analyst instances (parallel by domain):
 ```
 
 ### 8. Continuous Quality Pipeline
+
 ```yaml
 Every commit triggers (parallel quality gates):
 ├── code-reviewer (code quality)
@@ -422,29 +464,34 @@ Every commit triggers (parallel quality gates):
 ### Quality Gate Framework (Parallel Execution)
 
 #### Gate 1: Code Quality (Parallel)
+
 - **code-reviewer**: Style compliance, best practices, maintainability
 - **dependency-analyst**: Dependency security and compliance
 - **KPI**: Code quality score ≥ 8.5/10, zero critical issues
 
 #### Gate 2: Security & Compliance (Parallel)
+
 - **security-auditor**: OWASP Top 10, vulnerability assessment
 - **regulatory-compliance-specialist**: Compliance frameworks
 - **supply-chain-security-engineer**: Dependency security
 - **KPI**: Zero high/critical security vulnerabilities, 100% compliance
 
 #### Gate 3: Testing & Quality Assurance (Parallel)
+
 - **test-engineer**: Test coverage, automation, edge cases
 - **quality-gatekeeper**: Quality metrics validation
 - **accessibility-auditor**: WCAG compliance, accessibility testing
 - **KPI**: Test coverage ≥ 80%, zero failing tests, accessibility compliance
 
 #### Gate 4: Performance & Scalability (Parallel)
+
 - **performance-specialist**: Load testing, optimization, profiling
 - **performance-predictor**: Capacity planning, scalability assessment
 - **monitoring-specialist**: Observability and alerting setup
 - **KPI**: Response time ≤ 200ms P95, zero performance regressions
 
 #### Gate 5: Production Readiness (Coordinated)
+
 - **production-reliability-engineer**: SRE practices, resilience
 - **devops**: Deployment readiness, infrastructure validation
 - **incident-commander**: Incident response preparedness
@@ -475,6 +522,7 @@ Every commit triggers (parallel quality gates):
 ### Success Metrics & KPIs
 
 #### Agent Ecosystem Performance
+
 - **Coverage**: 100% of SDLC covered by specialized agents
 - **Parallel Efficiency**: ≥70% of tasks executed in parallel when possible
 - **Quality Gate Success**: ≥95% first-pass quality gate success rate
@@ -482,6 +530,7 @@ Every commit triggers (parallel quality gates):
 - **Agent Utilization**: Optimal agent selection 90% of the time
 
 #### Quality Metrics
+
 - **Code Quality Score**: ≥8.5/10 average across all projects
 - **Security Posture**: Zero critical vulnerabilities in production
 - **Test Coverage**: ≥80% automated test coverage maintained
@@ -489,6 +538,7 @@ Every commit triggers (parallel quality gates):
 - **Accessibility Compliance**: 100% WCAG AA compliance
 
 #### Operational Metrics
+
 - **Incident MTTR**: <30 minutes for critical incidents
 - **Deployment Frequency**: Daily deployments with zero-downtime
 - **Change Failure Rate**: <5% of deployments require hotfixes
@@ -497,6 +547,7 @@ Every commit triggers (parallel quality gates):
 ### Failure Recovery Patterns
 
 #### When Agents Fail
+
 ```yaml
 Scenario: Agent timeout or poor output
 Recovery:
@@ -510,6 +561,7 @@ Example:
 ```
 
 #### Integration Conflicts (Parallel Agents)
+
 ```yaml
 File Conflicts:
   Resolution: Serialize file operations, maintain parallel for analysis
@@ -533,18 +585,21 @@ Test Failures from Parallel Changes:
 ### Optimal Execution Patterns ✅
 
 #### Smart Agent Selection
+
 - **Right-sized Response**: Handle simple tasks directly, delegate complex work to specialists
 - **Parallel-First Thinking**: Default to parallel execution for independent tasks
 - **Specialist Expertise**: Use domain experts for their specific capabilities
 - **Cost-Conscious Orchestration**: Balance speed, quality, and resource costs
 
 #### Effective Coordination
+
 - **Clear Handoffs**: Provide explicit context, success criteria, and artifacts between agents
 - **Quality Integration**: Run quality agents in parallel, establish clear pass/fail criteria
 - **Proactive Orchestration**: Use project-orchestrator for 3+ agent coordination
 - **Continuous Validation**: Validate agent outputs before proceeding to next phase
 
 #### Resource Optimization
+
 - **Token Management**: Use targeted analysis before broad implementation
 - **Model Selection**: Match agent model (Opus/Sonnet/Haiku) to task complexity
 - **Parallel Scaling**: Deploy multiple instances of same agent type when beneficial
@@ -553,6 +608,7 @@ Test Failures from Parallel Changes:
 ### Anti-Patterns to Avoid ❌
 
 #### Poor Agent Selection
+
 ```yaml
 WRONG: devops for code review
 RIGHT: code-reviewer for code quality assessment
@@ -568,6 +624,7 @@ RIGHT: security-auditor for security assessment
 ```
 
 #### Sequential When Parallel is Possible
+
 ```yaml
 WRONG: backend-engineer → wait → frontend-architect → wait → test-engineer
 RIGHT: [backend-engineer + frontend-architect + test-engineer] (parallel)
@@ -580,6 +637,7 @@ RIGHT: [code-reviewer + security-auditor + test-engineer] (parallel)
 ```
 
 #### Poor Orchestration
+
 ```yaml
 WRONG: Launch 5+ agents without coordination
 RIGHT: project-orchestrator → coordinated execution plan
@@ -592,6 +650,7 @@ RIGHT: Clear priority hierarchy and conflict resolution process
 ```
 
 #### Resource Waste
+
 ```yaml
 WRONG: Opus agents for simple documentation
 RIGHT: Sonnet agents for standard technical writing
@@ -606,6 +665,7 @@ RIGHT: Just-enough analysis to start implementation
 ### Proven Execution Patterns
 
 #### Parallel Domain Analysis
+
 ```yaml
 # Large System Analysis
 codebase-analyst #1: Backend services analysis
@@ -617,6 +677,7 @@ codebase-analyst #5: Database & data layer analysis
 ```
 
 #### Comprehensive Quality Assessment
+
 ```yaml
 # Multi-dimensional Quality Check (Parallel)
 code-reviewer: Code quality & best practices
@@ -629,6 +690,7 @@ regulatory-compliance-specialist: Compliance frameworks
 ```
 
 #### Full-Stack Feature Development
+
 ```yaml
 # Architecture-First Development
 Phase 1: principal-architect + api-architect (design)
@@ -645,6 +707,7 @@ Phase 3: Parallel Quality Gates
 ```
 
 #### Incident Response Coordination
+
 ```yaml
 # Rapid Response Pattern
 incident-commander: Overall coordination & communication
@@ -658,6 +721,7 @@ Prevention: production-reliability-engineer (post-incident improvements)
 ```
 
 #### Database & Migration Projects
+
 ```yaml
 # Database Evolution Pattern
 Phase 1: Analysis
@@ -690,6 +754,7 @@ Agents are granted minimal necessary permissions following the principle of leas
 | **Monitoring** | monitoring-specialist, performance-specialist | Read, Grep, Glob, LS, Bash | System monitoring and analysis |
 
 ### Security Boundaries
+
 - **SYSTEM BOUNDARY Protection**: Agents cannot invoke the Task tool (reserved for Claude)
 - **Domain Isolation**: Agents cannot exceed their designated domain boundaries
 - **Audit Trail**: All agent actions are logged and traceable
@@ -698,6 +763,7 @@ Agents are granted minimal necessary permissions following the principle of leas
 ## Ecosystem Health Metrics
 
 ### Performance Indicators
+
 - **Agent Ecosystem Coverage**: 40+ specialized agents across 8 domains
 - **Parallel Execution Rate**: ≥70% of eligible tasks executed in parallel
 - **Quality Gate Success**: ≥95% first-pass success rate
@@ -706,6 +772,7 @@ Agents are granted minimal necessary permissions following the principle of leas
 - **Resource Utilization**: Balanced cost vs. speed optimization
 
 ### Quality Metrics
+
 - **Domain Coverage**: 100% of SDLC covered by specialists
 - **Coordination Patterns**: 20+ documented orchestration patterns
 - **Failure Recovery**: <5% unhandled agent failures
@@ -713,6 +780,7 @@ Agents are granted minimal necessary permissions following the principle of leas
 - **Documentation Completeness**: 100% agent capabilities documented
 
 ### Operational Excellence
+
 - **Agent Availability**: 99.9% agent availability target
 - **Response Time**: <30 seconds average agent invocation time
 - **Integration Success**: 95% successful multi-agent coordination
@@ -722,6 +790,7 @@ Agents are granted minimal necessary permissions following the principle of leas
 ### Success Patterns Recognition
 
 #### High-Performing Patterns
+
 - Parallel execution of independent tasks
 - Right-sized agent selection (complexity-appropriate)
 - Clear handoffs with explicit success criteria
@@ -729,6 +798,7 @@ Agents are granted minimal necessary permissions following the principle of leas
 - Cost-conscious resource optimization
 
 #### Areas for Improvement
+
 - Sequential execution of parallelizable tasks
 - Over-delegation of simple tasks
 - Under-utilization of specialist capabilities
@@ -738,6 +808,7 @@ Agents are granted minimal necessary permissions following the principle of leas
 ## Decision Flows & Visual Guides
 
 ### Quick Decision Tree
+
 ```
 Task Request
 ├── Simple/Urgent (< 5 min)? → Handle Directly
@@ -749,6 +820,7 @@ Task Request
 ```
 
 ### Complexity Assessment Flow
+
 ```
 Complexity Assessment
 ├── Lines of Code
@@ -778,24 +850,28 @@ Complexity Assessment
 ## Additional Resources
 
 ### Documentation
+
 - **Individual Agent Docs**: See specific `.md` files in this directory
 - **Category Definitions**: [AGENT_CATEGORIES.md](./AGENT_CATEGORIES.md)
 - **Audit Protocols**: [AUDIT_VERIFICATION_PROTOCOL.md](./AUDIT_VERIFICATION_PROTOCOL.md)
 - **Agent Templates**: [AGENT_TEMPLATE.md](./AGENT_TEMPLATE.md)
 
 ### Configuration
+
 - **Claude Settings**: `~/.claude/settings.json`
 - **Agent Sync**: `/sync` command to deploy configurations
 - **Validation**: `./scripts/validate-agent-yaml.py`
 - **Health Check**: `/agent-audit` command
 
 ### Training & Development
+
 - **Best Practices**: Follow "MUST BE USED" and "Use PROACTIVELY" patterns
 - **Quality Standards**: Maintain Sonnet 4.1 capability descriptions
 - **Integration Testing**: Use `/test` command for validation
 - **Continuous Improvement**: Regular agent capability reviews
 
 ### Support & Troubleshooting
+
 - **Agent Failures**: Automatic fallback to Claude with user notification
 - **Coordination Issues**: project-orchestrator for complex scenarios
 - **Performance Problems**: monitoring-specialist for system analysis

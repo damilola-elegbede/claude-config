@@ -15,37 +15,41 @@
 
 ## 🎯 Overview
 
-This repository delivers a **sophisticated Smart Agent Orchestration Framework** for Claude Code CLI, featuring **41+ specialized agents** and **14 essential commands**. Built from the ground up after a comprehensive cleanup that removed 85+ bloat files, this system provides intelligent task delegation, parallel execution, and continuous improvement capabilities for enhanced development workflows.
+This repository delivers a **sophisticated Smart Agent Orchestration Framework** for Claude Code CLI, featuring **40+ specialized agents** and **14 essential commands**. Built from the ground up after a comprehensive cleanup that removed 85+ bloat files, this system provides intelligent task delegation, parallel execution, and continuous improvement capabilities for enhanced development workflows.
 
 ## 🧠 Smart Agent Orchestration Framework
 
-This repository implements a **production-ready orchestration framework** that intelligently manages 41+ specialized agents with sophisticated task delegation and parallel execution capabilities.
+This repository implements a **production-ready orchestration framework** that intelligently manages 40+ specialized agents with sophisticated task delegation and parallel execution capabilities.
 
 ### 🌟 Framework Core Principles
 
 #### 🎯 Right Tool for the Job
+
 - **Mandatory Specialist Delegation**: When a specialist exists, USE THEM - violation equals execution failure
 - **Domain Expertise**: Each agent has deep specialization in their domain
 - **Quality Boundaries**: Specialists maintain higher standards than generalist approaches
 
 #### ⚡ Parallel-First Execution
+
 - **Concurrent by Default**: Multiple agents work simultaneously whenever possible
 - **Intelligent Coordination**: Framework optimizes task distribution and dependencies
 - **Multi-Instance Support**: Run multiple instances of the same agent type for massive parallelization
 
 #### 📊 Pragmatic Thresholds
+
 - **Emergency Override**: Direct action when specialists aren't available or time-critical
 - **Context-Aware Decisions**: Framework balances specialist deployment vs. direct execution
 - **Performance Feedback Loop**: Continuous improvement based on execution metrics
 
 #### 🔄 Continuous Improvement
+
 - **Performance Monitoring**: Tracks execution times, success rates, and quality metrics
 - **Adaptive Allocation**: Learns optimal agent combinations for common task patterns
 - **Quality Evolution**: Agent capabilities improve through validated feedback cycles
 
 ### Key Framework Benefits
 
-- **🎭 41+ Specialized Agents**: Complete coverage across 8 functional domains
+- **🎭 40+ Specialized Agents**: Complete coverage across 8 functional domains
 - **⚡ Parallel Execution Engine**: Maximize concurrent operations for faster delivery
 - **🧠 Intelligent Task Delegation**: Automatic specialist selection based on task requirements
 - **🔄 One-Command Synchronization**: Deploy entire framework with `/sync`
@@ -239,7 +243,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 ```bash
 /agent-audit
 # Deploys 8 parallel agent-auditor instances across all categories
-# Comprehensive validation of 41+ agent configurations
+# Comprehensive validation of 40+ agent configurations
 # Performance metrics and capability gap analysis
 # Continuous improvement recommendations with quality feedback loops
 # Production-ready health monitoring for the entire orchestration framework
@@ -278,9 +282,9 @@ Note: Previously named `/resolve-rabbit`.
 # Prevents accidental force pushes
 ```
 
-## 🎭 Agent Ecosystem: 41+ Specialists
+## 🎭 Agent Ecosystem: 40+ Specialists
 
-The Smart Agent Orchestration Framework includes **41+ specialized agents** organized across 8 functional domains, with sophisticated parallel execution and multi-instance capabilities:
+The Smart Agent Orchestration Framework includes **40+ specialized agents** organized across 8 functional domains, with sophisticated parallel execution and multi-instance capabilities:
 
 ### 📊 Agent Categories Overview
 
@@ -438,7 +442,7 @@ Performance Tracking: Real-time capability assessment and gap analysis
 
 - **Production-Ready Orchestration**: Sophisticated task delegation with performance feedback loops
 - **Parallel-First Architecture**: Concurrent agent deployment optimized for maximum efficiency
-- **41+ Specialized Agents**: Complete coverage across 8 functional domains with continuous expansion
+- **40+ Specialized Agents**: Complete coverage across 8 functional domains with continuous expansion
 - **Intelligent Task Routing**: Automatic specialist selection based on task complexity and requirements
 - **Performance Monitoring**: Real-time execution metrics with continuous improvement algorithms
 - **Multi-Instance Coordination**: Scalable agent deployment with intelligent load balancing
@@ -482,7 +486,7 @@ graph TB
     B --> C{Validation}
     C --> D[Backup Existing]
     D --> E[Deploy to ~/.claude/]
-    E --> F[41 Agents Available]
+    E --> F[40+ Agents Available]
     E --> G[14 Commands Available]
     F --> H[Enhanced Claude CLI]
     G --> H
@@ -500,7 +504,7 @@ cd claude-config
 # One-command framework deployment
 /sync
 
-# Experience intelligent orchestration: 41+ agents and 14 commands available
+# Experience intelligent orchestration: 40+ agents and 14 commands available
 # Multi-agent repository analysis with performance optimization
 /context
 
@@ -747,7 +751,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 - **Orchestration Security**: Framework-level validation of all agent operations and task delegation
 - **Principle of Least Privilege**: Each specialist has minimal required permissions with role-based access
 - **No Stored Credentials**: Configuration files contain no secrets, security through architecture
-- **Continuous Security Monitoring**: Automated security assessments with `/security` and security-auditor agent
+- **Continuous Security Monitoring**: Automated security assessments via the security-auditor agent
 - **Production-Ready Security Gates**: Comprehensive security validation throughout the orchestration pipeline
 
 ## 📄 License
