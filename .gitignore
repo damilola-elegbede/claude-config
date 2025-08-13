@@ -30,9 +30,11 @@ Thumbs.db
 
 # Test artifacts
 test-results.log
+test-output.log
 test-results/
 coverage/
 .coverage
+*.test.log
 
 # Environment files with potential secrets
 .env
