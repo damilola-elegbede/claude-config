@@ -2,9 +2,9 @@
 
 ## Description
 
-Enters plan mode to generate comprehensive strategic requirements and tactical 
-implementation plans. Presents a preview for approval before writing any files. 
-Creates a roadmap of small, focused PRs that can be developed in parallel when 
+Enters plan mode to generate comprehensive strategic requirements and tactical
+implementation plans. Presents a preview for approval before writing any files.
+Creates a roadmap of small, focused PRs that can be developed in parallel when
 possible, with each PR independently reviewable and following TDD methodology.
 
 ## Usage
@@ -56,6 +56,7 @@ Based on task requirements, I will:
 5. **Optimize for parallel execution** when possible
 
 Common agent patterns:
+
 - **Feature development**: backend-engineer + frontend-architect + test-engineer
 - **Bug fixes**: debugger + test-engineer + code-reviewer
 - **Performance issues**: performance-specialist + monitoring-specialist
@@ -102,9 +103,11 @@ The strategic plan includes:
 When approved, files are written to `.tmp/<feature-name>/`:
 
 **Simple tasks** generate:
+
 - `implementation.md` - Single PR with all changes
 
 **Complex tasks** generate:
+
 - `plan.md` - Strategic requirements document
 - `phase_1.1_<description>.md` - Phase 1, PR 1
 - `phase_1.2_<description>.md` - Phase 1, PR 2
@@ -118,7 +121,7 @@ When approved, files are written to `.tmp/<feature-name>/`:
 
 Each PR file (`phase_X.Y_description.md`) contains comprehensive task breakdowns:
 
-#### Required Sections in Each PR File:
+#### Required Sections in Each PR File
 
 1. **PR Metadata**
    - Title, estimated LOC, dependencies
@@ -139,7 +142,7 @@ Each PR file (`phase_X.Y_description.md`) contains comprehensive task breakdowns
 
 4. **Implementation Details**
    - **Specific code changes** required
-   - **File-by-file modifications** 
+   - **File-by-file modifications**
    - **Exact functions/methods** to add or modify
    - **Database changes** if applicable
    - **Configuration updates** needed
@@ -152,7 +155,8 @@ Each PR file (`phase_X.Y_description.md`) contains comprehensive task breakdowns
    - Performance implications
 
 Example task detail level:
-```
+
+```text
 Task T1.2.3: Implement password hashing in User model
 - Agent: backend-engineer
 - Time: 25-30 minutes
@@ -175,6 +179,7 @@ Phases follow a logical progression:
 3. **Phase 3 - Integration**: Service integration and validation
 
 Within each phase:
+
 - PRs are numbered sequentially (1.1, 1.2, 1.3...)
 - Dependencies are clearly marked
 - Parallel execution opportunities identified
@@ -217,7 +222,7 @@ After 3 failed attempts, generate a simple single-file plan as fallback.
 
 ### Complex Task with Approval
 
-```
+```text
 User: /plan implement user authentication with JWT
 
 Claude: 📋 Entering plan mode for strategic planning...
@@ -245,7 +250,7 @@ Claude: ✅ Plan approved! Writing files...
 
 ### Cancelled Plan
 
-```
+```text
 User: /plan add dark mode to entire app
 
 Claude: 📋 Entering plan mode...
@@ -261,7 +266,7 @@ Claude: ❌ Plan cancelled. No files were written.
 
 ### Simple Mode
 
-```
+```text
 User: /plan simple fix typo in button
 
 Claude: 📋 Entering plan mode...

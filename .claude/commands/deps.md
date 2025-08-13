@@ -51,12 +51,14 @@ I automatically detect and work with:
 I perform comprehensive security analysis:
 
 #### Vulnerability Scanning
+
 - Check against CVE databases
 - Identify known security issues
 - Assess severity levels (Critical, High, Medium, Low)
 - Check for available patches
 
 #### Supply Chain Analysis
+
 - Verify package authenticity
 - Check maintainer reputation
 - Identify typosquatting risks
@@ -64,13 +66,15 @@ I perform comprehensive security analysis:
 - Analyze download statistics anomalies
 
 #### License Compliance
+
 - Identify license types
 - Check for incompatible licenses
 - Flag copyleft requirements
 - Verify commercial usage rights
 
 #### Output Format
-```
+
+```text
 ## Dependency Audit Report
 
 ### Critical Issues (Immediate Action Required)
@@ -94,6 +98,7 @@ I perform comprehensive security analysis:
 I perform safe, intelligent updates:
 
 #### Update Strategy
+
 1. **Analyze update impact** - breaking changes, compatibility
 2. **Create update plan** - staged approach for safety
 3. **Test each stage** - run tests after each update group
@@ -101,12 +106,14 @@ I perform safe, intelligent updates:
 5. **Generate report** - document all changes
 
 #### Update Priorities
+
 - **Security patches**: Immediate, even if breaking
 - **Minor updates**: Grouped by compatibility
 - **Major updates**: Individual attention with migration notes
 - **Dev dependencies**: Updated more aggressively
 
 #### Safety Measures
+
 - Lock file backups before changes
 - Incremental updates (patch → minor → major)
 - Compatibility verification between packages
@@ -118,6 +125,7 @@ I perform safe, intelligent updates:
 I remove unnecessary dependencies:
 
 #### Detection Methods
+
 - **Static analysis** - find unused imports/requires
 - **Dynamic analysis** - runtime usage tracking
 - **Test coverage** - dependencies only used in dead code
@@ -125,6 +133,7 @@ I remove unnecessary dependencies:
 - **Transitive analysis** - duplicated sub-dependencies
 
 #### Cleanup Process
+
 1. Identify unused packages
 2. Check for hidden usages
 3. Verify removal safety
@@ -137,6 +146,7 @@ I remove unnecessary dependencies:
 I provide comprehensive dependency health metrics:
 
 #### Health Indicators
+
 - **Freshness**: How up-to-date are dependencies
 - **Security**: Known vulnerabilities count
 - **Maintenance**: Last update, open issues, responsiveness
@@ -145,7 +155,8 @@ I provide comprehensive dependency health metrics:
 - **Technical Debt**: Update effort required
 
 #### Risk Assessment
-```
+
+```text
 ## Dependency Health Score: B+ (78/100)
 
 ### Breakdown
@@ -166,6 +177,7 @@ I provide comprehensive dependency health metrics:
 I forecast future dependency risks:
 
 #### Prediction Factors
+
 - **Historical vulnerability patterns** of the package
 - **Maintenance activity trends** and responsiveness
 - **Dependency chain risks** from sub-dependencies
@@ -173,7 +185,8 @@ I forecast future dependency risks:
 - **Code complexity metrics** suggesting bug likelihood
 
 #### Prediction Output
-```
+
+```text
 ## 30-Day Risk Forecast
 
 ### High Risk Packages (>70% probability)
@@ -194,13 +207,15 @@ I forecast future dependency risks:
 I analyze dependency differences:
 
 #### Comparison Scenarios
+
 - **Environment comparison**: dev vs prod vs staging
 - **Branch comparison**: main vs feature branches
 - **Time comparison**: current vs last month
 - **Team comparison**: different projects/services
 
 #### Comparison Output
-```
+
+```text
 ## Dependency Comparison: main vs feature/new-ui
 
 ### Added (5 packages)
@@ -223,9 +238,11 @@ I analyze dependency differences:
 ## Agent Coordination
 
 ### Primary Coordinator
+
 - **dependency-strategist**: Orchestrates the analysis and updates
 
 ### Specialist Support
+
 - **security-auditor**: For vulnerability assessment
 - **supply-chain-security-engineer**: For supply chain risks
 - **code-archaeologist**: For usage analysis in legacy code

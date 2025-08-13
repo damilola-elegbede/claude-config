@@ -1,14 +1,17 @@
 # /push Command
 
 ## Description
+
 Safely pushes changes to the remote repository with proper checks and branch tracking.
 
 ## Usage
-```
+
+```bash
 /push
 ```
 
 ## Behavior
+
 When you use `/push`, I will:
 
 1. **Verify branch status**:
@@ -80,6 +83,7 @@ When you use `/push`, I will:
    - Display pushed commit summary
 
 ## Safety Features
+
 - Prevents accidental pushes to main/master
 - Warns about uncommitted changes
 - Sets up branch tracking automatically
@@ -93,16 +97,19 @@ When you use `/push`, I will:
 ## Common Scenarios
 
 ### First push of new branch
+
 ```bash
 git push -u origin feature/new-feature
 ```
 
 ### Regular push to tracked branch
+
 ```bash
 git push origin $(git branch --show-current)
 ```
 
 ### Force push (requires confirmation)
+
 ```bash
 git push --force-with-lease
 ```
@@ -110,7 +117,9 @@ git push --force-with-lease
 ## Enhanced Quality Gates with Remediation
 
 ### Automated Fix Process
+
 Before push, agents automatically attempt to fix issues:
+
 1. **Test Failures**: test-engineer debugs and fixes failing tests
 2. **Linting Violations**: Auto-fix with language-specific formatters
    - ESLint --fix for JavaScript/TypeScript
@@ -123,6 +132,7 @@ Before push, agents automatically attempt to fix issues:
 6. **Performance**: performance-specialist optimizes bottlenecks
 
 ### Quality Gate Levels
+
 1. **Critical (Blocking)**:
    - Security vulnerabilities
    - Breaking test failures
@@ -142,12 +152,14 @@ Before push, agents automatically attempt to fix issues:
    - Document for technical debt tracking
 
 ### Push Decision Matrix
+
 - **All Fixed**: Push proceeds automatically
 - **Critical Issues**: Push blocked until resolved
 - **Non-critical + Rationale**: Push with warnings and documentation
 - **Non-critical No Rationale**: Request justification or fix
 
 ## Prerequisites
+
 - Git repository with remote configured
 - Commits to push
 - Clean working directory (or explicit override)
@@ -156,6 +168,7 @@ Before push, agents automatically attempt to fix issues:
 - Code review approval (no critical issues)
 
 ## Notes
+
 - Force pushes require explicit confirmation
 - Protected branches follow repository rules
 - **Linting is automatically run and fixed** before push

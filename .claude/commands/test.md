@@ -1,18 +1,21 @@
 # /test Command
 
 ## Description
+
 Automatically discovers and runs tests configured in any repository by analyzing the README.md and common test patterns. If no tests exist, it creates a base level test suite appropriate for the project type. This universal test runner eliminates the need to remember project-specific test commands or manually set up initial tests. Claude coordinates with the test-engineer specialist for comprehensive test strategy when needed.
 
 ## Usage
-```
+
+```bash
 /test
 ```
 
 ## Behavior
+
 When you use `/test`, I will:
 
 1. **Check for existing tests** by looking for:
-   - Test directories (test/, tests/, __tests__, spec/)
+   - Test directories (test/, tests/, **tests**, spec/)
    - Test files (*test.*, *.test.*, *_test.*, *.spec.*)
    - Test configuration files (jest.config.*, pytest.ini, etc.)
 
@@ -44,37 +47,44 @@ When you use `/test`, I will:
    - Show coverage information if available
 
 ## Test Detection Priority
+
 1. README.md documented commands (highest priority)
 2. Package manager test scripts (npm, yarn, pnpm)
 3. Framework-specific conventions
 4. Common test tool detection (pytest, jest, mocha, etc.)
 
 ## Test Generation Templates
+
 When creating new tests, I'll generate appropriate starter tests:
 
 ### JavaScript/TypeScript
+
 - Jest test with describe/it blocks
 - Basic module import tests
 - Simple function tests with assertions
 - Mock setup examples
 
 ### Python
+
 - pytest-style test functions
 - Basic import tests
 - Simple unit tests with assertions
 - Fixture examples
 
 ### Go
+
 - Standard testing package tests
 - Table-driven test examples
 - Basic function tests
 
 ### Other Languages
+
 - Framework-appropriate test structure
 - Basic assertions and test cases
 - Import/compilation tests
 
 ## Supported Test Frameworks
+
 - **JavaScript/TypeScript**: Jest, Mocha, Vitest, Jasmine, Karma
 - **Python**: pytest, unittest, nose, tox
 - **Go**: go test
@@ -85,7 +95,8 @@ When creating new tests, I'll generate appropriate starter tests:
 - **.NET**: dotnet test
 
 ## Examples
-```
+
+```bash
 # In a Node.js project
 /test
 # Finds and runs: npm test
@@ -100,6 +111,7 @@ When creating new tests, I'll generate appropriate starter tests:
 ```
 
 ## Notes
+
 - If no tests exist, I'll create a basic test suite before running
 - Generated tests follow best practices for the detected framework
 - If multiple test commands are found, I'll ask which one to run

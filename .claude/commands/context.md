@@ -1,19 +1,23 @@
 # /context Command
 
 ## Description
+
 Quickly analyzes and understands any repository by scanning its structure, dependencies, and documentation. This command provides a comprehensive overview to get you up to speed on any codebase. It can be configured to run automatically when Claude Code starts in a git repository.
 
 ## Usage
-```
+
+```bash
 /context [scope or component]
 ```
 
 ## Arguments
+
 - `scope or component` (optional): Specific area to analyze deeply. If omitted, provides full repository overview.
 
 ## Behavior
 
 ### Full Repository Analysis (no arguments)
+
 When you use `/context` without arguments, I will:
 
 1. **Analyze repository structure**:
@@ -44,6 +48,7 @@ When you use `/context` without arguments, I will:
    - Development workflow
 
 ### Focused Component Analysis (with scope argument)
+
 When you use `/context <scope>`, I will coordinate with codebase-analyst agents to:
 
 1. **Deep dive into specific areas**:
@@ -62,7 +67,8 @@ When you use `/context <scope>`, I will coordinate with codebase-analyst agents 
    - Executive-level summaries
 
 ## Output Format
-```
+
+```text
 ## Repository Context: [Project Name]
 
 ### Overview
@@ -97,6 +103,7 @@ When you use `/context <scope>`, I will coordinate with codebase-analyst agents 
 ```
 
 ## Auto-execution
+
 To enable automatic context analysis on Claude Code startup:
 
 1. This behavior is documented in CLAUDE.md
@@ -105,13 +112,15 @@ To enable automatic context analysis on Claude Code startup:
 4. You can disable this by adding a `.claude/noautocontext` file
 
 ## Performance
+
 - Completes in under 5 seconds for typical repositories
 - Uses parallel analysis with multiple codebase-analyst agents for large codebases
 - Caches results to speed up repeated analysis
 - Limits depth for extremely large repositories
 
 ## Examples
-```
+
+```bash
 # Full repository overview
 /context
 
@@ -120,7 +129,9 @@ To enable automatic context analysis on Claude Code startup:
 /context frontend architecture
 /context technical debt
 /context performance bottlenecks
+```
 
+```text
 # Output for a React app:
 ## Repository Context: my-react-app
 
@@ -137,6 +148,7 @@ A modern React application with TypeScript, using Vite for building and Jest for
 ```
 
 ## Notes
+
 - Works with any programming language or framework
 - Particularly useful when switching between projects
 - Results are tailored to the repository type

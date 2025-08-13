@@ -35,9 +35,11 @@ When you invoke `/review`, I will:
 ## Multi-Agent Review Process
 
 ### Primary Reviewer
+
 - **code-reviewer**: Coordinates review, ensures completeness
 
 ### Specialist Reviewers (deployed as needed)
+
 - **security-auditor**: Security vulnerabilities, OWASP Top 10
 - **performance-specialist**: Performance bottlenecks, optimization
 - **test-engineer**: Test coverage, test quality
@@ -52,6 +54,7 @@ When you invoke `/review`, I will:
 I check for:
 
 #### Injection Vulnerabilities
+
 - SQL injection risks
 - Command injection
 - XSS vulnerabilities
@@ -59,6 +62,7 @@ I check for:
 - LDAP injection
 
 #### Authentication & Authorization
+
 - Weak authentication methods
 - Missing authorization checks
 - Session management issues
@@ -66,6 +70,7 @@ I check for:
 - Password policy violations
 
 #### Data Protection
+
 - Sensitive data exposure
 - Insufficient encryption
 - Insecure data storage
@@ -73,6 +78,7 @@ I check for:
 - Secrets in code
 
 #### Configuration Security
+
 - Insecure defaults
 - Debug mode enabled
 - Verbose error messages
@@ -83,6 +89,7 @@ I check for:
 I evaluate:
 
 #### Complexity Metrics
+
 - Cyclomatic complexity
 - Cognitive complexity
 - Nesting depth
@@ -90,6 +97,7 @@ I evaluate:
 - Class coupling
 
 #### Maintainability
+
 - Code duplication
 - Dead code
 - Unclear naming
@@ -97,6 +105,7 @@ I evaluate:
 - Poor organization
 
 #### Best Practices
+
 - SOLID principles
 - DRY violations
 - Design patterns
@@ -108,12 +117,14 @@ I evaluate:
 I identify:
 
 #### Algorithm Issues
+
 - O(n²) or worse complexity
 - Unnecessary loops
 - Inefficient sorting
 - Redundant computations
 
 #### Database Performance
+
 - N+1 queries
 - Missing indexes
 - Unnecessary joins
@@ -121,6 +132,7 @@ I identify:
 - Lock contention
 
 #### Memory Issues
+
 - Memory leaks
 - Large allocations
 - Circular references
@@ -128,6 +140,7 @@ I identify:
 - Resource cleanup
 
 #### Frontend Performance
+
 - Bundle size issues
 - Render blocking resources
 - Missing lazy loading
@@ -139,12 +152,14 @@ I identify:
 I verify:
 
 #### Coverage Metrics
+
 - Line coverage
 - Branch coverage
 - Function coverage
 - Statement coverage
 
 #### Test Quality
+
 - Test isolation
 - Assertion quality
 - Edge case coverage
@@ -152,6 +167,7 @@ I verify:
 - Mock appropriateness
 
 #### Missing Tests
+
 - Untested functions
 - Uncovered branches
 - Missing integration tests
@@ -162,18 +178,21 @@ I verify:
 I assess:
 
 #### Design Patterns
+
 - Pattern appropriateness
 - Consistency
 - Over-engineering
 - Under-abstraction
 
 #### Dependencies
+
 - Circular dependencies
 - Tight coupling
 - Interface violations
 - Layer violations
 
 #### Scalability
+
 - Bottlenecks
 - Single points of failure
 - Resource limits
@@ -184,6 +203,7 @@ I assess:
 ### Severity Levels
 
 #### 🔴 Critical (Must Fix)
+
 - **Security vulnerabilities** that could be exploited
 - **Data loss risks** or corruption possibilities
 - **Breaking changes** to public APIs
@@ -191,6 +211,7 @@ I assess:
 - **Production crashes** waiting to happen
 
 #### 🟠 High (Should Fix)
+
 - **Performance degradation** >20%
 - **Memory leaks** or resource issues
 - **Poor error handling** that affects UX
@@ -198,6 +219,7 @@ I assess:
 - **Accessibility barriers** (WCAG AA violations)
 
 #### 🟡 Medium (Consider Fixing)
+
 - **Code smells** affecting maintainability
 - **Minor performance** issues (<20% impact)
 - **Incomplete documentation** for public APIs
@@ -205,6 +227,7 @@ I assess:
 - **Test coverage gaps** in non-critical paths
 
 #### 🟢 Low (Nice to Have)
+
 - **Formatting issues** (if no auto-formatter)
 - **Minor naming** improvements
 - **Optional optimizations**
@@ -238,12 +261,15 @@ const query = `SELECT * FROM users WHERE id = ${userId}`;
 const query = 'SELECT * FROM users WHERE id = ?';
 db.query(query, [userId]);
 ```
+
 **Impact**: Allows database manipulation via malicious input
 **References**: [OWASP SQL Injection](https://owasp.org/www-community/attacks/SQL_Injection)
 
 #### 2. Authentication Bypass
+
 **File**: `src/middleware/auth.js:15`
 **Issue**: Weak token validation allows bypass
+
 ```javascript
 // Current (vulnerable):
 if (token && token.length > 0) { // Too permissive
@@ -251,13 +277,16 @@ if (token && token.length > 0) { // Too permissive
 // Fix:
 if (token && jwt.verify(token, SECRET_KEY)) {
 ```
+
 **Impact**: Unauthorized access to protected resources
 
 ### 🟠 High Priority Issues (5)
 
 #### 1. Memory Leak in React Component
+
 **File**: `src/components/Dashboard.jsx:23`
 **Issue**: Event listener not cleaned up
+
 ```javascript
 // Add cleanup:
 useEffect(() => {
@@ -270,18 +299,22 @@ useEffect(() => {
 [Additional issues with fixes...]
 
 ### 🟡 Medium Priority Issues (6)
+
 [List of maintainability and performance improvements...]
 
 ### 🟢 Low Priority Suggestions (2)
+
 [Minor improvements and style issues...]
 
 ### ✅ What's Good
+
 - Excellent test coverage in auth module (95%)
 - Consistent error handling pattern
 - Good separation of concerns
 - Clear documentation in API endpoints
 
 ### 📈 Metrics Comparison
+
 | Metric | Before | After (if fixed) | Target |
 |--------|--------|------------------|--------|
 | Security Score | 65/100 | 95/100 | >90 |
@@ -290,17 +323,21 @@ useEffect(() => {
 | Performance | B | A | A |
 
 ### 🔧 Auto-Fixable Issues
+
 Run `/review --fix` to automatically fix:
+
 - ✅ 4 formatting issues
 - ✅ 2 import sorting issues
 - ✅ 3 simple refactoring opportunities
 
 ### 📋 Next Steps
+
 1. Fix 2 critical security issues immediately
 2. Address 5 high priority issues before PR
 3. Consider fixing medium issues for better quality
 4. Run tests after fixes
 5. Re-run `/review` to verify fixes
+
 ```
 
 ## Fix Suggestions
@@ -355,6 +392,7 @@ Add as PR check:
 ### IDE Integration
 
 Configure for on-save reviews:
+
 - Review changed files automatically
 - Show inline issue markers
 - Provide quick-fix suggestions
@@ -362,6 +400,7 @@ Configure for on-save reviews:
 ## Review Profiles
 
 ### Security-Focused Review (`--security`)
+
 - Deep vulnerability scanning
 - Dependency vulnerability check
 - Authentication/authorization audit
@@ -369,6 +408,7 @@ Configure for on-save reviews:
 - Input validation verification
 
 ### Performance Review (`--performance`)
+
 - Algorithm complexity analysis
 - Database query optimization
 - Memory usage profiling
@@ -376,6 +416,7 @@ Configure for on-save reviews:
 - Caching opportunity identification
 
 ### Strict Review (`--strict`)
+
 - Enforces all best practices
 - Requires 90%+ test coverage
 - No complexity above threshold

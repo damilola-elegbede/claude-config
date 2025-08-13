@@ -1,17 +1,21 @@
 # /branch Command
 
 ## Description
+
 Intelligently creates and switches to a new git branch based on context from the conversation or explicit input. Always starts from the latest main branch to ensure branches are up-to-date.
 
 ## Usage
-```
+
+```bash
 /branch [context]
 ```
 
 ## Arguments
+
 - `context` (optional): Description or context for the branch. If not provided, uses context from the current conversation window.
 
 ## Behavior
+
 When you use `/branch`, I will:
 
 1. **Switch to main and update**:
@@ -46,7 +50,9 @@ When you use `/branch`, I will:
 ## Branch Naming Conventions
 
 ### Automatic Prefixes
+
 Based on context analysis:
+
 - `feature/` - New functionality or enhancements
 - `fix/` - Bug fixes or issue resolutions
 - `chore/` - Maintenance, refactoring, or tooling
@@ -70,6 +76,7 @@ Based on context analysis:
 ## Examples
 
 ### With explicit context
+
 ```bash
 /branch add stripe payment integration
 # Creates: feature/stripe-payment-integration
@@ -82,7 +89,8 @@ Based on context analysis:
 ```
 
 ### Using conversation context
-```
+
+```text
 User: "I need to add a dark mode toggle to the settings page"
 User: /branch
 # Creates: feature/dark-mode-settings-toggle
@@ -105,6 +113,7 @@ The command analyzes multiple context sources:
 ## Integration with Other Commands
 
 Typical workflow:
+
 ```bash
 /branch implement oauth2 login    # Create feature branch
 # ... make changes ...
@@ -124,20 +133,26 @@ Typical workflow:
 ## Advanced Features
 
 ### Issue Integration
+
 Automatically detects and includes:
+
 - JIRA ticket numbers (PROJ-123)
 - GitHub issue numbers (#456)
 - Linear issue IDs (ENG-789)
 - Shortcut story IDs (sc-1234)
 
 ### Multi-word Handling
+
 Intelligently converts phrases:
+
 - "User Profile Manager" → `user-profile-manager`
 - "API v2 Migration" → `api-v2-migration`
 - "iOS/Android Support" → `ios-android-support`
 
 ### Context Inference
+
 Can understand intent from:
+
 - Error stack traces → fix branch
 - Feature descriptions → feature branch
 - "Update docs" mentions → docs branch
@@ -146,12 +161,14 @@ Can understand intent from:
 ## Configuration
 
 Respects repository settings:
+
 - Branch naming conventions in `.gitmessage`
 - Protected branch rules
 - Team-specific prefixes
 - Organization standards
 
 ## Notes
+
 - Branch names are limited to 50 characters for readability
 - Special characters are converted to hyphens
 - Uppercase converted to lowercase

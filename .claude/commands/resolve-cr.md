@@ -32,16 +32,19 @@ When you invoke `/resolve-cr`, I will:
 I search for CodeRabbit comments using multiple methods in parallel:
 
 #### Primary Search Endpoints (Parallel Execution)
+
 - `/pulls/{pr}/reviews` - Review-level comments
 - `/pulls/{pr}/comments` - Inline review comments
 - `/issues/{pr}/comments` - Conversation comments (backup)
 
 #### Search Patterns
+
 - Primary: `@coderabbitai` mentions
 - Secondary: `coderabbitai[bot]` user comments
 - Tertiary: `Prompts for AI Agents` sections
 
 #### Search Verification
+
 - **Never assume comments don't exist** after first attempt
 - **Never assume comments are resolved** without verification
 - **Always retry** with different methods if initial search returns empty
@@ -50,6 +53,7 @@ I search for CodeRabbit comments using multiple methods in parallel:
 ### Comment Types Processed
 
 I process ALL comment types:
+
 - **Inline code comments** on specific lines
 - **File-level comments** on entire files
 - **Review summary comments** at PR level
@@ -109,7 +113,7 @@ I apply fixes systematically:
 
 I create organized commits:
 
-```
+```text
 fix: address CodeRabbit security findings
 - Fix SQL injection vulnerability in user query
 - Add input validation for API endpoints
@@ -134,6 +138,7 @@ docs: update documentation per CodeRabbit suggestions
 ## Resolution Categories
 
 ### Security Fixes
+
 - Input validation
 - SQL injection prevention
 - XSS protection
@@ -142,6 +147,7 @@ docs: update documentation per CodeRabbit suggestions
 - Sensitive data handling
 
 ### Performance Optimizations
+
 - Query optimization
 - Caching implementation
 - Algorithm improvements
@@ -150,6 +156,7 @@ docs: update documentation per CodeRabbit suggestions
 - Bundle size reduction
 
 ### Code Quality
+
 - Reduce complexity
 - Extract methods
 - Remove duplication
@@ -158,6 +165,7 @@ docs: update documentation per CodeRabbit suggestions
 - Add error handling
 
 ### Test Coverage
+
 - Add unit tests
 - Add integration tests
 - Test edge cases
@@ -165,6 +173,7 @@ docs: update documentation per CodeRabbit suggestions
 - Add test documentation
 
 ### Documentation
+
 - Add missing JSDoc/docstrings
 - Update README
 - Add inline comments
@@ -175,7 +184,7 @@ docs: update documentation per CodeRabbit suggestions
 
 After resolution, I provide:
 
-```
+```text
 ## CodeRabbit Resolution Summary
 
 ### Comments Processed

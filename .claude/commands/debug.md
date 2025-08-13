@@ -26,30 +26,35 @@ When you invoke `/debug`, I will:
 I classify bugs into categories to determine the investigation approach:
 
 ### Intermittent Issues
+
 - **Symptoms**: Works sometimes, fails unpredictably
 - **Approach**: Statistical analysis, multiple reproduction attempts
 - **Agents**: debugger, performance-specialist
 - **Focus**: Timing, load conditions, environmental factors
 
 ### Race Conditions
+
 - **Symptoms**: Concurrency failures, deadlocks, data corruption
 - **Approach**: Thread analysis, lock inspection, timing manipulation
 - **Agents**: debugger, backend-engineer
 - **Focus**: Shared resources, synchronization points, atomic operations
 
 ### Memory Issues
+
 - **Symptoms**: Growing memory usage, crashes, slow degradation
 - **Approach**: Heap analysis, reference tracking, allocation patterns
 - **Agents**: debugger, code-archaeologist
 - **Focus**: Leak sources, circular references, resource cleanup
 
 ### Production-Only Bugs
+
 - **Symptoms**: Works in dev/staging, fails in production
 - **Approach**: Environment comparison, configuration analysis, scale testing
 - **Agents**: debugger, production-reliability-engineer, monitoring-specialist
 - **Focus**: Environment differences, data volumes, external dependencies
 
 ### Performance Degradation
+
 - **Symptoms**: Slowness, timeouts, resource exhaustion
 - **Approach**: Profiling, bottleneck analysis, load testing
 - **Agents**: debugger, performance-specialist, performance-predictor
@@ -81,12 +86,14 @@ Based on evidence, I form hypotheses about the root cause:
 I use appropriate techniques based on the issue type:
 
 #### Binary Search (for regressions)
+
 - Find last working version
 - Find first broken version
 - Bisect commits to find exact breaking change
 - Analyze the specific changes that caused the issue
 
 #### Reproduction Attempts
+
 - **Deterministic**: Exact step-by-step reproduction
 - **Statistical**: Multiple runs to catch intermittent issues
 - **Stress Testing**: High load to trigger race conditions
@@ -94,6 +101,7 @@ I use appropriate techniques based on the issue type:
 - **Synthetic**: Using artificial data/conditions
 
 #### Differential Analysis
+
 - Compare working vs failing environments
 - Analyze configuration differences
 - Examine data variations
@@ -120,9 +128,11 @@ I deliver:
 ## Agent Coordination
 
 ### Primary Investigator
+
 - **debugger**: Leads the investigation, coordinates other agents
 
 ### Specialist Support (deployed as needed)
+
 - **performance-specialist**: For performance-related issues
 - **code-archaeologist**: For historical code analysis and memory leaks
 - **backend-engineer**: For concurrency and system-level issues
@@ -131,6 +141,7 @@ I deliver:
 - **security-auditor**: When security implications are suspected
 
 ### Parallel Execution
+
 When multiple hypotheses exist, I deploy agents in parallel to investigate different theories simultaneously, reducing time to resolution.
 
 ## Output Format
@@ -138,7 +149,8 @@ When multiple hypotheses exist, I deploy agents in parallel to investigate diffe
 After investigation, I provide:
 
 ### Bug Report
-```
+
+```text
 ## Issue: [Title]
 
 ### Summary
@@ -170,6 +182,7 @@ After investigation, I provide:
 ## Common Investigation Patterns
 
 ### Pattern: Intermittent Test Failures
+
 1. Collect failure history and patterns
 2. Identify environmental factors (time, load, data)
 3. Add logging around failure points
@@ -177,6 +190,7 @@ After investigation, I provide:
 5. Implement deterministic reproduction
 
 ### Pattern: Memory Leak
+
 1. Monitor memory growth over time
 2. Identify allocation patterns
 3. Track reference chains
@@ -184,6 +198,7 @@ After investigation, I provide:
 5. Implement proper cleanup
 
 ### Pattern: Race Condition
+
 1. Identify shared resources
 2. Analyze synchronization mechanisms
 3. Add strategic delays to expose timing issues
@@ -191,6 +206,7 @@ After investigation, I provide:
 5. Implement proper synchronization
 
 ### Pattern: Production-Only Failure
+
 1. Compare all environment variables
 2. Analyze data volume differences
 3. Check external service behaviors

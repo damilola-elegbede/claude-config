@@ -35,12 +35,14 @@ When you invoke `/fix-ci`, I will:
 I identify and fix these types of CI failures:
 
 ### Build Failures
+
 - **Import/Module errors** - Missing dependencies, incorrect paths
 - **Compilation errors** - Syntax errors, type mismatches
 - **Configuration issues** - Invalid config files, missing env vars
 - **Resource constraints** - Out of memory, disk space issues
 
 ### Test Failures
+
 - **Assertion failures** - Update test expectations
 - **Timeouts** - Increase timeout limits or optimize slow code
 - **Flaky tests** - Add retries, fix race conditions
@@ -48,12 +50,14 @@ I identify and fix these types of CI failures:
 - **Snapshot mismatches** - Update snapshots after verifying changes
 
 ### Code Quality Failures
+
 - **Linting errors** - Auto-fix formatting and style issues
 - **Type errors** - Fix type annotations and interfaces
 - **Coverage drops** - Identify untested code paths
 - **Security vulnerabilities** - Apply security patches
 
 ### Environment Issues
+
 - **Missing dependencies** - Install required packages
 - **Version mismatches** - Align versions across environments
 - **Permission errors** - Fix file/directory permissions
@@ -110,6 +114,7 @@ I recognize patterns to identify root causes:
 ### Flaky Test Detection
 
 I identify flaky tests by:
+
 - Multiple runs with different results
 - Timing-dependent failures
 - Order-dependent test failures
@@ -117,6 +122,7 @@ I identify flaky tests by:
 - Random/intermittent failures
 
 For flaky tests, I:
+
 1. Add retry mechanisms
 2. Fix race conditions
 3. Isolate test dependencies
@@ -128,6 +134,7 @@ For flaky tests, I:
 When using `--predict`, I:
 
 ### Analyze Risk Factors
+
 - Recent code changes that often cause failures
 - Dependencies with known issues
 - Test coverage gaps
@@ -135,6 +142,7 @@ When using `--predict`, I:
 - Historical failure patterns
 
 ### Preventive Actions
+
 - Run additional tests locally before push
 - Check for common issues in changed files
 - Verify dependency compatibility
@@ -146,6 +154,7 @@ When using `--predict`, I:
 When using `--optimize`, I:
 
 ### Identify Bottlenecks
+
 - Slow test suites
 - Sequential jobs that could parallelize
 - Redundant test runs
@@ -153,6 +162,7 @@ When using `--optimize`, I:
 - Cache misses
 
 ### Optimization Strategies
+
 - Parallelize independent jobs
 - Implement test splitting
 - Add caching for dependencies
@@ -164,7 +174,7 @@ When using `--optimize`, I:
 
 When using `--report`, I generate:
 
-```
+```text
 ## CI Health Report
 
 ### Success Rate
@@ -194,9 +204,11 @@ When using `--report`, I generate:
 ## Agent Coordination
 
 ### Primary Agent
+
 - **devops**: Leads CI/CD troubleshooting and fixes
 
 ### Supporting Agents
+
 - **test-engineer**: For test-related failures
 - **debugger**: For complex failure analysis
 - **performance-specialist**: For performance issues
@@ -205,6 +217,7 @@ When using `--report`, I generate:
 ## Success Metrics
 
 Fix success is measured by:
+
 - CI passes after fix application
 - No regression in other tests
 - Fix doesn't break other branches
@@ -213,7 +226,7 @@ Fix success is measured by:
 
 ## Workflow Example
 
-```
+```text
 User: /fix-ci
 
 Claude: 🔍 Analyzing CI failure on current branch...

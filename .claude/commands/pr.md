@@ -36,6 +36,7 @@ When you invoke `/pr`, I will:
 I analyze your changes to understand:
 
 #### Code Changes
+
 - **Added features**: New functionality and capabilities
 - **Modified behavior**: Changes to existing functionality
 - **Refactoring**: Code improvements without behavior changes
@@ -43,6 +44,7 @@ I analyze your changes to understand:
 - **Performance**: Optimizations and improvements
 
 #### Impact Assessment
+
 - **Breaking changes**: API changes, removed features, incompatible updates
 - **Database changes**: Schema modifications, migrations needed
 - **Configuration changes**: New environment variables, settings
@@ -50,6 +52,7 @@ I analyze your changes to understand:
 - **Security implications**: Authentication, authorization, data handling
 
 #### Test Coverage
+
 - **New tests added**: Unit, integration, e2e tests
 - **Test modifications**: Updated expectations, new test cases
 - **Coverage changes**: Increase or decrease in coverage percentage
@@ -61,7 +64,7 @@ I analyze your changes to understand:
 
 I create semantic commit-style titles:
 
-```
+```text
 feat: add user authentication with JWT tokens
 fix: resolve memory leak in data processor
 refactor: simplify database connection logic
@@ -185,11 +188,13 @@ I automatically assign labels based on changes:
 I assign reviewers based on:
 
 ### Code Ownership
+
 - Check CODEOWNERS file for automatic assignments
 - Identify primary maintainers of changed files
 - Consider recent contributors to affected code
 
 ### Expertise Matching
+
 - **Frontend changes**: Assign UI/UX specialists
 - **Backend changes**: Assign backend engineers
 - **Database changes**: Assign database experts
@@ -197,11 +202,13 @@ I assign reviewers based on:
 - **Performance changes**: Assign performance specialists
 
 ### Availability Consideration
+
 - Check reviewer's recent PR review load
 - Avoid overloading single reviewers
 - Distribute reviews across team
 
 ### Review Requirements
+
 - Ensure minimum reviewers based on:
   - Breaking changes: 2+ reviewers
   - Security changes: Security team review required
@@ -274,6 +281,7 @@ PR quality is measured by:
 ## Examples
 
 ### Feature PR
+
 ```bash
 /pr
 # Creates: "feat: add user dashboard with analytics"
@@ -282,6 +290,7 @@ PR quality is measured by:
 ```
 
 ### Urgent Bug Fix
+
 ```bash
 /pr main --urgent
 # Creates: "fix: critical - resolve payment processing error"
@@ -290,6 +299,7 @@ PR quality is measured by:
 ```
 
 ### Draft WIP
+
 ```bash
 /pr develop --draft
 # Creates: "WIP: refactor authentication system"
@@ -300,6 +310,7 @@ PR quality is measured by:
 ## Integration with Other Commands
 
 Works seamlessly with:
+
 - `/commit` - Ensures commits are ready for PR
 - `/test` - Validates tests before PR creation
 - `/review` - Can trigger review after PR creation
