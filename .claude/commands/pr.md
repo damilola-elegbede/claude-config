@@ -8,7 +8,7 @@ Creates pull requests with intelligent analysis of your changes and generates co
 /pr [target_branch]
 ```
 
-## What It Does
+## Behavior
 1. **Analyzes your changes**: Diffs against target branch to understand scope and impact
 2. **Generates smart PR content**: Creates title, description, and identifies breaking changes
 3. **Creates the PR**: Opens with proper labels and reviewer suggestions

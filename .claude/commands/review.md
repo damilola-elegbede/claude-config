@@ -8,7 +8,7 @@ Pre-commit code review that catches issues before you create a PR. Focuses on co
 /review [file_or_directory]
 ```
 
-## What It Does
+## Behavior
 1. **Scans changed code**: Reviews uncommitted changes or specified files
 2. **Finds real issues**: Security vulnerabilities, performance problems, bugs
 3. **Provides fixes**: Actionable suggestions with code examples
