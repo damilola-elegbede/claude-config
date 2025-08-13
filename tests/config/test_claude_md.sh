@@ -10,85 +10,91 @@ test_claude_md_exists() {
         "CLAUDE.md should exist in repository root"
 }
 
-# Test CLAUDE.md structure - Updated for new pragmatic format
-test_claude_md_structure() {
+# Test CLAUDE.md effectiveness criteria
+test_claude_md_effectiveness() {
     local claude_file="$ORIGINAL_DIR/CLAUDE.md"
+    local line_count=$(wc -l < "$claude_file")
+    local word_count=$(wc -w < "$claude_file")
+    local score=10
+    local reasons=()
     
-    # Check main header
-    assert_file_contains "$claude_file" "# Claude Configuration" \
-        "Should have main header"
+    # CRITICAL: Size limits for attention/effectiveness
+    # Based on analysis: >100 lines = attention drops, >200 lines = ignored
+    if [ "$line_count" -gt 100 ]; then
+        score=$((score - 3))
+        reasons+=("Too long ($line_count lines > 100): Claude will lose attention")
+    fi
     
-    # Check for core principle (chief of staff role)
-    assert_file_contains "$claude_file" "Core Principle" \
-        "Should have Core Principle section"
+    if [ "$line_count" -gt 200 ]; then
+        score=$((score - 5))
+        reasons+=("Massively too long ($line_count lines > 200): Will be ignored")
+    fi
     
-    assert_file_contains "$claude_file" "chief of staff" \
-        "Should define chief of staff role"
+    # Word density check (should be concise, not verbose)
+    words_per_line=$((word_count / line_count))
+    if [ "$words_per_line" -gt 20 ]; then
+        score=$((score - 2))
+        reasons+=("Too verbose ($words_per_line words/line > 20): Needs tighter editing")
+    fi
     
-    # Check for decision framework
-    assert_file_contains "$claude_file" "Decision Framework" \
-        "Should have Decision Framework section"
-}
-
-# Test critical sections exist - Updated for pragmatic structure
-test_claude_md_critical_sections() {
-    local claude_file="$ORIGINAL_DIR/CLAUDE.md"
+    # Must have role definition
+    if ! grep -q -i "orchestrat\|coordinat\|CTO\|chief\|manage" "$claude_file"; then
+        score=$((score - 2))
+        reasons+=("Missing role definition: Must clearly define Claude's role")
+    fi
     
-    # Check for Quick Start section
-    assert_file_contains "$claude_file" "Quick Start" \
-        "Should have Quick Start section with common patterns"
+    # Must have mandatory delegations (core requirement)
+    if ! grep -q "MANDATORY" "$claude_file"; then
+        score=$((score - 3))
+        reasons+=("Missing MANDATORY section: Core orchestration rules absent")
+    fi
     
-    # Check for Task Complexity Guide
-    assert_file_contains "$claude_file" "Task Complexity Guide" \
-        "Should have Task Complexity Guide"
+    # Must have consequences/enforcement
+    if ! grep -q -i "fail\|violat\|consequenc" "$claude_file"; then
+        score=$((score - 2))
+        reasons+=("No enforcement: Rules without consequences are ignored")
+    fi
     
-    # Check for Essential Agents section
-    assert_file_contains "$claude_file" "Essential Agents" \
-        "Should have Essential Agents section"
+    # Must be actionable (not just theory)
+    if ! grep -q -E "→|USE|STOP|Deploy" "$claude_file"; then
+        score=$((score - 1))
+        reasons+=("Not actionable enough: Needs clear directives")
+    fi
     
-    # Check for Real-World Examples
-    assert_file_contains "$claude_file" "Real-World Examples" \
-        "Should have Real-World Examples section"
+    # Report results
+    echo "CLAUDE.md Effectiveness Analysis:"
+    echo "  Lines: $line_count"
+    echo "  Words: $word_count" 
+    echo "  Words/line: $words_per_line"
+    echo "  Score: $score/10"
     
-    # Check for Anti-Patterns
-    assert_file_contains "$claude_file" "Anti-Patterns" \
-        "Should have Anti-Patterns to Avoid section"
+    if [ ${#reasons[@]} -gt 0 ]; then
+        echo "  Issues found:"
+        for reason in "${reasons[@]}"; do
+            echo "    - $reason"
+        done
+    fi
     
-    # Check for execution patterns
-    assert_file_contains "$claude_file" "Execution Patterns" \
-        "Should have Execution Patterns section"
-    
-    # Check for brutal honesty principle
-    assert_file_contains "$claude_file" "brutal honesty" \
-        "Should mention brutal honesty principle"
-}
-
-# Test pragmatic philosophy
-test_claude_md_philosophy() {
-    local claude_file="$ORIGINAL_DIR/CLAUDE.md"
-    
-    # Check for pragmatic approach
-    assert_file_contains "$claude_file" "When to Delegate" \
-        "Should have When to Delegate section"
-    
-    assert_file_contains "$claude_file" "When NOT to Delegate" \
-        "Should have When NOT to Delegate section"
-    
-    # Check for the closing philosophy
-    assert_file_contains "$claude_file" "bias toward action" \
-        "Should emphasize bias toward action"
-    
-    # Check for Mental Model
-    assert_file_contains "$claude_file" "Mental Model" \
-        "Should have Mental Model section"
+    # Require 9/10 or higher (brutal standard)
+    if [ "$score" -lt 9 ]; then
+        echo "❌ CLAUDE.md effectiveness score too low: $score/10 (requires ≥9/10)"
+        echo "   This file will not be effective at changing Claude's behavior"
+        return 1
+    else
+        echo "✅ CLAUDE.md effectiveness score: $score/10"
+        return 0
+    fi
 }
 
 # Run all tests
-echo "Testing CLAUDE.md validation..."
+run_claude_md_tests() {
+    echo "Testing CLAUDE.md validation..."
+    
+    test_claude_md_exists && \
+    test_claude_md_effectiveness
+}
 
-test_claude_md_exists || exit 1
-test_claude_md_structure || exit 1
-test_claude_md_critical_sections || exit 1
-test_claude_md_philosophy || exit 1
-
-echo "All CLAUDE.md validation tests passed!"
+# Execute if called directly
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    run_claude_md_tests
+fi

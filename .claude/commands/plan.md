@@ -1,82 +1,368 @@
 # /plan Command
 
 ## Description
-Generates comprehensive strategic requirements and tactical implementation phases using TDD methodology. Creates actionable, PR-sized work packages with detailed implementation guidance and code examples.
+
+Generates comprehensive strategic requirements and tactical implementation
+broken down into individual PR files. Each PR is independently reviewable,
+contains complete implementation details, and follows TDD methodology.
+Creates a roadmap of small, focused PRs that can be developed in parallel
+when possible.
 
 ## Usage
+
 ```bash
 /plan <task_description>
-```
+/plan simple <task_description>  # For tasks <100 LOC
+
+```text
+
+## Complexity Determination
+
+- **Simple tasks** (<100 LOC): Single PR, no phases, minimal orchestration
+
+-**Medium tasks** (100-1000 LOC): 2-3 phases, 4-7 PRs
+
+-**Complex tasks** (>1000 LOC): Full phase breakdown, 8+ PRs
+
+-Use "simple" keyword to force simple mode for quick tasks
 
 ## Command Execution Flow
 
-### 1. Task Analysis (5-10 seconds)
-```
-Input → Complexity Analysis → Agent Selection → Strategic Planning → Tactical Breakdown → File Generation
-```
+### 1. Task Analysis & Orchestration (5-15 seconds based on complexity)
 
-### 2. Agent Selection Algorithm
-```python
-def select_agents(task_description):
-    agents = []
-    
-    # Strategic Phase - Requirements Gathering
-    if contains_keywords(task_description, ['api', 'backend', 'database']):
-        agents.append('backend-engineer')
-    if contains_keywords(task_description, ['ui', 'frontend', 'component']):
-        agents.append('frontend-architect')
-    if contains_keywords(task_description, ['auth', 'security', 'encryption']):
-        agents.append('security-auditor')
-    if contains_keywords(task_description, ['performance', 'scale', 'optimize']):
-        agents.append('performance-specialist')
-    
-    # Tactical Phase - Always include
-    agents.append('principal-architect')  # Primary tactical consultant
-    agents.append('test-engineer')        # TDD methodology enforcer
-    
-    # Fallback for unmatched patterns
-    if len(agents) < 3:
-        agents.extend(['codebase-analyst', 'tech-writer'])
-    
-    return deduplicate(agents[:8])  # Max 8 agents to prevent analysis paralysis
-```
+```text
+Input → Complexity Analysis → Mode Selection (simple/medium/complex)
+   ↓
+Simple Mode: Direct Implementation → Single PR File
+   OR
+Complex Mode: Agent Selection → Strategic Planning (principal-architect)
+   ↓
+Phase Breakdown → PR Generation → Task Assignment (project-orchestrator)
+   ↓
+File Writing with Parallel Execution Plans
 
-### 3. Error Handling
+```text
 
-**Command Failures:**
+### 2. Complexity Analysis
+
+```javascript
+function analyzeComplexity(taskDescription) {
+    // Check for explicit simple mode
+    if (taskDescription.startsWith('simple ')) {
+        return {
+            mode: 'simple',
+            estimatedLOC: '<100',
+            description: taskDescription.replace('simple ', '')
+        };
+    }
+    
+    // Analyze task indicators
+    const indicators = {
+        simple: ['button', 'typo', 'color', 'text', 'label', 'tooltip'],
+        medium: ['feature', 'endpoint', 'component', 'integration'],
+        complex: ['system', 'migration', 'architecture', 'redesign', 'platform']
+    };
+    
+    const estimatedLOC = estimateLinesOfCode(taskDescription);
+    
+    if (estimatedLOC < 100) return { mode: 'simple', estimatedLOC };
+    if (estimatedLOC < 1000) return { mode: 'medium', estimatedLOC };
+    return { mode: 'complex', estimatedLOC };
+}
+
+```text
+
+### 3. Agent Selection (Consulting Principal-Architect)
+
+```javascript
+async function selectAgents(taskDescription, complexity) {
+    // Simple mode - minimal agents
+    if (complexity.mode === 'simple') {
+        const primaryAgent = await principalArchitect.selectPrimaryAgent(taskDescription);
+        return [primaryAgent, 'code-reviewer'];
+    }
+    
+    // Complex mode - full orchestration
+    const agents = ['principal-architect', 'project-orchestrator'];
+    
+    // Principal-architect determines required specialists
+    const requiredSpecialists = await principalArchitect.analyze({
+        task: taskDescription,
+        complexity: complexity,
+        availableAgents: getAllAvailableAgents()
+    });
+    
+    // Add specialists recommended by principal-architect
+    agents.push(...requiredSpecialists.essential);
+    
+    // Always include for quality
+    agents.push('test-engineer', 'code-reviewer');
+    
+    // Add optional specialists if under limit
+    if (agents.length < 8) {
+        agents.push(...requiredSpecialists.optional.slice(0, 8 - agents.length));
+    }
+    
+    // Fallback if principal-architect unavailable
+    if (!requiredSpecialists) {
+        console.warn('Principal-architect unavailable, using keyword matching');
+        return selectAgentsByKeywords(taskDescription);
+    }
+    
+    return agents.slice(0, 8); // Max 8 agents
+}
+
+```text
+
+### 4. Task Orchestration Process with Realistic Time Estimates
+
+**How Principal-Architect and Project-Orchestrator Collaborate:**
+
+```javascript
+async function orchestrateTasks(pr, complexity) {
+    // Principal-architect determines technical approach
+    const technicalPlan = await principalArchitect.analyze({
+        requirements: pr.requirements,
+        constraints: pr.constraints,
+        availableAgents: getAvailableAgents()
+    });
+    
+    // Project-orchestrator optimizes execution
+    const executionPlan = await projectOrchestrator.optimize({
+        tasks: technicalPlan.tasks,
+        agents: technicalPlan.suggestedAgents,
+        dependencies: technicalPlan.dependencies
+    });
+    
+    // Handle disagreements - Principal-architect has final say
+    if (executionPlan.conflicts) {
+        console.log('Orchestrator conflict detected, deferring to principal-architect');
+        executionPlan = technicalPlan.fallbackPlan;
+    }
+    
+    // Add realistic time buffers
+    const addTimeBuffers = (task) => {
+        const baseTime = task.estimatedTime;
+        const complexityMultiplier = { simple: 1.2, medium: 1.5, complex: 2.0 }[complexity.mode];
+        const uncertaintyBuffer = task.hasExternalDeps ? 1.3 : 1.1;
+        
+        return {
+            ...task,
+            estimatedTime: Math.ceil(baseTime * complexityMultiplier * uncertaintyBuffer),
+            bestCase: baseTime,
+            worstCase: Math.ceil(baseTime * 3),
+            bufferReason: `${(complexityMultiplier - 1) * 100}% complexity, ${(uncertaintyBuffer - 1) * 100}% uncertainty`
+        };
+    };
+    
+    executionPlan.tasks = executionPlan.tasks.map(addTimeBuffers);
+    
+    // Calculate realistic time savings
+    const sequentialTime = executionPlan.tasks.reduce((sum, t) => sum + t.estimatedTime, 0);
+    const parallelTime = calculateCriticalPath(executionPlan.tasks);
+    const actualSavings = Math.round(((sequentialTime - parallelTime) / sequentialTime) * 100);
+    
+    return {
+        taskAssignments: executionPlan.assignments,
+        parallelGroups: executionPlan.groups,
+        timeSavings: `${sequentialTime} min → ${parallelTime} min (${actualSavings}% reduction)`,
+        criticalPath: executionPlan.criticalPath,
+        confidence: complexity.mode === 'simple' ? 'High' : 'Medium',
+        warning: actualSavings > 60 ? 'Time savings may be optimistic' : null
+    };
+}
+
+```text
+
+### 5. Error Handling, Failure Modes & Escape Hatches
+
+**Command Failures and Recovery:**
+
 ```javascript
 try {
-    const plan = await generatePlan(taskDescription);
-    await validatePlan(plan);
-    await writePlanFiles(plan);
+    const complexity = analyzeComplexity(taskDescription);
+    const plan = await generatePlan(taskDescription, complexity);
+    
+    // PR Size Validation
+    await validatePRSizes(plan.prs, {
+        maxLinesPerPR: 500,
+        maxFilesPerPR: 10,
+        maxTotalPRs: 15
+    });
+    
+    const phases = await breakdownIntoPhases(plan);
+    const prs = await generatePRFiles(phases);
+    await writePRFiles(prs);
+    
 } catch (error) {
+    // Specific failure handlers
     if (error.type === 'AGENT_CONFLICT') {
-        return reconcileAgentOpinions(error.conflicts);
+        // Principal-architect breaks ties
+        return await principalArchitect.resolve(error.conflicts);
     }
+    
     if (error.type === 'COMPLEXITY_OVERFLOW') {
-        return splitIntoSubtasks(taskDescription);
+        // Auto-split into smaller tasks
+        return splitIntoSubtasks(taskDescription, { maxComplexity: 'medium' });
     }
-    if (error.type === 'INSUFFICIENT_CONTEXT') {
-        return requestUserClarification(error.missingInfo);
+    
+    if (error.type === 'PR_TOO_LARGE') {
+        // Split PR into smaller chunks
+        return splitPR(error.pr, { maxLines: 300 });
     }
+    
+    if (error.type === 'PR_DEPENDENCY_CYCLE') {
+        // Break cycle by serializing
+        return serializePRs(error.prs);
+    }
+    
+    if (error.type === 'AGENT_UNAVAILABLE') {
+        // Use fallback agent
+        const fallback = selectFallbackAgent(error.agent);
+        console.warn(`${error.agent} unavailable, using ${fallback}`);
+        return retryWithAgent(fallback);
+    }
+    
+    if (error.type === 'TEST_BEFORE_IMPL_IMPOSSIBLE') {
+        // External API case - allow implementation first
+        return switchToImplementationFirst(plan);
+    }
+    
+    // Escape hatches
+    if (error.retryCount > 3) {
+        return {
+            fallback: 'simple',
+            message: 'Complex planning failed, generated simple single-file plan',
+            plan: generateSimplePlan(taskDescription)
+        };
+    }
+    
     throw new PlanGenerationError(error);
 }
-```
+
+// Escape Hatch Rules
+const escapeHatches = {
+    'BLOCKED_2_HOURS': 'Escalate to principal-architect for guidance',
+    'PR_OVER_500_LINES': 'Auto-split into multiple PRs',
+    'TESTS_FAIL_3_TIMES': 'Create investigation task for debugger agent',
+    'MERGE_CONFLICT': 'Create conflict resolution PR',
+    'REVIEW_BOTTLENECK': 'Allow parallel review with reduced requirements',
+    'AGENT_OVERLOAD': 'Redistribute tasks to available agents',
+    'CIRCULAR_DEPENDENCY': 'Break cycle, serialize execution'
+};
+
+```text
 
 ## File Organization
 
-### Directory Structure
-```
+### Simple Mode Output (Single PR)
+For simple tasks, generates a single PR file:
+
+```text
+
 ./.tmp/<feature-name>/
-├── plan.md                    # Strategic requirements (2-4 pages)
-├── phase-1-tests.md          # TDD test specifications
-├── phase-2-implementation.md  # Core implementation
-├── phase-3-integration.md    # Integration and validation
-├── rollback.md               # Rollback procedures
-└── .cleanup                   # Auto-cleanup metadata
-```
+├── implementation.md           # Single PR with all changes
+└── .cleanup                    # Auto-cleanup metadata
+
+```text
+
+#### Simple PR Format: `implementation.md`
+
+```markdown
+
+# Simple Implementation: <Task Description>
+
+## Task Summary
+
+-**Complexity**: Simple (<100 LOC)
+
+-**Primary Agent**: backend-engineer (selected by principal-architect)
+
+-**Reviewer**: code-reviewer
+
+-**Estimated Time**: 30-45 min (with buffer)
+
+## Implementation
+
+### Files to Modify
+
+-`src/components/Button.js` - Add logout functionality
+
+### Changes
+\```javascript
+// Add logout button handler
+const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = '/login';
+};
+\```
+
+## Testing
+
+-Manual test: Click logout button
+
+-Verify session cleared
+
+-Verify redirect to login
+
+## Checklist
+
+-[ ] Implementation complete
+
+-[ ] Manually tested
+
+-[ ] Code review passed
+
+```text
+
+### Complex Mode Output (Multiple Phases/PRs)
+
+### Directory Structure
+
+```text
+
+./.tmp/<feature-name>/
+├── plan.md                           # Strategic requirements (2-4 pages)
+├── phase_1.1_test_scaffolding.md    # Phase 1, PR 1: Test environment setup
+├── phase_1.2_model_tests.md         # Phase 1, PR 2: Model unit tests
+├── phase_1.3_api_tests.md           # Phase 1, PR 3: API integration tests
+├── phase_2.1_data_models.md         # Phase 2, PR 1: Database models
+├── phase_2.2_business_logic.md      # Phase 2, PR 2: Core business logic
+├── phase_2.3_api_endpoints.md       # Phase 2, PR 3: REST API implementation
+├── phase_2.4_middleware.md          # Phase 2, PR 4: Authentication middleware
+├── phase_3.1_integration.md         # Phase 3, PR 1: Service integration
+├── phase_3.2_validation.md          # Phase 3, PR 2: E2E validation
+├── rollback.md                      # Rollback procedures
+└── .cleanup                          # Auto-cleanup metadata
+
+```text
+
+### PR File Naming Convention
+
+```text
+
+phase_<phase_number>.<pr_number>_<description>.md
+
+```text
+
+**Examples:**
+- `phase_1.1_test_scaffolding.md` - Phase 1, PR 1: Setting up test infrastructure
+
+-`phase_2.3_api_endpoints.md` - Phase 2, PR 3: API endpoint implementation
+
+-`phase_3.2_validation.md` - Phase 3, PR 2: End-to-end validation
+
+**Naming Rules:**
+- Phase number: Single digit (1-9)
+
+-PR number: Sequential within phase (1, 2, 3...)
+
+-Description: Snake_case, descriptive of PR content
+
+-Each PR should be independently reviewable and mergeable
 
 ### Auto-Cleanup Strategy
+
 ```javascript
 // .cleanup file contains:
 {
@@ -84,38 +370,56 @@ try {
     "expires": "2024-01-22T14:30:00Z",  // 7-day retention
     "feature": "user-authentication",
     "phases": 3,
+    "total_prs": 9,  // Total number of PR files generated
+    "pr_status": {
+        "phase_1": ["merged", "merged", "in_review"],
+        "phase_2": ["draft", "draft", "draft", "draft"],
+        "phase_3": ["planned", "planned"]
+    },
     "status": "in-progress",
     "cleanup_on_merge": true
 }
-```
+
+```text
 
 ### Feature Name Generation
+
 ```javascript
 function generateFeatureName(description) {
     // Extract core functionality
     const keywords = extractKeywords(description);
     const feature = keywords.slice(0, 3).join('-');
     
-    // Ensure uniqueness
+    // Ensure uniqueness for reproducible docs/tests
     const timestamp = Date.now().toString(36);
-    return `${feature}-${timestamp}`.toLowerCase()
+    const uniqueId = feature.length > 0 ? `${feature}-${timestamp}` : `task-${timestamp}`;
+    return uniqueId.toLowerCase()
         .replace(/[^a-z0-9-]/g, '-')
         .replace(/-+/g, '-')
-        .slice(0, 50);  // Max 50 chars
+        .slice(0, 50);  // Max 50 chars for filesystem compatibility
 }
-```
+
+```text
 
 ## Strategic Plan Format
 
 ### Requirements Document Template
+
 ```markdown
+
 # <Feature Name> - Strategic Requirements
 
 ## Executive Summary
-- **Objective**: [Clear business goal]
-- **Scope**: [What's included/excluded]
-- **Success Metrics**: [Measurable outcomes]
-- **Estimated Effort**: [Phase-based time estimates]
+
+-**Objective**: [Clear business goal]
+
+-**Scope**: [What's included/excluded]
+
+-**Success Metrics**: [Measurable outcomes]
+
+-**Estimated PRs**: [Total number of PRs across all phases]
+
+-**Estimated Effort**: [Phase-based time estimates]
 
 ## Functional Requirements
 | ID | Requirement | Priority | Acceptance Criteria |
@@ -128,35 +432,233 @@ function generateFeatureName(description) {
 | NFR-001 | Performance | [Requirement] | [SLA/metric] |
 
 ## Technical Architecture
-- **Pattern**: [Architecture pattern]
-- **Stack**: [Technology choices with rationale]
-- **Dependencies**: [External systems/libraries]
-- **Security**: [Security considerations]
+
+-**Pattern**: [Architecture pattern]
+
+-**Stack**: [Technology choices with rationale]
+
+-**Dependencies**: [External systems/libraries]
+
+-**Security**: [Security considerations]
 
 ## Risk Assessment
-| Risk | Probability | Impact | Mitigation |
-|------|------------|--------|------------|
-| [Risk] | Low/Med/High | Low/Med/High | [Strategy] |
+| Risk | Probability | Impact | Mitigation | Affected PRs |
+|------|------------|--------|------------|-------------|
+| [Risk] | Low/Med/High | Low/Med/High | [Strategy] | [PR numbers] |
 
-## Implementation Phases
-1. **Phase 1**: Test scaffolding and interfaces (4-6 files)
-2. **Phase 2**: Core implementation (6-8 files)
-3. **Phase 3**: Integration and validation (4-6 files)
-```
+## PR Dependencies & Coordination
+
+### Critical Path
+
+```mermaid
+graph LR
+    PR1.1[Test Setup] --> PR1.2[Unit Tests]
+    PR1.2 --> PR2.1[Models]
+    PR2.1 --> PR2.2[Logic]
+    PR2.2 --> PR2.3[APIs]
+    PR2.3 --> PR3.1[Integration]
+
+```text
+
+### Parallel Opportunities
+
+-Phase 1: PRs 1.2 and 1.3 can be developed in parallel after 1.1
+- Phase 2: PRs 2.3 and 2.4 can be developed in parallel after 2.2
+- Phase 3: PRs 3.2 and 3.3 can be developed in parallel after 3.1
+
+### Review Requirements & Bottleneck Management
+
+-Each PR requires 2 reviews minimum
+
+-**code-reviewer** reviews ALL PRs for quality, best practices, and maintainability
+
+-Security-critical PRs require security-auditor review
+
+-API changes require api-architect review
+
+-Test PRs require test-engineer review
+
+#### Review Load Balancing
+
+```javascript
+async function manageReviewQueue(pr) {
+    const reviewerLoad = await getReviewerWorkload();
+    
+    // If code-reviewer has >5 PRs queued, use alternative reviewers
+    if (reviewerLoad['code-reviewer'] > 5) {
+        // Primary alternatives: senior-engineer, principal-architect
+        // Fallback alternatives: backend-engineer (for implementation PRs)
+        const alternatives = ['senior-engineer', 'principal-architect', 'backend-engineer'];
+        const availableReviewer = alternatives.find(agent => 
+            reviewerLoad[agent] < 3
+        );
+        
+        if (availableReviewer) {
+            pr.reviewers.push(availableReviewer);
+            console.warn(`code-reviewer overloaded, using ${availableReviewer} as alternative reviewer`);
+        }
+    }
+    
+    // Stagger PR submissions to avoid bottlenecks
+    if (reviewerLoad.average > 3) {
+        return {
+            delay: '2 hours',
+            reason: 'Review queue congested, staggering submissions'
+        };
+    }
+    
+    return { delay: 0 };
+}
+
+```text
+
+## Implementation Roadmap
+
+### Phase Overview
+
+1.**Phase 1 - Test Foundation**: 3-4 PRs
+   - PR 1.1: Test environment setup
+   - PR 1.2: Unit test scaffolding
+   - PR 1.3: Integration test framework
+   - PR 1.4: Interface definitions
+
+2. **Phase 2 - Core Implementation**: 4-5 PRs
+   - PR 2.1: Data models and schemas
+   - PR 2.2: Business logic layer
+   - PR 2.3: API endpoints
+   - PR 2.4: Middleware and auth
+   - PR 2.5: Error handling
+
+3. **Phase 3 - Integration & Validation**: 2-3 PRs
+   - PR 3.1: Service integration
+   - PR 3.2: End-to-end validation
+   - PR 3.3: Performance optimization
+
+### PR Sizing Guidelines
+
+-**Small PR**: <150 LOC (configuration, simple features)
+
+-**Medium PR**: 150-400 LOC (typical feature implementation)
+
+-**Large PR**: 400-500 LOC (complex features, requires splitting discussion)
+
+### Merge Strategy
+
+-Sequential within phases (PR 1.1 → 1.2 → 1.3)
+
+-Phase dependencies (All Phase 1 → Phase 2 starts)
+
+-Feature flags for partial deployments
+
+```text
 
 ## Tactical Phase Format
 
-### Phase 1: Test-First Development
+Each phase is broken down into independently reviewable PRs. Each PR gets its own file with complete implementation details.
+
+### Phase Structure Overview
+
 ```markdown
-# Phase 1: Test Scaffolding and Interfaces
+Phase 1: Test-First Development
+├── PR 1: Test environment setup
+├── PR 2: Model unit tests
+├── PR 3: API integration test scaffolding
+└── PR 4: Interface definitions
 
-## Execution Time: 2-3 hours
-## Files to Create: 5
-## Dependencies: None
+Phase 2: Core Implementation
+├── PR 1: Database models and schemas
+├── PR 2: Business logic layer
+├── PR 3: API endpoints
+├── PR 4: Authentication middleware
+└── PR 5: Error handling and validation
 
-## 1.1 Test Environment Setup
+Phase 3: Integration & Validation
+├── PR 1: Service integration
+├── PR 2: End-to-end tests
+└── PR 3: Performance validation
+
+```text
+
+### PR File Format Example: `phase_1.1_test_scaffolding.md`
+
+```markdown
+
+# Phase 1, PR 1: Test Environment Setup
+
+## PR Metadata
+
+-**Phase**: 1 (Test-First Development)
+
+-**PR Number**: 1 of 4
+- **PR Title**: "feat: Add test environment setup and configuration"
+
+-**Estimated LOC**: ~150
+- **Dependencies**: None
+
+-**Reviewers**: @test-engineer, @backend-engineer, @code-reviewer
+
+-**Merge Order**: Must merge before phase_1.2
+- **Orchestration**: Determined by @principal-architect and @project-orchestrator
+
+## PR Description
+This PR sets up the foundational test environment and configuration needed for TDD approach. It includes test runners, assertion libraries, and mock utilities.
+
+## Task Assignments & Dependencies
+
+### Task Breakdown
+| Task ID | Description | Assigned Agent | Dependencies | Est. Time |
+|---------|-------------|----------------|--------------|-----------|
+| T1.1.1 | Create test directory structure | backend-engineer | None | 15-20 min |
+| T1.1.2 | Install and configure test framework | test-engineer | T1.1.1 | 20-35 min |
+| T1.1.3 | Set up database test utilities | backend-engineer | T1.1.1 | 30-50 min |
+| T1.1.4 | Create test environment config | devops | None | 20 min |
+| T1.1.5 | Write test helper functions | test-engineer | T1.1.2 | 25 min |
+| T1.1.6 | Add CI test configuration | devops | T1.1.2, T1.1.4 | 20 min |
+
+### Parallel Execution Plan
+
+```text
+
+Execution Group 1 (Parallel):
+├── backend-engineer: T1.1.1 - Create directory structure
+└── devops: T1.1.4 - Create environment config
+
+Execution Group 2 (After Group 1):
+├── test-engineer: T1.1.2 - Configure test framework
+└── backend-engineer: T1.1.3 - Database utilities
+
+Execution Group 3 (After Group 2):
+├── test-engineer: T1.1.5 - Helper functions
+└── devops: T1.1.6 - CI configuration
+
+```text
+
+### Agent Coordination Notes
+
+-**Principal-architect**: Defined testing architecture and framework choices
+
+-**Project-orchestrator**: Optimized task parallelization, estimated 35-45% time reduction (capped at ~50%)
+
+-**Critical path**: T1.1.1 → T1.1.2 → T1.1.5 (60-90 min with buffers)
+
+-**Conflict Resolution**: Principal-architect has final decision authority on technical approaches
+
+## Files Changed
+
+-`test/setup.js` - Test environment configuration (test-engineer)
+
+-`test/helpers/database.js` - Database test utilities (backend-engineer)
+
+-`package.json` - Test dependencies (test-engineer)
+
+-`.env.test` - Test environment variables (devops)
+
+-`.github/workflows/test.yml` - CI configuration (devops)
+
+## Implementation Details
 
 ### File: `test/setup.js`
+
 ```javascript
 // Environment configuration
 process.env.NODE_ENV = 'test';
@@ -176,13 +678,107 @@ global.sinon = sinon;
 afterEach(() => {
     sinon.restore();
 });
-```
+
+```text
 
 **Rationale**: Test environment must be isolated from production configs. Using lower bcrypt rounds speeds up test execution without compromising test validity.
 
-## 1.2 User Model Tests (TDD - Write First)
+## PR Completion Checklist
+
+-[ ] All tests pass
+
+-[ ] Code follows project style guide
+
+-[ ] Documentation updated
+
+-[ ] No console.logs or debug code
+
+-[ ] Security considerations addressed
+
+## PR Merge Instructions
+
+1.Ensure CI passes
+
+2.Merge to main
+
+3.No deployment needed (test infrastructure only)
+
+```text
+
+### PR File Format Example: `phase_1.2_model_tests.md`
+
+```markdown
+
+# Phase 1, PR 2: Model Unit Tests
+
+## PR Metadata
+
+-**Phase**: 1 (Test-First Development)
+
+-**PR Number**: 2 of 4
+- **PR Title**: "test: Add comprehensive model unit tests for TDD"
+
+-**Estimated LOC**: ~300
+- **Dependencies**: phase_1.1 (test environment)
+
+-**Reviewers**: @test-engineer, @security-auditor, @code-reviewer
+
+-**Merge Order**: After phase_1.1, before phase_2.1
+- **Orchestration**: Determined by @principal-architect and @project-orchestrator
+
+## PR Description
+Implements comprehensive unit tests for the User model following TDD principles. These tests will initially fail and drive the implementation in Phase 2.
+
+## Task Assignments & Dependencies
+
+### Task Breakdown
+| Task ID | Description | Assigned Agent | Dependencies | Est. Time |
+|---------|-------------|----------------|--------------|-----------|
+| T1.2.1 | Design test scenarios | test-engineer | None | 20 min |
+| T1.2.2 | Write password hashing tests | security-auditor | T1.2.1 | 30 min |
+| T1.2.3 | Write validation tests | test-engineer | T1.2.1 | 25 min |
+| T1.2.4 | Write security feature tests | security-auditor | T1.2.1 | 35 min |
+| T1.2.5 | Create test fixtures | backend-engineer | None | 15 min |
+| T1.2.6 | Write integration test stubs | test-engineer | T1.2.3, T1.2.5 | 20 min |
+
+### Parallel Execution Plan
+
+```text
+
+Execution Group 1 (Parallel):
+├── test-engineer: T1.2.1 - Design test scenarios
+└── backend-engineer: T1.2.5 - Create fixtures
+
+Execution Group 2 (After T1.2.1):
+├── security-auditor: T1.2.2 - Password tests
+├── test-engineer: T1.2.3 - Validation tests
+└── security-auditor: T1.2.4 - Security tests
+
+Execution Group 3 (After Group 2):
+└── test-engineer: T1.2.6 - Integration stubs
+
+```text
+
+### Agent Coordination Notes
+
+-**Principal-architect**: Defined test coverage requirements and security test priorities
+
+-**Project-orchestrator**: Identified parallel test writing opportunities, reducing time from 145 min to ~75 min
+
+-**Critical path**: T1.2.1 → T1.2.3 → T1.2.6 (65 min)
+
+## Files Changed
+
+-`test/models/user.test.js` - User model tests (test-engineer, security-auditor)
+
+-`test/fixtures/users.js` - Test fixtures (backend-engineer)
+
+-`test/helpers/assertions.js` - Custom assertions (test-engineer)
+
+## Implementation Details
 
 ### File: `test/models/user.test.js`
+
 ```javascript
 const User = require('../../src/models/User'); // Will fail initially
 const ValidationError = require('../../src/errors/ValidationError');
@@ -190,727 +786,360 @@ const ValidationError = require('../../src/errors/ValidationError');
 describe('User Model', () => {
     describe('Password Hashing', () => {
         it('should hash password on creation', async () => {
-            const plainPassword = 'SecureP@ss123';
-            const user = new User({
-                email: 'test@example.com',
-                password: plainPassword
-            });
-            
-            await user.save();
-            
-            expect(user.password).to.not.equal(plainPassword);
-            expect(user.password).to.have.length.above(50);
+            // Test implementation
         });
         
-        it('should not rehash password if unchanged', async () => {
-            const user = await User.create({
-                email: 'test@example.com',
-                password: 'SecureP@ss123'
-            });
-            
-            const originalHash = user.password;
-            user.email = 'newemail@example.com';
-            await user.save();
-            
-            expect(user.password).to.equal(originalHash);
+        it('should not rehash unchanged passwords', async () => {
+            // Test implementation
         });
     });
     
     describe('Input Validation', () => {
         it('should reject invalid email formats', async () => {
-            const invalidEmails = [
-                'notanemail',
-                '@example.com',
-                'user@',
-                'user @example.com'
-            ];
-            
-            for (const email of invalidEmails) {
-                try {
-                    await User.create({ email, password: 'ValidP@ss123' });
-                    throw new Error(`Should have rejected: ${email}`);
-                } catch (error) {
-                    expect(error).to.be.instanceOf(ValidationError);
-                    expect(error.field).to.equal('email');
-                }
-            }
+            // Test implementation
         });
         
         it('should enforce password complexity', async () => {
-            const weakPasswords = [
-                'short',           // Too short
-                'nouppercase123!', // No uppercase
-                'NOLOWERCASE123!', // No lowercase
-                'NoNumbers!',      // No numbers
-                'NoSpecial123'     // No special chars
-            ];
-            
-            for (const password of weakPasswords) {
-                try {
-                    await User.create({ 
-                        email: 'test@example.com', 
-                        password 
-                    });
-                    throw new Error(`Should have rejected: ${password}`);
-                } catch (error) {
-                    expect(error).to.be.instanceOf(ValidationError);
-                    expect(error.field).to.equal('password');
-                    expect(error.message).to.include('complexity');
-                }
-            }
+            // Test implementation
         });
     });
     
     describe('Security Features', () => {
         it('should not expose password in JSON', () => {
-            const user = new User({
-                email: 'test@example.com',
-                password: 'SecureP@ss123'
-            });
-            
-            const json = user.toJSON();
-            
-            expect(json).to.not.have.property('password');
-            expect(json).to.have.property('email');
+            // Test implementation
         });
         
         it('should rate limit password comparisons', async () => {
-            const user = await User.create({
-                email: 'test@example.com',
-                password: 'SecureP@ss123'
-            });
-            
-            const attempts = [];
-            for (let i = 0; i < 10; i++) {
-                attempts.push(user.comparePassword('wrong'));
-            }
-            
-            try {
-                await Promise.all(attempts);
-                throw new Error('Should have rate limited');
-            } catch (error) {
-                expect(error.message).to.include('rate limit');
-            }
+            // Test implementation
         });
     });
 });
-```
 
-**Rationale**: Tests written first define the contract. Implementation must satisfy these tests exactly. Security tests ensure protection against common vulnerabilities.
+```text
 
-## 1.3 Interface Definitions
+## Final PR Checklist
 
-### File: `src/interfaces/IUser.ts`
-```typescript
-export interface IUser {
-    id: string;
-    email: string;
-    password?: string;  // Optional in responses
-    createdAt: Date;
-    updatedAt: Date;
-    
-    comparePassword(plaintext: string): Promise<boolean>;
-    generateAuthToken(): string;
-    toJSON(): Omit<IUser, 'password'>;
-}
+-[ ] Tests written following TDD principles
 
-export interface IUserInput {
-    email: string;
-    password: string;
-}
+-[ ] All tests are initially failing (red)
 
-export interface IUserRepository {
-    create(input: IUserInput): Promise<IUser>;
-    findByEmail(email: string): Promise<IUser | null>;
-    findById(id: string): Promise<IUser | null>;
-    update(id: string, updates: Partial<IUserInput>): Promise<IUser>;
-    delete(id: string): Promise<boolean>;
-}
-```
+-[ ] No implementation code included
 
-**Rationale**: Interfaces define contracts before implementation. TypeScript ensures type safety across the application.
+-[ ] Documentation complete
 
-## 1.4 Error Definitions
+## Final Merge Instructions
 
-### File: `src/errors/index.js`
-```javascript
-class ApplicationError extends Error {
-    constructor(message, statusCode = 500, field = null) {
-        super(message);
-        this.statusCode = statusCode;
-        this.field = field;
-        this.timestamp = new Date().toISOString();
-        Error.captureStackTrace(this, this.constructor);
-    }
-    
-    toJSON() {
-        return {
-            error: this.constructor.name,
-            message: this.message,
-            field: this.field,
-            timestamp: this.timestamp,
-            ...(process.env.NODE_ENV === 'development' && {
-                stack: this.stack
-            })
-        };
-    }
-}
+1.Review test coverage and scenarios
 
-class ValidationError extends ApplicationError {
-    constructor(field, message) {
-        super(message, 400, field);
-    }
-}
+2.Ensure tests align with requirements
 
-class AuthenticationError extends ApplicationError {
-    constructor(message = 'Authentication failed') {
-        super(message, 401);
-    }
-}
+3.Merge after approval from test-engineer
 
-class RateLimitError extends ApplicationError {
-    constructor(retryAfter = 60) {
-        super(`Rate limit exceeded. Retry after ${retryAfter}s`, 429);
-        this.retryAfter = retryAfter;
-    }
-}
+```text
 
-module.exports = {
-    ApplicationError,
-    ValidationError,
-    AuthenticationError,
-    RateLimitError
-};
-```
+### PR File Format Example: `phase_2.1_data_models.md`
 
-**Rationale**: Centralized error handling ensures consistent API responses and debugging information.
-
-## Phase Completion Criteria
-✅ All tests written and failing appropriately
-✅ Interfaces fully defined
-✅ Error classes implemented
-✅ No implementation code yet (TDD discipline)
-✅ 100% test coverage for defined behaviors
-
-## Next Phase Trigger
-Once all Phase 1 tests are red (failing), proceed to Phase 2 for implementation.
-```
-
-### Phase 2: Core Implementation
 ```markdown
-# Phase 2: Core Implementation
 
-## Execution Time: 3-4 hours
-## Files to Create: 6
-## Dependencies: Phase 1 tests must be failing
+# Phase 2, PR 1: Database Models and Schemas
 
-## 2.1 User Model Implementation
+## PR Metadata
+
+-**Phase**: 2 (Core Implementation)
+
+-**PR Number**: 1 of 5
+- **PR Title**: "feat: Implement User model with secure password handling"
+
+-**Estimated LOC**: ~250
+- **Dependencies**: phase_1.2 (tests must be failing)
+
+-**Reviewers**: @backend-engineer, @security-auditor, @code-reviewer
+
+-**Merge Order**: First PR in Phase 2
+- **Orchestration**: Determined by @principal-architect and @project-orchestrator
+
+## PR Description
+Implements the User model with bcrypt password hashing, validation rules, and security features to make Phase 1 tests pass.
+
+## Task Assignments & Dependencies
+
+### Task Breakdown
+| Task ID | Description | Assigned Agent | Dependencies | Est. Time |
+|---------|-------------|----------------|--------------|-----------|
+| T2.1.1 | Create database schema | backend-engineer | None | 25 min |
+| T2.1.2 | Implement password hashing | security-auditor | T2.1.1 | 30 min |
+| T2.1.3 | Add input validation | backend-engineer | T2.1.1 | 20 min |
+| T2.1.4 | Implement rate limiting | security-auditor | T2.1.1 | 25 min |
+| T2.1.5 | Add JWT token methods | backend-engineer | T2.1.1 | 20 min |
+| T2.1.6 | Configure database connection | devops | None | 15 min |
+| T2.1.7 | Run tests and verify | test-engineer | T2.1.2, T2.1.3, T2.1.4, T2.1.5 | 15 min |
+| T2.1.8 | Code quality review | code-reviewer | T2.1.2, T2.1.3, T2.1.4, T2.1.5 | 20 min |
+
+### Parallel Execution Plan
+
+```text
+
+Execution Group 1 (Parallel):
+├── backend-engineer: T2.1.1 - Create schema
+└── devops: T2.1.6 - Configure database
+
+Execution Group 2 (After T2.1.1):
+├── security-auditor: T2.1.2 - Password hashing
+├── backend-engineer: T2.1.3 - Input validation
+├── security-auditor: T2.1.4 - Rate limiting
+└── backend-engineer: T2.1.5 - JWT methods
+
+Execution Group 3 (After Group 2):
+├── test-engineer: T2.1.7 - Verify tests pass
+└── code-reviewer: T2.1.8 - Code quality review
+
+```text
+
+### Agent Coordination Notes
+
+-**Principal-architect**: Designed model architecture with security-first approach
+
+-**Project-orchestrator**: Parallelized independent tasks, realistic reduction from 150 min to ~95 min (37% savings)
+
+-**Critical path**: T2.1.1 → T2.1.2 → T2.1.7 (70 min)
+
+-**Risk**: Security features must be implemented correctly first time
+
+## Files Changed
+
+-`src/models/User.js` - User model implementation (backend-engineer, security-auditor)
+
+-`src/models/index.js` - Model exports (backend-engineer)
+
+-`src/config/database.js` - Database configuration (devops)
+
+-`src/utils/security.js` - Security utilities (security-auditor)
+
+## Implementation Details
 
 ### File: `src/models/User.js`
+
 ```javascript
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-const { ValidationError, RateLimitError } = require('../errors');
-
-// Rate limiting for password attempts
-const passwordAttempts = new Map();
-const RATE_LIMIT_WINDOW = 60000; // 1 minute
-const MAX_ATTEMPTS = 5;
 
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
-        required: [true, 'Email is required'],
+        required: true,
         unique: true,
         lowercase: true,
-        trim: true,
-        validate: {
-            validator: (email) => {
-                // RFC 5322 compliant email regex
-                const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                return regex.test(email);
-            },
-            message: 'Invalid email format'
-        }
+        // Validation implementation
     },
     password: {
         type: String,
-        required: [true, 'Password is required'],
-        minlength: [8, 'Password must be at least 8 characters'],
-        validate: {
-            validator: function(password) {
-                // Only validate on create or password change
-                if (!this.isModified('password')) return true;
-                
-                const hasUpper = /[A-Z]/.test(password);
-                const hasLower = /[a-z]/.test(password);
-                const hasNumber = /\d/.test(password);
-                const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-                
-                if (!hasUpper || !hasLower || !hasNumber || !hasSpecial) {
-                    throw new ValidationError('password', 
-                        'Password must contain uppercase, lowercase, number, and special character');
-                }
-                return true;
-            }
-        }
+        required: true,
+        // Security implementation
     }
-}, {
-    timestamps: true
-});
+}, { timestamps: true });
 
-// Hash password before saving
+// Password hashing middleware
 userSchema.pre('save', async function(next) {
-    try {
-        if (!this.isModified('password')) return next();
-        
-        const rounds = parseInt(process.env.BCRYPT_ROUNDS || '12', 10);
-        this.password = await bcrypt.hash(this.password, rounds);
-        next();
-    } catch (error) {
-        next(error);
-    }
+    // Implementation details
 });
 
-// Rate-limited password comparison
+// Instance methods
 userSchema.methods.comparePassword = async function(plaintext) {
-    const key = this._id.toString();
-    const now = Date.now();
-    
-    // Clean old entries
-    if (passwordAttempts.has(key)) {
-        const attempts = passwordAttempts.get(key);
-        const recent = attempts.filter(time => now - time < RATE_LIMIT_WINDOW);
-        
-        if (recent.length >= MAX_ATTEMPTS) {
-            throw new RateLimitError(60);
-        }
-        
-        passwordAttempts.set(key, [...recent, now]);
-    } else {
-        passwordAttempts.set(key, [now]);
-    }
-    
-    return bcrypt.compare(plaintext, this.password);
+    // Implementation details
 };
-
-// Generate JWT token
-userSchema.methods.generateAuthToken = function() {
-    const payload = {
-        id: this._id.toString(),
-        email: this.email
-    };
-    
-    const options = {
-        expiresIn: process.env.JWT_EXPIRES_IN || '24h',
-        algorithm: 'RS256'
-    };
-    
-    return jwt.sign(payload, process.env.JWT_PRIVATE_KEY, options);
-};
-
-// Remove password from JSON responses
-userSchema.methods.toJSON = function() {
-    const obj = this.toObject();
-    delete obj.password;
-    delete obj.__v;
-    return obj;
-};
-
-// Handle unique constraint errors
-userSchema.post('save', function(error, doc, next) {
-    if (error.name === 'MongoError' && error.code === 11000) {
-        next(new ValidationError('email', 'Email already exists'));
-    } else {
-        next(error);
-    }
-});
 
 module.exports = mongoose.model('User', userSchema);
-```
 
-**Rationale**: Implementation satisfies all Phase 1 tests. Security features include rate limiting, proper hashing, and JWT with RS256.
+```text
 
-## 2.2 Authentication Middleware
+## PR Checklist
 
-### File: `src/middleware/auth.js`
-```javascript
-const jwt = require('jsonwebtoken');
-const { AuthenticationError } = require('../errors');
-const User = require('../models/User');
+-[ ] All Phase 1 tests now pass
 
-// Cache for validated tokens (TTL: 5 minutes)
-const tokenCache = new Map();
-const CACHE_TTL = 300000;
+-[ ] Security best practices implemented
 
-function cleanCache() {
-    const now = Date.now();
-    for (const [token, data] of tokenCache.entries()) {
-        if (now - data.timestamp > CACHE_TTL) {
-            tokenCache.delete(token);
-        }
-    }
-}
+-[ ] Code follows project conventions
 
-// Run cache cleanup every minute
-setInterval(cleanCache, 60000);
+-[ ] No hardcoded secrets
 
-async function authenticate(req, res, next) {
-    try {
-        const token = extractToken(req);
-        
-        if (!token) {
-            throw new AuthenticationError('No token provided');
-        }
-        
-        // Check cache first
-        if (tokenCache.has(token)) {
-            const cached = tokenCache.get(token);
-            req.user = cached.user;
-            return next();
-        }
-        
-        // Verify token
-        const decoded = jwt.verify(token, process.env.JWT_PUBLIC_KEY, {
-            algorithms: ['RS256']
-        });
-        
-        // Get user from database
-        const user = await User.findById(decoded.id).select('-password');
-        
-        if (!user) {
-            throw new AuthenticationError('User not found');
-        }
-        
-        // Cache the result
-        tokenCache.set(token, {
-            user,
-            timestamp: Date.now()
-        });
-        
-        req.user = user;
-        next();
-    } catch (error) {
-        if (error.name === 'JsonWebTokenError') {
-            return next(new AuthenticationError('Invalid token'));
-        }
-        if (error.name === 'TokenExpiredError') {
-            return next(new AuthenticationError('Token expired'));
-        }
-        next(error);
-    }
-}
+## Merge Instructions
 
-function extractToken(req) {
-    // Check Authorization header
-    const authHeader = req.headers.authorization;
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-        return authHeader.substring(7);
-    }
-    
-    // Check cookie
-    if (req.cookies && req.cookies.token) {
-        return req.cookies.token;
-    }
-    
-    return null;
-}
+1.Run Phase 1 tests to verify they pass
 
-// Optional authentication (doesn't fail if no token)
-async function optionalAuth(req, res, next) {
-    const token = extractToken(req);
-    
-    if (!token) {
-        return next();
-    }
-    
-    // Use regular auth but catch errors
-    authenticate(req, res, (error) => {
-        if (error) {
-            // Log but don't fail
-            console.warn('Optional auth failed:', error.message);
-            req.user = null;
-        }
-        next();
-    });
-}
+2.Security review required
 
-module.exports = {
-    authenticate,
-    optionalAuth
-};
-```
+3.Merge after approval
 
-**Rationale**: Middleware includes token caching for performance, multiple token sources, and optional authentication for mixed content.
+```text
 
-## Phase 2 Completion Criteria
-✅ All Phase 1 tests passing
-✅ Security features implemented (rate limiting, hashing)
-✅ Performance optimizations (caching)
-✅ Error handling comprehensive
-✅ 100% test coverage maintained
+### PR File Format Example: `phase_3.1_integration.md`
 
-## Phase 2 to 3 Trigger
-Once all Phase 2 implementations pass tests, proceed to Phase 3 for integration.
-```
-
-### Phase 3: Integration and Validation
 ```markdown
-# Phase 3: Integration and Validation
 
-## Execution Time: 2-3 hours
-## Files to Create: 4
-## Dependencies: Phases 1-2 complete
+# Phase 3, PR 1: Service Integration
 
-## 3.1 API Routes Implementation
+## PR Metadata
 
-### File: `src/routes/auth.js`
+-**Phase**: 3 (Integration & Validation)
+
+-**PR Number**: 1 of 3
+- **PR Title**: "feat: Integrate authentication service with API endpoints"
+
+-**Estimated LOC**: ~200
+- **Dependencies**: All Phase 2 PRs merged
+
+-**Reviewers**: @principal-architect, @test-engineer, @code-reviewer
+
+-**Merge Order**: First PR in Phase 3
+- **Orchestration**: Determined by @principal-architect and @project-orchestrator
+
+## PR Description
+Integrates the authentication components into the main application, connecting models, middleware, and routes.
+
+## Task Assignments & Dependencies
+
+### Task Breakdown
+| Task ID | Description | Assigned Agent | Dependencies | Est. Time |
+|---------|-------------|----------------|--------------|-----------|
+| T3.1.1 | Set up Express app structure | backend-engineer | None | 20 min |
+| T3.1.2 | Integrate auth routes | backend-engineer | T3.1.1 | 15 min |
+| T3.1.3 | Configure middleware stack | backend-engineer | T3.1.1 | 20 min |
+| T3.1.4 | Set up error handlers | backend-engineer | T3.1.3 | 15 min |
+| T3.1.5 | Add request logging | monitoring-specialist | T3.1.1 | 20 min |
+| T3.1.6 | Configure CORS and security | security-auditor | T3.1.1 | 25 min |
+| T3.1.7 | Run integration tests | test-engineer | T3.1.2, T3.1.4, T3.1.6 | 20 min |
+| T3.1.8 | Final code review | code-reviewer | All tasks | 25 min |
+
+### Parallel Execution Plan
+
+```text
+
+Execution Group 1:
+└── backend-engineer: T3.1.1 - Express setup
+
+Execution Group 2 (After T3.1.1):
+├── backend-engineer: T3.1.2 - Auth routes
+├── backend-engineer: T3.1.3 - Middleware
+├── monitoring-specialist: T3.1.5 - Logging
+└── security-auditor: T3.1.6 - CORS/Security
+
+Execution Group 3 (After dependencies):
+├── backend-engineer: T3.1.4 - Error handlers
+└── test-engineer: T3.1.7 - Integration tests
+
+Execution Group 4 (Final):
+└── code-reviewer: T3.1.8 - Final code review
+
+```text
+
+### Agent Coordination Notes
+
+-**Principal-architect**: Defined integration patterns and middleware ordering
+
+-**Project-orchestrator**: Identified 4 parallel tasks in Group 2, reducing time from 135 min to ~65 min
+
+-**Critical path**: T3.1.1 → T3.1.3 → T3.1.4 (55 min)
+
+-**Note**: Security configuration can run parallel to route integration
+
+## Files Changed
+
+-`src/app.js` - Application setup (backend-engineer)
+
+-`src/routes/index.js` - Route registration (backend-engineer)
+
+-`src/server.js` - Server configuration (backend-engineer)
+
+-`src/middleware/logging.js` - Request logging (monitoring-specialist)
+
+-`src/middleware/security.js` - Security headers (security-auditor)
+
+## Implementation Details
+
+### File: `src/app.js`
+
 ```javascript
 const express = require('express');
-const router = express.Router();
-const User = require('../models/User');
-const { authenticate } = require('../middleware/auth');
-const { ValidationError, AuthenticationError } = require('../errors');
-const { body, validationResult } = require('express-validator');
+const authRoutes = require('./routes/auth');
 
-// Input validation rules
-const registrationRules = [
-    body('email').isEmail().normalizeEmail(),
-    body('password').isLength({ min: 8 }).trim()
-];
+const app = express();
 
-const loginRules = [
-    body('email').isEmail().normalizeEmail(),
-    body('password').notEmpty()
-];
+// Middleware setup
+app.use(express.json());
 
-// Validation middleware
-function validate(req, res, next) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        const firstError = errors.array()[0];
-        return next(new ValidationError(firstError.param, firstError.msg));
-    }
-    next();
-}
+// Route registration
+app.use('/api/auth', authRoutes);
 
-// POST /auth/register
-router.post('/register', registrationRules, validate, async (req, res, next) => {
-    try {
-        const { email, password } = req.body;
-        
-        // Check if user exists
-        const existing = await User.findOne({ email });
-        if (existing) {
-            throw new ValidationError('email', 'Email already registered');
-        }
-        
-        // Create user
-        const user = new User({ email, password });
-        await user.save();
-        
-        // Generate token
-        const token = user.generateAuthToken();
-        
-        // Set secure cookie
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            maxAge: 24 * 60 * 60 * 1000 // 24 hours
-        });
-        
-        res.status(201).json({
-            success: true,
-            user: user.toJSON(),
-            token
-        });
-    } catch (error) {
-        next(error);
-    }
-});
+// Error handling
+app.use(errorHandler);
 
-// POST /auth/login
-router.post('/login', loginRules, validate, async (req, res, next) => {
-    try {
-        const { email, password } = req.body;
-        
-        // Find user
-        const user = await User.findOne({ email });
-        if (!user) {
-            throw new AuthenticationError('Invalid credentials');
-        }
-        
-        // Verify password
-        const isValid = await user.comparePassword(password);
-        if (!isValid) {
-            throw new AuthenticationError('Invalid credentials');
-        }
-        
-        // Generate token
-        const token = user.generateAuthToken();
-        
-        // Set secure cookie
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            maxAge: 24 * 60 * 60 * 1000
-        });
-        
-        res.json({
-            success: true,
-            user: user.toJSON(),
-            token
-        });
-    } catch (error) {
-        next(error);
-    }
-});
+module.exports = app;
 
-// POST /auth/logout
-router.post('/logout', authenticate, (req, res) => {
-    res.clearCookie('token');
-    res.json({ success: true, message: 'Logged out successfully' });
-});
+```text
 
-// GET /auth/me
-router.get('/me', authenticate, (req, res) => {
-    res.json({
-        success: true,
-        user: req.user.toJSON()
-    });
-});
+## PR Checklist
 
-module.exports = router;
-```
+-[ ] Integration tests pass
 
-**Rationale**: Routes implement complete authentication flow with input validation, secure cookies, and proper error handling.
+-[ ] End-to-end flow verified
 
-## 3.2 Integration Tests
+-[ ] API documentation updated
 
-### File: `test/integration/auth.test.js`
-```javascript
-const request = require('supertest');
-const app = require('../../src/app');
-const User = require('../../src/models/User');
-const { connectDB, clearDB, closeDB } = require('../helpers/database');
+-[ ] No breaking changes
 
-describe('Authentication API', () => {
-    before(async () => {
-        await connectDB();
-    });
-    
-    afterEach(async () => {
-        await clearDB();
-    });
-    
-    after(async () => {
-        await closeDB();
-    });
-    
-    describe('POST /auth/register', () => {
-        it('should register new user', async () => {
-            const res = await request(app)
-                .post('/auth/register')
-                .send({
-                    email: 'newuser@example.com',
-                    password: 'SecureP@ss123'
-                })
-                .expect(201);
-            
-            expect(res.body.success).to.be.true;
-            expect(res.body.user.email).to.equal('newuser@example.com');
-            expect(res.body.token).to.be.a('string');
-            expect(res.body.user).to.not.have.property('password');
-        });
-        
-        it('should reject duplicate emails', async () => {
-            await User.create({
-                email: 'existing@example.com',
-                password: 'SecureP@ss123'
-            });
-            
-            const res = await request(app)
-                .post('/auth/register')
-                .send({
-                    email: 'existing@example.com',
-                    password: 'SecureP@ss123'
-                })
-                .expect(400);
-            
-            expect(res.body.error).to.equal('ValidationError');
-            expect(res.body.field).to.equal('email');
-        });
-    });
-    
-    describe('POST /auth/login', () => {
-        beforeEach(async () => {
-            await User.create({
-                email: 'test@example.com',
-                password: 'SecureP@ss123'
-            });
-        });
-        
-        it('should login with valid credentials', async () => {
-            const res = await request(app)
-                .post('/auth/login')
-                .send({
-                    email: 'test@example.com',
-                    password: 'SecureP@ss123'
-                })
-                .expect(200);
-            
-            expect(res.body.success).to.be.true;
-            expect(res.body.token).to.be.a('string');
-            expect(res.headers['set-cookie']).to.be.an('array');
-        });
-        
-        it('should reject invalid password', async () => {
-            const res = await request(app)
-                .post('/auth/login')
-                .send({
-                    email: 'test@example.com',
-                    password: 'WrongPassword'
-                })
-                .expect(401);
-            
-            expect(res.body.error).to.equal('AuthenticationError');
-        });
-    });
-    
-    describe('GET /auth/me', () => {
-        let token;
-        
-        beforeEach(async () => {
-            const user = await User.create({
-                email: 'test@example.com',
-                password: 'SecureP@ss123'
-            });
-            token = user.generateAuthToken();
-        });
-        
-        it('should return current user with valid token', async () => {
-            const res = await request(app)
-                .get('/auth/me')
-                .set('Authorization', `Bearer ${token}`)
-                .expect(200);
-            
-            expect(res.body.user.email).to.equal('test@example.com');
-        });
-        
-        it('should reject invalid token', async () => {
-            await request(app)
-                .get('/auth/me')
-                .set('Authorization', 'Bearer invalid-token')
-                .expect(401);
-        });
-    });
-});
-```
+## Merge Instructions
 
-**Rationale**: Integration tests validate the complete authentication flow end-to-end, ensuring all components work together correctly.
+1.Run full test suite
+
+2.Deploy to staging environment
+
+3.Smoke test critical paths
+
+4.Merge and monitor
+
+```text
+
+## Phase Overview and PR Dependencies
+
+### Phase Dependency Chain
+
+```text
+
+Phase 1 PRs (Tests/TDD):
+  phase_1.1 → phase_1.2 → phase_1.3 → phase_1.4
+                                          ↓
+Phase 2 PRs (Implementation):
+  phase_2.1 → phase_2.2 → phase_2.3 → phase_2.4 → phase_2.5
+                                                      ↓
+Phase 3 PRs (Integration):
+  phase_3.1 → phase_3.2 → phase_3.3
+
+```text
+
+### Rollback Procedures
+
+Each PR can be independently rolled back if issues arise:
+
+1. **PR-level rollback**: Revert individual PR merges
+
+2.**Phase-level rollback**: Revert all PRs in a phase
+
+3.**Feature rollback**: Complete feature removal
+
+### PR Rollback Commands
+
+```bash
+
+# Rollback specific PR
+git revert <pr-merge-commit>
+
+# Rollback entire phase
+git revert <first-pr-commit>..<last-pr-commit>
+
+# Emergency rollback
+./scripts/rollback.sh phase_2.3
+
+```text
 
 ## Phase 3 Completion Criteria
 ✅ All API endpoints implemented and tested
@@ -920,18 +1149,27 @@ describe('Authentication API', () => {
 ✅ Ready for production deployment
 
 ## Deployment Readiness Checklist
-- [ ] Environment variables configured
-- [ ] SSL certificates installed
-- [ ] Rate limiting configured
-- [ ] Monitoring alerts set up
-- [ ] Backup strategy implemented
-- [ ] Rollback procedure documented
-```
+
+-[ ] Environment variables configured
+
+-[ ] SSL certificates installed
+
+-[ ] Rate limiting configured
+
+-[ ] Monitoring alerts set up
+
+-[ ] Backup strategy implemented
+
+-[ ] Rollback procedure documented
+
+```text
 
 ## Rollback Procedures
 
 ### Rollback Strategy Document
+
 ```markdown
+
 # Rollback Procedures
 
 ## Phase Rollback Matrix
@@ -943,8 +1181,10 @@ describe('Authentication API', () => {
 | Phase 3 | Revert routes, maintain tests | 10min | Low |
 
 ## Emergency Rollback Script
+
 ```bash
 #!/bin/bash
+
 # rollback.sh - Emergency rollback for authentication feature
 
 PHASE=$1
@@ -980,11 +1220,14 @@ case $PHASE in
 esac
 
 echo "Rollback complete for Phase $PHASE"
-```
+
+```text
 
 ## Monitoring Script
+
 ```bash
 #!/bin/bash
+
 # monitor.sh - Monitor feature implementation progress
 
 check_phase() {
@@ -1007,8 +1250,10 @@ echo "=== Feature Implementation Status ==="
 check_phase 1 "test/models/user.test.js"
 check_phase 2 "src/models/User.js"
 check_phase 3 "test/integration/auth.test.js"
-```
-```
+
+```text
+
+```text
 
 ## Performance Specifications
 
@@ -1021,6 +1266,7 @@ check_phase 3 "test/integration/auth.test.js"
 | Total execution | <20s | 45s | End-to-end timing |
 
 ### Resource Limits
+
 ```javascript
 const RESOURCE_LIMITS = {
     maxAgents: 8,              // Maximum concurrent agents
@@ -1030,11 +1276,13 @@ const RESOURCE_LIMITS = {
     maxFilesPerPhase: 15,       // Maximum files per phase
     timeoutSeconds: 45          // Total command timeout
 };
-```
+
+```text
 
 ## Agent Conflict Resolution
 
 ### Conflict Detection and Resolution
+
 ```javascript
 function resolveAgentConflicts(opinions) {
     const conflicts = detectConflicts(opinions);
@@ -1069,12 +1317,15 @@ function resolveAgentConflicts(opinions) {
     
     return applyResolutions(opinions, conflicts);
 }
-```
+
+```text
 
 ## Security Configurations
 
 ### Environment Variables
+
 ```bash
+
 # .env.example
 NODE_ENV=development
 JWT_PRIVATE_KEY_PATH=./keys/private.pem  # Generated, not stored
@@ -1085,11 +1336,14 @@ RATE_LIMIT_WINDOW=60000                  # 1 minute
 RATE_LIMIT_MAX_ATTEMPTS=5
 COOKIE_SECURE=true                        # Production only
 COOKIE_SAMESITE=strict
-```
+
+```text
 
 ### Key Generation Script
+
 ```bash
 #!/bin/bash
+
 # generate-keys.sh - Generate RSA keys for JWT signing
 
 mkdir -p keys
@@ -1105,11 +1359,13 @@ chmod 600 keys/private.pem
 chmod 644 keys/public.pem
 
 echo "✅ RSA keys generated in ./keys/"
-```
+
+```text
 
 ## Command Integration
 
 ### Implementation Hook
+
 ```javascript
 // Implementation in Claude Code command handler
 async function handlePlanCommand(taskDescription) {
@@ -1120,7 +1376,7 @@ async function handlePlanCommand(taskDescription) {
         
         // Step 1: Select agents
         monitor.start('agent_selection');
-        const agents = selectAgents(taskDescription);
+        const agents = await selectAgents(taskDescription);
         monitor.end('agent_selection');
         
         // Step 2: Generate strategic plan
@@ -1167,27 +1423,107 @@ async function handlePlanCommand(taskDescription) {
         };
     }
 }
-```
+
+```text
 
 ## Success Metrics
 
 ### Quality Gates
-- ✅ All examples follow TDD (tests before implementation)
-- ✅ Error handling comprehensive with specific error types
-- ✅ Security vulnerabilities addressed (environment variables, validation)
-- ✅ Performance specifications defined with measurable SLAs
-- ✅ Rollback procedures documented for each phase
-- ✅ Agent selection algorithm deterministic
-- ✅ File cleanup strategy implemented
-- ✅ Conflict resolution strategy defined
-- ✅ Resource limits enforced
-- ✅ Monitoring and observability built-in
+
+-✅ All examples follow TDD (tests before implementation)
+
+-✅ Error handling comprehensive with specific error types
+
+-✅ Security vulnerabilities addressed (environment variables, validation)
+
+-✅ Performance specifications defined with measurable SLAs
+
+-✅ Rollback procedures documented for each phase
+
+-✅ Agent selection algorithm deterministic
+
+-✅ File cleanup strategy implemented
+
+-✅ Conflict resolution strategy defined
+
+-✅ Resource limits enforced
+
+-✅ Monitoring and observability built-in
+
+## Real-World Considerations
+
+### Common Reality Checks
+
+-**Merge Conflicts**: Will happen, especially in Phase 2-3 PRs
+
+-**Flaky Tests**: Add retry logic, don't assume tests always pass
+
+-**External API Limits**: Rate limiting will affect integration tests
+
+-**Review Delays**: Humans take time, add 24-48 hour buffer for reviews
+
+-**Dependency Updates**: May break between PR creation and merge
+
+-**CI/CD Queues**: Shared resources cause delays
+
+### Deployment Strategy (Not Covered in PRs)
+
+```javascript
+// Add deployment phase after Phase 3
+const deploymentPhase = {
+    staging: {
+        agent: 'devops',
+        tasks: ['deploy', 'smoke-test', 'monitor'],
+        time: '2-4 hours with rollback buffer'
+    },
+    production: {
+        agent: 'devops',
+        reviewers: ['principal-architect', 'incident-commander'],
+        tasks: ['canary-deploy', 'monitor', 'full-deploy'],
+        time: '4-8 hours with validation'
+    }
+};
+
+```text
 
 ## Notes
 
-- **TDD Discipline**: Tests MUST be written before implementation code
-- **Security First**: All examples use environment variables, never hardcoded values
-- **Error Recovery**: Every operation has defined error handling and rollback
-- **Performance**: Caching strategies and resource limits prevent system overload
-- **Maintainability**: Clear phase separation enables incremental development
-- **Production Ready**: Examples include monitoring, logging, and observability
+### PR-Based Implementation Strategy
+
+-**One PR = One File**: Each PR gets its own dedicated markdown file with complete implementation details
+
+-**PR Size**: Each PR is designed to be independently reviewable (typically 150-400 LOC)
+
+-**Dependencies**: Clear dependency chain between PRs ensures proper merge order
+
+-**Naming Convention**: `phase_<phase>.<pr>_<description>.md` for easy identification
+
+-**Rollback Friendly**: Each PR can be independently reverted without breaking the system
+
+### Agent Orchestration Within PRs
+
+-**Principal-Architect**: Determines technical approach and suggests agent assignments for each task
+
+-**Project-Orchestrator**: Optimizes task parallelization and identifies the critical path
+
+-**Task Assignment**: Each task within a PR is assigned to a specific agent based on expertise
+
+-**Parallel Execution**: Independent tasks run simultaneously, reducing total execution time by 40-60%
+
+-**Dependencies Tracked**: Task-level dependencies ensure correct execution order
+
+-**Time Optimization**: Shows both sequential and parallel execution times for transparency
+
+### Core Principles
+
+-**TDD Discipline**: Tests MUST be written before implementation code
+
+-**Security First**: All examples use environment variables, never hardcoded values
+
+-**Error Recovery**: Every operation has defined error handling and rollback
+
+-**Performance**: Caching strategies and resource limits prevent system overload
+
+-**Maintainability**: Clear phase separation enables incremental development
+
+-**Production Ready**: Examples include monitoring, logging, and observability
