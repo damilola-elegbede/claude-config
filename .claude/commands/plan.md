@@ -14,7 +14,7 @@ possible, with each PR independently reviewable and following TDD methodology.
 /plan simple <task_description>  # For tasks <100 LOC
 ```
 
-## Behavior
+## Command Execution Flow
 
 ### Plan Mode Entry
 
@@ -85,6 +85,17 @@ After presenting the preview:
    - **"cancel" or rejection**: Abort without writing files
 3. **Execute approved plan**: Write files only after confirmation
 4. **Report completion**: Show where files were written
+
+## Strategic Plan Format
+
+The strategic plan includes:
+
+1. **Executive Summary** - High-level overview and objectives
+2. **Requirements Analysis** - Business and technical requirements  
+3. **Success Criteria** - Measurable outcomes
+4. **Risk Assessment** - Potential challenges and mitigations
+5. **Architectural Decisions** - Technology choices and patterns
+6. **Phased implementation** - TDD methodology with parallel execution opportunities
 
 ### File Generation Strategy
 
