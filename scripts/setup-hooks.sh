@@ -256,17 +256,38 @@ if command -v npx &> /dev/null; then
     # Check if markdownlint-cli2 is available
     if npx markdownlint-cli2 --version > /dev/null 2>&1; then
         if [ -f ".markdownlint-cli2.jsonc" ]; then
-            if npx markdownlint-cli2 "**/*.md" > /dev/null 2>&1; then
+            # Capture lint output
+            lint_output=$(npx markdownlint-cli2 "**/*.md" 2>&1)
+            lint_status=$?
+            
+            if [ $lint_status -eq 0 ]; then
                 echo -e "${GREEN}✓ Markdown linting passed${NC}"
             else
-                echo -e "${YELLOW}⚠️  Markdown linting found issues (non-blocking)${NC}"
+                echo -e "${RED}❌ Markdown linting failed${NC}"
+                echo "Linting errors:"
+                echo "$lint_output" | head -20
+                echo ""
+                echo "Fix markdown linting errors before pushing."
+                echo "Run 'npx markdownlint-cli2 \"**/*.md\"' to see all issues."
+                exit 1
             fi
         else
-            echo -e "${YELLOW}⚠️  No markdownlint config found${NC}"
+            echo -e "${YELLOW}⚠️  No markdownlint config found, skipping${NC}"
         fi
     else
         echo "Installing markdownlint-cli2 locally..."
-        npm install --no-save markdownlint-cli2 > /dev/null 2>&1 || echo -e "${YELLOW}⚠️  Could not install markdownlint${NC}"
+        if npm install --no-save markdownlint-cli2 > /dev/null 2>&1; then
+            # Try running after install
+            if npx markdownlint-cli2 "**/*.md" > /dev/null 2>&1; then
+                echo -e "${GREEN}✓ Markdown linting passed${NC}"
+            else
+                echo -e "${RED}❌ Markdown linting failed${NC}"
+                echo "Run 'npx markdownlint-cli2 \"**/*.md\"' to see issues."
+                exit 1
+            fi
+        else
+            echo -e "${YELLOW}⚠️  Could not install markdownlint, skipping${NC}"
+        fi
     fi
 else
     echo -e "${YELLOW}⚠️  npx not available, skipping markdown linting${NC}"
