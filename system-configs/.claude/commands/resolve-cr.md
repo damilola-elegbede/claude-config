@@ -22,9 +22,10 @@ When you invoke `/resolve-cr`, I will:
 2. **Exhaustively search** for ALL CodeRabbit review comments
 3. **Extract improvement suggestions** from "Prompts for AI Agents" sections
 4. **Verify comment authenticity** with user confirmation
-5. **Deploy specialized agents** to implement fixes
-6. **Apply all changes** in organized commits
-7. **Report completion** with summary of resolutions
+5. **Post PR comment** with "@coderabbitai resolve" and summary of fixes about to be addressed
+6. **Deploy specialized agents** to implement fixes
+7. **Apply all changes** in organized commits
+8. **Report completion** with summary of resolutions
 
 ## Search Strategy
 
@@ -102,7 +103,39 @@ I gather all CodeRabbit feedback:
    - Bug fixes
    - Style/formatting issues
 
-### Phase 2: Agent Deployment
+### Phase 2: PR Notification
+
+After finding and categorizing all CodeRabbit comments, I immediately:
+
+1. **Post a comment on the PR** using `gh pr comment`:
+   ```bash
+   gh pr comment {pr-number} --body "@coderabbitai resolve
+   
+   ## Addressing CodeRabbit Review Comments
+   
+   Found {total} actionable items from CodeRabbit review. Now addressing:
+   
+   ### Security ({count} items)
+   - {summary of security fixes}
+   
+   ### Performance ({count} items)
+   - {summary of performance improvements}
+   
+   ### Code Quality ({count} items)
+   - {summary of quality improvements}
+   
+   ### Tests ({count} items)
+   - {summary of test additions}
+   
+   ### Documentation ({count} items)
+   - {summary of documentation updates}
+   
+   Will apply these fixes in organized commits shortly."
+   ```
+
+2. **Wait for CodeRabbit acknowledgment** (optional, continue with fixes regardless)
+
+### Phase 3: Agent Deployment
 
 I deploy appropriate specialists based on issue type:
 
@@ -117,7 +150,7 @@ I deploy appropriate specialists based on issue type:
 | API problems | api-architect | backend-engineer |
 | Type errors | backend-engineer | - |
 
-### Phase 3: Implementation
+### Phase 4: Implementation
 
 I apply fixes systematically:
 
@@ -134,7 +167,7 @@ I apply fixes systematically:
    - Ensure tests still pass
    - Verify no new issues introduced
 
-### Phase 4: Commit Organization
+### Phase 5: Commit Organization
 
 I create organized commits:
 
@@ -291,9 +324,10 @@ When searches fail:
 ### During Execution
 
 1. **Always show found comments** for user verification
-2. **Process comments in priority order** (security first)
-3. **Group related fixes** in logical commits
-4. **Validate each change** against original suggestion
+2. **Post "@coderabbitai resolve" comment** immediately after verification
+3. **Process comments in priority order** (security first)
+4. **Group related fixes** in logical commits
+5. **Validate each change** against original suggestion
 
 ### Post-Execution
 
@@ -310,6 +344,7 @@ When searches fail:
 - **Repository identification is essential** - 404 errors are usually caused by wrong repository context
 - **Start with `/pulls/{pr}/comments` endpoint** - this contains most CodeRabbit inline comments
 - **Always verify comments with user** - prevents processing wrong or outdated suggestions
+- **Post PR comment immediately** - notify CodeRabbit of resolution intent before starting fixes
 - **Handle JSON parsing gracefully** - Unicode control characters can break parsing
 
 ### Processing Guidelines
