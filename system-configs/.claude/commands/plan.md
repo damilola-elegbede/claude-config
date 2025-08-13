@@ -90,6 +90,34 @@ After presenting the preview:
 3. **Execute approved plan**: Write files only after confirmation
 4. **Report completion**: Show where files were written
 
+## Approval Indicators
+
+The command recognizes these approval signals:
+
+### Positive Approval
+- "yes" - Standard approval
+- "approve" - Formal approval
+- "proceed" - Go ahead approval
+- "👍" - Emoji approval
+- "looks good" - Informal approval
+- "generate" - Direct generation request
+- "create files" - Explicit file creation request
+
+### Modification Requests
+- "modify" - Request changes
+- "update" - Request updates
+- "change" - Request modifications
+- "revise" - Request revision
+- "adjust" - Request adjustments
+
+### Rejection Signals
+- "no" - Standard rejection
+- "cancel" - Cancellation request
+- "abort" - Abort operation
+- "stop" - Stop processing
+- "reject" - Formal rejection
+- "👎" - Emoji rejection
+
 ## Strategic Plan Format
 
 The strategic plan includes:
@@ -288,6 +316,35 @@ User: yes
 Claude: ✅ Plan approved! Writing files...
 📁 Files written to: .tmp/fix-typo-2x1/implementation.md
 ```
+
+## Behavior
+
+The /plan command follows these behavioral patterns:
+
+### Planning Phase
+1. **Immediate plan mode entry**: Switches to strategic planning mode
+2. **Comprehensive analysis**: Evaluates task complexity and requirements
+3. **Agent orchestration**: Identifies optimal agent assignments
+4. **Preview generation**: Creates detailed plan preview without writing files
+5. **Approval waiting**: Pauses for explicit user confirmation
+
+### Execution Phase
+1. **File generation**: Only occurs after explicit approval
+2. **Structured output**: Writes files to `.tmp/<feature-name>/` directory
+3. **Progress reporting**: Shows exactly where files were created
+4. **Error handling**: Gracefully handles planning failures with fallbacks
+
+### Quality Assurance
+1. **TDD methodology**: Emphasizes test-driven development patterns
+2. **Phased implementation**: Breaks complex work into manageable phases
+3. **Parallel optimization**: Identifies concurrent execution opportunities
+4. **Review requirements**: Specifies required reviewers and quality gates
+
+### User Control
+1. **Preview first**: Never writes files without approval
+2. **Iterative refinement**: Supports plan modifications before generation
+3. **Cancellation support**: Allows aborting without file creation
+4. **Transparency**: Shows complete plan structure before execution
 
 ## Notes
 

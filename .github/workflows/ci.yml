@@ -47,12 +47,12 @@ jobs:
           "CLAUDE.md"
           "LICENSE"
           "tests/test.sh"
-          ".claude/commands/plan.md"
-          ".claude/commands/commit.md"
-          ".claude/commands/push.md"
-          ".claude/commands/test.md"
-          ".claude/commands/context.md"
-          ".claude/commands/sync.md"
+          "system-configs/.claude/commands/plan.md"
+          "system-configs/.claude/commands/commit.md"
+          "system-configs/.claude/commands/push.md"
+          "system-configs/.claude/commands/test.md"
+          "system-configs/.claude/commands/context.md"
+          "system-configs/.claude/commands/sync.md"
         )
         
         for file in "${required_files[@]}"; do
