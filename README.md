@@ -15,7 +15,7 @@
 
 ## 🎯 Overview
 
-The Claude Multi-Agent Orchestration System is a sophisticated AI-powered development ecosystem that coordinates **29 specialized agents** across 8 functional domains. By leveraging intelligent parallel execution and dynamic task decomposition, this system delivers comprehensive solutions faster and more effectively than any single agent could achieve.
+The Claude Multi-Agent Orchestration System is a sophisticated AI-powered development ecosystem that coordinates **41 specialized agents** across 8 functional domains. By leveraging intelligent parallel execution and dynamic task decomposition, this system delivers comprehensive solutions faster and more effectively than any single agent could achieve.
 
 ### 🌟 What Makes This System Unique
 
@@ -29,7 +29,7 @@ This isn't just another AI tool—it's a complete paradigm shift in how complex 
 ### Key Benefits
 
 - **🚀 Parallel-First Execution**: Maximize throughput with concurrent agent operations
-- **🎭 29 Specialized Agents**: Complete coverage of the software development lifecycle
+- **🎭 41 Specialized Agents**: Complete coverage of the software development lifecycle
 - **🎼 Intelligent Orchestration**: Smart task decomposition and dependency management
 - **🔧 Efficiency Tools**: Dedicated agents for common operations and automation
 - **🛡️ Quality Gates**: Comprehensive review, testing, and security validation
@@ -84,24 +84,22 @@ cp -r .claude ~/.claude
 - **Smart Task Decomposition**: Break complex requests into specialized workstreams
 - **Dynamic Agent Selection**: Match work to specialist capabilities automatically
 
-### 🛠️ Development Commands
-- **`/test`** - Intelligent test discovery and execution
-- **`/context`** - Instant repository analysis using parallel agents
-- **`/review`** - Comprehensive code quality validation
-- **`/security`** - Security vulnerability assessment
-- **`/perf`** - Performance analysis and optimization
-- **`/docs`** - Documentation generation and updates
-- **`/debug`** - Complex bug investigation
-- **`/orchestrate`** - Multi-agent project planning
+### 🛠️ Core Commands (14 Essential Tools)
+- **`/test`** ⭐⭐⭐⭐⭐ - Auto-discovers and runs tests, creates starter tests if none exist
+- **`/context`** ⭐⭐⭐⭐⭐ - Repository analysis with parallel agents, auto-runs on startup
+- **`/review`** ⭐⭐⭐⭐ - Comprehensive code review with quality gates
+- **`/plan`** ⭐⭐⭐⭐ - Strategic + tactical planning with TDD, prevents massive PRs
+- **`/debug`** ⭐⭐⭐ - Systematic debugging for complex issues
+- **`/deps`** ⭐⭐⭐ - Security-focused dependency management
+- **`/fix-ci`** ⭐⭐⭐ - Auto-fixes CI failures, gets PRs green
+- **`/agent-audit`** ⭐⭐⭐ - Validates agent configurations
 
-### 🎯 Efficiency Tools
-- **`/find`** - Intelligent file navigation
-- **`/deps`** - Unified package management
-- **`/git`** - Streamlined git workflows
-- **`/config`** - Configuration management
-- **`/error`** - Automated error resolution
-- **`/search`** - Complex search coordination
-- **`/find-docs`** - Documentation discovery
+- **`/resolve-cr`** ⭐⭐⭐ - Addresses code review comments
+- **`/pr`** ⭐⭐⭐ - Creates pull requests with proper formatting
+- **`/commit`** ⭐⭐⭐ - Git commit with conventional format
+- **`/push`** ⭐⭐⭐ - Safe git push with checks
+- **`/branch`** ⭐⭐⭐ - Creates semantic branches
+- **`/sync`** ⭐⭐⭐ - Syncs Claude config files
 
 ### 🔊 Audio Notifications
 - Task completion sounds (Swish.m4r)
@@ -137,48 +135,50 @@ cp -r .claude ~/.claude
 # Pre-commit best practices check
 ```
 
-#### `/docs` - Documentation Management
+#### `/debug` - Systematic Debugging
 ```bash
-/docs api       # Generate API documentation
-/docs spec      # Create technical specifications
-/docs arch      # Architecture documentation
-/docs readme    # Update README files
+/debug "app crashes when user logs out"
+# Gathers evidence from logs and traces
+# Forms and tests hypotheses
+# Identifies root cause with fix
 ```
 
 ### Planning & Orchestration
 
-#### `/plan` - Implementation Planning
+#### `/plan` - Strategic & Tactical Planning
 ```bash
-/plan Add user authentication
-# Creates detailed implementation plan
-# NO execution until approved
-# Optimizes for parallel execution
+/plan "Add user authentication"
+# Creates strategic requirements document
+# Generates tactical TDD phases (8-15 files each)
+# Principal-architect as primary consultant
+# Outputs to ./.tmp/<feature-name>/
 ```
 
-#### `/orchestrate` - Complex Project Coordination
+#### `/fix-ci` - Auto-Fix CI Failures
 ```bash
-/orchestrate Build e-commerce platform
-# Analyzes project requirements
-# Creates parallel execution strategy
-# Coordinates multiple specialists
+/fix-ci [pr_number]
+# Analyzes CI failure logs
+# Applies targeted fixes (lint, test, security)
+# Verifies locally before pushing
+# Gets your PR back to green
 ```
 
 ### Quality & Security
 
-#### `/security` - Security Assessment
+#### `/deps` - Security-Focused Dependency Management
 ```bash
-/security
-# OWASP Top 10 compliance check
-# Authentication/authorization review
-# Vulnerability detection with fixes
+/deps audit    # Find and fix vulnerabilities
+/deps update   # Safe updates with testing
+/deps clean    # Remove unused packages
+# Multi-language support (npm, pip, cargo, etc.)
 ```
 
-#### `/perf` - Performance Analysis
+#### `/agent-audit` - Agent Ecosystem Validation
 ```bash
-/perf [target]
-# Identifies bottlenecks
-# Load testing and profiling
-# Optimization recommendations
+/agent-audit
+# Validates all 41 agent configurations
+# Checks for capability gaps
+# Runs parallel audits by category
 ```
 
 #### `/resolve-cr` - CodeRabbit Review Resolution
@@ -212,7 +212,7 @@ Note: Previously named `/resolve-rabbit`.
 
 ## 🎭 Agent Ecosystem
 
-The system includes **29 specialized agents** organized across 8 functional domains:
+The system includes **41 specialized agents** organized across 8 functional domains:
 
 ### 📊 Agent Categories Overview
 
@@ -344,8 +344,11 @@ Parallel Execution (8 instances):
 
 ## 🆕 Recent Updates
 
-### SYSTEM BOUNDARY Protection (Latest)
-- **Enhanced Security Model**: All 29 agents now include SYSTEM BOUNDARY protection
+### Enhanced Command System (Latest)
+- **Streamlined Commands**: Reduced from 40 to 14 essential commands
+- **TDD Planning**: `/plan` now generates test-driven development phases
+- **CI/CD Integration**: `/fix-ci` automatically resolves build failures
+- **41 Specialized Agents**: Complete coverage across 8 domains
 - **Prevents Unauthorized Invocation**: Agents cannot invoke themselves or other agents
 - **Sole Executor Paradigm**: Claude maintains exclusive execution authority
 - **Automatic Termination**: Any attempt at agent self-invocation triggers immediate termination
