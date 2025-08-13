@@ -85,21 +85,24 @@ cp -r .claude ~/.claude
 - **Dynamic Agent Selection**: Match work to specialist capabilities automatically
 
 ### 🛠️ Core Commands (14 Essential Tools)
-- **`/test`** ⭐⭐⭐⭐⭐ - Auto-discovers and runs tests, creates starter tests if none exist
-- **`/context`** ⭐⭐⭐⭐⭐ - Repository analysis with parallel agents, auto-runs on startup
-- **`/review`** ⭐⭐⭐⭐ - Comprehensive code review with quality gates
-- **`/plan`** ⭐⭐⭐⭐ - Strategic + tactical planning with TDD, prevents massive PRs
-- **`/debug`** ⭐⭐⭐ - Systematic debugging for complex issues
-- **`/deps`** ⭐⭐⭐ - Security-focused dependency management
-- **`/fix-ci`** ⭐⭐⭐ - Auto-fixes CI failures, gets PRs green
-- **`/agent-audit`** ⭐⭐⭐ - Validates agent configurations
 
-- **`/resolve-cr`** ⭐⭐⭐ - Addresses code review comments
-- **`/pr`** ⭐⭐⭐ - Creates pull requests with proper formatting
-- **`/commit`** ⭐⭐⭐ - Git commit with conventional format
-- **`/push`** ⭐⭐⭐ - Safe git push with checks
-- **`/branch`** ⭐⭐⭐ - Creates semantic branches
-- **`/sync`** ⭐⭐⭐ - Syncs Claude config files
+#### ⭐⭐⭐⭐⭐ Five-Star Commands (10)
+- **`/test`** - Auto-discovers and runs tests, creates starter tests if none exist
+- **`/context`** - Repository analysis with parallel agents, auto-runs on startup
+- **`/plan`** - Strategic planning with preview mode, TDD methodology, prevents file spam
+- **`/agent-audit`** - Comprehensive agent validation with parallel execution
+- **`/resolve-cr`** - Exhaustive CodeRabbit comment resolution with multi-agent deployment
+- **`/debug`** - Systematic investigation for complex bugs, race conditions, memory leaks
+- **`/pr`** - Intelligent PR creation with comprehensive descriptions and smart reviewer assignment
+- **`/review`** - Multi-dimensional code analysis with security, performance, and quality checks
+- **`/deps`** - Security-focused dependency management across all package managers
+- **`/fix-ci`** - Pattern recognition and auto-fix for CI failures
+
+#### ⭐⭐⭐⭐ Four-Star Commands (4)
+- **`/commit`** - Smart commits with quality gates and auto-remediation
+- **`/push`** - Safe push with comprehensive quality checks
+- **`/branch`** - Intelligent branch naming from context
+- **`/sync`** - Repository-specific configuration synchronization
 
 ### 🔊 Audio Notifications
 - Task completion sounds (Swish.m4r)
@@ -108,6 +111,13 @@ cp -r .claude ~/.claude
 - Non-blocking background playback
 
 ## 📋 Commands
+
+### Command Quality Summary
+- **Total Commands**: 14 essential commands (reduced from 40+)
+- **5-Star Commands**: 10 (71%) - Excellent behavioral instructions, comprehensive functionality
+- **4-Star Commands**: 4 (29%) - Good quality with minor improvement opportunities
+- **Average Rating**: 4.7/5.0
+- **Design Philosophy**: Commands solve real problems beyond simple agent delegation
 
 ### Core Development Commands
 

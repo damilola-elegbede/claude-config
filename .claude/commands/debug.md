@@ -1,418 +1,216 @@
 # /debug Command
 
 ## Description
-Advanced root cause analysis for complex bugs using systematic investigation, automated reproduction, and multi-agent forensics. Handles race conditions, memory leaks, intermittent failures, and production-only issues that traditional debugging can't solve.
+
+Performs systematic root cause analysis for complex bugs using multi-agent forensics. Specializes in hard-to-reproduce issues like race conditions, memory leaks, intermittent failures, and production-only bugs that traditional debugging cannot solve.
 
 ## Usage
+
 ```bash
 /debug <issue_description>
 ```
 
-## Command Execution Flow
+## Behavior
 
-### 1. Evidence Collection Phase (Parallel)
-```javascript
-async function collectEvidence(issue) {
-    const evidence = await Promise.all([
-        collectLogs(issue),           // System, application, error logs
-        collectStackTraces(issue),     // All available stack traces
-        collectSystemMetrics(issue),   // CPU, memory, disk, network
-        collectUserReports(issue),     // User-reported symptoms
-        collectCodeChanges(issue),     // Recent commits/deployments
-        collectEnvironmentDiff(issue)  // Dev vs prod differences
-    ]);
-    
-    return correlateEvidence(evidence);
-}
-```
+When you invoke `/debug`, I will:
 
-### 2. Reproduction Strategy
-```javascript
-function generateReproductionStrategy(evidence) {
-    const strategies = [
-        'deterministic',      // Exact step-by-step reproduction
-        'statistical',        // Run N times to catch intermittent
-        'stress',            // High load to trigger race conditions
-        'time-based',        // Time-of-day dependent issues
-        'environment',       // Environment-specific reproduction
-        'synthetic'          // Synthetic data reproduction
-    ];
-    
-    return strategies.map(strategy => ({
-        type: strategy,
-        script: generateReproScript(evidence, strategy),
-        confidence: calculateConfidence(evidence, strategy)
-    })).sort((a, b) => b.confidence - a.confidence);
-}
-```
+1. **Deploy the debugger agent** as the primary investigator
+2. **Analyze the issue description** to identify symptom patterns
+3. **Deploy specialized agents** based on the issue type
+4. **Conduct systematic investigation** using appropriate techniques
+5. **Generate reproduction steps** if possible
+6. **Provide root cause analysis** with fix recommendations
 
-### 3. Multi-Agent Investigation
+## Issue Classification
 
-**Agent Deployment Matrix:**
-```javascript
-function selectDebugAgents(issue, evidence) {
-    const agents = [];
-    
-    // Core investigation team
-    agents.push('debugger');  // Primary investigator
-    
-    // Specialized based on symptoms
-    if (evidence.includes('performance')) {
-        agents.push('performance-specialist', 'performance-predictor');
-    }
-    if (evidence.includes('memory')) {
-        agents.push('code-archaeologist');  // Memory leak patterns
-    }
-    if (evidence.includes('race_condition')) {
-        agents.push('backend-engineer');  // Concurrency expert
-    }
-    if (evidence.includes('production_only')) {
-        agents.push('production-reliability-engineer', 'monitoring-specialist');
-    }
-    if (evidence.includes('security')) {
-        agents.push('security-auditor');
-    }
-    
-    return agents.slice(0, 6);  // Max 6 agents for focused investigation
-}
-```
+I classify bugs into categories to determine the investigation approach:
 
-## Investigation Techniques
+### Intermittent Issues
+- **Symptoms**: Works sometimes, fails unpredictably
+- **Approach**: Statistical analysis, multiple reproduction attempts
+- **Agents**: debugger, performance-specialist
+- **Focus**: Timing, load conditions, environmental factors
 
-### Binary Search Isolation
-```python
-def binary_search_isolation(codebase, issue):
-    """Systematically narrow down problem area"""
-    
-    working_version = find_last_working_version()
-    broken_version = find_first_broken_version()
-    
-    while not is_adjacent(working_version, broken_version):
-        midpoint = get_midpoint_commit(working_version, broken_version)
-        
-        if test_version(midpoint, issue):
-            working_version = midpoint
-        else:
-            broken_version = midpoint
-    
-    # Found exact commit that introduced bug
-    return analyze_commit_diff(working_version, broken_version)
-```
+### Race Conditions
+- **Symptoms**: Concurrency failures, deadlocks, data corruption
+- **Approach**: Thread analysis, lock inspection, timing manipulation
+- **Agents**: debugger, backend-engineer
+- **Focus**: Shared resources, synchronization points, atomic operations
 
-### Time Travel Debugging
-```javascript
-// Replay execution with instrumentation
-async function timeTravelDebug(issue) {
-    const trace = await recordExecution(issue.reproductionSteps);
-    
-    // Step backwards through execution
-    for (let i = trace.length - 1; i >= 0; i--) {
-        const state = trace[i];
-        
-        if (detectAnomaly(state)) {
-            return {
-                timestamp: state.timestamp,
-                callStack: state.callStack,
-                variables: state.variables,
-                anomaly: describeAnomaly(state),
-                fix: suggestFix(state)
-            };
-        }
-    }
-}
-```
+### Memory Issues
+- **Symptoms**: Growing memory usage, crashes, slow degradation
+- **Approach**: Heap analysis, reference tracking, allocation patterns
+- **Agents**: debugger, code-archaeologist
+- **Focus**: Leak sources, circular references, resource cleanup
 
-### Race Condition Detection
-```go
-// Concurrent execution analysis
-func detectRaceConditions(code string) []RaceCondition {
-    // Run with race detector
-    results := runWithRaceDetector(code, iterations=1000)
-    
-    // Analyze memory access patterns
-    accessPatterns := analyzeMemoryAccess(results)
-    
-    // Identify unsafe concurrent access
-    races := []RaceCondition{}
-    for _, pattern := range accessPatterns {
-        if pattern.IsConcurrent && !pattern.IsSynchronized {
-            races = append(races, RaceCondition{
-                Location: pattern.Location,
-                Variables: pattern.Variables,
-                Threads: pattern.Threads,
-                Fix: generateSynchronizationFix(pattern),
-            })
-        }
-    }
-    
-    return races
-}
-```
+### Production-Only Bugs
+- **Symptoms**: Works in dev/staging, fails in production
+- **Approach**: Environment comparison, configuration analysis, scale testing
+- **Agents**: debugger, production-reliability-engineer, monitoring-specialist
+- **Focus**: Environment differences, data volumes, external dependencies
 
-### Memory Leak Detection
-```javascript
-class MemoryLeakDetector {
-    constructor() {
-        this.heapSnapshots = [];
-        this.leakPatterns = new Map();
-    }
-    
-    async detectLeaks(testScenario) {
-        // Take baseline snapshot
-        this.heapSnapshots.push(await this.takeHeapSnapshot('baseline'));
-        
-        // Run scenario multiple times
-        for (let i = 0; i < 10; i++) {
-            await testScenario();
-            await this.forceGarbageCollection();
-            this.heapSnapshots.push(await this.takeHeapSnapshot(`iteration_${i}`));
-        }
-        
-        // Analyze growth patterns
-        const growth = this.analyzeHeapGrowth();
-        
-        // Identify leak sources
-        return {
-            leaks: this.identifyLeakSources(growth),
-            retainedObjects: this.findRetainedObjects(),
-            circularReferences: this.detectCircularRefs(),
-            eventListeners: this.findOrphanedListeners(),
-            fixes: this.generateFixes()
-        };
-    }
-}
-```
+### Performance Degradation
+- **Symptoms**: Slowness, timeouts, resource exhaustion
+- **Approach**: Profiling, bottleneck analysis, load testing
+- **Agents**: debugger, performance-specialist, performance-predictor
+- **Focus**: Hot paths, N+1 queries, inefficient algorithms
+
+## Investigation Process
+
+### Phase 1: Evidence Collection
+
+I gather all available information in parallel:
+
+- **Logs**: Application, system, error, and audit logs
+- **Stack Traces**: All available error traces and core dumps
+- **Metrics**: CPU, memory, disk, network utilization
+- **User Reports**: Symptoms, reproduction steps, affected users
+- **Code Changes**: Recent commits, deployments, configuration changes
+- **Environment**: Differences between working and failing environments
+
+### Phase 2: Hypothesis Formation
+
+Based on evidence, I form hypotheses about the root cause:
+
+1. **Most Likely**: Based on symptom patterns and similar past issues
+2. **Alternative**: Other possible causes to investigate
+3. **Edge Cases**: Unlikely but severe possibilities to rule out
+
+### Phase 3: Systematic Investigation
+
+I use appropriate techniques based on the issue type:
+
+#### Binary Search (for regressions)
+- Find last working version
+- Find first broken version
+- Bisect commits to find exact breaking change
+- Analyze the specific changes that caused the issue
+
+#### Reproduction Attempts
+- **Deterministic**: Exact step-by-step reproduction
+- **Statistical**: Multiple runs to catch intermittent issues
+- **Stress Testing**: High load to trigger race conditions
+- **Time-Based**: For time-dependent issues
+- **Synthetic**: Using artificial data/conditions
+
+#### Differential Analysis
+- Compare working vs failing environments
+- Analyze configuration differences
+- Examine data variations
+- Review dependency versions
+
+### Phase 4: Root Cause Identification
+
+Once identified, I provide:
+
+- **Primary Cause**: The direct cause of the issue
+- **Contributing Factors**: Conditions that enable the bug
+- **Impact Scope**: What systems/users are affected
+- **Risk Assessment**: Likelihood of recurrence
+
+### Phase 5: Solution Development
+
+I deliver:
+
+- **Immediate Fix**: Quick resolution to stop the bleeding
+- **Proper Solution**: Comprehensive fix addressing root cause
+- **Prevention Measures**: How to prevent similar issues
+- **Test Cases**: To verify the fix and prevent regression
+
+## Agent Coordination
+
+### Primary Investigator
+- **debugger**: Leads the investigation, coordinates other agents
+
+### Specialist Support (deployed as needed)
+- **performance-specialist**: For performance-related issues
+- **code-archaeologist**: For historical code analysis and memory leaks
+- **backend-engineer**: For concurrency and system-level issues
+- **production-reliability-engineer**: For production-specific problems
+- **monitoring-specialist**: For observability and metrics analysis
+- **security-auditor**: When security implications are suspected
+
+### Parallel Execution
+When multiple hypotheses exist, I deploy agents in parallel to investigate different theories simultaneously, reducing time to resolution.
 
 ## Output Format
 
-### Investigation Report
-```markdown
-# Bug Investigation Report
+After investigation, I provide:
 
-## Executive Summary
-**Issue**: Random API 500 errors in production
-**Root Cause**: Race condition in payment processing
-**Confidence**: 94%
-**Fix Priority**: P0 - Critical
+### Bug Report
+```
+## Issue: [Title]
 
-## Evidence Analysis
-### Symptoms
-- 500 errors spike during high traffic (>1000 req/s)
-- Occurs only between 2-4 PM EST
-- Affects 0.3% of payment transactions
-- No errors in staging environment
+### Summary
+[One paragraph description of the issue and its impact]
 
-### Correlation Matrix
-| Evidence | Weight | Correlation |
-|----------|--------|-------------|
-| Concurrent payment attempts | High | 0.92 |
-| Database lock timeouts | High | 0.88 |
-| Memory spike pattern | Medium | 0.65 |
-| Time-of-day correlation | Low | 0.41 |
+### Root Cause
+[Specific technical cause of the issue]
 
-## Root Cause Analysis
+### Evidence
+- [Key evidence point 1]
+- [Key evidence point 2]
+- [Key evidence point 3]
 
-### Primary Cause
-```javascript
-// PROBLEM: Non-atomic payment processing
-async function processPayment(orderId, amount) {
-    const order = await getOrder(orderId);  // Step 1
-    if (order.status === 'pending') {       // Step 2
-        order.status = 'processing';        // Step 3
-        await saveOrder(order);             // Step 4
-        await chargeCard(order, amount);    // Step 5
-    }
-}
-// Race condition between steps 2-4
+### Reproduction Steps
+1. [Step to reproduce]
+2. [Step to reproduce]
+3. [Expected vs actual behavior]
+
+### Solution
+[Recommended fix with code changes if applicable]
+
+### Prevention
+[How to prevent this class of bug in the future]
+
+### Test Coverage
+[Test cases to add to prevent regression]
 ```
 
-### Reproduction Script
-```bash
-#!/bin/bash
-# Reproduces race condition with 98% success rate
-for i in {1..100}; do
-    curl -X POST http://api/payment \
-         -H "Content-Type: application/json" \
-         -d '{"orderId": "TEST_ORDER", "amount": 100}' &
-done
-wait
-```
+## Common Investigation Patterns
 
-## Solution
+### Pattern: Intermittent Test Failures
+1. Collect failure history and patterns
+2. Identify environmental factors (time, load, data)
+3. Add logging around failure points
+4. Run with various conditions to find trigger
+5. Implement deterministic reproduction
 
-### Immediate Fix (2 hours)
-```javascript
-// SOLUTION: Atomic operation with row-level locking
-async function processPayment(orderId, amount) {
-    const result = await db.transaction(async (trx) => {
-        const order = await trx('orders')
-            .where({ id: orderId, status: 'pending' })
-            .forUpdate()  // Row-level lock
-            .first();
-            
-        if (!order) {
-            throw new Error('Order not available for processing');
-        }
-        
-        await trx('orders')
-            .where({ id: orderId })
-            .update({ status: 'processing' });
-            
-        return chargeCard(order, amount);
-    });
-    
-    return result;
-}
-```
+### Pattern: Memory Leak
+1. Monitor memory growth over time
+2. Identify allocation patterns
+3. Track reference chains
+4. Find retention points
+5. Implement proper cleanup
 
-### Long-term Solution (1 week)
-- Implement distributed locking with Redis
-- Add idempotency keys for payment operations
-- Create payment state machine with atomic transitions
-- Add comprehensive concurrency tests
+### Pattern: Race Condition
+1. Identify shared resources
+2. Analyze synchronization mechanisms
+3. Add strategic delays to expose timing issues
+4. Review lock ordering
+5. Implement proper synchronization
 
-## Prevention Strategy
+### Pattern: Production-Only Failure
+1. Compare all environment variables
+2. Analyze data volume differences
+3. Check external service behaviors
+4. Review configuration management
+5. Implement environment parity
 
-### Testing Improvements
-```javascript
-describe('Payment Concurrency Tests', () => {
-    it('handles concurrent payment attempts', async () => {
-        const orderId = 'TEST_ORDER';
-        const attempts = 100;
-        
-        // Attempt 100 concurrent payments
-        const results = await Promise.allSettled(
-            Array(attempts).fill().map(() => 
-                processPayment(orderId, 100)
-            )
-        );
-        
-        // Only one should succeed
-        const successful = results.filter(r => r.status === 'fulfilled');
-        expect(successful).toHaveLength(1);
-        
-        // Others should fail gracefully
-        const failed = results.filter(r => r.status === 'rejected');
-        expect(failed).toHaveLength(attempts - 1);
-        failed.forEach(r => {
-            expect(r.reason.message).toContain('not available');
-        });
-    });
-});
-```
+## Success Criteria
 
-### Monitoring Additions
-```yaml
-alerts:
-  - name: payment_race_condition_detector
-    query: |
-      SELECT COUNT(*) as concurrent_attempts
-      FROM payments
-      WHERE created_at > NOW() - INTERVAL '1 minute'
-      GROUP BY order_id
-      HAVING COUNT(*) > 1
-    threshold: 1
-    severity: critical
-```
+The investigation is complete when:
 
-## Verification
-
-### Before Fix
-- Error rate: 0.3% (15 errors/hour during peak)
-- P95 latency: 2800ms
-- Concurrent payment conflicts: 89/hour
-
-### After Fix (Projected)
-- Error rate: <0.001%
-- P95 latency: 180ms
-- Concurrent payment conflicts: 0
-
-## Lessons Learned
-1. Always use database transactions for multi-step operations
-2. Implement row-level locking for shared resources
-3. Load test with realistic concurrency patterns
-4. Monitor for race condition indicators
-```
-
-## Advanced Features
-
-### Automatic Fix Generation
-```javascript
-function generateFix(rootCause) {
-    const fixTemplates = {
-        'race_condition': generateRaceConditionFix,
-        'memory_leak': generateMemoryLeakFix,
-        'null_pointer': generateNullCheckFix,
-        'infinite_loop': generateLoopTerminationFix,
-        'deadlock': generateDeadlockFix
-    };
-    
-    const fixGenerator = fixTemplates[rootCause.type];
-    if (fixGenerator) {
-        return {
-            code: fixGenerator(rootCause),
-            tests: generateTests(rootCause),
-            confidence: calculateFixConfidence(rootCause)
-        };
-    }
-}
-```
-
-### Performance Impact Analysis
-```javascript
-async function analyzePerformanceImpact(bug) {
-    const metrics = await collectMetrics([
-        'response_time',
-        'throughput',
-        'error_rate',
-        'resource_usage'
-    ]);
-    
-    return {
-        userImpact: calculateUserImpact(metrics),
-        revenueImpact: calculateRevenueImpact(metrics),
-        slaViolations: checkSLAViolations(metrics),
-        priority: calculatePriority(metrics)
-    };
-}
-```
-
-## Integration with CI/CD
-
-### Automatic Bug Bisection
-```yaml
-# .github/workflows/auto-bisect.yml
-name: Automatic Bug Bisection
-on:
-  issue:
-    types: [labeled]
-
-jobs:
-  bisect:
-    if: contains(github.event.label.name, 'bug-regression')
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run bisection
-        run: |
-          /debug "Issue: ${{ github.event.issue.title }}"
-          git bisect start
-          git bisect bad HEAD
-          git bisect good ${{ env.LAST_KNOWN_GOOD }}
-          git bisect run npm test
-```
-
-## Success Metrics
-
-- **Time to Root Cause**: Average 15 minutes (was 2+ hours manual)
-- **Fix Confidence**: 94% average (fixes work first time)
-- **Reproduction Rate**: 98% for intermittent bugs
-- **Prevention**: 60% reduction in similar bugs recurring
+- Root cause is identified with evidence
+- Issue can be reproduced reliably (or explanation why not)
+- Fix is implemented and tested
+- Prevention measures are in place
+- Documentation is updated
 
 ## Notes
 
-- Handles production-only issues through environment diff analysis
-- Automatically generates reproduction scripts with confidence scores
-- Creates comprehensive test suites to prevent regression
-- Integrates with monitoring for continuous validation
-- Provides both immediate fixes and long-term solutions
+- Complex bugs often have multiple contributing factors
+- Production issues take priority over development issues
+- Always consider the cost of the bug vs cost of investigation
+- Some bugs may require accepting and working around rather than fixing
+- Document all findings for future reference
