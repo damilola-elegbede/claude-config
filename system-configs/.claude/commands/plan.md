@@ -112,17 +112,17 @@ When approved, files are written to `.tmp/<feature-name>/`:
 **Complex tasks** generate:
 
 - `plan.md` - Strategic requirements document
-- `phase_1.1_<description>.md` - Phase 1, PR 1
-- `phase_1.2_<description>.md` - Phase 1, PR 2
-- `phase_1.3_<description>.md` - Phase 1, PR 3
-- `phase_2.1_<description>.md` - Phase 2, PR 1
-- `phase_2.2_<description>.md` - Phase 2, PR 2
-- (continues for all PRs with phase_X.Y_description.md format)
+- `phase_1.01_<description>.md` - Phase 1, PR 1
+- `phase_1.02_<description>.md` - Phase 1, PR 2
+- `phase_1.03_<description>.md` - Phase 1, PR 3
+- `phase_2.01_<description>.md` - Phase 2, PR 1
+- `phase_2.02_<description>.md` - Phase 2, PR 2
+- (continues for all PRs with phase_X.YY_description.md format)
 - `rollback.md` - Rollback procedures
 
 ### PR File Contents (Detailed Task Descriptions)
 
-Each PR file (`phase_X.Y_description.md`) contains comprehensive task breakdowns:
+Each PR file (`phase_X.YY_description.md`) contains comprehensive task breakdowns:
 
 #### Required Sections in Each PR File
 
@@ -132,7 +132,7 @@ Each PR file (`phase_X.Y_description.md`) contains comprehensive task breakdowns
 
 2. **Detailed Task Breakdown**
    - **Granular task list** with specific implementation steps
-   - **Task IDs** for tracking (e.g., T1.1.1, T1.1.2)
+   - **Task IDs** for tracking (e.g., T1.01.1, T1.01.2)
    - **Assigned agents** for each task
    - **Time estimates** per task (in minutes)
    - **Dependencies** between tasks
@@ -160,10 +160,10 @@ Each PR file (`phase_X.Y_description.md`) contains comprehensive task breakdowns
 Example task detail level:
 
 ```text
-Task T1.2.3: Implement password hashing in User model
+Task T1.02.3: Implement password hashing in User model
 - Agent: backend-engineer
 - Time: 25-30 minutes
-- Dependencies: T1.2.1 (User schema complete)
+- Dependencies: T1.02.1 (User schema complete)
 - Details:
   * Add bcrypt dependency to package.json
   * Create pre-save hook in src/models/User.js
@@ -183,7 +183,7 @@ Phases follow a logical progression:
 
 Within each phase:
 
-- PRs are numbered sequentially (1.1, 1.2, 1.3...)
+- PRs are numbered sequentially (1.01, 1.02, 1.03...)
 - Dependencies are clearly marked
 - Parallel execution opportunities identified
 - Each PR is independently mergeable
