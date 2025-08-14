@@ -29,6 +29,12 @@ When you invoke `/fix-ci`, I will:
 5. **Create a commit** with the fixes
 6. **Re-trigger CI** to verify the fix worked
 7. **Report results** with any manual steps needed
+8. **Deploy execution-evaluator** to verify:
+   - CI failure data fetched successfully
+   - Root cause correctly identified
+   - Fixes applied without breaking other tests
+   - CI re-triggered and passing
+   - No unintended side effects
 
 ## Failure Categories
 

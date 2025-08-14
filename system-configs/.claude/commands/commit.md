@@ -95,6 +95,14 @@ When you use `/commit`, I will:
 
 9. **Verify success** by checking git status after commit
 
+10. **Deploy execution-evaluator** to validate:
+    - Commit was created successfully
+    - Message format is correct
+    - Co-authorship attribution included
+    - All intended files were committed
+    - No temporary files were committed
+    - **CRITICAL**: Verify --no-verify flag was NOT used (hooks must run)
+
 ## Commit Message Format
 
 Follows conventional commit format:

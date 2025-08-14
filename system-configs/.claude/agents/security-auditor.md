@@ -1,6 +1,6 @@
 ---
 name: security-auditor
-description: MUST BE USED for OWASP Top 10 checks, threat modeling, security remediation guidance, and critical vulnerability detection. Use PROACTIVELY for security audits, comprehensive vulnerability assessments, compliance reviews, and proactive threat detection
+description: MUST BE USED for OWASP Top 10 checks, threat modeling, and vulnerability detection. Use PROACTIVELY for security audits, vulnerability assessments, compliance reviews, and threat detection
 tools: Read, Grep, Glob, LS
 model: sonnet
 color: red

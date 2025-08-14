@@ -111,6 +111,16 @@ parallel_execution:
 - Document all changes made
 - **Model changes are RECOMMENDATIONS ONLY** (not auto-applied)
 
+## Execution Verification
+
+After audit completion, **execution-evaluator** is deployed to verify:
+- All agent files were scanned successfully
+- YAML validation completed without errors
+- Category assignments were checked
+- Tool permissions were validated
+- Report generated with all required sections
+- Patch snippets (if any) are syntactically correct
+
 ## Report Structure
 
 ### Executive Summary

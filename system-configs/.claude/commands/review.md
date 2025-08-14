@@ -31,6 +31,12 @@ When you invoke `/review`, I will:
 5. **Generate actionable feedback** with specific fixes
 6. **Provide PR readiness assessment** with clear go/no-go decision
 7. **Optionally apply fixes** if requested
+8. **Deploy execution-evaluator** to verify:
+   - Review completed across all dimensions
+   - All critical issues identified
+   - Fix suggestions provided
+   - PR readiness assessment accurate
+   - Applied fixes (if requested) successful
 
 ## Multi-Agent Review Process
 

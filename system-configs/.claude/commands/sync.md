@@ -47,6 +47,7 @@ When you use `/sync`, I will:
    - Report any errors or conflicts
    - Show summary of synced files
    - Confirm actual agent files are present (excluding documentation)
+   - Deploy execution-evaluator to validate sync success
 
 ## Files Synced
 

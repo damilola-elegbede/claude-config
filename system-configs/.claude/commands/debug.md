@@ -20,6 +20,12 @@ When you invoke `/debug`, I will:
 4. **Conduct systematic investigation** using appropriate techniques
 5. **Generate reproduction steps** if possible
 6. **Provide root cause analysis** with fix recommendations
+7. **Deploy execution-evaluator** to verify:
+   - Debugging process completed successfully
+   - Root cause identified or hypotheses documented
+   - Reproduction steps validated
+   - Fix recommendations provided
+   - No debugging artifacts left behind
 
 ## Issue Classification
 

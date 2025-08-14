@@ -47,6 +47,13 @@ When you use `/branch`, I will:
    - Display branch creation summary
    - List recent commits from main
 
+6. **Deploy execution-evaluator** to verify:
+   - Branch created successfully with correct naming
+   - Switched to new branch
+   - Branch starts from latest main/master
+   - Tracking configured if needed
+   - No uncommitted changes lost
+
 ## Branch Naming Conventions
 
 ### Automatic Prefixes

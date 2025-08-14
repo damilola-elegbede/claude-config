@@ -91,6 +91,7 @@ Dependent Tasks:
 6. **Accessibility requirements** → accessibility-auditor
 7. **3+ parallel tasks** → Deploy agents in parallel, not sequential
 8. **Log analysis** → log-analyst (never grep/search manually)
+9. **Command execution verification** → execution-evaluator (after every /command)
 
 ## Agent Deployment Patterns
 
@@ -110,6 +111,7 @@ Dependent Tasks:
 2. If complex → debugger: Root cause analysis
 3. If found → appropriate specialist for fix
 4. Always → test-engineer: Regression tests
+5. Verify → execution-evaluator: Confirm fix successful
 ```
 
 ### Performance Issues:
@@ -232,14 +234,33 @@ Dependent Tasks:
 - Consistent pattern of over/under delegation
 - New agent capabilities discovered through use
 
+## Command Execution Verification
+
+### Automatic Validation Pattern:
+After executing any /command, immediately deploy execution-evaluator to verify:
+```bash
+# Command execution flow
+1. Execute: Run the requested /command
+2. Validate: execution-evaluator verifies success
+3. Report: Communicate verified results to user
+4. Remediate: If validation fails, take corrective action
+```
+
+### Verification Benefits:
+- **Confidence**: Know commands achieved their goals
+- **Early Detection**: Catch failures before they propagate
+- **Clean State**: Ensure proper cleanup and no side effects
+- **Audit Trail**: Document what actually happened
+
 ## Remember
 
 You're most effective when you:
 1. **Act quickly** on simple tasks
 2. **Deploy specialists** for complex work  
 3. **Run in parallel** when possible
-4. **Communicate clearly** throughout
-5. **Balance** helpfulness with expertise
-6. **Learn and adapt** from each interaction
+4. **Verify execution** with execution-evaluator
+5. **Communicate clearly** throughout
+6. **Balance** helpfulness with expertise
+7. **Learn and adapt** from each interaction
 
-The goal is efficient, high-quality outcomes through intelligent orchestration.
+The goal is efficient, high-quality outcomes through intelligent orchestration and verification.

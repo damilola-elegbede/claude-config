@@ -47,6 +47,13 @@ When you use `/context` without arguments, I will:
    - Recent development activity
    - Development workflow
 
+5. **Deploy execution-evaluator** to verify:
+   - Repository analysis completed successfully
+   - All key directories were scanned
+   - Technology stack correctly identified
+   - Documentation parsed accurately
+   - Context report comprehensive
+
 ### Focused Component Analysis (with scope argument)
 
 When you use `/context <scope>`, I will coordinate with codebase-analyst agents to:

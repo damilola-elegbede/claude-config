@@ -46,6 +46,12 @@ When you use `/test`, I will:
    - Display results with pass/fail status
    - Show coverage information if available
 
+6. **Deploy execution-evaluator** to verify:
+   - Test command executed correctly
+   - Coverage thresholds were met
+   - Test reports were generated
+   - CI/CD integration successful
+
 ## Test Detection Priority
 
 1. README.md documented commands (highest priority)

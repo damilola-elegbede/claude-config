@@ -28,6 +28,12 @@ When you invoke `/pr`, I will:
 5. **Assign metadata** - Add appropriate labels, reviewers, and projects
 6. **Create the pull request** - Submit via GitHub API with all metadata
 7. **Report PR URL** - Provide link for immediate review
+8. **Deploy execution-evaluator** to verify:
+   - PR created successfully with correct target branch
+   - Description follows template format
+   - All commits included in PR
+   - Labels and metadata properly assigned
+   - PR accessible via provided URL
 
 ## Change Analysis Process
 

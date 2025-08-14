@@ -156,6 +156,18 @@ tools:
 
 # Complex Agent Content" "pass"
 
+# Test 10: Execution evaluator agent
+run_test "execution_evaluator" "---
+name: execution-evaluator
+description: MUST BE USED for verifying command execution success. Use PROACTIVELY after any command to validate outputs, check side effects, and ensure intended goals were achieved
+tools: Read, Grep, Glob, LS, Bash
+model: haiku
+color: green
+category: quality
+---
+
+# Execution Evaluator Content" "pass"
+
 # Cleanup test directory
 rm -rf "$TEST_DIR"
 

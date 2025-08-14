@@ -28,6 +28,12 @@ When you invoke `/deps`, I will:
 3. **Analyze the requested action** and deploy appropriate specialists
 4. **Execute the action** across all detected ecosystems
 5. **Provide consolidated results** with actionable recommendations
+6. **Deploy execution-evaluator** to verify:
+   - All package managers detected correctly
+   - Requested action completed successfully
+   - No dependencies broken
+   - Security scan results accurate
+   - Lock files updated appropriately
 
 ## Package Manager Detection
 

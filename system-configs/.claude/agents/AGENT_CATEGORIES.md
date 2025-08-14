@@ -53,11 +53,12 @@ This document defines the official agent categories and their corresponding colo
 - Interaction and motion design
 
 ### 5. **Quality** (green)
-**Purpose**: Testing, review, and validation  
+**Purpose**: Testing, review, validation, and verification  
 **Color**: `green`  
 **Scope**:
 - Test strategy and implementation
 - Code quality review
+- Command execution verification
 - Performance testing and optimization
 - Security testing and validation
 - Accessibility compliance testing

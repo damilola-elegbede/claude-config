@@ -26,6 +26,12 @@ When you invoke `/resolve-cr`, I will:
 6. **Deploy specialized agents** to implement fixes
 7. **Apply all changes** in organized commits
 8. **Report completion** with summary of resolutions
+9. **Deploy execution-evaluator** to verify:
+   - All CodeRabbit comments found and processed
+   - Fixes correctly implemented
+   - No code broken by changes
+   - Commits created with proper messages
+   - PR comment posted successfully
 
 ## Search Strategy
 

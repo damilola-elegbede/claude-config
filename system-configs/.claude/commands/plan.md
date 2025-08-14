@@ -26,6 +26,12 @@ When you invoke `/plan`, I will:
 4. **Present a preview** for your review and approval
 5. **Wait for your decision** before taking any action
 6. **Write files only if approved** - no files created until you confirm
+7. **Deploy execution-evaluator** to verify:
+   - Plan generated successfully
+   - Complexity assessment accurate
+   - PR breakdown logical and independent
+   - Files written match approved plan
+   - No unauthorized files created
 
 ### Complexity Assessment
 
