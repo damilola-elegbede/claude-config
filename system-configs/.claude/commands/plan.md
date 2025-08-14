@@ -101,6 +101,7 @@ After presenting the preview:
 The command recognizes these approval signals:
 
 ### Positive Approval
+
 - "yes" - Standard approval
 - "approve" - Formal approval
 - "proceed" - Go ahead approval
@@ -110,6 +111,7 @@ The command recognizes these approval signals:
 - "create files" - Explicit file creation request
 
 ### Modification Requests
+
 - "modify" - Request changes
 - "update" - Request updates
 - "change" - Request modifications
@@ -117,6 +119,7 @@ The command recognizes these approval signals:
 - "adjust" - Request adjustments
 
 ### Rejection Signals
+
 - "no" - Standard rejection
 - "cancel" - Cancellation request
 - "abort" - Abort operation
@@ -328,6 +331,7 @@ Claude: ✅ Plan approved! Writing files...
 The /plan command follows these behavioral patterns:
 
 ### Planning Phase
+
 1. **Immediate plan mode entry**: Switches to strategic planning mode
 2. **Comprehensive analysis**: Evaluates task complexity and requirements
 3. **Agent orchestration**: Identifies optimal agent assignments
@@ -335,18 +339,21 @@ The /plan command follows these behavioral patterns:
 5. **Approval waiting**: Pauses for explicit user confirmation
 
 ### Execution Phase
+
 1. **File generation**: Only occurs after explicit approval
 2. **Structured output**: Writes files to `.tmp/<feature-name>/` directory
 3. **Progress reporting**: Shows exactly where files were created
 4. **Error handling**: Gracefully handles planning failures with fallbacks
 
 ### Quality Assurance
+
 1. **TDD methodology**: Emphasizes test-driven development patterns
 2. **Phased implementation**: Breaks complex work into manageable phases
 3. **Parallel optimization**: Identifies concurrent execution opportunities
 4. **Review requirements**: Specifies required reviewers and quality gates
 
 ### User Control
+
 1. **Preview first**: Never writes files without approval
 2. **Iterative refinement**: Supports plan modifications before generation
 3. **Cancellation support**: Allows aborting without file creation

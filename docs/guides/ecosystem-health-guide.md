@@ -20,6 +20,7 @@ This guide provides comprehensive strategies for monitoring, maintaining, and op
 The agent ecosystem health monitoring system ensures that all specialized AI agents maintain consistency, compliance, and optimal performance. Regular audits and proactive maintenance prevent degradation and ensure the ecosystem evolves cohesively.
 
 ### Key Health Indicators
+
 - **Compliance Score**: Adherence to system boundaries and constraints
 - **Documentation Quality**: Completeness and accuracy of agent specifications
 - **Capability Coverage**: Breadth and depth of specialized functions
@@ -33,17 +34,20 @@ The agent ecosystem health monitoring system ensures that all specialized AI age
 The `/agent-audit` command provides a complete ecosystem health assessment by running multiple specialized auditors in parallel.
 
 #### Basic Audit Command
+
 ```bash
 /agent-audit
 ```
 
 This triggers parallel execution of:
+
 - Category-specific auditors for each agent category
 - **codebase-analyst** for structural assessment
 - **security-auditor** for vulnerability checks
 - **performance-specialist** for efficiency metrics
 
 #### Targeted Audits
+
 ```bash
 # Audit specific agent categories
 /agent-audit --category development
@@ -61,6 +65,7 @@ This triggers parallel execution of:
 The audit runs in parallel phases:
 
 #### Phase 1: Parallel Category Audits
+
 - Documentation agents audit
 - Development agents audit
 - Infrastructure agents audit
@@ -68,11 +73,13 @@ The audit runs in parallel phases:
 - Testing agents audit
 
 #### Phase 2: Cross-Cutting Analysis
+
 - Integration pattern validation
 - Constraint consistency verification
 - Performance benchmarking
 
 #### Phase 3: Synthesis & Reporting
+
 - Aggregate findings
 - Calculate health scores
 - Generate remediation recommendations
@@ -102,26 +109,31 @@ The 100-point health score comprises:
 ### Key Metrics Deep Dive
 
 #### 1. System Boundary Compliance (30 points)
+
 - **Constraint Violations**: Agents attempting prohibited actions
 - **Boundary Respect**: Proper delegation patterns
 - **Authority Adherence**: Correct execution model
 
 #### 2. Documentation Quality (20 points)
+
 - **Specification Completeness**: All required sections present
 - **Example Coverage**: Practical usage demonstrations
 - **Update Currency**: Documentation matches implementation
 
 #### 3. Capability Coverage (20 points)
+
 - **Domain Completeness**: All necessary specializations covered
 - **Depth Adequacy**: Sufficient expertise per domain
 - **Gap Identification**: Missing capabilities flagged
 
 #### 4. Integration Patterns (15 points)
+
 - **Handoff Efficiency**: Clean data transfer between agents
 - **Parallel Execution**: Proper concurrent operation
 - **Dependency Management**: Clear execution phases
 
 #### 5. Performance Metrics (15 points)
+
 - **Response Time**: Agent invocation latency
 - **Success Rate**: Task completion percentage
 - **Resource Efficiency**: Optimal use of compute resources
@@ -129,10 +141,12 @@ The 100-point health score comprises:
 ## Common Compliance Issues & Fixes
 
 ### Issue 1: Agents Attempting Tool Invocation
+
 **Symptom**: Agents trying to use Read, Write, or other tools directly
 **Impact**: -5 to -10 health score points
 
 **Fix**:
+
 ```markdown
 # In agent specification
 ## Execution Model
@@ -142,10 +156,12 @@ The 100-point health score comprises:
 ```
 
 ### Issue 2: Self-Invocation Attempts
+
 **Symptom**: Agents trying to call themselves or other agents
 **Impact**: -5 to -8 health score points
 
 **Fix**:
+
 ```markdown
 # Add to agent constraints
 ## CRITICAL CONSTRAINT
@@ -154,28 +170,34 @@ upon any Task tool invocation. This is a hard-coded system protection.
 ```
 
 ### Issue 3: Inconsistent Documentation
+
 **Symptom**: Agent behavior doesn't match specification
 **Impact**: -3 to -5 health score points
 
 **Fix**:
+
 1. Run documentation sync audit
 2. Update specifications to match implementation
 3. Validate with concrete examples
 
 ### Issue 4: Missing Capability Coverage
+
 **Symptom**: No specialized agent for required domain
 **Impact**: -2 to -4 health score points
 
 **Fix**:
+
 1. Identify gap through capability matrix
 2. Create new specialist using AGENT_TEMPLATE.md
 3. Validate with comprehensive testing
 
 ### Issue 5: Poor Integration Patterns
+
 **Symptom**: Sequential execution where parallel is possible
 **Impact**: -2 to -3 health score points
 
 **Fix**:
+
 1. Analyze task dependencies
 2. Restructure for parallel execution
 3. Update orchestration patterns
@@ -183,6 +205,7 @@ upon any Task tool invocation. This is a hard-coded system protection.
 ## Automated Remediation Scripts
 
 ### 1. Compliance Enforcement Script
+
 ```bash
 #!/bin/bash
 # compliance-enforcer.sh
@@ -215,6 +238,7 @@ done
 ```
 
 ### 2. Documentation Sync Script
+
 ```bash
 #!/bin/bash
 # doc-sync.sh
@@ -236,6 +260,7 @@ done
 ```
 
 ### 3. Performance Baseline Script
+
 ```python
 #!/usr/bin/env python3
 # performance-baseline.py
@@ -277,6 +302,7 @@ print(f"Performance baseline established for {len(agents)} agents")
 ```
 
 ### 4. Gap Analysis Automation
+
 ```python
 #!/usr/bin/env python3
 # capability-gap-analyzer.py
@@ -372,6 +398,7 @@ jobs:
 ### 2. Real-Time Monitoring Dashboard
 
 Key metrics to track:
+
 - Agent invocation frequency
 - Success/failure rates
 - Average response times
@@ -381,6 +408,7 @@ Key metrics to track:
 ### 3. Alert Thresholds
 
 Configure alerts for:
+
 - Health score drops below 85
 - Compliance violations detected
 - Performance degradation > 20%
@@ -390,16 +418,19 @@ Configure alerts for:
 ### 4. Monitoring Checklist
 
 **Daily**:
+
 - [ ] Check agent invocation logs
 - [ ] Review error rates
 - [ ] Monitor response times
 
 **Weekly**:
+
 - [ ] Run compliance spot checks
 - [ ] Review integration patterns
 - [ ] Update performance baselines
 
 **Monthly**:
+
 - [ ] Full ecosystem audit
 - [ ] Gap analysis review
 - [ ] Documentation currency check
@@ -429,6 +460,7 @@ Create and maintain a capability matrix:
 ### 2. Gap Prioritization Framework
 
 Evaluate gaps based on:
+
 - **Business Impact**: Revenue, efficiency, risk reduction
 - **Technical Debt**: Current workarounds, manual processes
 - **Market Demands**: Industry trends, competitive requirements
@@ -445,12 +477,14 @@ Evaluate gaps based on:
 ### 4. Evolution Planning
 
 **Quarterly Reviews**:
+
 - Assess new technology trends
 - Review user feedback
 - Analyze usage patterns
 - Plan capability additions
 
 **Annual Planning**:
+
 - Strategic capability roadmap
 - Resource allocation
 - Training requirements
@@ -461,11 +495,13 @@ Evaluate gaps based on:
 ### 1. Parallel Execution Optimization
 
 **Current State Analysis** (86/100 score indicates room for improvement):
+
 - Identify sequential patterns that could be parallel
 - Measure current parallel execution rate
 - Set target for improvement
 
 **Optimization Techniques**:
+
 ```python
 # Before: Sequential execution
 def process_files_sequential(files):
@@ -484,6 +520,7 @@ def process_files_parallel(files):
 ### 2. Agent Response Time Optimization
 
 **Profiling Strategy**:
+
 1. Measure baseline response times
 2. Identify slowest agents
 3. Analyze bottlenecks
@@ -491,6 +528,7 @@ def process_files_parallel(files):
 5. Validate improvements
 
 **Common Optimizations**:
+
 - Reduce agent prompt complexity
 - Implement caching for common queries
 - Optimize context loading
@@ -499,12 +537,14 @@ def process_files_parallel(files):
 ### 3. Resource Utilization
 
 **Monitoring Metrics**:
+
 - CPU usage per agent invocation
 - Memory consumption patterns
 - API rate limit utilization
 - Concurrent execution capacity
 
 **Optimization Approaches**:
+
 - Load balancing across instances
 - Request batching where appropriate
 - Lazy loading of agent context
@@ -513,11 +553,13 @@ def process_files_parallel(files):
 ### 4. Integration Efficiency
 
 **Current Integration Patterns**:
+
 - Review handoff mechanisms
 - Analyze data transformation overhead
 - Identify redundant processing
 
 **Improvements**:
+
 - Standardize data formats
 - Implement efficient serialization
 - Minimize intermediate steps
@@ -528,6 +570,7 @@ def process_files_parallel(files):
 Based on the current 86/100 health score, here's a prioritized improvement plan:
 
 ### Immediate Actions (1-2 weeks)
+
 1. **Fix Compliance Issues** (+5 points)
    - Add system boundary constraints to all agents
    - Remove tool invocation attempts
@@ -539,6 +582,7 @@ Based on the current 86/100 health score, here's a prioritized improvement plan:
    - Update integration patterns
 
 ### Short-term Improvements (1 month)
+
 1. **Optimize Integration Patterns** (+3 points)
    - Increase parallel execution rate
    - Standardize data handoffs
@@ -550,6 +594,7 @@ Based on the current 86/100 health score, here's a prioritized improvement plan:
    - Implement monitoring
 
 ### Medium-term Goals (3 months)
+
 1. **Fill Capability Gaps** (+1 point)
    - Complete capability matrix
    - Develop missing specialists

@@ -114,6 +114,7 @@ I gather all CodeRabbit feedback:
 After finding and categorizing all CodeRabbit comments, I immediately:
 
 1. **Post a comment on the PR** using `gh pr comment`:
+
    ```bash
    gh pr comment {pr-number} --body "@coderabbitai resolve
    

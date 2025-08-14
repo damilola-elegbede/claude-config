@@ -437,7 +437,8 @@ The performance-predictor agent leverages advanced machine learning models to fo
 
   predictor = PerformancePredictorAgent()
 
-  # Step 1: Get current system bottleneck prediction
+# Step 1: Get current system bottleneck prediction
+
   bottleneck_prediction = await predictor.predict_bottleneck(
       system_id="prod-cluster-01",
       horizon_minutes=30
@@ -448,7 +449,8 @@ The performance-predictor agent leverages advanced machine learning models to fo
   print(f"Predicted Resource: {bottleneck_prediction.resource_type}")
   print(f"Severity: {bottleneck_prediction.severity}/10")
 
-  # Step 2: Get optimization recommendations
+# Step 2: Get optimization recommendations
+
   if bottleneck_prediction.probability > 0.7:
       optimization = await predictor.get_optimization_recommendations(
           current_state=bottleneck_prediction.current_state
@@ -457,6 +459,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
       for recommendation in optimization.recommendations:
           print(f"- {recommendation.action}: {recommendation.description}")
           print(f"  Expected Impact: {recommendation.expected_impact}")
+
   ```
 </usage-example>
 
@@ -499,6 +502,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
 
       return optimization
   ```
+
 </usage-example>
 
 ### Failure Prevention Setup
@@ -549,6 +553,7 @@ The performance-predictor agent leverages advanced machine learning models to fo
           # Attempt automated mitigation if confidence is high
           if prediction.confidence > 0.95:
               await self.attempt_automated_mitigation(prediction)
+
   ```
 </usage-example>
 

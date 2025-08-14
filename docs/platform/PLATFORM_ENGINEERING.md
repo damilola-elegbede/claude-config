@@ -21,6 +21,7 @@ A comprehensive command-line interface that serves as the primary interaction po
 **Location**: `scripts/platform/claude-validate`
 
 **Key Features**:
+
 - Interactive setup and configuration
 - Performance monitoring and optimization
 - Cache management
@@ -28,6 +29,7 @@ A comprehensive command-line interface that serves as the primary interaction po
 - Auto-fix capabilities
 
 **Usage Examples**:
+
 ```bash
 # Setup environment
 claude-validate setup
@@ -52,6 +54,7 @@ Automatically analyzes repository characteristics and applies appropriate perfor
 **Location**: `scripts/platform/performance-optimizer.sh`
 
 **Features**:
+
 - Repository size analysis and categorization
 - Performance benchmarking
 - Cache optimization
@@ -59,6 +62,7 @@ Automatically analyzes repository characteristics and applies appropriate perfor
 - Metrics collection and reporting
 
 **Usage Examples**:
+
 ```bash
 # Analyze and optimize
 ./performance-optimizer.sh analyze
@@ -77,6 +81,7 @@ Self-service portal providing interactive tools and guidance.
 **Location**: `scripts/platform/developer-portal.sh`
 
 **Features**:
+
 - Interactive setup wizard
 - Troubleshooting assistance
 - Performance dashboard
@@ -84,6 +89,7 @@ Self-service portal providing interactive tools and guidance.
 - Best practices guidance
 
 **Usage Examples**:
+
 ```bash
 # Run setup wizard
 ./developer-portal.sh wizard
@@ -102,12 +108,14 @@ Seamless integration with existing development workflows and tools.
 **Location**: `scripts/platform/workflow-integrator.sh`
 
 **Features**:
+
 - Git hooks integration
 - CI/CD pipeline setup
 - IDE integration
 - Platform-specific workflows (Node.js, Python, Go, Rust)
 
 **Usage Examples**:
+
 ```bash
 # Initialize all integrations
 ./workflow-integrator.sh init

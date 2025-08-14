@@ -511,13 +511,15 @@ graph TD
 
 **Decision**: Only Claude can execute tools and write files
 
-**Rationale**: 
+**Rationale**:
+
 - Maintains single point of control
 - Prevents cascade failures
 - Simplifies security model
 - Enables comprehensive auditing
 
 **Consequences**:
+
 - All execution flows through Claude
 - Agents become pure computation units
 - Clear responsibility boundaries
@@ -527,12 +529,14 @@ graph TD
 **Decision**: Agents maintain no state between invocations
 
 **Rationale**:
+
 - Enables massive parallelization
 - Simplifies agent implementation
 - Reduces memory footprint
 - Improves fault tolerance
 
 **Consequences**:
+
 - Claude manages all state
 - Each invocation is independent
 - No agent-to-agent communication
@@ -542,12 +546,14 @@ graph TD
 **Decision**: Hard-coded termination on Task tool access by agents
 
 **Rationale**:
+
 - Prevents security breaches
 - Cannot be overridden
 - Protects execution integrity
 - Maintains architecture constraints
 
 **Consequences**:
+
 - Automatic agent termination
 - No exceptions possible
 - Strong security guarantee
@@ -557,12 +563,14 @@ graph TD
 **Decision**: Default to parallel execution wherever possible
 
 **Rationale**:
+
 - Maximizes throughput
 - Reduces total execution time
 - Leverages multi-agent architecture
 - Improves user experience
 
 **Consequences**:
+
 - Complex orchestration logic
 - Higher resource usage
 - Need for synchronization points

@@ -5,9 +5,11 @@ This document defines the official agent categories and their corresponding colo
 ## Categories
 
 ### 1. **Development** (blue)
+
 **Purpose**: Core programming and implementation  
 **Color**: `blue`  
-**Scope**: 
+**Scope**:
+
 - Building applications, features, and systems
 - Writing production code across languages and frameworks
 - Database design and implementation
@@ -17,9 +19,11 @@ This document defines the official agent categories and their corresponding colo
 - Data pipeline engineering
 
 ### 2. **Infrastructure** (orange)
+
 **Purpose**: Systems, operations, and deployment  
 **Color**: `orange`  
 **Scope**:
+
 - Cloud infrastructure design and management
 - CI/CD pipeline configuration
 - Container orchestration and deployment
@@ -29,9 +33,11 @@ This document defines the official agent categories and their corresponding colo
 - Monitoring and observability setup
 
 ### 3. **Architecture** (purple)
+
 **Purpose**: System design and technical planning  
 **Color**: `purple`  
 **Scope**:
+
 - High-level system architecture
 - API design and governance
 - Technology selection and evaluation
@@ -41,9 +47,11 @@ This document defines the official agent categories and their corresponding colo
 - Scalability and performance architecture
 
 ### 4. **Design** (pink)
+
 **Purpose**: User experience and interface design  
 **Color**: `pink`  
 **Scope**:
+
 - User interface design
 - User experience optimization
 - Design systems and component libraries
@@ -53,9 +61,11 @@ This document defines the official agent categories and their corresponding colo
 - Interaction and motion design
 
 ### 5. **Quality** (green)
+
 **Purpose**: Testing, review, validation, and verification  
 **Color**: `green`  
 **Scope**:
+
 - Test strategy and implementation
 - Code quality review
 - Command execution verification
@@ -66,9 +76,11 @@ This document defines the official agent categories and their corresponding colo
 - Quality metrics and reporting
 
 ### 6. **Security** (red)
+
 **Purpose**: Security assessment and compliance  
 **Color**: `red`  
 **Scope**:
+
 - Security vulnerability assessment
 - Penetration testing
 - Compliance auditing
@@ -78,9 +90,11 @@ This document defines the official agent categories and their corresponding colo
 - Agent ecosystem security validation
 
 ### 7. **Analysis** (yellow)
+
 **Purpose**: Research, documentation, and analysis  
 **Color**: `yellow`  
 **Scope**:
+
 - Business process analysis
 - Codebase analysis and technical debt assessment
 - Data analysis and insights
@@ -90,9 +104,11 @@ This document defines the official agent categories and their corresponding colo
 - Performance analysis
 
 ### 8. **Operations** (teal)
+
 **Purpose**: Support, coordination, and strategic planning  
 **Color**: `teal`  
 **Scope**:
+
 - Incident management and response
 - Debugging and troubleshooting
 - Product strategy and roadmapping
@@ -128,12 +144,14 @@ When creating new agents, use the color associated with their primary category:
 ## Documentation Standards
 
 ### Required Language Patterns
+
 - **Critical Use Cases**: "MUST BE USED for [specific capability]"
 - **Proactive Deployment**: "Use PROACTIVELY when [trigger condition]"
 - **AI Enhancement**: Describe Sonnet 4.1 advanced reasoning capabilities
 - **Specialization**: "Specializes in [key differentiators]"
 
 ### Agent Enhancement Guidelines
+
 - Upgrade model specifications to leverage Sonnet 4.1 capabilities
 - Include "Advanced AI Capabilities" section highlighting 4.1 features
 - Add "Proactive Deployment Triggers" for automatic agent invocation

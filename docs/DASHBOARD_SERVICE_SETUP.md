@@ -18,6 +18,7 @@ launchctl list | grep claude.mcp.dashboard
 ## ✅ Verify Installation
 
 Check that the dashboard is running:
+
 ```bash
 # Check service status
 launchctl list | grep claude.mcp.dashboard
@@ -32,6 +33,7 @@ tail -f ~/Library/Logs/mcp-dashboard.log
 ## 📊 Access Dashboard
 
 Once installed, the dashboard will:
+
 - **Auto-start on system boot**
 - **Restart automatically if it crashes**
 - **Always be available at:** <http://localhost:3003>
@@ -39,32 +41,38 @@ Once installed, the dashboard will:
 ## 🛠️ Service Management Commands
 
 ### Start Service
+
 ```bash
 launchctl start com.claude.mcp.dashboard
 ```
 
 ### Stop Service
+
 ```bash
 launchctl stop com.claude.mcp.dashboard
 ```
 
 ### Restart Service
+
 ```bash
 launchctl stop com.claude.mcp.dashboard
 launchctl start com.claude.mcp.dashboard
 ```
 
 ### Disable Auto-Start
+
 ```bash
 launchctl unload ~/Library/LaunchAgents/com.claude.mcp.dashboard.plist
 ```
 
 ### Re-enable Auto-Start
+
 ```bash
 launchctl load ~/Library/LaunchAgents/com.claude.mcp.dashboard.plist
 ```
 
 ### Completely Remove Service
+
 ```bash
 launchctl unload ~/Library/LaunchAgents/com.claude.mcp.dashboard.plist
 rm ~/Library/LaunchAgents/com.claude.mcp.dashboard.plist
@@ -73,6 +81,7 @@ rm ~/Library/LaunchAgents/com.claude.mcp.dashboard.plist
 ## 📝 Service Configuration Details
 
 The service is configured to:
+
 - **Run at system startup** (`RunAtLoad: true`)
 - **Restart on crash** (`KeepAlive -> Crashed: true`)
 - **Not restart on clean exit** (allows manual stops)
@@ -89,30 +98,39 @@ The service is configured to:
 ## 🔧 Troubleshooting
 
 ### Dashboard Not Starting
+
 1. Check Node.js path:
+
    ```bash
    which node
    ```
+
    If not `/usr/local/bin/node`, update the path in the plist file.
 
 2. Check permissions:
+
    ```bash
    ls -la ~/Documents/Projects/claude-config/dashboard.js
    ```
 
 3. Check error logs:
+
    ```bash
    cat ~/Library/Logs/mcp-dashboard.error.log
    ```
 
 ### Port Already in Use
+
 If port 3003 is taken, edit `dashboard.js` to use a different port:
+
 ```javascript
 const PORT = 3004; // or any available port
 ```
 
 ### Service Not Loading
+
 Ensure the plist file has correct permissions:
+
 ```bash
 chmod 644 ~/Library/LaunchAgents/com.claude.mcp.dashboard.plist
 ```
@@ -129,17 +147,21 @@ chmod 644 ~/Library/LaunchAgents/com.claude.mcp.dashboard.plist
 ## 💡 Optional: Add to Menu Bar
 
 For easy access, you can create a menu bar shortcut:
+
 1. Open Script Editor
 2. Create new script:
+
    ```applescript
    do shell script "open http://localhost:3003"
    ```
+
 3. Save as application
 4. Add to Login Items for menu bar access
 
 ## 🔄 Updating the Dashboard
 
 When you update `dashboard.js`:
+
 ```bash
 # Restart the service to load changes
 launchctl stop com.claude.mcp.dashboard
@@ -149,6 +171,7 @@ launchctl start com.claude.mcp.dashboard
 ## ✨ Success Indicators
 
 You know it's working when:
+
 - ✅ `launchctl list` shows the service with PID
 - ✅ <http://localhost:3003> loads the dashboard
 - ✅ Dashboard survives system restarts

@@ -1,6 +1,7 @@
 # YAML Front-Matter Requirements for Agent Files
 
 ## Overview
+
 All agent configuration files are Markdown (.md) files that must include valid YAML front-matter at the beginning of the file. This document specifies the requirements and best practices for YAML front-matter in agent files.
 
 **Important**: Per Anthropic's Claude Code documentation, agents are saved as Markdown files with YAML frontmatter, not as pure YAML files.
@@ -8,11 +9,13 @@ All agent configuration files are Markdown (.md) files that must include valid Y
 ## Structure Requirements
 
 ### 1. YAML Delimiters
+
 - **Opening delimiter**: Files MUST start with `---` on the first line
 - **Closing delimiter**: YAML block MUST end with `---` on its own line
 - **No content before**: Nothing should appear before the opening delimiter
 
 Example:
+
 ```yaml
 ---
 name: agent-name
@@ -21,6 +24,7 @@ description: Agent description
 ```
 
 ### 2. Required Fields
+
 Every agent file MUST include these fields:
 
 - **name**: Unique identifier for the agent (lowercase, hyphenated)
@@ -33,6 +37,7 @@ Every agent file MUST include these fields:
   - Should clearly state what the agent does and when to use it
 
 ### 3. Recommended Fields
+
 These fields should be included for complete agent configuration:
 
 - **color**: Visual identifier for the agent
@@ -42,6 +47,7 @@ These fields should be included for complete agent configuration:
   - Valid values: `junior`, `specialist`, `senior`, `principal`
 
 - **domain_expertise**: Array of expertise areas
+
   ```yaml
   domain_expertise:
     - primary_skill
@@ -50,6 +56,7 @@ These fields should be included for complete agent configuration:
   ```
 
 - **tools**: Tool access configuration
+
   ```yaml
   tools:
     allowed: [Read, Write, Grep]
@@ -58,6 +65,7 @@ These fields should be included for complete agent configuration:
   ```
 
 ### 4. Optional Fields
+
 These fields can be included as needed:
 
 - **parallel_compatible**: List of agents that can work in parallel
@@ -69,12 +77,15 @@ These fields can be included as needed:
 ## Best Practices
 
 ### 1. Description Format
+
 - **DO**: Use single-line descriptions
+
   ```yaml
   description: Use this agent for backend development tasks requiring FAANG-level expertise
   ```
 
 - **AVOID**: Multiline descriptions with pipe operator
+
   ```yaml
   description: |
     Use this agent for backend development...
@@ -82,11 +93,14 @@ These fields can be included as needed:
   ```
 
 ### 2. Examples in Description
+
 - **AVOID**: Embedding examples in the description field
 - **CONSIDER**: Creating a separate examples section after the front-matter
 
 ### 3. Field Ordering
+
 Recommended order for consistency:
+
 1. name
 2. description  
 3. color
@@ -99,6 +113,7 @@ Recommended order for consistency:
 ### 4. Validation
 
 #### Using the Validation Script
+
 ```bash
 # Validate all agent files
 ./scripts/validate_yaml.sh
@@ -108,11 +123,13 @@ Recommended order for consistency:
 ```
 
 #### Running Unit Tests
+
 ```bash
 ./test_yaml_validation.sh
 ```
 
 #### Pre-commit Hook Setup
+
 To automatically validate YAML before commits:
 
 ```bash
@@ -126,18 +143,22 @@ ln -s ../../.claude/agents/pre-commit-yaml-validation.sh .git/hooks/pre-commit
 ## Common Issues and Solutions
 
 ### Issue 1: Very Long Descriptions
+
 **Problem**: Descriptions over 500 characters are hard to maintain
 **Solution**: Keep descriptions concise, move details to documentation section
 
 ### Issue 2: Complex Nested YAML
+
 **Problem**: Deep nesting makes YAML hard to read and parse
 **Solution**: Limit nesting to 2-3 levels maximum
 
 ### Issue 3: Special Characters in Strings
+
 **Problem**: Quotes, colons, and special characters can break YAML
 **Solution**: Use proper quoting for strings with special characters
 
 ## Template
+
 Use `AGENT_TEMPLATE.md` as a starting point for new agent files:
 
 ```bash
@@ -148,6 +169,7 @@ cp AGENT_TEMPLATE.md new-agent.md
 ## CI/CD Integration
 
 ### GitHub Actions Example
+
 ```yaml
 name: Validate Agent YAML
 on:
@@ -168,15 +190,20 @@ jobs:
 ## Maintenance
 
 ### Regular Validation
+
 Run validation as part of your regular CI/CD pipeline to catch issues early.
 
 ### Updating Templates
+
 When adding new required fields, update:
+
 1. AGENT_TEMPLATE.md
 2. scripts/validate_yaml.sh validation rules
 3. This documentation
 
 ## Support
+
 For questions or issues with YAML validation:
+
 1. Check error messages from scripts/validate_yaml.sh
 2. Refer to examples in existing agent files

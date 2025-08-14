@@ -43,16 +43,19 @@
 ## Escalation Decision Trees
 
 ### Implementation Escalation Path
+
 ```
 Task Request → fullstack-lead → [complexity assessment] → staff agents → principal-architect
 ```
 
 ### Quality Assurance Workflow
+
 ```
 Code Complete → code-reviewer → [parallel: security-auditor, test-engineer] → implementation agents
 ```
 
 ### Analysis Request Flow
+
 ```
 Analysis Need → codebase-analyst → [domain-specific agents] → principal-architect
 ```
@@ -60,16 +63,19 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 ## Complexity Thresholds
 
 ### Staff Agent Triggers
+
 - **Backend Engineer**: 100k+ requests/sec, microservices coordination, distributed state
 - **Frontend Architect**: Real-time data (WebSocket/SSE), complex state management, performance optimization
 - **Principal Architect**: Cross-team coordination, system design changes, technology stack decisions
 
 ### Senior Agent Boundaries
+
 - **Fullstack Lead**: Single service, established patterns, clear requirements
 - **Stays Autonomous**: Implementation details, coding patterns, testing strategies
 - **Escalates When**: Architecture changes, new dependencies, breaking changes
 
 ### Specialist Agent Scope
+
 - **Mobile Platform Engineer**: iOS/Android native apps, React Native, Flutter development
 - **UI Designer**: Web/desktop only, design systems, visual hierarchy
 - **Security Auditor**: OWASP Top 10, penetration testing, compliance
@@ -78,11 +84,13 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 ## Parallel Execution Groups
 
 ### Development Workflow
+
 - **Primary**: `frontend-architect` + `backend-engineer` + `fullstack-lead`
 - **Quality**: `code-reviewer` + `security-auditor` + `test-engineer`
 - **Design**: `ui-designer` (cross-platform consistency)
 
 ### Analysis Workflow  
+
 - **Technical**: `codebase-analyst` + `debugger` + `security-auditor` + `performance-specialist`
 - **Strategic**: `principal-architect` + `project-orchestrator`
 - **Infrastructure**: `devops` + `platform-engineer` (deployment + monitoring)
@@ -101,6 +109,7 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 ## Common Anti-Patterns to Avoid
 
 ### ❌ Wrong Agent Selection
+
 - Using `fullstack-lead` for architecture decisions → Use `principal-architect`
 - Using `ui-designer` for mobile apps → Use `mobile-platform-engineer`
 - Using `codebase-analyst` for implementation → Use implementation agents
@@ -108,11 +117,13 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 - Using `devops` for production monitoring → Use `platform-engineer`
 
 ### ❌ Missing Parallel Opportunities
+
 - Sequential code review → Run `code-reviewer` + `security-auditor` + `test-engineer` in parallel
 - Single-threaded analysis → Use multiple analysis agents concurrently
 - Independent implementation → Parallel frontend/backend development
 
 ### ❌ Incorrect Escalation
+
 - Staff agents for simple tasks → Start with `fullstack-lead`
 - No escalation for complex decisions → Use proper escalation paths
 - Skipping domain specialists → Leverage expert knowledge
@@ -120,6 +131,7 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 ## Quick Decision Prompts
 
 **Before selecting an agent, ask:**
+
 1. **Complexity**: Staff-level complexity or senior-level execution?
 2. **Domain**: Technical implementation, analysis, strategy, or design?
 3. **Scope**: Single service, multi-service, or system-wide?

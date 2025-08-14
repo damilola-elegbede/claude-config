@@ -1,26 +1,33 @@
 # Agent System API Documentation
 
 ## Overview
+
 The Claude Agent System provides a programmatic interface for invoking specialized AI agents, coordinating multi-agent workflows, and managing agent execution.
 
 ## Base Concepts
 
 ### Agent
+
 An agent is a specialized AI entity with:
+
 - Defined expertise domain
 - Specific tool access permissions
 - Clear interaction patterns
 - Quality standards
 
 ### Task
+
 A task is a unit of work assigned to an agent:
+
 - Has clear objectives
 - May have dependencies
 - Can run in parallel or sequence
 - Produces defined outputs
 
 ### Orchestration
+
 Orchestration manages multi-agent execution:
+
 - Plans optimal execution order
 - Manages dependencies
 - Enables parallel execution
@@ -31,11 +38,13 @@ Orchestration manages multi-agent execution:
 ### Agent Invocation
 
 #### Direct Agent Call
+
 ```
 POST /api/agents/invoke
 ```
 
 **Request Body:**
+
 ```json
 {
   "agent": "backend-engineer",
@@ -52,6 +61,7 @@ POST /api/agents/invoke
 ```
 
 **Response:**
+
 ```json
 {
   "execution_id": "exec_123456",
@@ -63,11 +73,13 @@ POST /api/agents/invoke
 ```
 
 #### Command-Based Invocation
+
 ```
 POST /api/commands/execute
 ```
 
 **Request Body:**
+
 ```json
 {
   "command": "/test",
@@ -77,6 +89,7 @@ POST /api/commands/execute
 ```
 
 **Response:**
+
 ```json
 {
   "command": "test",
@@ -95,11 +108,13 @@ POST /api/commands/execute
 ### Multi-Agent Orchestration
 
 #### Create Orchestration Plan
+
 ```
 POST /api/orchestration/plan
 ```
 
 **Request Body:**
+
 ```json
 {
   "project": "Build real-time chat application",
@@ -117,6 +132,7 @@ POST /api/orchestration/plan
 ```
 
 **Response:**
+
 ```json
 {
   "plan_id": "plan_789",
@@ -167,11 +183,13 @@ POST /api/orchestration/plan
 ```
 
 #### Execute Orchestration Plan
+
 ```
 POST /api/orchestration/execute
 ```
 
 **Request Body:**
+
 ```json
 {
   "plan_id": "plan_789",
@@ -184,6 +202,7 @@ POST /api/orchestration/execute
 ```
 
 **Response:**
+
 ```json
 {
   "orchestration_id": "orch_456",
@@ -208,11 +227,13 @@ POST /api/orchestration/execute
 ### Agent Management
 
 #### List Available Agents
+
 ```
 GET /api/agents
 ```
 
 **Response:**
+
 ```json
 {
   "agents": [
@@ -234,11 +255,13 @@ GET /api/agents
 ```
 
 #### Get Agent Details
+
 ```
 GET /api/agents/{agent_name}
 ```
 
 **Response:**
+
 ```json
 {
   "name": "backend-engineer",
@@ -264,11 +287,13 @@ GET /api/agents/{agent_name}
 ### Execution Monitoring
 
 #### Get Execution Status
+
 ```
 GET /api/executions/{execution_id}
 ```
 
 **Response:**
+
 ```json
 {
   "execution_id": "exec_123456",
@@ -295,11 +320,13 @@ GET /api/executions/{execution_id}
 ```
 
 #### Stream Execution Logs
+
 ```
 GET /api/executions/{execution_id}/logs/stream
 ```
 
 **Response:** Server-Sent Events stream
+
 ```
 event: log
 data: {"timestamp": "2024-01-15T10:46:00Z", "level": "info", "message": "Running tests..."}
@@ -314,11 +341,13 @@ data: {"status": "success", "duration": 3600, "test_results": {"passed": 25, "fa
 ### Quality Assurance
 
 #### Request Code Review
+
 ```
 POST /api/qa/review
 ```
 
 **Request Body:**
+
 ```json
 {
   "scope": {
@@ -334,6 +363,7 @@ POST /api/qa/review
 ```
 
 **Response:**
+
 ```json
 {
   "review_id": "review_987",
@@ -356,11 +386,13 @@ POST /api/qa/review
 ## Webhooks
 
 ### Execution Complete
+
 ```
 POST https://your-webhook-url.com/agent-complete
 ```
 
 **Payload:**
+
 ```json
 {
   "event": "execution.complete",
@@ -381,11 +413,13 @@ POST https://your-webhook-url.com/agent-complete
 ```
 
 ### Orchestration Checkpoint
+
 ```
 POST https://your-webhook-url.com/orchestration-checkpoint
 ```
 
 **Payload:**
+
 ```json
 {
   "event": "orchestration.checkpoint",
@@ -405,6 +439,7 @@ POST https://your-webhook-url.com/orchestration-checkpoint
 ## Error Handling
 
 ### Error Response Format
+
 ```json
 {
   "error": {
@@ -434,12 +469,14 @@ POST https://your-webhook-url.com/orchestration-checkpoint
 ## Rate Limits
 
 ### Default Limits
+
 - **Agent Invocations**: 100 per hour
 - **Orchestrations**: 10 per hour
 - **Status Checks**: 1000 per hour
 - **Log Streaming**: 50 concurrent connections
 
 ### Rate Limit Headers
+
 ```
 X-RateLimit-Limit: 100
 X-RateLimit-Remaining: 95
@@ -449,11 +486,13 @@ X-RateLimit-Reset: 1705333200
 ## Authentication
 
 ### API Key Authentication
+
 ```
 Authorization: Bearer sk_live_abcdef123456
 ```
 
 ### OAuth2 Flow
+
 ```
 Authorization: Bearer oauth2_token_xyz789
 ```
@@ -461,6 +500,7 @@ Authorization: Bearer oauth2_token_xyz789
 ## SDK Examples
 
 ### JavaScript/TypeScript
+
 ```typescript
 import { ClaudeAgents } from '@anthropic/claude-agents';
 
@@ -488,6 +528,7 @@ const execution = await client.orchestration.execute(plan.id);
 ```
 
 ### Python
+
 ```python
 from claude_agents import ClaudeAgents
 import os
@@ -511,20 +552,24 @@ for event in client.executions.stream_logs(execution_id):
 ## Best Practices
 
 ### Agent Selection
+
 1. Use the agent selector endpoint for recommendations
 2. Consider task complexity when choosing agents
 3. Prefer specialized agents over general-purpose
 
 ### Parallel Execution
+
 1. Identify independent tasks
 2. Set appropriate parallel limits
 3. Handle partial failures gracefully
 
 ### Error Recovery Strategies
+
 1. Implement exponential backoff for retries
 2. Log all error responses
 3. Have fallback strategies
 
 ### Performance
+
 1. Use webhook notifications instead of polling
 2. Cache agent availability

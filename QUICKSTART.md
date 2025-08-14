@@ -5,6 +5,7 @@
 This guide gets you up and running with the Claude configuration management system.
 
 ### Step 1: Install Claude Code CLI
+
 ```bash
 # Install via npm
 npm install -g @anthropic/claude-code
@@ -14,6 +15,7 @@ brew install claude-code
 ```
 
 ### Step 2: Clone and Setup Configuration
+
 ```bash
 # Clone the repository
 git clone https://github.com/damilola/claude-config.git
@@ -23,9 +25,11 @@ cd claude-config
 claude-code
 /sync
 ```
+
 This deploys 40 agents and 14 commands to your system.
 
 ### Step 3: Verify Installation
+
 ```bash
 # Check agent configurations
 /agent-audit
@@ -35,6 +39,7 @@ This deploys 40 agents and 14 commands to your system.
 ```
 
 ### Step 4: Try the System
+
 ```bash
 # Run tests with auto-discovery
 /test
@@ -60,6 +65,7 @@ This deploys 40 agents and 14 commands to your system.
 ## 🆘 Common Issues
 
 **If sync fails:**
+
 ```bash
 # Ensure you're in the claude-config repository
 pwd
@@ -72,6 +78,7 @@ git status
 ```
 
 **If agents aren't available:**
+
 ```bash
 # Check if configurations synced
 ls ~/.claude/agents/
@@ -84,6 +91,7 @@ ls ~/.claude/agents/
 ```
 
 **If commands don't work:**
+
 ```bash
 # Check command directory
 ls ~/.claude/commands/
@@ -95,13 +103,16 @@ ls ~/.claude/commands/
 ## 📚 What Happens Now
 
 ### Enhanced Claude Experience
+
 You now have access to:
+
 - 🎭 40 specialized agents covering all development domains
 - 🔧 14 essential commands for common workflows
 - 🔊 Audio notifications for task completion
 - 🔄 Easy configuration synchronization
 
 ### Available Agent Categories
+
 - **Development**: Backend, frontend, mobile, ML engineering
 - **Infrastructure**: Cloud, DevOps, Kubernetes, monitoring
 - **Quality**: Testing, code review, performance, accessibility
@@ -109,6 +120,7 @@ You now have access to:
 - **Analysis**: Documentation, research, metrics, debugging
 
 ### Smart Commands
+
 - `/test` - Auto-discovers and runs tests
 - `/context` - Comprehensive repository analysis
 - `/review` - Multi-dimensional code quality checks
@@ -117,18 +129,21 @@ You now have access to:
 ## 🎯 What This Gives You
 
 ### Enhanced Productivity
+
 - **Specialized expertise** for every development task
 - **Automated workflows** for common operations
 - **Quality gates** built into every process
 - **Consistent standards** across all projects
 
 ### Development Efficiency
+
 - **Parallel agent execution** for complex tasks
 - **Context-aware analysis** of any codebase
 - **Smart test discovery** and execution
 - **Automated code review** with security checks
 
 ### Configuration Management
+
 - **Centralized configuration** for all Claude settings
 - **Version-controlled agents** and commands
 - **Easy updates** through git pull and sync
@@ -141,9 +156,10 @@ You now have access to:
 - **Command Reference**: All commands documented in [system-configs/.claude/commands/](system-configs/.claude/commands/)
 - **Documentation Index**: [docs/DOCUMENTATION_INDEX.md](docs/DOCUMENTATION_INDEX.md)
 
-## 🎉 You're Ready!
+## 🎉 You're Ready
 
 Your Claude Code CLI now has comprehensive agent and command support. The system provides:
+
 - **40 specialized agents** for every development scenario
 - **14 essential commands** for streamlined workflows
 - **Quality validation** for all configurations

@@ -260,6 +260,7 @@ const agents = [
 ### Common Error Scenarios
 
 1. **Agent Not Found**
+
    ```json
    {
      "error": {
@@ -274,6 +275,7 @@ const agents = [
    ```
 
 2. **Boundary Violation**
+
    ```json
    {
      "error": {
@@ -293,6 +295,7 @@ const agents = [
 ### Orchestration Patterns
 
 #### Pattern 1: Parallel Development
+
 ```yaml
 workflow:
   name: full-stack-feature
@@ -318,6 +321,7 @@ workflow:
 ```
 
 #### Pattern 2: Analysis Pipeline
+
 ```yaml
 workflow:
   name: codebase-analysis

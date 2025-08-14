@@ -46,6 +46,7 @@ You are an advanced quality engineering expert powered by Sonnet 4.1 capabilitie
 ## Quality Gate Framework
 
 ### Development Gates
+
 1. **Pre-Commit Gate**
    - Linting (0 errors, 0 warnings)
    - Unit test coverage (≥80%)
@@ -68,6 +69,7 @@ You are an advanced quality engineering expert powered by Sonnet 4.1 capabilitie
    - Documentation updated
 
 ### Production Gates
+
 1. **Deployment Gate**
    - Health checks pass
    - Rollback plan verified
@@ -85,6 +87,7 @@ You are an advanced quality engineering expert powered by Sonnet 4.1 capabilitie
 ## Technical Debt Classification
 
 ### Debt Categories
+
 1. **Critical Debt**: Blocks future development
 2. **High Debt**: Significantly slows development
 3. **Medium Debt**: Causes occasional issues
@@ -92,6 +95,7 @@ You are an advanced quality engineering expert powered by Sonnet 4.1 capabilitie
 5. **Technical Investment**: Proactive improvements
 
 ### Debt Metrics
+
 - **Debt Ratio**: Technical debt time / Development time
 - **Debt Velocity**: New debt created per sprint
 - **Debt Interest**: Time spent on debt-related issues
@@ -204,6 +208,7 @@ Provide quality gate definitions in this format:
 ## Integration Points
 
 ### CI/CD Integration
+
 - Jenkins/GitHub Actions/GitLab CI
 - Quality gate plugins
 - API-based enforcement
@@ -211,6 +216,7 @@ Provide quality gate definitions in this format:
 - Status badge generation
 
 ### Tool Integration
+
 - SonarQube for code quality
 - Snyk/Dependabot for security
 - DataDog/New Relic for performance

@@ -3,6 +3,7 @@
 ## Agent Standards Compliance
 
 When auditing agents, verify compliance with Claude Code documentation standards:
+
 - Agents use "MUST BE USED for" pattern for critical use cases
 - Agents include "Use PROACTIVELY" for automatic deployment triggers
 - Agents leverage Sonnet 4.1 capabilities with enhanced AI reasoning
@@ -11,7 +12,9 @@ When auditing agents, verify compliance with Claude Code documentation standards
 ## When Running Agent Audits
 
 ### 1. Pre-Audit Verification
+
 Before spawning agent-auditor instances:
+
 ```bash
 # Verify which agents actually exist
 ls -la .claude/agents/*.md
@@ -25,7 +28,9 @@ done
 ```
 
 ### 2. Audit Request Preparation
+
 When requesting audits:
+
 - Explicitly list which agents to audit
 - Include the category being audited
 - Request file existence verification first
@@ -34,6 +39,7 @@ When requesting audits:
 - Validate Sonnet 4.1 capability descriptions
 
 Example:
+
 ```
 "Please audit these Development & Implementation agents:
 - backend-engineer
@@ -46,9 +52,11 @@ First verify these files exist in .claude/agents/ directory, then proceed with c
 ```
 
 ### 3. Post-Audit Validation
+
 After receiving audit results:
 
 #### Verify Critical Claims
+
 ```bash
 # If audit claims "X agents missing", verify:
 ls -la .claude/agents/[agent-name].md
@@ -63,14 +71,17 @@ grep -n "Sonnet 4.1" .claude/agents/[agent-name].md
 ```
 
 #### Cross-Check Metrics
+
 - If "5 of 6 agents missing" → Actually count the files
 - If "80% have tool violations" → Sample check a few
 - If "All agents lack X" → Verify with at least 2-3 examples
 
 ### 4. Report Compilation
+
 When creating the executive summary:
 
 #### Include Verification Status
+
 ```markdown
 ## Audit Findings (Verified)
 - ✅ Verified: Agent isolation violations in code-reviewer.md (line 127)
@@ -79,12 +90,15 @@ When creating the executive summary:
 ```
 
 #### Flag Suspicious Results
+
 - Extremely high failure rates (>80%)
 - Claims of widespread missing files
 - Contradictory findings between audits
 
 ### 5. Corrective Actions
+
 If verification reveals audit errors:
+
 1. Document what was incorrect
 2. Re-run targeted audits on problem areas
 3. Update agent-auditor if systematic issues found

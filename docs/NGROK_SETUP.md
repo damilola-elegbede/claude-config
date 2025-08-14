@@ -23,6 +23,7 @@ Your dashboard will be accessible at the ngrok URL shown!
 1. Sign up at <https://ngrok.com/signup>
 2. Get your auth token from <https://dashboard.ngrok.com/auth>
 3. Configure ngrok:
+
    ```bash
    ngrok authtoken YOUR_AUTH_TOKEN
    ```
@@ -38,6 +39,7 @@ alias mcp-url="curl -s http://localhost:4040/api/tunnels | grep -o '\"public_url
 ```
 
 Then reload your shell:
+
 ```bash
 source ~/.zshrc  # or ~/.bashrc
 ```
@@ -90,16 +92,19 @@ chmod +x ~/start-mcp-dashboard.sh
 ## 🚀 Usage
 
 ### Start Everything
+
 ```bash
 ~/start-mcp-dashboard.sh
 ```
 
 ### Get Current Public URL
+
 ```bash
 ./get-dashboard-url.sh
 ```
 
 ### Check Status
+
 ```bash
 # Check dashboard
 launchctl list | grep claude.mcp.dashboard
@@ -124,6 +129,7 @@ curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
 ## 📱 Share Your Dashboard
 
 Once ngrok is running, you can:
+
 - Share the public URL with team members
 - Access from your phone or tablet
 - Demo to stakeholders remotely
@@ -132,6 +138,7 @@ Once ngrok is running, you can:
 ## 🛠️ Troubleshooting
 
 ### Ngrok Not Starting
+
 ```bash
 # Check if port 4040 is in use (ngrok API)
 lsof -i :4040
@@ -144,6 +151,7 @@ ngrok http 3003
 ```
 
 ### Dashboard Not Accessible via Ngrok
+
 ```bash
 # Verify local dashboard works
 curl http://localhost:3003/api/metrics
@@ -155,11 +163,13 @@ curl http://localhost:4040/api/tunnels
 ## 🎯 Auto-Start at Login (Simple Method)
 
 Add to your Login Items:
+
 1. Open System Preferences → Users & Groups
 2. Click Login Items tab
 3. Click "+" and add the `~/start-mcp-dashboard.sh` script
 
 Or use a simple cron job:
+
 ```bash
 # Edit crontab
 crontab -e
@@ -171,6 +181,7 @@ crontab -e
 ## Summary
 
 Your MCP Dashboard is now:
+
 - ✅ Running as a system service (always available locally)
 - ✅ Accessible via ngrok public URL (when ngrok is running)
 - ✅ Can be shared with anyone via the public URL

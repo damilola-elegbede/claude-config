@@ -114,6 +114,7 @@ parallel_execution:
 ## Execution Verification
 
 After audit completion, **execution-evaluator** is deployed to verify:
+
 - All agent files were scanned successfully
 - YAML validation completed without errors
 - Category assignments were checked

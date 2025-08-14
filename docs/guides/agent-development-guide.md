@@ -51,6 +51,7 @@ SYSTEM BOUNDARY: While the Task tool is visible in your function registry, it is
 ### Step 2: Define Agent Purpose
 
 Before writing any instructions, clearly define:
+
 - What problem does this agent solve?
 - What unique expertise does it provide?
 - How does it differ from existing agents?
@@ -106,6 +107,7 @@ Create comprehensive instructions following the structure demonstrated in existi
 ### Required Files
 
 Each agent requires:
+
 1. **Agent Definition**: `.claude/agents/{agent-name}.md`
 2. **Category Assignment**: Must align with `AGENT_CATEGORIES.md`
 
@@ -175,7 +177,7 @@ category: development    # Required: Official category
 
 ### Validation Rules
 
-1. **name**: 
+1. **name**:
    - Must be unique across all agents
    - Lowercase letters and hyphens only
    - No spaces or underscores
@@ -277,6 +279,7 @@ category: architecture
 ### Writing Guidelines
 
 1. **Be Specific**: Avoid vague instructions
+
    ```markdown
    # ❌ Vague
    You help with backend tasks.
@@ -288,6 +291,7 @@ category: architecture
    ```
 
 2. **Define Boundaries**: Clear scope and limitations
+
    ```markdown
    ## Scope
    - ✅ API design and implementation
@@ -297,6 +301,7 @@ category: architecture
    ```
 
 3. **Provide Context**: Include domain knowledge
+
    ```markdown
    ## Domain Expertise
    - E-commerce: Payment processing, inventory management
@@ -305,6 +310,7 @@ category: architecture
    ```
 
 4. **Action-Oriented**: Focus on what the agent does
+
    ```markdown
    ## Execution Protocol
    1. Analyze existing codebase structure
@@ -318,6 +324,7 @@ category: architecture
 ### Pre-Launch Checklist
 
 1. **YAML Validation**
+
    ```bash
    # Validate YAML syntax
    python -c "import yaml; yaml.safe_load(open('.claude/agents/my-agent.md').read().split('---')[1])"
@@ -340,6 +347,7 @@ category: architecture
 ### Testing Protocol
 
 1. **Isolated Testing**: Test agent with simple, focused tasks
+
    ```python
    # Test script example
    test_prompts = [
@@ -350,6 +358,7 @@ category: architecture
    ```
 
 2. **Integration Testing**: Test interaction with orchestrator
+
    ```python
    # Orchestration test
    orchestration_test = """
@@ -374,6 +383,7 @@ Use the `agent-auditor` to validate your new agent:
 ```
 
 The auditor checks:
+
 - YAML format compliance
 - Tool access appropriateness
 - Category alignment
@@ -453,11 +463,13 @@ The auditor checks:
 #### Issue 1: YAML Parsing Errors
 
 **Symptom**: Agent fails to load
+
 ```
 Error: YAML parsing failed
 ```
 
 **Solution**:
+
 1. Check for proper frontmatter delimiters (---)
 2. Validate YAML syntax
 3. Ensure no tabs (use spaces)
@@ -466,11 +478,13 @@ Error: YAML parsing failed
 #### Issue 2: Tool Access Denied
 
 **Symptom**: Agent can't use expected tools
+
 ```
 Error: Tool 'Bash' not available
 ```
 
 **Solution**:
+
 1. Verify tool is listed in YAML frontmatter
 2. Check tool name spelling
 3. Ensure comma separation in tools list
@@ -478,11 +492,13 @@ Error: Tool 'Bash' not available
 #### Issue 3: Category Mismatch
 
 **Symptom**: Validation fails on color/category
+
 ```
 Error: Color 'blue' doesn't match category 'security'
 ```
 
 **Solution**:
+
 1. Refer to AGENT_CATEGORIES.md
 2. Update color to match category
 3. Or reconsider agent categorization
@@ -490,11 +506,13 @@ Error: Color 'blue' doesn't match category 'security'
 #### Issue 4: Agent Not Found
 
 **Symptom**: Orchestrator can't find agent
+
 ```
 Error: Unknown agent 'my-agent'
 ```
 
 **Solution**:
+
 1. Verify file location (.claude/agents/)
 2. Check filename matches agent name
 3. Ensure .md extension
@@ -502,11 +520,13 @@ Error: Unknown agent 'my-agent'
 #### Issue 5: System Boundary Violation
 
 **Symptom**: Agent terminates unexpectedly
+
 ```
 Error: System boundary violation - Task tool invoked
 ```
 
 **Solution**:
+
 1. Never attempt to use Task tool
 2. Don't ask agents to coordinate
 3. Return content, not execute actions
@@ -514,6 +534,7 @@ Error: System boundary violation - Task tool invoked
 ### Debugging Techniques
 
 1. **Verbose Logging**: Add detailed logging to agent instructions
+
    ```markdown
    ## Debugging Mode
    When encountering errors:
@@ -524,12 +545,14 @@ Error: System boundary violation - Task tool invoked
    ```
 
 2. **Test in Isolation**: Create minimal test cases
+
    ```python
    # Minimal test
    simple_test = "Read and analyze a single file"
    ```
 
 3. **Progressive Complexity**: Start simple, add complexity
+
    ```
    Level 1: Read file
    Level 2: Analyze content
@@ -561,6 +584,7 @@ Final Output
 ### Coordination Patterns
 
 1. **Sequential Workflow**
+
    ```
    Analyst → provides insights → Orchestrator
    Orchestrator → uses insights → Engineer
@@ -569,6 +593,7 @@ Final Output
    ```
 
 2. **Parallel Execution**
+
    ```
    Orchestrator launches simultaneously:
    - Backend-engineer (API development)
@@ -577,6 +602,7 @@ Final Output
    ```
 
 3. **Iterative Refinement**
+
    ```
    Loop:
      Developer → creates code
@@ -588,6 +614,7 @@ Final Output
 ### Integration Best Practices
 
 1. **Clear Output Format**: Structure agent outputs consistently
+
    ```markdown
    ## Output Format
    
@@ -602,6 +629,7 @@ Final Output
    ```
 
 2. **Handoff Preparation**: Provide context for next agent
+
    ```markdown
    ## For Next Agent
    - Key decisions made
@@ -611,6 +639,7 @@ Final Output
    ```
 
 3. **Complementary Skills**: Design agents to complement each other
+
    ```
    API-Architect: Designs the API specification
    Backend-Engineer: Implements the specification
@@ -641,6 +670,7 @@ Creating a new microservice with multiple agents:
 ## Conclusion
 
 Creating effective agents requires:
+
 1. Clear understanding of the agent's purpose and boundaries
 2. Proper categorization and tool selection
 3. Well-structured, actionable instructions
@@ -650,6 +680,7 @@ Creating effective agents requires:
 By following this guide, you can create agents that seamlessly integrate into the Claude-config ecosystem and provide valuable specialized capabilities. Remember that agents are tools for the orchestrator—they think and analyze while the orchestrator executes and coordinates.
 
 For additional resources:
+
 - Review existing agents in `.claude/agents/`
 - Consult `AGENT_CATEGORIES.md` for categorization
 - Use `agent-auditor` for validation

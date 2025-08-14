@@ -15,18 +15,21 @@ This test suite provides complete validation of the MCP infrastructure component
 ## 📋 SPEC_01 Requirements Validation
 
 ### ✅ Performance Requirements
+
 - **Sub-100ms routing decisions**: Validated with high-frequency load tests
 - **Sub-500ms server discovery**: Measured during startup and configuration changes
 - **Concurrent request handling**: Tested with 100+ parallel requests
 - **Memory efficiency**: Resource usage monitoring and leak detection
 
 ### ✅ Reliability Requirements
+
 - **95%+ success rate**: Validated under normal and stress conditions
 - **Graceful degradation**: Circuit breaker and fallback testing
 - **Automatic recovery**: Server health monitoring and restoration
 - **Data consistency**: Concurrent operation safety validation
 
 ### ✅ Scalability Requirements
+
 - **1000+ concurrent requests**: Load testing with sustained traffic
 - **500+ server registrations**: Large-scale registry testing
 - **Multiple routing strategies**: Performance comparison and validation
@@ -35,6 +38,7 @@ This test suite provides complete validation of the MCP infrastructure component
 ## 🏗️ Test Architecture
 
 ### Test Files Structure
+
 ```
 __tests__/
 ├── discovery.test.ts        # Server discovery and monitoring
@@ -51,18 +55,21 @@ __tests__/
 ### Test Categories
 
 #### 🔍 Unit Tests
+
 - **Component isolation**: Each module tested independently
 - **Mocked dependencies**: External services and processes mocked
 - **Edge cases**: Error conditions and boundary testing
 - **Performance validation**: Individual component performance
 
 #### 🔄 Integration Tests
+
 - **System coordination**: Inter-component communication
 - **Real scenarios**: End-to-end workflows and user journeys
 - **Resource management**: Startup, shutdown, and cleanup
 - **Event coordination**: Cross-component event handling
 
 #### ⚡ Performance Tests
+
 - **Latency measurement**: Response time validation
 - **Throughput testing**: Request volume handling
 - **Memory profiling**: Resource usage monitoring
@@ -71,6 +78,7 @@ __tests__/
 ## 🚀 Running Tests
 
 ### Prerequisites
+
 ```bash
 # Node.js 18+ required
 node --version
@@ -83,6 +91,7 @@ npm install --save-dev jest @types/jest ts-jest typescript
 ```
 
 ### Quick Start
+
 ```bash
 # Run all tests with coverage
 ./run-tests.sh
@@ -98,6 +107,7 @@ npm test -- --testPathPattern="integration.test.ts" --testTimeout=60000
 ```
 
 ### Advanced Usage
+
 ```bash
 # Run tests in watch mode
 npm test -- --watch
@@ -115,18 +125,21 @@ npm test -- --coverage --coverageReporters=html
 ## 📊 Test Metrics and Coverage
 
 ### Coverage Requirements (SPEC_01)
+
 - **Branches**: 80% minimum
 - **Functions**: 80% minimum
 - **Lines**: 80% minimum
 - **Statements**: 80% minimum
 
 ### Performance Benchmarks
+
 - **Routing Decisions**: < 100ms (target: < 50ms average)
 - **Server Discovery**: < 500ms (target: < 300ms)
 - **System Startup**: < 2000ms (target: < 1500ms)
 - **Memory Usage**: < 100MB baseline (target: < 50MB)
 
 ### Quality Validation
+
 - **Test Success Rate**: 100% required
 - **No Memory Leaks**: Validated with repeated cycles
 - **Error Recovery**: Automatic failure handling
@@ -135,6 +148,7 @@ npm test -- --coverage --coverageReporters=html
 ## 🧪 Test Features
 
 ### Custom Jest Matchers
+
 ```typescript
 // Performance validation
 expect(responseTime).toHaveLatencyLessThan(100);
@@ -150,6 +164,7 @@ expect(timestamp).toBeValidDate();
 ```
 
 ### Global Test Utilities
+
 ```typescript
 // Mock server generation
 const server = TestUtils.createMockServer({
@@ -168,6 +183,7 @@ await tracker.waitForEvent('serverDiscovered', 5000);
 ```
 
 ### Environment Configuration
+
 ```typescript
 // Performance thresholds
 TEST_CONFIG.MAX_ROUTING_TIME = 100;     // ms
@@ -182,6 +198,7 @@ TEST_CONFIG.MAX_SERVERS_PER_REGISTRY = 500;
 ## 📝 Test Scenarios
 
 ### Discovery Service Tests
+
 - ✅ Server configuration parsing and validation
 - ✅ Health monitoring and status tracking
 - ✅ Performance measurement (sub-500ms requirement)
@@ -190,6 +207,7 @@ TEST_CONFIG.MAX_SERVERS_PER_REGISTRY = 500;
 - ✅ Resource cleanup and process management
 
 ### Registry Service Tests
+
 - ✅ Server registration and deregistration
 - ✅ Metrics collection and aggregation
 - ✅ Tool mapping and preference management
@@ -198,6 +216,7 @@ TEST_CONFIG.MAX_SERVERS_PER_REGISTRY = 500;
 - ✅ Memory management and cleanup
 
 ### Tool Router Tests
+
 - ✅ Strategy implementation (Performance, Round-robin, Failover)
 - ✅ Routing decision optimization (sub-100ms requirement)
 - ✅ Cache efficiency and TTL management
@@ -206,6 +225,7 @@ TEST_CONFIG.MAX_SERVERS_PER_REGISTRY = 500;
 - ✅ High-concurrency performance validation
 
 ### Circuit Breaker Tests
+
 - ✅ State transitions (Closed → Open → Half-open → Closed)
 - ✅ Failure threshold detection and recovery
 - ✅ Timeout and retry logic validation
@@ -214,6 +234,7 @@ TEST_CONFIG.MAX_SERVERS_PER_REGISTRY = 500;
 - ✅ Multi-service management coordination
 
 ### Integration Tests
+
 - ✅ End-to-end system initialization and startup
 - ✅ Cross-component event coordination
 - ✅ Resilience under failure conditions
@@ -226,6 +247,7 @@ TEST_CONFIG.MAX_SERVERS_PER_REGISTRY = 500;
 ### Common Issues
 
 **Test Timeouts**
+
 ```bash
 # Increase timeout for slow tests
 npm test -- --testTimeout=30000
@@ -235,6 +257,7 @@ npm test -- --testNamePattern="integration" --testTimeout=60000
 ```
 
 **Memory Issues**
+
 ```bash
 # Run with increased memory
 node --max-old-space-size=4096 node_modules/.bin/jest
@@ -244,6 +267,7 @@ npm test -- --detectOpenHandles --forceExit
 ```
 
 **Mock Issues**
+
 ```bash
 # Clear mocks between tests
 npm test -- --clearMocks --restoreMocks
@@ -253,6 +277,7 @@ npm test -- --verbose
 ```
 
 ### Debug Configuration
+
 ```typescript
 // Enable debug logging
 process.env.NODE_ENV = 'test';
@@ -266,6 +291,7 @@ silent: false,
 ## 📈 Continuous Integration
 
 ### GitHub Actions Example
+
 ```yaml
 name: MCP Infrastructure Tests
 on: [push, pull_request]
@@ -296,6 +322,7 @@ jobs:
 ```
 
 ### Quality Gates
+
 ```bash
 # Fail build if coverage below 80%
 npm test -- --coverage --coverageThreshold='{"global":{"lines":80,"functions":80,"branches":80,"statements":80}}'
@@ -307,6 +334,7 @@ npm test -- --testNamePattern="performance" --verbose
 ## 🎯 Best Practices
 
 ### Writing Tests
+
 - **Isolation**: Each test should be independent
 - **Clarity**: Test names should describe expected behavior
 - **Coverage**: Aim for edge cases and error conditions
@@ -314,12 +342,14 @@ npm test -- --testNamePattern="performance" --verbose
 - **Cleanup**: Ensure proper resource cleanup
 
 ### Mock Usage
+
 - **External Dependencies**: Always mock file system, network, processes
 - **Deterministic**: Use predictable mock data
 - **Realistic**: Mock data should reflect real scenarios
 - **Error Simulation**: Test failure scenarios with mocks
 
 ### Performance Testing
+
 - **Measure Consistently**: Use high-resolution timers
 - **Multiple Iterations**: Average over multiple runs
 - **Realistic Loads**: Test with expected production volumes
@@ -328,6 +358,7 @@ npm test -- --testNamePattern="performance" --verbose
 ## 🤝 Contributing
 
 ### Adding New Tests
+
 1. Follow existing test patterns and naming conventions
 2. Include both positive and negative test cases
 3. Validate performance requirements where applicable
@@ -335,6 +366,7 @@ npm test -- --testNamePattern="performance" --verbose
 5. Document any special requirements or setup
 
 ### Test Review Checklist
+
 - [ ] Tests are isolated and repeatable
 - [ ] Edge cases and error conditions covered
 - [ ] Performance requirements validated
@@ -352,12 +384,14 @@ npm test -- --testNamePattern="performance" --verbose
 ## 🔍 Monitoring and Alerts
 
 ### Test Metrics to Track
+
 - **Test Duration**: Monitor for performance regressions
 - **Coverage Trends**: Ensure coverage doesn't decrease
 - **Failure Rates**: Track test stability over time
 - **Memory Usage**: Watch for memory leaks in tests
 
 ### Alerting Thresholds
+
 - **Test Failure**: Any test failure should alert
 - **Coverage Drop**: Below 80% coverage threshold
 - **Performance Regression**: >20% increase in test duration

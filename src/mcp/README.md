@@ -5,6 +5,7 @@ This directory contains the intelligent tool preference engine implementation ac
 ## Components Implemented
 
 ### 1. Tool Router (`infrastructure/tool-router.ts`)
+
 **Intelligent tool routing with Strategy Pattern**
 
 - **Sub-100ms routing decisions** for common tool types
@@ -17,13 +18,15 @@ This directory contains the intelligent tool preference engine implementation ac
 - **Agent-specific routing profiles** and tool-specific strategies
 - **Performance requirements** filtering (response time, success rate, load)
 
-#### Router Key Features:
+#### Router Key Features
+
 - Weighted scoring considering latency, success rate, load, and agent preferences
 - Configurable routing strategies per tool type and agent
 - Automatic fallback and circuit breaker integration
 - Comprehensive routing decision logging and metrics
 
 ### 2. Preference Engine (`infrastructure/preference-engine.ts`)
+
 **Performance-based tool preference learning and adaptation**
 
 - **Exponential moving averages** for metric smoothing
@@ -32,7 +35,8 @@ This directory contains the intelligent tool preference engine implementation ac
 - **Manual preference overrides** with expiration support
 - **Historical performance tracking** per server/tool/agent combination
 
-#### Engine Key Features:
+#### Engine Key Features
+
 - Continuous learning from response time, success rate, and user satisfaction
 - Agent profiles with tool usage patterns and preferences
 - Preference overrides (prefer, avoid, require, exclude) with expiration
@@ -40,6 +44,7 @@ This directory contains the intelligent tool preference engine implementation ac
 - Comprehensive learning statistics and analytics
 
 ### 3. Cache Manager (`infrastructure/cache-manager.ts`)
+
 **In-memory caching with Redis fallback**
 
 - **High-performance in-memory cache** with LRU eviction
@@ -49,7 +54,8 @@ This directory contains the intelligent tool preference engine implementation ac
 - **Pattern-based invalidation** for cache coherence
 - **Comprehensive statistics** and monitoring
 
-#### Cache Key Features:
+#### Cache Key Features
+
 - Multiple eviction policies (LRU, LFU, TTL, Random)
 - Cache warming and background refresh capabilities
 - Configurable compression for large values
@@ -135,6 +141,7 @@ node src/mcp/infrastructure/integration-test.ts
 ```
 
 The test suite covers:
+
 - Cache manager basic operations, TTL, and pattern invalidation
 - Tool router strategy selection and performance-based routing
 - Preference engine learning from performance data
