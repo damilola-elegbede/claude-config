@@ -98,6 +98,9 @@ run_markdownlint() {
     
     # Run markdownlint and capture both stdout and stderr
     if ! npx markdownlint-cli2 "**/*.md" --config "$CONFIG_FILE" > "$temp_file" 2>&1; then
+        exit_code=1  # Capture non-zero exit code
+    else
+        exit_code=0  # Capture success
     fi
     
     # Reset error count

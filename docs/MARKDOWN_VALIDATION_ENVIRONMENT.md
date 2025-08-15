@@ -31,7 +31,7 @@ npx markdownlint-cli2 --version
 - **File**: `.markdownlint-cli2.jsonc`
 - **Purpose**: Defines linting rules and file exclusions
 - **Key exclusions**:
-  - `node_modules/**` - Package dependencies  
+  - `node_modules/**` - Package dependencies
   - `.git/**` - Git metadata
   - `docs/markdown-quality-report.md` - Auto-generated report
   - `system-configs/.claude/agents/*.md` - Agent definitions (special format)
@@ -144,7 +144,7 @@ The CI environment mirrors local setup exactly:
 - name: Install dependencies
   run: npm ci
 
-- name: Run markdown quality validation  
+- name: Run markdown quality validation
   run: ./scripts/validate-markdown-quality.sh validate
 
 - name: Run markdown quality tests
@@ -189,7 +189,7 @@ The CI environment mirrors local setup exactly:
 ### Success Criteria
 
 - ✅ Local validation shows 0 violations
-- ✅ CI validation shows 0 violations  
+- ✅ CI validation shows 0 violations
 - ✅ Both environments report identical counts
 - ✅ Test suite passes in both environments
 - ✅ Baseline remains stable at 0
@@ -197,7 +197,7 @@ The CI environment mirrors local setup exactly:
 ### Failure Indicators
 
 - ❌ Local shows 0 but CI shows violations
-- ❌ Violation counts differ between environments  
+- ❌ Violation counts differ between environments
 - ❌ Test suite passes locally but fails in CI
 - ❌ Baseline trending upward
 

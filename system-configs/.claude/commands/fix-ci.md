@@ -121,7 +121,7 @@ Deploying execution-evaluator for final verification...
 ## Pragmatic Rules
 
 - **Don't over-analyze** - If error message is clear, fix it
-- **Batch simple fixes** - Combine lint/format/typos in one pass  
+- **Batch simple fixes** - Combine lint/format/typos in one pass
 - **Fail fast** - If CI infrastructure issue, report and stop
 - **Learn patterns** - Remember common fixes for this repo
 - **Respect limits** - Max 2 retry attempts before escalating

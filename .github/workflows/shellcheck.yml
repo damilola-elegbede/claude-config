@@ -1,0 +1,220 @@
+name: Shell Script Quality Check
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - '**/*.sh'
+      - 'scripts/**/*'
+      - 'tests/**/*.sh'
+      - '.github/workflows/shellcheck.yml'
+      - '.shellcheckrc'
+
+jobs:
+  shellcheck:
+    name: ShellCheck Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+      
+    - name: Install ShellCheck
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y shellcheck
+        shellcheck --version
+        
+    - name: Find shell scripts
+      id: find-scripts
+      run: |
+        echo "Finding shell scripts..."
+        
+        # Find .sh files
+        find . -name "*.sh" \
+          -not -path "./node_modules/*" \
+          -not -path "./.git/*" \
+          -not -path "./temp-scripts/*" \
+          > shell_scripts.txt
+        
+        # Find shell scripts without .sh extension (check shebang)
+        find . -type f \
+          -not -path "./node_modules/*" \
+          -not -path "./.git/*" \
+          -not -path "./temp-scripts/*" \
+          -not -name "*.sh" \
+          -not -name "*.md" \
+          -not -name "*.json" \
+          -not -name "*.yml" \
+          -not -name "*.yaml" \
+          -not -name "*.js" \
+          -not -name "*.ts" \
+          -not -name "*.py" \
+          -exec grep -l '^#!.*\(bash\|sh\)' {} \; \
+          >> shell_scripts.txt 2>/dev/null || true
+        
+        # Remove duplicates and sort
+        sort -u shell_scripts.txt -o shell_scripts.txt
+        
+        echo "Found shell scripts:"
+        cat shell_scripts.txt
+        
+        # Count scripts
+        script_count=$(wc -l < shell_scripts.txt)
+        echo "script_count=$script_count" >> $GITHUB_OUTPUT
+        
+    - name: Run ShellCheck on all scripts
+      if: steps.find-scripts.outputs.script_count > 0
+      run: |
+        echo "Running ShellCheck on all found scripts..."
+        
+        # Initialize error tracking
+        exit_code=0
+        total_scripts=0
+        passed_scripts=0
+        failed_scripts=0
+        
+        # Create results directory
+        mkdir -p shellcheck-results
+        
+        # Process each script
+        while IFS= read -r script; do
+          if [ -n "$script" ] && [ -f "$script" ]; then
+            total_scripts=$((total_scripts + 1))
+            echo ""
+            echo "=== Checking: $script ==="
+            
+            # Run shellcheck with custom configuration
+            if shellcheck \
+              --format=gcc \
+              --severity=warning \
+              --shell=bash \
+              --exclude=SC1091,SC2034,SC2086,SC2155 \
+              "$script" 2>&1 | tee "shellcheck-results/$(basename "$script").log"; then
+              echo "✅ PASSED: $script"
+              passed_scripts=$((passed_scripts + 1))
+            else
+              echo "❌ FAILED: $script"
+              failed_scripts=$((failed_scripts + 1))
+              exit_code=1
+            fi
+          fi
+        done < shell_scripts.txt
+        
+        # Summary
+        echo ""
+        echo "=== ShellCheck Summary ==="
+        echo "Total scripts checked: $total_scripts"
+        echo "Passed: $passed_scripts"
+        echo "Failed: $failed_scripts"
+        
+        # Exit with error if any script failed
+        if [ $exit_code -ne 0 ]; then
+          echo ""
+          echo "❌ ShellCheck found issues in shell scripts!"
+          echo "Please fix the issues above before merging."
+          exit 1
+        else
+          echo ""
+          echo "✅ All shell scripts passed ShellCheck validation!"
+        fi
+        
+    - name: Check critical scripts for syntax errors
+      run: |
+        echo "Running syntax check on critical scripts..."
+        
+        critical_scripts=(
+          "tests/test.sh"
+          "scripts/validate-system.sh"
+          "scripts/validate_yaml.sh"
+        )
+        
+        for script in "${critical_scripts[@]}"; do
+          if [ -f "$script" ]; then
+            echo "Syntax checking: $script"
+            if ! bash -n "$script"; then
+              echo "❌ Syntax error in critical script: $script"
+              exit 1
+            else
+              echo "✅ Syntax OK: $script"
+            fi
+          else
+            echo "⚠️ Critical script not found: $script"
+          fi
+        done
+        
+    - name: Upload ShellCheck results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: shellcheck-results
+        path: shellcheck-results/
+        retention-days: 30
+        
+  shellcheck-critical:
+    name: Critical Scripts Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+      
+    - name: Install ShellCheck
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y shellcheck
+        
+    - name: Validate critical scripts with strict rules
+      run: |
+        echo "Running strict validation on critical scripts..."
+        
+        # Define critical scripts that must pass strict checks
+        critical_scripts=(
+          "tests/test.sh"
+          "scripts/validate-system.sh"
+          "scripts/validate_yaml.sh"
+          "scripts/setup-hooks.sh"
+          "scripts/install-hooks.sh"
+        )
+        
+        exit_code=0
+        
+        for script in "${critical_scripts[@]}"; do
+          if [ -f "$script" ]; then
+            echo ""
+            echo "=== Strict check: $script ==="
+            
+            # Run with stricter settings for critical scripts
+            if shellcheck \
+              --format=gcc \
+              --severity=info \
+              --shell=bash \
+              --exclude=SC1091 \
+              "$script"; then
+              echo "✅ PASSED: $script"
+            else
+              echo "❌ FAILED: $script"
+              exit_code=1
+            fi
+            
+            # Also check for bash syntax errors
+            if ! bash -n "$script"; then
+              echo "❌ Syntax error in: $script"
+              exit_code=1
+            fi
+          else
+            echo "⚠️ Critical script not found: $script"
+          fi
+        done
+        
+        if [ $exit_code -ne 0 ]; then
+          echo ""
+          echo "❌ Critical scripts validation failed!"
+          echo "These scripts are essential for CI/CD and must be error-free."
+          exit 1
+        else
+          echo ""
+          echo "✅ All critical scripts passed strict validation!"
+        fi

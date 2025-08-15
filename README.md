@@ -242,6 +242,36 @@ cp system-configs/settings.json ~/.claude/settings.json
 
 ### Quality & Security
 
+#### Shell Script Validation System
+
+This repository includes comprehensive **ShellCheck validation** to prevent bash syntax errors and ensure script quality:
+
+**Features:**
+- **Automated CI Validation**: All shell scripts validated on push/PR
+- **Pre-commit Hooks**: Local validation before commits  
+- **Developer Tools**: Setup and fix scripts for easy adoption
+- **Configurable Rules**: Balanced exclusions for practical development
+
+**Usage:**
+```bash
+# One-time setup for developers
+./scripts/setup-shellcheck.sh
+
+# Run validation locally
+shellcheck scripts/*.sh
+
+# Auto-fix common issues
+./scripts/fix-shellcheck-issues.sh
+```
+
+**CI Integration:**
+- Critical scripts must pass strict validation
+- Comprehensive workflow validates all repository scripts
+- Results uploaded as artifacts for review
+- Excludes style-only issues while catching real problems
+
+See [ShellCheck Validation Documentation](docs/SHELLCHECK_VALIDATION.md) for complete details.
+
 #### `/deps` - Security-Focused Dependency Management
 
 ```bash

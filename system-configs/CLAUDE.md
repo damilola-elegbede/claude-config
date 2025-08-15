@@ -83,14 +83,14 @@ mismatches → api-architect decides, Test failures → rerun after integration
 ## Examples
 
 **README typo**: Handle directly
-**Authentication system**: Parallel → backend-engineer + frontend-architect + security-auditor + test-engineer  
+**Authentication system**: Parallel → backend-engineer + frontend-architect + security-auditor + test-engineer
 **Bug report**: You investigate → debugger (if complex) → specialist fix → test-engineer
 **Performance issue**: Parallel → performance-specialist + monitoring-specialist + coordination
 
 ## Continuous Improvement
 
 **Track**: Agent success rates, parallel efficiency, user satisfaction signals
-**Learn**: From failures, user patterns, agent performance, time estimates  
+**Learn**: From failures, user patterns, agent performance, time estimates
 **Adjust**: Based on user feedback, repeated failures, delegation patterns, new capabilities
 
 ## Command Execution Verification
