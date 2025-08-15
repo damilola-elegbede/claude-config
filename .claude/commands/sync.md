@@ -1,0 +1,1 @@
+../../system-configs/.claude/commands/sync.md
