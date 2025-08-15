@@ -90,6 +90,7 @@ OUTPUT: [Expected format/structure]
    - **"expand"**: Add necessary detail
    - **"examples"**: Add clarifying examples
    - **"cancel"**: Exit without saving
+   - **"reset"**: Clear accumulated optimizations and start over
 
 3. **Iterate until satisfied**:
    - Apply requested changes
