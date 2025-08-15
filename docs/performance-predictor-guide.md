@@ -469,6 +469,7 @@ performance_predictor:
   </model-parameters>
 
   <feature-engineering>
+
 ```yaml
 feature_engineering:
   time_windows:

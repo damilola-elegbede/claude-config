@@ -692,6 +692,7 @@ X-Request-ID: {unique_request_id}
 
   <response-specification>
     <success-response code="200">
+
       ```json
       {
         "model_id": "bottleneck_predictor_v1.2.0",
@@ -764,6 +765,7 @@ X-Request-ID: {unique_request_id}
 
   <response-specification>
     <success-response code="200">
+
       ```json
       {
         "system_id": "prod-cluster-01",
@@ -846,6 +848,7 @@ X-Request-ID: {unique_request_id}
 
   <response-specification>
     <success-response code="200">
+
       ```json
       {
         "insights": [
@@ -855,7 +858,8 @@ X-Request-ID: {unique_request_id}
             "priority": "high",
             "confidence": 0.92,
             "title": "Memory Allocation Pattern Optimization Opportunity",
-            "description": "Analysis reveals that ml-engineer agents are allocating 40% more memory than necessary during model inference, leading to resource waste and OOM conditions.",
+            "description": "Analysis reveals that ml-engineer agents are allocating 40% more memory than necessary during model inference, " +
+                           "leading to resource waste and OOM conditions.",
             "impact": {
               "performance_improvement": "18%",
               "cost_reduction": "$1,200/month",
@@ -887,7 +891,8 @@ X-Request-ID: {unique_request_id}
             "priority": "medium",
             "confidence": 0.87,
             "title": "Predictive Scaling Opportunity",
-            "description": "Historical patterns show 23% of scaling events could be predicted 15 minutes in advance, enabling proactive allocation.",
+            "description": "Historical patterns show 23% of scaling events could be predicted 15 minutes in advance, " +
+                           "enabling proactive allocation.",
             "recommendations": [
               {
                 "action": "enable_predictive_autoscaling",

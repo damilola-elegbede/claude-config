@@ -465,7 +465,7 @@ The repository now includes `.markdownlint-cli2.jsonc` with optimized rules:
 |----------|----------|
 | Data     | Data     |
 
-```
+```markdown
 
 #### Formatting Rules
 
@@ -541,7 +541,7 @@ code here
 code here
 ```
 
-## Issue: Improper Heading Hierarchy
+#### Issue: Improper Heading Hierarchy
 
 ```markdown
 # Before (incorrect)
@@ -554,7 +554,7 @@ code here
 ### Subsection
 ```
 
-## Issue: List Formatting
+#### Issue: List Formatting
 
 ```markdown
 # Before (incorrect)
