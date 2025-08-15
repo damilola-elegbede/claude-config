@@ -4,13 +4,13 @@ on:
   push:
     branches: [ main, develop ]
     paths:
-      - '**.md'
+      - '**/*.md'
       - '.markdownlint-cli2.jsonc'
       - 'scripts/validate-markdown-quality.sh'
   pull_request:
     branches: [ main ]
     paths:
-      - '**.md'
+      - '**/*.md'
       - '.markdownlint-cli2.jsonc'
       - 'scripts/validate-markdown-quality.sh'
 
@@ -77,7 +77,7 @@ jobs:
 
     - name: Comment on PR with quality report
       if: github.event_name == 'pull_request' && always()
-      uses: actions/github-script@v6
+      uses: actions/github-script@v7
       with:
         script: |
           const fs = require('fs');
@@ -97,7 +97,7 @@ jobs:
 
     - name: Set status check
       if: always()
-      uses: actions/github-script@v6
+      uses: actions/github-script@v7
       with:
         script: |
           const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure';

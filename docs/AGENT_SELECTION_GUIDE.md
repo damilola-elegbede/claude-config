@@ -45,20 +45,32 @@
 ### Implementation Escalation Path
 
 ```mermaid
-Task Request → fullstack-lead → [complexity assessment] → staff agents → principal-architect
-```yaml
+flowchart LR
+    A[Task Request] --> B[fullstack-lead]
+    B --> C{complexity assessment}
+    C --> D[staff agents]
+    D --> E[principal-architect]
+```
 
 ### Quality Assurance Workflow
 
 ```mermaid
-Code Complete → code-reviewer → [parallel: security-auditor, test-engineer] → implementation agents
-```yaml
+flowchart LR
+    A[Code Complete] --> B[code-reviewer]
+    B --> C[security-auditor]
+    B --> D[test-engineer]
+    C --> E[implementation agents]
+    D --> E
+```
 
 ### Analysis Request Flow
 
 ```mermaid
-Analysis Need → codebase-analyst → [domain-specific agents] → principal-architect
-```yaml
+flowchart LR
+    A[Analysis Need] --> B[codebase-analyst]
+    B --> C[domain-specific agents]
+    C --> D[principal-architect]
+```
 
 ## Complexity Thresholds
 

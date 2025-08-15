@@ -2,8 +2,8 @@
 
 ## Overview
 
-This guide provides comprehensive strategies for maximizing parallel agent execution using the consolidated 29-agent
-system. The consolidation improves coordination efficiency while optimizing development velocity and maintaining
+This guide provides comprehensive strategies for maximizing parallel agent execution using the comprehensive 42-agent
+system. The expanded agent ecosystem improves coordination efficiency while optimizing development velocity and maintaining
 quality standards.
 
 **Consolidation Benefits for Parallel Execution:**

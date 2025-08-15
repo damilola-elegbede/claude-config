@@ -1,19 +1,20 @@
 # Agent YAML Validation Report
 
-**Total agents validated:** 42
+Total agents validated: 42
 
 ## Validation Issues
 
 ### debugger
+- Invalid color 'teal'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan, pink
 
-**Issue:** Invalid color value
-**Details:** Color 'teal' is not allowed. Must be one of:
-blue, green, red, purple, yellow, orange, white, brown, cyan, pink
+### incident-commander
+- Invalid color 'teal'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan, pink
 
-### security-auditor
+### production-reliability-engineer
+- Invalid color 'teal'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan, pink
 
-**Issue:** Description length exceeded
-**Details:** Description too long (252 chars). Should be under 250 characters.
+### project-orchestrator
+- Invalid color 'teal'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan, pink
 
 ## Valid Agents
 
@@ -36,7 +37,6 @@ blue, green, red, purple, yellow, orange, white, brown, cyan, pink
 - ✅ execution-evaluator
 - ✅ frontend-architect
 - ✅ git-workflow-specialist
-- ✅ incident-commander
 - ✅ integration-specialist
 - ✅ kubernetes-admin
 - ✅ metrics-analyst
@@ -48,24 +48,11 @@ blue, green, red, purple, yellow, orange, white, brown, cyan, pink
 - ✅ performance-specialist
 - ✅ platform-engineer
 - ✅ principal-architect
-- ✅ production-reliability-engineer
-- ✅ project-orchestrator
 - ✅ quality-gatekeeper
 - ✅ regulatory-compliance-specialist
+- ✅ security-auditor
 - ✅ supply-chain-security-engineer
 - ✅ tech-writer
 - ✅ test-engineer
 - ✅ ui-designer
 - ✅ ux-researcher
-
-## Summary
-
-- **Total Agents:** 42
-- **Valid Agents:** 40 (95.2%)
-- **Agents with Issues:** 2 (4.8%)
-
-### Issues Breakdown
-
-- **Configuration Issues:** 2 agents
-  - Invalid color value: 1 agent (debugger)
-  - Description length exceeded: 1 agent (security-auditor)
