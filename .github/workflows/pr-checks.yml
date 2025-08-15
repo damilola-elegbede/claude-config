@@ -8,104 +8,104 @@ jobs:
   test-changes:
     name: Test Changes
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout PR branch
       uses: actions/checkout@v5
       with:
         fetch-depth: 0
-        
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
         cache: 'npm'
-    
+
     - name: Install dependencies
       run: npm ci
-        
+
     - name: Get changed files
       id: changed-files
       uses: tj-actions/changed-files@v46
-      
+
     - name: List changed files
       run: |
         echo "Changed files:"
         for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
           echo "  - $file"
         done
-        
+
     - name: Run tests
       run: |
         chmod +x tests/test.sh
         ./tests/test.sh
-        
+
     - name: Check if sync needed
       if: contains(steps.changed-files.outputs.all_changed_files, 'system-configs/CLAUDE.md') || contains(steps.changed-files.outputs.all_changed_files, 'system-configs/.claude/commands/')
       run: |
         echo "⚠️ Changes detected in configuration files!"
         echo "Remember to run /sync command after merging to update your local configuration."
-        
+
   command-validation:
     name: Validate Commands
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
-      
+
     - name: Validate command structure
       run: |
         echo "Validating command files..."
-        
+
         for cmd in system-configs/.claude/commands/*.md; do
           # Skip README.md file
           if [[ "$(basename "$cmd")" == "README.md" ]]; then
             echo "Skipping $cmd (documentation file)"
             continue
           fi
-          
+
           echo "Checking $cmd..."
-          
+
           # Check for required sections
           if ! grep -q "^# /" "$cmd"; then
             echo "❌ Missing command header in $cmd"
             exit 1
           fi
-          
+
           if ! grep -q "^## Description" "$cmd"; then
             echo "❌ Missing Description section in $cmd"
             exit 1
           fi
-          
+
           if ! grep -q "^## Usage" "$cmd"; then
             echo "❌ Missing Usage section in $cmd"
             exit 1
           fi
-          
+
           # Check for either Behavior or Command Execution Flow (plan.md uses the latter)
           if ! grep -q "^## Behavior" "$cmd" && ! grep -q "^## Command Execution Flow" "$cmd"; then
             echo "❌ Missing Behavior or Command Execution Flow section in $cmd"
             exit 1
           fi
-          
+
           echo "✓ $cmd structure is valid"
         done
-        
+
         echo "All command files are properly structured!"
 
   security-check:
     name: Security Scan
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
-      
+
     - name: Check for sensitive data
       run: |
         echo "Scanning for sensitive data..."
-        
+
         # Check for common patterns of sensitive data
         patterns=(
           "password.*=.*['\"].*['\"]"
@@ -114,9 +114,9 @@ jobs:
           "token.*=.*['\"].*['\"]"
           "private[_-]?key"
         )
-        
+
         found_issues=false
-        
+
         for pattern in "${patterns[@]}"; do
           # Exclude .git, node_modules, .github, scripts, and test directories
           # Also exclude example/sample/test/fake/dummy patterns and command documentation
@@ -133,10 +133,10 @@ jobs:
             found_issues=true
           fi
         done
-        
+
         if [ "$found_issues" = true ]; then
           echo "Security check failed! Please remove sensitive data."
           exit 1
         fi
-        
+
         echo "✓ No sensitive data patterns found"

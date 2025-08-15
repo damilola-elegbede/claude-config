@@ -77,7 +77,7 @@ expect.extend({
   },
 
   toBeHealthyServer(received) {
-    const isHealthy = received && 
+    const isHealthy = received &&
                      received.status === 'healthy' &&
                      received.responseTime >= 0 &&
                      received.failureCount >= 0 &&
@@ -103,17 +103,17 @@ global.TEST_CONFIG = {
   MAX_ROUTING_TIME: 100,     // ms
   MAX_DISCOVERY_TIME: 500,   // ms
   MAX_STARTUP_TIME: 2000,    // ms
-  
+
   // Reliability thresholds
   MIN_SUCCESS_RATE: 0.95,    // 95%
   MIN_UPTIME: 0.90,          // 90%
   MAX_FAILURE_RATE: 0.05,    // 5%
-  
+
   // Capacity limits
   MAX_CONCURRENT_REQUESTS: 1000,
   MAX_CACHE_SIZE: 100 * 1024 * 1024, // 100MB
   MAX_SERVERS_PER_REGISTRY: 500,
-  
+
   // Timeouts
   DEFAULT_TEST_TIMEOUT: 10000,  // 10s
   INTEGRATION_TEST_TIMEOUT: 30000,  // 30s
@@ -159,29 +159,29 @@ global.TestUtils = {
   // Wait for condition to be true
   async waitFor(condition, timeout = 5000, interval = 100) {
     const startTime = Date.now();
-    
+
     while (Date.now() - startTime < timeout) {
       if (await condition()) {
         return true;
       }
       await new Promise(resolve => setTimeout(resolve, interval));
     }
-    
+
     throw new Error(`Condition not met within ${timeout}ms timeout`);
   },
 
   // Performance measurement utility
   async measurePerformance(operation, iterations = 1) {
     const times = [];
-    
+
     for (let i = 0; i < iterations; i++) {
       const startTime = process.hrtime.bigint();
       await operation();
       const endTime = process.hrtime.bigint();
-      
+
       times.push(Number(endTime - startTime) / 1000000); // Convert to milliseconds
     }
-    
+
     return {
       min: Math.min(...times),
       max: Math.max(...times),
@@ -224,13 +224,13 @@ global.TestUtils = {
               setTimeout(checkForEvent, 100);
             }
           };
-          
+
           setTimeout(() => reject(new Error(`Event ${eventType} not received within ${timeout}ms`)), timeout);
           checkForEvent();
         });
       }
     };
-    
+
     return emitter;
   }
 };
@@ -248,7 +248,7 @@ process.on('uncaughtException', (error) => {
 afterEach(() => {
   // Clear any lingering timers
   jest.clearAllTimers();
-  
+
   // Force garbage collection if available
   if (global.gc) {
     global.gc();
@@ -267,7 +267,7 @@ console.error = (...args) => {
   )) {
     return; // Suppress expected test errors
   }
-  
+
   originalConsoleError.apply(console, args);
 };
 

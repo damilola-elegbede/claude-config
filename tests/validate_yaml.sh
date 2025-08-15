@@ -10,24 +10,24 @@ echo "🔍 Validating YAML front-matter in agent files..."
 validate_yaml_frontmatter() {
     local file="$1"
     local temp_file=$(mktemp)
-    
+
     # Extract YAML front-matter (between --- markers)
     sed -n '/^---$/,/^---$/p' "$file" | sed '1d;$d' > "$temp_file"
-    
+
     # Check if we got any YAML content
     if [ ! -s "$temp_file" ]; then
         echo "❌ No YAML front-matter found in $file"
         rm "$temp_file"
         return 1
     fi
-    
+
     # Validate YAML syntax (basic check - ensure it's key: value format)
     if ! grep -q "^[a-zA-Z_][a-zA-Z0-9_]*:" "$temp_file"; then
         echo "❌ Invalid YAML syntax in $file"
         rm "$temp_file"
         return 1
     fi
-    
+
     # Check required fields
     local yaml_content=$(cat "$temp_file")
     if ! echo "$yaml_content" | grep -q "^name:"; then
@@ -35,31 +35,31 @@ validate_yaml_frontmatter() {
         rm "$temp_file"
         return 1
     fi
-    
+
     if ! echo "$yaml_content" | grep -q "^description:"; then
         echo "❌ Missing 'description' field in $file"
         rm "$temp_file"
         return 1
     fi
-    
+
     if ! echo "$yaml_content" | grep -q "^color:"; then
         echo "❌ Missing 'color' field in $file"
         rm "$temp_file"
         return 1
     fi
-    
+
     if ! echo "$yaml_content" | grep -q "^category:"; then
         echo "❌ Missing 'category' field in $file"
         rm "$temp_file"
         return 1
     fi
-    
+
     if ! echo "$yaml_content" | grep -q "^tools:"; then
         echo "❌ Missing 'tools' field in $file"
         rm "$temp_file"
         return 1
     fi
-    
+
     echo "✅ Valid YAML front-matter in $file"
     rm "$temp_file"
     return 0

@@ -13,17 +13,17 @@ test_commit_file_exists() {
 # Test commit command structure
 test_commit_structure() {
     local commit_file="$ORIGINAL_DIR/system-configs/.claude/commands/commit.md"
-    
+
     # Check required sections
     assert_file_contains "$commit_file" "# /commit Command" \
         "Should have command header"
-    
+
     assert_file_contains "$commit_file" "## Description" \
         "Should have Description section"
-    
+
     assert_file_contains "$commit_file" "## Usage" \
         "Should have Usage section"
-    
+
     assert_file_contains "$commit_file" "## Behavior" \
         "Should have Behavior section"
 }
@@ -31,14 +31,14 @@ test_commit_structure() {
 # Test commit command content
 test_commit_content() {
     local commit_file="$ORIGINAL_DIR/system-configs/.claude/commands/commit.md"
-    
+
     # Check for key behavior descriptions
     assert_file_contains "$commit_file" "git commit" \
         "Should mention git commit"
-    
+
     assert_file_contains "$commit_file" "Co-Authored-By: Claude" \
         "Should include co-authorship"
-    
+
     assert_file_contains "$commit_file" "conventional commit format" \
         "Should mention conventional commits"
 }

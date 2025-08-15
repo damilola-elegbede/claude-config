@@ -6,22 +6,22 @@
 import { EventEmitter } from 'events';
 import { createServer } from 'http';
 import { WebSocketServer, WebSocket } from 'ws';
-import { 
-  DashboardServer, 
-  defaultDashboardConfig, 
+import {
+  DashboardServer,
+  defaultDashboardConfig,
   DashboardConfig,
   PerformanceMetrics,
   Alert
 } from './performance-dashboard';
-import { 
-  BenchmarkEngine, 
-  defaultBenchmarkConfig, 
+import {
+  BenchmarkEngine,
+  defaultBenchmarkConfig,
   BenchmarkConfig,
   BenchmarkRun
 } from './benchmarking-framework';
-import { 
-  AnalyticsEngine, 
-  defaultAnalyticsConfig, 
+import {
+  AnalyticsEngine,
+  defaultAnalyticsConfig,
   AnalyticsConfig,
   AnalyticsResult,
   Recommendation
@@ -95,7 +95,7 @@ export interface NotificationConfig {
   };
 }
 
-export type MonitoringEvent = 
+export type MonitoringEvent =
   | 'performance-alert'
   | 'benchmark-completed'
   | 'regression-detected'
@@ -141,21 +141,21 @@ export class MonitoringSystem extends EventEmitter {
 
   constructor(config: Partial<MonitoringSystemConfig> = {}) {
     super();
-    
+
     this.config = this.mergeConfig(config);
-    
+
     // Initialize components
     this.dashboard = new DashboardServer(this.config.dashboard as DashboardConfig);
     this.benchmarkEngine = new BenchmarkEngine(this.config.benchmarking as BenchmarkConfig);
     this.analyticsEngine = new AnalyticsEngine(this.config.analytics as AnalyticsConfig);
-    
+
     // Initialize reporting system if enabled
     if (this.config.reporting.enabled) {
       this.reportingSystem = createReportingSystem(this.analyticsEngine, this.dashboard, this.config);
     }
-    
+
     this.systemStatus = this.initializeSystemStatus();
-    
+
     this.setupEventHandlers();
     this.createHttpServer();
   }
@@ -199,10 +199,10 @@ export class MonitoringSystem extends EventEmitter {
 
     // Add reporting component if enabled
     if (this.config.reporting.enabled) {
-      (components as any).reporting = { 
-        status: 'stopped', 
-        lastUpdate: Date.now(), 
-        metrics: { memoryUsage: 0, cpuUsage: 0, errorCount: 0 } 
+      (components as any).reporting = {
+        status: 'stopped',
+        lastUpdate: Date.now(),
+        metrics: { memoryUsage: 0, cpuUsage: 0, errorCount: 0 }
       };
     }
 
@@ -275,7 +275,7 @@ export class MonitoringSystem extends EventEmitter {
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-        
+
         if (req.method === 'OPTIONS') {
           res.writeHead(204);
           res.end();
@@ -284,7 +284,7 @@ export class MonitoringSystem extends EventEmitter {
       }
 
       const url = new URL(req.url!, `http://${req.headers.host}`);
-      
+
       try {
         this.handleHttpRequest(req, res, url);
       } catch (error) {
@@ -296,13 +296,13 @@ export class MonitoringSystem extends EventEmitter {
 
     // Setup WebSocket server
     this.wsServer = new WebSocketServer({ server: this.httpServer });
-    
+
     this.wsServer.on('connection', (ws: WebSocket, req) => {
       console.log('WebSocket client connected:', req.url);
-      
+
       // Add client to dashboard for real-time updates
       this.dashboard.addWebSocketClient(ws);
-      
+
       // Send initial system status
       ws.send(JSON.stringify({
         type: 'system-status',
@@ -315,14 +315,14 @@ export class MonitoringSystem extends EventEmitter {
   private async handleHttpRequest(req: any, res: any, url: URL): Promise<void> {
     const path = url.pathname;
     const method = req.method;
-    
+
     res.setHeader('Content-Type', 'application/json');
 
     // API Routes
     if (path === '/api/status') {
       res.writeHead(200);
       res.end(JSON.stringify(this.getSystemStatus()));
-    } 
+    }
     else if (path === '/api/metrics') {
       const snapshot = this.dashboard.getPerformanceSnapshot();
       res.writeHead(200);
@@ -350,7 +350,7 @@ export class MonitoringSystem extends EventEmitter {
     else if (path === '/api/benchmarks/run' && method === 'POST') {
       const body = await this.readRequestBody(req);
       const { suiteId } = JSON.parse(body);
-      
+
       try {
         const run = await this.benchmarkEngine.runBenchmark(suiteId);
         res.writeHead(200);
@@ -363,22 +363,22 @@ export class MonitoringSystem extends EventEmitter {
     else if (path === '/api/benchmarks/report') {
       const suiteId = url.searchParams.get('suite');
       const format = url.searchParams.get('format') as 'json' | 'html' | 'csv' || 'json';
-      
+
       if (!suiteId) {
         res.writeHead(400);
         res.end(JSON.stringify({ error: 'Missing suite parameter' }));
         return;
       }
-      
+
       try {
         const report = await this.benchmarkEngine.generateReport(suiteId, format);
-        
+
         if (format === 'html') {
           res.setHeader('Content-Type', 'text/html');
         } else if (format === 'csv') {
           res.setHeader('Content-Type', 'text/csv');
         }
-        
+
         res.writeHead(200);
         res.end(report);
       } catch (error) {
@@ -400,14 +400,14 @@ export class MonitoringSystem extends EventEmitter {
     }
     else if (path === '/api/analytics/report') {
       const templateId = url.searchParams.get('template') || 'executive-summary';
-      
+
       try {
         const report = await this.analyticsEngine.generateReport(templateId);
-        
+
         if (templateId.includes('html')) {
           res.setHeader('Content-Type', 'text/html');
         }
-        
+
         res.writeHead(200);
         res.end(report);
       } catch (error) {
@@ -468,16 +468,16 @@ export class MonitoringSystem extends EventEmitter {
     else if (path.startsWith('/api/reporting/export/') && this.reportingSystem) {
       const reportId = path.split('/').pop();
       const format = url.searchParams.get('format') || 'json';
-      
+
       if (!reportId) {
         res.writeHead(400);
         res.end(JSON.stringify({ error: 'Report ID is required' }));
         return;
       }
-      
+
       try {
         const exportedContent = await this.reportingSystem.exportReport(reportId, format as any);
-        
+
         // Set appropriate content type
         const contentTypes = {
           json: 'application/json',
@@ -486,14 +486,14 @@ export class MonitoringSystem extends EventEmitter {
           csv: 'text/csv',
           xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         };
-        
+
         res.setHeader('Content-Type', contentTypes[format as keyof typeof contentTypes] || 'application/octet-stream');
-        
+
         // Set download headers for non-JSON formats
         if (format !== 'json' && format !== 'html') {
           res.setHeader('Content-Disposition', `attachment; filename="report-${reportId}.${format}"`);
         }
-        
+
         res.writeHead(200);
         res.end(exportedContent);
       } catch (error) {
@@ -518,7 +518,7 @@ export class MonitoringSystem extends EventEmitter {
           healthy: component.status === 'running'
         }))
       };
-      
+
       res.writeHead(200);
       res.end(JSON.stringify(health));
     }
@@ -533,19 +533,19 @@ export class MonitoringSystem extends EventEmitter {
     const start = params.get('start');
     const end = params.get('end');
     const duration = params.get('duration') || '24h';
-    
+
     const now = Date.now();
-    
+
     if (start && end) {
       return {
         start: parseInt(start),
         end: parseInt(end)
       };
     }
-    
+
     // Parse duration (e.g., '24h', '7d', '30m')
     const durationMs = this.parseDuration(duration);
-    
+
     return {
       start: now - durationMs,
       end: now
@@ -555,10 +555,10 @@ export class MonitoringSystem extends EventEmitter {
   private parseDuration(duration: string): number {
     const match = duration.match(/^(\d+)([smhd])$/);
     if (!match) return 24 * 60 * 60 * 1000; // Default 24 hours
-    
+
     const value = parseInt(match[1]);
     const unit = match[2];
-    
+
     switch (unit) {
       case 's': return value * 1000;
       case 'm': return value * 60 * 1000;
@@ -583,10 +583,10 @@ export class MonitoringSystem extends EventEmitter {
 
   private async handleAlert(alert: Alert): Promise<void> {
     console.log(`Alert: ${alert.severity} - ${alert.message}`);
-    
+
     // Send webhooks
     await this.sendWebhooks('performance-alert', { alert });
-    
+
     // Update system status if critical
     if (alert.severity === 'critical' || alert.severity === 'emergency') {
       this.updateSystemStatus('critical');
@@ -595,27 +595,27 @@ export class MonitoringSystem extends EventEmitter {
 
   private async handleRegression(regression: any): Promise<void> {
     console.log(`Performance regression detected:`, regression);
-    
+
     // Send webhooks
     await this.sendWebhooks('regression-detected', { regression });
-    
+
     // Notify critical channels
     await this.sendCriticalNotification(`Performance regression detected in ${regression.suite}`, regression);
-    
+
     this.updateSystemStatus('degraded');
   }
 
   private async handleAnalysisResult(result: AnalyticsResult): Promise<void> {
     console.log(`Analytics result: ${result.type} - ${result.insights.length} insights, ${result.recommendations.length} recommendations`);
-    
+
     // Send webhooks for insights and recommendations
     if (result.insights.length > 0) {
       await this.sendWebhooks('analytics-insight', { result });
     }
-    
+
     if (result.recommendations.length > 0) {
-      await this.sendWebhooks('optimization-recommendation', { 
-        recommendations: result.recommendations 
+      await this.sendWebhooks('optimization-recommendation', {
+        recommendations: result.recommendations
       });
     }
   }
@@ -624,11 +624,11 @@ export class MonitoringSystem extends EventEmitter {
     const relevantWebhooks = this.config.integrations.webhooks.filter(
       wh => wh.enabled && wh.events.includes(event)
     );
-    
+
     for (const webhook of relevantWebhooks) {
       try {
         const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-        
+
         if (webhook.authentication) {
           if (webhook.authentication.type === 'bearer') {
             headers['Authorization'] = `Bearer ${webhook.authentication.token}`;
@@ -636,20 +636,20 @@ export class MonitoringSystem extends EventEmitter {
             headers['X-API-Key'] = webhook.authentication.token;
           }
         }
-        
+
         const payload = {
           event,
           timestamp: Date.now(),
           system: 'mcp-monitoring',
           data
         };
-        
+
         const response = await fetch(webhook.url, {
           method: 'POST',
           headers,
           body: JSON.stringify(payload)
         });
-        
+
         if (!response.ok) {
           console.error(`Webhook ${webhook.id} failed:`, response.status, response.statusText);
         }
@@ -669,7 +669,7 @@ export class MonitoringSystem extends EventEmitter {
     componentStatus.status = hasError ? 'error' : 'running';
     componentStatus.lastUpdate = Date.now();
     componentStatus.metrics.errorCount += hasError ? 1 : 0;
-    
+
     this.systemStatus.lastUpdated = Date.now();
     this.broadcastSystemStatus();
   }
@@ -678,13 +678,13 @@ export class MonitoringSystem extends EventEmitter {
     if (this.systemStatus.status !== status) {
       this.systemStatus.status = status;
       this.systemStatus.lastUpdated = Date.now();
-      
-      this.emit('system-status-change', { 
-        oldStatus: this.systemStatus.status, 
+
+      this.emit('system-status-change', {
+        oldStatus: this.systemStatus.status,
         newStatus: status,
         timestamp: Date.now()
       });
-      
+
       this.broadcastSystemStatus();
     }
   }
@@ -696,7 +696,7 @@ export class MonitoringSystem extends EventEmitter {
         data: this.systemStatus,
         timestamp: Date.now()
       });
-      
+
       this.wsServer.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
           client.send(message);
@@ -708,25 +708,25 @@ export class MonitoringSystem extends EventEmitter {
   // Public API
   async start(): Promise<void> {
     console.log('Starting MCP Monitoring System...');
-    
+
     try {
       // Start components
       this.dashboard.start();
       this.systemStatus.components.dashboard.status = 'running';
-      
+
       await this.benchmarkEngine.start();
       this.systemStatus.components.benchmarking.status = 'running';
-      
+
       await this.analyticsEngine.start();
       this.systemStatus.components.analytics.status = 'running';
-      
+
       // Start reporting system if enabled
       if (this.reportingSystem) {
         await this.reportingSystem.start();
         (this.systemStatus.components as any).reporting.status = 'running';
         console.log('Comprehensive reporting system started');
       }
-      
+
       // Start HTTP server
       await new Promise<void>((resolve, reject) => {
         this.httpServer.listen(this.config.server.port, this.config.server.host, (err: any) => {
@@ -734,21 +734,21 @@ export class MonitoringSystem extends EventEmitter {
           else resolve();
         });
       });
-      
+
       this.updateSystemStatus('healthy');
-      
+
       console.log(`MCP Monitoring System started on ${this.config.server.host}:${this.config.server.port}`);
       console.log(`WebSocket endpoint: ws://${this.config.server.host}:${this.config.server.port}`);
       console.log(`Health check: http://${this.config.server.host}:${this.config.server.port}/api/health`);
       console.log(`Metrics API: http://${this.config.server.host}:${this.config.server.port}/api/metrics`);
-      
+
       if (this.reportingSystem) {
         console.log(`Executive KPIs: http://${this.config.server.host}:${this.config.server.port}/api/reporting/kpis/current`);
         console.log(`ROI Analysis: http://${this.config.server.host}:${this.config.server.port}/api/reporting/roi`);
         console.log(`Trend Analysis: http://${this.config.server.host}:${this.config.server.port}/api/reporting/trends`);
         console.log(`Report Generation: POST http://${this.config.server.host}:${this.config.server.port}/api/reporting/generate`);
       }
-      
+
       this.emit('started');
     } catch (error) {
       console.error('Failed to start monitoring system:', error);
@@ -759,18 +759,18 @@ export class MonitoringSystem extends EventEmitter {
 
   async stop(): Promise<void> {
     console.log('Stopping MCP Monitoring System...');
-    
+
     this.updateSystemStatus('maintenance');
-    
+
     // Stop components
     this.dashboard.stop();
     this.benchmarkEngine.stop();
     this.analyticsEngine.stop();
-    
+
     if (this.reportingSystem) {
       this.reportingSystem.stop();
     }
-    
+
     // Close WebSocket connections
     if (this.wsServer) {
       this.wsServer.clients.forEach((client) => {
@@ -778,7 +778,7 @@ export class MonitoringSystem extends EventEmitter {
       });
       this.wsServer.close();
     }
-    
+
     // Close HTTP server
     await new Promise<void>((resolve) => {
       this.httpServer.close(() => {
@@ -786,7 +786,7 @@ export class MonitoringSystem extends EventEmitter {
         resolve();
       });
     });
-    
+
     this.emit('stopped');
   }
 
@@ -808,13 +808,13 @@ export class MonitoringSystem extends EventEmitter {
         };
         const report = this.dashboard.getPerformanceReport(timeRange);
         return JSON.stringify(report, null, 2);
-      
+
       case 'benchmark':
         return this.benchmarkEngine.generateReport(options.suiteId, options.format || 'json');
-      
+
       case 'analytics':
         return this.analyticsEngine.generateReport(options.templateId || 'executive-summary');
-      
+
       default:
         throw new Error(`Unknown report type: ${type}`);
     }
@@ -854,14 +854,14 @@ export class MonitoringSystem extends EventEmitter {
     format?: string;
     recipients?: string[];
   } = {}): Promise<GeneratedReport | null> {
-    return this.reportingSystem ? 
-      await this.reportingSystem.generateReport('executive-dashboard', options) : 
+    return this.reportingSystem ?
+      await this.reportingSystem.generateReport('executive-dashboard', options) :
       null;
   }
 
   async exportReport(reportId: string, format: 'json' | 'html' | 'pdf' | 'csv' | 'xlsx'): Promise<string | Buffer | null> {
-    return this.reportingSystem ? 
-      await this.reportingSystem.exportReport(reportId, format) : 
+    return this.reportingSystem ?
+      await this.reportingSystem.exportReport(reportId, format) :
       null;
   }
 
@@ -894,7 +894,7 @@ export const defaultMonitoringConfig: MonitoringSystemConfig = {
         enabled: false,
         channels: {
           alerts: '#mcp-alerts',
-          reports: '#mcp-reports',  
+          reports: '#mcp-reports',
           maintenance: '#mcp-maintenance'
         }
       },

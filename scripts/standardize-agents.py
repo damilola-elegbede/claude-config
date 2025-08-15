@@ -23,37 +23,37 @@ FINAL_AGENTS = {
     'mobile-engineer': {'color': 'blue', 'category': 'development', 'level': 'senior'},
     'data-engineer': {'color': 'blue', 'category': 'development', 'level': 'senior'},
     'ml-engineer': {'color': 'blue', 'category': 'development', 'level': 'senior'},
-    
+
     # 🟢 Quality & Testing (5 agents)
     'test-engineer': {'color': 'green', 'category': 'quality', 'level': 'senior'},
     'code-reviewer': {'color': 'green', 'category': 'quality', 'level': 'senior'},
     'debugger': {'color': 'green', 'category': 'quality', 'level': 'specialist'},
     'security-auditor': {'color': 'green', 'category': 'quality', 'level': 'specialist'},
     'performance-engineer': {'color': 'green', 'category': 'quality', 'level': 'specialist'},
-    
+
     # 🟣 Architecture (2 agents)
     'principal-architect': {'color': 'purple', 'category': 'architecture', 'level': 'principal'},
     'api-architect': {'color': 'purple', 'category': 'architecture', 'level': 'senior'},
-    
+
     # 🩷 Design (2 agents)
     'ui-designer': {'color': 'pink', 'category': 'design', 'level': 'specialist'},
     'mobile-ui': {'color': 'pink', 'category': 'design', 'level': 'specialist'},
-    
+
     # 🟣 Analysis & Research (3 agents)
     'codebase-analyst': {'color': 'purple', 'category': 'analysis', 'level': 'specialist'},
     'researcher': {'color': 'purple', 'category': 'analysis', 'level': 'specialist'},
     'business-analyst': {'color': 'purple', 'category': 'analysis', 'level': 'specialist'},
-    
+
     # 🟡 Infrastructure & Operations (3 agents)
     'devops': {'color': 'yellow', 'category': 'infrastructure', 'level': 'senior'},
     'platform-engineer': {'color': 'yellow', 'category': 'infrastructure', 'level': 'senior'},
     'cloud-architect': {'color': 'yellow', 'category': 'infrastructure', 'level': 'senior'},
-    
+
     # 🟠 Documentation & Support (3 agents)
     'tech-writer': {'color': 'orange', 'category': 'documentation', 'level': 'specialist'},
     'project-orchestrator': {'color': 'orange', 'category': 'documentation', 'level': 'senior'},
     'product-strategist': {'color': 'orange', 'category': 'documentation', 'level': 'senior'},
-    
+
     # ⚪ Specialized Support (2 agents)
     'accessibility-auditor': {'color': 'white', 'category': 'specialized', 'level': 'specialist'},
     'database-admin': {'color': 'white', 'category': 'specialized', 'level': 'specialist'},
@@ -78,7 +78,7 @@ def extract_content_sections(file_path):
     """Extract YAML and markdown content from file."""
     with open(file_path, 'r') as f:
         content = f.read()
-    
+
     match = re.match(r'^---\n(.*?)\n---\n(.*)', content, re.DOTALL)
     if match:
         return match.group(1), match.group(2)
@@ -86,16 +86,16 @@ def extract_content_sections(file_path):
 
 def create_standardized_yaml(agent_name, agent_info, existing_yaml=''):
     """Create standardized YAML front-matter."""
-    
+
     # Parse some basic info from existing YAML if available
     description = ''
     domain_expertise = []
-    
+
     if existing_yaml:
         desc_match = re.search(r'description:\s*(.+)', existing_yaml)
         if desc_match:
             description = desc_match.group(1).strip()
-    
+
     if not description:
         descriptions = {
             'backend-engineer': 'Expert backend engineer specializing in server-side architecture, APIs, databases, and distributed systems',
@@ -126,7 +126,7 @@ def create_standardized_yaml(agent_name, agent_info, existing_yaml=''):
             'database-admin': 'Database security, optimization, and administration expert'
         }
         description = descriptions.get(agent_name, f'Expert {agent_name} agent')
-    
+
     # Define domain expertise based on agent type
     domain_map = {
         'backend-engineer': ['server_architecture', 'api_development', 'database_design', 'distributed_systems'],
@@ -156,9 +156,9 @@ def create_standardized_yaml(agent_name, agent_info, existing_yaml=''):
         'accessibility-auditor': ['accessibility_testing', 'wcag_compliance', 'inclusive_design'],
         'database-admin': ['database_administration', 'database_security', 'database_optimization']
     }
-    
+
     domain_expertise = domain_map.get(agent_name, ['general_expertise'])
-    
+
     yaml_content = f"""---
 name: {agent_name}
 description: {description}
@@ -166,14 +166,14 @@ color: {agent_info['color']}
 specialization_level: {agent_info['level']}
 
 domain_expertise:"""
-    
+
     for expertise in domain_expertise:
         yaml_content += f"\n  - {expertise}"
-    
+
     # Tools section
     yaml_content += "\n\ntools:"
     yaml_content += "\n  allowed:"
-    
+
     # Define allowed tools based on agent category
     if agent_info['category'] == 'development':
         yaml_content += "\n    read: \"Analyzing existing code and documentation\""
@@ -198,17 +198,17 @@ domain_expertise:"""
         yaml_content += "\n    read: \"Accessing relevant information\""
         yaml_content += "\n    write: \"Creating documentation and reports\""
         yaml_content += "\n    # NO Task tool - Claude handles all orchestration"
-    
+
     yaml_content += "\n  forbidden:"
     if agent_info['category'] != 'infrastructure':
         yaml_content += "\n    deploy: \"Production deployment restricted to infrastructure agents\""
     else:
         yaml_content += "\n    none: \"Infrastructure agents have broad access for operations\""
-    
+
     # Coordination protocols
     yaml_content += "\n\ncoordination_protocols:"
     yaml_content += "\n  handoff_to:"
-    
+
     # Define handoffs based on agent type
     handoff_map = {
         'backend-engineer': {'frontend-engineer': 'API integration specifications', 'test-engineer': 'Test requirements'},
@@ -218,13 +218,13 @@ domain_expertise:"""
         'principal-architect': {'api-architect': 'API design requirements', 'cloud-architect': 'Infrastructure needs'},
         'devops': {'platform-engineer': 'Production monitoring setup', 'security-auditor': 'Security validation'}
     }
-    
+
     handoffs = handoff_map.get(agent_name, {'test-engineer': 'Quality validation'})
     for target, reason in handoffs.items():
         yaml_content += f"\n    {target}: \"{reason}\""
-    
+
     yaml_content += "\n  parallel_compatible:"
-    
+
     # Define parallel compatible agents
     parallel_map = {
         'backend-engineer': ['frontend-engineer', 'test-engineer', 'devops'],
@@ -232,13 +232,13 @@ domain_expertise:"""
         'test-engineer': ['code-reviewer', 'security-auditor', 'performance-engineer'],
         'principal-architect': ['api-architect', 'cloud-architect', 'product-strategist']
     }
-    
+
     parallel_agents = parallel_map.get(agent_name, ['test-engineer', 'code-reviewer'])
     for agent in parallel_agents:
         yaml_content += f"\n    - {agent}"
-    
+
     yaml_content += "\n  escalation_path:"
-    
+
     # Define escalation paths
     escalation_map = {
         'backend-engineer': 'principal-architect',
@@ -248,25 +248,25 @@ domain_expertise:"""
         'code-reviewer': 'tech-lead',
         'api-architect': 'principal-architect'
     }
-    
+
     escalation = escalation_map.get(agent_name, 'principal-architect')
     yaml_content += f"\n    {escalation}: \"Complex decisions beyond current scope\""
-    
+
     # Knowledge base and examples
     yaml_content += "\n\nknowledge_base:"
     yaml_content += f"\n  - {agent_info['category'].title()} best practices and patterns"
     yaml_content += "\n\nexamples:"
     yaml_content += f"\n  - scenario: \"Typical {agent_name.replace('-', ' ')} task\""
     yaml_content += f"\n    approach: \"Systematic approach using {agent_info['category']} expertise\""
-    
+
     yaml_content += "\n---"
-    
+
     return yaml_content
 
 def process_agent(agent_name, agents_dir, deprecated_dir):
     """Process a single agent file."""
     file_path = agents_dir / f"{agent_name}.md"
-    
+
     # Check if this is a deprecated agent
     if agent_name in DEPRECATED_AGENTS:
         target = DEPRECATED_AGENTS[agent_name]
@@ -283,33 +283,33 @@ def process_agent(agent_name, agents_dir, deprecated_dir):
                 shutil.copy(str(file_path), str(deprecated_dir / f"{agent_name}.md"))
                 os.remove(file_path)
         return
-    
+
     # Check if this is a final agent
     if agent_name not in FINAL_AGENTS:
         print(f"Unknown agent: {agent_name} (moving to deprecated)")
         if file_path.exists():
             shutil.move(str(file_path), str(deprecated_dir / f"{agent_name}.md"))
         return
-    
+
     # Process final agent
     agent_info = FINAL_AGENTS[agent_name]
-    
+
     if file_path.exists():
         # Update existing file
         yaml_section, markdown_content = extract_content_sections(file_path)
         new_yaml = create_standardized_yaml(agent_name, agent_info, yaml_section)
-        
+
         with open(file_path, 'w') as f:
             f.write(new_yaml)
             f.write('\n')
             f.write(markdown_content)
-        
+
         print(f"Updated: {agent_name}")
     else:
         # Create new file for agents that don't exist yet
         print(f"Creating: {agent_name}")
         new_yaml = create_standardized_yaml(agent_name, agent_info)
-        
+
         # Basic template content
         markdown_content = f"""
 # {agent_name.replace('-', ' ').title()}
@@ -331,7 +331,7 @@ You are an expert {agent_name.replace('-', ' ')} specializing in {agent_info['ca
 - Clear handoff protocols with downstream agents
 - Escalates complex decisions appropriately
 """
-        
+
         with open(file_path, 'w') as f:
             f.write(new_yaml)
             f.write('\n')
@@ -341,37 +341,37 @@ def main():
     """Main execution function."""
     agents_dir = Path('/Users/damilola/Documents/Projects/claude-config/.claude/agents')
     deprecated_dir = Path('/Users/damilola/Documents/Projects/claude-config/.claude/deprecated/agents')
-    
+
     # Create deprecated directory
     deprecated_dir.mkdir(parents=True, exist_ok=True)
-    
+
     print("=== Agent Standardization Process ===\n")
-    
+
     # Get all existing agent files
     existing_agents = [f.stem for f in agents_dir.glob('*.md') if f.name != 'README.md']
-    
+
     print(f"Found {len(existing_agents)} existing agent files")
     print(f"Target: {len(FINAL_AGENTS)} final agents\n")
-    
+
     # Process existing agents
     for agent_name in sorted(existing_agents):
         process_agent(agent_name, agents_dir, deprecated_dir)
-    
+
     # Create any missing final agents
     print("\n=== Creating Missing Agents ===\n")
     for agent_name in sorted(FINAL_AGENTS.keys()):
         if agent_name not in existing_agents:
             process_agent(agent_name, agents_dir, deprecated_dir)
-    
+
     # Generate summary report
     print("\n=== Summary Report ===\n")
-    
+
     final_agents = list(agents_dir.glob('*.md'))
     final_agents = [f for f in final_agents if f.name != 'README.md']
-    
+
     print(f"Final agent count: {len(final_agents)}")
     print(f"Deprecated agents: {len(list(deprecated_dir.glob('*.md')))}")
-    
+
     # Create detailed report
     report_path = Path('/Users/damilola/Documents/Projects/claude-config/docs/agent-standardization-report.md')
     with open(report_path, 'w') as f:
@@ -381,7 +381,7 @@ def main():
         f.write(f"- Final agents: {len(final_agents)}\n")
         f.write(f"- Deprecated: {len(list(deprecated_dir.glob('*.md')))}\n")
         f.write(f"- Target: {len(FINAL_AGENTS)}\n\n")
-        
+
         f.write("## Final Agent List\n\n")
         for category in ['development', 'quality', 'architecture', 'analysis', 'infrastructure', 'documentation', 'specialized']:
             agents_in_cat = [name for name, info in FINAL_AGENTS.items() if info['category'] == category]
@@ -391,7 +391,7 @@ def main():
                     info = FINAL_AGENTS[agent]
                     f.write(f"- **{agent}** ({info['color']}, {info['level']})\n")
                 f.write("\n")
-    
+
     print(f"\nReport saved to: {report_path}")
 
 if __name__ == '__main__':

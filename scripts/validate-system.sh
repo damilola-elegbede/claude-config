@@ -30,13 +30,13 @@ for agent_file in "$AGENTS_DIR"/*.md; do
     # Skip non-agent files
     if [[ -f "$agent_file" ]] && [[ "$basename_file" != "README.md" ]] && [[ "$basename_file" != "AGENT_TEMPLATE.md" ]] && [[ "$basename_file" != "AGENT_CATEGORIES.md" ]] && [[ "$basename_file" != "AUDIT_VERIFICATION_PROTOCOL.md" ]]; then
         agent_name=$(basename "$agent_file" .md)
-        
+
         # Check required fields
         if ! grep -q "^name: $agent_name$" "$agent_file"; then
             echo -e "${RED}❌ $agent_name: name field mismatch${NC}"
             ((agent_yaml_issues++))
         fi
-        
+
         # Check all required fields exist
         for field in "description" "tools" "model" "color" "category"; do
             if ! grep -q "^$field:" "$agent_file"; then
@@ -44,13 +44,13 @@ for agent_file in "$AGENTS_DIR"/*.md; do
                 ((agent_yaml_issues++))
             fi
         done
-        
+
         # Check SYSTEM BOUNDARY warning
         if ! grep -q "SYSTEM BOUNDARY:" "$agent_file"; then
             echo -e "${RED}❌ $agent_name: missing SYSTEM BOUNDARY warning${NC}"
             ((agent_yaml_issues++))
         fi
-        
+
         # Check for Task tool usage
         if grep -q "tools:.*Task" "$agent_file"; then
             echo -e "${RED}❌ $agent_name: illegally references Task tool${NC}"
@@ -81,7 +81,7 @@ get_expected_color() {
         "analysis") echo "yellow" ;;
         "architecture") echo "purple" ;;
         "design") echo "pink" ;;
-        "operations") echo "red" ;;  # Same as security
+        "operations") echo "cyan" ;;  # Operations and coordination
         *) echo "unknown" ;;
     esac
 }
@@ -91,11 +91,11 @@ for agent_file in "$AGENTS_DIR"/*.md; do
     # Skip non-agent files
     if [[ -f "$agent_file" ]] && [[ "$basename_file" != "README.md" ]] && [[ "$basename_file" != "AGENT_TEMPLATE.md" ]] && [[ "$basename_file" != "AGENT_CATEGORIES.md" ]] && [[ "$basename_file" != "AUDIT_VERIFICATION_PROTOCOL.md" ]]; then
         agent_name=$(basename "$agent_file" .md)
-        
+
         # Extract category and color (handles variable spacing)
         category=$(grep "^category:" "$agent_file" | awk -F: '{gsub(/^[ \t]+|[ \t]+$/, "", $2); print $2}')
         color=$(grep "^color:" "$agent_file" | awk -F: '{gsub(/^[ \t]+|[ \t]+$/, "", $2); print $2}')
-        
+
         # Check mapping
         expected_color=$(get_expected_color "$category")
         if [[ "$color" != "$expected_color" ]]; then
@@ -142,10 +142,15 @@ for agent_file in "$AGENTS_DIR"/*.md; do
 done
 
 # Check for duplicates
-printf '%s\n' "${agent_names[@]}" | sort | uniq -d | while read -r dup; do
-    echo -e "${RED}❌ Duplicate agent name: $dup${NC}"
-    ((duplicate_issues++))
-done
+if [[ ${#agent_names[@]} -gt 0 ]]; then
+    duplicates=$(printf '%s\n' "${agent_names[@]}" | sort | uniq -d)
+    if [[ -n "$duplicates" ]]; then
+        while read -r dup; do
+            echo -e "${RED}❌ Duplicate agent name: $dup${NC}"
+            ((duplicate_issues++))
+        done <<< "$duplicates"
+    fi
+fi
 
 if [[ $duplicate_issues -eq 0 ]]; then
     echo -e "${GREEN}✅ No duplicate agent names found${NC}"
@@ -161,18 +166,18 @@ command_issues=0
 for cmd_file in "$COMMANDS_DIR"/*.md; do
     if [[ -f "$cmd_file" ]]; then
         cmd_name=$(basename "$cmd_file" .md)
-        
+
         # Check for basic structure
         if ! grep -q "^# /$cmd_name" "$cmd_file"; then
             echo -e "${RED}❌ $cmd_name: missing or incorrect command header${NC}"
             ((command_issues++))
         fi
-        
+
         if ! grep -q "## Description" "$cmd_file"; then
             echo -e "${RED}❌ $cmd_name: missing Description section${NC}"
             ((command_issues++))
         fi
-        
+
         if ! grep -q "## Usage" "$cmd_file"; then
             echo -e "${RED}❌ $cmd_name: missing Usage section${NC}"
             ((command_issues++))
@@ -198,14 +203,14 @@ for agent_file in "$AGENTS_DIR"/*.md; do
     # Skip non-agent files
     if [[ -f "$agent_file" ]] && [[ "$basename_file" != "README.md" ]] && [[ "$basename_file" != "AGENT_TEMPLATE.md" ]] && [[ "$basename_file" != "AGENT_CATEGORIES.md" ]] && [[ "$basename_file" != "AUDIT_VERIFICATION_PROTOCOL.md" ]]; then
         agent_name=$(basename "$agent_file" .md)
-        
+
         # Extract YAML section
         yaml_section=$(sed -n '/^---$/,/^---$/p' "$agent_file" | sed '1d;$d')
-        
+
         # Check order
         expected_order="name description tools model color category"
         actual_order=$(echo "$yaml_section" | grep -E "^(name|description|tools|model|color|category):" | cut -d':' -f1 | tr '\n' ' ' | sed 's/ $//')
-        
+
         if [[ "$actual_order" != "$expected_order" ]]; then
             echo -e "${YELLOW}⚠️  $agent_name: field order is '$actual_order' (expected: '$expected_order')${NC}"
             ((order_issues++))

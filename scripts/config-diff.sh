@@ -39,7 +39,7 @@ main() {
     echo "Repository: $REPO_ROOT"
     echo "User config: $USER_HOME"
     echo
-    
+
     # Compare CLAUDE.md
     echo -e "${CYAN}CLAUDE.md:${NC}"
     if [[ -f "$REPO_CLAUDE_MD" ]] && [[ -f "$USER_CLAUDE_MD" ]]; then
@@ -60,16 +60,16 @@ main() {
     else
         echo "  ❌ Missing in repository"
     fi
-    
+
     echo
-    
+
     # Compare Commands
     echo -e "${CYAN}Commands:${NC}"
-    
+
     # Count command files (excluding sync.md and config-diff.md which are repo-only)
     repo_cmd_count=0
     user_cmd_count=0
-    
+
     if [[ -d "$REPO_COMMANDS_DIR" ]]; then
         # Count all except sync.md and config-diff.md for comparison
         shopt -s nullglob
@@ -82,17 +82,17 @@ main() {
         done
         shopt -u nullglob
     fi
-    
+
     if [[ -d "$USER_COMMANDS_DIR" ]]; then
         shopt -s nullglob
         user_commands=("$USER_COMMANDS_DIR"/*.md)
         user_cmd_count=${#user_commands[@]}
         shopt -u nullglob
     fi
-    
+
     echo "  Repository: $repo_cmd_count files (excluding sync.md and config-diff.md)"
     echo "  User: $user_cmd_count files"
-    
+
     if [[ $repo_cmd_count -eq $user_cmd_count ]]; then
         echo "  ✅ Count matches"
         ((IDENTICAL_FILES++))
@@ -100,7 +100,7 @@ main() {
         echo "  ⚠️  Count mismatch"
         ((DIFFERENT_FILES++))
     fi
-    
+
     # List any missing commands
     if [[ -d "$REPO_COMMANDS_DIR" ]] && [[ -d "$USER_COMMANDS_DIR" ]]; then
         missing_cmds=""
@@ -121,16 +121,16 @@ main() {
             echo -e "$missing_cmds"
         fi
     fi
-    
+
     echo
-    
+
     # Compare Agents
     echo -e "${CYAN}Agents:${NC}"
-    
+
     # Count agent files (excluding documentation files)
     repo_agent_count=0
     user_agent_count=0
-    
+
     if [[ -d "$REPO_AGENTS_DIR" ]]; then
         # Exclude documentation files
         shopt -s nullglob
@@ -143,17 +143,17 @@ main() {
         done
         shopt -u nullglob
     fi
-    
+
     if [[ -d "$USER_AGENTS_DIR" ]]; then
         shopt -s nullglob
         user_agents=("$USER_AGENTS_DIR"/*.md)
         user_agent_count=${#user_agents[@]}
         shopt -u nullglob
     fi
-    
+
     echo "  Repository: $repo_agent_count files (excluding docs)"
     echo "  User: $user_agent_count files"
-    
+
     if [[ $repo_agent_count -eq $user_agent_count ]]; then
         echo "  ✅ Count matches"
         ((IDENTICAL_FILES++))
@@ -161,9 +161,9 @@ main() {
         echo "  ⚠️  Count mismatch"
         ((DIFFERENT_FILES++))
     fi
-    
+
     echo
-    
+
     # Compare settings.json
     echo -e "${CYAN}Settings.json:${NC}"
     if [[ -f "$REPO_SETTINGS" ]] && [[ -f "$USER_SETTINGS" ]]; then
@@ -183,10 +183,10 @@ main() {
     else
         echo "  ℹ️  No settings.json in either location"
     fi
-    
+
     echo
     echo -e "${BLUE}=== Summary ===${NC}"
-    
+
     # Calculate sync status
     if [[ $DIFFERENT_FILES -eq 0 ]] && [[ $MISSING_FILES -eq 0 ]] && [[ $EXTRA_FILES -eq 0 ]]; then
         echo -e "${GREEN}✅ Your configuration is fully synchronized!${NC}"

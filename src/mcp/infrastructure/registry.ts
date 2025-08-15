@@ -1,6 +1,6 @@
 /**
  * MCP Server Registry Implementation
- * 
+ *
  * Production-grade registry service for MCP server management implementing SPEC_01.
  * Features:
  * - Thread-safe operations with concurrent access handling
@@ -89,7 +89,7 @@ interface ScoringWeights {
 
 /**
  * MCP Server Registry
- * 
+ *
  * Comprehensive registry service providing:
  * - Thread-safe server management with concurrent access control
  * - High-performance query interface with sub-100ms response times
@@ -111,12 +111,12 @@ export class MCPServerRegistry extends EventEmitter {
     availability: 0.25,
     load: 0.2
   };
-  
+
   // Thread safety and concurrency control
   private readonly globalLock = Promise.resolve();
   private readonly operationQueue: Array<() => Promise<void>> = [];
   private isProcessingQueue = false;
-  
+
   // Performance tracking
   private readonly performanceMetrics = {
     totalQueries: 0,
@@ -127,23 +127,23 @@ export class MCPServerRegistry extends EventEmitter {
     totalRegistrations: 0,
     totalUnregistrations: 0
   };
-  
+
   // Service state
   private isRunning = false;
   private cleanupTimer?: NodeJS.Timeout;
   private metricsAggregationTimer?: NodeJS.Timeout;
   private redisClient?: RedisClient;
-  
+
   constructor(
     options: ServerRegistryOptions = {},
     private readonly discoveryService?: MCPDiscoveryService,
     redisClient?: RedisClient
   ) {
     super();
-    
+
     // Set maximum listeners for high-concurrency scenarios
     this.setMaxListeners(100);
-    
+
     // Configure options with production defaults
     this.options = {
       maxMetricsHistory: options.maxMetricsHistory || 1000,
@@ -152,9 +152,9 @@ export class MCPServerRegistry extends EventEmitter {
       persistenceInterval: options.persistenceInterval || 30000, // 30 seconds
       redisOptions: options.redisOptions
     };
-    
+
     this.redisClient = redisClient;
-    
+
     // Setup error handling and monitoring
     this.setupErrorHandling();
     this.setupDiscoveryIntegration();
@@ -449,7 +449,7 @@ export class MCPServerRegistry extends EventEmitter {
 
       // Apply filters
       if (query.toolName) {
-        results = results.filter(entry => 
+        results = results.filter(entry =>
           entry.server.capabilities.some(cap => cap.name === query.toolName)
         );
       }
@@ -459,8 +459,8 @@ export class MCPServerRegistry extends EventEmitter {
       }
 
       if (query.capabilities && query.capabilities.length > 0) {
-        results = results.filter(entry => 
-          query.capabilities!.every(reqCap => 
+        results = results.filter(entry =>
+          query.capabilities!.every(reqCap =>
             entry.server.capabilities.some(serverCap => serverCap.name === reqCap)
           )
         );
@@ -475,13 +475,13 @@ export class MCPServerRegistry extends EventEmitter {
       }
 
       if (query.tags && query.tags.length > 0) {
-        results = results.filter(entry => 
+        results = results.filter(entry =>
           query.tags!.some(tag => entry.server.metadata?.tags?.includes(tag))
         );
       }
 
       if (query.minThroughput !== undefined) {
-        results = results.filter(entry => 
+        results = results.filter(entry =>
           (entry.metrics.throughput || 0) >= query.minThroughput!
         );
       }
@@ -566,7 +566,7 @@ export class MCPServerRegistry extends EventEmitter {
 
     const preferredServerId = mapping.preferredServerId || mapping.serverIds[0];
     const entry = this.servers.get(preferredServerId);
-    
+
     return entry ? { ...entry.server } : null;
   }
 
@@ -623,8 +623,8 @@ export class MCPServerRegistry extends EventEmitter {
 
     // Calculate cache hit rate
     const totalCacheOperations = this.performanceMetrics.totalCacheHits + this.performanceMetrics.totalCacheMisses;
-    this.performanceMetrics.cacheHitRate = totalCacheOperations > 0 
-      ? this.performanceMetrics.totalCacheHits / totalCacheOperations 
+    this.performanceMetrics.cacheHitRate = totalCacheOperations > 0
+      ? this.performanceMetrics.totalCacheHits / totalCacheOperations
       : 0;
 
     return {
@@ -692,7 +692,7 @@ export class MCPServerRegistry extends EventEmitter {
           reject(error);
         }
       });
-      
+
       this.processQueue();
     });
   }
@@ -756,8 +756,8 @@ export class MCPServerRegistry extends EventEmitter {
     const server = entry.server;
 
     // Performance score (0-1)
-    const performanceScore = Math.max(0, Math.min(1, 
-      (1000 - server.responseTime) / 1000 * 0.5 + 
+    const performanceScore = Math.max(0, Math.min(1,
+      (1000 - server.responseTime) / 1000 * 0.5 +
       (metrics.throughput || 0) / 1000 * 0.3 +
       (1 - metrics.errorRate) * 0.2
     ));
@@ -769,14 +769,14 @@ export class MCPServerRegistry extends EventEmitter {
     ));
 
     // Availability score (0-1)
-    const availabilityScore = server.status === 'healthy' ? 1 : 
+    const availabilityScore = server.status === 'healthy' ? 1 :
                              server.status === 'degraded' ? 0.5 : 0;
 
     // Load score (0-1, lower load is better)
     const loadScore = Math.max(0, 1 - metrics.load);
 
     // Calculate weighted score
-    const score = 
+    const score =
       performanceScore * this.scoringWeights.performance +
       reliabilityScore * this.scoringWeights.reliability +
       availabilityScore * this.scoringWeights.availability +
@@ -871,8 +871,8 @@ export class MCPServerRegistry extends EventEmitter {
   }
 
   private updateAverageQueryTime(queryTime: number): void {
-    this.performanceMetrics.averageQueryTime = 
-      (this.performanceMetrics.averageQueryTime * (this.performanceMetrics.totalQueries - 1) + queryTime) / 
+    this.performanceMetrics.averageQueryTime =
+      (this.performanceMetrics.averageQueryTime * (this.performanceMetrics.totalQueries - 1) + queryTime) /
       this.performanceMetrics.totalQueries;
   }
 
@@ -909,7 +909,7 @@ export class MCPServerRegistry extends EventEmitter {
   private aggregateMetrics(): void {
     // Aggregate system-wide metrics
     const stats = this.getRegistryStats();
-    
+
     // Emit system metrics event
     this.emit('systemMetrics', {
       timestamp: new Date(),
@@ -940,7 +940,7 @@ export class MCPServerRegistry extends EventEmitter {
 
     try {
       const serverKeys = await this.redisClient.keys('mcp:server:*');
-      
+
       for (const key of serverKeys) {
         const data = await this.redisClient.get(key);
         if (data) {
@@ -952,7 +952,7 @@ export class MCPServerRegistry extends EventEmitter {
       }
 
       const toolMappingKeys = await this.redisClient.keys('mcp:tool:*');
-      
+
       for (const key of toolMappingKeys) {
         const data = await this.redisClient.get(key);
         if (data) {
@@ -1050,9 +1050,9 @@ export class MCPServerRegistry extends EventEmitter {
         const entry = this.servers.get(event.server.id);
         if (entry) {
           entry.server.status = 'failed';
-          await this.updateServerMetrics(event.server.id, { 
+          await this.updateServerMetrics(event.server.id, {
             errorRate: 1.0,
-            uptimePercentage: 0 
+            uptimePercentage: 0
           });
         }
       } catch (error) {
@@ -1065,9 +1065,9 @@ export class MCPServerRegistry extends EventEmitter {
         const entry = this.servers.get(event.server.id);
         if (entry) {
           entry.server.status = 'healthy';
-          await this.updateServerMetrics(event.server.id, { 
+          await this.updateServerMetrics(event.server.id, {
             errorRate: 0,
-            uptimePercentage: 100 
+            uptimePercentage: 100
           });
         }
       } catch (error) {

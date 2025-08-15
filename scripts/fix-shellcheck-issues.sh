@@ -25,15 +25,15 @@ fi
 fix_script() {
     local script="$1"
     local backup="${script}.backup"
-    
+
     echo -e "${YELLOW}Processing: $script${NC}"
-    
+
     # Create backup
     cp "$script" "$backup"
-    
+
     # Track if we made changes
     local changes_made=false
-    
+
     # Fix 1: Add shellcheck directive at the top if not present
     if ! grep -q "# shellcheck" "$script"; then
         # Add common shellcheck disable comments for acceptable patterns
@@ -41,7 +41,7 @@ fix_script() {
         changes_made=true
         echo "  ✓ Added shellcheck directives"
     fi
-    
+
     # Fix 2: Quote variables in common patterns (be careful not to break intentional word splitting)
     # This is a basic fix - manual review may be needed
     if sed -i.tmp 's/\$\([A-Za-z_][A-Za-z0-9_]*\)/"$\1"/g' "$script" && ! cmp -s "$script" "$script.tmp"; then
@@ -51,38 +51,38 @@ fix_script() {
     else
         rm -f "$script.tmp"
     fi
-    
+
     # Fix 3: Add 'set -euo pipefail' if not present (for bash scripts)
     if grep -q "#!/bin/bash" "$script" && ! grep -q "set -" "$script"; then
         sed -i '2i\\nset -euo pipefail' "$script"
         changes_made=true
         echo "  ✓ Added 'set -euo pipefail'"
     fi
-    
+
     # Fix 4: Replace 'which' with 'command -v'
     if sed -i 's/which \([a-zA-Z0-9_-]*\)/command -v \1/g' "$script" && ! cmp -s "$script" "$backup"; then
         changes_made=true
         echo "  ✓ Replaced 'which' with 'command -v'"
     fi
-    
+
     # Fix 5: Add quotes around command substitutions in echo statements
     if sed -i 's/echo \$(/echo "$(/g' "$script" && ! cmp -s "$script" "$backup"; then
         changes_made=true
         echo "  ✓ Added quotes around command substitutions in echo"
     fi
-    
+
     # Check if the script still has issues
     local issues_before
     local issues_after
-    
+
     issues_before=$(shellcheck "$backup" 2>&1 | wc -l || true)
     issues_after=$(shellcheck "$script" 2>&1 | wc -l || true)
-    
+
     if [ "$changes_made" = true ]; then
         echo -e "  ${GREEN}✓ Made automatic fixes${NC}"
         echo "    Issues before: $issues_before"
         echo "    Issues after: $issues_after"
-        
+
         if [ "$issues_after" -lt "$issues_before" ]; then
             echo -e "    ${GREEN}Improvement detected!${NC}"
         fi
@@ -90,7 +90,7 @@ fix_script() {
         echo "  • No automatic fixes applied"
         rm "$backup"  # Remove backup if no changes made
     fi
-    
+
     # Show remaining issues
     echo "  Remaining ShellCheck output:"
     if shellcheck "$script" 2>&1 | head -10; then
@@ -98,16 +98,16 @@ fix_script() {
     else
         echo -e "  ${YELLOW}⚠️ Manual review needed for remaining issues${NC}"
     fi
-    
+
     echo ""
 }
 
 # Function to process all scripts
 process_scripts() {
     local script_pattern="$1"
-    
+
     echo -e "${BLUE}Finding scripts matching: $script_pattern${NC}"
-    
+
     # Find scripts
     local scripts
     scripts=$(find . -name "$script_pattern" \
@@ -115,16 +115,16 @@ process_scripts() {
         -not -path "./.git/*" \
         -not -path "./temp-scripts/*" \
         -type f)
-    
+
     if [ -z "$scripts" ]; then
         echo -e "${YELLOW}No scripts found matching pattern: $script_pattern${NC}"
         return 0
     fi
-    
+
     echo "Found scripts:"
     echo "$scripts"
     echo ""
-    
+
     # Process each script
     for script in $scripts; do
         if [ -f "$script" ] && [ -r "$script" ]; then
@@ -165,7 +165,7 @@ main() {
     echo "This script will attempt to fix common ShellCheck issues automatically."
     echo "Backups will be created for all modified files."
     echo ""
-    
+
     # Ask for confirmation
     read -p "Continue? (y/N): " -n 1 -r
     echo
@@ -173,15 +173,15 @@ main() {
         echo "Aborted."
         exit 0
     fi
-    
+
     echo ""
-    
+
     # Process .sh files
     process_scripts "*.sh"
-    
+
     # Also check for shell scripts without .sh extension
     echo -e "${BLUE}Checking for shell scripts without .sh extension...${NC}"
-    
+
     local shell_scripts
     shell_scripts=$(find . -type f \
         -not -path "./node_modules/*" \
@@ -196,12 +196,12 @@ main() {
         -not -name "*.ts" \
         -not -name "*.py" \
         -exec grep -l '^#!.*\(bash\|sh\)' {} \; 2>/dev/null || true)
-    
+
     if [ -n "$shell_scripts" ]; then
         echo "Found shell scripts without .sh extension:"
         echo "$shell_scripts"
         echo ""
-        
+
         for script in $shell_scripts; do
             fix_script "$script"
         done
@@ -209,7 +209,7 @@ main() {
         echo "No shell scripts without .sh extension found."
         echo ""
     fi
-    
+
     # Show summary
     echo -e "${GREEN}========================================${NC}"
     echo -e "${GREEN}Auto-fix process completed!${NC}"
@@ -226,10 +226,10 @@ main() {
     echo "3. Run './scripts/setup-shellcheck.sh' to validate all scripts"
     echo "4. Remove .backup files when satisfied with changes"
     echo ""
-    
+
     # Show manual fix suggestions
     show_manual_fixes
-    
+
     echo ""
     echo "To validate all fixes:"
     echo "  ./scripts/setup-shellcheck.sh"

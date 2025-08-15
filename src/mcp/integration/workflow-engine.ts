@@ -1,6 +1,6 @@
 /**
  * SPEC_03: Advanced Workflow Engine for Integration Specialist
- * 
+ *
  * Custom MCP workflow patterns with optimization strategies, performance analytics,
  * and integration with the optimization engine. Designed to handle complex multi-step
  * workflows with parallel and sequential execution patterns.
@@ -169,13 +169,13 @@ export interface WorkflowExecution {
   context: WorkflowExecutionContext;
 }
 
-export type WorkflowExecutionStatus = 
-  | 'pending' 
-  | 'running' 
-  | 'paused' 
-  | 'completed' 
-  | 'failed' 
-  | 'cancelled' 
+export type WorkflowExecutionStatus =
+  | 'pending'
+  | 'running'
+  | 'paused'
+  | 'completed'
+  | 'failed'
+  | 'cancelled'
   | 'timeout';
 
 export interface WorkflowExecutionContext {
@@ -214,13 +214,13 @@ export interface StepExecution {
   logs: string[];
 }
 
-export type StepExecutionStatus = 
-  | 'pending' 
-  | 'running' 
-  | 'completed' 
-  | 'failed' 
-  | 'retrying' 
-  | 'skipped' 
+export type StepExecutionStatus =
+  | 'pending'
+  | 'running'
+  | 'completed'
+  | 'failed'
+  | 'retrying'
+  | 'skipped'
   | 'cancelled';
 
 // =============================================================================
@@ -395,7 +395,7 @@ export class WorkflowDesigner {
    * Create a new workflow definition
    */
   createWorkflow(
-    name: string, 
+    name: string,
     description?: string
   ): WorkflowDefinitionBuilder {
     return new WorkflowDefinitionBuilder(name, description);
@@ -405,7 +405,7 @@ export class WorkflowDesigner {
    * Create workflow from template
    */
   createFromTemplate(
-    templateId: string, 
+    templateId: string,
     parameters: Record<string, any>
   ): WorkflowDefinition {
     const template = this.templates.get(templateId);
@@ -621,11 +621,11 @@ export class WorkflowDesigner {
   }
 
   private instantiateTemplate(
-    template: WorkflowTemplate, 
+    template: WorkflowTemplate,
     parameters: Record<string, any>
   ): WorkflowDefinition {
     const workflowId = `${template.id}-${Date.now()}`;
-    
+
     // Replace template parameters in steps
     const instantiatedSteps: WorkflowStep[] = template.steps.map(step => ({
       ...step,
@@ -703,7 +703,7 @@ export class WorkflowDesigner {
     };
 
     const stepMap = new Map(steps.map(s => [s.id, s]));
-    
+
     for (const step of steps) {
       if (hasCycle(step.id, stepMap)) {
         return true;
@@ -780,7 +780,7 @@ export class WorkflowDefinitionBuilder {
       dependencies: [],
       canRunInParallel: false
     };
-    
+
     this.steps.push(workflowStep);
     return this;
   }
@@ -860,7 +860,7 @@ export class WorkflowExecutionEngine extends EventEmitter {
     context: Partial<WorkflowExecutionContext> = {}
   ): Promise<WorkflowExecution> {
     const executionId = `exec-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const execution: WorkflowExecution = {
       executionId,
       workflowId: workflow.id,
@@ -883,18 +883,18 @@ export class WorkflowExecutionEngine extends EventEmitter {
     try {
       execution.status = 'running';
       await this.executeWorkflowSteps(workflow, execution);
-      
+
       execution.status = 'completed';
       execution.endTime = new Date();
       execution.duration = execution.endTime.getTime() - execution.startTime.getTime();
-      
+
       this.emit('workflowCompleted', { execution });
     } catch (error) {
       execution.status = 'failed';
       execution.error = error instanceof Error ? error : new Error(String(error));
       execution.endTime = new Date();
       execution.duration = execution.endTime.getTime() - execution.startTime.getTime();
-      
+
       this.emit('workflowFailed', { execution, error });
     } finally {
       this.activeExecutions.delete(executionId);
@@ -941,11 +941,11 @@ export class WorkflowExecutionEngine extends EventEmitter {
     const stepMap = new Map(workflow.steps.map(s => [s.id, s]));
     const completedSteps = new Set<string>();
     const runningSteps = new Set<string>();
-    
+
     // Continue until all steps are completed or execution fails
     while (completedSteps.size < workflow.steps.length && execution.status === 'running') {
       const readySteps = this.getReadySteps(workflow.steps, completedSteps, runningSteps);
-      
+
       if (readySteps.length === 0) {
         // No ready steps, check if we're waiting on running steps
         if (runningSteps.size === 0) {
@@ -970,7 +970,7 @@ export class WorkflowExecutionEngine extends EventEmitter {
       if (parallelSteps.length > 0) {
         const concurrency = Math.min(parallelSteps.length, workflow.config.maxConcurrency);
         const chunks = this.chunkArray(parallelSteps, concurrency);
-        
+
         for (const chunk of chunks) {
           const promises = chunk.map(step => {
             runningSteps.add(step.id);
@@ -1021,7 +1021,7 @@ export class WorkflowExecutionEngine extends EventEmitter {
 
     try {
       stepExecution.status = 'running';
-      
+
       // Check conditional execution
       if (step.condition && !this.evaluateCondition(step.condition, execution)) {
         stepExecution.status = 'skipped';
@@ -1037,7 +1037,7 @@ export class WorkflowExecutionEngine extends EventEmitter {
 
       for (let attempt = 1; attempt <= maxAttempts; attempt++) {
         stepExecution.attempts = attempt;
-        
+
         try {
           if (attempt > 1) {
             stepExecution.status = 'retrying';
@@ -1085,7 +1085,7 @@ export class WorkflowExecutionEngine extends EventEmitter {
         } catch (error) {
           lastError = error instanceof Error ? error : new Error(String(error));
           stepExecution.logs.push(`Step failed on attempt ${attempt}: ${lastError.message}`);
-          
+
           // Check if we should retry
           if (attempt === maxAttempts || !this.shouldRetry(lastError, step.retryConfig)) {
             throw lastError;
@@ -1101,7 +1101,7 @@ export class WorkflowExecutionEngine extends EventEmitter {
     } finally {
       stepExecution.endTime = new Date();
       stepExecution.duration = stepExecution.endTime.getTime() - stepExecution.startTime.getTime();
-      
+
       if (stepExecution.status === 'completed') {
         this.emit('stepCompleted', { execution, step, stepExecution });
       }
@@ -1161,13 +1161,13 @@ export class WorkflowExecutionEngine extends EventEmitter {
   ): Record<string, any> {
     // Deep clone parameters
     const resolved = JSON.parse(JSON.stringify(parameters));
-    
+
     // Resolve parameter references (simplified implementation)
     this.resolveParameterReferences(resolved, {
       input: execution.input,
       results: execution.results || {}
     });
-    
+
     return resolved;
   }
 
@@ -1198,8 +1198,8 @@ export class WorkflowExecutionEngine extends EventEmitter {
     if (!retryConfig || !retryConfig.retryOnErrors) {
       return true;
     }
-    
-    return retryConfig.retryOnErrors.some(errorType => 
+
+    return retryConfig.retryOnErrors.some(errorType =>
       error.name.includes(errorType) || error.message.includes(errorType)
     );
   }
@@ -1245,7 +1245,7 @@ export class WorkflowOptimizer extends EventEmitter {
     performanceData?: WorkflowPerformanceStats
   ): Promise<WorkflowDefinition> {
     const optimizedWorkflow = { ...workflow };
-    
+
     // Update performance history
     if (performanceData) {
       this.performanceHistory.set(workflow.id, performanceData);
@@ -1253,7 +1253,7 @@ export class WorkflowOptimizer extends EventEmitter {
 
     // Apply optimization strategies
     const optimizations = await this.analyzeOptimizationOpportunities(workflow, performanceData);
-    
+
     for (const optimization of optimizations) {
       switch (optimization.type) {
         case 'parallelization':
@@ -1279,10 +1279,10 @@ export class WorkflowOptimizer extends EventEmitter {
     optimizedWorkflow.version = `${major}.${minor}.${patch + 1}`;
     optimizedWorkflow.updatedAt = new Date();
 
-    this.emit('workflowOptimized', { 
-      originalWorkflow: workflow, 
-      optimizedWorkflow, 
-      optimizations 
+    this.emit('workflowOptimized', {
+      originalWorkflow: workflow,
+      optimizedWorkflow,
+      optimizations
     });
 
     return optimizedWorkflow;
@@ -1315,23 +1315,23 @@ export class WorkflowOptimizer extends EventEmitter {
     executions: WorkflowExecution[]
   ): Promise<OptimizationRecommendation[]> {
     const recommendations: OptimizationRecommendation[] = [];
-    
+
     // Analyze execution patterns
     const performance = this.calculatePerformanceMetrics(executions);
     const stepPerformance = this.analyzeStepPerformance(workflow, executions);
-    
+
     // Parallelization recommendations
     const parallelizationRec = this.analyzeParallelizationOpportunities(workflow, stepPerformance);
     if (parallelizationRec) recommendations.push(parallelizationRec);
-    
+
     // Caching recommendations
     const cachingRec = this.analyzeCachingOpportunities(workflow, executions);
     if (cachingRec) recommendations.push(cachingRec);
-    
+
     // Resource optimization recommendations
     const resourceRec = this.analyzeResourceOptimizationOpportunities(workflow, executions);
     if (resourceRec) recommendations.push(resourceRec);
-    
+
     return recommendations.sort((a, b) => {
       const priorityOrder = { 'critical': 4, 'high': 3, 'medium': 2, 'low': 1 };
       return priorityOrder[b.priority] - priorityOrder[a.priority];
@@ -1362,7 +1362,7 @@ export class WorkflowOptimizer extends EventEmitter {
     }
 
     // Check for caching opportunities
-    const readOnlySteps = workflow.steps.filter(step => 
+    const readOnlySteps = workflow.steps.filter(step =>
       step.toolName.includes('read') || step.toolName.includes('fetch')
     );
     if (readOnlySteps.length > 0 && !workflow.config.enableCaching) {
@@ -1572,7 +1572,7 @@ export class WorkflowOptimizer extends EventEmitter {
           .reduce((sum, time) => sum + time, 0);
 
         const stepTime = stepPerformance.get(step.id)?.averageTime || 0;
-        
+
         if (dependencyTimes > stepTime * 2) {
           bottlenecks.push({
             type: 'dependency',
@@ -1593,7 +1593,7 @@ export class WorkflowOptimizer extends EventEmitter {
     workflow: WorkflowDefinition,
     stepPerformance: Map<string, StepPerformanceMetrics>
   ): OptimizationRecommendation | null {
-    const sequentialSteps = workflow.steps.filter(step => 
+    const sequentialSteps = workflow.steps.filter(step =>
       !step.canRunInParallel && step.dependencies.length === 0
     );
 
@@ -1658,7 +1658,7 @@ export class WorkflowOptimizer extends EventEmitter {
     workflow: WorkflowDefinition,
     executions: WorkflowExecution[]
   ): OptimizationRecommendation | null {
-    const longRunningExecutions = executions.filter(e => 
+    const longRunningExecutions = executions.filter(e =>
       e.duration && e.duration > 300000 // 5 minutes
     );
 
@@ -1705,7 +1705,7 @@ export class WorkflowOptimizer extends EventEmitter {
   private analyzeErrors(executions: WorkflowExecution[]): ErrorAnalysis {
     const failedExecutions = executions.filter(e => e.status === 'failed');
     const totalErrors = failedExecutions.length;
-    
+
     const errorCategories = new Map<string, ErrorCategoryStats>();
     const commonErrors: Array<{ error: string; count: number; percentage: number }> = [];
 
@@ -1713,7 +1713,7 @@ export class WorkflowOptimizer extends EventEmitter {
     for (const execution of failedExecutions) {
       const errorMessage = execution.error?.message || 'Unknown error';
       const category = this.categorizeError(errorMessage);
-      
+
       if (!errorCategories.has(category)) {
         errorCategories.set(category, {
           category,
@@ -1722,7 +1722,7 @@ export class WorkflowOptimizer extends EventEmitter {
           topError: errorMessage
         });
       }
-      
+
       const stats = errorCategories.get(category)!;
       stats.count++;
     }
@@ -1747,27 +1747,27 @@ export class WorkflowOptimizer extends EventEmitter {
 
   private categorizeError(errorMessage: string): string {
     const message = errorMessage.toLowerCase();
-    
+
     if (message.includes('timeout')) return 'timeout';
     if (message.includes('connection')) return 'connection';
     if (message.includes('permission') || message.includes('auth')) return 'authorization';
     if (message.includes('not found')) return 'not_found';
     if (message.includes('validation')) return 'validation';
-    
+
     return 'other';
   }
 
   private calculatePercentile(values: number[], percentile: number): number {
     if (values.length === 0) return 0;
-    
+
     const index = percentile * (values.length - 1);
     const lower = Math.floor(index);
     const upper = Math.ceil(index);
-    
+
     if (lower === upper) {
       return values[lower];
     }
-    
+
     const weight = index - lower;
     return values[lower] * (1 - weight) + values[upper] * weight;
   }
@@ -1796,7 +1796,7 @@ export class AdvancedWorkflowEngine extends EventEmitter {
 
   constructor(optimizationEngine?: MCPOptimizationEngine) {
     super();
-    
+
     this.designer = new WorkflowDesigner();
     this.executionEngine = new WorkflowExecutionEngine(optimizationEngine);
     this.optimizer = new WorkflowOptimizer(optimizationEngine);
@@ -1847,7 +1847,7 @@ export class AdvancedWorkflowEngine extends EventEmitter {
     }
 
     const execution = await this.executionEngine.executeWorkflow(workflow, input, context);
-    
+
     // Store execution in history
     if (!this.executionHistory.has(workflowId)) {
       this.executionHistory.set(workflowId, []);
@@ -1884,12 +1884,12 @@ export class AdvancedWorkflowEngine extends EventEmitter {
 
     const executions = this.executionHistory.get(workflowId) || [];
     const performanceStats = this.calculatePerformanceStats(executions);
-    
+
     const optimizedWorkflow = await this.optimizer.optimizeWorkflow(workflow, performanceStats);
-    
+
     // Register the optimized workflow
     this.registerWorkflow(optimizedWorkflow);
-    
+
     return optimizedWorkflow;
   }
 
@@ -1906,7 +1906,7 @@ export class AdvancedWorkflowEngine extends EventEmitter {
   async generatePerformanceReport(workflowId: string): Promise<WorkflowPerformanceReport> {
     const analytics = await this.analyzeWorkflow(workflowId);
     const executions = this.getExecutionHistory(workflowId);
-    
+
     return {
       workflowId,
       generatedAt: new Date(),
@@ -1959,7 +1959,7 @@ export class AdvancedWorkflowEngine extends EventEmitter {
       .sort((a, b) => a - b);
 
     const averageExecutionTime = executionTimes.reduce((sum, time) => sum + time, 0) / executionTimes.length || 0;
-    const medianExecutionTime = executionTimes.length > 0 ? 
+    const medianExecutionTime = executionTimes.length > 0 ?
       executionTimes[Math.floor(executionTimes.length / 2)] : 0;
     const p95ExecutionTime = executionTimes.length > 0 ?
       executionTimes[Math.floor(executionTimes.length * 0.95)] : 0;

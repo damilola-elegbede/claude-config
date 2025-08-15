@@ -8,27 +8,27 @@ source "$(dirname "$0")/../utils.sh"
 test_sync_simulation() {
     # Setup test environment
     setup_test_env
-    
+
     # Create mock source structure
     mkdir -p system-configs/.claude/commands
     create_mock_claude_md
     create_mock_command "test" "Test command content"
     create_mock_command "plan" "Plan command content"
-    
+
     # Create mock destination
     mkdir -p mock_home/.claude/commands
-    
+
     # Simulate sync operation - copying from system-configs
     cp system-configs/CLAUDE.md mock_home/CLAUDE.md 2>/dev/null || cp CLAUDE.md mock_home/CLAUDE.md
     cp system-configs/.claude/commands/*.md mock_home/.claude/commands/ 2>/dev/null || echo "No commands to copy"
-    
+
     # Verify sync results
     assert_file_exists "mock_home/CLAUDE.md" \
         "CLAUDE.md should be synced"
-    
+
     assert_file_exists "mock_home/.claude/commands/test.md" \
         "Command files should be synced"
-    
+
     cleanup_test_env
 }
 
@@ -36,14 +36,14 @@ test_sync_simulation() {
 test_command_consistency() {
     local commands_in_readme
     local commands_in_dir
-    
+
     commands_in_readme=$(grep -c "^\s*- \`/[a-z]*\`" "$ORIGINAL_DIR/README.md" 2>/dev/null || echo 0)
     commands_in_dir=$(ls "$ORIGINAL_DIR/system-configs/.claude/commands/"*.md 2>/dev/null | wc -l | tr -d ' ')
-    
+
     # Ensure numeric values
     commands_in_readme=${commands_in_readme:-0}
     commands_in_dir=${commands_in_dir:-0}
-    
+
     # All commands should be documented in README
     if [ "$commands_in_readme" -lt "$commands_in_dir" ] 2>/dev/null; then
         echo "Not all commands are documented in README.md"
@@ -51,7 +51,7 @@ test_command_consistency() {
         echo "Commands in README: $commands_in_readme"
         return 1
     fi
-    
+
     return 0
 }
 
@@ -59,21 +59,21 @@ test_command_consistency() {
 test_claude_md_consistency() {
     local project_claude="$ORIGINAL_DIR/CLAUDE.md"
     local system_claude="$ORIGINAL_DIR/system-configs/CLAUDE.md"
-    
+
     # Check project CLAUDE.md exists and has repository info
     assert_file_exists "$project_claude" \
         "Project CLAUDE.md should exist"
-    
+
     assert_file_contains "$project_claude" "Configuration Repository" \
         "Project CLAUDE.md should describe configuration repository"
-    
+
     # Check system CLAUDE.md exists and has orchestration rules
     assert_file_exists "$system_claude" \
         "System CLAUDE.md should exist in system-configs/"
-    
+
     assert_file_contains "$system_claude" "Non-Negotiable Rules" \
         "System CLAUDE.md should define non-negotiable orchestration rules"
-    
+
     return 0
 }
 
@@ -82,20 +82,20 @@ test_repo_structure() {
     # Check all expected directories exist
     assert_dir_exists "$ORIGINAL_DIR/system-configs/.claude" \
         "system-configs/.claude directory should exist"
-    
+
     assert_dir_exists "$ORIGINAL_DIR/system-configs/.claude/commands" \
         "system-configs commands directory should exist"
-    
+
     assert_dir_exists "$ORIGINAL_DIR/tests" \
         "tests directory should exist"
-    
+
     # Check all expected files exist
     assert_file_exists "$ORIGINAL_DIR/README.md" \
         "README.md should exist"
-    
+
     assert_file_exists "$ORIGINAL_DIR/CLAUDE.md" \
         "CLAUDE.md should exist"
-    
+
     assert_file_exists "$ORIGINAL_DIR/tests/test.sh" \
         "tests/test.sh should exist"
 }
@@ -103,15 +103,15 @@ test_repo_structure() {
 # Test that sync command is excluded from global commands
 test_sync_exclusion() {
     local sync_file="$ORIGINAL_DIR/system-configs/.claude/commands/sync.md"
-    
+
     # Verify sync.md exists
     assert_file_exists "$sync_file" \
         "sync.md should exist in repo"
-    
+
     # Verify it mentions exclusion
     assert_file_contains "$sync_file" "will NOT be copied" \
         "sync.md should mention it won't be copied"
-    
+
     assert_file_contains "$sync_file" "repo-specific" \
         "sync.md should be marked as repo-specific"
 }

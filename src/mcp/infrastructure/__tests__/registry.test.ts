@@ -91,7 +91,7 @@ describe('MCPServerRegistry', () => {
         enablePersistence: true,
         persistenceInterval: 30000
       });
-      
+
       expect(customRegistry).toBeInstanceOf(MCPServerRegistry);
       customRegistry.destroy();
     });
@@ -121,7 +121,7 @@ describe('MCPServerRegistry', () => {
       registry.registerServer(mockServer1);
 
       expect(serverRegisteredSpy).toHaveBeenCalledWith(mockServer1);
-      
+
       const registeredServer = registry.getServer(mockServer1.id);
       expect(registeredServer).toEqual(mockServer1);
     });
@@ -145,7 +145,7 @@ describe('MCPServerRegistry', () => {
       registry.registerServer(mockServer2);
 
       const toolMappings = registry.getToolMappings();
-      
+
       // Read tool should be mapped to both servers
       const readMapping = toolMappings.get('Read');
       expect(readMapping).toMatchObject({
@@ -167,14 +167,14 @@ describe('MCPServerRegistry', () => {
 
       const toolMappings = registry.getToolMappings();
       const readMapping = toolMappings.get('Read');
-      
+
       expect(readMapping?.serverIds).toEqual([mockServer1.id]);
       expect(readMapping?.serverIds.length).toBe(1);
     });
 
     it('should preserve existing metrics when re-registering server', () => {
       registry.registerServer(mockServer1);
-      
+
       // Update metrics
       registry.updateServerMetrics(mockServer1.id, {
         totalRequests: 100,
@@ -202,7 +202,7 @@ describe('MCPServerRegistry', () => {
       registry.on('serverUnregistered', serverUnregisteredSpy);
 
       const result = registry.unregisterServer(mockServer1.id);
-      
+
       expect(result).toBe(true);
       expect(serverUnregisteredSpy).toHaveBeenCalledWith({
         serverId: mockServer1.id,
@@ -224,7 +224,7 @@ describe('MCPServerRegistry', () => {
 
       const toolMappings = registry.getToolMappings();
       const readMapping = toolMappings.get('Read');
-      
+
       // Should only contain server2 now
       expect(readMapping?.serverIds).toEqual([mockServer2.id]);
     });
@@ -297,7 +297,7 @@ describe('MCPServerRegistry', () => {
     it('should query servers by tool name', () => {
       const query: RegistryQuery = { toolName: 'Read' };
       const servers = registry.queryServers(query);
-      
+
       expect(servers).toHaveLength(3); // All servers support Read
       expect(servers.map(s => s.id)).toEqual(
         expect.arrayContaining([mockServer1.id, mockServer2.id, mockServer3.id])
@@ -319,7 +319,7 @@ describe('MCPServerRegistry', () => {
     it('should query servers by capabilities', () => {
       const query: RegistryQuery = { capabilities: ['GitCommit'] };
       const servers = registry.queryServers(query);
-      
+
       expect(servers).toHaveLength(1);
       expect(servers[0].id).toBe(mockServer2.id);
     });
@@ -327,7 +327,7 @@ describe('MCPServerRegistry', () => {
     it('should query servers by multiple capabilities', () => {
       const query: RegistryQuery = { capabilities: ['Read', 'Write'] };
       const servers = registry.queryServers(query);
-      
+
       expect(servers).toHaveLength(2); // Server1 and Server3 have both
       expect(servers.map(s => s.id)).toEqual(
         expect.arrayContaining([mockServer1.id, mockServer3.id])
@@ -337,14 +337,14 @@ describe('MCPServerRegistry', () => {
     it('should query servers by uptime percentage', () => {
       const query: RegistryQuery = { minUptimePercentage: 90 };
       const servers = registry.queryServers(query);
-      
+
       expect(servers).toHaveLength(2); // Server1 (99%) and Server2 (95%)
     });
 
     it('should query servers by response time', () => {
       const query: RegistryQuery = { maxResponseTime: 100 };
       const servers = registry.queryServers(query);
-      
+
       expect(servers).toHaveLength(1); // Only Server1 (50ms)
       expect(servers[0].id).toBe(mockServer1.id);
     });
@@ -356,9 +356,9 @@ describe('MCPServerRegistry', () => {
         minUptimePercentage: 95,
         maxResponseTime: 150
       };
-      
+
       const servers = registry.queryServers(query);
-      
+
       expect(servers).toHaveLength(2); // Server1 and Server2
       expect(servers.map(s => s.id)).toEqual(
         expect.arrayContaining([mockServer1.id, mockServer2.id])
@@ -369,7 +369,7 @@ describe('MCPServerRegistry', () => {
       const query: RegistryQuery = {
         toolName: 'NonExistentTool'
       };
-      
+
       const servers = registry.queryServers(query);
       expect(servers).toHaveLength(0);
     });
@@ -417,7 +417,7 @@ describe('MCPServerRegistry', () => {
 
     it('should clear preferred server', () => {
       registry.setPreferredServerForTool('Read', mockServer1.id);
-      
+
       const preferenceClearedSpy = jest.fn();
       registry.on('preferenceCleared', preferenceClearedSpy);
 
@@ -455,7 +455,7 @@ describe('MCPServerRegistry', () => {
       // Make all servers unhealthy except degraded server3
       mockServer1.status = 'failed';
       mockServer2.status = 'failed';
-      
+
       registry.registerServer(mockServer1); // Re-register with failed status
       registry.registerServer(mockServer2);
 
@@ -654,7 +654,7 @@ describe('MCPServerRegistry', () => {
       }));
 
       // Concurrent registration
-      const registrationPromises = servers.map(server => 
+      const registrationPromises = servers.map(server =>
         new Promise<void>(resolve => {
           registry.registerServer(server);
           resolve();
@@ -666,7 +666,7 @@ describe('MCPServerRegistry', () => {
       expect(registry.getServers()).toHaveLength(50);
 
       // Concurrent metric updates
-      const updatePromises = servers.map((server, i) => 
+      const updatePromises = servers.map((server, i) =>
         new Promise<void>(resolve => {
           registry.updateServerMetrics(server.id, {
             totalRequests: i * 10,
@@ -688,7 +688,7 @@ describe('MCPServerRegistry', () => {
     it('should maintain performance with large number of tool mappings', () => {
       // Create servers with many unique tools
       const tools = Array.from({ length: 100 }, (_, i) => `tool-${i}`);
-      
+
       const serverWithManyTools = {
         ...mockServer1,
         capabilities: tools.map(name => ({ name, description: `Tool ${name}` }))
@@ -709,7 +709,7 @@ describe('MCPServerRegistry', () => {
   describe('Error Handling and Edge Cases', () => {
     it('should handle server scoring with no metrics', () => {
       registry.registerServer(mockServer1);
-      
+
       // No metrics have been added
       const preferred = registry.getPreferredServerForTool('Read');
       expect(preferred).toBeDefined(); // Should still work
@@ -741,7 +741,7 @@ describe('MCPServerRegistry', () => {
 
       const toolMappings = registry.getToolMappings();
       const readMapping = toolMappings.get('Read');
-      
+
       // Should only have one entry for the server
       expect(readMapping?.serverIds).toEqual([serverWithDuplicates.id]);
     });

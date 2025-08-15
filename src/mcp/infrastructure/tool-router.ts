@@ -1,9 +1,9 @@
 /**
  * Intelligent Tool Router Implementation
- * 
+ *
  * Provides sub-100ms routing decisions using multiple strategies,
  * agent-specific optimization profiles, and performance caching.
- * 
+ *
  * @fileoverview SPEC_01 compliant implementation
  */
 
@@ -83,7 +83,7 @@ class RoutingCache {
 
     const key = this.generateKey(context);
     const now = new Date();
-    
+
     this.cache.set(key, {
       value: decision,
       createdAt: now,
@@ -204,7 +204,7 @@ export class PerformanceFirstStrategy implements RoutingStrategy {
         return false;
       }
       if (requirements.minSuccessRate) {
-        const successRate = server.metrics ? 
+        const successRate = server.metrics ?
           (server.metrics.successfulRequests / (server.metrics.totalRequests || 1)) : 1;
         if (successRate < requirements.minSuccessRate) {
           return false;
@@ -276,7 +276,7 @@ export class AgentOptimizedStrategy implements RoutingStrategy {
 
     // Get agent profile for optimization
     const agentProfile = context.agentId ? this.agentProfiles.get(context.agentId as AgentID) : null;
-    
+
     // Score candidates based on agent preferences and learning
     const scored = candidates.map(server => ({
       server,
@@ -287,7 +287,7 @@ export class AgentOptimizedStrategy implements RoutingStrategy {
     scored.sort((a, b) => b.score - a.score);
     const selected = scored[0];
 
-    const reasoning = agentProfile 
+    const reasoning = agentProfile
       ? `Agent-optimized for ${agentProfile.name}: ${selected.server.name} (score: ${selected.score.toFixed(3)})`
       : `Agent-optimized (fallback): ${selected.server.name} (score: ${selected.score.toFixed(3)})`;
 
@@ -451,7 +451,7 @@ export class ToolRouter extends EventEmitter {
     context: Partial<RoutingContext> = {}
   ): Promise<RoutingDecision> {
     const routingStart = Date.now();
-    
+
     // Build complete routing context
     const fullContext: RoutingContext = {
       toolName: toolName as string,
@@ -510,7 +510,7 @@ export class ToolRouter extends EventEmitter {
     // Select routing strategy
     const strategyName = this.selectStrategy(context);
     const strategy = this.strategies.get(strategyName);
-    
+
     if (!strategy) {
       throw new Error(`Unknown routing strategy: ${strategyName}`);
     }
@@ -558,13 +558,13 @@ export class ToolRouter extends EventEmitter {
     error: Error
   ): RoutingDecision {
     // Find any healthy server supporting the tool
-    const viable = candidates.find(server => 
+    const viable = candidates.find(server =>
       (server.status === 'healthy' || server.status === 'degraded') &&
       server.capabilities.some(cap => cap.name === context.toolName)
     );
 
     const selected = viable || candidates[0];
-    
+
     return {
       selectedServer: selected,
       confidence: 0.1, // Very low confidence for fallback
@@ -577,10 +577,10 @@ export class ToolRouter extends EventEmitter {
 
   private updateMetrics(startTime: number, type: 'cache-hit' | 'cache-miss' | 'fallback'): void {
     const decisionTime = Date.now() - startTime;
-    
+
     this.metrics.totalRoutingDecisions++;
-    this.metrics.averageDecisionTime = 
-      (this.metrics.averageDecisionTime * (this.metrics.totalRoutingDecisions - 1) + decisionTime) / 
+    this.metrics.averageDecisionTime =
+      (this.metrics.averageDecisionTime * (this.metrics.totalRoutingDecisions - 1) + decisionTime) /
       this.metrics.totalRoutingDecisions;
 
     const cacheStats = this.cache.getStats();
@@ -669,7 +669,7 @@ export function createToolRouter(
 export {
   RoutingCache,
   PerformanceFirstStrategy,
-  AgentOptimizedStrategy,  
+  AgentOptimizedStrategy,
   LoadBalancedStrategy
 };
 

@@ -24,12 +24,12 @@
     // MD032: Lists should be surrounded by blank lines (re-enabled)
     "MD032": true,
     // MD033: Inline HTML (allow specific elements)
-    "MD033": { 
+    "MD033": {
       "allowed_elements": [
         "br", "kbd", "sub", "sup", "details", "summary", "div", "id", "commentary",
         // XML-style documentation elements
         "metadata", "api-version", "specification-standard", "authentication", "base-url",
-        "executive-summary", "api-architecture", "service-endpoints", "category", 
+        "executive-summary", "api-architecture", "service-endpoints", "category",
         "authentication-setup", "auth-methods", "method", "rate-limiting", "tier",
         "api-endpoint", "description", "request-specification", "headers", "request-body",
         "response-specification", "success-response", "degraded-response", "error-responses", "error",
@@ -90,10 +90,10 @@
     // MD036: Emphasis used instead of a heading (re-enabled with punctuation exception)
     "MD036": { "punctuation": ".,;:!?" },
     // MD040: Fenced code blocks should have language specified (allow common languages including http)
-    "MD040": { 
+    "MD040": {
       "allowed_languages": [
-        "bash", "javascript", "python", "yaml", "json", "typescript", "shell", 
-        "text", "markdown", "mermaid", "http", "xml", "html", "css", "sql", 
+        "bash", "javascript", "python", "yaml", "json", "typescript", "shell",
+        "text", "markdown", "mermaid", "http", "xml", "html", "css", "sql",
         "dockerfile", "go", "rust", "java", "cpp", "c", "jsonc", "prometheus",
         "hcl", "terraform", "ruby", "php", "swift", "kotlin", "promql"
       ]

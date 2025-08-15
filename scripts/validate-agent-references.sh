@@ -43,10 +43,10 @@ is_valid_agent() {
 check_file() {
     local file="$1"
     local errors=0
-    
+
     # Skip non-existent files
     [[ ! -f "$file" ]] && return 0
-    
+
     # Look for specific agent reference patterns
     # Pattern 1: "agent-name agent" or "agent-name agents"
     while IFS= read -r line; do
@@ -70,7 +70,7 @@ check_file() {
             fi
         fi
     done < "$file"
-    
+
     # Pattern 2: Look for explicit "uses X agent", "deploys X agent", etc.
     while IFS= read -r line; do
         if [[ -n "$line" ]]; then
@@ -82,7 +82,7 @@ check_file() {
             fi
         fi
     done < <(grep -E "(uses|deploys|coordinates|launches|invokes) [a-z][a-z0-9-]*[a-z0-9] agent" "$file" 2>/dev/null || true)
-    
+
     return $errors
 }
 

@@ -164,7 +164,7 @@ class InMemoryCache<T = any> extends EventEmitter {
 
   constructor(config: Partial<CacheConfig> = {}) {
     super();
-    
+
     this.config = {
       maxEntries: 10000,
       maxSize: 100 * 1024 * 1024, // 100MB
@@ -187,10 +187,10 @@ class InMemoryCache<T = any> extends EventEmitter {
    */
   async get(key: string): Promise<CacheOperation<T>> {
     const startTime = Date.now();
-    
+
     try {
       const entry = this.cache.get(key);
-      
+
       if (!entry) {
         this.stats.misses++;
         return {
@@ -242,7 +242,7 @@ class InMemoryCache<T = any> extends EventEmitter {
    */
   async set(key: string, value: T, ttl?: number): Promise<CacheOperation<void>> {
     const startTime = Date.now();
-    
+
     try {
       const actualTtl = ttl || this.config.defaultTtl;
       const now = new Date();
@@ -263,7 +263,7 @@ class InMemoryCache<T = any> extends EventEmitter {
 
       this.cache.set(key, entry);
       this.updateAccessOrder(key);
-      
+
       this.emit('cacheSet', { key, entry });
 
       return {
@@ -287,7 +287,7 @@ class InMemoryCache<T = any> extends EventEmitter {
    */
   async delete(key: string): Promise<CacheOperation<boolean>> {
     const startTime = Date.now();
-    
+
     try {
       const existed = this.cache.delete(key);
       if (existed) {
@@ -380,7 +380,7 @@ class InMemoryCache<T = any> extends EventEmitter {
     if (this.cleanupTimer) {
       clearInterval(this.cleanupTimer);
     }
-    
+
     this.cache.clear();
     this.accessOrder.length = 0;
     this.removeAllListeners();
@@ -543,7 +543,7 @@ export class CacheManager extends EventEmitter {
 
   constructor(config: Partial<CacheConfig> = {}, redisClient?: RedisClient) {
     super();
-    
+
     this.config = {
       maxEntries: 10000,
       maxSize: 100 * 1024 * 1024, // 100MB
@@ -569,7 +569,7 @@ export class CacheManager extends EventEmitter {
    */
   async get<T = any>(key: string): Promise<CacheOperation<T>> {
     const startTime = Date.now();
-    
+
     try {
       // Try memory cache first
       const memoryResult = await this.memoryCache.get<T>(key);
@@ -581,13 +581,13 @@ export class CacheManager extends EventEmitter {
       if (this.config.enableRedis && this.redisClient) {
         const redisKey = this.buildRedisKey(key);
         const redisValue = await this.redisClient.get(redisKey);
-        
+
         if (redisValue) {
           const parsedValue = JSON.parse(redisValue);
-          
+
           // Store back in memory cache for faster future access
           await this.memoryCache.set(key, parsedValue, this.config.defaultTtl);
-          
+
           return {
             success: true,
             value: parsedValue,
@@ -618,13 +618,13 @@ export class CacheManager extends EventEmitter {
    */
   async set<T = any>(key: string, value: T, ttl?: number): Promise<CacheOperation<void>> {
     const startTime = Date.now();
-    
+
     try {
       const actualTtl = ttl || this.config.defaultTtl;
-      
+
       // Set in memory cache
       const memoryResult = await this.memoryCache.set(key, value, actualTtl);
-      
+
       // Set in Redis if enabled
       if (this.config.enableRedis && this.redisClient) {
         try {
@@ -657,11 +657,11 @@ export class CacheManager extends EventEmitter {
    */
   async delete(key: string): Promise<CacheOperation<boolean>> {
     const startTime = Date.now();
-    
+
     try {
       // Delete from memory cache
       const memoryResult = await this.memoryCache.delete(key);
-      
+
       // Delete from Redis if enabled
       if (this.config.enableRedis && this.redisClient) {
         try {
@@ -750,7 +750,7 @@ export class CacheManager extends EventEmitter {
    */
   async clear(): Promise<void> {
     await this.memoryCache.clear();
-    
+
     if (this.config.enableRedis && this.redisClient) {
       try {
         await this.redisClient.flushdb();
@@ -789,7 +789,7 @@ export class CacheManager extends EventEmitter {
    */
   static buildKey(pattern: CacheKeyPattern): string {
     const parts = [pattern.namespace, pattern.type, pattern.id];
-    
+
     if (pattern.params) {
       const paramString = Object.entries(pattern.params)
         .sort(([a], [b]) => a.localeCompare(b))
@@ -806,13 +806,13 @@ export class CacheManager extends EventEmitter {
    */
   async warmUp(entries: Array<{ key: string; value: any; ttl?: number }>): Promise<void> {
     console.log(`Warming up cache with ${entries.length} entries...`);
-    
-    const promises = entries.map(({ key, value, ttl }) => 
+
+    const promises = entries.map(({ key, value, ttl }) =>
       this.set(key, value, ttl)
     );
-    
+
     await Promise.allSettled(promises);
-    
+
     this.emit('cacheWarmedUp', { entryCount: entries.length });
   }
 
@@ -821,7 +821,7 @@ export class CacheManager extends EventEmitter {
    */
   async destroy(): Promise<void> {
     this.memoryCache.destroy();
-    
+
     if (this.redisClient) {
       try {
         await this.redisClient.disconnect();
@@ -829,7 +829,7 @@ export class CacheManager extends EventEmitter {
         console.warn('Redis disconnect failed:', error);
       }
     }
-    
+
     this.removeAllListeners();
   }
 
@@ -846,7 +846,7 @@ export class CacheManager extends EventEmitter {
     const regexPattern = pattern
       .replace(/\*/g, '.*')
       .replace(/\?/g, '.');
-    
+
     const regex = new RegExp(`^${regexPattern}$`);
     return regex.test(key);
   }

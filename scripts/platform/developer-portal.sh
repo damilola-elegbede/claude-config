@@ -20,7 +20,7 @@ readonly NC='\033[0m'
 # Initialize portal
 init_portal() {
     mkdir -p "$PORTAL_DIR" "$TEMPLATES_DIR"
-    
+
     # Create welcome message
     cat > "$PORTAL_DIR/welcome.md" << 'EOF'
 # 🚀 Claude Validation Platform - Developer Portal
@@ -29,7 +29,7 @@ Welcome to the Claude validation platform! This self-service portal helps you:
 
 ## Quick Start
 - `claude-validate setup` - Setup your environment
-- `claude-validate doctor` - Check system health  
+- `claude-validate doctor` - Check system health
 - `claude-validate validate` - Run validations
 
 ## Common Tasks
@@ -153,7 +153,7 @@ EOF
     },
     {
       "label": "Claude Setup",
-      "type": "shell", 
+      "type": "shell",
       "command": "scripts/platform/claude-validate",
       "args": ["setup"],
       "group": "build"
@@ -166,7 +166,7 @@ EOF
 # Create integration examples
 create_integration_examples() {
     mkdir -p "$TEMPLATES_DIR/integrations"
-    
+
     # Make integration
     cat > "$TEMPLATES_DIR/integrations/Makefile.example" << 'EOF'
 # Claude Validation Integration Example
@@ -177,7 +177,7 @@ create_integration_examples() {
 validate:
 	@scripts/platform/claude-validate validate
 
-# Environment setup  
+# Environment setup
 setup:
 	@scripts/platform/claude-validate setup
 
@@ -230,11 +230,11 @@ from pathlib import Path
 def run_validation():
     """Run Claude validation."""
     script_path = Path(__file__).parent / "scripts" / "platform" / "claude-validate"
-    
+
     try:
-        result = subprocess.run([str(script_path), "validate"], 
+        result = subprocess.run([str(script_path), "validate"],
                               capture_output=True, text=True)
-        
+
         if result.returncode == 0:
             print("✅ Validation passed")
             return True
@@ -243,7 +243,7 @@ def run_validation():
             print(result.stdout)
             print(result.stderr)
             return False
-            
+
     except FileNotFoundError:
         print("⚠️  Claude validate not found. Run setup first.")
         return False
@@ -259,7 +259,7 @@ run_setup_wizard() {
     echo -e "${BLUE}🧙‍♂️ Claude Validation Setup Wizard${NC}"
     echo "====================================="
     echo
-    
+
     # Project type detection
     local project_type="generic"
     if [[ -f "package.json" ]]; then
@@ -271,10 +271,10 @@ run_setup_wizard() {
     elif [[ -f "Cargo.toml" ]]; then
         project_type="rust"
     fi
-    
+
     echo "🔍 Detected project type: $project_type"
     echo
-    
+
     # Repository size analysis
     local file_count=$(find . -type f | wc -l)
     local repo_size
@@ -285,54 +285,54 @@ run_setup_wizard() {
     else
         repo_size="large"
     fi
-    
+
     echo "📊 Repository size: $repo_size ($file_count files)"
     echo
-    
+
     # Interactive configuration
     echo "⚙️  Configuration Options:"
     echo
-    
+
     read -p "Enable performance caching? [Y/n]: " enable_cache
     enable_cache=${enable_cache:-Y}
-    
+
     read -p "Enable parallel validation? [Y/n]: " enable_parallel
     enable_parallel=${enable_parallel:-Y}
-    
+
     read -p "Set up Git hooks? [Y/n]: " setup_hooks
     setup_hooks=${setup_hooks:-Y}
-    
+
     read -p "Create IDE integration? [Y/n]: " setup_ide
     setup_ide=${setup_ide:-Y}
-    
+
     echo
     echo "🚀 Setting up validation platform..."
-    
+
     # Apply configuration
     if [[ "$enable_cache" =~ ^[Yy] ]]; then
         echo "✅ Enabling performance caching"
         # Configuration would be applied here
     fi
-    
+
     if [[ "$enable_parallel" =~ ^[Yy] ]]; then
         echo "✅ Enabling parallel validation"
         # Configuration would be applied here
     fi
-    
+
     if [[ "$setup_hooks" =~ ^[Yy] ]]; then
         echo "✅ Setting up Git hooks"
         "$REPO_ROOT/scripts/install-hooks.sh"
     fi
-    
+
     if [[ "$setup_ide" =~ ^[Yy] ]]; then
         echo "✅ Creating IDE integration files"
         create_ide_integration "$project_type"
     fi
-    
+
     # Performance optimization
     echo "⚡ Optimizing for $repo_size repository..."
     "$SCRIPTS_DIR/performance-optimizer.sh" optimize "$repo_size"
-    
+
     echo
     echo -e "${GREEN}🎉 Setup completed successfully!${NC}"
     echo
@@ -341,7 +341,7 @@ run_setup_wizard() {
     echo "  2. Test: claude-validate validate"
     echo "  3. Commit your changes to activate hooks"
     echo
-    
+
     # Show integration examples
     show_integration_examples "$project_type"
 }
@@ -349,14 +349,14 @@ run_setup_wizard() {
 # Create IDE integration
 create_ide_integration() {
     local project_type="$1"
-    
+
     # VS Code
     if [[ ! -d ".vscode" ]]; then
         mkdir -p ".vscode"
         cp "$TEMPLATES_DIR/vscode-settings.json" ".vscode/settings.json"
         echo "📝 Created VS Code integration"
     fi
-    
+
     # Project-specific integration
     case "$project_type" in
         nodejs)
@@ -377,10 +377,10 @@ create_ide_integration() {
 # Show integration examples
 show_integration_examples() {
     local project_type="$1"
-    
+
     echo "📚 Integration Examples:"
     echo
-    
+
     case "$project_type" in
         nodejs)
             echo "NPM Scripts:"
@@ -401,7 +401,7 @@ show_integration_examples() {
             echo "  make doctor        # Health check"
             ;;
     esac
-    
+
     echo
     echo "Available templates:"
     echo "  🔧 CI/CD: $TEMPLATES_DIR/github-actions.yml"
@@ -414,7 +414,7 @@ run_troubleshooting() {
     echo -e "${YELLOW}🔧 Interactive Troubleshooting${NC}"
     echo "==============================="
     echo
-    
+
     # Common issues and solutions
     local issues=(
         "Validation is slow"
@@ -424,17 +424,17 @@ run_troubleshooting() {
         "Configuration problems"
         "CI/CD integration issues"
     )
-    
+
     echo "What issue are you experiencing?"
     echo
-    
+
     for i in "${!issues[@]}"; do
         echo "$((i+1)). ${issues[i]}"
     done
     echo
-    
+
     read -p "Select issue (1-${#issues[@]}): " issue_num
-    
+
     case "$issue_num" in
         1)
             troubleshoot_performance
@@ -464,10 +464,10 @@ run_troubleshooting() {
 # Troubleshooting functions
 troubleshoot_performance() {
     echo "🔍 Diagnosing performance issues..."
-    
+
     local file_count=$(find . -type f | wc -l)
     echo "📊 Repository has $file_count files"
-    
+
     if [[ $file_count -gt 1000 ]]; then
         echo "💡 Large repository detected. Recommendations:"
         echo "  1. Enable caching: claude-validate config set .settings.cache_enabled true"
@@ -475,7 +475,7 @@ troubleshoot_performance() {
         echo "  3. Create .claudeignore file to exclude unnecessary files"
         echo "  4. Run: scripts/platform/performance-optimizer.sh analyze"
     fi
-    
+
     # Check for .claudeignore
     if [[ ! -f ".claudeignore" ]]; then
         echo "💡 Create .claudeignore to exclude files:"
@@ -484,7 +484,7 @@ troubleshoot_performance() {
         echo "  *.log"
         echo "  build/"
     fi
-    
+
     # Check cache status
     local cache_size=$(du -sh "$REPO_ROOT/.validation-cache" 2>/dev/null | cut -f1 || echo "0B")
     echo "💾 Current cache size: $cache_size"
@@ -492,10 +492,10 @@ troubleshoot_performance() {
 
 troubleshoot_git_hooks() {
     echo "🔍 Checking Git hooks..."
-    
+
     local hooks_dir="$REPO_ROOT/.git/hooks"
     local hook_files=("pre-commit" "commit-msg" "pre-push")
-    
+
     for hook in "${hook_files[@]}"; do
         if [[ -x "$hooks_dir/$hook" ]]; then
             echo "✅ $hook hook is installed and executable"
@@ -504,7 +504,7 @@ troubleshoot_git_hooks() {
             echo "💡 Fix: Run 'claude-validate setup' or 'make install-hooks'"
         fi
     done
-    
+
     # Check hook content
     if [[ -f "$hooks_dir/pre-commit" ]]; then
         if grep -q "claude-validate\|validation/framework" "$hooks_dir/pre-commit"; then
@@ -517,25 +517,25 @@ troubleshoot_git_hooks() {
 
 troubleshoot_yaml() {
     echo "🔍 Checking YAML validation..."
-    
+
     # Check for common YAML issues
     find .claude/agents -name "*.md" 2>/dev/null | head -5 | while read -r file; do
         echo "Checking $file..."
-        
+
         if ! head -1 "$file" | grep -q "^---$"; then
             echo "❌ Missing YAML front-matter start marker in $file"
         fi
-        
+
         # Check for common YAML errors
         if grep -n "^\s*-\s*$" "$file" >/dev/null; then
             echo "⚠️  Empty list items found in $file"
         fi
-        
+
         if grep -n ":\s*$" "$file" >/dev/null; then
             echo "⚠️  Empty values found in $file"
         fi
     done
-    
+
     echo "💡 Common YAML fixes:"
     echo "  1. Ensure files start with '---'"
     echo "  2. Use proper indentation (2 spaces)"
@@ -545,10 +545,10 @@ troubleshoot_yaml() {
 
 troubleshoot_permissions() {
     echo "🔍 Checking file permissions..."
-    
+
     # Check script permissions
     local scripts=("$SCRIPTS_DIR/claude-validate" "$REPO_ROOT/scripts/install-hooks.sh")
-    
+
     for script in "${scripts[@]}"; do
         if [[ -f "$script" ]]; then
             if [[ -x "$script" ]]; then
@@ -561,10 +561,10 @@ troubleshoot_permissions() {
             echo "❌ $script not found"
         fi
     done
-    
+
     # Check directory permissions
     local dirs=("$REPO_ROOT/.claude" "$REPO_ROOT/scripts")
-    
+
     for dir in "${dirs[@]}"; do
         if [[ -d "$dir" ]]; then
             if [[ -r "$dir" ]] && [[ -w "$dir" ]]; then
@@ -579,14 +579,14 @@ troubleshoot_permissions() {
 
 troubleshoot_configuration() {
     echo "🔍 Checking configuration..."
-    
+
     # Check main config files
     local configs=(
         "$REPO_ROOT/CLAUDE.md"
         "$REPO_ROOT/.claude/agents"
         "$REPO_ROOT/scripts/validation/framework.sh"
     )
-    
+
     for config in "${configs[@]}"; do
         if [[ -e "$config" ]]; then
             echo "✅ $config exists"
@@ -595,7 +595,7 @@ troubleshoot_configuration() {
             echo "💡 This may indicate incomplete setup"
         fi
     done
-    
+
     # Check validation framework
     if [[ -f "$REPO_ROOT/scripts/validation/framework.sh" ]]; then
         if source "$REPO_ROOT/scripts/validation/framework.sh" 2>/dev/null; then
@@ -609,7 +609,7 @@ troubleshoot_configuration() {
 
 troubleshoot_ci_cd() {
     echo "🔍 Checking CI/CD integration..."
-    
+
     # Check for CI config files
     local ci_files=(
         ".github/workflows"
@@ -617,7 +617,7 @@ troubleshoot_ci_cd() {
         "Jenkinsfile"
         ".circleci/config.yml"
     )
-    
+
     local found_ci=false
     for ci_file in "${ci_files[@]}"; do
         if [[ -e "$ci_file" ]]; then
@@ -625,13 +625,13 @@ troubleshoot_ci_cd() {
             found_ci=true
         fi
     done
-    
+
     if [[ "$found_ci" == "false" ]]; then
         echo "⚠️  No CI/CD configuration found"
         echo "💡 Consider adding validation to your CI pipeline"
         echo "   Template available: $TEMPLATES_DIR/github-actions.yml"
     fi
-    
+
     # Check if validation commands work in CI context
     echo "🧪 Testing validation commands..."
     if command -v claude-validate >/dev/null 2>&1; then
@@ -647,18 +647,18 @@ show_performance_dashboard() {
     echo -e "${CYAN}📊 Performance Dashboard${NC}"
     echo "======================="
     echo
-    
+
     # Repository stats
     local total_files=$(find . -type f | wc -l)
     local agent_files=$(find .claude/agents -name "*.md" 2>/dev/null | wc -l || echo 0)
     local script_files=$(find scripts -name "*.sh" 2>/dev/null | wc -l || echo 0)
-    
+
     echo "📈 Repository Statistics:"
     echo "  Total files: $total_files"
     echo "  Agent files: $agent_files"
     echo "  Script files: $script_files"
     echo
-    
+
     # Cache information
     if [[ -d "$REPO_ROOT/.validation-cache" ]]; then
         local cache_size=$(du -sh "$REPO_ROOT/.validation-cache" | cut -f1)
@@ -670,7 +670,7 @@ show_performance_dashboard() {
         echo "💾 Cache: Not initialized"
     fi
     echo
-    
+
     # Recent performance metrics
     if [[ -f "$REPO_ROOT/.validation-metrics/performance.jsonl" ]]; then
         echo "⏱️  Recent Performance:"
@@ -686,18 +686,18 @@ show_performance_dashboard() {
         echo "⏱️  Performance: No metrics available"
     fi
     echo
-    
+
     # Recommendations
     echo "💡 Optimization Recommendations:"
     if [[ $total_files -gt 1000 ]]; then
         echo "  • Large repository detected - consider performance optimization"
         echo "  • Run: scripts/platform/performance-optimizer.sh analyze"
     fi
-    
+
     if [[ ! -f ".claudeignore" ]]; then
         echo "  • Create .claudeignore to exclude unnecessary files"
     fi
-    
+
     if [[ ! -d "$REPO_ROOT/.validation-cache" ]]; then
         echo "  • Enable caching for better performance"
     fi
@@ -706,7 +706,7 @@ show_performance_dashboard() {
 # Main command dispatcher
 main() {
     local command="${1:-help}"
-    
+
     case "$command" in
         init)
             init_portal
@@ -739,7 +739,7 @@ main() {
             echo "  init              Initialize developer portal"
             echo "  wizard           Run interactive setup wizard"
             echo "  troubleshoot     Interactive troubleshooting"
-            echo "  dashboard        Show performance dashboard" 
+            echo "  dashboard        Show performance dashboard"
             echo "  templates        List available templates"
             echo "  integration      Show integration examples"
             echo "  help             Show this help message"

@@ -106,9 +106,9 @@ export interface OptimizationConfig {
   };
 }
 
-export type OptimizationCategory = 
+export type OptimizationCategory =
   | 'performance-tuning'
-  | 'resource-scaling' 
+  | 'resource-scaling'
   | 'workflow-optimization'
   | 'technology-updates'
   | 'cost-reduction';
@@ -176,7 +176,7 @@ export class AnalyticsEngine extends EventEmitter {
 
   async start(): Promise<void> {
     console.log('Starting analytics engine...');
-    
+
     // Start data collection
     this.collectTimer = setInterval(async () => {
       await this.collectData();
@@ -195,7 +195,7 @@ export class AnalyticsEngine extends EventEmitter {
       clearInterval(this.collectTimer);
       this.collectTimer = null;
     }
-    
+
     if (this.analysisTimer) {
       clearInterval(this.analysisTimer);
       this.analysisTimer = null;
@@ -295,11 +295,11 @@ export class AnalyticsEngine extends EventEmitter {
       const response = await fetch(dataSource.endpoint, {
         headers: this.getAuthHeaders(dataSource.authentication)
       });
-      
+
       if (!response.ok) {
         throw new Error(`API request failed: ${response.status}`);
       }
-      
+
       const data = await response.json();
       return this.transformExternalData(data);
     } catch (error) {
@@ -310,7 +310,7 @@ export class AnalyticsEngine extends EventEmitter {
 
   private getAuthHeaders(auth?: DataSourceConfig['authentication']): Record<string, string> {
     if (!auth) return {};
-    
+
     switch (auth.type) {
       case 'bearer':
         return { 'Authorization': `Bearer ${auth.credentials}` };
@@ -335,21 +335,21 @@ export class AnalyticsEngine extends EventEmitter {
     if (!this.dataStore.has(sourceId)) {
       this.dataStore.set(sourceId, []);
     }
-    
+
     const sourceData = this.dataStore.get(sourceId)!;
     sourceData.push(...data);
-    
+
     // Apply retention policy
     const retentionMs = this.config.dataSources.find(ds => ds.id === sourceId)?.retentionDays * 24 * 60 * 60 * 1000 || 90 * 24 * 60 * 60 * 1000;
     const cutoff = Date.now() - retentionMs;
-    
+
     const filteredData = sourceData.filter(d => d.timestamp > cutoff);
     this.dataStore.set(sourceId, filteredData);
   }
 
   private async runAnalysis(): Promise<void> {
     console.log('Running analytics models...');
-    
+
     for (const [modelId, model] of this.models) {
       try {
         const result = await this.executeModel(model);
@@ -386,16 +386,16 @@ export class AnalyticsEngine extends EventEmitter {
     // Analyze trends for each input metric
     for (const metricName of model.inputs) {
       const metricData = data.map(d => d.metrics[metricName]).filter(v => v !== undefined);
-      
+
       if (metricData.length < 10) continue;
-      
+
       const trend = this.calculateTrend(metricData);
       const significance = Math.abs(trend.slope) * trend.confidence;
-      
+
       if (significance > 0.1) {
         const direction = trend.slope > 0 ? 'increasing' : 'decreasing';
         const severity = significance > 0.3 ? 'warning' : 'info';
-        
+
         insights.push({
           type: 'trend',
           description: `${metricName} is ${direction} with ${(significance * 100).toFixed(1)}% significance`,
@@ -456,11 +456,11 @@ export class AnalyticsEngine extends EventEmitter {
 
     for (const metricName of model.inputs) {
       const metricData = data.map(d => d.metrics[metricName]).filter(v => v !== undefined);
-      
+
       if (metricData.length < 20) continue;
-      
+
       const anomalies = this.detectAnomalies(metricData);
-      
+
       if (anomalies.length > 0) {
         insights.push({
           type: 'anomaly',
@@ -523,18 +523,18 @@ export class AnalyticsEngine extends EventEmitter {
       for (let j = i + 1; j < model.inputs.length; j++) {
         const metric1 = model.inputs[i];
         const metric2 = model.inputs[j];
-        
+
         const data1 = data.map(d => d.metrics[metric1]).filter(v => v !== undefined);
         const data2 = data.map(d => d.metrics[metric2]).filter(v => v !== undefined);
-        
+
         if (data1.length !== data2.length || data1.length < 10) continue;
-        
+
         const correlation = this.calculateCorrelation(data1, data2);
-        
+
         if (Math.abs(correlation) > 0.7) {
           const strength = Math.abs(correlation) > 0.9 ? 'strong' : 'moderate';
           const direction = correlation > 0 ? 'positive' : 'negative';
-          
+
           insights.push({
             type: 'correlation',
             description: `${strength} ${direction} correlation (${correlation.toFixed(3)}) between ${metric1} and ${metric2}`,
@@ -565,12 +565,12 @@ export class AnalyticsEngine extends EventEmitter {
 
     for (const metricName of model.inputs) {
       const metricData = data.map(d => d.metrics[metricName]).filter(v => v !== undefined);
-      
+
       if (metricData.length < 30) continue;
-      
+
       const forecast = this.forecastMetric(metricData, this.config.predictions.forecastingHorizon);
       forecasts.push({ metric: metricName, forecast });
-      
+
       // Check for capacity issues
       if (metricName === 'cpu_usage' && forecast.projectedMax > 90) {
         insights.push({
@@ -643,7 +643,7 @@ export class AnalyticsEngine extends EventEmitter {
     // Check for resource waste
     const cpuUsage = latestData.metrics.cpu_usage || 0;
     const memoryUsage = latestData.metrics.memory_usage || 0;
-    
+
     if (cpuUsage < 30 && memoryUsage < 40) {
       insights.push({
         type: 'pattern',
@@ -745,7 +745,7 @@ export class AnalyticsEngine extends EventEmitter {
       const predicted = slope * x[i] + intercept;
       return sum + Math.pow(yi - predicted, 2);
     }, 0);
-    
+
     const rSquared = 1 - (residualSumSquares / totalSumSquares);
     const confidence = Math.max(0, Math.min(1, rSquared));
 
@@ -756,17 +756,17 @@ export class AnalyticsEngine extends EventEmitter {
     // Simple statistical anomaly detection using z-score
     const mean = data.reduce((a, b) => a + b, 0) / data.length;
     const stdDev = Math.sqrt(data.reduce((sum, x) => sum + Math.pow(x - mean, 2), 0) / data.length);
-    
+
     const threshold = 2.5; // z-score threshold
     const anomalies: number[] = [];
-    
+
     data.forEach((value, index) => {
       const zScore = Math.abs((value - mean) / stdDev);
       if (zScore > threshold) {
         anomalies.push(value);
       }
     });
-    
+
     return anomalies;
   }
 
@@ -789,11 +789,11 @@ export class AnalyticsEngine extends EventEmitter {
     const trend = this.calculateTrend(data);
     const lastValue = data[data.length - 1];
     const projectedValue = lastValue + (trend.slope * horizon);
-    
+
     // Add uncertainty bounds
     const stdDev = Math.sqrt(data.reduce((sum, x) => sum + Math.pow(x - data.reduce((a, b) => a + b) / data.length, 2), 0) / data.length);
     const uncertainty = stdDev * Math.sqrt(horizon);
-    
+
     return {
       projectedMax: projectedValue + uncertainty,
       projectedMin: projectedValue - uncertainty,
@@ -804,11 +804,11 @@ export class AnalyticsEngine extends EventEmitter {
   private getModelInputData(model: AnalyticsModel): TimeSeriesData[] {
     // Combine data from all sources
     const allData: TimeSeriesData[] = [];
-    
+
     for (const sourceData of this.dataStore.values()) {
       allData.push(...sourceData);
     }
-    
+
     // Sort by timestamp and return recent data (last 100 points)
     return allData
       .sort((a, b) => a.timestamp - b.timestamp)
@@ -819,10 +819,10 @@ export class AnalyticsEngine extends EventEmitter {
     if (!this.results.has(modelId)) {
       this.results.set(modelId, []);
     }
-    
+
     const modelResults = this.results.get(modelId)!;
     modelResults.push(result);
-    
+
     // Keep only last 50 results per model
     if (modelResults.length > 50) {
       modelResults.splice(0, modelResults.length - 50);
@@ -884,7 +884,7 @@ export class AnalyticsEngine extends EventEmitter {
   private buildAnalysisSection(section: ReportSection): any {
     const allResults = Array.from(this.results.values()).flat();
     const insights = allResults.flatMap(r => r.insights);
-    
+
     return {
       title: section.title,
       type: 'analysis',
@@ -900,7 +900,7 @@ export class AnalyticsEngine extends EventEmitter {
   private buildRecommendationsSection(section: ReportSection): any {
     const allResults = Array.from(this.results.values()).flat();
     const recommendations = allResults.flatMap(r => r.recommendations);
-    
+
     // Sort by priority
     const priorityOrder = { critical: 4, high: 3, medium: 2, low: 1 };
     const sortedRecommendations = recommendations
@@ -968,7 +968,7 @@ export class AnalyticsEngine extends EventEmitter {
         <h1>${report.title}</h1>
         <p>Generated: ${report.generatedAt}</p>
     </div>
-    
+
     ${report.sections.map((section: any) => this.formatHTMLSection(section)).join('')}
 </body>
 </html>`;
@@ -981,7 +981,7 @@ export class AnalyticsEngine extends EventEmitter {
         <div class="section">
             <h2>${section.title}</h2>
             <div class="metrics">
-                ${Object.entries(section.data).map(([key, value]: [string, any]) => 
+                ${Object.entries(section.data).map(([key, value]: [string, any]) =>
                   `<div class="metric-card">
                      <strong>${key.replace(/_/g, ' ').toUpperCase()}</strong><br>
                      ${typeof value === 'number' ? value.toFixed(2) : value}
@@ -989,38 +989,38 @@ export class AnalyticsEngine extends EventEmitter {
                 ).join('')}
             </div>
         </div>`;
-      
+
       case 'analysis':
         return `
         <div class="section">
             <h2>${section.title}</h2>
-            <p>Total Insights: ${section.summary.totalInsights} | 
-               Critical: ${section.summary.criticalIssues} | 
+            <p>Total Insights: ${section.summary.totalInsights} |
+               Critical: ${section.summary.criticalIssues} |
                Warnings: ${section.summary.warnings}</p>
-            ${section.insights.map((insight: Insight) => 
+            ${section.insights.map((insight: Insight) =>
               `<div class="insight ${insight.severity}">
                  <strong>${insight.type.toUpperCase()}</strong>: ${insight.description}
                  <br><small>Confidence: ${(insight.confidence * 100).toFixed(1)}%</small>
                </div>`
             ).join('')}
         </div>`;
-      
+
       case 'recommendations':
         return `
         <div class="section">
             <h2>${section.title}</h2>
             <p>Total Recommendations: ${section.summary.totalRecommendations}</p>
-            ${section.recommendations.map((rec: Recommendation) => 
+            ${section.recommendations.map((rec: Recommendation) =>
               `<div class="recommendation priority-${rec.priority}">
                  <h3>${rec.title}</h3>
                  <p>${rec.description}</p>
-                 <p><strong>Priority:</strong> ${rec.priority} | 
-                    <strong>Impact:</strong> ${rec.impact.performance}% performance, 
+                 <p><strong>Priority:</strong> ${rec.priority} |
+                    <strong>Impact:</strong> ${rec.impact.performance}% performance,
                     $${rec.impact.cost} cost, ${rec.impact.effort} effort</p>
                </div>`
             ).join('')}
         </div>`;
-      
+
       default:
         return `<div class="section"><h2>${section.title}</h2><p>Content not available</p></div>`;
     }
@@ -1031,7 +1031,7 @@ export class AnalyticsEngine extends EventEmitter {
       const results = this.results.get(modelId) || [];
       return results.flatMap(r => r.insights);
     }
-    
+
     return Array.from(this.results.values())
       .flat()
       .flatMap(r => r.insights);
@@ -1041,11 +1041,11 @@ export class AnalyticsEngine extends EventEmitter {
     const allRecommendations = Array.from(this.results.values())
       .flat()
       .flatMap(r => r.recommendations);
-    
+
     if (category) {
       return allRecommendations.filter(r => r.category === category);
     }
-    
+
     return allRecommendations;
   }
 }

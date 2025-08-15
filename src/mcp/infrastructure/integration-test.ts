@@ -70,7 +70,7 @@ const mockServers: MCPServerInfo[] = [
  */
 async function testIntelligentRouting(): Promise<void> {
   console.log('\n=== Testing Intelligent Tool Routing ===');
-  
+
   const infrastructure = new MCPInfrastructure({
     router: {
       defaultStrategy: 'performance_weighted',
@@ -91,7 +91,7 @@ async function testIntelligentRouting(): Promise<void> {
     // Manually register mock servers (since we're not using discovery)
     for (const server of mockServers) {
       infrastructure.registry.registerServer(server);
-      
+
       // Add initial metrics
       infrastructure.registry.updateServerMetrics(server.id, {
         totalRequests: 10,
@@ -139,7 +139,7 @@ async function testIntelligentRouting(): Promise<void> {
       }
     });
     const cachedTime = Date.now() - start;
-    
+
     console.log('✓ Cached routing time:', cachedTime + 'ms');
     if (cachedTime > 50) {
       console.warn('⚠ Cached routing seems slow:', cachedTime + 'ms');
@@ -147,7 +147,7 @@ async function testIntelligentRouting(): Promise<void> {
 
     // Test learning from performance data
     console.log('\n--- Testing performance learning ---');
-    
+
     // Simulate good performance for server 1
     await infrastructure.recordPerformance({
       serverId: 'filesystem-server-1',
@@ -160,7 +160,7 @@ async function testIntelligentRouting(): Promise<void> {
 
     // Simulate poor performance for server 2
     await infrastructure.recordPerformance({
-      serverId: 'filesystem-server-2', 
+      serverId: 'filesystem-server-2',
       toolName: 'Read',
       agentId: 'test-agent',
       responseTime: 500,
@@ -221,7 +221,7 @@ async function testIntelligentRouting(): Promise<void> {
  */
 async function testCacheManager(): Promise<void> {
   console.log('\n=== Testing Cache Manager ===');
-  
+
   const { CacheManager } = await import('./cache-manager.js');
   const cache = new CacheManager({
     maxEntries: 100,
@@ -232,7 +232,7 @@ async function testCacheManager(): Promise<void> {
   try {
     // Test basic operations
     console.log('--- Testing basic cache operations ---');
-    
+
     await cache.set('test-key', { data: 'test-value', number: 42 });
     console.log('✓ Set cache entry');
 
@@ -246,13 +246,13 @@ async function testCacheManager(): Promise<void> {
     // Test TTL expiration
     console.log('--- Testing TTL expiration ---');
     await cache.set('expire-key', 'expire-value', 100); // 100ms TTL
-    
+
     let exists = await cache.exists('expire-key');
     console.log('✓ Key exists before expiration:', exists);
-    
+
     // Wait for expiration
     await new Promise(resolve => setTimeout(resolve, 150));
-    
+
     const expiredResult = await cache.get('expire-key');
     if (!expiredResult.success) {
       console.log('✓ Key correctly expired');
@@ -265,10 +265,10 @@ async function testCacheManager(): Promise<void> {
     await cache.set('pattern:1', 'value1');
     await cache.set('pattern:2', 'value2');
     await cache.set('other:3', 'value3');
-    
+
     const invalidated = await cache.invalidatePattern('pattern:*');
     console.log('✓ Invalidated pattern entries:', invalidated);
-    
+
     const remainsResult = await cache.get('other:3');
     if (remainsResult.success) {
       console.log('✓ Non-matching entries preserved');
@@ -298,7 +298,7 @@ async function testCacheManager(): Promise<void> {
  */
 async function testResilienceComponents(): Promise<void> {
   console.log('\n=== Testing Resilience Components ===');
-  
+
   // Test Circuit Breaker
   console.log('\n--- Testing Circuit Breaker ---');
   const circuitBreaker = new CircuitBreaker({
@@ -316,7 +316,7 @@ async function testResilienceComponents(): Promise<void> {
       const result = await circuitBreaker.execute(async () => {
         return `success-${i}`;
       });
-      
+
       if (result.executed && result.value === `success-${i}`) {
         console.log(`✓ Successful execution ${i + 1}`);
       }
@@ -327,14 +327,14 @@ async function testResilienceComponents(): Promise<void> {
       const result = await circuitBreaker.execute(async () => {
         throw new Error(`Test failure ${i + 1}`);
       });
-      
+
       if (result.executed && result.error) {
         console.log(`✓ Recorded failure ${i + 1}`);
       }
     }
 
     console.log('✓ Circuit breaker state:', circuitBreaker.getState());
-    
+
     // Should be 'open' now
     if (circuitBreaker.getState() === 'open') {
       console.log('✓ Circuit breaker correctly opened after failures');
@@ -344,7 +344,7 @@ async function testResilienceComponents(): Promise<void> {
     const rejectedResult = await circuitBreaker.execute(async () => {
       return 'should-be-rejected';
     });
-    
+
     if (!rejectedResult.executed) {
       console.log('✓ Circuit breaker correctly rejected execution');
     }
@@ -368,7 +368,7 @@ async function testResilienceComponents(): Promise<void> {
  */
 async function testResilienceIntegration(): Promise<void> {
   console.log('\n=== Testing Resilience Integration ===');
-  
+
   const infrastructure = new MCPInfrastructure({
     resilience: {
       circuitBreaker: {
@@ -433,7 +433,7 @@ async function testResilienceIntegration(): Promise<void> {
           // Simulate primary server failure
           throw new Error('Primary server unavailable');
         }
-        
+
         // Fallback server succeeds
         return { content: 'fallback data', serverId: server.id };
       },
@@ -484,13 +484,13 @@ async function testResilienceIntegration(): Promise<void> {
  */
 async function runTests(): Promise<void> {
   console.log('🚀 Starting MCP Infrastructure Integration Tests');
-  
+
   try {
     await testCacheManager();
     await testIntelligentRouting();
     await testResilienceComponents();
     await testResilienceIntegration();
-    
+
     console.log('\n🎉 All tests completed successfully!');
     console.log('\n📊 Test Summary:');
     console.log('✅ Cache Manager: Basic operations, TTL, pattern invalidation');
@@ -500,7 +500,7 @@ async function runTests(): Promise<void> {
     console.log('✅ Fallback Manager: Automatic server switching');
     console.log('✅ Resilience Integration: End-to-end fault tolerance');
     console.log('✅ Integration: Full MCP infrastructure with resilience');
-    
+
   } catch (error) {
     console.error('\n💥 Test suite failed:', error);
     process.exit(1);

@@ -2,18 +2,18 @@
 
 /**
  * SPEC_05: Comprehensive Analytics and Reporting System Demo
- * 
+ *
  * Demonstrates the executive dashboard, KPI tracking, ROI analysis,
  * automated report generation, and export capabilities.
  */
 
 import { createMonitoringSystem } from './index';
-import type { 
-  MonitoringSystemConfig, 
-  ExecutiveKPIs, 
+import type {
+  MonitoringSystemConfig,
+  ExecutiveKPIs,
   ROIMetrics,
   TrendAnalysis,
-  GeneratedReport 
+  GeneratedReport
 } from './index';
 
 /**
@@ -103,7 +103,7 @@ async function runReportingSystemDemo(): Promise<void> {
     console.log('\n✅ Demo completed successfully!');
     console.log('\n📝 Summary of Capabilities Demonstrated:');
     console.log('   ✓ Executive KPI Dashboard with real-time metrics');
-    console.log('   ✓ ROI calculation and cost savings tracking');  
+    console.log('   ✓ ROI calculation and cost savings tracking');
     console.log('   ✓ Performance trend analysis and forecasting');
     console.log('   ✓ Automated report generation and scheduling');
     console.log('   ✓ Multi-format export (JSON, HTML, PDF, CSV, Excel)');
@@ -140,7 +140,7 @@ async function runReportingSystemDemo(): Promise<void> {
  */
 async function demonstrateExecutiveDashboard(system: any): Promise<void> {
   console.log('   📊 Fetching current executive KPIs...');
-  
+
   const kpis = await system.getCurrentKPIs();
   if (kpis) {
     console.log('   ✅ Executive KPIs retrieved:');
@@ -155,13 +155,13 @@ async function demonstrateExecutiveDashboard(system: any): Promise<void> {
   } else {
     console.log('   ⚠️  Executive KPIs not available (reporting system disabled)');
   }
-  
+
   // Demonstrate KPI history
   const timeRange = {
     start: Date.now() - 24 * 60 * 60 * 1000, // Last 24 hours
     end: Date.now()
   };
-  
+
   const kpiHistory = system.getKPIHistory(timeRange);
   console.log(`   📈 Retrieved ${kpiHistory.length} historical KPI data points`);
 }
@@ -171,7 +171,7 @@ async function demonstrateExecutiveDashboard(system: any): Promise<void> {
  */
 async function demonstrateROIAnalysis(system: any): Promise<void> {
   console.log('   💸 Calculating ROI metrics...');
-  
+
   const roiAnalysis = await system.getROIAnalysis();
   if (roiAnalysis) {
     console.log('   ✅ ROI Analysis completed:');
@@ -194,17 +194,17 @@ async function demonstrateROIAnalysis(system: any): Promise<void> {
  */
 async function demonstrateTrendAnalysis(system: any): Promise<void> {
   console.log('   📈 Analyzing performance trends...');
-  
+
   const timeRange = {
     start: Date.now() - 7 * 24 * 60 * 60 * 1000, // Last 7 days
     end: Date.now()
   };
-  
+
   const trends = await system.getTrendAnalysis(timeRange);
-  
+
   if (trends && trends.length > 0) {
     console.log(`   ✅ Generated ${trends.length} trend analyses:`);
-    
+
     trends.slice(0, 5).forEach((trend: TrendAnalysis) => {
       const onTrackStatus = trend.targetProgress.onTrack ? '✅ On Track' : '⚠️ Behind';
       console.log(`      ${formatMetricName(trend.metricName)}:`);
@@ -223,7 +223,7 @@ async function demonstrateTrendAnalysis(system: any): Promise<void> {
  */
 async function demonstrateAutomatedReports(system: any): Promise<void> {
   console.log('   📋 Generating executive report...');
-  
+
   const report = await system.generateExecutiveReport({
     timeRange: {
       start: Date.now() - 24 * 60 * 60 * 1000,
@@ -231,7 +231,7 @@ async function demonstrateAutomatedReports(system: any): Promise<void> {
     },
     format: 'html'
   });
-  
+
   if (report) {
     console.log('   ✅ Executive report generated:');
     console.log(`      Report ID: ${report.id}`);
@@ -244,7 +244,7 @@ async function demonstrateAutomatedReports(system: any): Promise<void> {
   } else {
     console.log('   ⚠️  Report generation not available');
   }
-  
+
   // Show available reports
   const availableReports = system.getAvailableReports();
   console.log(`   📚 Available reports: ${availableReports.length}`);
@@ -255,13 +255,13 @@ async function demonstrateAutomatedReports(system: any): Promise<void> {
  */
 async function demonstrateExportCapabilities(system: any): Promise<void> {
   console.log('   💾 Testing export capabilities...');
-  
+
   const availableReports = system.getAvailableReports();
-  
+
   if (availableReports.length > 0) {
     const reportId = availableReports[0].id;
     const formats = ['json', 'html', 'csv'];
-    
+
     for (const format of formats) {
       try {
         const exported = await system.exportReport(reportId, format);
@@ -281,7 +281,7 @@ async function demonstrateExportCapabilities(system: any): Promise<void> {
  */
 async function demonstrateAPIIntegration(): Promise<void> {
   console.log('   🔗 Testing REST API endpoints...');
-  
+
   const baseUrl = 'http://127.0.0.1:3002';
   const endpoints = [
     '/api/health',
@@ -289,7 +289,7 @@ async function demonstrateAPIIntegration(): Promise<void> {
     '/api/reporting/roi',
     '/api/reporting/reports'
   ];
-  
+
   for (const endpoint of endpoints) {
     try {
       const response = await fetch(`${baseUrl}${endpoint}`);
@@ -306,9 +306,9 @@ async function demonstrateAPIIntegration(): Promise<void> {
  */
 async function demonstratePRDValidation(system: any): Promise<void> {
   console.log('   🎯 Validating PRD performance targets...');
-  
+
   const kpis = await system.getCurrentKPIs();
-  
+
   if (kpis) {
     const targets = {
       'Code Analysis Improvement': { current: kpis.codeAnalysisImprovement, target: 60, unit: '%' },
@@ -317,23 +317,23 @@ async function demonstratePRDValidation(system: any): Promise<void> {
       'System Uptime': { current: kpis.systemUptime, target: 99.5, unit: '%' },
       'MCP Utilization': { current: kpis.mcpUtilization, target: 80, unit: '%' }
     };
-    
+
     console.log('   📊 PRD Target Achievement:');
-    
+
     Object.entries(targets).forEach(([name, metric]) => {
       const achievement = (metric.current / metric.target) * 100;
       const status = achievement >= 80 ? '✅' : achievement >= 60 ? '⚠️' : '❌';
       const onTrack = achievement >= 80 ? 'On Track' : 'Behind Target';
-      
+
       console.log(`      ${status} ${name}: ${metric.current.toFixed(1)}${metric.unit} / ${metric.target}${metric.unit} (${achievement.toFixed(1)}% - ${onTrack})`);
     });
-    
+
     // Overall system efficiency
-    const overallEfficiency = Object.values(targets).reduce((avg, metric) => 
+    const overallEfficiency = Object.values(targets).reduce((avg, metric) =>
       avg + (metric.current / metric.target) * 100, 0) / Object.keys(targets).length;
-    
+
     console.log(`   🎯 Overall PRD Achievement: ${overallEfficiency.toFixed(1)}%`);
-    
+
     if (overallEfficiency >= 80) {
       console.log('   ✅ System is meeting or exceeding PRD performance targets!');
     } else if (overallEfficiency >= 60) {

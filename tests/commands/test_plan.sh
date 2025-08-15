@@ -13,20 +13,20 @@ test_plan_file_exists() {
 # Test plan command structure
 test_plan_structure() {
     local plan_file="$ORIGINAL_DIR/system-configs/.claude/commands/plan.md"
-    
+
     # Check required sections
     assert_file_contains "$plan_file" "# /plan Command" \
         "Should have command header"
-    
+
     assert_file_contains "$plan_file" "## Description" \
         "Should have Description section"
-    
+
     assert_file_contains "$plan_file" "## Usage" \
         "Should have Usage section"
-    
+
     assert_file_contains "$plan_file" "## Command Execution Flow" \
         "Should have Command Execution Flow section"
-    
+
     assert_file_contains "$plan_file" "## Strategic Plan Format" \
         "Should have Strategic Plan Format section"
 }
@@ -34,14 +34,14 @@ test_plan_structure() {
 # Test plan command content
 test_plan_content() {
     local plan_file="$ORIGINAL_DIR/system-configs/.claude/commands/plan.md"
-    
+
     # Check for key behavior descriptions
     assert_file_contains "$plan_file" "TDD methodology" \
         "Should mention TDD methodology"
-    
+
     assert_file_contains "$plan_file" "phased implementation" \
         "Should mention phased implementation"
-    
+
     assert_file_contains "$plan_file" "Executive Summary" \
         "Should include plan template sections"
 }

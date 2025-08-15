@@ -76,7 +76,7 @@ npm install -g @anthropic/claude-code
 
 # Or via Homebrew (macOS)
 brew install claude-code
-```yaml
+```
 
 ### 2. Clone and Setup Configuration
 
@@ -93,7 +93,7 @@ claude-code
 cp system-configs/CLAUDE.md ~/CLAUDE.md
 cp -r system-configs/.claude ~/.claude
 cp system-configs/settings.json ~/.claude/settings.json
-```yaml
+```
 
 ### 3. Experience the Orchestration Framework
 
@@ -115,7 +115,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 
 # Experience parallel agent deployment
 /resolve-cr [pr-number]  # Deploys multiple specialized agents for PR comment resolution
-```yaml
+```
 
 ## ✨ Features
 
@@ -188,7 +188,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Automatically discovers and runs tests
 # Creates starter tests if none exist
 # Detects test frameworks from package.json/README
-```yaml
+```
 
 #### `/context` - Parallel Repository Analysis
 
@@ -198,7 +198,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Orchestrates comprehensive architecture, tech stack, and purpose analysis
 # Auto-executes on Claude Code startup with intelligent load balancing
 # Performance feedback loop for optimal agent allocation
-```yaml
+```
 
 #### `/review` - Multi-Agent Quality Review
 
@@ -208,7 +208,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Comprehensive quality validation with specialist expertise
 # Performance tracking and continuous improvement metrics
 # Production-ready quality gates with detailed reporting
-```yaml
+```
 
 #### `/debug` - Orchestrated Systematic Debugging
 
@@ -218,7 +218,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Coordinates evidence gathering from multiple sources
 # Hypothesis formation and testing with specialist precision
 # Root cause identification with validated fixes
-```yaml
+```
 
 ### Planning & Orchestration
 
@@ -231,7 +231,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Generates TDD phases (8-15 files each) with quality gates
 # Intelligent framework orchestration for complex feature development
 # Outputs to ./.tmp/<feature-name>/ with comprehensive documentation
-```yaml
+```
 
 #### `/fix-ci` - Intelligent CI Failure Resolution
 
@@ -242,7 +242,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Coordinates with test-engineer and security-auditor as needed
 # Performance tracking for continuous improvement of fix strategies
 # Automated verification with rollback capabilities
-```yaml
+```
 
 ### Quality & Security
 
@@ -251,12 +251,14 @@ cp system-configs/settings.json ~/.claude/settings.json
 This repository includes comprehensive **ShellCheck validation** to prevent bash syntax errors and ensure script quality:
 
 **Features:**
+
 - **Automated CI Validation**: All shell scripts validated on push/PR
 - **Pre-commit Hooks**: Local validation before commits
 - **Developer Tools**: Setup and fix scripts for easy adoption
 - **Configurable Rules**: Balanced exclusions for practical development
 
 **Usage:**
+
 ```bash
 # One-time setup for developers
 ./scripts/setup-shellcheck.sh
@@ -284,7 +286,7 @@ See [ShellCheck Validation Documentation](docs/SHELLCHECK_VALIDATION.md) for com
 /deps update   # Safe updates with testing
 /deps clean    # Remove unused packages
 # Multi-language support (npm, pip, cargo, etc.)
-```yaml
+```
 
 #### `/agent-audit` - Orchestrated Ecosystem Validation
 
@@ -295,7 +297,7 @@ See [ShellCheck Validation Documentation](docs/SHELLCHECK_VALIDATION.md) for com
 # Performance metrics and capability gap analysis
 # Continuous improvement recommendations with quality feedback loops
 # Production-ready health monitoring for the entire orchestration framework
-```yaml
+```
 
 #### `/command-audit` - Command Quality Assurance
 
@@ -306,7 +308,7 @@ See [ShellCheck Validation Documentation](docs/SHELLCHECK_VALIDATION.md) for com
 # Length analysis with complexity thresholds and refactoring recommendations
 # Repository-specific command detection and sync exclusion validation
 # Command ecosystem health monitoring with detailed metrics and remediation
-```yaml
+```
 
 #### `/resolve-cr` - Multi-Agent PR Resolution
 
@@ -317,7 +319,7 @@ See [ShellCheck Validation Documentation](docs/SHELLCHECK_VALIDATION.md) for com
 # Coordinates with test-engineer and code-reviewer for validation
 # Performance tracking and success rate optimization
 # Seamless integration with /test and /commit orchestration workflow
-```yaml
+```
 
 Note: Previously named `/resolve-rabbit`.
 
@@ -330,7 +332,7 @@ Note: Previously named `/resolve-rabbit`.
 # Analyzes changes comprehensively
 # Creates semantic commit messages
 # Adds AI co-authorship attribution
-```yaml
+```
 
 #### `/push` - Safe Push to Remote
 
@@ -339,7 +341,7 @@ Note: Previously named `/resolve-rabbit`.
 # Safety checks for branch status
 # Sets up tracking for new branches
 # Prevents accidental force pushes
-```yaml
+```
 
 ## 🎭 Agent Ecosystem: 40+ Specialists
 
@@ -377,7 +379,7 @@ Execution:
   - design-system: Component library & design tokens
   - ux-researcher: User testing & feedback integration
 Performance Metrics: 70% faster delivery through parallel execution
-```yaml
+```
 
 #### Cloud Infrastructure Orchestration
 
@@ -391,7 +393,7 @@ Execution:
   - devops: CI/CD pipelines & deployment automation
   - cloud-architect: Cost optimization & multi-cloud strategy
 Continuous Improvement: Performance feedback drives resource allocation
-```yaml
+```
 
 #### Quality Assurance Orchestration
 
@@ -406,7 +408,7 @@ Execution:
   - accessibility-auditor: WCAG compliance & inclusive design validation
   - execution-evaluator: Command verification & success assessment
 Quality Gates: 95% coverage across all quality dimensions
-```yaml
+```
 
 #### Framework Health Orchestration
 
@@ -423,7 +425,7 @@ Execution (8 concurrent instances):
   - agent-auditor #7: Analysis agents (8 specialists)
   - agent-auditor #8: Operations agents (11 specialists)
 Performance Tracking: Real-time capability assessment and gap analysis
-```yaml
+```
 
 ### 🎯 Complete Agent Roster
 
@@ -539,7 +541,7 @@ claude-config/
 ├── docs/                      # 26 documentation files
 ├── scripts/                   # 17 utility and validation scripts
 └── tests/                     # Test suite for all components
-```yaml
+```
 
 ### Configuration Flow
 
@@ -553,7 +555,7 @@ graph TB
     E --> G[15 Commands Available]
     F --> H[Enhanced Claude CLI]
     G --> H
-```yaml
+```
 
 ## 💡 Real-World Orchestration Use Cases
 
@@ -576,7 +578,7 @@ cd claude-config
 
 # Multi-dimensional code review with parallel specialist deployment
 /review
-```yaml
+```
 
 ### Production-Ready Quality Assurance
 
@@ -590,7 +592,7 @@ cd claude-config
 # Continuous improvement workflow
 git pull origin main && /sync  # Framework updates
 /test                         # Orchestrated test validation
-```yaml
+```
 
 ### Advanced Framework Development
 
@@ -604,7 +606,7 @@ cp system-configs/.claude/agents/AGENT_TEMPLATE.md system-configs/.claude/agents
 /agent-audit                      # Comprehensive ecosystem validation
 
 # Performance tracking and continuous improvement
-```yaml
+```
 
 ## 💻 Installation
 
@@ -627,7 +629,7 @@ claude-code
 
 # Validate framework deployment and agent ecosystem health
 /agent-audit
-```yaml
+```
 
 ### Option 2: Manual Installation
 
@@ -642,7 +644,7 @@ cp system-configs/CLAUDE.md ~/CLAUDE.md
 # Copy Claude settings and commands
 cp -r system-configs/.claude ~/.claude
 cp system-configs/settings.json ~/.claude/settings.json
-```yaml
+```
 
 ### Option 3: Selective Installation
 
@@ -658,7 +660,7 @@ cp -r system-configs/.claude/agents ~/.claude/agents
 
 # Just the audio settings
 cp system-configs/settings.json ~/.claude/settings.json
-```yaml
+```
 
 ## 🧪 Testing
 
@@ -675,7 +677,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 
 # Validate YAML in agent definitions
 ./scripts/validate_yaml.sh
-```yaml
+```
 
 ### Test Coverage
 
@@ -700,7 +702,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 
 # Check agent directory
 ls ~/.claude/agents/
-```yaml
+```
 
 #### SYSTEM BOUNDARY Violation
 
@@ -715,9 +717,9 @@ If you see "SYSTEM BOUNDARY: operation not permitted", this means:
 # Check audio hook configuration
 cat ~/.claude/settings.json | grep -A 10 "hooks"
 
-# Test audio playback
+# Test audio playbook
 afplay /System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r
-```yaml
+```
 
 #### Configuration Sync Issues
 
@@ -730,7 +732,7 @@ git status
 
 # Force sync with validation
 /sync
-```yaml
+```
 
 ## 🤝 Contributing
 

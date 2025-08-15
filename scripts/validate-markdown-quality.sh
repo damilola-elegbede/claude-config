@@ -58,7 +58,7 @@ echo
 categorize_error() {
     local error_line="$1"
     local file="$2"
-    
+
     case "$error_line" in
         *"MD013/line-length"*)
             ((LINE_LENGTH_VIOLATIONS++))
@@ -83,7 +83,7 @@ categorize_error() {
             echo "Other" >> "$ERROR_CATEGORIES_FILE"
             ;;
     esac
-    
+
     # Track files with errors
     echo "$file" >> "$ERROR_FILES_FILE"
 }
@@ -93,30 +93,30 @@ run_markdownlint() {
     local temp_file
     temp_file=$(mktemp)
     local exit_code=0
-    
+
     echo -e "${YELLOW}Running markdownlint validation...${NC}"
-    
+
     # Run markdownlint and capture both stdout and stderr
     if ! npx markdownlint-cli2 "**/*.md" --config "$CONFIG_FILE" > "$temp_file" 2>&1; then
         exit_code=1  # Capture non-zero exit code
     else
         exit_code=0  # Capture success
     fi
-    
+
     # Reset error count
     total_errors=0
-    
+
     # Process results - count individual violation lines
     while IFS= read -r line; do
         if [[ "$line" =~ ^(.+):([0-9]+)(:([0-9]+))?[[:space:]]+(.+) ]]; then
             local file="${BASH_REMATCH[1]}"
             local error_desc="${BASH_REMATCH[5]}"
-            
+
             ((total_errors++))
             categorize_error "$error_desc" "$file"
         fi
     done < "$temp_file"
-    
+
     # Also extract summary for verification (but use counted errors as authoritative)
     if grep -q "Summary:" "$temp_file"; then
         local summary_line=$(grep "Summary:" "$temp_file")
@@ -130,7 +130,7 @@ run_markdownlint() {
             fi
         fi
     fi
-    
+
     # Calculate file statistics
     total_files=$(find "$REPO_ROOT" -name "*.md" -type f \
         ! -path "*/node_modules/*" \
@@ -139,18 +139,18 @@ run_markdownlint() {
         ! -path "**/CHANGELOG.md" \
         ! -path "*/system-configs/.claude/agents/*.md" \
         | wc -l | tr -d ' ')
-    
+
     # Count unique failed files
     if [ -f "$ERROR_FILES_FILE" ]; then
         failed_files=$(sort "$ERROR_FILES_FILE" | uniq | wc -l | tr -d ' ')
     else
         failed_files=0
     fi
-    
+
     passed_files=$((total_files - failed_files))
-    
+
     rm -f "$temp_file"
-    
+
     # Return appropriate exit code based on violations
     if [[ $total_errors -gt 0 ]]; then
         return 1
@@ -162,7 +162,7 @@ run_markdownlint() {
 # Function to analyze quality patterns
 analyze_quality_patterns() {
     echo -e "${YELLOW}Analyzing quality patterns...${NC}"
-    
+
     # Top error types
     echo "Most common violations:"
     if [ -f "$ERROR_CATEGORIES_FILE" ]; then
@@ -170,7 +170,7 @@ analyze_quality_patterns() {
             echo "  - $category: $count occurrences"
         done
     fi
-    
+
     # Problematic file analysis
     echo
     echo "Files requiring attention:"
@@ -186,7 +186,7 @@ analyze_quality_patterns() {
 # Function to generate quality report
 generate_quality_report() {
     echo -e "${YELLOW}Generating quality report...${NC}"
-    
+
     cat > "$QUALITY_REPORT" << EOF
 # Markdown Quality Report
 
@@ -214,18 +214,18 @@ EOF
     if [ -f "$ERROR_CATEGORIES_FILE" ] && [ -s "$ERROR_CATEGORIES_FILE" ]; then
         echo "| Rule | Count | Priority | Fix Strategy |" >> "$QUALITY_REPORT"
         echo "|------|-------|----------|--------------|" >> "$QUALITY_REPORT"
-        
+
         sort "$ERROR_CATEGORIES_FILE" | uniq -c | sort -nr | while read count category; do
             local priority="Medium"
             local fix_strategy="Manual review required"
-            
+
             case "$category" in
                 "MD013 (Line Length)")
                     priority="Low"
                     fix_strategy="Reformat long lines, exclude code blocks"
                     ;;
                 "MD040 (Code Language)")
-                    priority="High" 
+                    priority="High"
                     fix_strategy="Add language specifiers to code blocks"
                     ;;
                 "MD009 (Trailing Spaces)")
@@ -237,7 +237,7 @@ EOF
                     fix_strategy="Update allowed elements list"
                     ;;
             esac
-            
+
             echo "| $category | $count | $priority | $fix_strategy |" >> "$QUALITY_REPORT"
         done
     else
@@ -291,9 +291,9 @@ EOF
 \`\`\`jsonc
 {
   "config": {
-    "MD040": { 
+    "MD040": {
       "allowed_languages": [
-        "bash", "javascript", "python", "yaml", "json", 
+        "bash", "javascript", "python", "yaml", "json",
         "typescript", "shell", "text", "markdown", "mermaid", "http"
       ]
     }
@@ -311,24 +311,24 @@ EOF
 # Function to suggest fixes
 suggest_fixes() {
     echo -e "${YELLOW}Automated fix suggestions:${NC}"
-    
+
     if [[ $CODE_BLOCK_VIOLATIONS -gt 0 ]]; then
         echo "1. Code Language Violations ($CODE_BLOCK_VIOLATIONS):"
         echo "   - Add 'http' to allowed languages in .markdownlint-cli2.jsonc"
         echo "   - Add language specifiers to unlabeled code blocks"
     fi
-    
+
     if [[ $TRAILING_SPACE_VIOLATIONS -gt 0 ]]; then
         echo "2. Trailing Space Violations ($TRAILING_SPACE_VIOLATIONS):"
         echo "   - Run: find . -name '*.md' -exec sed -i '' 's/[[:space:]]*$//' {} +"
     fi
-    
+
     if [[ $LINE_LENGTH_VIOLATIONS -gt 0 ]]; then
         echo "3. Line Length Violations ($LINE_LENGTH_VIOLATIONS):"
         echo "   - Review lines >120 chars, reformat where appropriate"
         echo "   - Consider excluding specific files with technical content"
     fi
-    
+
     if [[ $INLINE_HTML_VIOLATIONS -gt 0 ]]; then
         echo "4. Inline HTML Violations ($INLINE_HTML_VIOLATIONS):"
         echo "   - Review HTML elements and add to allowed list if legitimate"
@@ -338,9 +338,9 @@ suggest_fixes() {
 # Function to check quality gate pass/fail
 evaluate_quality_gate() {
     local gate_passed=true
-    
+
     echo -e "${BLUE}=== Quality Gate Evaluation ===${NC}"
-    
+
     # Critical error threshold
     if [[ $total_errors -gt $CRITICAL_ERROR_THRESHOLD ]]; then
         echo -e "${RED}❌ Critical errors: $total_errors (threshold: $CRITICAL_ERROR_THRESHOLD)${NC}"
@@ -348,7 +348,7 @@ evaluate_quality_gate() {
     else
         echo -e "${GREEN}✅ Critical errors: $total_errors (within threshold)${NC}"
     fi
-    
+
     # File pass rate
     local pass_rate=$(( (passed_files * 100) / total_files ))
     if [[ $pass_rate -lt 100 ]]; then
@@ -357,7 +357,7 @@ evaluate_quality_gate() {
     else
         echo -e "${GREEN}✅ Pass rate: $pass_rate% (target achieved)${NC}"
     fi
-    
+
     # Overall gate result
     echo
     if [[ "$gate_passed" = true ]]; then
@@ -374,7 +374,7 @@ evaluate_quality_gate() {
 # Main execution
 main() {
     local gate_mode="${1:-validate}"
-    
+
     case "$gate_mode" in
         "validate"|"")
             if run_markdownlint; then
@@ -382,7 +382,7 @@ main() {
             else
                 echo -e "${RED}❌ Found $total_errors markdownlint violations${NC}"
             fi
-            
+
             analyze_quality_patterns
             generate_quality_report
             suggest_fixes
@@ -396,7 +396,7 @@ main() {
                 ! -path "*/.git/*" \
                 ! -path "*/system-configs/.claude/agents/*.md" \
                 -exec sed -i '' 's/[[:space:]]*$//' {} +
-            
+
             echo "Automated fixes applied. Run validation again."
             ;;
         "report")

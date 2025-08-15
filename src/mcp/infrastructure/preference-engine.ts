@@ -229,7 +229,7 @@ export class PreferenceEngine extends EventEmitter {
 
   constructor(registry: MCPServerRegistry, config: Partial<PreferenceEngineConfig> = {}) {
     super();
-    
+
     this.registry = registry;
     this.config = {
       defaultLearning: {
@@ -265,7 +265,7 @@ export class PreferenceEngine extends EventEmitter {
     try {
       // Store learning data
       this.learningData.push(data);
-      
+
       // Trim learning data if too large
       if (this.learningData.length > this.config.defaultLearning.maxHistory) {
         this.learningData.splice(0, this.learningData.length - this.config.defaultLearning.maxHistory);
@@ -273,10 +273,10 @@ export class PreferenceEngine extends EventEmitter {
 
       // Get or create agent profile
       const profile = await this.getOrCreateAgentProfile(data.agentId);
-      
+
       // Update tool usage pattern
       this.updateToolUsagePattern(profile, data);
-      
+
       // Learn preferences if auto-learning is enabled
       if (profile.learning.enableAutoLearning) {
         await this.updatePreferences(profile, data);
@@ -284,7 +284,7 @@ export class PreferenceEngine extends EventEmitter {
 
       // Emit learning event
       this.emit('learningUpdate', { agentId: data.agentId, data });
-      
+
     } catch (error) {
       console.error('Learning failed:', error);
       this.emit('learningError', { data, error });
@@ -300,7 +300,7 @@ export class PreferenceEngine extends EventEmitter {
     requirements: PerformanceRequirements;
   }> {
     const profile = this.profiles.get(agentId);
-    
+
     if (!profile) {
       // Return default preferences
       return {
@@ -343,9 +343,9 @@ export class PreferenceEngine extends EventEmitter {
 
     this.overrides.set(id, fullOverride);
     this.emit('preferenceOverrideSet', fullOverride);
-    
+
     console.log(`Preference override set: ${override.type} ${override.scope.serverId} for ${override.scope.agentId || 'all agents'}/${override.scope.toolName || 'all tools'}`);
-    
+
     return id;
   }
 
@@ -370,16 +370,16 @@ export class PreferenceEngine extends EventEmitter {
       if (override.expiresAt && override.expiresAt.getTime() < now) {
         return false;
       }
-      
+
       // Filter by scope
       if (agentId && override.scope.agentId && override.scope.agentId !== agentId) {
         return false;
       }
-      
+
       if (toolName && override.scope.toolName && override.scope.toolName !== toolName) {
         return false;
       }
-      
+
       return true;
     });
   }
@@ -409,7 +409,7 @@ export class PreferenceEngine extends EventEmitter {
 
     Object.assign(profile, updates);
     profile.metadata.lastActivity = new Date();
-    
+
     this.emit('agentProfileUpdated', { agentId, profile });
   }
 
@@ -424,7 +424,7 @@ export class PreferenceEngine extends EventEmitter {
     toolUsageStats: Record<string, number>;
   } {
     const now = Date.now();
-    const recentData = this.learningData.filter(d => 
+    const recentData = this.learningData.filter(d =>
       now - d.timestamp.getTime() < 24 * 60 * 60 * 1000 // Last 24 hours
     );
 
@@ -441,8 +441,8 @@ export class PreferenceEngine extends EventEmitter {
       totalLearningData: this.learningData.length,
       activeProfiles: this.profiles.size,
       activeOverrides: this.getPreferenceOverrides().length,
-      averageSatisfaction: satisfactionScores.length > 0 
-        ? satisfactionScores.reduce((sum, s) => sum + s, 0) / satisfactionScores.length 
+      averageSatisfaction: satisfactionScores.length > 0
+        ? satisfactionScores.reduce((sum, s) => sum + s, 0) / satisfactionScores.length
         : 0,
       toolUsageStats: toolUsage
     };
@@ -491,7 +491,7 @@ export class PreferenceEngine extends EventEmitter {
       }
     }
 
-    this.emit('preferencesImported', { 
+    this.emit('preferencesImported', {
       profileCount: data.profiles?.length || 0,
       overrideCount: data.overrides?.length || 0,
       dataPointCount: data.learningData?.length || 0
@@ -508,7 +508,7 @@ export class PreferenceEngine extends EventEmitter {
     if (this.cleanupTimer) {
       clearInterval(this.cleanupTimer);
     }
-    
+
     this.profiles.clear();
     this.overrides.clear();
     this.learningData.length = 0;
@@ -521,7 +521,7 @@ export class PreferenceEngine extends EventEmitter {
 
   private async getOrCreateAgentProfile(agentId: string): Promise<AgentProfile> {
     let profile = this.profiles.get(agentId);
-    
+
     if (!profile) {
       profile = {
         agentId,
@@ -542,17 +542,17 @@ export class PreferenceEngine extends EventEmitter {
           totalRequests: 0
         }
       };
-      
+
       this.profiles.set(agentId, profile);
       this.emit('agentProfileCreated', profile);
     }
-    
+
     return profile;
   }
 
   private updateToolUsagePattern(profile: AgentProfile, data: PerformanceLearning): void {
     let usage = profile.toolUsage.get(data.toolName);
-    
+
     if (!usage) {
       usage = {
         toolName: data.toolName,
@@ -568,7 +568,7 @@ export class PreferenceEngine extends EventEmitter {
     // Update usage metrics
     usage.lastUsed = data.timestamp;
     usage.frequency = this.updateWithEMA(usage.frequency, 1, profile.learning.emaAlpha);
-    
+
     if (data.satisfaction !== undefined) {
       usage.satisfactionHistory.push(data.satisfaction);
       if (usage.satisfactionHistory.length > 100) {
@@ -584,7 +584,7 @@ export class PreferenceEngine extends EventEmitter {
   private async updatePreferences(profile: AgentProfile, data: PerformanceLearning): Promise<void> {
     const minSamples = profile.learning.minSamples;
     const serverData = this.getLearningDataForServer(data.serverId, data.toolName, data.agentId);
-    
+
     if (serverData.length < minSamples) {
       return; // Not enough data for learning
     }
@@ -639,7 +639,7 @@ export class PreferenceEngine extends EventEmitter {
     const satisfactionScores = data
       .map(d => d.satisfaction)
       .filter(s => s !== undefined) as number[];
-    
+
     return satisfactionScores.length > 0
       ? satisfactionScores.reduce((sum, s) => sum + s, 0) / satisfactionScores.length
       : 0.5; // Neutral if no satisfaction data
@@ -658,11 +658,11 @@ export class PreferenceEngine extends EventEmitter {
 
   private applyOverrides(agentId: string, toolName: string, serverPreferences: Map<string, number>): void {
     const overrides = this.getPreferenceOverrides(agentId, toolName);
-    
+
     for (const override of overrides) {
       const serverId = override.scope.serverId;
       const current = serverPreferences.get(serverId) || 0;
-      
+
       switch (override.type) {
         case 'prefer':
           serverPreferences.set(serverId, Math.max(current, override.strength));
@@ -694,7 +694,7 @@ export class PreferenceEngine extends EventEmitter {
 
   private cleanupExpiredData(): void {
     const now = Date.now();
-    
+
     // Remove expired overrides
     for (const [id, override] of this.overrides.entries()) {
       if (override.expiresAt && override.expiresAt.getTime() < now) {
@@ -713,7 +713,7 @@ export class PreferenceEngine extends EventEmitter {
       const profiles = Array.from(this.profiles.entries())
         .sort(([, a], [, b]) => b.metadata.lastActivity.getTime() - a.metadata.lastActivity.getTime())
         .slice(this.config.maxProfiles);
-      
+
       for (const [agentId] of profiles) {
         this.profiles.delete(agentId);
       }

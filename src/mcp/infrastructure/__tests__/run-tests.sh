@@ -39,11 +39,11 @@ run_test_suite() {
     local test_name="$1"
     local test_pattern="$2"
     local timeout="$3"
-    
+
     echo -e "${YELLOW}Running $test_name...${NC}"
-    
+
     local start_time=$(date +%s)
-    
+
     if npm test -- --testPathPattern="$test_pattern" --testTimeout="$timeout" --verbose; then
         local end_time=$(date +%s)
         local duration=$((end_time - start_time))
@@ -131,7 +131,7 @@ echo -e "${YELLOW}Generating comprehensive coverage report...${NC}"
 
 if npx jest --config="$TEST_DIR/jest.config.js" --coverage --coverageReporters=text --coverageReporters=lcov --coverageReporters=html; then
     echo -e "${GREEN}✅ Coverage report generated${NC}"
-    
+
     # Check coverage thresholds
     if [ -f "$COVERAGE_DIR/lcov.info" ]; then
         echo -e "${GREEN}✅ Coverage data available at: $COVERAGE_DIR${NC}"
@@ -151,7 +151,7 @@ const { performance } = require('perf_hooks');
 async function runPerformanceTests() {
     console.log('\n📊 Performance Benchmarks:');
     console.log('==========================');
-    
+
     // Simulate routing performance test
     const routingTimes = [];
     for (let i = 0; i < 100; i++) {
@@ -161,24 +161,24 @@ async function runPerformanceTests() {
         const end = performance.now();
         routingTimes.push(end - start);
     }
-    
+
     const avgRouting = routingTimes.reduce((sum, time) => sum + time, 0) / routingTimes.length;
     const maxRouting = Math.max(...routingTimes);
-    
+
     console.log(`🎯 Routing Performance:`);
     console.log(`   Average: ${avgRouting.toFixed(2)}ms (target: <100ms)`);
     console.log(`   Maximum: ${maxRouting.toFixed(2)}ms (target: <100ms)`);
     console.log(`   Status: ${avgRouting < 100 && maxRouting < 100 ? '✅ PASS' : '❌ FAIL'}`);
-    
+
     // Simulate discovery performance test
     const discoveryStart = performance.now();
     await new Promise(resolve => setTimeout(resolve, Math.random() * 100 + 200));
     const discoveryTime = performance.now() - discoveryStart;
-    
+
     console.log(`\n🔍 Discovery Performance:`);
     console.log(`   Time: ${discoveryTime.toFixed(2)}ms (target: <500ms)`);
     console.log(`   Status: ${discoveryTime < 500 ? '✅ PASS' : '❌ FAIL'}`);
-    
+
     return {
         routing: { avg: avgRouting, max: maxRouting, pass: avgRouting < 100 && maxRouting < 100 },
         discovery: { time: discoveryTime, pass: discoveryTime < 500 }

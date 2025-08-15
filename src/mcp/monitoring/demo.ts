@@ -50,7 +50,7 @@ const demoConfig: Partial<MonitoringSystemConfig> = {
           },
           {
             id: 'ui-workflow-demo',
-            name: 'UI Workflow Performance Demo', 
+            name: 'UI Workflow Performance Demo',
             description: 'Demonstrates UI development workflow optimization',
             executor: {
               type: 'ui-workflow',
@@ -130,13 +130,13 @@ async function runDemo(): Promise<void> {
   try {
     // Create and start monitoring system
     const monitoringSystem = createMonitoringSystem(demoConfig);
-    
+
     // Set up event handlers for demo
     setupDemoEventHandlers(monitoringSystem);
-    
+
     // Start the system
     await monitoringSystem.start();
-    
+
     console.log('\n✅ Monitoring system started successfully!');
     console.log('\n📊 Dashboard URLs:');
     console.log(`   • Health Check: http://localhost:3001/api/health`);
@@ -154,13 +154,13 @@ async function runDemo(): Promise<void> {
     console.log('   • GET  /api/analytics/report    - Analytics report');
 
     console.log('\n🔄 Running demonstration sequence...');
-    
+
     // Demo sequence
     await runDemoSequence(monitoringSystem);
-    
+
     console.log('\n⚡ Demo completed! System will continue running...');
     console.log('   Press Ctrl+C to stop');
-    
+
     // Keep the demo running
     process.on('SIGINT', async () => {
       console.log('\n🛑 Shutting down monitoring system...');
@@ -168,7 +168,7 @@ async function runDemo(): Promise<void> {
       console.log('✅ Monitoring system stopped');
       process.exit(0);
     });
-    
+
   } catch (error) {
     console.error('❌ Demo failed:', error);
     process.exit(1);
@@ -191,7 +191,7 @@ function setupDemoEventHandlers(monitoringSystem: any): void {
   monitoringSystem.on('benchmark-completed', (run: any) => {
     const passRate = ((run.summary.passedTests / run.summary.totalTests) * 100).toFixed(1);
     console.log(`🧪 Benchmark Complete: ${run.suiteName} - ${passRate}% pass rate, ${run.summary.avgDuration.toFixed(0)}ms avg`);
-    
+
     // Show PRD validation results
     const prd = run.summary.prdValidation;
     console.log(`   📈 PRD Validation:`);
@@ -260,7 +260,7 @@ async function runDemoSequence(monitoringSystem: any): Promise<void> {
         end: Date.now()
       }
     });
-    
+
     const report = JSON.parse(performanceReport);
     if (report) {
       console.log(`   📊 Report generated with ${report.metricsCount} data points`);
@@ -348,7 +348,7 @@ if (require.main === module) {
   console.log('🎬 SPEC_05 Performance Monitoring Dashboard');
   console.log('   Comprehensive performance monitoring and analytics system');
   console.log('   Validating PRD success metrics with real-time monitoring\n');
-  
+
   // Show PRD validation first
   validatePRDMetrics().then(() => {
     console.log('\n');

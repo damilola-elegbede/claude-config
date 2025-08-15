@@ -1,6 +1,6 @@
 /**
  * MCP Infrastructure Main Export
- * 
+ *
  * Provides unified access to all MCP infrastructure components with integration examples
  */
 
@@ -27,33 +27,33 @@ export interface MCPInfrastructureConfig {
     discoveryInterval?: number;
     healthCheckInterval?: number;
   };
-  
+
   /** Registry options */
   registry?: {
     enablePersistence?: boolean;
     persistenceInterval?: number;
   };
-  
+
   /** Router configuration */
   router?: {
     defaultStrategy?: string;
     enableCaching?: boolean;
     cacheTtl?: number;
   };
-  
+
   /** Preference engine options */
   preferences?: {
     enableAutoLearning?: boolean;
     learningRate?: number;
   };
-  
+
   /** Cache manager options */
   cache?: {
     maxEntries?: number;
     maxSize?: number;
     enableRedis?: boolean;
   };
-  
+
   /** Resilience configuration */
   resilience?: ResilienceConfig;
 }
@@ -69,32 +69,32 @@ export class MCPInfrastructure {
   public readonly preferences: PreferenceEngine;
   public readonly cache: CacheManager;
   public readonly resilience: ResilienceManager;
-  
+
   private isStarted = false;
 
   constructor(config: MCPInfrastructureConfig = {}) {
     // Initialize cache first (others may depend on it)
     this.cache = new CacheManager(config.cache);
-    
+
     // Initialize registry
     this.registry = new MCPServerRegistry(config.registry);
-    
+
     // Initialize discovery service
     this.discovery = new MCPDiscoveryService(config.discovery);
-    
+
     // Initialize preference engine
     this.preferences = new PreferenceEngine(this.registry, config.preferences);
-    
+
     // Initialize router with integrated components
     this.router = new ToolRouter(this.registry, {
       ...config.router,
       // Integrate with cache for routing decisions
       enableCaching: config.router?.enableCaching ?? true
     });
-    
+
     // Initialize resilience manager
     this.resilience = new ResilienceManager(this.registry, config.resilience);
-    
+
     this.setupIntegrations();
   }
 
@@ -107,14 +107,14 @@ export class MCPInfrastructure {
     }
 
     console.log('Starting MCP Infrastructure...');
-    
+
     try {
       // Start discovery service (this will populate the registry)
       await this.discovery.start();
-      
+
       // Start resilience manager
       await this.resilience.start();
-      
+
       console.log('MCP Infrastructure started successfully');
       this.isStarted = true;
     } catch (error) {
@@ -132,7 +132,7 @@ export class MCPInfrastructure {
     }
 
     console.log('Stopping MCP Infrastructure...');
-    
+
     try {
       await this.discovery.stop();
       await this.resilience.stop();
@@ -140,7 +140,7 @@ export class MCPInfrastructure {
       this.preferences.destroy();
       await this.cache.destroy();
       this.registry.destroy();
-      
+
       this.isStarted = false;
       console.log('MCP Infrastructure stopped');
     } catch (error) {
@@ -166,7 +166,7 @@ export class MCPInfrastructure {
 
     // Get agent preferences
     const preferences = await this.preferences.getPreferences(
-      agentId || 'default', 
+      agentId || 'default',
       toolName
     );
 
@@ -232,11 +232,11 @@ export class MCPInfrastructure {
     if (metrics) {
       this.registry.updateServerMetrics(data.serverId, {
         totalRequests: metrics.totalRequests + 1,
-        successfulRequests: data.success 
-          ? metrics.successfulRequests + 1 
+        successfulRequests: data.success
+          ? metrics.successfulRequests + 1
           : metrics.successfulRequests,
-        failedRequests: !data.success 
-          ? metrics.failedRequests + 1 
+        failedRequests: !data.success
+          ? metrics.failedRequests + 1
           : metrics.failedRequests,
         averageResponseTime: data.responseTime, // Will be recalculated by registry
         lastRequestTime: new Date()
@@ -268,7 +268,7 @@ export class MCPInfrastructure {
     resilienceStats: any;
   } {
     const registryStats = this.registry.getRegistryStats();
-    
+
     return {
       isStarted: this.isStarted,
       discoveredServers: this.discovery.getServers().length,

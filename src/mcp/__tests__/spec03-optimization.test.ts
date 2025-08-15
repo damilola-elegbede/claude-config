@@ -1,12 +1,12 @@
 /**
  * SPEC_03 Tests: MCP Optimization Engine Validation
- * 
+ *
  * Comprehensive test suite validating the MCP optimization engine
  * meets all performance targets and functionality requirements
  */
 
-import { 
-  MCPOptimizationEngine, 
+import {
+  MCPOptimizationEngine,
   OptimizationEngineConfig,
   IntelligentRouter,
   AdvancedCacheManager,
@@ -93,7 +93,7 @@ describe('SPEC_03: MCP Optimization Engine', () => {
 
     test('should handle 10+ MCP servers coordination', async () => {
       const serverIds = mockServers.slice(0, 12).map(s => s.id);
-      
+
       const result = await optimizationEngine.coordinateMultiServerOperation(
         'test-operation',
         serverIds,
@@ -150,25 +150,25 @@ describe('SPEC_03: MCP Optimization Engine', () => {
   describe('Intelligent Request Routing', () => {
     test('should route based on real-time performance metrics', async () => {
       const router = new IntelligentRouter(config.routing);
-      
+
       // Create servers with different performance profiles
       const fastServer = createMockServer('fast-server', 50, 'healthy'); // 50ms response
       const slowServer = createMockServer('slow-server', 500, 'healthy'); // 500ms response
-      
+
       const context: RoutingContext = {
         toolName: 'Read',
         requirements: { maxResponseTime: 100 }
       };
 
       const decision = await router.route(context, [fastServer, slowServer]);
-      
+
       expect(decision.selectedServer.id).toBe('fast-server');
       expect(decision.reasoning).toContain('fast response time');
     });
 
     test('should implement predictive routing patterns', async () => {
       const router = new IntelligentRouter(config.routing);
-      
+
       // Simulate historical usage patterns
       const context: RoutingContext = {
         toolName: 'Read',
@@ -176,7 +176,7 @@ describe('SPEC_03: MCP Optimization Engine', () => {
       };
 
       const decision = await router.route(context, mockServers);
-      
+
       expect(decision.confidence).toBeGreaterThan(config.routing.minConfidence);
       expect(decision.decisionTime).toBeLessThan(config.routing.maxDecisionTime);
     });
@@ -194,7 +194,7 @@ describe('SPEC_03: MCP Optimization Engine', () => {
       };
 
       const decision = await optimizationEngine['router'].route(context, mockServers);
-      
+
       expect(workingServers.some(s => s.id === decision.selectedServer.id)).toBe(true);
       expect(decision.selectedServer.status).toBe('healthy');
     });
@@ -203,7 +203,7 @@ describe('SPEC_03: MCP Optimization Engine', () => {
   describe('Advanced Caching System', () => {
     test('should achieve 60% cache hit rate improvement', async () => {
       const cache = new AdvancedCacheManager(config.caching);
-      
+
       // Populate cache with test data
       const testKeys = Array.from({ length: 100 }, (_, i) => `test-key-${i}`);
       for (const key of testKeys) {
@@ -223,7 +223,7 @@ describe('SPEC_03: MCP Optimization Engine', () => {
 
     test('should implement multi-level caching strategy', async () => {
       const cache = new AdvancedCacheManager(config.caching);
-      
+
       // Test memory cache
       await cache.set('memory-test', { data: 'memory-value' });
       const memoryResult = await cache.get('memory-test', { preferLocal: true });
@@ -237,7 +237,7 @@ describe('SPEC_03: MCP Optimization Engine', () => {
 
     test('should handle cache coherence across servers', async () => {
       const cache = new AdvancedCacheManager(config.caching);
-      
+
       const coherenceGroup = 'test-group';
       await cache.set('coherent-key-1', { data: 'value1' }, { coherenceGroup });
       await cache.set('coherent-key-2', { data: 'value2' }, { coherenceGroup });
@@ -268,7 +268,7 @@ describe('SPEC_03: MCP Optimization Engine', () => {
   describe('Cross-Server Coordination', () => {
     test('should synchronize state across multiple servers', async () => {
       const coordinator = new CrossServerCoordinator(config.coordination);
-      
+
       const stateId = 'test-state-sync';
       const serverId = 'server-1';
       const testData = { key: 'value', timestamp: new Date() };
@@ -297,9 +297,9 @@ describe('SPEC_03: MCP Optimization Engine', () => {
 
     test('should resolve state conflicts automatically', async () => {
       const coordinator = new CrossServerCoordinator(config.coordination);
-      
+
       const stateId = 'conflict-test';
-      
+
       // Create conflicting states
       await coordinator.synchronizeState(stateId, 'server-1', { version: 1, data: 'data1' });
       await coordinator.synchronizeState(stateId, 'server-2', { version: 2, data: 'data2' });
@@ -313,7 +313,7 @@ describe('SPEC_03: MCP Optimization Engine', () => {
       // Verify conflict resolution
       const resolvedStates = Array.from(coordinator['serverStates'].values())
         .filter(state => state.stateId === stateId);
-      
+
       expect(resolvedStates.some(state => state.consistency !== 'conflict')).toBe(true);
     });
   });
@@ -337,7 +337,7 @@ describe('SPEC_03: MCP Optimization Engine', () => {
 
     test('should optimize connection pooling', async () => {
       const requests = generateTestRequests(20);
-      
+
       const results = await Promise.all(
         requests.map(req => optimizationEngine.optimizeRequest(req, mockServers))
       );
@@ -381,7 +381,7 @@ describe('SPEC_03: MCP Optimization Engine', () => {
 
     test('should provide real-time optimization recommendations', async () => {
       const healthCheck = await optimizationEngine.performHealthCheck();
-      
+
       expect(healthCheck.status).toMatch(/healthy|degraded|failed/);
       expect(healthCheck.details).toBeDefined();
       expect(healthCheck.details.cache).toBeDefined();
@@ -411,14 +411,14 @@ describe('SPEC_03: MCP Optimization Engine', () => {
       };
 
       const result = await optimizationEngine.optimizeRequest(request, mockServers);
-      
+
       expect(result.success).toBe(true);
       expect(result.metadata?.routingDecision).toBeDefined();
     });
 
     test('should leverage existing monitoring stack', async () => {
       const metrics = optimizationEngine.getOptimizationMetrics();
-      
+
       // Verify metrics format compatible with existing monitoring
       expect(metrics.routing).toBeDefined();
       expect(metrics.cache).toBeDefined();
@@ -430,7 +430,7 @@ describe('SPEC_03: MCP Optimization Engine', () => {
   describe('Scalability and Load Handling', () => {
     test('should handle 100+ concurrent requests', async () => {
       const concurrentRequests = generateTestRequests(150);
-      
+
       const startTime = Date.now();
       const results = await Promise.all(
         concurrentRequests.map(req => optimizationEngine.optimizeRequest(req, mockServers))
@@ -446,7 +446,7 @@ describe('SPEC_03: MCP Optimization Engine', () => {
 
     test('should scale to coordinate 10+ MCP servers', async () => {
       const allServerIds = mockServers.map(s => s.id);
-      
+
       const result = await optimizationEngine.coordinateMultiServerOperation(
         'scale-test',
         allServerIds,
@@ -477,17 +477,17 @@ describe('SPEC_03: MCP Optimization Engine', () => {
 
     test('should handle network partitions', async () => {
       const coordinator = new CrossServerCoordinator(config.coordination);
-      
+
       // Simulate network partition
       const partitionedServers = mockServers.slice(0, 3).map(s => s.id);
-      
+
       try {
         const result = await coordinator.coordinateOperation(
           'partition-test',
           partitionedServers,
           { data: 'test' }
         );
-        
+
         // Should handle gracefully even if some servers are unreachable
         expect(result).toBeDefined();
       } catch (error) {

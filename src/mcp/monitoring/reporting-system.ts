@@ -7,7 +7,7 @@ import { EventEmitter } from 'events';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { createWriteStream } from 'fs';
-import { 
+import {
   PerformanceMetrics,
   AnalyticsResult,
   Insight,
@@ -341,15 +341,15 @@ export class ComprehensiveReportingSystem extends EventEmitter {
   private reportConfigs: Map<string, ReportConfig> = new Map();
   private generatedReports: Map<string, GeneratedReport> = new Map();
   private scheduledJobs: Map<string, NodeJS.Timeout> = new Map();
-  
+
   // KPI tracking
   private kpiHistory: ExecutiveKPIs[] = [];
   private roiCalculator: ROICalculator;
   private trendAnalyzer: TrendAnalyzer;
-  
+
   // Export capabilities
   private exportHandlers: Map<string, ExportHandler> = new Map();
-  
+
   // PRD validation targets
   private readonly PRD_TARGETS = {
     codeAnalysisImprovement: 60, // 60% improvement target
@@ -367,12 +367,12 @@ export class ComprehensiveReportingSystem extends EventEmitter {
     config: Partial<MonitoringSystemConfig> = {}
   ) {
     super();
-    
+
     this.analyticsEngine = analyticsEngine;
     this.dashboardServer = dashboardServer;
     this.roiCalculator = new ROICalculator();
     this.trendAnalyzer = new TrendAnalyzer();
-    
+
     this.initializeExportHandlers();
     this.loadDefaultReportConfigs();
     this.setupEventHandlers();
@@ -512,14 +512,14 @@ export class ComprehensiveReportingSystem extends EventEmitter {
   private async updateKPIsFromAnalysis(result: AnalyticsResult): Promise<void> {
     try {
       const currentKPIs = await this.getCurrentKPIs();
-      
+
       // Update KPIs based on analysis insights
       if (result.type === 'trend-analysis') {
         this.updateTrendKPIs(currentKPIs, result);
       } else if (result.type === 'optimization') {
         this.updateOptimizationKPIs(currentKPIs, result);
       }
-      
+
       this.emit('kpisUpdated', currentKPIs);
     } catch (error) {
       console.error('Failed to update KPIs from analysis:', error);
@@ -546,7 +546,7 @@ export class ComprehensiveReportingSystem extends EventEmitter {
       };
 
       this.kpiHistory.push(kpis);
-      
+
       // Keep only last 10000 entries (approximately 7 days at 1-minute intervals)
       if (this.kpiHistory.length > 10000) {
         this.kpiHistory = this.kpiHistory.slice(-10000);
@@ -564,7 +564,7 @@ export class ComprehensiveReportingSystem extends EventEmitter {
   private async collectCurrentKPIs(): Promise<ExecutiveKPIs> {
     const snapshot = this.dashboardServer.getPerformanceSnapshot();
     const roi = await this.roiCalculator.calculateCurrentROI();
-    
+
     const kpis: ExecutiveKPIs = {
       timestamp: Date.now(),
       performanceScore: this.calculatePerformanceScore(snapshot),
@@ -601,7 +601,7 @@ export class ComprehensiveReportingSystem extends EventEmitter {
     const mcpScore = metrics.mcpServerUtilization;
     const workflowScore = metrics.workflowEfficiency * 100;
 
-    const totalScore = 
+    const totalScore =
       responseTimeScore * weights.responseTime +
       uptimeScore * weights.uptime +
       cacheScore * weights.cacheHitRate +
@@ -655,7 +655,7 @@ export class ComprehensiveReportingSystem extends EventEmitter {
 
     const codeImprovement = currentKPIs.codeAnalysisImprovement / 100;
     const uiImprovement = currentKPIs.uiDevelopmentImprovement / 100;
-    
+
     // Weighted average of improvements
     return ((codeImprovement * 0.6 + uiImprovement * 0.4) * 100);
   }
@@ -692,7 +692,7 @@ export class ComprehensiveReportingSystem extends EventEmitter {
     try {
       // Collect all necessary data
       const reportData = await this.collectReportData(config, options.timeRange);
-      
+
       // Generate report instance
       const report: GeneratedReport = {
         id: reportId,
@@ -737,7 +737,7 @@ export class ComprehensiveReportingSystem extends EventEmitter {
    * Collect all data needed for report generation
    */
   private async collectReportData(
-    config: ReportConfig, 
+    config: ReportConfig,
     timeRange?: { start: number; end: number }
   ): Promise<GeneratedReport['data']> {
     const range = timeRange || {
@@ -794,7 +794,7 @@ export class ComprehensiveReportingSystem extends EventEmitter {
     for (const metric of metrics) {
       const values = relevantKPIs.map(kpi => (kpi as any)[metric] as number);
       const trendAnalysis = this.trendAnalyzer.analyzeTrend(values, metric);
-      
+
       if (trendAnalysis) {
         trends.push({
           metricName: metric,
@@ -878,15 +878,15 @@ export class ComprehensiveReportingSystem extends EventEmitter {
 
     for (const recipient of config.schedule.recipients) {
       const deliveryFormat = preferredFormat || this.getPreferredFormat(recipient, config.formats);
-      
+
       if (recipient.preferredDelivery === 'email' && config.delivery.email) {
         deliveryPromises.push(this.deliverByEmail(report, recipient, deliveryFormat));
       }
-      
+
       if (recipient.preferredDelivery === 'slack' && config.delivery.slack) {
         deliveryPromises.push(this.deliverBySlack(report, recipient, deliveryFormat));
       }
-      
+
       if (recipient.preferredDelivery === 'webhook' && config.delivery.webhook) {
         deliveryPromises.push(this.deliverByWebhook(report, recipient, deliveryFormat));
       }
@@ -918,7 +918,7 @@ export class ComprehensiveReportingSystem extends EventEmitter {
     };
 
     const preferences = rolePreferences[recipient.role] || ['html'];
-    
+
     for (const format of preferences) {
       if (availableFormats.includes(format)) {
         return format;
@@ -932,8 +932,8 @@ export class ComprehensiveReportingSystem extends EventEmitter {
    * Deliver report via email
    */
   private async deliverByEmail(
-    report: GeneratedReport, 
-    recipient: ReportRecipient, 
+    report: GeneratedReport,
+    recipient: ReportRecipient,
     format: string
   ): Promise<void> {
     if (!recipient.email) return;
@@ -945,7 +945,7 @@ export class ComprehensiveReportingSystem extends EventEmitter {
       }
 
       const content = await exportHandler.export(report);
-      
+
       // In production, integrate with actual email service
       console.log(`Email delivery to ${recipient.email}:`, {
         subject: `${this.reportConfigs.get(report.configId)?.name} - ${new Date().toLocaleDateString()}`,
@@ -973,8 +973,8 @@ export class ComprehensiveReportingSystem extends EventEmitter {
    * Deliver report via Slack
    */
   private async deliverBySlack(
-    report: GeneratedReport, 
-    recipient: ReportRecipient, 
+    report: GeneratedReport,
+    recipient: ReportRecipient,
     format: string
   ): Promise<void> {
     if (!recipient.slack) return;
@@ -1009,8 +1009,8 @@ export class ComprehensiveReportingSystem extends EventEmitter {
    * Deliver report via webhook
    */
   private async deliverByWebhook(
-    report: GeneratedReport, 
-    recipient: ReportRecipient, 
+    report: GeneratedReport,
+    recipient: ReportRecipient,
     format: string
   ): Promise<void> {
     if (!recipient.webhook) return;
@@ -1055,7 +1055,7 @@ export class ComprehensiveReportingSystem extends EventEmitter {
    */
   private async storeReport(report: GeneratedReport, formats: string[]): Promise<void> {
     const reportDir = path.join(process.cwd(), 'reports', report.configId);
-    
+
     try {
       await fs.mkdir(reportDir, { recursive: true });
 
@@ -1352,7 +1352,7 @@ export class ComprehensiveReportingSystem extends EventEmitter {
 
     // Start real-time KPI collection
     this.emit('started');
-    
+
     console.log('Comprehensive reporting system started successfully');
   }
 
@@ -1361,7 +1361,7 @@ export class ComprehensiveReportingSystem extends EventEmitter {
    */
   public stop(): void {
     console.log('Stopping comprehensive reporting system...');
-    
+
     // Clear all scheduled jobs
     for (const [id, timer] of this.scheduledJobs) {
       clearInterval(timer);
@@ -1380,7 +1380,7 @@ export class ComprehensiveReportingSystem extends EventEmitter {
       if (!config.enabled) continue;
 
       const interval = this.getScheduleInterval(config.schedule.frequency);
-      
+
       const timer = setInterval(async () => {
         try {
           await this.generateReport(configId);
@@ -1450,7 +1450,7 @@ export class ComprehensiveReportingSystem extends EventEmitter {
    * Export report in specific format
    */
   public async exportReport(
-    reportId: string, 
+    reportId: string,
     format: 'json' | 'html' | 'pdf' | 'csv' | 'xlsx'
   ): Promise<string | Buffer> {
     const report = this.generatedReports.get(reportId);
@@ -1508,7 +1508,7 @@ class ROICalculator {
     // In production, this would integrate with actual cost tracking systems
     const monthlySavings = this.calculateMonthlySavings();
     const breakEvenMonths = this.DEFAULT_CONFIG.initialInvestment / monthlySavings;
-    
+
     return {
       initialInvestment: this.DEFAULT_CONFIG.initialInvestment,
       operationalCosts: this.DEFAULT_CONFIG.monthlyOperationalCosts,
@@ -1526,24 +1526,24 @@ class ROICalculator {
   private calculateMonthlySavings(): number {
     // Time savings: 160 hours * $120/hour = $19,200
     const timeSavings = 160 * this.DEFAULT_CONFIG.developerHourlyRate;
-    
+
     // Infrastructure savings: $2,000
     const infraSavings = 2000;
-    
+
     // Quality improvements: $3,000
     const qualitySavings = 3000;
-    
+
     return timeSavings + infraSavings + qualitySavings - this.DEFAULT_CONFIG.monthlyOperationalCosts;
   }
 
   private calculateNPV(monthlySavings: number, months: number): number {
     const discountRate = 0.1; // 10% annual discount rate
     let npv = -this.DEFAULT_CONFIG.initialInvestment;
-    
+
     for (let i = 1; i <= months; i++) {
       npv += monthlySavings / Math.pow(1 + discountRate / 12, i);
     }
-    
+
     return npv;
   }
 
@@ -1574,7 +1574,7 @@ class TrendAnalyzer {
   private calculateTrend(values: number[]): TrendAnalysis['trend'] {
     const n = values.length;
     const x = Array.from({ length: n }, (_, i) => i);
-    
+
     // Linear regression
     const sumX = x.reduce((a, b) => a + b, 0);
     const sumY = values.reduce((a, b) => a + b, 0);
@@ -1582,7 +1582,7 @@ class TrendAnalyzer {
     const sumXX = x.reduce((sum, xi) => sum + xi * xi, 0);
 
     const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
-    
+
     // Calculate R-squared for confidence
     const yMean = sumY / n;
     const totalSumSquares = values.reduce((sum, yi) => sum + Math.pow(yi - yMean, 2), 0);
@@ -1590,7 +1590,7 @@ class TrendAnalyzer {
       const predicted = slope * x[i] + (sumY - slope * sumX) / n;
       return sum + Math.pow(yi - predicted, 2);
     }, 0);
-    
+
     const rSquared = 1 - (residualSumSquares / totalSumSquares);
     const confidence = Math.max(0, Math.min(1, rSquared));
 
@@ -1605,11 +1605,11 @@ class TrendAnalyzer {
   private generateForecast(values: number[], trend: TrendAnalysis['trend']): TrendAnalysis['forecast'] {
     const lastValue = values[values.length - 1];
     const predicted = lastValue + trend.slope * 5; // 5 periods ahead
-    
+
     // Calculate uncertainty
     const stdDev = this.calculateStandardDeviation(values);
     const uncertainty = stdDev * Math.sqrt(5);
-    
+
     return {
       predicted,
       confidenceInterval: [predicted - uncertainty, predicted + uncertainty],
@@ -1651,7 +1651,7 @@ class HTMLExportHandler implements ExportHandler {
   async export(report: GeneratedReport): Promise<string> {
     const config = report.configId;
     const data = report.data;
-    
+
     return `
 <!DOCTYPE html>
 <html>
@@ -1822,8 +1822,8 @@ class HTMLExportHandler implements ExportHandler {
         <div class="header">
             <h1>MCP Analytics Report</h1>
             <div class="meta">
-                Generated: ${new Date(report.generatedAt).toLocaleString()} | 
-                Report ID: ${report.id} | 
+                Generated: ${new Date(report.generatedAt).toLocaleString()} |
+                Report ID: ${report.id} |
                 Coverage: ${new Date(report.metadata.coverage.start).toLocaleDateString()} - ${new Date(report.metadata.coverage.end).toLocaleDateString()}
             </div>
         </div>
@@ -1980,7 +1980,7 @@ class PDFExportHandler implements ExportHandler {
     // For now, return HTML content as a placeholder
     const htmlHandler = new HTMLExportHandler();
     const htmlContent = await htmlHandler.export(report);
-    
+
     // Placeholder: convert HTML to PDF using puppeteer
     return Buffer.from(htmlContent, 'utf8');
   }
@@ -1993,7 +1993,7 @@ class CSVExportHandler implements ExportHandler {
   async export(report: GeneratedReport): Promise<string> {
     const kpis = report.data.kpis;
     const trends = report.data.trends;
-    
+
     const csvLines = [
       // Header
       'Metric,Value,Unit,Timestamp',
@@ -2015,7 +2015,7 @@ class CSVExportHandler implements ExportHandler {
       csvLines.push('');
       csvLines.push('Trend Analysis');
       csvLines.push('Metric,Direction,Slope,Confidence,Target Achievement');
-      
+
       trends.forEach(trend => {
         csvLines.push(
           `${trend.metricName},${trend.trend.direction},${trend.trend.slope.toFixed(4)},${(trend.trend.confidence * 100).toFixed(1)}%,${trend.targetProgress.achievement.toFixed(1)}%`
@@ -2036,7 +2036,7 @@ class ExcelExportHandler implements ExportHandler {
     // For now, return CSV content as a fallback
     const csvHandler = new CSVExportHandler();
     const csvContent = await csvHandler.export(report);
-    
+
     return Buffer.from(csvContent, 'utf8');
   }
 }

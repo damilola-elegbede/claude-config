@@ -10,7 +10,7 @@ it does not make any changes automatically.**
 
 ```bash
 /agent-audit
-```yaml
+```
 
 ## Behavior
 
@@ -61,13 +61,14 @@ design principles.
 
 ### 6. Markdown Parsing Standards
 
-- **Code Fencing Consistency**: Ensure all code blocks use proper language tags (```bash, ```yaml, ```python, etc.)
+- **Code Fencing Consistency**: Ensure all code blocks use proper language tags (`bash`, `yaml`, `python`, etc.)
 - **Example Quality**: Verify examples are focused, well-commented, and provide clear context
 - **Structured Formats**: Validate use of YAML for workflows and structured data
 - **Code Format Separation**: Ensure clean separation between inline code and code blocks
 - **Command Clarity**: Multi-line commands must include explanations and context
 
 **Anti-Patterns to Detect**:
+
 - Overly complex multi-line commands without explanation
 - Inconsistent formatting between sections
 - Mixed inline/block code formats creating ambiguity
@@ -113,7 +114,7 @@ parallel_execution:
     validations: [template, tools, description, markdownParsing, tier, modelAppropriateness]
   - category: operations
     validations: [template, tools, description, markdownParsing, tier, modelAppropriateness]
-```yaml
+```
 
 ### Phase 2: Cross-Category Analysis
 
@@ -149,7 +150,7 @@ After audit completion, **execution-evaluator** is deployed to verify:
 
 ```text
 Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
-```yaml
+```
 
 ### Category Health Matrix
 
@@ -176,12 +177,14 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 | agent-name | ✅ | ✅ | ❌ | ✅ | Complex examples without explanation |
 
 **Parsing Standards Summary**:
+
 - Code Fencing: XX/XX agents compliant
-- Language Tags: XX/XX agents compliant  
+- Language Tags: XX/XX agents compliant
 - Example Quality: XX/XX agents compliant
 - Format Consistency: XX/XX agents compliant
 
 **Common Anti-Patterns Found**:
+
 - Missing language tags on code fences: X agents
 - Complex commands without explanation: X agents
 - Mixed inline/block formatting: X agents
@@ -212,7 +215,7 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 - Updated agent-name: Set tier to 1
 - Fixed agent-name: Removed Task tool access
 - Updated agent-name: Added SYSTEM BOUNDARY warning
-```yaml
+```
 
 ### Manual Remediation Required
 
@@ -225,7 +228,7 @@ sed -i '' 's/category: wrong/category: correct/' agent.md
 sed -i '' 's/model: opus/model: sonnet/' agent-name.md  # Save 40% cost
 # Upgrade under-provisioned agents:
 sed -i '' 's/model: haiku/model: sonnet/' agent-name.md  # Better capability
-```yaml
+```
 
 ## Success Criteria
 

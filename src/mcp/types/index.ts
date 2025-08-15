@@ -1,6 +1,6 @@
 /**
  * MCP Infrastructure Type Definitions
- * 
+ *
  * Comprehensive TypeScript interfaces for the MCP infrastructure system.
  * Provides strict typing for all components and operations.
  */
@@ -438,7 +438,7 @@ export interface PerformanceThresholdEvent extends BaseEvent {
 export abstract class MCPInfrastructureError extends Error {
   abstract readonly code: string;
   abstract readonly category: string;
-  
+
   constructor(message: string, public readonly context?: Record<string, any>) {
     super(message);
     this.name = this.constructor.name;
@@ -750,7 +750,7 @@ export interface ResilienceConfig {
     /** Per-server circuit breaker configurations */
     serverConfigs?: Record<string, Partial<CircuitBreakerConfig>>;
   };
-  
+
   /** Fallback configuration */
   fallback?: {
     /** Default fallback policies */
@@ -760,7 +760,7 @@ export interface ResilienceConfig {
     /** Enable automatic fallback discovery */
     enableAutoDiscovery?: boolean;
   };
-  
+
   /** Health monitoring configuration */
   healthMonitoring?: {
     /** Health check interval in milliseconds */
@@ -772,7 +772,7 @@ export interface ResilienceConfig {
     /** Number of consecutive successes before marking healthy */
     recoveryThreshold?: number;
   };
-  
+
   /** Performance targets */
   performance?: {
     /** Maximum acceptable response time in ms */
@@ -916,7 +916,7 @@ export interface RoutingStrategy {
   readonly name: string;
   /** Strategy description */
   readonly description: string;
-  
+
   /**
    * Evaluate servers for routing decision
    */
@@ -1789,23 +1789,23 @@ export type {
   MCPServerInfo,
   ServerMetadata,
   ResourceRequirements,
-  
+
   // Metrics types
   ServerMetrics,
   MetricsDataPoint,
   PerformanceBenchmark,
-  
+
   // Registry types
   ToolMapping,
   ToolMappingMetadata,
   RegistryQuery,
   RegistryStats,
-  
+
   // Configuration types
   DiscoveryOptions,
   ServerRegistryOptions,
   RedisOptions,
-  
+
   // Event types
   BaseEvent,
   ServerDiscoveredEvent,
@@ -1820,7 +1820,7 @@ export type {
   PreferenceUpdatedEvent,
   PerformanceBenchmarkEvent,
   PerformanceThresholdEvent,
-  
+
   // Circuit breaker types
   CircuitBreakerState,
   CircuitBreakerConfig,
@@ -1828,7 +1828,7 @@ export type {
   CircuitBreakerStats,
   CircuitBreakerFailureEvent,
   CircuitBreakerStateChangeEvent,
-  
+
   // Fallback and resilience types
   FallbackPolicy,
   FallbackServerConfig,
@@ -1840,7 +1840,7 @@ export type {
   ResilienceStats,
   HealthCheckResult,
   ResilienceContext,
-  
+
   // Tool routing types
   RoutingDecision,
   RoutingContext,
@@ -1848,7 +1848,7 @@ export type {
   RoutingStrategy,
   StrategyConfig,
   ToolRouterConfig,
-  
+
   // Agent preference types
   AgentProfile,
   ToolUsagePattern,
@@ -1861,7 +1861,7 @@ export type {
   PreferenceOverride,
   OverrideScope,
   PreferenceEngineConfig,
-  
+
   // Cache types
   CacheEntry,
   CacheStats,
@@ -1870,21 +1870,21 @@ export type {
   CacheOperation,
   CacheKeyPattern,
   RedisClient,
-  
+
   // Tool execution types
   ToolExecutionRequest,
   ToolExecutionResponse,
   ToolExecutionContext,
-  
+
   // Branded types
   ServerID,
   AgentID,
   ToolName,
   RequestID,
-  
+
   // Infrastructure configuration
   MCPInfrastructureConfig,
-  
+
   // Utility types
   DeepPartial,
   RequiredSubset,

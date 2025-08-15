@@ -5,15 +5,15 @@
 module.exports = {
   // Test environment
   testEnvironment: 'node',
-  
+
   // Test file patterns
   testMatch: [
     '**/__tests__/**/*.test.ts'
   ],
-  
+
   // Module resolution
   moduleFileExtensions: ['ts', 'js', 'json'],
-  
+
   // Transform TypeScript files
   transform: {
     '^.+\\.ts$': ['ts-jest', {
@@ -32,21 +32,21 @@ module.exports = {
       }
     }]
   },
-  
+
   // Module path mapping (adjust paths as needed)
   moduleNameMapping: {
     '^@/(.*)$': '<rootDir>/../../../$1',
     '^@mcp/(.*)$': '<rootDir>/../$1'
   },
-  
+
   // Test setup
   setupFilesAfterEnv: ['<rootDir>/test-setup.js'],
-  
+
   // Coverage configuration
   collectCoverage: true,
   coverageDirectory: '<rootDir>/coverage',
   coverageReporters: ['text', 'lcov', 'html', 'json'],
-  
+
   // Coverage thresholds (80% minimum as required)
   coverageThreshold: {
     global: {
@@ -56,7 +56,7 @@ module.exports = {
       statements: 80
     }
   },
-  
+
   // Files to include in coverage
   collectCoverageFrom: [
     '../*.ts',
@@ -65,36 +65,36 @@ module.exports = {
     '!**/*.d.ts',
     '!**/node_modules/**'
   ],
-  
+
   // Test timeout (important for integration tests)
   testTimeout: 30000,
-  
+
   // Clear mocks between tests
   clearMocks: true,
   restoreMocks: true,
-  
+
   // Verbose output for debugging
   verbose: true,
-  
+
   // Fail fast on first error (optional)
   bail: false,
-  
+
   // Parallel execution (adjust based on system)
   maxWorkers: 4,
-  
+
   // Mock handling
   mockPathIgnorePatterns: [
     '/node_modules/',
     '/__fixtures__/'
   ],
-  
+
   // Global setup/teardown (if needed)
   globalSetup: undefined,
   globalTeardown: undefined,
-  
+
   // Error handling
   errorOnDeprecated: true,
-  
+
   // Cache configuration
   cacheDirectory: '<rootDir>/.jest-cache'
 };

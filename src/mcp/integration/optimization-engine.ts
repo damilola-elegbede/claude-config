@@ -1,6 +1,6 @@
 /**
  * SPEC_03: MCP Optimization Engine for Integration Specialist
- * 
+ *
  * Advanced MCP request routing system with intelligent caching, performance optimization,
  * and cross-server coordination patterns designed to reduce cross-MCP latency by 40%
  * and enable coordination across 10+ MCP servers.
@@ -219,7 +219,7 @@ export class AdvancedCacheManager extends EventEmitter {
       // Try distributed cache
       if (this.distributedCache.has(key)) {
         const value = this.distributedCache.get(key);
-        
+
         // Promote to memory cache if frequently accessed
         if (this.shouldPromoteToMemory(key)) {
           this.memoryCache.set(key, value);
@@ -346,7 +346,7 @@ export class AdvancedCacheManager extends EventEmitter {
       for (const key of keys) {
         const memValue = this.memoryCache.get(key);
         const distValue = this.distributedCache.get(key);
-        
+
         if (memValue && distValue && JSON.stringify(memValue) !== JSON.stringify(distValue)) {
           conflicts++;
           // Resolve conflict (latest wins)
@@ -405,10 +405,10 @@ export class IntelligentRouter extends EventEmitter {
 
       // Apply intelligent routing strategies
       const scoredServers = await this.scoreServers(candidates, context);
-      
+
       // Select optimal server
       const selectedServer = this.selectOptimalServer(scoredServers, context);
-      
+
       // Create routing decision
       const decision: RoutingDecision = {
         selectedServer,
@@ -434,7 +434,7 @@ export class IntelligentRouter extends EventEmitter {
   private async updateServerProfiles(servers: MCPServerInfo[]): Promise<void> {
     for (const server of servers) {
       const existingProfile = this.serverProfiles.get(server.id);
-      
+
       const profile: ServerPerformanceProfile = {
         serverId: server.id,
         serverName: server.name,
@@ -452,7 +452,7 @@ export class IntelligentRouter extends EventEmitter {
   }
 
   private async scoreServers(
-    servers: MCPServerInfo[], 
+    servers: MCPServerInfo[],
     context: RoutingContext
   ): Promise<Array<{ server: MCPServerInfo; score: number }>> {
     const scored: Array<{ server: MCPServerInfo; score: number }> = [];
@@ -511,7 +511,7 @@ export class IntelligentRouter extends EventEmitter {
   ): number {
     const selectedScore = alternatives.find(alt => alt.server.id === selected.id)?.score || 0;
     const secondBestScore = alternatives[1]?.score || 0;
-    
+
     // Confidence based on score gap
     return Math.min(1, (selectedScore - secondBestScore) + 0.5);
   }
@@ -557,7 +557,7 @@ export class IntelligentRouter extends EventEmitter {
 
   private calculateHealthScore(server: MCPServerInfo): number {
     // Composite health score
-    return server.status === 'healthy' ? 1.0 : 
+    return server.status === 'healthy' ? 1.0 :
            server.status === 'degraded' ? 0.7 : 0.3;
   }
 
@@ -690,7 +690,7 @@ export class CrossServerCoordinator extends EventEmitter {
 
   async resolveConflicts(stateId: string): Promise<void> {
     const conflictingStates: CrossServerState[] = [];
-    
+
     for (const [key, state] of this.serverStates) {
       if (key.startsWith(stateId) && state.consistency === 'conflict') {
         conflictingStates.push(state);
@@ -712,10 +712,10 @@ export class CrossServerCoordinator extends EventEmitter {
   ): Promise<{ success: boolean; results: Map<string, any>; errors: Error[] }> {
     const results = new Map<string, any>();
     const errors: Error[] = [];
-    
+
     // Phase 1: Prepare
     const prepared = await this.prepareTransaction(transactionId, servers, operation, data);
-    
+
     if (!prepared.allPrepared) {
       // Abort transaction
       await this.abortTransaction(transactionId, servers);
@@ -851,7 +851,7 @@ export class CrossServerCoordinator extends EventEmitter {
 
   private async processSyncQueue(): Promise<void> {
     const batch = this.syncQueue.splice(0, 10); // Process in batches
-    
+
     for (const item of batch) {
       try {
         await this.performSync(item);
@@ -873,7 +873,7 @@ export class CrossServerCoordinator extends EventEmitter {
 
   private performConflictResolution(states: CrossServerState[]): CrossServerState {
     // Last-write-wins conflict resolution
-    return states.reduce((latest, current) => 
+    return states.reduce((latest, current) =>
       current.lastModified > latest.lastModified ? current : latest
     );
   }
@@ -1060,7 +1060,7 @@ export class MCPOptimizationEngine extends EventEmitter {
     this.metrics.coordination.activeServers = servers.length;
 
     const result = await this.coordinator.coordinateOperation(operation, servers, data);
-    
+
     if (result.success) {
       this.metrics.coordination.transactionSuccess++;
     }
@@ -1164,13 +1164,13 @@ export class MCPOptimizationEngine extends EventEmitter {
     decision: RoutingDecision
   ): Promise<ToolExecutionResponse<T>> {
     const batchKey = `${decision.selectedServer.id}:${request.toolName}`;
-    
+
     if (!this.batchingQueues.has(batchKey)) {
       this.batchingQueues.set(batchKey, []);
     }
 
     const queue = this.batchingQueues.get(batchKey)!;
-    
+
     return new Promise((resolve) => {
       queue.push({ request, resolve, decision });
     });
@@ -1254,7 +1254,7 @@ export class MCPOptimizationEngine extends EventEmitter {
 
   private updatePerformanceMetrics<T>(startTime: number, result: ToolExecutionResponse<T>): void {
     const executionTime = Date.now() - startTime;
-    
+
     // Calculate latency reduction (mock calculation)
     const baselineLatency = 500; // Assumed baseline
     this.metrics.system.latencyReduction = Math.max(0, (baselineLatency - executionTime) / baselineLatency);

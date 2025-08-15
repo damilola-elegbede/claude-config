@@ -86,7 +86,7 @@ describe('Performance Dashboard System', () => {
       expect(metrics.codeAnalysisTime).toBeGreaterThanOrEqual(15);
       expect(metrics.codeAnalysisTime).toBeLessThanOrEqual(30);
 
-      // Validate UI workflow duration (target: 4.8-7.2min)  
+      // Validate UI workflow duration (target: 4.8-7.2min)
       expect(metrics.uiWorkflowDuration).toBeGreaterThanOrEqual(4);
       expect(metrics.uiWorkflowDuration).toBeLessThanOrEqual(8);
 
@@ -142,12 +142,12 @@ describe('Performance Dashboard System', () => {
 
     test('should calculate workflow efficiency correctly', () => {
       const efficiency = collector['calculateWorkflowEfficiency'](20, 5.5);
-      
+
       // Expected calculation:
       // Code improvement: (52.5 - 20) / 52.5 = 0.619
       // UI improvement: (10 - 5.5) / 10 = 0.45
       // Weighted average: 0.619 * 0.6 + 0.45 * 0.4 = 0.551
-      
+
       expect(efficiency).toBeCloseTo(0.551, 2);
     });
 
@@ -340,7 +340,7 @@ describe('Performance Dashboard System', () => {
 
     test('should provide performance snapshot', () => {
       const snapshot = server.getPerformanceSnapshot();
-      
+
       expect(snapshot).toHaveProperty('metrics');
       expect(snapshot).toHaveProperty('alerts');
       expect(snapshot).toHaveProperty('status');
@@ -354,12 +354,12 @@ describe('Performance Dashboard System', () => {
       };
 
       const report = server.getPerformanceReport(timeRange);
-      
+
       if (report) {
         expect(report).toHaveProperty('timeRange');
         expect(report).toHaveProperty('statistics');
         expect(report).toHaveProperty('prdValidation');
-        
+
         // Verify PRD validation structure
         expect(report.prdValidation).toHaveProperty('codeAnalysisImprovement');
         expect(report.prdValidation).toHaveProperty('uiWorkflowImprovement');
@@ -402,7 +402,7 @@ describe('Performance Dashboard System', () => {
 
     test('should handle WebSocket message for metrics history request', () => {
       const mockWs = { ...mockWebSocket, send: jest.fn() };
-      
+
       const message = {
         type: 'getMetrics',
         timeRange: {
@@ -412,7 +412,7 @@ describe('Performance Dashboard System', () => {
       };
 
       server['handleClientMessage'](mockWs as any, message);
-      
+
       expect(mockWs.send).toHaveBeenCalledWith(
         expect.stringContaining('"metricsHistory"')
       );
@@ -421,7 +421,7 @@ describe('Performance Dashboard System', () => {
     test('should handle alert resolution via WebSocket', () => {
       const mockWs = { ...mockWebSocket };
       const resolveSpy = jest.spyOn(server['alertManager'], 'resolveAlert');
-      
+
       const message = {
         type: 'resolveAlert',
         metric: 'test_metric',
@@ -429,7 +429,7 @@ describe('Performance Dashboard System', () => {
       };
 
       server['handleClientMessage'](mockWs as any, message);
-      
+
       expect(resolveSpy).toHaveBeenCalledWith('test_metric', 'warning');
     });
   });
@@ -439,11 +439,11 @@ describe('Performance Dashboard System', () => {
       // Pre-optimization baseline: 52.5s average (45-60s range)
       // Post-optimization target: 21s average (18-24s range)
       // Expected improvement: 60%
-      
+
       const preOptimizationTime = 52.5;
       const postOptimizationTime = 21;
       const improvement = (preOptimizationTime - postOptimizationTime) / preOptimizationTime;
-      
+
       expect(improvement).toBeGreaterThanOrEqual(0.60); // 60% improvement
     });
 
@@ -451,23 +451,23 @@ describe('Performance Dashboard System', () => {
       // Pre-optimization baseline: 10min average (8-12min range)
       // Post-optimization target: 6min average (4.8-7.2min range)
       // Expected improvement: 40%
-      
+
       const preOptimizationTime = 10;
       const postOptimizationTime = 6;
       const improvement = (preOptimizationTime - postOptimizationTime) / preOptimizationTime;
-      
+
       expect(improvement).toBeGreaterThanOrEqual(0.40); // 40% improvement
     });
 
     test('should validate workflow efficiency calculation', () => {
       const collector = new MetricsCollector(defaultDashboardConfig);
-      
+
       // Test with target metrics
       const codeTime = 21; // 60% improvement from 52.5s
       const uiTime = 6; // 40% improvement from 10min
-      
+
       const efficiency = collector['calculateWorkflowEfficiency'](codeTime, uiTime);
-      
+
       // Expected: 0.6 * 0.6 + 0.4 * 0.4 = 0.52 (52% overall efficiency)
       expect(efficiency).toBeGreaterThanOrEqual(0.40); // Target 40-50%
       expect(efficiency).toBeLessThanOrEqual(0.60);
@@ -475,13 +475,13 @@ describe('Performance Dashboard System', () => {
 
     test('should validate MCP server utilization target (80%)', () => {
       const collector = new MetricsCollector(defaultDashboardConfig);
-      
+
       // Simulate multiple measurements
       const measurements = [];
       for (let i = 0; i < 100; i++) {
         measurements.push(collector['getMCPServerUtilization']());
       }
-      
+
       Promise.all(measurements).then(results => {
         const avgUtilization = results.reduce((sum, val) => sum + val, 0) / results.length;
         expect(avgUtilization).toBeGreaterThanOrEqual(0.75); // Above baseline
@@ -490,12 +490,12 @@ describe('Performance Dashboard System', () => {
 
     test('should validate system uptime target (99.5%)', () => {
       const collector = new MetricsCollector(defaultDashboardConfig);
-      
+
       const measurements = [];
       for (let i = 0; i < 100; i++) {
         measurements.push(collector['getSystemUptime']());
       }
-      
+
       Promise.all(measurements).then(results => {
         const avgUptime = results.reduce((sum, val) => sum + val, 0) / results.length;
         expect(avgUptime).toBeGreaterThanOrEqual(0.995); // 99.5% target
@@ -504,12 +504,12 @@ describe('Performance Dashboard System', () => {
 
     test('should validate cache hit rate target (>90%)', () => {
       const collector = new MetricsCollector(defaultDashboardConfig);
-      
+
       const measurements = [];
       for (let i = 0; i < 100; i++) {
         measurements.push(collector['getCacheHitRate']());
       }
-      
+
       Promise.all(measurements).then(results => {
         const avgHitRate = results.reduce((sum, val) => sum + val, 0) / results.length;
         expect(avgHitRate).toBeGreaterThanOrEqual(0.90); // >90% target
@@ -520,7 +520,7 @@ describe('Performance Dashboard System', () => {
   describe('Alert Configuration Validation', () => {
     test('should have correct threshold configuration', () => {
       const config = defaultDashboardConfig;
-      
+
       expect(config.alertThresholds.codeAnalysisTimeMax).toBe(28.8); // 24s + 20%
       expect(config.alertThresholds.uiWorkflowMax).toBe(8.28); // 7.2min + 15%
       expect(config.alertThresholds.mcpUtilizationMin).toBe(0.70); // 70% minimum
@@ -531,7 +531,7 @@ describe('Performance Dashboard System', () => {
 
     test('should have appropriate retention periods', () => {
       const config = defaultDashboardConfig;
-      
+
       expect(config.retentionPeriods.realTime).toBe(60); // 1 hour
       expect(config.retentionPeriods.hourly).toBe(24); // 24 hours
       expect(config.retentionPeriods.daily).toBe(90); // 90 days
@@ -540,7 +540,7 @@ describe('Performance Dashboard System', () => {
 
     test('should have proper escalation rules', () => {
       const config = defaultDashboardConfig;
-      
+
       expect(config.integrations.alerts.escalationRules).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -569,20 +569,20 @@ describe('Performance Dashboard System', () => {
 
       const updateCount = 50;
       const updates: PerformanceMetrics[] = [];
-      
+
       collector.on('metricsUpdated', (metrics) => {
         updates.push(metrics);
       });
 
       collector.start();
-      
+
       // Wait for several update cycles
       await new Promise(resolve => setTimeout(resolve, 5500));
-      
+
       collector.stop();
-      
+
       expect(updates.length).toBeGreaterThanOrEqual(50); // At least 50 updates in 5.5 seconds
-      
+
       // Verify all updates have required fields
       updates.forEach(update => {
         expect(update).toHaveProperty('timestamp');
@@ -594,36 +594,36 @@ describe('Performance Dashboard System', () => {
 
     test('should maintain performance under load', async () => {
       const server = new DashboardServer(defaultDashboardConfig);
-      
+
       // Simulate multiple WebSocket clients
       const clients = Array.from({ length: 100 }, () => ({
         ...mockWebSocket,
         send: jest.fn()
       }));
-      
+
       clients.forEach(client => {
         server.addWebSocketClient(client as any);
       });
-      
+
       const startTime = Date.now();
-      
+
       // Broadcast to all clients
       const testData = { test: 'performance test data' };
       server['broadcastToClients']('test', testData);
-      
+
       const endTime = Date.now();
       const duration = endTime - startTime;
-      
+
       // Should complete broadcast in reasonable time
       expect(duration).toBeLessThan(100); // Less than 100ms
-      
+
       // Verify all clients received the message
       clients.forEach(client => {
         expect(client.send).toHaveBeenCalledWith(
           expect.stringContaining('"test"')
         );
       });
-      
+
       server.stop();
     });
   });

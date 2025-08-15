@@ -1,9 +1,9 @@
 /**
  * SPEC_04: MCP-Aware Orchestration Patterns
- * 
+ *
  * Advanced orchestration system for managing multiple agents across MCP servers
  * with intelligent load balancing, conflict resolution, and performance optimization.
- * 
+ *
  * Key Features:
  * - Support for 8+ concurrent agents
  * - MCP-aware load balancing with automated failover
@@ -117,7 +117,7 @@ export class MCPLoadBalancer {
 
     const selectedServer = availableServers[0];
     this.updateServerLoad(selectedServer.name, requirements.resourceIntensity);
-    
+
     return selectedServer.name;
   }
 
@@ -128,11 +128,11 @@ export class MCPLoadBalancer {
     let score = 0;
 
     // Capability match score (40% weight)
-    const capabilityMatch = requirements.requiredCapabilities.every(cap => 
+    const capabilityMatch = requirements.requiredCapabilities.every(cap =>
       server.capabilities.includes(cap)
     );
     if (!capabilityMatch) return 0;
-    
+
     score += 40;
 
     // Load score (25% weight) - prefer less loaded servers
@@ -144,7 +144,7 @@ export class MCPLoadBalancer {
     score += performanceScore;
 
     // Health score (15% weight)
-    const healthScore = server.health === 'healthy' ? 15 : 
+    const healthScore = server.health === 'healthy' ? 15 :
                        server.health === 'degraded' ? 7 : 0;
     score += healthScore;
 
@@ -159,15 +159,15 @@ export class MCPLoadBalancer {
     if (server.health === 'unhealthy') return false;
 
     // Check capability requirements
-    const hasRequiredCapabilities = requirements.requiredCapabilities.every(cap => 
+    const hasRequiredCapabilities = requirements.requiredCapabilities.every(cap =>
       server.capabilities.includes(cap)
     );
     if (!hasRequiredCapabilities) return false;
 
     // Check capacity
-    const resourceMultiplier = requirements.resourceIntensity === 'heavy' ? 2 : 
+    const resourceMultiplier = requirements.resourceIntensity === 'heavy' ? 2 :
                               requirements.resourceIntensity === 'medium' ? 1.5 : 1;
-    
+
     if (server.currentLoad + resourceMultiplier > server.maxConcurrentAgents) {
       return false;
     }
@@ -203,7 +203,7 @@ export class MCPLoadBalancer {
   async handleFailover(failedServerId: string): Promise<Map<string, string>> {
     const reassignments = new Map<string, string>();
     const failedServer = this.mcpServers.get(failedServerId);
-    
+
     if (!failedServer) return reassignments;
 
     // Mark server as unhealthy
@@ -215,7 +215,7 @@ export class MCPLoadBalancer {
     // This would typically involve getting current agent assignments
     // and reassigning them to other servers
     // For now, we'll return an empty map indicating no reassignments
-    
+
     return reassignments;
   }
 
@@ -236,7 +236,7 @@ export class MCPLoadBalancer {
       try {
         // Simulate health check - in real implementation, this would ping the server
         const isHealthy = await this.pingServer(serverId);
-        
+
         if (isHealthy) {
           if (server.health === 'unhealthy') {
             server.health = 'healthy';
@@ -247,7 +247,7 @@ export class MCPLoadBalancer {
           console.warn(`MCP server ${serverId} health check failed`);
           await this.handleFailover(serverId);
         }
-        
+
         server.lastHealthCheck = new Date();
       } catch (error) {
         console.error(`Health check error for server ${serverId}:`, error);
@@ -294,7 +294,7 @@ export class ParallelOptimizationEngine {
    */
   buildDependencyGraph(stages: WorkflowStage[]): void {
     this.dependencyGraph.clear();
-    
+
     for (const stage of stages) {
       this.dependencyGraph.set(stage.id, new Set(stage.dependencies));
     }
@@ -305,34 +305,34 @@ export class ParallelOptimizationEngine {
    */
   calculateOptimalExecution(stages: WorkflowStage[]): WorkflowStage[][] {
     this.buildDependencyGraph(stages);
-    
+
     const executionLevels: WorkflowStage[][] = [];
     const completed = new Set<string>();
     const stageMap = new Map(stages.map(stage => [stage.id, stage]));
-    
+
     while (completed.size < stages.length) {
       const currentLevel: WorkflowStage[] = [];
-      
+
       for (const stage of stages) {
         if (completed.has(stage.id)) continue;
-        
+
         // Check if all dependencies are completed
         const dependencies = this.dependencyGraph.get(stage.id) || new Set();
         const canExecute = Array.from(dependencies).every(dep => completed.has(dep));
-        
+
         if (canExecute) {
           currentLevel.push(stage);
         }
       }
-      
+
       if (currentLevel.length === 0) {
         throw new Error('Circular dependency detected in workflow stages');
       }
-      
+
       executionLevels.push(currentLevel);
       currentLevel.forEach(stage => completed.add(stage.id));
     }
-    
+
     return executionLevels;
   }
 
@@ -341,10 +341,10 @@ export class ParallelOptimizationEngine {
    */
   optimizeAgentDistribution(stage: WorkflowStage, availableServers: string[]): Map<string, string[]> {
     const distribution = new Map<string, string[]>();
-    
+
     // Initialize servers
     availableServers.forEach(server => distribution.set(server, []));
-    
+
     // Sort agents by resource intensity (heaviest first)
     const sortedAgents = [...stage.agents].sort((a, b) => {
       const intensityOrder = { 'heavy': 3, 'medium': 2, 'light': 1 };
@@ -352,7 +352,7 @@ export class ParallelOptimizationEngine {
       const bIntensity = this.getAgentResourceIntensity(b.agentType);
       return intensityOrder[bIntensity] - intensityOrder[aIntensity];
     });
-    
+
     // Distribute using round-robin with load balancing
     let serverIndex = 0;
     for (const agent of sortedAgents) {
@@ -360,7 +360,7 @@ export class ParallelOptimizationEngine {
       distribution.get(server)?.push(agent.agentId);
       serverIndex++;
     }
-    
+
     return distribution;
   }
 
@@ -370,7 +370,7 @@ export class ParallelOptimizationEngine {
   private getAgentResourceIntensity(agentType: string): 'light' | 'medium' | 'heavy' {
     const heavyAgents = ['backend-engineer', 'frontend-architect', 'performance-specialist'];
     const mediumAgents = ['codebase-analyst', 'security-auditor', 'test-engineer'];
-    
+
     if (heavyAgents.includes(agentType)) return 'heavy';
     if (mediumAgents.includes(agentType)) return 'medium';
     return 'light';
@@ -383,7 +383,7 @@ export class ParallelOptimizationEngine {
     const totalStages = stages.flat().length;
     const sequentialTime = totalStages; // Assume 1 unit per stage
     const parallelTime = stages.length; // Number of parallel levels
-    
+
     return Math.max(0, (sequentialTime - parallelTime) / sequentialTime * 100);
   }
 }
@@ -406,15 +406,15 @@ export class AgentAssignmentEngine {
    */
   assignAgents(requirements: AgentRequirements[]): Map<string, AgentAssignment> {
     const assignments = new Map<string, AgentAssignment>();
-    
+
     for (const requirement of requirements) {
       const mcpServerId = this.mcpLoadBalancer.assignMCPServer(requirement);
-      
+
       if (!mcpServerId) {
         console.error(`Failed to assign MCP server for agent: ${requirement.agentType}`);
         continue;
       }
-      
+
       const assignment: AgentAssignment = {
         agentId: this.generateAgentId(requirement.agentType),
         agentType: requirement.agentType,
@@ -426,13 +426,13 @@ export class AgentAssignmentEngine {
           resourceUsage: 0
         }
       };
-      
+
       assignments.set(assignment.agentId, assignment);
-      
+
       // Cache assignment for future optimization
       this.cacheAssignment(requirement, mcpServerId);
     }
-    
+
     return assignments;
   }
 
@@ -471,15 +471,15 @@ export class AgentAssignmentEngine {
       actualDuration,
       timestamp: new Date()
     };
-    
+
     const history = this.performanceHistory.get(assignment.agentType) || [];
     history.push(performanceData);
-    
+
     // Keep only recent history (last 100 entries)
     if (history.length > 100) {
       history.splice(0, history.length - 100);
     }
-    
+
     this.performanceHistory.set(assignment.agentType, history);
   }
 
@@ -489,7 +489,7 @@ export class AgentAssignmentEngine {
   calculateAssignmentAccuracy(): number {
     let totalAssignments = 0;
     let successfulAssignments = 0;
-    
+
     for (const [agentType, history] of this.performanceHistory) {
       for (const record of history) {
         totalAssignments++;
@@ -498,7 +498,7 @@ export class AgentAssignmentEngine {
         }
       }
     }
-    
+
     return totalAssignments > 0 ? (successfulAssignments / totalAssignments) * 100 : 0;
   }
 }
@@ -531,13 +531,13 @@ export class ConflictResolutionEngine extends EventEmitter {
    */
   requestResource(agentId: string, resource: string, priority: number, duration: number): boolean {
     const startTime = Date.now();
-    
+
     // Check if resource is available
     if (!this.resourceLocks.has(resource)) {
       this.acquireResource(agentId, resource, duration);
       return true;
     }
-    
+
     // Resource is locked, add to conflict queue
     this.conflictQueue.push({
       agentId,
@@ -545,14 +545,14 @@ export class ConflictResolutionEngine extends EventEmitter {
       priority,
       timestamp: new Date()
     });
-    
+
     // Attempt resolution
     const resolved = this.resolveConflict(resource);
-    
+
     // Track resolution time
     const resolutionTime = Date.now() - startTime;
     this.emit('conflict-resolved', { resource, resolutionTime, resolved });
-    
+
     return resolved;
   }
 
@@ -565,7 +565,7 @@ export class ConflictResolutionEngine extends EventEmitter {
       lockTime: new Date(),
       duration
     });
-    
+
     // Auto-release after duration
     setTimeout(() => {
       this.releaseResource(resource, agentId);
@@ -577,11 +577,11 @@ export class ConflictResolutionEngine extends EventEmitter {
    */
   releaseResource(resource: string, agentId: string): void {
     const lock = this.resourceLocks.get(resource);
-    
+
     if (lock && lock.agentId === agentId) {
       this.resourceLocks.delete(resource);
       this.emit('resource-released', { resource, agentId });
-      
+
       // Process waiting conflicts
       this.processWaitingConflicts(resource);
     }
@@ -592,21 +592,21 @@ export class ConflictResolutionEngine extends EventEmitter {
    */
   private processWaitingConflicts(resource: string): void {
     const waitingConflicts = this.conflictQueue.filter(c => c.resource === resource);
-    
+
     if (waitingConflicts.length === 0) return;
-    
+
     // Sort by priority and timestamp
     waitingConflicts.sort((a, b) => {
       if (a.priority !== b.priority) return b.priority - a.priority;
       return a.timestamp.getTime() - b.timestamp.getTime();
     });
-    
+
     // Grant access to highest priority agent
     const nextAgent = waitingConflicts[0];
     this.acquireResource(nextAgent.agentId, resource, 60000); // Default 60s duration
-    
+
     // Remove from queue
-    this.conflictQueue = this.conflictQueue.filter(c => 
+    this.conflictQueue = this.conflictQueue.filter(c =>
       !(c.agentId === nextAgent.agentId && c.resource === resource)
     );
   }
@@ -625,26 +625,26 @@ export class ConflictResolutionEngine extends EventEmitter {
   private priorityBasedResolution(resource: string): boolean {
     const conflicts = this.conflictQueue.filter(c => c.resource === resource);
     const currentLock = this.resourceLocks.get(resource);
-    
+
     if (!conflicts.length || !currentLock) return false;
-    
+
     // Find highest priority conflict
-    const highestPriorityConflict = conflicts.reduce((max, current) => 
+    const highestPriorityConflict = conflicts.reduce((max, current) =>
       current.priority > max.priority ? current : max
     );
-    
+
     // If conflict priority is significantly higher, preempt current lock
     const currentAgent = this.findAgentPriority(currentLock.agentId);
     if (highestPriorityConflict.priority > currentAgent + 1) { // +1 for preemption threshold
       this.resourceLocks.delete(resource);
       this.acquireResource(highestPriorityConflict.agentId, resource, 60000);
-      
+
       // Remove resolved conflict from queue
       this.conflictQueue = this.conflictQueue.filter(c => c !== highestPriorityConflict);
-      
+
       return true;
     }
-    
+
     return false;
   }
 
@@ -654,17 +654,17 @@ export class ConflictResolutionEngine extends EventEmitter {
   private timeBasedResolution(resource: string): boolean {
     const lock = this.resourceLocks.get(resource);
     if (!lock) return false;
-    
+
     const lockAge = Date.now() - lock.lockTime.getTime();
     const maxLockTime = lock.duration * 1.5; // 150% of expected duration
-    
+
     if (lockAge > maxLockTime) {
       // Force release stale lock
       this.resourceLocks.delete(resource);
       this.processWaitingConflicts(resource);
       return true;
     }
-    
+
     return false;
   }
 
@@ -675,22 +675,22 @@ export class ConflictResolutionEngine extends EventEmitter {
     // Check if resource supports sharing
     if (this.isResourceShareable(resource)) {
       const conflicts = this.conflictQueue.filter(c => c.resource === resource);
-      
+
       // Allow multiple agents to share the resource
       for (const conflict of conflicts) {
-        this.emit('resource-shared', { 
-          resource, 
+        this.emit('resource-shared', {
+          resource,
           agentId: conflict.agentId,
-          sharedWith: this.resourceLocks.get(resource)?.agentId 
+          sharedWith: this.resourceLocks.get(resource)?.agentId
         });
       }
-      
+
       // Remove all conflicts for this resource
       this.conflictQueue = this.conflictQueue.filter(c => c.resource !== resource);
-      
+
       return true;
     }
-    
+
     return false;
   }
 
@@ -704,7 +704,7 @@ export class ConflictResolutionEngine extends EventEmitter {
       'sequential-thinking',
       'postgres-read'
     ];
-    
+
     return shareableResources.some(shareable => resource.includes(shareable));
   }
 
@@ -749,12 +749,12 @@ export class MCPOrchestrationEngine extends EventEmitter {
 
   constructor() {
     super();
-    
+
     this.loadBalancer = new MCPLoadBalancer();
     this.parallelOptimizer = new ParallelOptimizationEngine();
     this.assignmentEngine = new AgentAssignmentEngine(this.loadBalancer);
     this.conflictResolver = new ConflictResolutionEngine();
-    
+
     this.metrics = {
       parallelExecutionEfficiency: 0,
       resourceUtilization: 0,
@@ -763,7 +763,7 @@ export class MCPOrchestrationEngine extends EventEmitter {
       overallWorkflowSuccess: 0,
       mcpServerLoadBalance: new Map()
     };
-    
+
     this.setupEventListeners();
   }
 
@@ -790,16 +790,16 @@ export class MCPOrchestrationEngine extends EventEmitter {
    * Execute workflow with MCP-aware orchestration
    */
   async executeWorkflow(
-    workflowId: string, 
+    workflowId: string,
     stages: WorkflowStage[]
   ): Promise<boolean> {
     try {
       console.log(`Starting MCP-aware workflow execution: ${workflowId}`);
-      
+
       // Calculate optimal execution plan
       const executionLevels = this.parallelOptimizer.calculateOptimalExecution(stages);
       console.log(`Workflow optimized into ${executionLevels.length} parallel levels`);
-      
+
       // Track workflow
       this.activeWorkflows.set(workflowId, {
         stages,
@@ -807,15 +807,15 @@ export class MCPOrchestrationEngine extends EventEmitter {
         startTime: new Date(),
         status: 'running'
       });
-      
+
       // Execute levels sequentially, stages in parallel
       for (let levelIndex = 0; levelIndex < executionLevels.length; levelIndex++) {
         const level = executionLevels[levelIndex];
         console.log(`Executing level ${levelIndex + 1} with ${level.length} parallel stages`);
-        
+
         await this.executeParallelStages(level);
       }
-      
+
       // Mark workflow as completed
       const workflow = this.activeWorkflows.get(workflowId);
       if (workflow) {
@@ -823,19 +823,19 @@ export class MCPOrchestrationEngine extends EventEmitter {
         workflow.endTime = new Date();
         this.updateMetrics(workflow);
       }
-      
+
       console.log(`Workflow ${workflowId} completed successfully`);
       return true;
-      
+
     } catch (error) {
       console.error(`Workflow ${workflowId} failed:`, error);
-      
+
       const workflow = this.activeWorkflows.get(workflowId);
       if (workflow) {
         workflow.status = 'failed';
         workflow.error = error;
       }
-      
+
       return false;
     }
   }
@@ -853,9 +853,9 @@ export class MCPOrchestrationEngine extends EventEmitter {
    */
   private async executeStage(stage: WorkflowStage): Promise<void> {
     console.log(`Executing stage: ${stage.name}`);
-    
+
     stage.status = 'running';
-    
+
     try {
       // Assign agents to MCP servers
       const agentRequirements = stage.agents.map(agent => ({
@@ -866,18 +866,18 @@ export class MCPOrchestrationEngine extends EventEmitter {
         expectedDuration: 60000, // 60 seconds default
         dependencies: []
       }));
-      
+
       const assignments = this.assignmentEngine.assignAgents(agentRequirements);
-      
+
       // Execute agents in parallel
-      const agentPromises = Array.from(assignments.values()).map(assignment => 
+      const agentPromises = Array.from(assignments.values()).map(assignment =>
         this.executeAgent(assignment)
       );
-      
+
       await Promise.all(agentPromises);
-      
+
       stage.status = 'completed';
-      
+
     } catch (error) {
       stage.status = 'failed';
       throw error;
@@ -889,10 +889,10 @@ export class MCPOrchestrationEngine extends EventEmitter {
    */
   private async executeAgent(assignment: AgentAssignment): Promise<void> {
     console.log(`Executing agent ${assignment.agentType} on MCP server ${assignment.mcpServerId}`);
-    
+
     assignment.status = 'running';
     assignment.performance.startTime = new Date();
-    
+
     try {
       // Request resources if needed
       const exclusiveResources = this.getExclusiveResources(assignment.agentType);
@@ -903,33 +903,33 @@ export class MCPOrchestrationEngine extends EventEmitter {
           5, // priority
           60000 // duration
         );
-        
+
         if (!acquired) {
           throw new Error(`Failed to acquire resource: ${resource}`);
         }
       }
-      
+
       // Simulate agent execution
       await this.simulateAgentExecution(assignment);
-      
+
       assignment.status = 'completed';
       assignment.performance.endTime = new Date();
-      assignment.performance.actualDuration = 
-        assignment.performance.endTime.getTime() - 
+      assignment.performance.actualDuration =
+        assignment.performance.endTime.getTime() -
         assignment.performance.startTime!.getTime();
-      
+
       // Release resources
       for (const resource of exclusiveResources) {
         this.conflictResolver.releaseResource(resource, assignment.agentId);
       }
-      
+
       // Track performance
       this.assignmentEngine.trackAssignmentPerformance(
         assignment,
         true,
         assignment.performance.actualDuration!
       );
-      
+
     } catch (error) {
       assignment.status = 'failed';
       throw error;
@@ -942,7 +942,7 @@ export class MCPOrchestrationEngine extends EventEmitter {
   private async simulateAgentExecution(assignment: AgentAssignment): Promise<void> {
     const executionTime = Math.random() * 5000 + 1000; // 1-6 seconds
     await new Promise(resolve => setTimeout(resolve, executionTime));
-    
+
     // Simulate occasional failures
     if (Math.random() < 0.05) { // 5% failure rate
       throw new Error(`Simulated failure for agent ${assignment.agentType}`);
@@ -961,7 +961,7 @@ export class MCPOrchestrationEngine extends EventEmitter {
       'performance-specialist': ['file operations', 'database operations'],
       'integration-specialist': ['repository management', 'complex reasoning']
     };
-    
+
     return capabilityMap[agentType] || ['file operations'];
   }
 
@@ -971,7 +971,7 @@ export class MCPOrchestrationEngine extends EventEmitter {
   private getResourceIntensity(agentType: string): 'light' | 'medium' | 'heavy' {
     const heavyAgents = ['backend-engineer', 'frontend-architect', 'performance-specialist'];
     const mediumAgents = ['codebase-analyst', 'security-auditor', 'integration-specialist'];
-    
+
     if (heavyAgents.includes(agentType)) return 'heavy';
     if (mediumAgents.includes(agentType)) return 'medium';
     return 'light';
@@ -986,7 +986,7 @@ export class MCPOrchestrationEngine extends EventEmitter {
       'frontend-architect': ['filesystem-write'],
       'security-auditor': ['filesystem-read']
     };
-    
+
     return resourceMap[agentType] || [];
   }
 
@@ -995,29 +995,29 @@ export class MCPOrchestrationEngine extends EventEmitter {
    */
   private updateMetrics(workflow: any): void {
     // Calculate parallel execution efficiency
-    this.metrics.parallelExecutionEfficiency = 
+    this.metrics.parallelExecutionEfficiency =
       this.parallelOptimizer.calculateExecutionEfficiency(workflow.executionLevels);
-    
+
     // Calculate resource utilization
     const serverStatus = this.loadBalancer.getServerStatus();
     let totalUtilization = 0;
     let serverCount = 0;
-    
+
     for (const [serverId, server] of serverStatus) {
       totalUtilization += (server.currentLoad / server.maxConcurrentAgents) * 100;
       serverCount++;
-      
+
       this.metrics.mcpServerLoadBalance.set(serverId, server.currentLoad);
     }
-    
+
     this.metrics.resourceUtilization = serverCount > 0 ? totalUtilization / serverCount : 0;
-    
+
     // Calculate agent assignment accuracy
     this.metrics.agentAssignmentAccuracy = this.assignmentEngine.calculateAssignmentAccuracy();
-    
+
     // Calculate overall workflow success
     this.metrics.overallWorkflowSuccess = workflow.status === 'completed' ? 100 : 0;
-    
+
     this.emit('metrics-updated', this.metrics);
   }
 
@@ -1065,7 +1065,7 @@ export class MCPOrchestrationEngine extends EventEmitter {
  */
 export function createMCPOrchestrationEngine(): MCPOrchestrationEngine {
   const engine = new MCPOrchestrationEngine();
-  
+
   // Initialize with default MCP servers
   const defaultServers: MCPServerCapabilities[] = [
     {
@@ -1125,9 +1125,9 @@ export function createMCPOrchestrationEngine(): MCPOrchestrationEngine {
       lastHealthCheck: new Date()
     }
   ];
-  
+
   engine.initializeMCPServers(defaultServers);
-  
+
   return engine;
 }
 

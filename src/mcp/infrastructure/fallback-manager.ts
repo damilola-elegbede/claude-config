@@ -166,7 +166,7 @@ export class RetryHandler {
     // Add jitter (±25% of the calculated delay)
     const jitterRange = exponentialDelay * 0.25;
     const jitter = (Math.random() - 0.5) * 2 * jitterRange;
-    
+
     return Math.max(0, exponentialDelay + jitter);
   }
 
@@ -225,7 +225,7 @@ export class RetryHandler {
 
 /**
  * Fallback manager for automatic server failover and recovery
- * 
+ *
  * Provides automatic fallback to alternative MCP servers with circuit breaker
  * integration and intelligent retry mechanisms.
  */
@@ -237,13 +237,13 @@ class FallbackManager extends EventEmitter {
 
   constructor(circuitBreakerManager?: CircuitBreakerManager) {
     super();
-    
+
     this.circuitBreakerManager = circuitBreakerManager || new CircuitBreakerManager();
     this.stats = this.initializeStats();
-    
+
     // Set up default policies
     this.setupDefaultPolicies();
-    
+
     // Listen to circuit breaker events
     this.circuitBreakerManager.on('stateChange', (event) => {
       this.emit('circuitBreakerStateChange', event);
@@ -263,15 +263,15 @@ class FallbackManager extends EventEmitter {
    */
   registerServerConfig(toolName: string, config: FallbackServerConfig): void {
     this.serverConfigs.set(toolName, config);
-    
+
     // Register circuit breakers for all servers if enabled
     const policy = this.policies.get(config.policy);
     if (policy?.enableCircuitBreaker) {
       const cbConfig = config.options?.circuitBreakerConfig || {};
-      
+
       // Register circuit breaker for primary server
       this.circuitBreakerManager.getCircuitBreaker(config.primary.id, cbConfig);
-      
+
       // Register circuit breakers for fallback servers
       for (const fallback of config.fallbacks) {
         this.circuitBreakerManager.getCircuitBreaker(fallback.id, cbConfig);
@@ -319,14 +319,14 @@ class FallbackManager extends EventEmitter {
       // Try each server in order
       for (const server of serversToTry) {
         const serverStartTime = Date.now();
-        
+
         try {
           totalAttempts++;
 
           // Check circuit breaker if enabled
           if (policy.enableCircuitBreaker) {
             const circuitBreaker = this.circuitBreakerManager.getCircuitBreaker(server.id);
-            
+
             const cbResult = await circuitBreaker.execute(async () => {
               return await this.executeWithTimeout(
                 () => operation(server),
@@ -406,7 +406,7 @@ class FallbackManager extends EventEmitter {
             success: false,
             executionTime,
             error: errorObj,
-            circuitBreakerState: policy.enableCircuitBreaker 
+            circuitBreakerState: policy.enableCircuitBreaker
               ? this.circuitBreakerManager.getCircuitBreaker(server.id).getState()
               : undefined,
             timestamp: new Date()
@@ -471,7 +471,7 @@ class FallbackManager extends EventEmitter {
     stats: any;
   }> {
     const health: Record<string, any> = {};
-    
+
     for (const [serverId, circuitBreaker] of this.circuitBreakerManager.getAllCircuitBreakers()) {
       const stats = circuitBreaker.getStats();
       health[serverId] = {
@@ -480,7 +480,7 @@ class FallbackManager extends EventEmitter {
         stats
       };
     }
-    
+
     return health;
   }
 
@@ -618,12 +618,12 @@ class FallbackManager extends EventEmitter {
     }
 
     // Update averages
-    this.stats.averageExecutionTime = 
-      (this.stats.averageExecutionTime * (this.stats.successfulOperations - 1) + executionTime) / 
+    this.stats.averageExecutionTime =
+      (this.stats.averageExecutionTime * (this.stats.successfulOperations - 1) + executionTime) /
       this.stats.successfulOperations;
 
-    this.stats.averageAttempts = 
-      (this.stats.averageAttempts * (this.stats.totalOperations - 1) + attempts) / 
+    this.stats.averageAttempts =
+      (this.stats.averageAttempts * (this.stats.totalOperations - 1) + attempts) /
       this.stats.totalOperations;
 
     // Update server success rates
@@ -641,18 +641,18 @@ class FallbackManager extends EventEmitter {
       this.stats.fallbackOperations++;
     }
 
-    this.stats.averageAttempts = 
-      (this.stats.averageAttempts * (this.stats.totalOperations - 1) + attempts) / 
+    this.stats.averageAttempts =
+      (this.stats.averageAttempts * (this.stats.totalOperations - 1) + attempts) /
       this.stats.totalOperations;
   }
 
   private getCircuitBreakerStates(): Record<string, string> {
     const states: Record<string, string> = {};
-    
+
     for (const [serverId, circuitBreaker] of this.circuitBreakerManager.getAllCircuitBreakers()) {
       states[serverId] = circuitBreaker.getState();
     }
-    
+
     return states;
   }
 }

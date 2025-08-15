@@ -37,7 +37,7 @@ apply_fix() {
     local description="$1"
     local file="$2"
     local command="$3"
-    
+
     if eval "$command"; then
         ((fixes_applied++))
         echo -e "${GREEN}✓${NC} $description: $file"
@@ -51,13 +51,13 @@ apply_fix() {
 # Function to fix trailing spaces (MD009)
 fix_trailing_spaces() {
     echo -e "${YELLOW}Fixing trailing spaces (MD009)...${NC}"
-    
+
     find "$REPO_ROOT" -name "*.md" -type f \
         ! -path "*/node_modules/*" \
         ! -path "*/.git/*" \
         ! -path "*/system-configs/.claude/agents/*.md" \
         -print0 | while IFS= read -r -d '' file; do
-        
+
         if grep -q '[[:space:]]$' "$file"; then
             apply_fix "Remove trailing spaces" "$file" \
                 "sed -i '' 's/[[:space:]]*$//' '$file'"
@@ -69,19 +69,19 @@ fix_trailing_spaces() {
 # Function to fix blank lines around headings (MD022)
 fix_heading_spacing() {
     echo -e "${YELLOW}Fixing heading spacing (MD022)...${NC}"
-    
+
     find "$REPO_ROOT" -name "*.md" -type f \
         ! -path "*/node_modules/*" \
         ! -path "*/.git/*" \
         ! -path "*/system-configs/.claude/agents/*.md" \
         -print0 | while IFS= read -r -d '' file; do
-        
+
         # Add blank line before headings (except at start of file)
         if grep -n '^#' "$file" | grep -v '^1:' | head -1 | grep -q .; then
             apply_fix "Add blank lines before headings" "$file" \
                 "sed -i '' '/^#/{ x; /^$/!{ s/^/\n/; }; x; }' '$file'"
         fi
-        
+
         # Add blank line after headings
         if grep -Pzo '(?s)^#+[^\n]*\n(?!\n|\s*$)' "$file" >/dev/null 2>&1; then
             apply_fix "Add blank lines after headings" "$file" \
@@ -93,13 +93,13 @@ fix_heading_spacing() {
 # Function to fix blank lines around lists (MD032)
 fix_list_spacing() {
     echo -e "${YELLOW}Fixing list spacing (MD032)...${NC}"
-    
+
     find "$REPO_ROOT" -name "*.md" -type f \
         ! -path "*/node_modules/*" \
         ! -path "*/.git/*" \
         ! -path "*/system-configs/.claude/agents/*.md" \
         -print0 | while IFS= read -r -d '' file; do
-        
+
         # This is a simplified fix - complex list detection would need more sophisticated parsing
         if grep -q '^[[:space:]]*[-*+][[:space:]]' "$file"; then
             # Add blank line before first list item if not already present
@@ -112,13 +112,13 @@ fix_list_spacing() {
 # Function to fix blank lines around fenced code blocks (MD031)
 fix_code_block_spacing() {
     echo -e "${YELLOW}Fixing code block spacing (MD031)...${NC}"
-    
+
     find "$REPO_ROOT" -name "*.md" -type f \
         ! -path "*/node_modules/*" \
         ! -path "*/.git/*" \
         ! -path "*/system-configs/.claude/agents/*.md" \
         -print0 | while IFS= read -r -d '' file; do
-        
+
         # Add blank lines around fenced code blocks
         if grep -q '^```' "$file"; then
             apply_fix "Fix code block spacing" "$file" \
@@ -130,18 +130,18 @@ fix_code_block_spacing() {
 # Function to add language specifiers to code blocks (MD040)
 fix_code_block_languages() {
     echo -e "${YELLOW}Fixing code block language specifiers (MD040)...${NC}"
-    
+
     find "$REPO_ROOT" -name "*.md" -type f \
         ! -path "*/node_modules/*" \
         ! -path "*/.git/*" \
         ! -path "*/system-configs/.claude/agents/*.md" \
         -print0 | while IFS= read -r -d '' file; do
-        
+
         # Look for code blocks without language specifiers
         if grep -q '^```$' "$file"; then
             # Attempt to guess language based on context and filename
             local lang="text"
-            
+
             # Check if it's likely shell/bash content
             if grep -A5 '^```$' "$file" | grep -q -E '(^[#$] |^npm |^git |^curl |^chmod |^mkdir |^cd )'; then
                 lang="bash"
@@ -155,7 +155,7 @@ fix_code_block_languages() {
             elif grep -A5 '^```$' "$file" | grep -q -E '(function|const|let|var|import|export)'; then
                 lang="javascript"
             fi
-            
+
             apply_fix "Add language specifier ($lang)" "$file" \
                 "sed -i '' 's/^```$/```$lang/' '$file'"
         fi
@@ -165,13 +165,13 @@ fix_code_block_languages() {
 # Function to ensure files end with newline (MD047)
 fix_file_endings() {
     echo -e "${YELLOW}Fixing file endings (MD047)...${NC}"
-    
+
     find "$REPO_ROOT" -name "*.md" -type f \
         ! -path "*/node_modules/*" \
         ! -path "*/.git/*" \
         ! -path "*/system-configs/.claude/agents/*.md" \
         -print0 | while IFS= read -r -d '' file; do
-        
+
         # Check if file doesn't end with newline
         if [[ -s "$file" ]] && [[ "$(tail -c1 "$file" | wc -l)" -eq 0 ]]; then
             apply_fix "Add final newline" "$file" \
@@ -183,13 +183,13 @@ fix_file_endings() {
 # Function to fix emphasis used as headings (MD036)
 fix_emphasis_headings() {
     echo -e "${YELLOW}Fixing emphasis used as headings (MD036)...${NC}"
-    
+
     find "$REPO_ROOT" -name "*.md" -type f \
         ! -path "*/node_modules/*" \
         ! -path "*/.git/*" \
         ! -path "*/system-configs/.claude/agents/*.md" \
         -print0 | while IFS= read -r -d '' file; do
-        
+
         # Look for standalone bold/italic text that should be headings
         # This is a conservative approach - only fixes obvious cases
         if grep -q '^\*\*[^*]\+\*\*$' "$file"; then
@@ -202,13 +202,13 @@ fix_emphasis_headings() {
 # Function to fix table spacing (MD058)
 fix_table_spacing() {
     echo -e "${YELLOW}Fixing table spacing (MD058)...${NC}"
-    
+
     find "$REPO_ROOT" -name "*.md" -type f \
         ! -path "*/node_modules/*" \
         ! -path "*/.git/*" \
         ! -path "*/system-configs/.claude/agents/*.md" \
         -print0 | while IFS= read -r -d '' file; do
-        
+
         # Add blank lines around tables
         if grep -q '|.*|' "$file"; then
             apply_fix "Fix table spacing" "$file" \
@@ -220,7 +220,7 @@ fix_table_spacing() {
 # Main execution
 main() {
     local fix_mode="${1:-all}"
-    
+
     case "$fix_mode" in
         "all")
             echo -e "${BLUE}Running all automatic fixes...${NC}"
@@ -270,12 +270,12 @@ main() {
             exit 1
             ;;
     esac
-    
+
     echo
     echo -e "${BLUE}=== Remediation Summary ===${NC}"
     echo "Fixes applied: $fixes_applied"
     echo "Files modified: $files_modified"
-    
+
     if [[ $fixes_applied -gt 0 ]]; then
         echo
         echo -e "${GREEN}✅ Automatic fixes completed!${NC}"

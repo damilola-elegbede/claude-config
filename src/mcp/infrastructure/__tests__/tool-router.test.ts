@@ -78,7 +78,7 @@ describe('ToolRouter', () => {
 
   beforeEach(() => {
     registry = new MCPServerRegistry();
-    
+
     // Register mock servers
     [mockServer1, mockServer2, mockServer3, mockServer4].forEach(server => {
       registry.registerServer(server);
@@ -410,12 +410,12 @@ describe('ToolRouter', () => {
 
       expect(decision.selectedServer.status).toBe('healthy');
       expect(decision.alternatives).toBeDefined();
-      
+
       // Should be sorted by status priority
       const allServers = [decision.selectedServer, ...decision.alternatives!];
       const healthyCount = allServers.filter(s => s.status === 'healthy').length;
       const degradedCount = allServers.filter(s => s.status === 'degraded').length;
-      
+
       expect(healthyCount).toBeGreaterThan(0);
     });
 
@@ -543,7 +543,7 @@ describe('ToolRouter', () => {
 
       // First call
       const decision1 = await router.route(context);
-      
+
       // Second call should be faster (cached)
       const startTime = Date.now();
       const decision2 = await router.route(context);
@@ -564,12 +564,12 @@ describe('ToolRouter', () => {
       };
 
       const decision1 = await shortCacheRouter.route(context);
-      
+
       // Wait for cache to expire
       await new Promise(resolve => setTimeout(resolve, 150));
-      
+
       const decision2 = await shortCacheRouter.route(context);
-      
+
       // Decisions might be different due to cache miss
       expect(decision2.timestamp.getTime()).toBeGreaterThan(decision1.timestamp.getTime());
 
@@ -624,7 +624,7 @@ describe('ToolRouter', () => {
       };
 
       await router.route(context);
-      
+
       const cacheClearedSpy = jest.fn();
       router.on('cacheCleared', cacheClearedSpy);
 
@@ -635,7 +635,7 @@ describe('ToolRouter', () => {
       const startTime = Date.now();
       await router.route(context);
       const timeAfterClear = Date.now() - startTime;
-      
+
       expect(timeAfterClear).toBeGreaterThan(5); // Should take actual processing time
     });
   });
@@ -687,7 +687,7 @@ describe('ToolRouter', () => {
       };
 
       await expect(router.route(context)).rejects.toThrow();
-      
+
       expect(routingErrorSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           context: expect.any(Object),
@@ -730,7 +730,7 @@ describe('ToolRouter', () => {
       };
 
       router.updateStrategyConfig('performance_weighted', newConfig);
-      
+
       expect(strategyConfigUpdatedSpy).toHaveBeenCalledWith({
         name: 'performance_weighted',
         config: newConfig
@@ -782,7 +782,7 @@ describe('ToolRouter', () => {
             } as RoutingDecision;
           }
         };
-        
+
         router.registerStrategy(strategy);
       }
 
@@ -790,15 +790,15 @@ describe('ToolRouter', () => {
     });
 
     it('should handle concurrent strategy updates safely', async () => {
-      const updatePromises = Array.from({ length: 10 }, (_, i) => 
+      const updatePromises = Array.from({ length: 10 }, (_, i) =>
         new Promise<void>((resolve) => {
           setTimeout(() => {
             router.updateStrategyConfig('performance_weighted', {
-              weights: { 
-                performance: 0.4 + (i * 0.01), 
-                availability: 0.3, 
-                load: 0.2, 
-                preference: 0.1 
+              weights: {
+                performance: 0.4 + (i * 0.01),
+                availability: 0.3,
+                load: 0.2,
+                preference: 0.1
               }
             });
             resolve();
@@ -863,12 +863,12 @@ describe('ToolRouter', () => {
 
     it('should clean up resources properly', () => {
       const testRouter = new ToolRouter(registry);
-      
+
       // Add some cached data
       testRouter.route({ toolName: 'Read' }).catch(() => {});
-      
+
       expect(() => testRouter.destroy()).not.toThrow();
-      
+
       // Should not throw on subsequent destroy calls
       expect(() => testRouter.destroy()).not.toThrow();
     });
@@ -926,7 +926,7 @@ describe('ToolRouter', () => {
 
     it('should handle server unregistration', async () => {
       const context: RoutingContext = { toolName: 'Read' };
-      
+
       // Get initial decision
       const decision1 = await router.route(context);
       const initialServerId = decision1.selectedServer.id;

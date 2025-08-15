@@ -10,7 +10,7 @@ it does not make any changes automatically.** Repository-specific command that i
 
 ```bash
 /command-audit
-```yaml
+```
 
 ## Behavior
 
@@ -41,13 +41,14 @@ design principles for optimal Claude Code CLI experience.
 
 ### 3. Markdown Parsing Standards
 
-- **Code Fencing Consistency**: Ensure all code blocks use proper language tags (```bash, ```yaml, ```text, etc.)
+- **Code Fencing Consistency**: Ensure all code blocks use proper language tags (`bash`, `yaml`, `text`, etc.)
 - **Example Quality**: Verify examples are focused, well-commented, and provide clear context
 - **Structured Formats**: Validate use of YAML for workflows and structured data
 - **Code Format Separation**: Ensure clean separation between inline code and code blocks
 - **Command Clarity**: Multi-line commands must include explanations and context
 
 **Anti-Patterns to Detect**:
+
 - Overly complex multi-line commands without explanation
 - Inconsistent formatting between sections
 - Mixed inline/block code formats creating ambiguity
@@ -67,30 +68,35 @@ design principles for optimal Claude Code CLI experience.
 Commands are validated based on their category with appropriate standards:
 
 **Git Workflow** (commit, branch, push, pr):
+
 - Must use execution-evaluator for git operations
 - Git safety features documented
 - Integration with other git workflow commands
 - Proper branch management and cleanup
 
 **Repository Analysis** (context, test, debug):
+
 - Framework detection capabilities
 - Parallel analysis when beneficial
 - Caching and performance optimization
 - Universal compatibility across project types
 
 **System Management** (sync, deps, fix-ci):
+
 - Environment validation
 - Backup and rollback procedures
 - Dependency management
 - System state verification
 
 **Quality Assurance** (review, agent-audit, command-audit):
+
 - Comprehensive validation frameworks
 - Detailed reporting with metrics
 - Auto-remediation suggestions
 - Standards enforcement
 
 **Development Support** (plan, resolve-cr):
+
 - Workflow integration
 - Context awareness
 - User guidance and assistance
@@ -113,6 +119,7 @@ Based on current command analysis:
 - **Ultra-Complex Commands** (400+ lines): Requires justification and potential refactoring
 
 **Warning Thresholds**:
+
 - 275+ lines for standard commands
 - 425+ lines for complex commands
 - 500+ lines triggers refactoring recommendation
@@ -147,7 +154,7 @@ parallel_execution:
   - category: development_support
     commands: [plan, resolve-cr]
     validations: [structure, content, markdownParsing, functional, length, repoSpecific]
-```yaml
+```
 
 ### Phase 2: Cross-Command Analysis
 
@@ -186,7 +193,7 @@ After audit completion, **execution-evaluator** is deployed to verify:
 ```text
 Total Commands: XX | Categories: X/5 | Compliance: XX% | Issues Fixed: XX
 Average Length: XXX lines | Repository-Specific: X commands
-```yaml
+```
 
 ### Category Health Matrix
 
@@ -214,8 +221,9 @@ Average Length: XXX lines | Repository-Specific: X commands
 | branch | ✅ | ✅ | ❌ | ✅ | Complex examples without explanation |
 
 **Parsing Standards Summary**:
+
 - Code Fencing: XX/XX commands compliant
-- Language Tags: XX/XX commands compliant  
+- Language Tags: XX/XX commands compliant
 - Example Quality: XX/XX commands compliant
 - Format Consistency: XX/XX commands compliant
 
@@ -228,25 +236,29 @@ Average Length: XXX lines | Repository-Specific: X commands
 | plan | 370 lines | 400 lines | ✅ OK | Well-structured complex command |
 
 **Length Distribution**:
+
 - Simple (100-150): X commands
-- Standard (150-250): X commands  
+- Standard (150-250): X commands
 - Complex (250-400): X commands
 - Ultra-complex (400+): X commands
 
 ### Repository-Specific Command Analysis
 
 **Current Repository-Specific Commands**:
+
 - `sync.md` - ✅ Properly excluded from sync
 - `command-audit.md` - ✅ Should be excluded (this audit command)
 
 **Sync Exclusion Validation**:
+
 - `sync.md` exclusion pattern: ✅ Current
-- `command-audit.md` exclusion: ❌ Needs adding to sync.md
+- `command-audit.md` exclusion: ✅ Present in sync.md
 - Repository-specific documentation: ✅ Proper
 
 ### Usage Pattern Analysis
 
 **Command Integration Matrix**:
+
 - Most referenced: execution-evaluator (used by X commands)
 - Workflow chains: branch → commit → push → pr
 - Missing integrations: X command pairs could benefit from integration
@@ -259,7 +271,7 @@ Average Length: XXX lines | Repository-Specific: X commands
 - Updated command-name: Standardized section ordering
 - Fixed command-name: Added missing language tags
 - Updated command-name: Added execution-evaluator verification
-```yaml
+```
 
 ### Manual Remediation Required
 
@@ -273,14 +285,16 @@ Average Length: XXX lines | Repository-Specific: X commands
 # fi
 
 # Standardize section formatting:
-sed -i '' 's/## Behavior/## Behavior/' command-name.md
+
+# Manually ensure required sections appear in the prescribed order:
+# Description, Usage, Behavior, Arguments (if applicable)
 
 # Add missing execution-evaluator usage:
 # Review command-name.md and add execution-evaluator verification section
 
 # Length reduction suggestions:
 # Consider breaking down oversized commands into focused sub-commands
-```yaml
+```
 
 ## Success Criteria
 
@@ -308,7 +322,8 @@ sed -i '' 's/## Behavior/## Behavior/' command-name.md
 
 **Command Length**: 302 lines (approaching 400-line complexity threshold)
 
-**Justification**: This command establishes the validation framework for the entire command ecosystem (15 commands). The complexity is justified by:
+**Justification**: This command establishes the validation framework for the entire command ecosystem
+(15 commands). The complexity is justified by:
 
 1. **Comprehensive Validation**: 8 distinct validation dimensions requiring detailed specifications
 2. **Parallel Execution Framework**: Complex orchestration logic for category-based validation

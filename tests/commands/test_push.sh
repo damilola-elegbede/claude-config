@@ -13,17 +13,17 @@ test_push_file_exists() {
 # Test push command structure
 test_push_structure() {
     local push_file="$ORIGINAL_DIR/system-configs/.claude/commands/push.md"
-    
+
     # Check required sections
     assert_file_contains "$push_file" "# /push Command" \
         "Should have command header"
-    
+
     assert_file_contains "$push_file" "## Description" \
         "Should have Description section"
-    
+
     assert_file_contains "$push_file" "## Usage" \
         "Should have Usage section"
-    
+
     assert_file_contains "$push_file" "## Behavior" \
         "Should have Behavior section"
 }
@@ -31,14 +31,14 @@ test_push_structure() {
 # Test push command content
 test_push_content() {
     local push_file="$ORIGINAL_DIR/system-configs/.claude/commands/push.md"
-    
+
     # Check for key behavior descriptions
     assert_file_contains "$push_file" "git push" \
         "Should mention git push"
-    
+
     assert_file_contains "$push_file" "branch" \
         "Should mention branch handling"
-    
+
     assert_file_contains "$push_file" "Safely pushes" \
         "Should mention safe pushing"
 }

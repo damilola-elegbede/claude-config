@@ -22,22 +22,22 @@ log_error() { echo -e "${RED}❌ $1${NC}"; }
 # Initialize workflow integration
 init_workflows() {
     mkdir -p "$WORKFLOWS_DIR" "$INTEGRATIONS_DIR"
-    
+
     log_info "Initializing workflow integration system..."
-    
+
     # Create workflow definitions
     create_git_workflows
     create_ci_workflows
     create_ide_workflows
     create_custom_workflows
-    
+
     log_success "Workflow integration initialized"
 }
 
 # Git workflow integration
 create_git_workflows() {
     log_info "Setting up Git workflow integration..."
-    
+
     # Pre-commit workflow
     cat > "$WORKFLOWS_DIR/pre-commit.yml" << 'EOF'
 # Pre-commit validation workflow
@@ -51,11 +51,11 @@ steps:
   - name: "Environment Check"
     command: "scripts/platform/claude-validate doctor --quick"
     continue_on_error: false
-    
+
   - name: "Incremental Validation"
     command: "scripts/platform/claude-validate validate --staged"
     continue_on_error: false
-    
+
   - name: "Performance Check"
     command: "scripts/platform/performance-optimizer.sh monitor record"
     continue_on_error: true
@@ -83,11 +83,11 @@ steps:
   - name: "Message Format Check"
     command: "scripts/platform/commit-validator.sh format"
     continue_on_error: false
-    
+
   - name: "Conventional Commit Check"
     command: "scripts/platform/commit-validator.sh conventional"
     continue_on_error: true
-    
+
   - name: "Auto-enhance Message"
     command: "scripts/platform/commit-validator.sh enhance"
     continue_on_error: true
@@ -112,15 +112,15 @@ steps:
   - name: "Full Validation Suite"
     command: "scripts/platform/claude-validate validate"
     continue_on_error: false
-    
+
   - name: "Security Scan"
     command: "scripts/platform/claude-validate validate security"
     continue_on_error: false
-    
+
   - name: "Performance Report"
     command: "scripts/platform/performance-optimizer.sh test"
     continue_on_error: true
-    
+
   - name: "Integration Test"
     command: "make test 2>/dev/null || echo 'No tests configured'"
     continue_on_error: true
@@ -136,7 +136,7 @@ EOF
 # CI/CD workflow integration
 create_ci_workflows() {
     log_info "Setting up CI/CD workflow integration..."
-    
+
     # GitHub Actions workflow
     cat > "$WORKFLOWS_DIR/github-actions.yml" << 'EOF'
 # GitHub Actions CI/CD integration
@@ -152,57 +152,57 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
         validation-type: [yaml, format, security, docs]
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup validation environment
         run: |
           sudo apt-get update
           sudo apt-get install -y yq shellcheck
           pip3 install pyyaml
-          
+
       - name: Initialize platform
         run: |
           scripts/platform/claude-validate setup
           scripts/platform/performance-optimizer.sh analyze
-          
+
       - name: Run validation
         run: |
           scripts/platform/claude-validate validate ${{ matrix.validation-type }}
-          
+
       - name: Performance report
         if: always()
         run: |
           scripts/platform/performance-optimizer.sh monitor report 1
-          
+
       - name: Upload metrics
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: validation-metrics-${{ matrix.validation-type }}
           path: .validation-metrics/
-  
+
   integration-test:
     needs: validate
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Full integration test
         run: |
           scripts/platform/claude-validate setup
           scripts/platform/claude-validate validate
           make test 2>/dev/null || echo "No tests configured"
-          
+
       - name: Performance benchmark
         run: |
           scripts/platform/performance-optimizer.sh test
@@ -283,12 +283,12 @@ EOF
 // Jenkins pipeline for Claude validation
 pipeline {
     agent any
-    
+
     environment {
         CLAUDE_VALIDATE_CACHE = 'true'
         CLAUDE_VALIDATE_PARALLEL = 'true'
     }
-    
+
     stages {
         stage('Setup') {
             steps {
@@ -296,7 +296,7 @@ pipeline {
                 sh 'scripts/platform/performance-optimizer.sh analyze'
             }
         }
-        
+
         stage('Validation') {
             parallel {
                 stage('YAML') {
@@ -321,7 +321,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Integration Test') {
             when {
                 anyOf {
@@ -335,7 +335,7 @@ pipeline {
                 sh 'make test 2>/dev/null || echo "No tests configured"'
             }
         }
-        
+
         stage('Performance Report') {
             steps {
                 sh 'scripts/platform/performance-optimizer.sh monitor report'
@@ -343,7 +343,7 @@ pipeline {
             }
         }
     }
-    
+
     post {
         always {
             sh 'scripts/platform/performance-optimizer.sh monitor record "jenkins-pipeline" $BUILD_DURATION $BUILD_NUMBER'
@@ -364,7 +364,7 @@ EOF
 # IDE workflow integration
 create_ide_workflows() {
     log_info "Setting up IDE workflow integration..."
-    
+
     # VS Code tasks
     cat > "$WORKFLOWS_DIR/vscode-tasks.json" << 'EOF'
 {
@@ -452,7 +452,7 @@ EOF
         },
         {
             "name": "Debug Performance",
-            "type": "node", 
+            "type": "node",
             "request": "launch",
             "program": "scripts/platform/performance-optimizer.sh",
             "args": ["test"],
@@ -540,7 +540,7 @@ EOF
 # Custom workflow creation
 create_custom_workflows() {
     log_info "Setting up custom workflow templates..."
-    
+
     # Workflow executor
     cat > "$WORKFLOWS_DIR/executor.sh" << 'EOF'
 #!/bin/bash
@@ -554,25 +554,25 @@ REPO_ROOT=$(git rev-parse --show-toplevel)
 execute_workflow() {
     local workflow_file="$1"
     local trigger="${2:-manual}"
-    
+
     if [[ ! -f "$workflow_file" ]]; then
         echo "❌ Workflow file not found: $workflow_file"
         return 1
     fi
-    
+
     echo "🚀 Executing workflow: $(basename "$workflow_file")"
-    
+
     # Parse YAML and execute steps
     if command -v yq >/dev/null 2>&1; then
         local steps_count=$(yq eval '.steps | length' "$workflow_file")
-        
+
         for ((i=0; i<steps_count; i++)); do
             local step_name=$(yq eval ".steps[$i].name" "$workflow_file")
             local step_command=$(yq eval ".steps[$i].command" "$workflow_file")
             local continue_on_error=$(yq eval ".steps[$i].continue_on_error // true" "$workflow_file")
-            
+
             echo "▶️  Executing: $step_name"
-            
+
             if eval "$step_command"; then
                 echo "✅ Step completed: $step_name"
             else
@@ -587,7 +587,7 @@ execute_workflow() {
         echo "⚠️  yq not available, cannot parse workflow YAML"
         return 1
     fi
-    
+
     echo "✅ Workflow completed successfully"
 }
 
@@ -600,12 +600,12 @@ list_workflows() {
 # Validate workflow definition
 validate_workflow() {
     local workflow_file="$1"
-    
+
     if [[ ! -f "$workflow_file" ]]; then
         echo "❌ Workflow file not found: $workflow_file"
         return 1
     fi
-    
+
     # Basic YAML validation
     if command -v yq >/dev/null 2>&1; then
         if yq eval '.' "$workflow_file" >/dev/null 2>&1; then
@@ -614,7 +614,7 @@ validate_workflow() {
             echo "❌ Invalid YAML in workflow file"
             return 1
         fi
-        
+
         # Check required fields
         local required_fields=("name" "description" "steps")
         for field in "${required_fields[@]}"; do
@@ -623,7 +623,7 @@ validate_workflow() {
                 return 1
             fi
         done
-        
+
         echo "✅ Workflow definition is valid"
     else
         echo "⚠️  Cannot validate workflow without yq"
@@ -651,7 +651,7 @@ esac
 EOF
 
     chmod +x "$WORKFLOWS_DIR/executor.sh"
-    
+
     # Custom workflow template
     cat > "$WORKFLOWS_DIR/custom-template.yml" << 'EOF'
 # Custom workflow template
@@ -669,12 +669,12 @@ steps:
     command: "scripts/platform/claude-validate doctor --quick"
     continue_on_error: false
     timeout: 30
-    
+
   - name: "Step 2: Custom Validation"
     command: "echo 'Add your custom command here'"
     continue_on_error: true
     timeout: 60
-    
+
   - name: "Step 3: Cleanup"
     command: "echo 'Cleanup operations'"
     continue_on_error: true
@@ -687,7 +687,7 @@ settings:
 notifications:
   success: "Custom workflow completed successfully"
   failure: "Custom workflow failed - check logs"
-  
+
 environment:
   CUSTOM_VAR: "value"
   DEBUG: "false"
@@ -699,7 +699,7 @@ EOF
 # Integration setup for specific platforms
 setup_platform_integration() {
     local platform="${1:-detect}"
-    
+
     if [[ "$platform" == "detect" ]]; then
         # Auto-detect platform
         if [[ -f "package.json" ]]; then
@@ -714,9 +714,9 @@ setup_platform_integration() {
             platform="generic"
         fi
     fi
-    
+
     log_info "Setting up integration for $platform platform..."
-    
+
     case "$platform" in
         nodejs)
             setup_nodejs_integration
@@ -739,30 +739,30 @@ setup_platform_integration() {
 # Node.js integration
 setup_nodejs_integration() {
     log_info "Setting up Node.js integration..."
-    
+
     # Package.json scripts
     if [[ -f "package.json" ]]; then
         local temp_file=$(mktemp)
-        
+
         # Add scripts if they don't exist
         if ! grep -q '"claude:validate"' package.json; then
             jq '.scripts["claude:validate"] = "scripts/platform/claude-validate validate"' package.json > "$temp_file"
             mv "$temp_file" package.json
         fi
-        
+
         if ! grep -q '"claude:setup"' package.json; then
             jq '.scripts["claude:setup"] = "scripts/platform/claude-validate setup"' package.json > "$temp_file"
             mv "$temp_file" package.json
         fi
-        
+
         if ! grep -q '"precommit"' package.json; then
             jq '.scripts.precommit = "scripts/platform/claude-validate validate --staged"' package.json > "$temp_file"
             mv "$temp_file" package.json
         fi
-        
+
         log_success "Added Claude validation scripts to package.json"
     fi
-    
+
     # Husky integration
     if command -v npx >/dev/null 2>&1; then
         if [[ ! -d ".husky" ]]; then
@@ -776,7 +776,7 @@ setup_nodejs_integration() {
 # Python integration
 setup_python_integration() {
     log_info "Setting up Python integration..."
-    
+
     # Create validation script
     cat > "validate.py" << 'EOF'
 #!/usr/bin/env python3
@@ -790,14 +790,14 @@ import argparse
 def run_validation(validation_types=None):
     """Run Claude validation."""
     script_path = Path(__file__).parent / "scripts" / "platform" / "claude-validate"
-    
+
     cmd = [str(script_path), "validate"]
     if validation_types:
         cmd.extend(validation_types)
-    
+
     try:
         result = subprocess.run(cmd, capture_output=True, text=True)
-        
+
         if result.returncode == 0:
             print("✅ Validation passed")
             return True
@@ -807,7 +807,7 @@ def run_validation(validation_types=None):
             if result.stderr:
                 print(result.stderr)
             return False
-            
+
     except FileNotFoundError:
         print("⚠️  Claude validate not found. Run setup first.")
         return False
@@ -816,17 +816,17 @@ def main():
     parser = argparse.ArgumentParser(description="Claude validation for Python")
     parser.add_argument("types", nargs="*", help="Validation types to run")
     args = parser.parse_args()
-    
+
     success = run_validation(args.types)
     sys.exit(0 if success else 1)
 
 if __name__ == "__main__":
     main()
 EOF
-    
+
     chmod +x "validate.py"
     log_success "Created Python validation integration"
-    
+
     # Pre-commit hooks integration
     if [[ -f ".pre-commit-config.yaml" ]]; then
         log_info "Pre-commit framework detected"
@@ -837,7 +837,7 @@ EOF
 # Go integration
 setup_go_integration() {
     log_info "Setting up Go integration..."
-    
+
     # Create Go validation wrapper
     cat > "validate.go" << 'EOF'
 package main
@@ -855,30 +855,30 @@ func main() {
         fmt.Printf("❌ Error getting working directory: %v\n", err)
         os.Exit(1)
     }
-    
+
     scriptPath := filepath.Join(wd, "scripts", "platform", "claude-validate")
-    
+
     args := append([]string{"validate"}, os.Args[1:]...)
     cmd := exec.Command(scriptPath, args...)
     cmd.Stdout = os.Stdout
     cmd.Stderr = os.Stderr
-    
+
     if err := cmd.Run(); err != nil {
         fmt.Println("❌ Validation failed")
         os.Exit(1)
     }
-    
+
     fmt.Println("✅ Validation passed")
 }
 EOF
-    
+
     log_success "Created Go validation integration"
 }
 
 # Rust integration
 setup_rust_integration() {
     log_info "Setting up Rust integration..."
-    
+
     # Add validation to Cargo.toml
     if [[ -f "Cargo.toml" ]]; then
         if ! grep -q "\[package.metadata.claude\]" Cargo.toml; then
@@ -894,7 +894,7 @@ setup_rust_integration() {
 # Generic integration
 setup_generic_integration() {
     log_info "Setting up generic integration..."
-    
+
     # Create simple wrapper script
     cat > "validate" << 'EOF'
 #!/bin/bash
@@ -910,7 +910,7 @@ else
     exit 1
 fi
 EOF
-    
+
     chmod +x "validate"
     log_success "Created generic validation wrapper"
 }
@@ -918,7 +918,7 @@ EOF
 # Main command dispatcher
 main() {
     local command="${1:-help}"
-    
+
     case "$command" in
         init)
             init_workflows
