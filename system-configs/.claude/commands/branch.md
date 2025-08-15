@@ -9,12 +9,14 @@ input. Always starts from the latest main branch to ensure branches are up-to-da
 
 ```bash
 /branch [context]
+/branch --file <file_path>
 ```yaml
 
 ## Arguments
 
 - `context` (optional): Description or context for the branch. If not provided, uses context from the current
   conversation window.
+- `--file <file_path>` (optional): Read context from a file instead of using conversation context or explicit arguments.
 
 ## Behavior
 
@@ -26,6 +28,7 @@ When you use `/branch`, I will:
    - Ensure local main is up-to-date
 
 2. **Analyze context**:
+   - If --file flag provided: Read and analyze file content for context
    - If explicit context provided: Use that for branch naming
    - If no argument: Analyze conversation context for:
      - Feature being discussed
@@ -55,6 +58,35 @@ When you use `/branch`, I will:
    - Branch starts from latest main/master
    - Tracking configured if needed
    - No uncommitted changes lost
+
+## File Input Processing
+
+When using `--file <file_path>`:
+
+1. **Read the entire file** using the Read tool
+2. **Extract context** from the file content:
+   - Issue descriptions or bug reports
+   - Feature specifications or requirements
+   - Task definitions or user stories
+   - Technical design documents
+   - Error logs or stack traces
+3. **Analyze content type** to determine appropriate branch prefix:
+   - Bug reports/errors → `fix/`
+   - Feature specs → `feature/`
+   - Documentation → `docs/`
+   - Performance issues → `perf/`
+   - Refactoring plans → `refactor/`
+4. **Generate branch name** based solely on file content
+5. **Ignore conversation context** when --file is used (file is the sole source)
+
+**Supported File Formats**:
+- `.md` - Markdown documents
+- `.txt` - Plain text files
+- `.yaml`/`.yml` - YAML specifications
+- `.json` - JSON data
+- `.log` - Log files
+- `.rst` - reStructuredText
+- Any text-based format
 
 ## Branch Naming Conventions
 
@@ -97,6 +129,52 @@ Based on context analysis:
 # Creates: feature/PROJ-789-user-notifications
 ```yaml
 
+### Using file input
+
+```bash
+/branch --file requirements/oauth-integration.md
+# Reads OAuth feature spec, creates: feature/oauth-integration
+
+/branch --file bugs/login-timeout.txt
+# Reads bug report, creates: fix/login-timeout-issue
+
+/branch --file tasks/JIRA-1234.yaml
+# Reads JIRA export, creates: feature/JIRA-1234-user-dashboard
+
+/branch --file errors/production-crash.log
+# Reads error log, creates: fix/production-crash-nullpointer
+```yaml
+
+### File content examples
+
+**Feature specification file** (requirements/payment.md):
+
+```markdown
+# Payment Gateway Integration
+Implement Stripe payment processing for subscriptions...
+```
+
+→ Creates: `feature/stripe-payment-gateway`
+
+**Bug report file** (bugs/api-error.txt):
+
+```text
+Users reporting 403 Forbidden errors when accessing profile endpoint
+after recent deployment. Affects approximately 15% of requests...
+```
+
+→ Creates: `fix/api-403-profile-endpoint`
+
+**Task definition file** (tasks/refactor.yaml):
+
+```yaml
+title: Refactor database connection pooling
+type: technical-debt
+description: Current connection pool implementation is inefficient...
+```
+
+→ Creates: `refactor/database-connection-pooling`
+
 ### Using conversation context
 
 ```text
@@ -111,13 +189,16 @@ User: /branch
 
 ## Smart Context Analysis
 
-The command analyzes multiple context sources:
+The command analyzes multiple context sources in priority order:
 
-1. **Explicit arguments** - Highest priority
-2. **Recent conversation** - Last 5-10 messages
-3. **Issue/ticket mentions** - JIRA, GitHub issues, etc.
-4. **Code snippets** - Feature/component names
-5. **Error messages** - For bug fix branches
+1. **File input (--file)** - Highest priority when provided
+2. **Explicit arguments** - Direct context passed to command
+3. **Recent conversation** - Last 5-10 messages
+4. **Issue/ticket mentions** - JIRA, GitHub issues, etc.
+5. **Code snippets** - Feature/component names
+6. **Error messages** - For bug fix branches
+
+When --file is used, it becomes the sole source of context, overriding all other sources.
 
 ## Integration with Other Commands
 
@@ -184,3 +265,7 @@ Respects repository settings:
 - Creates from main/master (configurable)
 - Supports both GitHub Flow and Git Flow conventions
 - Context window includes last 10 messages by default
+- **File input**: When using --file, the file content is the sole source for branch naming
+- **File formats**: Any text-based file can be used as input
+- **File paths**: Can be relative or absolute paths
+- **Large files**: The entire file is read and analyzed for context extraction
