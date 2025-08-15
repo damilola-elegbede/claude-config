@@ -316,4 +316,5 @@ sed -i '' 's/## Behavior/## Behavior/' command-name.md
 4. **Standards Definition**: Establishes quality standards that other commands must follow
 5. **Repository Integration**: Complex sync exclusion and repository-specific command handling
 
-**Refactoring Consideration**: While approaching the complexity limit, breaking this command into sub-commands would fragment the cohesive validation framework and make it harder to maintain consistency across the validation process.
+**Refactoring Consideration**: While approaching the complexity limit, breaking this command into sub-commands would
+fragment the cohesive validation framework and make it harder to maintain consistency across the validation process.
