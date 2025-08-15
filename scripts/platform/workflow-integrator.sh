@@ -742,20 +742,36 @@ setup_nodejs_integration() {
 
     # Package.json scripts
     if [[ -f "package.json" ]]; then
-        local temp_file=$(mktemp)
-
         # Add scripts if they don't exist
         if ! grep -q '"claude:validate"' package.json; then
+            local temp_file
+            temp_file=$(mktemp /tmp/package.json.XXXXXX) || {
+                log_error "Failed to create temp file"
+                return 1
+            }
+            trap 'rm -f "$temp_file"' EXIT
             jq '.scripts["claude:validate"] = "scripts/platform/claude-validate validate"' package.json > "$temp_file"
             mv "$temp_file" package.json
         fi
 
         if ! grep -q '"claude:setup"' package.json; then
+            local temp_file
+            temp_file=$(mktemp /tmp/package.json.XXXXXX) || {
+                log_error "Failed to create temp file"
+                return 1
+            }
+            trap 'rm -f "$temp_file"' EXIT
             jq '.scripts["claude:setup"] = "scripts/platform/claude-validate setup"' package.json > "$temp_file"
             mv "$temp_file" package.json
         fi
 
         if ! grep -q '"precommit"' package.json; then
+            local temp_file
+            temp_file=$(mktemp /tmp/package.json.XXXXXX) || {
+                log_error "Failed to create temp file"
+                return 1
+            }
+            trap 'rm -f "$temp_file"' EXIT
             jq '.scripts.precommit = "scripts/platform/claude-validate validate --staged"' package.json > "$temp_file"
             mv "$temp_file" package.json
         fi

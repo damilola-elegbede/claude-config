@@ -200,10 +200,9 @@ domain_expertise:"""
         yaml_content += "\n    # NO Task tool - Claude handles all orchestration"
 
     yaml_content += "\n  forbidden:"
+    yaml_content += "\n    task: \"Orchestration restricted to Claude (no direct Task tool access)\""
     if agent_info['category'] != 'infrastructure':
         yaml_content += "\n    deploy: \"Production deployment restricted to infrastructure agents\""
-    else:
-        yaml_content += "\n    none: \"Infrastructure agents have broad access for operations\""
 
     # Coordination protocols
     yaml_content += "\n\ncoordination_protocols:"

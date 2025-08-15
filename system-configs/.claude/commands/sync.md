@@ -89,7 +89,7 @@ When you use `/sync`, I will:
 ```text
 /sync
 Validating agent YAML compliance...
-✓ All 41 agents have valid YAML front-matter
+✓ All 42 agents have valid YAML front-matter
 
 Creating backups...
 ✓ Backed up ~/CLAUDE.md to ~/CLAUDE.md.backup

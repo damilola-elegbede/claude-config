@@ -676,11 +676,12 @@ export class MonitoringSystem extends EventEmitter {
 
   private updateSystemStatus(status: SystemStatus['status']): void {
     if (this.systemStatus.status !== status) {
+      const oldStatus = this.systemStatus.status;
       this.systemStatus.status = status;
       this.systemStatus.lastUpdated = Date.now();
 
       this.emit('system-status-change', {
-        oldStatus: this.systemStatus.status,
+        oldStatus: oldStatus,
         newStatus: status,
         timestamp: Date.now()
       });

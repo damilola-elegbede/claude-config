@@ -66,7 +66,7 @@ jobs:
         echo "script_count=$script_count" >> $GITHUB_OUTPUT
 
     - name: Run ShellCheck on all scripts
-      if: steps.find-scripts.outputs.script_count > 0
+      if: ${{ steps.find-scripts.outputs.script_count > 0 }}
       run: |
         echo "Running ShellCheck on all found scripts..."
 
