@@ -2,9 +2,13 @@
 
 ## Overview
 
-**IMPORTANT:** This document is maintained for historical reference. The efficiency agent concept has been integrated into the main 29-agent portfolio. The workflows described below are now handled by specialized agents like `production-reliability-engineer`, `supply-chain-security-engineer`, and others in the current system.
+**IMPORTANT:** This document is maintained for historical reference. The efficiency agent concept has been
+integrated into the main 29-agent portfolio. The workflows described below are now handled by specialized agents
+like `production-reliability-engineer`, `supply-chain-security-engineer`, and others in the current system.
 
-Originally, efficiency agents were specialized tools designed to minimize tool calls and streamline common development workflows in the Claude Code ecosystem. These concepts have been absorbed into our streamlined agent architecture.
+Originally, efficiency agents were specialized tools designed to minimize tool calls and streamline common
+development workflows in the Claude Code ecosystem. These concepts have been absorbed into our streamlined agent
+architecture.
 
 ## Core Philosophy
 
@@ -18,11 +22,12 @@ The efficiency agent category follows these principles:
 
 ## The Efficiency Agent Suite
 
-*Note: The efficiency agent category has been consolidated into the main 29-agent portfolio. The concepts below demonstrate streamlined workflow patterns now integrated into our specialized agents.*
+*Note: The efficiency agent category has been consolidated into the main 29-agent portfolio. The concepts below
+demonstrate streamlined workflow patterns now integrated into our specialized agents.*
 
 ### 1. file-navigator (Consolidated)
 
-**Purpose**: Rapid file system exploration and navigation  
+**Purpose**: Rapid file system exploration and navigation
 **Reduces**: Multiple `ls`, `find`, and `cd` commands to single operations
 
 **Key Capabilities:**
@@ -50,7 +55,7 @@ Task: "Use file-navigator to find all React components and utility files in the 
 
 ### 2. dependency-manager (Now: supply-chain-security-engineer)
 
-**Purpose**: Streamlined package and dependency operations  
+**Purpose**: Streamlined package and dependency operations
 **Reduces**: Multiple package manager commands and version checks
 
 **Key Capabilities:**
@@ -77,7 +82,7 @@ Task: "Use dependency-manager to update React and its types to latest compatible
 
 ### 3. git-workflow
 
-**Purpose**: Complex git operations in single commands  
+**Purpose**: Complex git operations in single commands
 **Reduces**: Multi-step git workflows to atomic operations
 
 **Key Capabilities:**
@@ -105,7 +110,7 @@ Task: "Use git-workflow to create feature/new-feature branch from latest main"
 
 ### 4. config-specialist
 
-**Purpose**: Multi-file configuration management  
+**Purpose**: Multi-file configuration management
 **Reduces**: Reading, parsing, and updating multiple config files
 
 **Key Capabilities:**
@@ -132,7 +137,7 @@ Task: "Use config-specialist to update database configuration across all environ
 
 ### 5. error-resolver (Now: production-reliability-engineer)
 
-**Purpose**: Rapid error diagnosis and resolution  
+**Purpose**: Rapid error diagnosis and resolution
 **Reduces**: Multiple debugging and log analysis steps
 
 **Key Capabilities:**
@@ -160,7 +165,7 @@ Task: "Use error-resolver to diagnose and fix the TypeError in production logs"
 
 ### 6. search-coordinator
 
-**Purpose**: Advanced code search and analysis  
+**Purpose**: Advanced code search and analysis
 **Reduces**: Multiple grep/ripgrep commands across files
 
 **Key Capabilities:**
@@ -186,7 +191,7 @@ Task: "Use search-coordinator to find all React hooks usage in test files"
 
 ### 7. test-runner
 
-**Purpose**: Intelligent test execution and management  
+**Purpose**: Intelligent test execution and management
 **Reduces**: Multiple test commands and coverage analysis
 
 **Key Capabilities:**
@@ -212,7 +217,7 @@ Task: "Use test-runner to run affected tests for recent changes with coverage"
 
 ### 8. documentation-finder
 
-**Purpose**: Rapid documentation and knowledge retrieval  
+**Purpose**: Rapid documentation and knowledge retrieval
 **Reduces**: Multiple file searches for docs and comments
 
 **Key Capabilities:**
@@ -239,7 +244,7 @@ Task: "Use documentation-finder to gather all user API documentation"
 
 ### 9. file-writer
 
-**Purpose**: Bulk file operations and scaffolding  
+**Purpose**: Bulk file operations and scaffolding
 **Reduces**: Multiple file creation and editing commands
 
 **Key Capabilities:**
@@ -346,19 +351,19 @@ These workflows are now handled by the main agent portfolio:
 
 1. **Sequential Efficiency**: Chain efficiency agents for complex workflows
 
-   ```
+   ```yaml
    file-navigator → search-coordinator → file-writer
    ```
 
 2. **Parallel Efficiency**: Run multiple efficiency agents simultaneously
 
-   ```
+   ```yaml
    dependency-manager + config-specialist + git-workflow
    ```
 
 3. **Hybrid Workflows**: Combine efficiency and specialist agents
 
-   ```
+   ```yaml
    file-navigator → codebase-analyst → file-writer
    ```
 
@@ -391,13 +396,13 @@ workflow: create-feature-component
 
 ### Common Issues
 
-**Issue**: Agent performs more operations than expected  
+**Issue**: Agent performs more operations than expected
 **Solution**: Provide more specific constraints in delegation
 
-**Issue**: Results don't match traditional approach  
+**Issue**: Results don't match traditional approach
 **Solution**: Verify agent has latest project context
 
-**Issue**: Performance not improved  
+**Issue**: Performance not improved
 **Solution**: Ensure task fits efficiency agent profile
 
 ### Debug Mode
@@ -427,4 +432,6 @@ Task: "Use file-navigator in debug mode to trace search algorithm"
 
 ## Summary
 
-Efficiency agents represent a paradigm shift in development automation, reducing tool call overhead while maintaining precision and flexibility. By mastering single workflows and providing intelligent defaults, they enable developers to focus on creative problem-solving rather than repetitive operations.
+Efficiency agents represent a paradigm shift in development automation, reducing tool call overhead while
+maintaining precision and flexibility. By mastering single workflows and providing intelligent defaults, they enable
+developers to focus on creative problem-solving rather than repetitive operations.

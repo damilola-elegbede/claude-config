@@ -80,11 +80,9 @@ class OAuthIntegration {
     // Generate PKCE challenge
     const codeVerifier = this.generateCodeVerifier();
     const codeChallenge = await this.generateCodeChallenge(codeVerifier);
-    
-    // Store verifier for token exchange
+       // Store verifier for token exchange
     sessionStorage.setItem('code_verifier', codeVerifier);
-    
-    // Build authorization URL
+       // Build authorization URL
     const params = new URLSearchParams({
       client_id: this.clientId,
       redirect_uri: this.redirectUri,
@@ -94,8 +92,7 @@ class OAuthIntegration {
       code_challenge_method: 'S256',
       state: this.generateState()
     });
-    
-    window.location.href = `${this.authEndpoint}?${params}`;
+       window.location.href = `${this.authEndpoint}?${params}`;
   }
 
   async handleCallback(code, state) {
@@ -103,8 +100,7 @@ class OAuthIntegration {
     if (!this.verifyState(state)) {
       throw new Error('Invalid state parameter');
     }
-    
-    // Exchange code for tokens
+       // Exchange code for tokens
     const codeVerifier = sessionStorage.getItem('code_verifier');
     const response = await fetch(this.tokenEndpoint, {
       method: 'POST',
@@ -117,8 +113,7 @@ class OAuthIntegration {
         code_verifier: codeVerifier
       })
     });
-    
-    const tokens = await response.json();
+       const tokens = await response.json();
     return this.secureTokenStorage(tokens);
   }
 }
@@ -137,42 +132,34 @@ class WebhookHandler:
     def __init__(self, secret):
         self.secret = secret
         self.event_handlers = {}
-    
-    def verify_signature(self, payload, signature, timestamp):
+       def verify_signature(self, payload, signature, timestamp):
         """Verify webhook signature to prevent replay attacks"""
         # Check timestamp to prevent replay
         if abs(time.time() - int(timestamp)) > 300:  # 5 minutes
             raise ValueError("Timestamp too old")
-        
-        # Compute expected signature
+               # Compute expected signature
         message = f"{timestamp}.{payload}"
         expected = hmac.new(
             self.secret.encode(),
             message.encode(),
             hashlib.sha256
         ).hexdigest()
-        
-        # Constant-time comparison
+               # Constant-time comparison
         return hmac.compare_digest(expected, signature)
-    
-    def register_handler(self, event_type, handler):
+       def register_handler(self, event_type, handler):
         """Register event handler"""
         self.event_handlers[event_type] = handler
-    
-    def process_webhook(self, request):
+       def process_webhook(self, request):
         """Process incoming webhook"""
         # Verify signature
         signature = request.headers.get('X-Webhook-Signature')
         timestamp = request.headers.get('X-Webhook-Timestamp')
-        
-        if not self.verify_signature(request.data, signature, timestamp):
+               if not self.verify_signature(request.data, signature, timestamp):
             return jsonify({'error': 'Invalid signature'}), 401
-        
-        # Parse event
+               # Parse event
         event = request.json
         event_type = event.get('type')
-        
-        # Handle event
+               # Handle event
         if event_type in self.event_handlers:
             try:
                 result = self.event_handlers[event_type](event)
@@ -181,8 +168,7 @@ class WebhookHandler:
                 # Log error but don't expose details
                 logger.error(f"Webhook processing error: {e}")
                 return jsonify({'error': 'Processing failed'}), 500
-        
-        return jsonify({'status': 'ignored'}), 200
+               return jsonify({'status': 'ignored'}), 200
 ```
 
 ### Payment Integration
@@ -191,8 +177,7 @@ class WebhookHandler:
 // Stripe payment integration with SCA support
 class StripePaymentService {
   private stripe: Stripe;
-  
-  constructor(private publishableKey: string) {
+   constructor(private publishableKey: string) {
     this.stripe = new Stripe(publishableKey);
   }
 
@@ -202,8 +187,7 @@ class StripePaymentService {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ amount, currency })
     });
-    
-    const { clientSecret } = await response.json();
+       const { clientSecret } = await response.json();
     return clientSecret;
   }
 
@@ -267,13 +251,11 @@ class MessageQueueIntegration:
         self.sqs = boto3.client('sqs')
         self.queue_url = queue_url
         self.dlq_url = dlq_url
-        
-    def send_message(self, message, delay_seconds=0, attributes=None):
+           def send_message(self, message, delay_seconds=0, attributes=None):
         """Send message with retry logic"""
         max_retries = 3
         retry_delay = 1
-        
-        for attempt in range(max_retries):
+               for attempt in range(max_retries):
             try:
                 response = self.sqs.send_message(
                     QueueUrl=self.queue_url,
@@ -289,8 +271,7 @@ class MessageQueueIntegration:
                         self.send_to_dlq(message, str(e))
                     raise
                 time.sleep(retry_delay * (2 ** attempt))
-    
-    def process_messages(self, handler, max_messages=10):
+       def process_messages(self, handler, max_messages=10):
         """Process messages with error handling"""
         while True:
             try:
@@ -300,15 +281,13 @@ class MessageQueueIntegration:
                     WaitTimeSeconds=20,  # Long polling
                     MessageAttributeNames=['All']
                 )
-                
-                messages = response.get('Messages', [])
+                               messages = response.get('Messages', [])
                 for message in messages:
                     try:
                         # Process message
                         body = json.loads(message['Body'])
                         handler(body, message.get('MessageAttributes', {}))
-                        
-                        # Delete on success
+                                               # Delete on success
                         self.sqs.delete_message(
                             QueueUrl=self.queue_url,
                             ReceiptHandle=message['ReceiptHandle']
@@ -316,8 +295,7 @@ class MessageQueueIntegration:
                     except Exception as e:
                         logger.error(f"Message processing failed: {e}")
                         # Message will become visible again after timeout
-                        
-            except Exception as e:
+                                   except Exception as e:
                 logger.error(f"Queue polling error: {e}")
                 time.sleep(5)
 ```
@@ -383,8 +361,7 @@ async function callExternalAPI(endpoint, options, retries = 3) {
         await logIntegrationError(error);
         throw error;
       }
-      
-      // Exponential backoff
+           // Exponential backoff
       await sleep(Math.pow(2, attempt) * 1000);
     }
   }

@@ -18,7 +18,9 @@ A comprehensive guide for creating, testing, and maintaining agents in the Claud
 
 ## Introduction
 
-The Claude-config agent ecosystem is a sophisticated system of specialized AI agents designed to handle specific technical tasks. Each agent is a focused expert with defined capabilities, tools, and responsibilities. This guide will help you create new agents that integrate seamlessly into this ecosystem.
+The Claude-config agent ecosystem is a sophisticated system of specialized AI agents designed to handle specific
+technical tasks. Each agent is a focused expert with defined capabilities, tools, and responsibilities. This guide
+will help you create new agents that integrate seamlessly into this ecosystem.
 
 ### Core Principles
 
@@ -113,7 +115,7 @@ Each agent requires:
 
 ### File Organization
 
-```
+```text
 .claude/
 └── agents/
     ├── AGENT_TEMPLATE.md          # Template for new agents
@@ -283,10 +285,10 @@ category: architecture
    ```markdown
    # ❌ Vague
    You help with backend tasks.
-   
+
    # ✅ Specific
-   You are an expert backend engineer specializing in high-performance 
-   distributed systems, capable of designing architectures that handle 
+   You are an expert backend engineer specializing in high-performance
+   distributed systems, capable of designing architectures that handle
    100k+ requests per second with sub-100ms latency.
    ```
 
@@ -464,7 +466,7 @@ The auditor checks:
 
 **Symptom**: Agent fails to load
 
-```
+```text
 Error: YAML parsing failed
 ```
 
@@ -479,7 +481,7 @@ Error: YAML parsing failed
 
 **Symptom**: Agent can't use expected tools
 
-```
+```text
 Error: Tool 'Bash' not available
 ```
 
@@ -493,7 +495,7 @@ Error: Tool 'Bash' not available
 
 **Symptom**: Validation fails on color/category
 
-```
+```text
 Error: Color 'blue' doesn't match category 'security'
 ```
 
@@ -507,7 +509,7 @@ Error: Color 'blue' doesn't match category 'security'
 
 **Symptom**: Orchestrator can't find agent
 
-```
+```text
 Error: Unknown agent 'my-agent'
 ```
 
@@ -521,7 +523,7 @@ Error: Unknown agent 'my-agent'
 
 **Symptom**: Agent terminates unexpectedly
 
-```
+```text
 Error: System boundary violation - Task tool invoked
 ```
 
@@ -566,7 +568,7 @@ Error: System boundary violation - Task tool invoked
 
 Agents don't directly communicate but work through the orchestrator:
 
-```
+```text
 User Request
      ↓
 Orchestrator (Claude)
@@ -617,13 +619,13 @@ Final Output
 
    ```markdown
    ## Output Format
-   
+
    ### Summary
    [Brief overview]
-   
+
    ### Details
    [Comprehensive information]
-   
+
    ### Recommendations
    [Next steps]
    ```

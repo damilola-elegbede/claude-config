@@ -2,14 +2,16 @@
 
 ## Overview
 
-This guide provides step-by-step instructions for migrating agents to the new ecosystem standards, including SYSTEM BOUNDARY enforcement, YAML field ordering, and category-based color standardization.
+This guide provides step-by-step instructions for migrating agents to the new ecosystem standards,
+including SYSTEM BOUNDARY enforcement, YAML field ordering, and category-based color standardization.
 
 ## Migration Summary
 
 ### Key Changes
 
 1. **SYSTEM BOUNDARY Language**: New mandatory constraint format for all agents
-2. **YAML Field Ordering**: Strict field order requirement (name → description → tools → color → category)
+2. **YAML Field Ordering**: Strict field order requirement
+   (name → description → tools → color → category)
 3. **Color Standardization**: Colors must match agent categories
 4. **Tool Access Updates**: Standardized tool declarations
 5. **Category Assignment**: All agents must have an explicit category
@@ -140,16 +142,16 @@ cat > fix-agent-issues.sh << 'EOF'
 for agent_file in *.md; do
     # Skip non-agent files
     [[ "$agent_file" =~ ^AGENT_ ]] && continue
-    
+
     echo "Migrating: $agent_file"
-    
+
     # Backup original
     cp "$agent_file" "$agent_file.backup"
-    
+
     # Extract and reorder YAML fields
     # Update constraint language
     # Standardize colors
-    
+
     echo "✓ Migrated: $agent_file"
 done
 EOF

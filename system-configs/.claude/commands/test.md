@@ -2,7 +2,10 @@
 
 ## Description
 
-Automatically discovers and runs tests configured in any repository by analyzing the README.md and common test patterns. If no tests exist, it creates a base level test suite appropriate for the project type. This universal test runner eliminates the need to remember project-specific test commands or manually set up initial tests. Claude coordinates with the test-engineer specialist for comprehensive test strategy when needed.
+Automatically discovers and runs tests configured in any repository by analyzing the README.md and common test
+patterns. If no tests exist, it creates a base level test suite appropriate for the project type. This universal
+test runner eliminates the need to remember project-specific test commands or manually set up initial tests.
+Claude coordinates with the test-engineer specialist for comprehensive test strategy when needed.
 
 ## Usage
 
@@ -107,12 +110,12 @@ When creating new tests, I'll generate appropriate starter tests:
 /test
 # Finds and runs: npm test
 
-# In a Python project  
+# In a Python project
 /test
 # Finds and runs: pytest
 
 # In a Go project
-/test  
+/test
 # Finds and runs: go test ./...
 ```
 

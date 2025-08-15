@@ -151,7 +151,7 @@ For easy access, you can create a menu bar shortcut:
 1. Open Script Editor
 2. Create new script:
 
-   ```applescript
+   ```text
    do shell script "open http://localhost:3003"
    ```
 

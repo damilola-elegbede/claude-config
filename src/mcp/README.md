@@ -109,7 +109,7 @@ await infrastructure.recordPerformance({
 ## Performance Targets (SPEC_01 Compliance)
 
 ✅ **Sub-100ms routing decisions** - Achieved through caching and optimized algorithms
-✅ **Performance-based preference learning** - Exponential moving averages with real-time adaptation  
+✅ **Performance-based preference learning** - Exponential moving averages with real-time adaptation
 ✅ **Agent-specific optimization profiles** - Comprehensive agent profiles with learning configs
 ✅ **Strategy Pattern for routing** - Pluggable strategies with configurable weights
 ✅ **Caching layer optimization** - In-memory cache with Redis fallback
@@ -117,7 +117,7 @@ await infrastructure.recordPerformance({
 
 ## File Structure
 
-```
+```text
 src/mcp/
 ├── infrastructure/
 │   ├── tool-router.ts           # Intelligent routing with Strategy Pattern

@@ -50,7 +50,7 @@ The Comprehensive Analytics and Reporting System provides advanced executive das
 
 ## Architecture
 
-```
+```text
 ComprehensiveReportingSystem
 ├── Executive Dashboard
 │   ├── KPI Collection & Tracking

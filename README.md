@@ -9,17 +9,25 @@
 <!-- markdownlint-disable-next-line MD036 -->
 *Production-ready Smart Agent Orchestration Framework for Claude Code CLI*
 
-[Quick Start](#-quick-start) • [Orchestration Framework](#-smart-agent-orchestration-framework) • [Features](#-features) • [Commands](#-commands) • [Agent Ecosystem](#-agent-ecosystem) • [Installation](#-installation) • [Contributing](#-contributing)
+[Quick Start](#-quick-start) • [Orchestration Framework](#-smart-agent-orchestration-framework) •
+[Features](#-features) • [Commands](#-commands) • [Agent Ecosystem](#-agent-ecosystem) •
+[Installation](#-installation) • [Contributing](#-contributing)
 
 </div>
 
 ## 🎯 Overview
 
-This repository delivers a **sophisticated Smart Agent Orchestration Framework** for Claude Code CLI, featuring **41 specialized agents** (including the new execution-evaluator for command verification) and **14 essential commands**. Built from the ground up after a comprehensive cleanup that removed 85+ bloat files, this system provides intelligent task delegation, parallel execution, continuous improvement capabilities, and automatic command verification for enhanced development workflows.
+This repository delivers a **sophisticated Smart Agent Orchestration Framework** for Claude Code CLI, featuring
+**41 specialized agents** (including the new execution-evaluator for command verification) and
+**14 essential commands**.
+Built from the ground up after a comprehensive cleanup that removed 85+ bloat files, this system provides intelligent
+task delegation, parallel execution, continuous improvement capabilities, and automatic command verification for
+enhanced development workflows.
 
 ## 🧠 Smart Agent Orchestration Framework
 
-This repository implements a **production-ready orchestration framework** that intelligently manages 40+ specialized agents with sophisticated task delegation and parallel execution capabilities.
+This repository implements a **production-ready orchestration framework** that intelligently manages 40+ specialized
+agents with sophisticated task delegation and parallel execution capabilities.
 
 ### 🌟 Framework Core Principles
 
@@ -128,12 +136,14 @@ cp system-configs/settings.json ~/.claude/settings.json
 
 - **`/test`** - **Multi-Agent Test Execution**: Auto-discovers frameworks, deploys test-engineer for complex scenarios
 - **`/context`** - **Parallel Repository Analysis**: Deploys multiple codebase-analyst agents concurrently
-- **`/plan`** - **Strategic Orchestration**: Principal-architect consultation with TDD methodology and parallel execution
+- **`/plan`** - **Strategic Orchestration**: Principal-architect consultation with TDD methodology and parallel
+  execution
 - **`/agent-audit`** - **Ecosystem Health Check**: Parallel validation across all 8 agent categories
 - **`/resolve-cr`** - **Multi-Agent PR Resolution**: Intelligent specialist deployment based on comment analysis
 - **`/debug`** - **Systematic Investigation**: Debugger agent with evidence gathering and hypothesis testing
 - **`/pr`** - **Intelligent PR Creation**: Tech-writer + codebase-analyst collaboration for comprehensive descriptions
-- **`/review`** - **Multi-Dimensional Analysis**: Parallel deployment of code-reviewer, security-auditor, and test-engineer
+- **`/review`** - **Multi-Dimensional Analysis**: Parallel deployment of code-reviewer, security-auditor, and
+  test-engineer
 - **`/deps`** - **Security-First Management**: Dependency-manager agent with vulnerability scanning
 - **`/fix-ci`** - **Pattern Recognition**: DevOps agent with automated failure analysis and remediation
 
@@ -285,7 +295,8 @@ Note: Previously named `/resolve-rabbit`.
 
 ## 🎭 Agent Ecosystem: 40+ Specialists
 
-The Smart Agent Orchestration Framework includes **40+ specialized agents** organized across 8 functional domains, with sophisticated parallel execution and multi-instance capabilities:
+The Smart Agent Orchestration Framework includes **40+ specialized agents** organized across 8 functional domains,
+with sophisticated parallel execution and multi-instance capabilities:
 
 ### 📊 Agent Categories Overview
 
@@ -302,7 +313,8 @@ The Smart Agent Orchestration Framework includes **40+ specialized agents** orga
 
 ### 🚀 Smart Orchestration Examples
 
-The framework demonstrates intelligent parallel execution and specialist coordination across complex real-world scenarios:
+The framework demonstrates intelligent parallel execution and specialist coordination across complex real-world
+scenarios:
 
 #### Multi-Platform Development Orchestration
 
@@ -311,7 +323,7 @@ Project: Mobile App with Backend
 Orchestration Strategy: Parallel specialist deployment with dependency management
 Execution:
   - backend-engineer: API development & microservices
-  - frontend-engineer: Admin dashboard & web interfaces  
+  - frontend-engineer: Admin dashboard & web interfaces
   - mobile-engineer #1: iOS native development
   - mobile-engineer #2: Android native development
   - design-system: Component library & design tokens
@@ -453,7 +465,7 @@ Performance Tracking: Real-time capability assessment and gap analysis
 ### Advanced Orchestration Capabilities
 
 - **Smart Agent Selection**: Context-aware specialist deployment with performance optimization
-- **Parallel Execution Engine**: Sophisticated coordination of concurrent agent operations  
+- **Parallel Execution Engine**: Sophisticated coordination of concurrent agent operations
 - **Quality Feedback Loops**: Continuous improvement based on execution success rates and performance metrics
 - **Emergency Override System**: Pragmatic thresholds for direct action when specialists unavailable
 - **Boundary Protection**: Enhanced SYSTEM BOUNDARY enforcement with automatic violation detection
@@ -722,23 +734,28 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ### Q: How do I deploy configurations from this repository?
 
-**A:** Use the `/sync` command from within the claude-config repository. It will validate and deploy all configurations to your `~/.claude/` directory.
+**A:** Use the `/sync` command from within the claude-config repository. It will validate and deploy all
+configurations to your `~/.claude/` directory.
 
 ### Q: How often should I update my configurations?
 
-**A:** Run `git pull` in the claude-config repository periodically, then `/sync` to get the latest agent definitions and commands.
+**A:** Run `git pull` in the claude-config repository periodically, then `/sync` to get the latest agent
+definitions and commands.
 
 ### Q: What's the difference between the repository CLAUDE.md and system-configs/CLAUDE.md?
 
-**A:** The repository CLAUDE.md describes this configuration repository. The system-configs/CLAUDE.md is deployed to your home directory for global Claude configuration.
+**A:** The repository CLAUDE.md describes this configuration repository. The system-configs/CLAUDE.md is deployed
+to your home directory for global Claude configuration.
 
 ### Q: How do I know which agent to use?
 
-**A:** Check the [Agent Selection Guide](docs/AGENT_SELECTION_GUIDE.md) or use `/agent-audit` to see all available agents.
+**A:** Check the [Agent Selection Guide](docs/AGENT_SELECTION_GUIDE.md) or use `/agent-audit` to see all
+available agents.
 
 ### Q: Why did my agent task fail with "SYSTEM BOUNDARY" error?
 
-**A:** This security feature prevents agents from invoking themselves or other agents. Always let Claude handle agent coordination.
+**A:** This security feature prevents agents from invoking themselves or other agents. Always let Claude handle
+agent coordination.
 
 ### Q: Can agents write files directly?
 
@@ -746,7 +763,8 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ### Q: How can I contribute a new agent?
 
-**A:** Use the template in `system-configs/.claude/agents/AGENT_TEMPLATE.md`, ensure valid YAML front-matter and SYSTEM BOUNDARY protection, then submit a PR.
+**A:** Use the template in `system-configs/.claude/agents/AGENT_TEMPLATE.md`, ensure valid YAML front-matter and
+SYSTEM BOUNDARY protection, then submit a PR.
 
 ## 🔒 Security & Framework Protection
 
@@ -775,6 +793,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <!-- markdownlint-disable-next-line MD036 -->
 *Built with ❤️ by the Smart Agent Orchestration Community*
 
+<!-- markdownlint-disable-next-line MD036 -->
 **Experience the future of intelligent development workflows**
 
-[Report Bug](https://github.com/damilola/claude-config/issues) • [Request Feature](https://github.com/damilola/claude-config/issues) • [Documentation](https://github.com/damilola/claude-config/wiki) • [Framework Guide](system-configs/.claude/agents/README.md)
+[Report Bug](https://github.com/damilola/claude-config/issues) •
+[Request Feature](https://github.com/damilola/claude-config/issues) •
+[Documentation](https://github.com/damilola/claude-config/wiki) •
+[Framework Guide](system-configs/.claude/agents/README.md)

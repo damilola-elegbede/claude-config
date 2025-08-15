@@ -117,8 +117,7 @@ const surveyConfig = {
       logic: { 'Never': 'end-survey' }
     }
   ],
-  
-  satisfaction: [
+   satisfaction: [
     {
       type: 'likert',
       question: 'How satisfied are you with [feature]?',
@@ -126,8 +125,7 @@ const surveyConfig = {
       labels: ['Very Dissatisfied', 'Very Satisfied']
     }
   ],
-  
-  usability: [
+   usability: [
     {
       type: 'sus',
       questions: [
@@ -137,8 +135,7 @@ const surveyConfig = {
       ]
     }
   ],
-  
-  openEnded: [
+   openEnded: [
     {
       type: 'text',
       question: 'What would you improve about this feature?',
@@ -156,32 +153,26 @@ persona:
   name: "Sarah Chen"
   role: "Product Manager"
   age: 32
-  
-  demographics:
+   demographics:
     location: "San Francisco, CA"
     education: "MBA"
     tech_savviness: "High"
-  
-  goals:
+   goals:
     - Ship features on time with high quality
     - Maintain clear communication with stakeholders
     - Make data-driven decisions
-  
-  frustrations:
+   frustrations:
     - Scattered information across multiple tools
     - Manual status update processes
     - Lack of real-time visibility
-  
-  behaviors:
+   behaviors:
     - Checks metrics dashboard 5+ times daily
     - Prefers visual over text communication
     - Multi-tasks heavily during meetings
-  
-  needs:
+   needs:
     primary: "Single source of truth for product data"
     secondary: "Automated reporting capabilities"
-    
-  quote: "I spend 40% of my time just gathering information"
+     quote: "I spend 40% of my time just gathering information"
 ```
 
 ## Proactive Deployment Triggers

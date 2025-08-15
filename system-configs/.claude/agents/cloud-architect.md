@@ -67,8 +67,7 @@ Your advanced reasoning capabilities enable you to:
    - Performance requirements
    - Security and compliance needs
    - Cost constraints
-   
-   Future State Design:
+     Future State Design:
    - Target architecture
    - Technology selections
    - Migration approach
@@ -189,8 +188,7 @@ Remember: Your role is to design cloud architectures that are not just technical
 ## Tools
 
 - Glob
-- Grep  
-- Read
+- Grep - Read
 - Write
 - Edit
 - MultiEdit

@@ -2,37 +2,52 @@
 
 ## Overview
 
-This guide explains the rationale behind tool access restrictions for each agent type, ensuring appropriate capabilities while maintaining security and role boundaries.
+This guide explains the rationale behind tool access restrictions for each agent type,
+ensuring appropriate capabilities while maintaining security and role boundaries.
 
 ## Tool Access Categories
 
 ### Full Access Agents
 
-**Tools**: All tools including Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit
+**Tools**: All tools including Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS,
+WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit
 
 #### Implementation Agents
 
-- **backend-engineer**: Needs full access for complex server-side implementation, database modifications, and system configuration
-- **frontend-architect**: Requires all tools for UI implementation, build system configuration, and performance optimization
-- **fullstack-lead**: Standard implementation agent needing complete toolset for feature development and bug fixes
-- **devops**: Essential for infrastructure automation, CI/CD configuration, and deployment scripts
-- **platform-engineer**: Needs full access for monitoring setup, infrastructure management, and SRE automation
+- **backend-engineer**: Needs full access for complex server-side implementation,
+  database modifications, and system configuration
+- **frontend-architect**: Requires all tools for UI implementation, build system
+  configuration, and performance optimization
+- **fullstack-lead**: Standard implementation agent needing complete toolset for
+  feature development and bug fixes
+- **devops**: Essential for infrastructure automation, CI/CD configuration, and
+  deployment scripts
+- **platform-engineer**: Needs full access for monitoring setup, infrastructure
+  management, and SRE automation
 
-**Justification**: Implementation agents must modify code, configure systems, and manage infrastructure to deliver working solutions.
+**Justification**: Implementation agents must modify code, configure systems, and
+manage infrastructure to deliver working solutions.
 
 ### Read + Analysis Access
 
-**Tools**: Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Bash(read-only), TodoWrite
+**Tools**: Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch,
+Bash(read-only), TodoWrite
 **Forbidden**: Edit, MultiEdit, Write, NotebookEdit(modification)
 
 #### Analysis Agents
 
-- **codebase-analyst**: Focuses on understanding and reporting, not modification. Read-only access prevents accidental changes while allowing comprehensive analysis
-- **security-auditor**: Analyzes for vulnerabilities without modifying code. Separation of analysis and implementation ensures objective security assessment
-- **debugger**: Investigates issues without changing code during analysis phase. Modifications happen after investigation is complete
-- **performance-specialist**: Analyzes performance characteristics before recommending changes. Separation ensures objective measurement
+- **codebase-analyst**: Focuses on understanding and reporting, not modification.
+  Read-only access prevents accidental changes while allowing comprehensive analysis
+- **security-auditor**: Analyzes for vulnerabilities without modifying code.
+  Separation of analysis and implementation ensures objective security assessment
+- **debugger**: Investigates issues without changing code during analysis phase.
+  Modifications happen after investigation is complete
+- **performance-specialist**: Analyzes performance characteristics before
+  recommending changes. Separation ensures objective measurement
 
-**Justification**: Analysis agents must remain objective and focused on assessment rather than implementation. Read-only access ensures thorough analysis without bias toward immediate fixes.
+**Justification**: Analysis agents must remain objective and focused on assessment
+rather than implementation. Read-only access ensures thorough analysis without
+bias toward immediate fixes.
 
 ### Orchestration Access
 
@@ -40,33 +55,43 @@ This guide explains the rationale behind tool access restrictions for each agent
 
 #### Coordination Agents
 
-- **principal-architect**: Needs full access for architectural decisions, system design, and technical leadership across all domains
-- **project-orchestrator**: Requires complete toolset to coordinate multiple agents and manage complex project workflows
+- **principal-architect**: Needs full access for architectural decisions, system
+  design, and technical leadership across all domains
+- **project-orchestrator**: Requires complete toolset to coordinate multiple
+  agents and manage complex project workflows
 
-**Justification**: Leadership roles require full capabilities to support and coordinate other agents effectively.
+**Justification**: Leadership roles require full capabilities to support and
+coordinate other agents effectively.
 
 ### Documentation Access
 
-**Tools**: Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite
+**Tools**: Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch,
+WebSearch, TodoWrite
 **Forbidden**: NotebookRead, NotebookEdit
 
 #### Documentation Agents
 
-- **tech-writer**: Focuses on technical documentation and knowledge transfer. Notebook tools not needed for standard documentation workflows
-- **api-architect**: Creates API specifications and documentation. Primary focus on OpenAPI specs and contract documentation
+- **tech-writer**: Focuses on technical documentation and knowledge transfer.
+  Notebook tools not needed for standard documentation workflows
+- **api-architect**: Creates API specifications and documentation. Primary focus
+  on OpenAPI specs and contract documentation
 
-**Justification**: Documentation agents need to read existing code and write specifications but don't typically work with data analysis notebooks.
+**Justification**: Documentation agents need to read existing code and write
+specifications but don't typically work with data analysis notebooks.
 
 ### Design Access
 
-**Tools**: Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite
+**Tools**: Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch,
+TodoWrite
 **Forbidden**: Bash, NotebookRead, NotebookEdit
 
 #### Design Agents
 
-- **ui-designer**: Creates design specifications and visual guidelines. No need for system execution or data analysis
+- **ui-designer**: Creates design specifications and visual guidelines. No need
+  for system execution or data analysis
 
-**Justification**: Design agents create specifications that implementation agents execute. Direct system access could blur the design/implementation boundary.
+**Justification**: Design agents create specifications that implementation agents
+execute. Direct system access could blur the design/implementation boundary.
 
 ### Quality Assurance Access
 
@@ -74,10 +99,13 @@ This guide explains the rationale behind tool access restrictions for each agent
 
 #### QA Agents
 
-- **test-engineer**: Full access needed for test implementation, framework configuration, and quality automation
-- **code-reviewer**: Read + analysis access for objective code quality assessment without implementation bias
+- **test-engineer**: Full access needed for test implementation, framework
+  configuration, and quality automation
+- **code-reviewer**: Read + analysis access for objective code quality
+  assessment without implementation bias
 
-**Justification**: Testing requires implementation capabilities while code review benefits from objective, read-only analysis.
+**Justification**: Testing requires implementation capabilities while code review
+benefits from objective, read-only analysis.
 
 ## Security Principles
 
@@ -110,23 +138,30 @@ Tool restrictions enable clear audit trails:
 ### Bash Access
 
 - **Full Access**: Implementation and orchestration agents need system execution
-- **Read-Only**: Analysis agents can run non-destructive commands for investigation
-- **Forbidden**: Design agents don't need system access for specification creation
+- **Read-Only**: Analysis agents can run non-destructive commands for
+  investigation
+- **Forbidden**: Design agents don't need system access for specification
+  creation
 
 ### File Modification Tools (Edit, Write, MultiEdit)
 
 - **Allowed**: Implementation, orchestration, and documentation agents
-- **Forbidden**: Analysis and design agents to maintain objectivity and role separation
+- **Forbidden**: Analysis and design agents to maintain objectivity and role
+  separation
 
 ### WebFetch/WebSearch Access
 
-- **Universal**: All agents can access external information for research and context
-- **Justification**: External information gathering doesn't pose security risks and enhances agent capabilities
+- **Universal**: All agents can access external information for research and
+  context
+- **Justification**: External information gathering doesn't pose security risks
+  and enhances agent capabilities
 
 ### Notebook Tools
 
-- **Limited Use**: Only data-focused implementation agents need notebook capabilities
-- **Justification**: Most agents work with code and documentation rather than data analysis notebooks
+- **Limited Use**: Only data-focused implementation agents need notebook
+  capabilities
+- **Justification**: Most agents work with code and documentation rather than
+  data analysis notebooks
 
 ## Access Control Benefits
 

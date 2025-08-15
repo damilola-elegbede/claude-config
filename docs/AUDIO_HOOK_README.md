@@ -2,7 +2,9 @@
 
 ## Overview
 
-This hook system provides automatic audio notifications for different Claude Code events, improving user experience by providing immediate auditory feedback without requiring manual intervention.
+This hook system provides automatic audio notifications for different Claude Code events,
+improving user experience by providing immediate auditory feedback without requiring
+manual intervention.
 
 ## Configuration
 
@@ -98,21 +100,31 @@ Add to `/Users/damilola/.claude/settings.json`:
 ### No Audio Playing
 
 1. Check if audio files exist:
-   - `ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r"`
-   - `ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r"`
-   - `ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r"`
+
+   ```bash
+   ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r"
+   ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r"
+   ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r"
+   ```
+
 2. Test audio manually:
-   - `afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r"`
-   - `afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r"`
-   - `afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r"`
+
+   ```bash
+   afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r"
+   afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r"
+   afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r"
+   ```
+
 3. Verify hook configuration in settings.json
 
 ### Too Many Notifications
 
-The hooks use matcher patterns to filter which tools trigger notifications. If you're still getting too many notifications, you can:
+The hooks use matcher patterns to filter which tools trigger notifications. If
+you're still getting too many notifications, you can:
 
 1. Modify the matcher patterns in settings.json to be more specific
-2. Remove specific tools from the matcher (e.g., change "Write|Edit|MultiEdit|Bash|TodoWrite" to "Write|Edit|MultiEdit")
+2. Remove specific tools from the matcher (e.g., change
+   "Write|Edit|MultiEdit|Bash|TodoWrite" to "Write|Edit|MultiEdit")
 3. Add time-based filtering or other logic if needed
 
 ### Disabling Notifications

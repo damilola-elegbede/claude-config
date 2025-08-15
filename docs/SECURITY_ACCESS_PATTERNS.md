@@ -2,97 +2,132 @@
 
 ## Agent Tool Access Security Framework
 
-This document defines the security access patterns and rationale for all Claude Code agents, ensuring appropriate tool restrictions while maintaining functional capabilities.
+This document defines the security access patterns and rationale for all Claude Code agents,
+ensuring appropriate tool restrictions while maintaining functional capabilities.
 
 ## Access Categories
 
 ### 1. Full Access (Staff-Level Implementation Agents)
 
 **Agents**: backend-engineer, frontend-architect, fullstack-lead, test-engineer, devops
-**Tools Allowed**: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit]
+**Tools Allowed**: [Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch,
+WebSearch, TodoWrite, NotebookRead, NotebookEdit]
 **Tools Forbidden**: []
-**Security Rationale**: These agents implement production code and require comprehensive tool access to fulfill their responsibilities. They operate under the principle of "trusted implementation" with full capability to modify systems.
+**Security Rationale**: These agents implement production code and require comprehensive
+tool access to fulfill their responsibilities. They operate under the principle of
+"trusted implementation" with full capability to modify systems.
 
 ### 2. Read-Only Plus Analysis
 
-**Agents**: security-auditor, debugger, code-reviewer, codebase-analyst, performance-specialist
-**Tools Allowed**: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch, Bash(read-only), TodoWrite]
+**Agents**: security-auditor, debugger, code-reviewer, codebase-analyst,
+performance-specialist
+**Tools Allowed**: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch,
+Bash(read-only), TodoWrite]
 **Tools Forbidden**: [Edit, MultiEdit, Write, NotebookEdit]
-**Security Rationale**: Analysis agents focus on assessment and reporting without modifying production systems. This separation ensures analysis integrity and prevents accidental system modifications during security reviews.
+**Security Rationale**: Analysis agents focus on assessment and reporting without
+modifying production systems. This separation ensures analysis integrity and prevents
+accidental system modifications during security reviews.
 
 ### 3. Design Specification Access
 
 **Agents**: ui-designer
-**Tools Allowed**: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, Bash(read-only)]
+**Tools Allowed**: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch,
+WebSearch, TodoWrite, Bash(read-only)]
 **Tools Forbidden**: [NotebookRead, NotebookEdit]
-**Security Rationale**: Design agents create specifications and documentation but don't need system execution capabilities or data analysis tools.
+**Security Rationale**: Design agents create specifications and documentation but don't
+need system execution capabilities or data analysis tools.
 
 ### 4. Documentation Access
 
 **Agents**: tech-writer, api-architect
-**Tools Allowed**: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, Bash(read-only)]
+**Tools Allowed**: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch,
+WebSearch, TodoWrite, Bash(read-only)]
 **Tools Forbidden**: [NotebookRead, NotebookEdit]
-**Security Rationale**: Documentation agents need file modification capabilities for specifications but limited system access.
+**Security Rationale**: Documentation agents need file modification capabilities for
+specifications but limited system access.
 
 ### 5. Strategic Planning Access
 
 **Agents**: principal-architect
-**Tools Allowed**: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch, WebSearch, TodoWrite, Bash(read-only)]
+**Tools Allowed**: [Read, Write, Edit, MultiEdit, Glob, Grep, LS, WebFetch,
+WebSearch, TodoWrite, Bash(read-only)]
 **Tools Forbidden**: [NotebookRead, NotebookEdit]
-**Security Rationale**: Architects coordinate strategy and planning through the general-purpose agent, focusing on creating implementation plans without needing data analysis capabilities.
+**Security Rationale**: Architects coordinate strategy and planning through the
+general-purpose agent, focusing on creating implementation plans without needing
+data analysis capabilities.
 
 ## Security Boundaries
 
 ### Critical Security Principles
 
-1. **Principle of Least Privilege**: Each agent receives only the minimum tools necessary for its role
-2. **Separation of Concerns**: Analysis agents cannot modify code; implementation agents focus on building
-3. **Defense in Depth**: Multiple layers of access control prevent privilege escalation
+1. **Principle of Least Privilege**: Each agent receives only the minimum tools
+   necessary for its role
+2. **Separation of Concerns**: Analysis agents cannot modify code; implementation
+   agents focus on building
+3. **Defense in Depth**: Multiple layers of access control prevent privilege
+   escalation
 4. **Audit Trail**: All tool restrictions are documented with clear rationale
 
 ### Risk Mitigation Strategies
 
 #### High-Risk Mitigations
 
-- **Analysis Agents**: Forbidden from Write/Edit operations to prevent accidental production modifications
-- **Security Auditor**: Read-only access ensures security reviews don't alter the systems being audited
-- **Design Agents**: Limited to specification tools, preventing system-level access
+- **Analysis Agents**: Forbidden from Write/Edit operations to prevent accidental
+  production modifications
+- **Security Auditor**: Read-only access ensures security reviews don't alter the
+  systems being audited
+- **Design Agents**: Limited to specification tools, preventing system-level
+  access
 
 #### Medium-Risk Mitigations
 
-- **Documentation Agents**: Controlled file access prevents system configuration changes
-- **Coordination Agents**: Orchestrate through the general-purpose agent with limited system execution
+- **Documentation Agents**: Controlled file access prevents system configuration
+  changes
+- **Coordination Agents**: Orchestrate through the general-purpose agent with
+  limited system execution
 
 ## Agent-Specific Security Rationale
 
 ### Implementation Agents (Full Access)
 
-- **backend-engineer**: Implements complex distributed systems requiring database and infrastructure access
-- **frontend-architect**: Manages build processes and deployment configurations requiring full system access
-- **fullstack-lead**: Implements features within defined scope, needs complete toolset for effectiveness
-- **test-engineer**: Creates test infrastructure and automation requiring full implementation capabilities
-- **devops**: Manages infrastructure automation requiring comprehensive system access
+- **backend-engineer**: Implements complex distributed systems requiring database
+  and infrastructure access
+- **frontend-architect**: Manages build processes and deployment configurations
+  requiring full system access
+- **fullstack-lead**: Implements features within defined scope, needs complete
+  toolset for effectiveness
+- **test-engineer**: Creates test infrastructure and automation requiring full
+  implementation capabilities
+- **devops**: Manages infrastructure automation requiring comprehensive system
+  access
 
 ### Analysis Agents (Read-Only Plus Analysis)
 
-- **security-auditor**: Performs vulnerability assessment without modifying audit targets
-- **debugger**: Investigates issues through analysis without changing production systems
+- **security-auditor**: Performs vulnerability assessment without modifying audit
+  targets
+- **debugger**: Investigates issues through analysis without changing production
+  systems
 - **code-reviewer**: Reviews code quality without implementing changes
-- **codebase-analyst**: Analyzes system architecture for reporting purposes only
-- **performance-specialist**: Analyzes and tests performance without modifying implementations
+- **codebase-analyst**: Analyzes system architecture for reporting purposes
+  only
+- **performance-specialist**: Analyzes and tests performance without modifying
+  implementations
 
 ### Design Agents (Specification Access)
 
-- **ui-designer**: Creates design specifications and documentation for web/desktop platforms
+- **ui-designer**: Creates design specifications and documentation for
+  web/desktop platforms
 
 ### Documentation Agents (Documentation Access)
 
 - **tech-writer**: Creates technical documentation and API specifications
-- **api-architect**: Designs API contracts and specifications without implementation
+- **api-architect**: Designs API contracts and specifications without
+  implementation
 
 ### Strategic Agents (Planning Access)
 
-- **principal-architect**: Coordinates strategy and creates plans for the general-purpose agent to execute
+- **principal-architect**: Coordinates strategy and creates plans for the
+  general-purpose agent to execute
 
 ## Compliance and Monitoring
 

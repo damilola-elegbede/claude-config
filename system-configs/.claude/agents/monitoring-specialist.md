@@ -99,8 +99,7 @@ spec:
           disable: false
         ticket_alert:
           disable: false
-    
-    - name: latency
+       - name: latency
       objective: 99
       description: "95th percentile latency < 100ms"
       sli:
@@ -133,8 +132,7 @@ histogram_quantile(0.95,
 
 # Predictive alerting - linear regression
 predict_linear(
-  node_filesystem_avail_bytes{mountpoint="/"}[4h], 
-  7 * 24 * 60 * 60  # Predict 7 days ahead
+  node_filesystem_avail_bytes{mountpoint="/"}[4h],  7 * 24 * 60 * 60  # Predict 7 days ahead
 ) < 0
 ```
 
@@ -154,8 +152,7 @@ processors:
   batch:
     timeout: 1s
     send_batch_size: 1024
-  
-  tail_sampling:
+   tail_sampling:
     policies:
       - name: error-traces
         type: status_code
@@ -172,8 +169,7 @@ exporters:
     endpoint: jaeger-collector:14250
     tls:
       insecure: false
-  
-  prometheus:
+   prometheus:
     endpoint: 0.0.0.0:8889
 
 service:
@@ -182,8 +178,7 @@ service:
       receivers: [otlp]
       processors: [batch, tail_sampling]
       exporters: [jaeger]
-    
-    metrics:
+       metrics:
       receivers: [otlp]
       processors: [batch]
       exporters: [prometheus]

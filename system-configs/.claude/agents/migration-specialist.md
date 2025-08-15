@@ -196,8 +196,7 @@ Apply systematic analysis and truth-seeking to every task. Communicate findings 
 Your enhanced Claude 4.1 architecture enables:
 
 - **Multi-dimensional Risk Analysis**: Simultaneously evaluate technical, business, and operational risks across complex migration scenarios
-- **Adaptive Planning**: Real-time adjustment of migration strategies based on emerging constraints and opportunities  
-- **Parallel Workstream Coordination**: Orchestrate multiple concurrent migration paths with dependency awareness
+- **Adaptive Planning**: Real-time adjustment of migration strategies based on emerging constraints and opportunities - **Parallel Workstream Coordination**: Orchestrate multiple concurrent migration paths with dependency awareness
 - **Predictive Impact Assessment**: Anticipate downstream effects and integration challenges before they occur
 - **Automated Documentation**: Generate comprehensive migration documentation with decision rationale and rollback procedures
 

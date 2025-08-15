@@ -2,7 +2,9 @@
 
 ## Executive Summary
 
-This guide provides comprehensive strategies for monitoring, maintaining, and optimizing the health of your AI agent ecosystem. Based on recent audit results showing an 86/100 health score, we'll explore systematic approaches to achieve and maintain optimal ecosystem performance.
+This guide provides comprehensive strategies for monitoring, maintaining, and optimizing the health of your AI agent
+ecosystem. Based on recent audit results showing an 86/100 health score, we'll explore systematic approaches to
+achieve and maintain optimal ecosystem performance.
 
 ## Table of Contents
 
@@ -12,12 +14,15 @@ This guide provides comprehensive strategies for monitoring, maintaining, and op
 4. [Common Compliance Issues & Fixes](#common-compliance-issues--fixes)
 5. [Automated Remediation Scripts](#automated-remediation-scripts)
 6. [Continuous Monitoring Best Practices](#continuous-monitoring-best-practices)
-7. [Gap Analysis & Capability Planning](#gap-analysis--capability-planning)
-8. [Performance Optimization Strategies](#performance-optimization-strategies)
+7. [Documentation Quality & Markdown Standards](#documentation-quality--markdown-standards)
+8. [Gap Analysis & Capability Planning](#gap-analysis--capability-planning)
+9. [Performance Optimization Strategies](#performance-optimization-strategies)
 
 ## Overview
 
-The agent ecosystem health monitoring system ensures that all specialized AI agents maintain consistency, compliance, and optimal performance. Regular audits and proactive maintenance prevent degradation and ensure the ecosystem evolves cohesively.
+The agent ecosystem health monitoring system ensures that all specialized AI agents maintain consistency, compliance,
+and optimal performance. Regular audits and proactive maintenance prevent degradation and ensure the ecosystem
+evolves cohesively.
 
 ### Key Health Indicators
 
@@ -165,7 +170,7 @@ The 100-point health score comprises:
 ```markdown
 # Add to agent constraints
 ## CRITICAL CONSTRAINT
-SYSTEM BOUNDARY: This agent instance will AUTOMATICALLY TERMINATE 
+SYSTEM BOUNDARY: This agent instance will AUTOMATICALLY TERMINATE
 upon any Task tool invocation. This is a hard-coded system protection.
 ```
 
@@ -223,7 +228,7 @@ for file in $AGENT_FILES; do
         cat >> "$file" << 'EOF'
 
 ## CRITICAL CONSTRAINT
-SYSTEM BOUNDARY: This agent instance will AUTOMATICALLY TERMINATE 
+SYSTEM BOUNDARY: This agent instance will AUTOMATICALLY TERMINATE
 upon any Task tool invocation. This is a hard-coded system protection.
 EOF
     fi
@@ -254,7 +259,7 @@ for file in .claude/agents/*.md; do
     category=$(grep -m1 "Category:" "$file" | cut -d: -f2 | xargs)
     updated=$(git log -1 --format=%cd --date=short "$file")
     compliance=$(grep -q "SYSTEM BOUNDARY" "$file" && echo "✅" || echo "❌")
-    
+
     echo "| $agent | $category | $updated | $compliance |" >> agent-status.md
 done
 ```
@@ -273,11 +278,11 @@ from concurrent.futures import ThreadPoolExecutor
 def measure_agent_performance(agent):
     """Measure agent invocation latency"""
     start = time.time()
-    
+
     # Simulate agent invocation
     cmd = f"echo 'Testing {agent} performance' | claude --agent {agent}"
     subprocess.run(cmd, shell=True, capture_output=True)
-    
+
     return {
         'agent': agent,
         'latency': time.time() - start,
@@ -327,20 +332,20 @@ def analyze_gaps():
     """Identify missing capabilities"""
     existing_agents = set()
     gaps = defaultdict(list)
-    
+
     # Scan existing agents
     for file in os.listdir('.claude/agents'):
         if file.endswith('.md') and not file.startswith('AGENT_'):
             agent_name = file.replace('.md', '')
             existing_agents.add(agent_name)
-    
+
     # Check for gaps
     for category, expected in EXPECTED_CAPABILITIES.items():
         for capability in expected:
             found = any(capability in agent for agent in existing_agents)
             if not found:
                 gaps[category].append(capability)
-    
+
     return gaps
 
 # Run gap analysis
@@ -375,11 +380,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Run Ecosystem Audit
         run: |
           claude /agent-audit > audit-report.md
-          
+
       - name: Check Health Score
         run: |
           score=$(grep "Overall Health Score" audit-report.md | grep -oE '[0-9]+')
@@ -387,13 +392,222 @@ jobs:
             echo "Health score below threshold: $score"
             exit 1
           fi
-          
+
       - name: Upload Report
         uses: actions/upload-artifact@v3
         with:
           name: health-report
           path: audit-report.md
 ```
+
+## Documentation Quality & Markdown Standards
+
+### Overview
+
+High-quality documentation is critical for ecosystem health. Recent improvements include comprehensive markdownlint configuration and automated quality enforcement across all documentation files.
+
+### Markdownlint Configuration Improvements
+
+The repository now includes `.markdownlint-cli2.jsonc` with optimized rules:
+
+**Key Configuration Benefits**:
+
+- **Balanced Rules**: Re-enabled important formatting rules (MD001, MD022, MD031) while maintaining flexibility
+- **Reasonable Limits**: 120-character line length with exceptions for tables and code blocks
+- **Smart Ignores**: Excludes agent files to prevent conflicts with specialized formatting
+- **HTML Support**: Allows essential HTML elements (`<br>`, `<kbd>`, `<details>`, etc.)
+
+### Fixed Documentation Issues
+
+**Root Directory**:
+- Fixed heading hierarchy in README.md
+- Standardized code block language specifications
+- Corrected line spacing around headings and code blocks
+
+**Documentation Directory (`docs/`)**:
+- Resolved 47+ markdown violations across 26 documentation files
+- Standardized table formatting and heading structures
+- Fixed fenced code block language specifications
+- Corrected emphasis usage patterns
+
+**System Configurations (`system-configs/`)**:
+- Improved command documentation consistency
+- Fixed code block formatting in agent specifications
+- Standardized YAML front-matter formatting
+
+### Markdown Quality Standards
+
+#### Required Elements
+
+```markdown
+# Document Title (H1 - only one per document)
+
+## Section Headings (H2)
+
+### Subsections (H3)
+
+- Proper list formatting with blank lines before/after
+- Code blocks with language specification:
+
+```bash
+# Example command
+./script.sh
+```
+
+- Tables with proper formatting:
+
+| Column 1 | Column 2 |
+|----------|----------|
+| Data     | Data     |
+```
+
+#### Formatting Rules
+
+1. **Headings**: Surrounded by blank lines, proper hierarchy (H1 → H2 → H3)
+2. **Code Blocks**: Always specify language, surrounded by blank lines
+3. **Lists**: Blank lines before and after list blocks
+4. **Line Length**: Maximum 120 characters (exceptions for tables/code)
+5. **Emphasis**: Use `**bold**` and `*italic*` consistently
+6. **HTML**: Limited to essential elements only
+
+### Maintenance Commands
+
+#### Validate Markdown Quality
+
+```bash
+# Run markdownlint on all documentation
+npx markdownlint-cli2 "**/*.md"
+
+# Fix auto-fixable issues
+npx markdownlint-cli2 --fix "**/*.md"
+
+# Check specific directory
+npx markdownlint-cli2 "docs/**/*.md"
+```
+
+#### Quality Gates
+
+```bash
+# Pre-commit validation (add to .git/hooks/pre-commit)
+#!/bin/bash
+echo "Validating markdown quality..."
+npx markdownlint-cli2 "**/*.md" || {
+    echo "Markdown quality issues found. Please fix before committing."
+    exit 1
+}
+```
+
+### Integration with CI/CD
+
+The markdownlint configuration integrates with the existing CI pipeline:
+
+```yaml
+# In .github/workflows/ci.yml
+- name: Validate Markdown Quality
+  run: |
+    npm install -g markdownlint-cli2
+    markdownlint-cli2 "**/*.md"
+```
+
+### Documentation Health Metrics
+
+Track these quality indicators:
+
+- **Consistency Score**: Adherence to markdown standards across all files
+- **Completeness Score**: Presence of required sections and examples
+- **Currency Score**: How recently documentation was updated
+- **Accessibility Score**: Proper heading hierarchy and alt-text usage
+
+### Common Issues & Fixes
+
+#### Issue: Missing Language Specifications
+
+```markdown
+# Before (incorrect)
+```text
+code here
+```
+
+# After (correct)
+```bash
+code here
+```
+```
+
+#### Issue: Improper Heading Hierarchy
+
+```markdown
+# Before (incorrect)
+# Main Title
+#### Subsection (skips H2, H3)
+
+# After (correct)
+# Main Title
+## Major Section
+### Subsection
+```
+
+#### Issue: List Formatting
+
+```markdown
+# Before (incorrect)
+Some text
+- Item 1
+- Item 2
+More text
+
+# After (correct)
+Some text
+
+- Item 1
+- Item 2
+
+More text
+```
+
+### Automated Quality Enforcement
+
+#### Setup Git Hooks
+
+```bash
+# Install pre-commit hook
+cat > .git/hooks/pre-commit << 'EOF'
+#!/bin/bash
+# Validate markdown on commit
+if ! npx markdownlint-cli2 "**/*.md" --quiet; then
+    echo "❌ Markdown quality issues found"
+    echo "Run: npx markdownlint-cli2 --fix \"**/*.md\""
+    exit 1
+fi
+echo "✅ Markdown quality check passed"
+EOF
+
+chmod +x .git/hooks/pre-commit
+```
+
+#### Documentation Update Workflow
+
+1. **Write Content**: Focus on information clarity
+2. **Auto-Fix**: Run `markdownlint-cli2 --fix` for automatic corrections
+3. **Manual Review**: Address remaining issues flagged by linter
+4. **Quality Check**: Verify with `markdownlint-cli2` before commit
+5. **Commit**: Documentation passes all quality gates
+
+### Benefits of Improved Standards
+
+- **Consistency**: Uniform formatting across all documentation
+- **Maintainability**: Easier to update and modify documentation
+- **Accessibility**: Better experience for screen readers and documentation tools
+- **Professional Appearance**: Clean, polished documentation reflects system quality
+- **Tool Compatibility**: Works better with documentation generators and processors
+
+### Next Steps for Quality Improvement
+
+1. **Expand Coverage**: Apply standards to additional file types (API docs, specs)
+2. **Automated Reporting**: Generate documentation quality reports
+3. **Style Guide**: Create comprehensive documentation style guide
+4. **Training**: Provide guidance on best practices for contributors
+5. **Metrics Dashboard**: Track documentation quality trends over time
 
 ### 2. Real-Time Monitoring Dashboard
 

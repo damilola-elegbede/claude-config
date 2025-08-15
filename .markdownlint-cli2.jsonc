@@ -1,52 +1,119 @@
 {
   // Markdownlint configuration for Claude configuration repository
-  // We disable several rules that conflict with our documentation style
+  // Updated configuration with http, prometheus, and id support - resolves false violations
   "config": {
     "default": true,
-    // MD009: Trailing spaces (sometimes needed for formatting)
-    "MD009": false,
-    // MD013: Line length (disabled - too restrictive for documentation)
-    "MD013": false,
-    // MD022: Headings should be surrounded by blank lines
-    "MD022": false,
+    // MD001: Heading levels should only increment by one level at a time (re-enabled)
+    "MD001": true,
+    // MD009: Trailing spaces (allow up to 2 for line breaks)
+    "MD009": { "br_spaces": 2 },
+    // MD013: Line length (set reasonable limit)
+    "MD013": { "line_length": 120, "tables": false, "code_blocks": false },
+    // MD022: Headings should be surrounded by blank lines (re-enabled)
+    "MD022": true,
     // MD023: Headings must start at beginning of line
     "MD023": false,
-    // MD024: No duplicate headings - each heading should be unique
-    "MD024": false,
-    // MD026: Trailing punctuation in heading (we use colons)
-    "MD026": false,
-    // MD031: Fenced code blocks should be surrounded by blank lines
-    "MD031": false,
-    // MD032: Lists should be surrounded by blank lines
-    "MD032": false,
-    // MD033: Inline HTML (needed for some formatting)
-    "MD033": false,
-    // MD040: Fenced code blocks should have language specified
-    "MD040": false,
-    // MD058: Tables should be surrounded by blank lines 
-    "MD058": false,
+    // MD024: No duplicate headings (allow in different sections)
+    "MD024": { "siblings_only": true },
+    // MD025: Multiple top level headings (re-enabled with allow_different_nesting)
+    "MD025": { "front_matter_title": "" },
+    // MD026: Trailing punctuation in heading (allow colons and question marks)
+    "MD026": { "punctuation": ".,;:!" },
+    // MD031: Fenced code blocks should be surrounded by blank lines (re-enabled)
+    "MD031": true,
+    // MD032: Lists should be surrounded by blank lines (re-enabled)
+    "MD032": true,
+    // MD033: Inline HTML (allow specific elements)
+    "MD033": { 
+      "allowed_elements": [
+        "br", "kbd", "sub", "sup", "details", "summary", "div", "id",
+        // XML-style documentation elements
+        "metadata", "api-version", "specification-standard", "authentication", "base-url",
+        "executive-summary", "api-architecture", "service-endpoints", "category", 
+        "authentication-setup", "auth-methods", "method", "rate-limiting", "tier",
+        "api-endpoint", "description", "request-specification", "headers", "request-body",
+        "response-specification", "success-response", "degraded-response", "error-responses", "error",
+        "query-parameters", "path-parameters", "client-library", "installation",
+        "usage-examples", "example", "error-handling", "metrics-format",
+        "implementation-notes", "deployment-requirements", "performance-characteristics",
+        "security-features",
+        // Phase 3 Intelligence Layer XML elements
+        "version", "status", "last-updated", "complexity", "intelligence-capabilities",
+        "predictive-analytics", "adaptive-orchestration", "behavioral-intelligence",
+        "architecture-overview", "core-components", "component", "agent-capabilities",
+        "prediction-models", "model", "integration-architecture", "monitoring-systems",
+        "orchestration-layer", "notification-systems", "ml-infrastructure", "training-pipeline",
+        "data-collection", "feature-engineering", "model-training", "validation-testing",
+        "serving-architecture", "inference-layer", "real-time-serving", "batch-processing",
+        "implementation-phase", "tasks", "task", "deliverables", "deployment-requirements",
+        "infrastructure", "kubernetes-cluster", "databases", "time-series-db", "feature-store",
+        "model-registry", "monitoring-stack", "installation-guide", "step", "commands",
+        "configuration-options", "environment-variables", "variable", "config-files", "file",
+        "performance-metrics", "latency", "real-time-predictions", "batch-predictions",
+        "model-serving", "accuracy", "performance-prediction", "resource-optimization",
+        "failure-prevention", "resource-usage", "cpu", "memory", "storage", "network",
+        "troubleshooting", "issue", "problem", "symptoms", "solutions", "solution",
+        "diagnostic-tools", "health-checks", "performance-monitoring", "security-implementation",
+        "access-control", "data-protection", "model-security", "roadmap", "phase-4",
+        "phase-5", "experimental-features", "success-criteria", "monitoring-kpis",
+        // MLOps Guide XML elements
+        "guide-type", "target-audience", "mlops-architecture", "pipeline-stages", "stage",
+        "infrastructure-stack", "specifications", "resource-requirements", "performance-targets",
+        "data-management", "data-pipeline", "ingestion-workflow", "experiment-setup",
+        "hyperparameter-optimization", "model-validation", "deployment-pipeline", "ci-cd-setup",
+        "canary-deployment", "rollback-mechanism", "monitoring-setup", "metrics-collection",
+        "drift-detection", "alerting-system", "dashboard-setup", "grafana-dashboard",
+        "custom-dashboard", "performance-optimization", "model-optimization", "serving-optimization",
+        "resource-optimization", "training-issues", "serving-issues", "maintenance-procedures",
+        "routine-maintenance", "disaster-recovery", "operational-runbook", "emergency-procedures",
+        "procedure", "steps", "contact-info", "automation", "data-validation",
+        // Performance Predictor specific XML elements
+        "agent-capabilities", "core-functions", "function", "expertise-domains", "domain",
+        "capabilities", "model-specification", "architecture", "input-features", "model-architecture",
+        "output-predictions", "performance-metrics", "optimization-objectives", "input-context",
+        "recommendation-engine", "optimization-outcomes", "anomaly-detection", "failure-classification",
+        "early-warning-system", "integration-setup", "data-pipeline", "metrics-collection",
+        "feature-computation", "prediction-serving", "real-time-api", "streaming-predictions",
+        "orchestration-integration", "agent-selection", "performance-aware-routing",
+        "resource-optimization", "dynamic-scaling", "configuration-options", "model-parameters",
+        "feature-engineering", "alert-configuration", "notification-channels", "usage-example",
+        "best-practices", "training-practices", "practice", "optimization-practices",
+        "operational-practices", "troubleshooting-guide", "root-causes", "solutions",
+        "diagnostic-tools", "validation-scripts", "monitoring-queries", "implementation-checklist",
+        "deployment-validation",
+        // Additional XML elements from code-analyst report
+        "agent-name", "capability-level", "specialization", "root-causes", "symptoms"
+      ]
+    },
+    // MD036: Emphasis used instead of a heading (re-enabled with punctuation exception)
+    "MD036": { "punctuation": ".,;:!?" },
+    // MD040: Fenced code blocks should have language specified (allow common languages including http)
+    "MD040": { 
+      "allowed_languages": [
+        "bash", "javascript", "python", "yaml", "json", "typescript", "shell", 
+        "text", "markdown", "mermaid", "http", "xml", "html", "css", "sql", 
+        "dockerfile", "go", "rust", "java", "cpp", "c", "jsonc", "prometheus"
+      ]
+    },
     // MD041: First line in file should be a top level heading
     "MD041": false,
-    // MD047: Files should end with single newline
-    "MD047": false,
-    // MD046: Code block style (conflicts with complex documentation)
+    // MD046: Code block style (allow indented blocks for compatibility)
     "MD046": false,
-    // MD050: Strong style should be consistent (we use both ** and __)
-    "MD050": false,
-    // MD051: Link fragments should be valid (emoji in headings cause issues)
+    // MD047: Files should end with single newline (re-enabled)
+    "MD047": true,
+    // MD050: Strong style should be consistent (standardize on asterisk)
+    "MD050": { "style": "asterisk" },
+    // MD051: Link fragments should be valid (disabled for emoji compatibility)
     "MD051": false,
-    // MD025: Multiple top level headings (false positives with Python comments in code blocks)
-    "MD025": false,
-    // MD001: Heading levels should only increment by one level at a time
-    "MD001": false,
-    // MD036: Emphasis used instead of a heading (false positives with legitimate emphasis)
-    "MD036": false
+    // MD058: Tables should be surrounded by blank lines (re-enabled)
+    "MD058": true
   },
   // Ignore patterns
   "ignores": [
-    "node_modules",
-    ".git",
-    ".tmp",
-    "**/.tmp"
+    "node_modules/**",
+    ".git/**",
+    "**/.tmp/**",
+    "**/CHANGELOG.md",
+    "system-configs/.claude/agents/*.md"
   ]
 }

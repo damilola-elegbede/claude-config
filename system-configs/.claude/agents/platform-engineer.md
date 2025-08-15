@@ -97,23 +97,19 @@ paths:
 # Platform-provided module for standardized microservice deployment
 module "microservice" {
   source = "git::https://platform.company.com/modules/microservice?ref=v2.1.0"
-  
-  name        = "payment-service"
+   name        = "payment-service"
   team        = "payments"
   environment = "production"
-  
-  resources = {
+   resources = {
     cpu    = "2"
     memory = "4Gi"
   }
-  
-  features = {
+   features = {
     autoscaling   = true
     observability = true
     service_mesh  = true
   }
-  
-  dependencies = {
+   dependencies = {
     database = "postgres"
     cache    = "redis"
   }
@@ -132,23 +128,20 @@ export const platformConfig = {
       TerraformProvider,
     ],
   },
-  
-  scaffolder: {
+   scaffolder: {
     templates: [
       'microservice-template',
       'frontend-template',
       'data-pipeline-template',
     ],
   },
-  
-  techDocs: {
+   techDocs: {
     builder: 'external',
     generator: {
       runIn: 'docker',
     },
   },
-  
-  plugins: [
+   plugins: [
     costInsightsPlugin,
     kubernetesPlugin,
     githubActionsPlugin,

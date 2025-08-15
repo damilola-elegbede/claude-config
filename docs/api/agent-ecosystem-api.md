@@ -2,7 +2,10 @@
 
 ## Overview
 
-The Claude Agent Ecosystem provides a sophisticated multi-agent orchestration system where specialized AI agents can be invoked to handle specific tasks. This document provides comprehensive API documentation for interacting with the agent ecosystem.
+The Claude Agent Ecosystem provides a sophisticated multi-agent orchestration
+system where specialized AI agents can be invoked to handle specific tasks. This
+document provides comprehensive API documentation for interacting with the agent
+ecosystem.
 
 ## Table of Contents
 
@@ -19,7 +22,8 @@ The Claude Agent Ecosystem provides a sophisticated multi-agent orchestration sy
 
 ### Task Tool Interface
 
-The primary method for invoking agents is through the `Task` tool. This tool serves as the orchestration interface for launching specialized agents.
+The primary method for invoking agents is through the `Task` tool. This tool serves
+as the orchestration interface for launching specialized agents.
 
 ```typescript
 interface TaskInvocation {
@@ -178,31 +182,31 @@ ToolAccessPatterns:
   development:
     common_tools: [Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite]
     description: Full development capabilities including file manipulation
-    
+
   infrastructure:
     common_tools: [Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite, WebFetch]
     description: Infrastructure management with web access for cloud APIs
-    
+
   architecture:
     common_tools: [Read, Write, Edit, Grep, Glob, LS, TodoWrite]
     description: Design and documentation focused tools
-    
+
   design:
     common_tools: [Read, Write, Edit, Grep, Glob, LS, TodoWrite]
     description: UI/UX design and documentation tools
-    
+
   quality:
     common_tools: [Read, Grep, Glob, LS, Bash, TodoWrite]
     description: Analysis and testing tools, limited write access
-    
+
   security:
     common_tools: [Read, Grep, Glob, LS, TodoWrite]
     description: Read-only analysis tools for security auditing
-    
+
   analysis:
     common_tools: [Read, Grep, Glob, LS, TodoWrite, WebFetch]
     description: Research and analysis tools with web access
-    
+
   operations:
     common_tools: [Read, Write, Grep, Glob, Bash]
     description: Operational tools for automation and management
@@ -406,7 +410,8 @@ workflow:
 
 ## Summary
 
-The Agent Ecosystem API provides a powerful, secure, and flexible system for orchestrating specialized AI agents. Key features include:
+The Agent Ecosystem API provides a powerful, secure, and flexible system for
+orchestrating specialized AI agents. Key features include:
 
 - **Hierarchical Control**: Centralized orchestration through Claude
 - **Parallel Execution**: Efficient multi-agent workflows
@@ -507,7 +512,7 @@ components:
         - ORCHESTRATION_ERROR
         - BOUNDARY_VIOLATION
         - SYSTEM_ERROR
-    
+
     AgentInfo:
       type: object
       required:
@@ -529,7 +534,7 @@ components:
           type: string
         category:
           type: string
-    
+
     AgentInvocationRequest:
       type: object
       required:
@@ -545,7 +550,7 @@ components:
           description: Detailed task for the agent
         subagent_type:
           $ref: '#/components/schemas/AgentType'
-    
+
     AgentInvocationResponse:
       type: object
       properties:

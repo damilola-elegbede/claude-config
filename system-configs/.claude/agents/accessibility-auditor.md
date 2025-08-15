@@ -144,10 +144,7 @@ const axeConfig = {
 ```html
 <div class="form-group">
   <label for="email">Email Address (required)</label>
-  <input 
-    type="email" 
-    id="email" 
-    name="email"
+  <input    type="email"    id="email"    name="email"
     required
     aria-describedby="email-error email-hint"
     aria-invalid="true"
@@ -211,8 +208,7 @@ Return to Claude when:
 ## Tools
 
 - Read
-- Edit  
-- MultiEdit
+- Edit - MultiEdit
 - Write
 - Glob
 - Grep

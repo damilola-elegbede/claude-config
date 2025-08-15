@@ -2,7 +2,9 @@
 
 ## Overview
 
-This documentation provides comprehensive information about the consolidated Claude configuration system with 29 specialized agents, optimized workflows, and enhanced development processes.
+This documentation provides comprehensive information about the consolidated
+Claude configuration system with 29 specialized agents, optimized workflows,
+and enhanced development processes.
 
 **System Highlights:**
 
@@ -15,21 +17,28 @@ This documentation provides comprehensive information about the consolidated Cla
 
 ### Core Documentation
 
-- [Agent Ecosystem Overview](../agents/README.md) - Complete guide to all 29 specialized agents
-- [Agent Selection Guide](AGENT_SELECTION_GUIDE.md) - How to choose the right agent in the consolidated system
-- [Agent Migration Guide](AGENT_MIGRATION_GUIDE.md) - Transition guide for the 29-agent system
-- [Command Reference](#command-reference) - All available slash commands (unchanged)
+- [Agent Ecosystem Overview](../agents/README.md) - Complete guide to all 29
+  specialized agents
+- [Agent Selection Guide](AGENT_SELECTION_GUIDE.md) - How to choose the right
+  agent in the consolidated system
+- [Agent Migration Guide](AGENT_MIGRATION_GUIDE.md) - Transition guide for the
+  29-agent system
+- [Command Reference](#command-reference) - All available slash commands
+  (unchanged)
 
 ### Technical Specifications
 
-- [Agent Ecosystem SPEC](specs/agent-ecosystem-spec.md) - Technical specification for the agent system
+- [Agent Ecosystem SPEC](specs/agent-ecosystem-spec.md) - Technical
+  specification for the agent system
 - [Audio Hook Configuration](AUDIO_HOOK_README.md) - Audio notification setup
 - [Tool Access Guide](TOOL_ACCESS_GUIDE.md) - Tool permissions by agent type
 
 ### Guides and Best Practices
 
-- [Parallel Execution Guide](PARALLEL_EXECUTION_GUIDE.md) - Maximizing agent parallelization
-- [Security Access Patterns](SECURITY_ACCESS_PATTERNS.md) - Security best practices
+- [Parallel Execution Guide](PARALLEL_EXECUTION_GUIDE.md) - Maximizing agent
+  parallelization
+- [Security Access Patterns](SECURITY_ACCESS_PATTERNS.md) - Security best
+  practices
 - [YAML Requirements](YAML_REQUIREMENTS.md) - Configuration file standards
 
 ## Command Reference
@@ -48,7 +57,7 @@ This documentation provides comprehensive information about the consolidated Cla
 | Command | Description | Example |
 |---------|-------------|---------|
 | `/plan` | Create implementation plan | `/plan Add user authentication` |
-| `/orchestrate` | Multi-agent project planning | `/orchestrate E-commerce platform` |
+| `/orchestrate` | Multi-agent project planning | `/orchestrate E-commerce` |
 | `/context` | Repository analysis | `/context` |
 
 ### Documentation Commands

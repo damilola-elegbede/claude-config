@@ -220,8 +220,7 @@ Support, coordination, and strategic planning agents
 
 ```bash
 /test         → test-engineer
-/review       → code-reviewer  
-/security     → security-auditor
+/review       → code-reviewer /security     → security-auditor
 /perf         → performance-specialist
 /docs         → tech-writer
 /debug        → debugger

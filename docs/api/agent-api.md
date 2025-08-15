@@ -2,7 +2,8 @@
 
 ## Overview
 
-The Claude Agent System provides a programmatic interface for invoking specialized AI agents, coordinating multi-agent workflows, and managing agent execution.
+The Claude Agent System provides a programmatic interface for invoking specialized
+AI agents, coordinating multi-agent workflows, and managing agent execution.
 
 ## Base Concepts
 
@@ -39,7 +40,7 @@ Orchestration manages multi-agent execution:
 
 #### Direct Agent Call
 
-```
+```http
 POST /api/agents/invoke
 ```
 
@@ -74,7 +75,7 @@ POST /api/agents/invoke
 
 #### Command-Based Invocation
 
-```
+```http
 POST /api/commands/execute
 ```
 
@@ -109,7 +110,7 @@ POST /api/commands/execute
 
 #### Create Orchestration Plan
 
-```
+```http
 POST /api/orchestration/plan
 ```
 
@@ -184,7 +185,7 @@ POST /api/orchestration/plan
 
 #### Execute Orchestration Plan
 
-```
+```http
 POST /api/orchestration/execute
 ```
 
@@ -228,7 +229,7 @@ POST /api/orchestration/execute
 
 #### List Available Agents
 
-```
+```http
 GET /api/agents
 ```
 
@@ -256,7 +257,7 @@ GET /api/agents
 
 #### Get Agent Details
 
-```
+```http
 GET /api/agents/{agent_name}
 ```
 
@@ -288,7 +289,7 @@ GET /api/agents/{agent_name}
 
 #### Get Execution Status
 
-```
+```http
 GET /api/executions/{execution_id}
 ```
 
@@ -321,13 +322,13 @@ GET /api/executions/{execution_id}
 
 #### Stream Execution Logs
 
-```
+```http
 GET /api/executions/{execution_id}/logs/stream
 ```
 
 **Response:** Server-Sent Events stream
 
-```
+```text
 event: log
 data: {"timestamp": "2024-01-15T10:46:00Z", "level": "info", "message": "Running tests..."}
 
@@ -342,7 +343,7 @@ data: {"status": "success", "duration": 3600, "test_results": {"passed": 25, "fa
 
 #### Request Code Review
 
-```
+```http
 POST /api/qa/review
 ```
 
@@ -387,7 +388,7 @@ POST /api/qa/review
 
 ### Execution Complete
 
-```
+```http
 POST https://your-webhook-url.com/agent-complete
 ```
 
@@ -414,7 +415,7 @@ POST https://your-webhook-url.com/agent-complete
 
 ### Orchestration Checkpoint
 
-```
+```http
 POST https://your-webhook-url.com/orchestration-checkpoint
 ```
 
@@ -477,7 +478,7 @@ POST https://your-webhook-url.com/orchestration-checkpoint
 
 ### Rate Limit Headers
 
-```
+```text
 X-RateLimit-Limit: 100
 X-RateLimit-Remaining: 95
 X-RateLimit-Reset: 1705333200
@@ -487,13 +488,13 @@ X-RateLimit-Reset: 1705333200
 
 ### API Key Authentication
 
-```
+```text
 Authorization: Bearer sk_live_abcdef123456
 ```
 
 ### OAuth2 Flow
 
-```
+```text
 Authorization: Bearer oauth2_token_xyz789
 ```
 

@@ -2,7 +2,9 @@
 
 ## Description
 
-Performs systematic root cause analysis for complex bugs using multi-agent forensics. Specializes in hard-to-reproduce issues like race conditions, memory leaks, intermittent failures, and production-only bugs that traditional debugging cannot solve.
+Performs systematic root cause analysis for complex bugs using multi-agent forensics. Specializes in
+hard-to-reproduce issues like race conditions, memory leaks, intermittent failures, and production-only bugs that
+traditional debugging cannot solve.
 
 ## Usage
 
@@ -149,7 +151,8 @@ I deliver:
 
 ### Parallel Execution
 
-When multiple hypotheses exist, I deploy agents in parallel to investigate different theories simultaneously, reducing time to resolution.
+When multiple hypotheses exist, I deploy agents in parallel to investigate different theories simultaneously,
+reducing time to resolution.
 
 ## Output Format
 

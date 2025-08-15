@@ -94,14 +94,12 @@ import numpy as np
 
 def generate_performance_forecast(metrics_data, days_ahead=7):
     """Generate ML-powered performance forecasts with confidence intervals"""
-    
-    # Prepare data for Prophet
+       # Prepare data for Prophet
     df = pd.DataFrame({
         'ds': pd.to_datetime(metrics_data['timestamp']),
         'y': metrics_data['value']
     })
-    
-    # Configure Prophet with business context
+       # Configure Prophet with business context
     model = Prophet(
         yearly_seasonality=True,
         weekly_seasonality=True,
@@ -110,16 +108,13 @@ def generate_performance_forecast(metrics_data, days_ahead=7):
         interval_width=0.95,
         changepoint_prior_scale=0.05
     )
-    
-    # Add business events and holidays
+       # Add business events and holidays
     model.add_country_holidays(country_name='US')
-    
-    # Fit model and generate forecast
+       # Fit model and generate forecast
     model.fit(df)
     future = model.make_future_dataframe(periods=days_ahead, freq='H')
     forecast = model.predict(future)
-    
-    return {
+       return {
         'forecast': forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].to_dict('records'),
         'components': model.predict(future)[['ds', 'trend', 'weekly', 'yearly']].to_dict('records'),
         'confidence_interval': 0.95,
@@ -132,8 +127,7 @@ from sklearn.preprocessing import StandardScaler
 
 def detect_performance_anomalies(metrics_stream):
     """Real-time anomaly detection using Isolation Forest"""
-    
-    # Feature engineering for anomaly detection
+       # Feature engineering for anomaly detection
     features = pd.DataFrame({
         'cpu_usage': metrics_stream['cpu'],
         'memory_usage': metrics_stream['memory'],
@@ -142,22 +136,18 @@ def detect_performance_anomalies(metrics_stream):
         'hour_of_day': pd.to_datetime(metrics_stream['timestamp']).dt.hour,
         'day_of_week': pd.to_datetime(metrics_stream['timestamp']).dt.dayofweek
     })
-    
-    # Normalize features
+       # Normalize features
     scaler = StandardScaler()
     features_scaled = scaler.fit_transform(features)
-    
-    # Isolation Forest for outlier detection
+       # Isolation Forest for outlier detection
     iso_forest = IsolationForest(
         contamination=0.05,  # 5% expected anomaly rate
         random_state=42,
         n_estimators=200
     )
-    
-    anomaly_scores = iso_forest.fit_predict(features_scaled)
+       anomaly_scores = iso_forest.fit_predict(features_scaled)
     anomaly_probabilities = iso_forest.score_samples(features_scaled)
-    
-    return {
+       return {
         'anomalies': (anomaly_scores == -1),
         'anomaly_scores': anomaly_probabilities,
         'threshold': np.percentile(anomaly_probabilities, 5),
@@ -167,22 +157,17 @@ def detect_performance_anomalies(metrics_stream):
 # Capacity Planning Optimization
 def generate_capacity_recommendations(forecast_data, current_capacity):
     """Generate intelligent scaling recommendations with cost analysis"""
-    
-    # Calculate resource utilization projections
+       # Calculate resource utilization projections
     projected_peak = forecast_data['yhat_upper'].max()
     current_utilization = forecast_data['yhat'].iloc[-1]
-    
-    # Scaling decision logic
+       # Scaling decision logic
     scaling_threshold = 0.8  # 80% utilization trigger
     safety_margin = 0.2      # 20% safety buffer
-    
-    recommendations = []
-    
-    if projected_peak > (current_capacity * scaling_threshold):
+       recommendations = []
+       if projected_peak > (current_capacity * scaling_threshold):
         recommended_capacity = projected_peak * (1 + safety_margin)
         scale_factor = recommended_capacity / current_capacity
-        
-        recommendations.append({
+               recommendations.append({
             'action': 'scale_up',
             'scale_factor': scale_factor,
             'trigger_date': forecast_data[forecast_data['yhat_upper'] > (current_capacity * scaling_threshold)]['ds'].iloc[0],
@@ -190,8 +175,7 @@ def generate_capacity_recommendations(forecast_data, current_capacity):
             'cost_impact': calculate_scaling_cost(scale_factor),
             'risk_mitigation': 'Prevents performance degradation and potential incidents'
         })
-    
-    return recommendations
+       return recommendations
 ```
 
 ### Visualization and Reporting
@@ -200,8 +184,7 @@ def generate_capacity_recommendations(forecast_data, current_capacity):
 # Grafana Dashboard Generation
 def generate_performance_dashboard():
     """Generate Grafana dashboard with ML forecasts"""
-    
-    dashboard_config = {
+       dashboard_config = {
         "dashboard": {
             "title": "AI-Powered Performance Predictions",
             "panels": [
@@ -246,8 +229,7 @@ def generate_performance_dashboard():
             ]
         }
     }
-    
-    return dashboard_config
+       return dashboard_config
 ```
 
 ## Proactive Deployment Triggers
@@ -256,8 +238,7 @@ This agent is automatically deployed when:
 
 - Performance metrics show degradation trends over 3+ consecutive periods
 - System resource utilization approaches 80% threshold with growth trajectory
-- Anomaly detection confidence exceeds 0.85 for performance-related metrics  
-- Capacity planning review required (weekly/monthly scheduled analysis)
+- Anomaly detection confidence exceeds 0.85 for performance-related metrics - Capacity planning review required (weekly/monthly scheduled analysis)
 - Cost optimization opportunity identified through performance pattern analysis
 - Integration with incident management systems for predictive alerting
 
@@ -286,35 +267,29 @@ This agent is automatically deployed when:
 # Model Performance Tracking
 def track_prediction_accuracy():
     """Continuously monitor model performance and trigger retraining"""
-    
-    predictions = load_predictions_history()
+       predictions = load_predictions_history()
     actuals = load_actual_metrics()
-    
-    # Calculate accuracy metrics
+       # Calculate accuracy metrics
     mape = calculate_mape(predictions, actuals)
     rmse = calculate_rmse(predictions, actuals)
-    
-    # Trigger retraining if accuracy degrades
+       # Trigger retraining if accuracy degrades
     if mape > 0.15 or rmse > threshold:
         trigger_model_retraining()
         send_alert("Model accuracy degraded, retraining initiated")
-    
-    # Store accuracy metrics for trend analysis
+       # Store accuracy metrics for trend analysis
     store_accuracy_metrics(mape, rmse, timestamp=datetime.now())
 
 # Pattern Learning and Adaptation
 def learn_system_patterns():
     """Build pattern library for improved predictions"""
-    
-    patterns = {
+       patterns = {
         'daily_peaks': identify_daily_patterns(),
         'weekly_cycles': identify_weekly_patterns(),
         'seasonal_trends': identify_seasonal_patterns(),
         'event_correlations': identify_event_patterns(),
         'anomaly_signatures': build_anomaly_signatures()
     }
-    
-    return patterns
+       return patterns
 ```
 
 ## Integration Ecosystem
@@ -336,8 +311,7 @@ def learn_system_patterns():
 ### Development Workflow Integration
 
 - **CI/CD**: Performance prediction validation in deployment pipelines with rollback triggers
-- **Incident Response**: Automated ticket creation for predicted issues with context and recommendations  
-- **Capacity Planning**: Integration with infrastructure provisioning tools for automated scaling
+- **Incident Response**: Automated ticket creation for predicted issues with context and recommendations - **Capacity Planning**: Integration with infrastructure provisioning tools for automated scaling
 - **Cost Management**: Budget alerts and optimization recommendations based on performance predictions
 
 ## Communication and Reporting

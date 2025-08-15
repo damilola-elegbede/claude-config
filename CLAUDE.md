@@ -2,7 +2,10 @@
 
 ## Repository Overview
 
-This is a **Claude Code CLI Configuration Management Repository** - a clean, organized system for managing Claude configurations, specialized agents, and custom commands. After a major cleanup that removed 85+ bloat files, this repository now contains essential configurations for running 41 specialized agents and 14 commands with the Claude Code CLI.
+This is a **Claude Code CLI Configuration Management Repository** - a clean, organized system for managing Claude
+configurations, specialized agents, and custom commands. After a major cleanup that removed 85+ bloat files, this
+repository now contains essential configurations for running 41 specialized agents and 14 commands with the Claude
+Code CLI.
 
 ## Repository-Specific Instructions
 
@@ -84,7 +87,8 @@ This is a **Claude Code CLI Configuration Management Repository** - a clean, org
 
 ### Agent Categories
 
-The 40 agents are organized across multiple functional domains covering all aspects of software development, from core programming to infrastructure, quality assurance, and documentation.
+The 40 agents are organized across multiple functional domains covering all aspects of software development, from
+core programming to infrastructure, quality assurance, and documentation.
 
 ### Synchronization System
 
@@ -180,4 +184,5 @@ The 40 agents are organized across multiple functional domains covering all aspe
 
 ---
 
-*This repository provides clean, validated Claude configurations for enhanced development workflows through specialized agents and custom commands.*
+*This repository provides clean, validated Claude configurations for enhanced development workflows through
+specialized agents and custom commands.*

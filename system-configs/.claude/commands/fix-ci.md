@@ -2,7 +2,8 @@
 
 ## Description
 
-Intelligently resolves CI/CD failures through pattern recognition, automatic fix generation, and predictive failure prevention. Reduces mean time to recovery (MTTR) by automatically diagnosing and fixing common CI issues.
+Intelligently resolves CI/CD failures through pattern recognition, automatic fix generation, and predictive failure
+prevention. Reduces mean time to recovery (MTTR) by automatically diagnosing and fixing common CI issues.
 
 ## Usage
 

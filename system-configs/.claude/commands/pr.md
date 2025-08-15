@@ -2,7 +2,9 @@
 
 ## Description
 
-Creates comprehensive pull requests with intelligent change analysis, automated description generation, breaking change detection, and smart reviewer assignment. Generates professional PR descriptions that follow best practices and team conventions.
+Creates comprehensive pull requests with intelligent change analysis, automated description generation, breaking
+change detection, and smart reviewer assignment. Generates professional PR descriptions that follow best practices
+and team conventions.
 
 ## Usage
 
@@ -234,7 +236,8 @@ I assign reviewers based on:
 Before creating the PR, I verify:
 
 1. **Branch is up to date** with target branch
-2. **/test run executed** with passing results (attach summary). If `--draft` is set, allow creation even if tests fail, but surface results prominently.
+2. **/test run executed** with passing results (attach summary). If `--draft` is set, allow creation even if tests
+   fail, but surface results prominently.
 3. **No merge conflicts** exist
 4. **Commit messages** follow conventions
 5. **Required files** are included (tests, docs)
@@ -325,7 +328,8 @@ Works seamlessly with:
 
 - `/commit` - Ensures commits are ready for PR
 - `/test` - Validates tests before PR creation
-- `/plan` - Uses Plan Preview Mode; requires explicit ExitPlanMode approval before any file writes and before PR creation. The accepted plan summary is embedded in the PR description.
+- `/plan` - Uses Plan Preview Mode; requires explicit ExitPlanMode approval before any file writes and before PR
+  creation. The accepted plan summary is embedded in the PR description.
 - `/review` - Can trigger review after PR creation
 - `/push` - Pushes changes before PR
 - `/fix-ci` - Fixes issues before creating PR

@@ -258,8 +258,7 @@ def calculate_risk_score(package):
     complexity_risk = analyze_complexity_metrics(package)
     popularity_risk = assess_popularity_threat(package)
     maintainer_risk = evaluate_maintainer_activity(package)
-    
-    return weighted_average([
+       return weighted_average([
         (age_risk, 0.30),
         (complexity_risk, 0.25),
         (popularity_risk, 0.25),

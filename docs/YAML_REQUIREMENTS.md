@@ -2,9 +2,12 @@
 
 ## Overview
 
-All agent configuration files are Markdown (.md) files that must include valid YAML front-matter at the beginning of the file. This document specifies the requirements and best practices for YAML front-matter in agent files.
+All agent configuration files are Markdown (.md) files that must include valid YAML
+front-matter at the beginning of the file. This document specifies the requirements
+and best practices for YAML front-matter in agent files.
 
-**Important**: Per Anthropic's Claude Code documentation, agents are saved as Markdown files with YAML frontmatter, not as pure YAML files.
+**Important**: Per Anthropic's Claude Code documentation, agents are saved as
+Markdown files with YAML frontmatter, not as pure YAML files.
 
 ## Structure Requirements
 
@@ -102,7 +105,7 @@ These fields can be included as needed:
 Recommended order for consistency:
 
 1. name
-2. description  
+2. description
 3. color
 4. specialization_level
 5. domain_expertise

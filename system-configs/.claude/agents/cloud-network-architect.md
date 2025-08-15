@@ -88,8 +88,7 @@ regions:
         - protocol: HTTP
           port: 80
           health_check: "/health"
-  
-  eu-west-1:
+   eu-west-1:
     vpc_cidr: "10.1.0.0/16"
     # Similar configuration
 
@@ -100,8 +99,7 @@ global:
     health_checks:
       interval: 30
       failure_threshold: 3
-  
-  cloudfront:
+   cloudfront:
     origins:
       - domain: "alb-us-east-1.elb.amazonaws.com"
         region: "us-east-1"
@@ -156,8 +154,7 @@ addEventListener('fetch', event => {
 
 async function handleRequest(request) {
   const url = new URL(request.url)
-  
-  // Image optimization
+   // Image optimization
   if (url.pathname.match(/\.(jpg|jpeg|png|gif)$/)) {
     const imageRequest = new Request(request.url, {
       headers: request.headers,
@@ -171,32 +168,26 @@ async function handleRequest(request) {
     })
     return fetch(imageRequest)
   }
-  
-  // Cache API responses
+   // Cache API responses
   if (url.pathname.startsWith('/api/')) {
     const cache = caches.default
     const cacheKey = new Request(url.toString(), request)
     const cachedResponse = await cache.match(cacheKey)
-    
-    if (cachedResponse) {
+       if (cachedResponse) {
       return cachedResponse
     }
-    
-    const response = await fetch(request)
+       const response = await fetch(request)
     const headers = new Headers(response.headers)
     headers.set('Cache-Control', 'public, max-age=300')
-    
-    const responseToCache = new Response(response.body, {
+       const responseToCache = new Response(response.body, {
       status: response.status,
       statusText: response.statusText,
       headers: headers
     })
-    
-    event.waitUntil(cache.put(cacheKey, responseToCache.clone()))
+       event.waitUntil(cache.put(cacheKey, responseToCache.clone()))
     return responseToCache
   }
-  
-  return fetch(request)
+   return fetch(request)
 }
 ```
 
@@ -226,8 +217,7 @@ paths:
       x-throttle:
         rateLimit: 1000
         burstLimit: 2000
-    
-  /users/{id}:
+     /users/{id}:
     get:
       parameters:
         - name: id
@@ -252,14 +242,11 @@ paths:
 network_health_check() {
   echo "=== DNS Resolution ==="
   dig +short api.example.com
-  
-  echo "=== SSL Certificate ==="
+   echo "=== SSL Certificate ==="
   echo | openssl s_client -servername api.example.com -connect api.example.com:443 2>/dev/null | openssl x509 -noout -dates
-  
-  echo "=== CDN Headers ==="
+   echo "=== CDN Headers ==="
   curl -I https://api.example.com/health | grep -E "x-cache|cf-ray|x-amz-cf"
-  
-  echo "=== Latency Test ==="
+   echo "=== Latency Test ==="
   curl -w "@curl-format.txt" -o /dev/null -s https://api.example.com/health
 }
 

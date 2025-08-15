@@ -2,7 +2,9 @@
 
 ## Description
 
-Comprehensive validation of agent ecosystem to ensure category integrity, template compliance, and system consistency. **This command generates a REPORT ONLY - it provides recommendations and optional patch snippets; it does not make any changes automatically.**
+Comprehensive validation of agent ecosystem to ensure category integrity, template compliance, and system
+consistency. **This command generates a REPORT ONLY - it provides recommendations and optional patch snippets;
+it does not make any changes automatically.**
 
 ## Usage
 
@@ -12,11 +14,13 @@ Comprehensive validation of agent ecosystem to ensure category integrity, templa
 
 ## Behavior
 
-This command performs thorough validation of all agents across multiple dimensions, executed in parallel by category for maximum efficiency.
+This command performs thorough validation of all agents across multiple dimensions, executed in parallel by
+category for maximum efficiency.
 
 ## Purpose
 
-Ensure agent ecosystem maintains high standards of consistency, proper categorization, and adherence to system design principles.
+Ensure agent ecosystem maintains high standards of consistency, proper categorization, and adherence to system
+design principles.
 
 ## Validation Scope
 
@@ -80,7 +84,7 @@ Execute validation for each category simultaneously:
 parallel_execution:
   - category: development
     validations: [template, tools, description, tier, modelAppropriateness]
-  - category: infrastructure  
+  - category: infrastructure
     validations: [template, tools, description, tier, modelAppropriateness]
   - category: quality
     validations: [template, tools, description, tier, modelAppropriateness]
@@ -156,7 +160,7 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 **Model Distribution**:
 
 - Opus: X agents (Y% - Target: 15-20%)
-- Sonnet: X agents (Y% - Target: 60-70%)  
+- Sonnet: X agents (Y% - Target: 60-70%)
 - Haiku: X agents (Y% - Target: 15-20%)
 
 **Optimization Opportunities**:
@@ -188,14 +192,14 @@ sed -i '' 's/model: haiku/model: sonnet/' agent-name.md  # Better capability
 
 ## Success Criteria
 
-✅ **Category Compliance**: ≤ 8 categories with proper color mapping  
-✅ **Template Adherence**: 100% AGENT_TEMPLATE.md compliance  
-✅ **Tool Validation**: No Task tool access, appropriate permissions  
-✅ **Anti-Pattern Free**: No orchestration or self-reference  
-✅ **Description Quality**: Clear "MUST BE USED" and "use PROACTIVELY" triggers  
-✅ **Tier 1 Only**: All agents at tier 1 level  
-✅ **Model Appropriateness**: Each agent uses optimal model for its complexity  
-✅ **Documentation Sync**: All docs reflect current state  
+✅ **Category Compliance**: ≤ 8 categories with proper color mapping
+✅ **Template Adherence**: 100% AGENT_TEMPLATE.md compliance
+✅ **Tool Validation**: No Task tool access, appropriate permissions
+✅ **Anti-Pattern Free**: No orchestration or self-reference
+✅ **Description Quality**: Clear "MUST BE USED" and "use PROACTIVELY" triggers
+✅ **Tier 1 Only**: All agents at tier 1 level
+✅ **Model Appropriateness**: Each agent uses optimal model for its complexity
+✅ **Documentation Sync**: All docs reflect current state
 
 ## Implementation Notes
 

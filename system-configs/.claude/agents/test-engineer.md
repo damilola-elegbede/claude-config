@@ -98,13 +98,11 @@ detect_python_framework() {
 # Run tests for changed files
 run_changed_tests() {
   changed_files=$(git diff --name-only HEAD~1)
-  
-  # JavaScript
+   # JavaScript
   if echo "$changed_files" | grep -q "\.jsx\?$\|\.tsx\?$"; then
     npm test -- --findRelatedTests $changed_files
   fi
-  
-  # Python
+   # Python
   if echo "$changed_files" | grep -q "\.py$"; then
     pytest --picked
   fi
@@ -113,14 +111,11 @@ run_changed_tests() {
 # Run tests by pattern
 run_pattern_tests() {
   pattern=$1
-  
-  # JavaScript
+   # JavaScript
   npm test -- --testNamePattern="$pattern"
-  
-  # Python
+   # Python
   pytest -k "$pattern"
-  
-  # Go
+   # Go
   go test -run "$pattern" ./...
 }
 ```
@@ -222,18 +217,14 @@ describe('UserService', () => {
     it('should create user with valid data', async () => {
       const userData = { name: 'John', email: 'john@example.com' };
       const user = await userService.createUser(userData);
-      
-      expect(user).toMatchObject(userData);
+           expect(user).toMatchObject(userData);
       expect(user.id).toBeDefined();
       expect(mockDatabase.save).toHaveBeenCalledWith('users', expect.any(Object));
     });
 
     it('should reject duplicate emails', async () => {
       mockDatabase.findOne.mockResolvedValue({ id: 1 });
-      
-      await expect(userService.createUser({ 
-        email: 'existing@example.com' 
-      })).rejects.toThrow('Email already exists');
+           await expect(userService.createUser({        email: 'existing@example.com'      })).rejects.toThrow('Email already exists');
     });
   });
 });
@@ -244,13 +235,10 @@ describe('API Integration', () => {
     const response = await request(app)
       .post('/api/users')
       .send({ name: 'Jane', email: 'jane@example.com' });
-    
-    expect(response.status).toBe(201);
-    
-    const getResponse = await request(app)
+       expect(response.status).toBe(201);
+       const getResponse = await request(app)
       .get(`/api/users/${response.body.id}`);
-    
-    expect(getResponse.body).toMatchObject(response.body);
+       expect(getResponse.body).toMatchObject(response.body);
   });
 });
 ```

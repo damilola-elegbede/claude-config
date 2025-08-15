@@ -1,16 +1,19 @@
 # Agent YAML Validation Report
 
-Total agents validated: 42
+**Total agents validated:** 42
 
 ## Validation Issues
 
 ### debugger
 
-- Invalid color 'teal'. Must be one of: blue, green, red, purple, yellow, orange, white, brown, cyan, pink
+**Issue:** Invalid color value
+**Details:** Color 'teal' is not allowed. Must be one of:
+blue, green, red, purple, yellow, orange, white, brown, cyan, pink
 
 ### security-auditor
 
-- Description too long (252 chars). Should be under 250.
+**Issue:** Description length exceeded
+**Details:** Description too long (252 chars). Should be under 250 characters.
 
 ## Valid Agents
 
@@ -54,3 +57,15 @@ Total agents validated: 42
 - ✅ test-engineer
 - ✅ ui-designer
 - ✅ ux-researcher
+
+## Summary
+
+- **Total Agents:** 42
+- **Valid Agents:** 40 (95.2%)
+- **Agents with Issues:** 2 (4.8%)
+
+### Issues Breakdown
+
+- **Configuration Issues:** 2 agents
+  - Invalid color value: 1 agent (debugger)
+  - Description length exceeded: 1 agent (security-auditor)

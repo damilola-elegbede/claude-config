@@ -1,6 +1,7 @@
 # Claude Validation Platform Engineering
 
-This document describes the platform engineering approach for the Claude validation system, focusing on developer experience, self-service capabilities, and workflow integration.
+This document describes the platform engineering approach for the Claude validation system, focusing on
+developer experience, self-service capabilities, and workflow integration.
 
 ## Overview
 

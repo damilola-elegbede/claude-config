@@ -44,19 +44,19 @@
 
 ### Implementation Escalation Path
 
-```
+```mermaid
 Task Request → fullstack-lead → [complexity assessment] → staff agents → principal-architect
 ```
 
 ### Quality Assurance Workflow
 
-```
+```mermaid
 Code Complete → code-reviewer → [parallel: security-auditor, test-engineer] → implementation agents
 ```
 
 ### Analysis Request Flow
 
-```
+```mermaid
 Analysis Need → codebase-analyst → [domain-specific agents] → principal-architect
 ```
 
@@ -89,7 +89,7 @@ Analysis Need → codebase-analyst → [domain-specific agents] → principal-ar
 - **Quality**: `code-reviewer` + `security-auditor` + `test-engineer`
 - **Design**: `ui-designer` (cross-platform consistency)
 
-### Analysis Workflow  
+### Analysis Workflow
 
 - **Technical**: `codebase-analyst` + `debugger` + `security-auditor` + `performance-specialist`
 - **Strategic**: `principal-architect` + `project-orchestrator`

@@ -2,11 +2,17 @@
 
 ## Overview
 
-The Agent Specification format defines how AI agents are configured in the Claude Code ecosystem. Each agent is defined in a Markdown file with YAML frontmatter that specifies its metadata, capabilities, and tool permissions. This specification supports the current ecosystem of 29 specialized agents across 8 categories.
+The Agent Specification format defines how AI agents are configured in the Claude
+Code ecosystem. Each agent is defined in a Markdown file with YAML frontmatter
+that specifies its metadata, capabilities, and tool permissions. This
+specification supports the current ecosystem of 29 specialized agents across 8
+categories.
 
 ## File Format
 
-Agent specifications use Markdown files (`.md`) with YAML frontmatter delimited by `---` markers. The frontmatter contains structured metadata, while the Markdown body contains the agent's detailed documentation and instructions.
+Agent specifications use Markdown files (`.md`) with YAML frontmatter delimited
+by `---` markers. The frontmatter contains structured metadata, while the
+Markdown body contains the agent's detailed documentation and instructions.
 
 ```markdown
 ---
@@ -40,14 +46,17 @@ tools: Read, Write, Edit, Grep, Glob
 - **Max Length**: 250 characters
 - **Description**: Concise description of the agent's purpose and when to use it
 - **Best Practice**: Include "MUST BE USED" conditions for clarity
-- **Example**: `"Use for building server-side systems, APIs, microservices. MUST BE USED for high-performance optimization (>10k RPS)"`
+- **Example**: `"Use for building server-side systems, APIs, microservices. MUST BE
+  USED for high-performance optimization (>10k RPS)"`
 
 #### `color` (string, required)
 
 - **Type**: String (color name only)
-- **Valid Color Names**: `blue`, `green`, `red`, `purple`, `yellow`, `orange`, `white`, `brown`, `cyan`, `pink`, `teal`
+- **Valid Color Names**: `blue`, `green`, `red`, `purple`, `yellow`, `orange`,
+  `white`, `brown`, `cyan`, `pink`, `teal`
 - **Description**: Visual identifier color for the agent
-- **Constraints**: Should align with the agent's category color assignment (see Category Colors section)
+- **Constraints**: Should align with the agent's category color assignment (see
+  Category Colors section)
 - **Examples**: `"blue"`, `"green"`, `"teal"`
 
 #### `tools` (string, required)
@@ -65,9 +74,11 @@ tools: Read, Write, Edit, Grep, Glob
 #### `category` (string, optional but recommended)
 
 - **Type**: String (enum)
-- **Valid Values**: `development`, `infrastructure`, `architecture`, `design`, `quality`, `security`, `analysis`, `operations`
+- **Valid Values**: `development`, `infrastructure`, `architecture`, `design`, `quality`, `security`, `analysis`,
+  `operations`
 - **Description**: Primary category the agent belongs to
-- **Note**: While technically optional, this field is strongly recommended for proper categorization and agent organization
+- **Note**: While technically optional, this field is strongly recommended for proper categorization and
+  agent organization
 
 ## Category System
 
@@ -176,7 +187,9 @@ tools: Read, Grep, Glob
 ```yaml
 ---
 name: backend-engineer
-description: Use for building server-side systems, APIs, microservices, databases, and distributed architectures. MUST BE USED for high-performance optimization (>10k RPS), event-driven systems, and cloud-native backend development
+description: Use for building server-side systems, APIs, microservices, databases, and distributed
+  architectures. MUST BE USED for high-performance optimization (>10k RPS), event-driven systems, and
+  cloud-native backend development
 color: blue
 category: development
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
@@ -200,7 +213,9 @@ You are an expert backend engineer specializing in server-side architecture...
 ```yaml
 ---
 name: accessibility-auditor
-description: Use for WCAG compliance audits, screen reader testing, keyboard navigation checks, and accessibility remediation. MUST BE USED when implementing accessible UI components or fixing accessibility violations
+description: Use for WCAG compliance audits, screen reader testing, keyboard navigation checks, and
+  accessibility remediation. MUST BE USED when implementing accessible UI components or fixing accessibility
+  violations
 color: yellow
 category: quality
 tools: Read, Edit, MultiEdit, Write, Grep, Glob, LS, WebFetch, WebSearch, TodoWrite
@@ -289,7 +304,8 @@ The following files in the agents directory are documentation, not agent definit
 Example:
 
 ```yaml
-description: Use for building React/Vue/Angular apps, state management, and frontend optimization. MUST BE USED for responsive design, accessibility implementation, and Core Web Vitals
+description: Use for building React/Vue/Angular apps, state management, and frontend optimization. MUST BE
+  USED for responsive design, accessibility implementation, and Core Web Vitals
 ```
 
 ### Tool Selection

@@ -59,15 +59,10 @@ You are an elite database administration specialist powered by Sonnet 4.1's adva
 
 ```sql
 -- Inefficient query example
-SELECT * FROM orders o 
-WHERE EXISTS (SELECT 1 FROM customers c WHERE c.id = o.customer_id AND c.country = 'US');
+SELECT * FROM orders oWHERE EXISTS (SELECT 1 FROM customers c WHERE c.id = o.customer_id AND c.country = 'US');
 
 -- Optimized with JOIN and specific columns
-SELECT o.id, o.order_date, o.total 
-FROM orders o 
-INNER JOIN customers c ON c.id = o.customer_id 
-WHERE c.country = 'US' 
-AND o.order_date >= CURRENT_DATE - INTERVAL '30 days';
+SELECT o.id, o.order_date, o.totalFROM orders oINNER JOIN customers c ON c.id = o.customer_idWHERE c.country = 'US'AND o.order_date >= CURRENT_DATE - INTERVAL '30 days';
 
 -- Add appropriate indexes
 CREATE INDEX idx_customers_country ON customers(country) WHERE country = 'US';

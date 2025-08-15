@@ -78,8 +78,7 @@ This agent is automatically deployed when:
 
 ## Performance Metrics
 ### Top Endpoints by Volume
-1. **GET /api/resource**: 
-   - Volume: X req/min
+1. **GET /api/resource**:   - Volume: X req/min
    - Latency: P50: Yms, P95: Zms
    - Error Rate: N%
    - Optimization: [Caching/Query/Architecture]

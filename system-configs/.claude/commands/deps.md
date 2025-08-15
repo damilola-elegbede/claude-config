@@ -2,7 +2,9 @@
 
 ## Description
 
-Manages dependencies intelligently across all package managers with security scanning, safe updates, and supply chain protection. Identifies vulnerabilities, reduces technical debt, and maintains optimal dependency health for polyglot codebases.
+Manages dependencies intelligently across all package managers with security scanning, safe updates, and supply
+chain protection. Identifies vulnerabilities, reduces technical debt, and maintains optimal dependency health for
+polyglot codebases.
 
 ## Usage
 

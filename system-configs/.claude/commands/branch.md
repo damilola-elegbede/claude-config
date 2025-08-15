@@ -2,7 +2,8 @@
 
 ## Description
 
-Intelligently creates and switches to a new git branch based on context from the conversation or explicit input. Always starts from the latest main branch to ensure branches are up-to-date.
+Intelligently creates and switches to a new git branch based on context from the conversation or explicit
+input. Always starts from the latest main branch to ensure branches are up-to-date.
 
 ## Usage
 
@@ -12,7 +13,8 @@ Intelligently creates and switches to a new git branch based on context from the
 
 ## Arguments
 
-- `context` (optional): Description or context for the branch. If not provided, uses context from the current conversation window.
+- `context` (optional): Description or context for the branch. If not provided, uses context from the current
+  conversation window.
 
 ## Behavior
 

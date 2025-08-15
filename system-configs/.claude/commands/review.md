@@ -2,7 +2,9 @@
 
 ## Description
 
-Performs comprehensive pre-commit code review using multiple specialized agents to catch issues before PR creation. Analyzes code quality, security vulnerabilities, performance issues, test coverage, and architectural concerns with actionable fix suggestions.
+Performs comprehensive pre-commit code review using multiple specialized agents to catch issues before PR
+creation. Analyzes code quality, security vulnerabilities, performance issues, test coverage, and architectural
+concerns with actionable fix suggestions.
 
 ## Usage
 

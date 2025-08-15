@@ -2,7 +2,9 @@
 
 ## Description
 
-Repository-specific command that synchronizes Claude configuration files from this repository to your user settings. This command copies the latest CLAUDE.md and command files to your home directory, ensuring your global Claude configuration stays up-to-date with the repository version.
+Repository-specific command that synchronizes Claude configuration files from this repository to your user
+settings. This command copies the latest CLAUDE.md and command files to your home directory, ensuring your global
+Claude configuration stays up-to-date with the repository version.
 
 ## Usage
 
@@ -31,8 +33,10 @@ When you use `/sync`, I will:
    - Copy `./system-configs/CLAUDE.md` to `~/CLAUDE.md`
    - **Remove old agents**: Delete `~/.claude/agents/` directory completely
    - **Remove old commands**: Delete all files in `~/.claude/commands/` (preserving the directory)
-   - Copy only actual agent files from `./system-configs/.claude/agents/` to `~/.claude/agents/` (excluding documentation/template files)
-   - Copy all files from `./system-configs/.claude/commands/` to `~/.claude/commands/` (explicitly excluding `sync.md` and `config-diff.md`)
+   - Copy only actual agent files from `./system-configs/.claude/agents/` to `~/.claude/agents/` (excluding
+     documentation/template files)
+   - Copy all files from `./system-configs/.claude/commands/` to `~/.claude/commands/` (explicitly excluding
+     `sync.md` and `config-diff.md`)
    - Copy `./system-configs/settings.json` to `~/.claude/settings.json` (merge with existing settings)
    - **Important**: This ensures no deprecated agents or commands remain, and only actual agents are synced
    - **Excluded from agents sync**:

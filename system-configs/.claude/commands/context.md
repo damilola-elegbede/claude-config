@@ -2,7 +2,9 @@
 
 ## Description
 
-Quickly analyzes and understands any repository by scanning its structure, dependencies, and documentation. This command provides a comprehensive overview to get you up to speed on any codebase. It can be configured to run automatically when Claude Code starts in a git repository.
+Quickly analyzes and understands any repository by scanning its structure, dependencies, and documentation. This
+command provides a comprehensive overview to get you up to speed on any codebase. It can be configured to run
+automatically when Claude Code starts in a git repository.
 
 ## Usage
 

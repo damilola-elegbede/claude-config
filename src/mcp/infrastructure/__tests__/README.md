@@ -7,7 +7,7 @@ Comprehensive test suite for the MCP (Model Context Protocol) Infrastructure imp
 This test suite provides complete validation of the MCP infrastructure components:
 
 - **Discovery Service**: Server discovery and health monitoring
-- **Registry Service**: Server registration and metrics tracking  
+- **Registry Service**: Server registration and metrics tracking
 - **Tool Router**: Intelligent routing with multiple strategies
 - **Circuit Breaker**: Fault tolerance and failure recovery
 - **Integration**: End-to-end system behavior and resilience
@@ -39,7 +39,7 @@ This test suite provides complete validation of the MCP infrastructure component
 
 ### Test Files Structure
 
-```
+```text
 __tests__/
 ├── discovery.test.ts        # Server discovery and monitoring
 ├── registry.test.ts         # Server registration and metrics
@@ -153,7 +153,7 @@ npm test -- --coverage --coverageReporters=html
 // Performance validation
 expect(responseTime).toHaveLatencyLessThan(100);
 
-// Server health validation  
+// Server health validation
 expect(server).toBeHealthyServer();
 
 // Metric validation
@@ -302,19 +302,19 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
-    
+
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-    
+
     - name: Install dependencies
       run: npm ci
-    
+
     - name: Run test suite
       run: ./src/mcp/infrastructure/__tests__/run-tests.sh
-    
+
     - name: Upload coverage
       uses: codecov/codecov-action@v3
       with:
@@ -400,6 +400,6 @@ npm test -- --testNamePattern="performance" --verbose
 ---
 
 **Status**: ✅ All SPEC_01 requirements validated with 80%+ coverage
-**Performance**: 🚀 Sub-100ms routing, Sub-500ms discovery guaranteed  
+**Performance**: 🚀 Sub-100ms routing, Sub-500ms discovery guaranteed
 **Reliability**: 💪 95%+ success rate with automatic recovery
 **Maintainability**: 🔧 Comprehensive test coverage and documentation

@@ -1,6 +1,7 @@
 ---
 name: tech-writer
-description: Use PROACTIVELY for documentation, READMEs, API docs, and work summaries. MUST BE USED after complex implementations, code changes, or when explaining technical concepts
+description: Use PROACTIVELY for documentation, READMEs, API docs, and work summaries. MUST BE USED after
+  complex implementations, code changes, or when explaining technical concepts
 tools: Read, Write, Edit, Grep, Glob, LS, WebFetch
 model: sonnet
 color: yellow
@@ -221,22 +222,19 @@ When creating PRDs and SPEC files, consider using XML tags for enhanced structur
     <date>2024-01-15</date>
     <stakeholders>Product, Engineering, Design</stakeholders>
   </metadata>
-  
-  <problem-statement priority="critical">
+   <problem-statement priority="critical">
     <current-state>...</current-state>
     <pain-points>...</pain-points>
     <opportunity>...</opportunity>
   </problem-statement>
-  
-  <solution>
+   <solution>
     <approach>...</approach>
     <features>
       <feature id="F1" priority="P0">...</feature>
       <feature id="F2" priority="P1">...</feature>
     </features>
   </solution>
-  
-  <requirements>
+   <requirements>
     <functional>...</functional>
     <non-functional>
       <performance>...</performance>
@@ -255,8 +253,7 @@ When creating PRDs and SPEC files, consider using XML tags for enhanced structur
     <objective>...</objective>
     <business-value>...</business-value>
   </high-level-context>
-  
-  <beginning-context>
+   <beginning-context>
     <available-files>
       <file path="src/models/user.js">User model</file>
     </available-files>
@@ -264,8 +261,7 @@ When creating PRDs and SPEC files, consider using XML tags for enhanced structur
       <package>jsonwebtoken@9.0.0</package>
     </dependencies>
   </beginning-context>
-  
-  <tasks>
+   <tasks>
     <task id="1.1" priority="high">
       <prompt>Create authentication service...</prompt>
       <acceptance-criteria>
@@ -274,8 +270,7 @@ When creating PRDs and SPEC files, consider using XML tags for enhanced structur
       </acceptance-criteria>
     </task>
   </tasks>
-  
-  <ending-context>
+   <ending-context>
     <expected-files>
       <file path="src/services/auth.js">Authentication service</file>
     </expected-files>

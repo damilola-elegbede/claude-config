@@ -40,11 +40,11 @@ I determine complexity based on task indicators and estimated lines of code:
 - **Simple** (<100 LOC): Single PR, minimal orchestration
   - Keywords: button, typo, color, text change, label, tooltip
   - Example: "Fix login button text"
-  
+
 - **Medium** (100-1000 LOC): 2-3 phases, 4-7 PRs
   - Keywords: feature, endpoint, component, integration
   - Example: "Add user profile page"
-  
+
 - **Complex** (>1000 LOC): Full phase breakdown, 8+ PRs
   - Keywords: system, migration, architecture, redesign, platform
   - Example: "Implement authentication system"
@@ -132,7 +132,7 @@ The command recognizes these approval signals:
 The strategic plan includes:
 
 1. **Executive Summary** - High-level overview and objectives
-2. **Requirements Analysis** - Business and technical requirements  
+2. **Requirements Analysis** - Business and technical requirements
 3. **Success Criteria** - Measurable outcomes
 4. **Risk Assessment** - Potential challenges and mitigations
 5. **Architectural Decisions** - Technology choices and patterns

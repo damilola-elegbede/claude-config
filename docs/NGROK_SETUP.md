@@ -24,9 +24,9 @@ Your dashboard will be accessible at the ngrok URL shown!
 2. Get your auth token from <https://dashboard.ngrok.com/auth>
 3. Configure ngrok:
 
-   ```bash
-   ngrok authtoken YOUR_AUTH_TOKEN
-   ```
+```bash
+ngrok authtoken YOUR_AUTH_TOKEN
+```
 
 ### 3. Automatic Startup Script
 
@@ -35,7 +35,8 @@ Create an alias in your shell profile (`~/.zshrc` or `~/.bashrc`):
 ```bash
 # Add this to your shell profile
 alias mcp-public="ngrok http 3003 &"
-alias mcp-url="curl -s http://localhost:4040/api/tunnels | grep -o '\"public_url\":\"[^\"]*' | grep -o 'https[^\"]*' | head -1"
+alias mcp-url="curl -s http://localhost:4040/api/tunnels | \
+  grep -o '\"public_url\":\"[^\"]*' | grep -o 'https[^\"]*' | head -1"
 ```
 
 Then reload your shell:
@@ -66,10 +67,11 @@ if ! pgrep -x ngrok > /dev/null; then
     ngrok http 3003 > /dev/null 2>&1 &
     echo "✅ Ngrok tunnel started"
     sleep 3
-    
+
     # Get and display the public URL
-    PUBLIC_URL=$(curl -s http://localhost:4040/api/tunnels 2>/dev/null | grep -o '"public_url":"[^"]*' | grep -o 'https[^"]*' | head -1)
-    
+    PUBLIC_URL=$(curl -s http://localhost:4040/api/tunnels 2>/dev/null | \
+      grep -o '"public_url":"[^"]*' | grep -o 'https[^"]*' | head -1)
+
     if [ -n "$PUBLIC_URL" ]; then
         echo ""
         echo "🌐 Your MCP Dashboard is available at:"
@@ -81,7 +83,8 @@ if ! pgrep -x ngrok > /dev/null; then
     fi
 else
     echo "✅ Ngrok already running"
-    PUBLIC_URL=$(curl -s http://localhost:4040/api/tunnels 2>/dev/null | grep -o '"public_url":"[^"]*' | grep -o 'https[^"]*' | head -1)
+    PUBLIC_URL=$(curl -s http://localhost:4040/api/tunnels 2>/dev/null | \
+      grep -o '"public_url":"[^"]*' | grep -o 'https[^"]*' | head -1)
     echo "   Public URL: $PUBLIC_URL"
 fi
 EOF
@@ -113,7 +116,8 @@ launchctl list | grep claude.mcp.dashboard
 ps aux | grep ngrok
 
 # Get public URL
-curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
+curl -s http://localhost:4040/api/tunnels | \
+  jq -r '.tunnels[0].public_url'
 ```
 
 ## 🔐 Security Notes

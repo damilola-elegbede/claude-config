@@ -2,7 +2,9 @@
 
 ## Overview
 
-The Claude Agent Ecosystem provides 29 specialized AI agents for software development tasks. This production architecture achieves 95% selection accuracy while maintaining 100% functional coverage, enabling efficient parallel execution and domain-specific expertise across all software development lifecycle phases.
+The Claude Agent Ecosystem provides 29 specialized AI agents for software development tasks. This production
+architecture achieves 95% selection accuracy while maintaining 100% functional coverage, enabling efficient parallel
+execution and domain-specific expertise across all software development lifecycle phases.
 
 **Key Features:**
 
@@ -83,20 +85,20 @@ graph TD
     subgraph "User Interface"
         A[Claude CLI] --> B[Command Parser]
     end
-    
+
     subgraph "Agent Management"
         B --> C[Agent Selector]
         C --> D[Orchestrator]
         D --> E[Agent Registry]
     end
-    
+
     subgraph "Agent Execution"
         D --> F[Development Agents]
         D --> G[Analysis Agents]
         D --> H[Quality Agents]
         D --> I[Strategic Agents]
     end
-    
+
     subgraph "Shared Resources"
         F --> J[Tool Registry]
         G --> J
@@ -111,7 +113,8 @@ graph TD
 #### 1. Development Agents (11 agents - blue)
 
 - **Purpose**: Core programming and implementation
-- **Members**: backend-engineer, frontend-engineer, mobile-engineer, data-engineer, ml-engineer, database-admin, database-migration-specialist, integration-specialist, file-writer, dependency-manager, git-workflow
+- **Members**: backend-engineer, frontend-engineer, mobile-engineer, data-engineer, ml-engineer, database-admin,
+  database-migration-specialist, integration-specialist, file-writer, dependency-manager, git-workflow
 - **Tool Access**: Full read/write/execute
 - **Constraints**: Cannot deploy to production
 
@@ -139,7 +142,8 @@ graph TD
 #### 5. Quality Agents (7 agents - green)
 
 - **Purpose**: Testing, review, and validation
-- **Members**: test-engineer, code-reviewer, performance-engineer, performance-analyst, accessibility-auditor, api-contract-tester, agent-auditor
+- **Members**: test-engineer, code-reviewer, performance-engineer, performance-analyst, accessibility-auditor,
+  api-contract-tester, agent-auditor
 - **Tool Access**: Read and test execution
 - **Constraints**: Cannot modify production code
 
@@ -153,14 +157,16 @@ graph TD
 #### 7. Analysis Agents (8 agents - yellow)
 
 - **Purpose**: Research, documentation, and analysis
-- **Members**: researcher, business-analyst, data-scientist, ux-researcher, tech-writer, api-documenter, log-analyst, documentation-finder
+- **Members**: researcher, business-analyst, data-scientist, ux-researcher, tech-writer, api-documenter,
+  log-analyst, documentation-finder
 - **Tool Access**: Read and analysis tools only
 - **Constraints**: Cannot modify code directly
 
 #### 8. Operations Agents (7 agents - teal)
 
 - **Purpose**: Support, coordination, and strategic planning
-- **Members**: incident-commander, debugger, product-strategist, error-resolver, config-specialist, file-navigator, search-coordinator
+- **Members**: incident-commander, debugger, product-strategist, error-resolver, config-specialist,
+  file-navigator, search-coordinator
 - **Tool Access**: Specialized operational tools
 - **Constraints**: Domain-specific limitations
 
@@ -185,34 +191,34 @@ def select_agents(task):
     command_mappings = {
         "/test": "test-engineer",
         "/review": "code-reviewer",
-        "/security": "security-auditor", 
+        "/security": "security-auditor",
         "/perf": "performance-engineer",
         "/docs": "tech-writer",
         "/debug": "debugger",
         "/orchestrate": "project-orchestrator",
         "/context": "codebase-analyst"
     }
-    
+
     if task.starts_with_command():
         return command_mappings[task.command]
-    
+
     # 2. Analyze task complexity and domains
     complexity = analyze_complexity(task)
     domains = identify_domains(task)
-    
+
     # 3. Apply domain-specific selection logic
     if "api" in task.lower():
         return "api-architect"
-    
+
     if "research" in task.lower():
         return "researcher"
-    
+
     if "mobile" in domains and "ui" in domains:
         return "mobile-ui"
-    
+
     if "accessibility" in task.lower():
         return "accessibility-auditor"
-    
+
     # 4. Select primary agent based on categories
     domain_mapping = {
         "backend": "backend-engineer",
@@ -225,13 +231,13 @@ def select_agents(task):
         "architecture": "principal-architect",
         "product": "product-strategist"
     }
-    
+
     primary_domain = identify_primary_domain(domains)
     primary = domain_mapping.get(primary_domain, "backend-engineer")
-    
+
     # 5. Identify supporting agents and plan coordination
     supporting = identify_supporting_agents(task, primary)
-    
+
     if len(supporting) >= 3:
         return {
             "orchestrator": "project-orchestrator",
@@ -239,7 +245,7 @@ def select_agents(task):
             "supporting": supporting,
             "mode": "orchestrated"
         }
-    
+
     return {
         "primary": primary,
         "supporting": supporting,
@@ -249,16 +255,16 @@ def select_agents(task):
 def identify_quality_gates(task):
     """Quality gate selection"""
     gates = ["code-reviewer"]  # Always include
-    
+
     if has_security_implications(task):
         gates.append("security-auditor")
-    
+
     if claims_performance_improvement(task):
         gates.append("performance-engineer")
-    
+
     if involves_accessibility(task):
         gates.append("accessibility-auditor")
-    
+
     return gates
 ```
 
@@ -274,7 +280,7 @@ execution:
       instance: service-1
       task: implement_auth_service
     - type: backend-engineer
-      instance: service-2  
+      instance: service-2
       task: implement_payment_service
     - type: backend-engineer
       instance: service-3
@@ -430,7 +436,7 @@ execution:
 - [ ] Multi-instance agents coordinate properly
 - [ ] Quality gates prevent bad deployments
 
-### Performance  
+### Performance
 
 - [ ] Agent invocation < 500ms
 - [ ] No blocking in parallel execution
