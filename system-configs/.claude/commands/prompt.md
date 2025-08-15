@@ -14,7 +14,7 @@ with all necessary components for successful execution.
 /prompt                           # Interactive mode with guided input
 ```
 
-## Command Behavior
+## Behavior
 
 ### Interactive Mode Entry
 
