@@ -12,6 +12,8 @@ possible, with each PR independently reviewable and following TDD methodology.
 ```bash
 /plan <task_description>
 /plan simple <task_description>  # For tasks <100 LOC
+/plan --file <file_path>         # Read task from file
+/plan simple --file <file_path>  # Simple mode with file input
 ```yaml
 
 ## Command Execution Flow
@@ -21,17 +23,43 @@ possible, with each PR independently reviewable and following TDD methodology.
 When you invoke `/plan`, I will:
 
 1. **Enter plan mode** immediately to begin strategic planning
-2. **Analyze task complexity** to determine the appropriate approach
-3. **Generate a complete plan** in memory without writing any files
-4. **Present a preview** for your review and approval
-5. **Wait for your decision** before taking any action
-6. **Write files only if approved** - no files created until you confirm
-7. **Deploy execution-evaluator** to verify:
+2. **Read file if provided** with --file flag, otherwise use provided description
+3. **Analyze task complexity** from file content or description
+4. **Generate a complete plan** in memory without writing any files
+5. **Present a preview** for your review and approval
+6. **Stay in plan mode** while waiting for your decision
+7. **Exit plan mode** ONLY after you approve using ExitPlanMode tool
+8. **Write files only if approved** - no files created until you confirm
+9. **Deploy execution-evaluator** to verify:
    - Plan generated successfully
    - Complexity assessment accurate
    - PR breakdown logical and independent
    - Files written match approved plan
    - No unauthorized files created
+
+### File Input Processing
+
+When using `--file <file_path>`:
+
+1. **Read the entire file** using the Read tool
+2. **Extract requirements** from the file content
+3. **Parse structured formats** (Markdown, YAML, JSON, plain text)
+4. **Identify task objectives** from:
+   - User stories or requirements lists
+   - Technical specifications
+   - Bug reports or issue descriptions
+   - Feature requests
+   - Architecture documents
+5. **Generate plan** based solely on file content
+6. **Ignore conversation context** when --file is used (file is the sole source)
+
+**Supported File Formats**:
+- `.md` - Markdown specifications
+- `.txt` - Plain text requirements
+- `.yaml`/`.yml` - Structured task definitions
+- `.json` - JSON task specifications
+- `.rst` - reStructuredText documents
+- Any text-based format with clear requirements
 
 ### Complexity Assessment
 
@@ -85,16 +113,21 @@ Before writing any files, I present a comprehensive preview including:
 
 After presenting the preview:
 
-1. **Wait for your response**:
-   - **"yes" or approval**: Proceed to write all files
-   - **"modify" or changes**: Adjust plan and re-present
-   - **"cancel" or rejection**: Abort without writing files
-2. **Exit plan mode** using ExitPlanMode tool with your decision
-   - On approval: Exit with intent=write, plan_id=<id>, approved=true
-   - On modify: Stay in plan mode, re-present updated preview
-   - On cancel: Exit with intent=discard, approved=false (no writes)
-3. **Execute approved plan**: Write files only after confirmation
-4. **Report completion**: Show where files were written
+**IMPORTANT**: Stay IN plan mode while waiting for approval. Only exit plan mode AFTER receiving user approval.
+
+1. **Present plan and wait** (still in plan mode):
+   - Show the complete plan preview
+   - Remain in plan mode while awaiting user decision
+   - Do NOT exit plan mode yet
+2. **Process user response**:
+   - **"yes" or approval**: Exit plan mode with ExitPlanMode tool, then write files
+   - **"modify" or changes**: Stay in plan mode, adjust plan and re-present
+   - **"cancel" or rejection**: Exit plan mode without writing files
+3. **Execute based on decision**:
+   - On approval: Use ExitPlanMode with the approved plan, then write files
+   - On modify: Generate new preview with requested changes (stay in plan mode)
+   - On cancel: Use ExitPlanMode to exit cleanly without creating files
+4. **Report completion**: Show where files were written (if approved)
 
 ## Approval Indicators
 
@@ -229,6 +262,10 @@ Within each phase:
 
 If issues occur during planning:
 
+- **File not found**: Report error and request valid file path
+- **File unreadable**: Check permissions and file format
+- **Empty file**: Inform user that file contains no requirements
+- **Binary file**: Reject non-text files, request text-based input
 - **Agent unavailable**: Use fallback agents with similar expertise
 - **Complexity overflow**: Auto-split into smaller manageable tasks
 - **PR too large**: Break down into multiple smaller PRs
@@ -260,6 +297,79 @@ After 3 failed attempts, generate a simple single-file plan as fallback.
 
 ## Examples
 
+### File-Based Planning
+
+#### Reading Requirements from File
+
+```text
+User: /plan --file requirements/auth-system.md
+
+Claude: 📋 Entering plan mode for strategic planning...
+[Reading file: requirements/auth-system.md]
+
+[Analyzing requirements from file...]
+
+## 📋 PLAN PREVIEW
+
+### Task Summary
+- **Source**: requirements/auth-system.md
+- **Description**: Implement OAuth2 authentication system with JWT tokens
+- **Complexity**: Complex (~2000 LOC)
+- **Total Phases**: 3
+- **Total PRs**: 11
+[... detailed breakdown based on file content ...]
+
+Ready to proceed with file generation?
+
+[Waiting for your approval in plan mode...]
+
+User: yes
+
+Claude: [Exiting plan mode with approved plan...]
+✅ Plan approved! Writing files...
+📁 Files written to: .tmp/oauth2-auth-jwt-a7x9/
+```yaml
+
+#### Simple Task from File
+
+```text
+User: /plan simple --file bugs/button-fix.txt
+
+Claude: 📋 Entering plan mode...
+[Reading file: bugs/button-fix.txt]
+
+## 📋 PLAN PREVIEW
+- **Source**: bugs/button-fix.txt
+- **Description**: Fix submit button disabled state
+- **Complexity**: Simple (~20 LOC)
+- **Files**: 1 implementation file
+
+Ready to proceed with file generation?
+
+[Waiting for your approval in plan mode...]
+```yaml
+
+#### Structured YAML Input
+
+```text
+User: /plan --file tasks/feature.yaml
+
+Claude: 📋 Entering plan mode...
+[Reading file: tasks/feature.yaml]
+[Parsing YAML structure...]
+
+## 📋 PLAN PREVIEW
+- **Source**: tasks/feature.yaml (structured)
+- **Description**: Multi-service integration feature
+- **Complexity**: Complex (~3000 LOC)
+- **Components Identified**:
+  - Backend API changes
+  - Frontend UI updates
+  - Database migrations
+  - Third-party integrations
+[... phase breakdown from YAML structure ...]
+```yaml
+
 ### Complex Task with Approval
 
 ```text
@@ -280,11 +390,12 @@ Claude: 📋 Entering plan mode for strategic planning...
 
 Ready to proceed with file generation?
 
-[Exiting plan mode, awaiting approval...]
+[Waiting for your approval in plan mode...]
 
 User: yes
 
-Claude: ✅ Plan approved! Writing files...
+Claude: [Exiting plan mode with approved plan...]
+✅ Plan approved! Writing files...
 📁 Files written to: .tmp/user-auth-jwt-x3f2/
 ```yaml
 
@@ -318,13 +429,22 @@ Claude: 📋 Entering plan mode...
 
 Ready to proceed with file generation?
 
-[Exiting plan mode, awaiting approval...]
+[Waiting for your approval in plan mode...]
 
 User: yes
 
-Claude: ✅ Plan approved! Writing files...
+Claude: [Exiting plan mode with approved plan...]
+✅ Plan approved! Writing files...
 📁 Files written to: .tmp/fix-typo-2x1/implementation.md
 ```yaml
+
+## Arguments
+
+- `task_description` (optional): Direct task description or requirements
+- `simple` (optional): Forces simple mode for tasks <100 LOC
+- `--file <file_path>` (optional): Path to file containing task requirements
+
+**Note**: When using `--file`, the file content becomes the sole source of requirements. Any additional task description is ignored.
 
 ## Behavior
 
@@ -368,3 +488,7 @@ The /plan command follows these behavioral patterns:
 - Users maintain full control over the planning process for both simple and complex tasks
 - Supports iterative refinement without generating unwanted files
 - **Even simple tasks require explicit approval before file generation**
+- **File input**: When using `--file`, the file content is the sole source of truth for requirements
+- **File formats**: Any text-based file with clear requirements can be used as input
+- **Absolute paths**: File paths can be relative or absolute
+- **Large files**: The entire file is read, so very large files may take longer to process

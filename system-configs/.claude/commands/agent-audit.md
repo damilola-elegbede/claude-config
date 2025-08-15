@@ -35,7 +35,9 @@ design principles.
 
 - **AGENT_TEMPLATE.md Format**: All agents must follow the standard template
 - **Required Sections**: Verify presence of all mandatory sections
-- **YAML Formatter**: Validate structure and field completeness
+- **YAML Front Matter Parsing**: Validate YAML syntax is parseable without errors
+- **YAML Field Validation**: Ensure all required fields are present and properly formatted
+- **Multi-line String Compliance**: Check description fields for proper YAML multi-line syntax
 - **System Boundary**: Ensure anti-pattern warning is present
 
 ### 3. Tool Assignment Validation
@@ -92,9 +94,22 @@ design principles.
 
 ## Execution Strategy
 
+### Phase 0: YAML Validation (Critical - Run First)
+
+Before any other validation, ensure all agent files have parseable YAML:
+
+```yaml
+yaml_validation:
+  - Parse YAML front matter for each agent file
+  - Identify agents with parsing failures
+  - Report specific line numbers and error types
+  - Skip further validation for unparseable agents
+  - Generate fix commands for common YAML issues
+```
+
 ### Phase 1: Parallel Category Audits
 
-Execute validation for each category simultaneously:
+Execute validation for each category simultaneously (only for agents that passed YAML validation):
 
 ```yaml
 parallel_execution:
@@ -136,13 +151,16 @@ parallel_execution:
 After audit completion, **execution-evaluator** is deployed to verify:
 
 - All agent files were scanned successfully
-- YAML validation completed without errors
+- YAML front matter parsing attempted for all agents
+- Unparseable YAML agents were identified and reported
+- Valid agents proceeded through full validation
 - Category assignments were checked
 - Tool permissions were validated
 - Markdown parsing standards were enforced
 - Code fencing and formatting consistency validated
-- Report generated with all required sections
+- Report generated with all required sections including YAML issues
 - Patch snippets (if any) are syntactically correct
+- Fix commands for YAML issues were generated
 
 ## Report Structure
 
@@ -163,11 +181,26 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 
 ### Critical Issues
 
-1. **Task Tool Violations**: [List any agents with Task tool access]
-2. **Orchestration Attempts**: [Agents trying to coordinate others]
-3. **Missing Templates**: [Non-compliant agent formats]
-4. **Tier 2 Agents**: [Any agents not at tier 1]
-5. **Markdown Parsing Violations**: [Agents with formatting/parsing issues]
+1. **YAML Parsing Failures**: [Agents with unparseable YAML front matter]
+2. **Task Tool Violations**: [List any agents with Task tool access]
+3. **Orchestration Attempts**: [Agents trying to coordinate others]
+4. **Missing Templates**: [Non-compliant agent formats]
+5. **Tier 2 Agents**: [Any agents not at tier 1]
+6. **Markdown Parsing Violations**: [Agents with formatting/parsing issues]
+
+### YAML Front Matter Validation
+
+| Agent | Parseable | Valid Fields | Description Format | Error Details |
+|-------|-----------|--------------|-------------------|---------------|
+| debugger | ❌ | N/A | Multi-line without quotes | Line 3-4: Invalid YAML syntax |
+| agent-name | ✅ | ✅ | ✅ | None |
+
+**YAML Parsing Issues Found**:
+
+- **Invalid multi-line strings**: X agents (description field not properly quoted/formatted)
+- **Missing required fields**: X agents (name, description, tools, etc.)
+- **Malformed YAML structure**: X agents (indentation errors, missing colons)
+- **Special character escaping**: X agents (unescaped quotes in descriptions)
 
 ### Markdown Parsing Compliance
 
@@ -220,6 +253,13 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 ### Manual Remediation Required
 
 ```bash
+# YAML Parsing Fixes (CRITICAL - Fix these first):
+# Fix multi-line description without quotes:
+sed -i '' '/^description:$/,/^[a-z]/s/^description:$/description: |/' agent-name.md
+# Or wrap in quotes:
+sed -i '' 's/^description:$/description: "/' agent-name.md
+sed -i '' '/^description: "/,/^tools:/s/^tools:/"\\ntools:/' agent-name.md
+
 # Execute these commands to fix remaining issues:
 sed -i '' 's/category: wrong/category: correct/' agent.md
 
@@ -232,6 +272,7 @@ sed -i '' 's/model: haiku/model: sonnet/' agent-name.md  # Better capability
 
 ## Success Criteria
 
+✅ **YAML Parseability**: 100% of agent files have valid, parseable YAML front matter
 ✅ **Category Compliance**: ≤ 8 categories with proper color mapping
 ✅ **Template Adherence**: 100% AGENT_TEMPLATE.md compliance
 ✅ **Tool Validation**: No Task tool access, appropriate permissions
