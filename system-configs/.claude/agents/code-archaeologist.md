@@ -7,7 +7,7 @@ tools:
   - Glob
   - Bash
 model: sonnet
-color: purple
+color: yellow
 category: analysis
 trigger_words: [legacy, refactor, technical debt, modernize, dead code, archaeology, evolution, git history, hotspot, complexity, maintainability]
 ---

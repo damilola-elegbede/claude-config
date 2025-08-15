@@ -3,7 +3,7 @@ name: project-orchestrator
 description: Use PROACTIVELY to orchestrate multi-agent execution strategies. MUST BE USED for planning parallel agent execution, optimizing resource allocation, coordinating 3+ agent workflows, and maximizing team efficiency
 tools: Read, Write, Grep, Glob, LS
 model: opus
-color: purple
+color: teal
 category: operations
 ---
 
