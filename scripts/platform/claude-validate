@@ -43,7 +43,7 @@ fi
 # Initialize configuration
 init_config() {
     mkdir -p "$CONFIG_DIR" "$CACHE_DIR" "$LOG_DIR"
-    
+
     if [[ ! -f "$CONFIG_DIR/config.yaml" ]]; then
         cat > "$CONFIG_DIR/config.yaml" << 'EOF'
 # Claude Validate Configuration
@@ -88,7 +88,7 @@ log() {
     shift
     local message="$*"
     local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    
+
     case $level in
         ERROR) echo -e "${RED}${CROSS} $message${NC}" ;;
         WARN)  echo -e "${YELLOW}${WARN} $message${NC}" ;;
@@ -96,7 +96,7 @@ log() {
         SUCCESS) echo -e "${GREEN}${CHECK} $message${NC}" ;;
         DEBUG) [[ "${CLAUDE_VALIDATE_DEBUG:-}" == "1" ]] && echo -e "${PURPLE}[DEBUG] $message${NC}" ;;
     esac
-    
+
     # Log to file
     echo "[$timestamp] [$level] $message" >> "$LOG_DIR/claude-validate.log"
 }
@@ -116,7 +116,7 @@ end_timer() {
 get_config() {
     local key="$1"
     local default="${2:-}"
-    
+
     if command -v yq >/dev/null 2>&1 && [[ -f "$CONFIG_DIR/config.yaml" ]]; then
         yq eval "$key // \"$default\"" "$CONFIG_DIR/config.yaml" 2>/dev/null || echo "$default"
     else
@@ -134,7 +134,7 @@ get_cache_key() {
 is_cache_valid() {
     local cache_file="$1"
     local ttl_hours=$(get_config ".performance.cache_ttl_hours" "24")
-    
+
     if [[ -f "$cache_file" ]]; then
         local cache_age=$(($(date +%s) - $(stat -c %Y "$cache_file" 2>/dev/null || stat -f %m "$cache_file" 2>/dev/null || echo 0)))
         local ttl_seconds=$((ttl_hours * 3600))
@@ -149,13 +149,13 @@ run_parallel() {
     local max_jobs=$(get_config ".settings.max_parallel_jobs" "4")
     local job_count=0
     local pids=()
-    
+
     while IFS= read -r line; do
         if [[ -n "$line" ]]; then
             eval "$line" &
             pids+=($!)
             ((job_count++))
-            
+
             if [[ $job_count -ge $max_jobs ]]; then
                 wait "${pids[0]}"
                 pids=("${pids[@]:1}")
@@ -163,7 +163,7 @@ run_parallel() {
             fi
         fi
     done
-    
+
     # Wait for remaining jobs
     for pid in "${pids[@]}"; do
         wait "$pid"
@@ -175,13 +175,13 @@ validate_yaml() {
     local files="$1"
     local start_time=$(start_timer)
     local cache_enabled=$(get_config ".settings.cache_enabled" "true")
-    
+
     log INFO "Validating YAML front-matter..."
-    
+
     if [[ "$cache_enabled" == "true" ]]; then
         local cache_key=$(get_cache_key "yaml" "$files")
         local cache_file="$CACHE_DIR/$cache_key"
-        
+
         if is_cache_valid "$cache_file"; then
             log INFO "Using cached YAML validation results"
             local duration=$(end_timer $start_time)
@@ -189,10 +189,10 @@ validate_yaml() {
             return 0
         fi
     fi
-    
+
     local validation_failed=false
     local files_processed=0
-    
+
     if [[ -n "$files" ]]; then
         echo "$files" | while IFS= read -r file; do
             if [[ -f "$file" ]]; then
@@ -203,14 +203,14 @@ validate_yaml() {
                 ((files_processed++))
             fi
         done | run_parallel
-        
+
         if [[ "$cache_enabled" == "true" ]]; then
             touch "$cache_file"
         fi
     fi
-    
+
     local duration=$(end_timer $start_time)
-    
+
     if [[ "$validation_failed" == "false" ]]; then
         log SUCCESS "YAML validation completed ($files_processed files, ${duration}s)"
         return 0
@@ -225,19 +225,19 @@ analyze_performance() {
     local validation_type="$1"
     local duration="$2"
     local files_count="$3"
-    
+
     local avg_time_per_file=0
     if [[ $files_count -gt 0 ]]; then
         avg_time_per_file=$((duration * 1000 / files_count))  # milliseconds
     fi
-    
+
     log INFO "Performance: $validation_type took ${duration}s for $files_count files (${avg_time_per_file}ms/file)"
-    
+
     # Performance recommendations
     if [[ $avg_time_per_file -gt 500 ]]; then
         log WARN "Performance tip: Consider enabling caching or reducing file size"
     fi
-    
+
     if [[ $files_count -gt 50 ]] && [[ $(get_config ".settings.parallel_validation" "true") == "false" ]]; then
         log WARN "Performance tip: Enable parallel validation for large file sets"
     fi
@@ -247,9 +247,9 @@ analyze_performance() {
 check_git_integration() {
     local hooks_dir="$REPO_ROOT/.git/hooks"
     local hook_types=("pre-commit" "commit-msg" "pre-push")
-    
+
     log INFO "Checking Git integration..."
-    
+
     for hook in "${hook_types[@]}"; do
         if [[ -x "$hooks_dir/$hook" ]]; then
             log SUCCESS "Git $hook hook is installed and executable"
@@ -261,14 +261,14 @@ check_git_integration() {
 
 check_ci_integration() {
     log INFO "Checking CI/CD integration..."
-    
+
     local ci_configs=(
         ".github/workflows/validate.yml"
         ".gitlab-ci.yml"
         "Jenkinsfile"
         ".circleci/config.yml"
     )
-    
+
     local found_ci=false
     for config in "${ci_configs[@]}"; do
         if [[ -f "$REPO_ROOT/$config" ]]; then
@@ -276,7 +276,7 @@ check_ci_integration() {
             found_ci=true
         fi
     done
-    
+
     if [[ "$found_ci" == "false" ]]; then
         log WARN "No CI/CD configuration found. Consider setting up automated validation."
     fi
@@ -287,17 +287,17 @@ cmd_validate() {
     local validation_types=("${@:-yaml format security docs}")
     local start_time=$(start_timer)
     local exit_code=0
-    
+
     log INFO "${ROCKET} Starting validation pipeline..."
-    
+
     # Load validation framework
     if [[ ! -f "$REPO_ROOT/scripts/validation/framework.sh" ]]; then
         log ERROR "Validation framework not found. Run: claude-validate setup"
         return 1
     fi
-    
+
     source "$REPO_ROOT/scripts/validation/framework.sh"
-    
+
     # Get files to validate
     local files_to_check
     if git diff --cached --name-only >/dev/null 2>&1; then
@@ -305,19 +305,19 @@ cmd_validate() {
     else
         files_to_check=$(find "$REPO_ROOT" -type f \( -name "*.md" -o -name "*.sh" -o -name "*.yml" -o -name "*.yaml" \))
     fi
-    
+
     if [[ -z "$files_to_check" ]]; then
         log INFO "No files to validate"
         return 0
     fi
-    
+
     local files_count=$(echo "$files_to_check" | wc -l)
     log INFO "Validating $files_count files..."
-    
+
     # Run validations
     for validation_type in "${validation_types[@]}"; do
         local validation_start=$(start_timer)
-        
+
         case "$validation_type" in
             yaml)
                 if ! validate_yaml "$files_to_check"; then
@@ -334,16 +334,16 @@ cmd_validate() {
                 exit_code=1
                 ;;
         esac
-        
+
         local validation_duration=$(end_timer $validation_start)
         analyze_performance "$validation_type" "$validation_duration" "$files_count"
     done
-    
+
     local total_duration=$(end_timer $start_time)
-    
+
     if [[ "$exit_code" -eq 0 ]]; then
         log SUCCESS "${CHECK} All validations passed in ${total_duration}s"
-        
+
         # Play success sound if enabled
         if [[ $(get_config ".settings.notification_sound" "true") == "true" ]]; then
             if [[ "$(uname -s)" == "Darwin" ]] && command -v afplay >/dev/null 2>&1; then
@@ -358,15 +358,15 @@ cmd_validate() {
         log INFO "  claude-validate doctor      # Check environment setup"
         log INFO "  claude-validate help        # Show all commands"
     fi
-    
+
     return $exit_code
 }
 
 cmd_setup() {
     log INFO "${GEAR} Setting up Claude validation platform..."
-    
+
     init_config
-    
+
     # Install git hooks
     if [[ -f "$REPO_ROOT/scripts/install-hooks.sh" ]]; then
         log INFO "Installing Git hooks..."
@@ -374,23 +374,23 @@ cmd_setup() {
     else
         log WARN "Git hooks installer not found"
     fi
-    
+
     # Check system dependencies
     local missing_deps=()
     local deps=("git" "make" "bash")
-    
+
     for dep in "${deps[@]}"; do
         if ! command -v "$dep" >/dev/null 2>&1; then
             missing_deps+=("$dep")
         fi
     done
-    
+
     if [[ ${#missing_deps[@]} -gt 0 ]]; then
         log ERROR "Missing dependencies: ${missing_deps[*]}"
         log INFO "Please install missing dependencies and run setup again"
         return 1
     fi
-    
+
     # Create desktop integration (optional)
     if [[ "$(uname -s)" == "Darwin" ]]; then
         local app_dir="/Applications/Claude Validate.app"
@@ -399,7 +399,7 @@ cmd_setup() {
             # Could create a simple .app bundle here
         fi
     fi
-    
+
     log SUCCESS "Setup completed successfully!"
     log INFO "Next steps:"
     log INFO "  1. Run: claude-validate doctor"
@@ -409,10 +409,10 @@ cmd_setup() {
 
 cmd_doctor() {
     log INFO "${MAGNIFY} Running environment diagnostics..."
-    
+
     local issues=0
     local warnings=0
-    
+
     # Check Git repository
     if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
         log ERROR "Not inside a Git repository"
@@ -420,7 +420,7 @@ cmd_doctor() {
     else
         log SUCCESS "Git repository detected"
     fi
-    
+
     # Check validation framework
     if [[ -f "$REPO_ROOT/scripts/validation/framework.sh" ]]; then
         log SUCCESS "Validation framework available"
@@ -428,13 +428,13 @@ cmd_doctor() {
         log ERROR "Validation framework missing"
         ((issues++))
     fi
-    
+
     # Check Git hooks
     check_git_integration
-    
+
     # Check CI integration
     check_ci_integration
-    
+
     # Check system dependencies
     local tools=("yq:YAML processor" "shellcheck:Shell linter" "python3:Python interpreter")
     for tool_info in "${tools[@]}"; do
@@ -446,11 +446,11 @@ cmd_doctor() {
             ((warnings++))
         fi
     done
-    
+
     # Performance check
     local cache_size=$(du -sh "$CACHE_DIR" 2>/dev/null | cut -f1 || echo "0B")
     log INFO "Cache size: $cache_size"
-    
+
     # Configuration check
     if [[ -f "$CONFIG_DIR/config.yaml" ]]; then
         log SUCCESS "Configuration file exists"
@@ -458,12 +458,12 @@ cmd_doctor() {
         log WARN "Configuration file not found"
         ((warnings++))
     fi
-    
+
     # Summary
     echo
     log INFO "Diagnostics Summary:"
     log INFO "==================="
-    
+
     if [[ $issues -eq 0 ]]; then
         if [[ $warnings -eq 0 ]]; then
             log SUCCESS "Environment is perfectly configured!"
@@ -479,12 +479,12 @@ cmd_doctor() {
 
 cmd_fix() {
     local auto_fix="${1:-false}"
-    
+
     log INFO "${GEAR} Running auto-fix procedures..."
-    
+
     if [[ "$auto_fix" == "--auto" ]] || [[ "$auto_fix" == "true" ]]; then
         log INFO "Attempting automatic fixes..."
-        
+
         # Run make fix-all if available
         if [[ -f "$REPO_ROOT/Makefile" ]]; then
             cd "$REPO_ROOT"
@@ -511,36 +511,36 @@ cmd_fix() {
 cmd_status() {
     log INFO "Claude Validation Status"
     log INFO "========================"
-    
+
     # Repository info
     local repo_name=$(basename "$REPO_ROOT")
     local branch=$(git symbolic-ref --short HEAD 2>/dev/null || echo "detached")
     local uncommitted=$(git status --porcelain | wc -l)
-    
+
     log INFO "Repository: $repo_name"
     log INFO "Branch: $branch"
     log INFO "Uncommitted changes: $uncommitted"
-    
+
     # File counts
     local agent_count=$(find "$REPO_ROOT/.claude/agents" -name "*.md" 2>/dev/null | wc -l || echo 0)
     local script_count=$(find "$REPO_ROOT/scripts" -name "*.sh" 2>/dev/null | wc -l || echo 0)
     local doc_count=$(find "$REPO_ROOT/docs" -name "*.md" 2>/dev/null | wc -l || echo 0)
-    
+
     log INFO "Agents: $agent_count"
     log INFO "Scripts: $script_count"
     log INFO "Docs: $doc_count"
-    
+
     # Validation status
     if cmd_validate >/dev/null 2>&1; then
         log SUCCESS "Validation: Passing"
     else
         log ERROR "Validation: Failing"
     fi
-    
+
     # Performance metrics
     local cache_size=$(du -sh "$CACHE_DIR" 2>/dev/null | cut -f1 || echo "0B")
     log INFO "Cache size: $cache_size"
-    
+
     # Recent activity
     local last_validation=$(ls -t "$LOG_DIR"/*.log 2>/dev/null | head -1 | xargs stat -c %y 2>/dev/null || echo "Never")
     log INFO "Last validation: $last_validation"
@@ -550,7 +550,7 @@ cmd_config() {
     local action="${1:-show}"
     local key="$2"
     local value="$3"
-    
+
     case "$action" in
         show)
             if [[ -f "$CONFIG_DIR/config.yaml" ]]; then
@@ -598,12 +598,12 @@ cmd_config() {
 
 cmd_cache() {
     local action="${1:-status}"
-    
+
     case "$action" in
         status)
             local cache_size=$(du -sh "$CACHE_DIR" 2>/dev/null | cut -f1 || echo "0B")
             local cache_files=$(find "$CACHE_DIR" -type f 2>/dev/null | wc -l || echo 0)
-            
+
             log INFO "Cache Status:"
             log INFO "  Size: $cache_size"
             log INFO "  Files: $cache_files"
@@ -669,13 +669,13 @@ main() {
     if [[ "${CLAUDE_VALIDATE_NO_COLOR:-}" == "1" ]]; then
         RED="" GREEN="" YELLOW="" BLUE="" PURPLE="" CYAN="" NC=""
     fi
-    
+
     # Initialize configuration
     init_config
-    
+
     local command="${1:-help}"
     shift || true
-    
+
     case "$command" in
         validate|v)     cmd_validate "$@" ;;
         setup|s)        cmd_setup "$@" ;;

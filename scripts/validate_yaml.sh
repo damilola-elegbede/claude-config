@@ -44,7 +44,7 @@ validate_yaml() {
     local file="$1"
     local filename=$(basename "$file")
     local has_errors=false
-    
+
     # Skip non-agent documentation files
     case "$filename" in
         README.md|AGENT_SELECTION_GUIDE.md|ENHANCEMENT_SUMMARY.md|PARALLEL_EXECUTION_GUIDE.md|\
@@ -53,67 +53,67 @@ validate_yaml() {
             return 0
             ;;
     esac
-    
+
     echo -n "Checking $filename... "
     local warnings_in_file=0
-    
+
     # Check if file starts with ---
     if ! head -n 1 "$file" | grep -q "^---$"; then
         printf "${RED}ERROR: Missing opening YAML delimiter '---'${NC}\n"
         ERRORS=$((ERRORS + 1))
         has_errors=true
     fi
-    
+
     # Extract YAML front-matter
     local yaml_content=""
     local in_yaml=false
     local line_num=0
     local closing_found=false
-    
+
     while IFS= read -r line; do
         line_num=$((line_num + 1))
-        
+
         if [ $line_num -eq 1 ] && [ "$line" = "---" ]; then
             in_yaml=true
             continue
         fi
-        
+
         if [ "$in_yaml" = true ] && [ "$line" = "---" ]; then
             closing_found=true
             break
         fi
-        
+
         if [ "$in_yaml" = true ]; then
             yaml_content+="$line"$'\n'
         fi
     done < "$file"
-    
+
     if [ "$closing_found" = false ]; then
         printf "${RED}ERROR: Missing closing YAML delimiter '---'${NC}\n"
         ERRORS=$((ERRORS + 1))
         has_errors=true
     fi
-    
+
     # Validate required fields
     if ! echo "$yaml_content" | grep -q "^name:"; then
         printf "${RED}ERROR: Missing required field: name${NC}\n"
         ERRORS=$((ERRORS + 1))
         has_errors=true
     fi
-    
+
     if ! echo "$yaml_content" | grep -q "^description:"; then
         printf "${RED}ERROR: Missing required field: description${NC}\n"
         ERRORS=$((ERRORS + 1))
         has_errors=true
     fi
-    
+
     # Check for multiline descriptions (warning only)
     if echo "$yaml_content" | grep -q "^description: |"; then
         printf "${YELLOW}WARNING: Using multiline description (consider single-line format)${NC}\n"
         WARNINGS=$((WARNINGS + 1))
         warnings_in_file=$((warnings_in_file + 1))
     fi
-    
+
     # Check description length
     desc_line=$(echo "$yaml_content" | grep "^description:" | head -1)
     if [ ${#desc_line} -gt 500 ]; then
@@ -121,12 +121,12 @@ validate_yaml() {
         WARNINGS=$((WARNINGS + 1))
         warnings_in_file=$((warnings_in_file + 1))
     fi
-    
+
     # If no errors found
     if [ "$has_errors" = false ] && [ $warnings_in_file -eq 0 ]; then
         printf "${GREEN}VALID${NC}\n"
     fi
-    
+
     return 0
 }
 

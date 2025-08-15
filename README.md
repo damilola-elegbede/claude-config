@@ -19,7 +19,7 @@
 
 This repository delivers a **sophisticated Smart Agent Orchestration Framework** for Claude Code CLI, featuring
 **41 specialized agents** (including the new execution-evaluator for command verification) and
-**14 essential commands**.
+**15 essential commands** (including the new command-audit for command ecosystem validation).
 Built from the ground up after a comprehensive cleanup that removed 85+ bloat files, this system provides intelligent
 task delegation, parallel execution, continuous improvement capabilities, and automatic command verification for
 enhanced development workflows.
@@ -63,7 +63,7 @@ agents with sophisticated task delegation and parallel execution capabilities.
 - **🔄 One-Command Synchronization**: Deploy entire framework with `/sync`
 - **🛡️ Quality Enforcement**: YAML validation, SYSTEM BOUNDARY protection, and compliance checking
 - **📚 Comprehensive Documentation**: 26 essential documentation files with usage patterns
-- **🔧 14 Essential Commands**: Carefully curated for maximum operational utility
+- **🔧 15 Essential Commands**: Carefully curated for maximum operational utility
 - **🎯 Production-Ready**: Battle-tested configurations with quality gates and security boundaries
 
 ## 🚀 Quick Start
@@ -76,7 +76,7 @@ npm install -g @anthropic/claude-code
 
 # Or via Homebrew (macOS)
 brew install claude-code
-```yaml
+```
 
 ### 2. Clone and Setup Configuration
 
@@ -93,7 +93,7 @@ claude-code
 cp system-configs/CLAUDE.md ~/CLAUDE.md
 cp -r system-configs/.claude ~/.claude
 cp system-configs/settings.json ~/.claude/settings.json
-```yaml
+```
 
 ### 3. Experience the Orchestration Framework
 
@@ -110,9 +110,12 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Comprehensive agent ecosystem validation with parallel execution
 /agent-audit
 
+# Command ecosystem validation and quality assurance
+/command-audit
+
 # Experience parallel agent deployment
 /resolve-cr [pr-number]  # Deploys multiple specialized agents for PR comment resolution
-```yaml
+```
 
 ## ✨ Features
 
@@ -130,9 +133,9 @@ cp system-configs/settings.json ~/.claude/settings.json
 - **Automatic Validation**: YAML compliance and security boundary checking
 - **Backup Management**: Automatic backups with rollback capabilities
 
-### 🛠️ Core Commands (14 Essential Tools)
+### 🛠️ Core Commands (15 Essential Tools)
 
-#### ⭐⭐⭐⭐⭐ Five-Star Commands (10) - Orchestration Excellence
+#### ⭐⭐⭐⭐⭐ Five-Star Commands (11) - Orchestration Excellence
 
 - **`/test`** - **Multi-Agent Test Execution**: Auto-discovers frameworks, deploys test-engineer for complex scenarios
 - **`/context`** - **Parallel Repository Analysis**: Deploys multiple codebase-analyst agents concurrently
@@ -140,6 +143,7 @@ cp system-configs/settings.json ~/.claude/settings.json
   execution
 
 - **`/agent-audit`** - **Ecosystem Health Check**: Parallel validation across all 8 agent categories
+- **`/command-audit`** - **Command Quality Assurance**: Comprehensive command ecosystem validation and standards enforcement
 - **`/resolve-cr`** - **Multi-Agent PR Resolution**: Intelligent specialist deployment based on comment analysis
 - **`/debug`** - **Systematic Investigation**: Debugger agent with evidence gathering and hypothesis testing
 - **`/pr`** - **Intelligent PR Creation**: Tech-writer + codebase-analyst collaboration for comprehensive descriptions
@@ -167,9 +171,9 @@ cp system-configs/settings.json ~/.claude/settings.json
 
 ### Orchestration Framework Command Portfolio
 
-- **Total Commands**: 14 essential orchestration commands (refined from 40+ candidates)
-- **5-Star Commands**: 10 (71%) - Production-ready with sophisticated agent coordination
-- **4-Star Commands**: 4 (29%) - Enhanced operations with multi-agent capabilities
+- **Total Commands**: 15 essential orchestration commands (refined from 40+ candidates)
+- **5-Star Commands**: 11 (73%) - Production-ready with sophisticated agent coordination
+- **4-Star Commands**: 4 (27%) - Enhanced operations with multi-agent capabilities
 - **Average Rating**: 4.7/5.0 - Industry-leading orchestration quality
 - **Design Philosophy**: Intelligent specialist delegation with parallel-first execution
 - **Performance Focus**: Continuous improvement through execution metrics and feedback loops
@@ -184,7 +188,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Automatically discovers and runs tests
 # Creates starter tests if none exist
 # Detects test frameworks from package.json/README
-```yaml
+```
 
 #### `/context` - Parallel Repository Analysis
 
@@ -194,7 +198,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Orchestrates comprehensive architecture, tech stack, and purpose analysis
 # Auto-executes on Claude Code startup with intelligent load balancing
 # Performance feedback loop for optimal agent allocation
-```yaml
+```
 
 #### `/review` - Multi-Agent Quality Review
 
@@ -204,7 +208,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Comprehensive quality validation with specialist expertise
 # Performance tracking and continuous improvement metrics
 # Production-ready quality gates with detailed reporting
-```yaml
+```
 
 #### `/debug` - Orchestrated Systematic Debugging
 
@@ -214,7 +218,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Coordinates evidence gathering from multiple sources
 # Hypothesis formation and testing with specialist precision
 # Root cause identification with validated fixes
-```yaml
+```
 
 ### Planning & Orchestration
 
@@ -227,7 +231,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Generates TDD phases (8-15 files each) with quality gates
 # Intelligent framework orchestration for complex feature development
 # Outputs to ./.tmp/<feature-name>/ with comprehensive documentation
-```yaml
+```
 
 #### `/fix-ci` - Intelligent CI Failure Resolution
 
@@ -238,7 +242,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Coordinates with test-engineer and security-auditor as needed
 # Performance tracking for continuous improvement of fix strategies
 # Automated verification with rollback capabilities
-```yaml
+```
 
 ### Quality & Security
 
@@ -247,12 +251,14 @@ cp system-configs/settings.json ~/.claude/settings.json
 This repository includes comprehensive **ShellCheck validation** to prevent bash syntax errors and ensure script quality:
 
 **Features:**
+
 - **Automated CI Validation**: All shell scripts validated on push/PR
 - **Pre-commit Hooks**: Local validation before commits
 - **Developer Tools**: Setup and fix scripts for easy adoption
 - **Configurable Rules**: Balanced exclusions for practical development
 
 **Usage:**
+
 ```bash
 # One-time setup for developers
 ./scripts/setup-shellcheck.sh
@@ -280,7 +286,7 @@ See [ShellCheck Validation Documentation](docs/SHELLCHECK_VALIDATION.md) for com
 /deps update   # Safe updates with testing
 /deps clean    # Remove unused packages
 # Multi-language support (npm, pip, cargo, etc.)
-```yaml
+```
 
 #### `/agent-audit` - Orchestrated Ecosystem Validation
 
@@ -291,7 +297,18 @@ See [ShellCheck Validation Documentation](docs/SHELLCHECK_VALIDATION.md) for com
 # Performance metrics and capability gap analysis
 # Continuous improvement recommendations with quality feedback loops
 # Production-ready health monitoring for the entire orchestration framework
-```yaml
+```
+
+#### `/command-audit` - Command Quality Assurance
+
+```bash
+/command-audit
+# Comprehensive validation of all 15 command files
+# Structure compliance, content quality, and markdown parsing standards
+# Length analysis with complexity thresholds and refactoring recommendations
+# Repository-specific command detection and sync exclusion validation
+# Command ecosystem health monitoring with detailed metrics and remediation
+```
 
 #### `/resolve-cr` - Multi-Agent PR Resolution
 
@@ -302,7 +319,7 @@ See [ShellCheck Validation Documentation](docs/SHELLCHECK_VALIDATION.md) for com
 # Coordinates with test-engineer and code-reviewer for validation
 # Performance tracking and success rate optimization
 # Seamless integration with /test and /commit orchestration workflow
-```yaml
+```
 
 Note: Previously named `/resolve-rabbit`.
 
@@ -315,7 +332,7 @@ Note: Previously named `/resolve-rabbit`.
 # Analyzes changes comprehensively
 # Creates semantic commit messages
 # Adds AI co-authorship attribution
-```yaml
+```
 
 #### `/push` - Safe Push to Remote
 
@@ -324,7 +341,7 @@ Note: Previously named `/resolve-rabbit`.
 # Safety checks for branch status
 # Sets up tracking for new branches
 # Prevents accidental force pushes
-```yaml
+```
 
 ## 🎭 Agent Ecosystem: 40+ Specialists
 
@@ -362,7 +379,7 @@ Execution:
   - design-system: Component library & design tokens
   - ux-researcher: User testing & feedback integration
 Performance Metrics: 70% faster delivery through parallel execution
-```yaml
+```
 
 #### Cloud Infrastructure Orchestration
 
@@ -376,7 +393,7 @@ Execution:
   - devops: CI/CD pipelines & deployment automation
   - cloud-architect: Cost optimization & multi-cloud strategy
 Continuous Improvement: Performance feedback drives resource allocation
-```yaml
+```
 
 #### Quality Assurance Orchestration
 
@@ -391,7 +408,7 @@ Execution:
   - accessibility-auditor: WCAG compliance & inclusive design validation
   - execution-evaluator: Command verification & success assessment
 Quality Gates: 95% coverage across all quality dimensions
-```yaml
+```
 
 #### Framework Health Orchestration
 
@@ -408,7 +425,7 @@ Execution (8 concurrent instances):
   - agent-auditor #7: Analysis agents (8 specialists)
   - agent-auditor #8: Operations agents (11 specialists)
 Performance Tracking: Real-time capability assessment and gap analysis
-```yaml
+```
 
 ### 🎯 Complete Agent Roster
 
@@ -516,15 +533,15 @@ claude-config/
 ├── system-configs/             # Source configurations
 │   ├── CLAUDE.md              # Core configuration file
 │   ├── .claude/               # Claude Code configuration
-│   │   ├── agents/            # 40 agent definitions + 4 docs
+│   │   ├── agents/            # 41 agent definitions + 4 docs
 │   │   │   ├── README.md      # Agent ecosystem guide
 │   │   │   └── *.md           # Individual agent specs
-│   │   └── commands/          # 14 command definitions
+│   │   └── commands/          # 15 command definitions
 │   └── settings.json          # Audio hooks and preferences
 ├── docs/                      # 26 documentation files
 ├── scripts/                   # 17 utility and validation scripts
 └── tests/                     # Test suite for all components
-```yaml
+```
 
 ### Configuration Flow
 
@@ -534,11 +551,11 @@ graph TB
     B --> C{Validation}
     C --> D[Backup Existing]
     D --> E[Deploy to ~/.claude/]
-    E --> F[40+ Agents Available]
-    E --> G[14 Commands Available]
+    E --> F[41 Agents Available]
+    E --> G[15 Commands Available]
     F --> H[Enhanced Claude CLI]
     G --> H
-```yaml
+```
 
 ## 💡 Real-World Orchestration Use Cases
 
@@ -552,7 +569,7 @@ cd claude-config
 # One-command framework deployment
 /sync
 
-# Experience intelligent orchestration: 40+ agents and 14 commands available
+# Experience intelligent orchestration: 41 agents and 15 commands available
 # Multi-agent repository analysis with performance optimization
 /context
 
@@ -561,7 +578,7 @@ cd claude-config
 
 # Multi-dimensional code review with parallel specialist deployment
 /review
-```yaml
+```
 
 ### Production-Ready Quality Assurance
 
@@ -569,12 +586,13 @@ cd claude-config
 # Comprehensive quality orchestration
 /review src/                    # Multi-agent quality validation
 /agent-audit                   # Framework health assessment
+/command-audit                 # Command ecosystem quality validation
 /resolve-cr PR-123            # Multi-specialist PR comment resolution
 
 # Continuous improvement workflow
 git pull origin main && /sync  # Framework updates
 /test                         # Orchestrated test validation
-```yaml
+```
 
 ### Advanced Framework Development
 
@@ -588,7 +606,7 @@ cp system-configs/.claude/agents/AGENT_TEMPLATE.md system-configs/.claude/agents
 /agent-audit                      # Comprehensive ecosystem validation
 
 # Performance tracking and continuous improvement
-```yaml
+```
 
 ## 💻 Installation
 
@@ -611,7 +629,7 @@ claude-code
 
 # Validate framework deployment and agent ecosystem health
 /agent-audit
-```yaml
+```
 
 ### Option 2: Manual Installation
 
@@ -626,7 +644,7 @@ cp system-configs/CLAUDE.md ~/CLAUDE.md
 # Copy Claude settings and commands
 cp -r system-configs/.claude ~/.claude
 cp system-configs/settings.json ~/.claude/settings.json
-```yaml
+```
 
 ### Option 3: Selective Installation
 
@@ -642,7 +660,7 @@ cp -r system-configs/.claude/agents ~/.claude/agents
 
 # Just the audio settings
 cp system-configs/settings.json ~/.claude/settings.json
-```yaml
+```
 
 ## 🧪 Testing
 
@@ -659,7 +677,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 
 # Validate YAML in agent definitions
 ./scripts/validate_yaml.sh
-```yaml
+```
 
 ### Test Coverage
 
@@ -684,7 +702,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 
 # Check agent directory
 ls ~/.claude/agents/
-```yaml
+```
 
 #### SYSTEM BOUNDARY Violation
 
@@ -699,9 +717,9 @@ If you see "SYSTEM BOUNDARY: operation not permitted", this means:
 # Check audio hook configuration
 cat ~/.claude/settings.json | grep -A 10 "hooks"
 
-# Test audio playback
+# Test audio playbook
 afplay /System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r
-```yaml
+```
 
 #### Configuration Sync Issues
 
@@ -714,7 +732,7 @@ git status
 
 # Force sync with validation
 /sync
-```yaml
+```
 
 ## 🤝 Contributing
 

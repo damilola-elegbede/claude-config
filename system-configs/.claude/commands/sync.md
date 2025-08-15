@@ -10,7 +10,7 @@ Claude configuration stays up-to-date with the repository version.
 
 ```bash
 /sync
-```yaml
+```
 
 ## Behavior
 
@@ -37,7 +37,7 @@ When you use `/sync`, I will:
      documentation/template files)
 
    - Copy all files from `./system-configs/.claude/commands/` to `~/.claude/commands/` (explicitly excluding
-     `sync.md` and `config-diff.md`)
+     `sync.md`, `config-diff.md`, and `command-audit.md`)
 
    - Copy `./system-configs/settings.json` to `~/.claude/settings.json` (merge with existing settings)
    - **Important**: This ensures no deprecated agents or commands remain, and only actual agents are synced
@@ -70,6 +70,7 @@ When you use `/sync`, I will:
 - `system-configs/.claude/agents/README.md` - Agent directory documentation
 - `system-configs/.claude/commands/sync.md` - Repository-specific sync command
 - `system-configs/.claude/commands/config-diff.md` - Repository-specific config comparison command
+- `system-configs/.claude/commands/command-audit.md` - Repository-specific command validation tool
 
 ## Important Notes
 
@@ -88,7 +89,7 @@ When you use `/sync`, I will:
 ```text
 /sync
 Validating agent YAML compliance...
-✓ All 35 agents have valid YAML front-matter
+✓ All 42 agents have valid YAML front-matter
 
 Creating backups...
 ✓ Backed up ~/CLAUDE.md to ~/CLAUDE.md.backup
@@ -100,15 +101,15 @@ Syncing configuration files...
 ✓ Copied system-configs/CLAUDE.md to ~/CLAUDE.md
 ✓ Removed old agents from ~/.claude/agents/
 ✓ Removed old commands from ~/.claude/commands/
-✓ Copied 35 command files to ~/.claude/commands/ (excluding sync.md and config-diff.md)
-✓ Copied 35 agent files to ~/.claude/agents/
+✓ Copied 12 command files to ~/.claude/commands/ (15 total - 3 excluded: sync.md, config-diff.md, and command-audit.md)
+✓ Copied 41 agent files to ~/.claude/agents/
 ✓ Copied system-configs/settings.json to ~/.claude/settings.json
 ✓ Excluded documentation files: AGENT_TEMPLATE.md, AGENT_CATEGORIES.md, AUDIT_VERIFICATION_PROTOCOL.md, README.md
-✓ Excluded repo-specific: sync.md, config-diff.md
+✓ Excluded repo-specific: sync.md, config-diff.md, command-audit.md
 
 Sync completed successfully!
 Audio notifications and specialized agents are now configured and ready to use.
-```yaml
+```
 
 ## Implementation Details
 
@@ -139,15 +140,19 @@ done
 # Remove old command files (but preserve directory)
 rm -f ~/.claude/commands/*.md
 
-# Copy commands except sync.md and config-diff.md
+# Safety options for robust scripting (recommended)
+set -euo pipefail
+IFS=$'\n\t'
 shopt -s nullglob
+
+# Copy 12 commands (15 total - 3 excluded: sync.md, config-diff.md, and command-audit.md)
 for file in ./system-configs/.claude/commands/*.md; do
     filename=$(basename "$file")
-    if [[ -f "$file" ]] && [[ "$filename" != "sync.md" && "$filename" != "config-diff.md" ]]; then
+    if [[ -f "$file" ]] && [[ "$filename" != "sync.md" && "$filename" != "config-diff.md" && "$filename" != "command-audit.md" ]]; then
         cp "$file" ~/.claude/commands/
     fi
 done
-```yaml
+```
 
 ## Troubleshooting
 

@@ -124,7 +124,7 @@ echo "----------------------"
 
 if command -v python3 >/dev/null 2>&1; then
     PYTHON_DEPS=("yaml" "json")
-    
+
     for dep in "${PYTHON_DEPS[@]}"; do
         if python3 -c "import $dep" >/dev/null 2>&1; then
             check_pass "Python $dep module available"
@@ -181,11 +181,11 @@ echo "-------------"
 if [[ -d "$REPO_ROOT/.claude/agents" ]]; then
     local agent_count=$(find "$REPO_ROOT/.claude/agents" -name "*.md" -type f | wc -l)
     check_info "Found $agent_count agent files"
-    
+
     # Check for YAML front-matter
     local valid_agents=0
     local invalid_agents=0
-    
+
     find "$REPO_ROOT/.claude/agents" -name "*.md" -type f | while read -r agent_file; do
         if head -1 "$agent_file" | grep -q "^---$"; then
             ((valid_agents++))
@@ -194,7 +194,7 @@ if [[ -d "$REPO_ROOT/.claude/agents" ]]; then
             check_warning "Agent $(basename "$agent_file") missing YAML front-matter"
         fi
     done
-    
+
     if [[ $invalid_agents -eq 0 ]]; then
         check_pass "All agent files have YAML front-matter"
     fi
@@ -234,7 +234,7 @@ echo "----------------------"
 if [[ -d "$REPO_ROOT/.github/workflows" ]]; then
     local workflow_count=$(find "$REPO_ROOT/.github/workflows" -name "*.yml" -type f | wc -l)
     check_pass "GitHub Actions configured ($workflow_count workflows)"
-    
+
     # Check specific workflows
     if [[ -f "$REPO_ROOT/.github/workflows/validate-agent-yaml.yml" ]]; then
         check_pass "YAML validation workflow configured"
@@ -272,7 +272,7 @@ echo "------------------------"
 if [[ -f "$REPO_ROOT/scripts/validation/framework.sh" ]]; then
     if source "$REPO_ROOT/scripts/validation/framework.sh" 2>/dev/null; then
         check_pass "Validation framework loads successfully"
-        
+
         # Test YAML validation on a sample file
         if [[ -f "$REPO_ROOT/.claude/agents/general-purpose.md" ]]; then
             if validate_yaml_frontmatter "$REPO_ROOT/.claude/agents/general-purpose.md" >/dev/null 2>&1; then

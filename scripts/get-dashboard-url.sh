@@ -16,7 +16,7 @@ if [ -n "$NGROK_URL" ]; then
     echo "🌐 Public URL: $NGROK_URL"
     echo ""
     echo "Share this URL to access your MCP Dashboard from anywhere!"
-    
+
     # Optional: Copy to clipboard (macOS)
     echo "$NGROK_URL" | pbcopy
     echo "📋 URL copied to clipboard!"

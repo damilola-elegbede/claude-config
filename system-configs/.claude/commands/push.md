@@ -34,15 +34,23 @@ When you use `/push`, I will:
    - If tests fail: Deploy test-engineer to fix or add missing tests
    - Re-run tests after fixes
 
-5. **Run linting checks** across all changed files:
-   - **Auto-detect linters**: ESLint, Prettier, Black, RuboCop, etc.
+5. **Run comprehensive linting checks** across all files (matching CI environment):
+   - **Pre-commit hooks validation**: Run pre-commit hooks locally to match CI checks
+   - **Comprehensive markdown linting**: Use markdownlint-cli2 with same config as CI
+     - Run: `npx markdownlint-cli2 "**/*.md" --config .markdownlint-cli2.jsonc`
+     - **Auto-fix markdown violations**: Use --fix flag where possible
+     - **Line length enforcement**: MD013 rule (120 character limit)
+     - **Code fence validation**: Ensure proper language tags
+     - **Block push for unfixable markdown violations**
+   - **Auto-detect other linters**: ESLint, Prettier, Black, RuboCop, etc.
    - **Execute all applicable linters** on modified files
    - **Auto-fix violations** where possible:
      - JavaScript/TypeScript: ESLint --fix, Prettier --write
      - Python: Black, autopep8, isort
      - Ruby: RuboCop --auto-correct
      - Go: gofmt, goimports
-     - Markdown: markdownlint --fix
+     - YAML: yamllint validation
+     - Shell: shellcheck validation
    - **Deploy agents for complex fixes**:
      - backend-engineer for server-side linting
      - frontend-architect for client-side linting
@@ -97,7 +105,12 @@ When you use `/push`, I will:
 - Sets up branch tracking automatically
 - Shows what will be pushed before pushing
 - Requires all tests to pass (100% success rate)
-- **Enforces linting standards** with auto-fix capabilities
+- **Enforces comprehensive linting standards** matching CI environment:
+  - Pre-commit hooks validation (identical to CI)
+  - Comprehensive markdown linting with markdownlint-cli2
+  - Line length enforcement (MD013: 120 characters)
+  - Code fence and language tag validation
+  - YAML, Shell, and language-specific linting
 - Blocks push if critical code issues detected
 - Enforces code review before any push
 - Provides quality gate summary before push confirmation
@@ -172,17 +185,25 @@ Before push, agents automatically attempt to fix issues:
 - Commits to push
 - Clean working directory (or explicit override)
 - All tests passing (100% success rate)
-- **Linting compliance** (auto-fixed where possible)
+- **Comprehensive linting compliance** (matching CI environment):
+  - Pre-commit hooks installed and passing
+  - Markdown linting with markdownlint-cli2 (120 char line limit)
+  - Language-specific linting (ESLint, Black, etc.)
+  - YAML and Shell validation
 - Code review approval (no critical issues)
 
 ## Notes
 
 - Force pushes require explicit confirmation
 - Protected branches follow repository rules
-- **Linting is automatically run and fixed** before push
+- **Comprehensive linting is automatically run** matching CI environment exactly:
+  - Pre-commit hooks ensure consistency with CI
+  - markdownlint-cli2 prevents MD013 and formatting violations
+  - All language-specific linters match CI configuration
 - Critical issues (security, breaking tests, unfixable linting) always block push
 - Non-critical issues are auto-fixed when possible
 - Unfixed issues require documented rationale
 - User can override non-critical blocks with justification
 - All remediation attempts are logged for audit trail
 - Linting auto-fixes are committed before push
+- Local environment now mirrors CI linting exactly

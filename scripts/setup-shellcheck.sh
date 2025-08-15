@@ -22,7 +22,7 @@ command_exists() {
 # Function to install shellcheck on different platforms
 install_shellcheck() {
     echo -e "${YELLOW}Installing ShellCheck...${NC}"
-    
+
     if [[ "$OSTYPE" == "darwin"* ]]; then
         # macOS
         if command_exists brew; then
@@ -53,14 +53,14 @@ install_shellcheck() {
         echo "Visit: https://github.com/koalaman/shellcheck#installing"
         exit 1
     fi
-    
+
     echo -e "${GREEN}✓ ShellCheck installed successfully${NC}"
 }
 
 # Function to install pre-commit
 install_precommit() {
     echo -e "${YELLOW}Installing pre-commit...${NC}"
-    
+
     if command_exists pip3; then
         pip3 install pre-commit
     elif command_exists pip; then
@@ -69,17 +69,17 @@ install_precommit() {
         echo -e "${RED}pip not found. Please install Python and pip first.${NC}"
         exit 1
     fi
-    
+
     echo -e "${GREEN}✓ pre-commit installed successfully${NC}"
 }
 
 # Function to setup pre-commit hooks
 setup_precommit_hooks() {
     echo -e "${YELLOW}Setting up pre-commit hooks...${NC}"
-    
+
     # Install the hooks
     pre-commit install
-    
+
     # Run hooks on all files to test
     echo -e "${YELLOW}Running pre-commit on all files to test setup...${NC}"
     if pre-commit run --all-files; then
@@ -93,7 +93,7 @@ setup_precommit_hooks() {
 # Function to test shellcheck setup
 test_shellcheck() {
     echo -e "${YELLOW}Testing ShellCheck setup...${NC}"
-    
+
     # Create a temporary test script
     cat > /tmp/test_shellcheck.sh << 'EOF'
 #!/bin/bash
@@ -102,7 +102,7 @@ echo "Hello, World!"
 cd /nonexistent/directory
 rm -rf $HOME/*
 EOF
-    
+
     echo "Running ShellCheck on test script..."
     if shellcheck /tmp/test_shellcheck.sh; then
         echo -e "${RED}❌ ShellCheck should have found issues with the test script${NC}"
@@ -117,22 +117,22 @@ EOF
 # Function to run shellcheck on repository scripts
 check_repository_scripts() {
     echo -e "${YELLOW}Checking repository shell scripts...${NC}"
-    
+
     # Find all shell scripts
     scripts=$(find . -name "*.sh" \
         -not -path "./node_modules/*" \
         -not -path "./.git/*" \
         -not -path "./temp-scripts/*")
-    
+
     if [ -z "$scripts" ]; then
         echo -e "${YELLOW}No shell scripts found to check${NC}"
         return 0
     fi
-    
+
     echo "Found scripts to check:"
     echo "$scripts"
     echo ""
-    
+
     # Check each script
     all_passed=true
     for script in $scripts; do
@@ -145,7 +145,7 @@ check_repository_scripts() {
         fi
         echo ""
     done
-    
+
     if $all_passed; then
         echo -e "${GREEN}✓ All repository scripts passed ShellCheck${NC}"
     else
@@ -157,7 +157,7 @@ check_repository_scripts() {
 # Main setup process
 main() {
     echo -e "${BLUE}Checking prerequisites...${NC}"
-    
+
     # Check if shellcheck is installed
     if ! command_exists shellcheck; then
         install_shellcheck
@@ -165,7 +165,7 @@ main() {
         echo -e "${GREEN}✓ ShellCheck already installed${NC}"
         shellcheck --version
     fi
-    
+
     # Check if pre-commit is installed
     if ! command_exists pre-commit; then
         install_precommit
@@ -173,22 +173,22 @@ main() {
         echo -e "${GREEN}✓ pre-commit already installed${NC}"
         pre-commit --version
     fi
-    
+
     echo ""
     echo -e "${BLUE}Setting up tools...${NC}"
-    
+
     # Test shellcheck
     test_shellcheck
-    
+
     # Setup pre-commit hooks
     setup_precommit_hooks
-    
+
     echo ""
     echo -e "${BLUE}Validating repository...${NC}"
-    
+
     # Check repository scripts
     check_repository_scripts
-    
+
     echo ""
     echo -e "${GREEN}========================================${NC}"
     echo -e "${GREEN}Setup completed successfully!${NC}"

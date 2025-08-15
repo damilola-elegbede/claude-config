@@ -35,9 +35,9 @@ print_info() {
 run_test() {
     local test_name=$1
     local test_file=$2
-    
+
     TESTS_RUN=$((TESTS_RUN + 1))
-    
+
     if [ -f "$test_file" ]; then
         print_info "Running $test_name..."
         if bash "$test_file"; then

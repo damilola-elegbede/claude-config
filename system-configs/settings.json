@@ -57,7 +57,7 @@
     "github": {
       "command": "npx",
       "args": [
-        "-y", 
+        "-y",
         "@modelcontextprotocol/server-github"
       ],
       "env": {

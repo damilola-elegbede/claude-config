@@ -42,7 +42,7 @@ describe('MCPDiscoveryService', () => {
   beforeEach(() => {
     // Reset all mocks
     jest.clearAllMocks();
-    
+
     // Mock child process
     mockProcess = {
       on: jest.fn(),
@@ -52,7 +52,7 @@ describe('MCPDiscoveryService', () => {
     } as any;
 
     mockSpawn.mockReturnValue(mockProcess);
-    
+
     // Default successful file read
     mockReadFile.mockResolvedValue(JSON.stringify(mockSettings));
 
@@ -94,7 +94,7 @@ describe('MCPDiscoveryService', () => {
 
     it('should handle missing settings file gracefully', async () => {
       mockReadFile.mockRejectedValue(new Error('ENOENT: no such file or directory'));
-      
+
       const servers = await discoveryService.discoverServers();
       expect(servers).toEqual([]);
     });
@@ -162,7 +162,7 @@ describe('MCPDiscoveryService', () => {
 
     it('should expand environment variables in server config', async () => {
       process.env['GH_AUTH'] = 'mock_value_for_testing';
-      
+
       await discoveryService.discoverServers();
 
       expect(mockSpawn).toHaveBeenCalledWith(
@@ -232,7 +232,7 @@ describe('MCPDiscoveryService', () => {
       });
 
       const server = servers[0];
-      
+
       // Simulate health check failure by calling getServerCapabilities
       try {
         await discoveryService.getServerCapabilities(server.id);
@@ -250,7 +250,7 @@ describe('MCPDiscoveryService', () => {
       discoveryService.on('serverRecovered', serverRecoveredSpy);
 
       const server = servers[0];
-      
+
       // First, make server fail
       mockProcess.on.mockImplementation((event, callback) => {
         if (event === 'error') {
@@ -271,7 +271,7 @@ describe('MCPDiscoveryService', () => {
 
       // Trigger health monitoring
       await discoveryService.start();
-      
+
       // Wait for recovery
       await new Promise(resolve => setTimeout(resolve, 600));
 
@@ -309,7 +309,7 @@ describe('MCPDiscoveryService', () => {
       expect(server).toBeDefined();
 
       const capabilities = await discoveryService.getServerCapabilities(server!.id);
-      
+
       expect(capabilities).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -326,7 +326,7 @@ describe('MCPDiscoveryService', () => {
 
     it('should handle capability discovery errors', async () => {
       const server = servers[0];
-      
+
       // Mock process failure during capability probe
       mockProcess.on.mockImplementation((event, callback) => {
         if (event === 'error') {
@@ -380,7 +380,7 @@ describe('MCPDiscoveryService', () => {
       await discoveryService.stop();
 
       expect(stoppedSpy).toHaveBeenCalled();
-      
+
       // Verify timers are cleared
       const servers = discoveryService.getServers();
       servers.forEach(server => {
@@ -419,7 +419,7 @@ describe('MCPDiscoveryService', () => {
     it('should get specific server by ID', () => {
       const server = servers[0];
       const foundServer = discoveryService.getServer(server.id);
-      
+
       expect(foundServer).toEqual(server);
     });
 
@@ -434,7 +434,7 @@ describe('MCPDiscoveryService', () => {
 
       expect(healthyServers.length).toBeGreaterThan(0);
       expect(failedServers.length).toBeGreaterThanOrEqual(0);
-      
+
       healthyServers.forEach(server => {
         expect(server.status).toBe('healthy');
       });
@@ -451,7 +451,7 @@ describe('MCPDiscoveryService', () => {
     });
 
     it('should handle concurrent discovery calls efficiently', async () => {
-      const promises = Array.from({ length: 5 }, () => 
+      const promises = Array.from({ length: 5 }, () =>
         discoveryService.discoverServers()
       );
 
@@ -485,7 +485,7 @@ describe('MCPDiscoveryService', () => {
 
       const times = await Promise.all(healthCheckPromises);
       const averageTime = times.reduce((sum, time) => sum + time, 0) / times.length;
-      
+
       expect(averageTime).toBeLessThan(200); // Average under 200ms
     });
   });
@@ -514,7 +514,7 @@ describe('MCPDiscoveryService', () => {
         // Simulate process crash
         const exitCallback = mockProcess.on.mock.calls
           .find(call => call[0] === 'exit')?.[1];
-        
+
         if (exitCallback) {
           exitCallback(1); // Exit with error code
         }
@@ -541,7 +541,7 @@ describe('MCPDiscoveryService', () => {
       try {
         await shortTimeoutService.discoverServers();
         const servers = shortTimeoutService.getServers();
-        
+
         // Should still discover servers but may have failures
         expect(servers.length).toBeGreaterThanOrEqual(0);
       } finally {
@@ -551,7 +551,7 @@ describe('MCPDiscoveryService', () => {
 
     it('should clean up resources on multiple stop calls', async () => {
       await discoveryService.start();
-      
+
       // Multiple stop calls should be safe
       await discoveryService.stop();
       await discoveryService.stop();
@@ -564,7 +564,7 @@ describe('MCPDiscoveryService', () => {
   describe('Event System', () => {
     it('should emit all expected events during discovery', async () => {
       const events: string[] = [];
-      
+
       discoveryService.on('serverDiscovered', () => events.push('serverDiscovered'));
       discoveryService.on('discoveryComplete', () => events.push('discoveryComplete'));
       discoveryService.on('serverError', () => events.push('serverError'));
@@ -581,7 +581,7 @@ describe('MCPDiscoveryService', () => {
 
     it('should provide detailed event data', async () => {
       const discoveryCompleteData: any[] = [];
-      
+
       discoveryService.on('discoveryComplete', (data) => {
         discoveryCompleteData.push(data);
       });

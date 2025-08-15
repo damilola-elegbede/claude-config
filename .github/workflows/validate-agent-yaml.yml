@@ -17,19 +17,19 @@ jobs:
   validate-yaml:
     name: Validate YAML Front-Matter
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
-        
+
       - name: Make validation script executable
         run: chmod +x tests/validate_yaml.sh
-        
+
       - name: Run YAML validation
         run: |
           cd tests
           ./validate_yaml.sh
-          
+
       - name: Run validation unit tests
         if: always()
         run: |

@@ -87,7 +87,7 @@ Code CLI.
 
 ### Agent Categories
 
-The 40 agents are organized across multiple functional domains covering all aspects of software development, from
+The 41 agents are organized across multiple functional domains covering all aspects of software development, from
 core programming to infrastructure, quality assurance, and documentation.
 
 ### Synchronization System

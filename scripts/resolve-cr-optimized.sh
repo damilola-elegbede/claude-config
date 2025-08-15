@@ -61,19 +61,19 @@ CODERABBIT_PATTERN='(@coderabbitai|coderabbitai\[bot\]|Prompts for AI Agents)'
         --paginate \
         --jq '.[] | select(.user.login == "coderabbitai[bot]" or (.body | test("'$CODERABBIT_PATTERN'"))) | {type: "review", body, user: .user.login}' \
         > "$TEMP_DIR/reviews.json" 2>/dev/null &
-    
+
     # Comments endpoint (inline review comments)
     gh api "repos/$OWNER/$REPO/pulls/$PR_NUMBER/comments" \
         --paginate \
         --jq '.[] | select(.user.login == "coderabbitai[bot]" or (.body | test("'$CODERABBIT_PATTERN'"))) | {type: "comment", body, path, line, user: .user.login}' \
         > "$TEMP_DIR/comments.json" 2>/dev/null &
-    
+
     # Issue comments endpoint (backup)
     gh api "repos/$OWNER/$REPO/issues/$PR_NUMBER/comments" \
         --paginate \
         --jq '.[] | select(.user.login == "coderabbitai[bot]" or (.body | test("'$CODERABBIT_PATTERN'"))) | {type: "issue", body, user: .user.login}' \
         > "$TEMP_DIR/issue_comments.json" 2>/dev/null &
-    
+
     wait
 }
 
@@ -82,13 +82,13 @@ cat "$TEMP_DIR"/*.json 2>/dev/null | jq -s 'add // []' > "$TEMP_DIR/all_comments
 
 # Extract all "Prompts for AI Agents" sections in one pass
 PROMPTS=$(cat "$TEMP_DIR/all_comments.json" | jq -r '
-    .[] | 
+    .[] |
     select(.body | contains("Prompt for AI Agents")) |
     {
         file: .path,
         line: .line,
         prompt: (
-            .body | 
+            .body |
             capture("(?s)```[\\n\\r]+(?<content>.*?)[\\n\\r]+```") |
             .content // ""
         ),
@@ -101,7 +101,7 @@ PROMPT_COUNT=$(echo "$PROMPTS" | jq 'length')
 
 if [ "$PROMPT_COUNT" -eq 0 ]; then
     echo -e "${YELLOW}⚠️ No CodeRabbit comments found on first attempt. Retrying with GraphQL...${NC}"
-    
+
     # GraphQL query for comprehensive search (single request)
     GRAPHQL_QUERY='{
         "query": "query {
@@ -129,14 +129,14 @@ if [ "$PROMPT_COUNT" -eq 0 ]; then
             }
         }"
     }'
-    
+
     # Execute GraphQL query
     GRAPHQL_RESULT=$(gh api graphql -f query="$(echo "$GRAPHQL_QUERY" | jq -r .query)")
-    
+
     # Parse GraphQL results
     PROMPTS=$(echo "$GRAPHQL_RESULT" | jq -r '
         [
-            .data.repository.pullRequest.reviews.nodes[]? | 
+            .data.repository.pullRequest.reviews.nodes[]? |
             select(.author.login == "coderabbitai[bot]" or (.body | test("'$CODERABBIT_PATTERN'"))) |
             {body}
         ] + [
@@ -150,13 +150,13 @@ if [ "$PROMPT_COUNT" -eq 0 ]; then
             file: .path,
             line: .line,
             prompt: (
-                .body | 
+                .body |
                 capture("(?s)```[\\n\\r]+(?<content>.*?)[\\n\\r]+```") |
                 .content // ""
             )
         }
     ' | jq -s '.')
-    
+
     PROMPT_COUNT=$(echo "$PROMPTS" | jq 'length')
 fi
 
@@ -191,10 +191,10 @@ echo -e "\n${BLUE}📝 Posting resolution notification with summary...${NC}"
 # Generate summary of planned changes with better formatting
 SUMMARY=$(echo "$PROMPTS" | jq -r '
     # Extract key action from each prompt
-    def extract_action: 
-        .prompt | 
-        split("\n") | 
-        map(select(length > 0)) | 
+    def extract_action:
+        .prompt |
+        split("\n") |
+        map(select(length > 0)) |
         (
             if any(contains("add") or contains("append")) then
                 map(select(contains("add") or contains("append")))[0] // .[0]
@@ -210,7 +210,7 @@ SUMMARY=$(echo "$PROMPTS" | jq -r '
         gsub("^\\s+|\\s+$"; "") |
         # Truncate if too long
         if length > 120 then .[0:117] + "..." else . end;
-    
+
     # Count issues by category
     def categorize:
         if .body | test("security|vulnerability|safety"; "i") then "Security"
@@ -220,25 +220,25 @@ SUMMARY=$(echo "$PROMPTS" | jq -r '
         elif .body | test("test|coverage"; "i") then "Testing"
         else "Code Quality"
         end;
-    
+
     # Build summary
     "## 📋 Planned Changes Summary\n\n" +
     "**Addressing " + (length | tostring) + " CodeRabbit review comments**\n\n" +
-    
+
     # Category breakdown
     "### 📊 Issues by Category\n" +
-    (group_by(categorize) | 
-     map("- **" + .[0].categorize + "**: " + (length | tostring) + " issue" + (if length > 1 then "s" else "" end)) | 
+    (group_by(categorize) |
+     map("- **" + .[0].categorize + "**: " + (length | tostring) + " issue" + (if length > 1 then "s" else "" end)) |
      join("\n")) + "\n\n" +
-    
+
     # File-specific changes
     "### 📁 Changes by File\n" +
-    (group_by(.file) | 
+    (group_by(.file) |
      map(
-         "#### `" + .[0].file + "` (" + (length | tostring) + " change" + (if length > 1 then "s" else "" end) + ")\n" + 
+         "#### `" + .[0].file + "` (" + (length | tostring) + " change" + (if length > 1 then "s" else "" end) + ")\n" +
          (map("- " + extract_action) | join("\n"))
      ) | join("\n\n")) +
-    
+
     "\n\n---\n" +
     "*🤖 Automated resolution in progress using Claude Code...*"
 ')
@@ -275,24 +275,24 @@ import re
 
 def apply_batch_updates(edits_json):
     edits = json.loads(edits_json)
-    
+
     for file_edit in edits:
         if not file_edit['file']:
             continue
-            
+
         file_path = f".claude/agents/{file_edit['file']}"
-        
+
         try:
             with open(file_path, 'r') as f:
                 content = f.read()
-            
+
             # Apply all edits for this file
             for edit in file_edit['edits']:
                 prompt = edit['prompt']
                 # Extract the actual change instruction from prompt
                 # This is a simplified version - real implementation would parse the prompt
                 # and apply the specific change requested
-                
+
                 # For now, just append suggested content to the file
                 if prompt and len(prompt) > 0:
                     # Parse out the suggestion from the prompt
@@ -304,12 +304,12 @@ def apply_batch_updates(edits_json):
                             if match:
                                 addition = match.group(1)
                                 content += f"\n\n{addition}"
-            
+
             with open(file_path, 'w') as f:
                 f.write(content)
-                
+
             print(f"✓ Updated {file_path}")
-            
+
         except Exception as e:
             print(f"✗ Error updating {file_path}: {e}")
 

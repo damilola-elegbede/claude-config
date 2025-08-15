@@ -10,10 +10,10 @@ function validateSpec03Implementation() {
   console.log('🎯 SPEC_03 MCP Optimization Engine - Implementation Validation\n');
 
   const results = [];
-  
+
   // Check if optimization engine file exists and has required components
   const optimizationEnginePath = path.join(__dirname, 'src/mcp/integration/optimization-engine.ts');
-  
+
   if (!fs.existsSync(optimizationEnginePath)) {
     results.push({ test: 'Optimization Engine File', passed: false, reason: 'File not found' });
     return printResults(results);
@@ -24,7 +24,7 @@ function validateSpec03Implementation() {
   // Test 1: Check for core classes
   const requiredClasses = [
     'MCPOptimizationEngine',
-    'IntelligentRouter', 
+    'IntelligentRouter',
     'AdvancedCacheManager',
     'CrossServerCoordinator'
   ];
@@ -76,7 +76,7 @@ function validateSpec03Implementation() {
   // Test 4: Check for integration interfaces
   const integrationInterfaces = [
     'MCPServerInfo',
-    'ToolExecutionRequest', 
+    'ToolExecutionRequest',
     'ToolExecutionResponse',
     'RoutingDecision',
     'OptimizationMetrics'
@@ -179,7 +179,7 @@ function printResults(results) {
 
   console.log('\n🎯 SPEC_03 Performance Targets:');
   console.log('   • ✅ Reduce cross-MCP latency by 40%');
-  console.log('   • ✅ Enable coordination across 10+ MCP servers'); 
+  console.log('   • ✅ Enable coordination across 10+ MCP servers');
   console.log('   • ✅ Automated failover and load balancing');
   console.log('   • ✅ Real-time performance analytics');
 }

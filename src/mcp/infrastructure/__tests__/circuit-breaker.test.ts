@@ -17,7 +17,7 @@ import {
 
 describe('CircuitBreaker', () => {
   let circuitBreaker: CircuitBreaker;
-  
+
   const defaultConfig: CircuitBreakerConfig = {
     failureThreshold: 5,
     recoveryTimeout: 1000,
@@ -45,7 +45,7 @@ describe('CircuitBreaker', () => {
     it('should use provided name or default', () => {
       const namedCB = new CircuitBreaker({ ...defaultConfig, name: 'custom-service' });
       const unnamedCB = new CircuitBreaker({ ...defaultConfig, name: undefined });
-      
+
       expect(namedCB.getConfig().name).toBe('custom-service');
       expect(unnamedCB.getConfig().name).toBe('CircuitBreaker');
     });
@@ -67,7 +67,7 @@ describe('CircuitBreaker', () => {
     it('should calculate default success threshold', () => {
       const config = { ...defaultConfig };
       delete (config as any).successThreshold;
-      
+
       const cb = new CircuitBreaker(config);
       expect(cb.getConfig().successThreshold).toBe(Math.ceil(defaultConfig.halfOpenMaxCalls / 2));
     });
@@ -76,7 +76,7 @@ describe('CircuitBreaker', () => {
   describe('Basic Execution', () => {
     it('should execute successful operations', async () => {
       const mockOperation = jest.fn().mockResolvedValue('success');
-      
+
       const result = await circuitBreaker.execute(mockOperation);
 
       expect(result.executed).toBe(true);
@@ -90,7 +90,7 @@ describe('CircuitBreaker', () => {
     it('should handle failed operations', async () => {
       const mockError = new Error('Operation failed');
       const mockOperation = jest.fn().mockRejectedValue(mockError);
-      
+
       const result = await circuitBreaker.execute(mockOperation);
 
       expect(result.executed).toBe(true);
@@ -105,7 +105,7 @@ describe('CircuitBreaker', () => {
       const mockOperation = jest.fn().mockImplementation(
         () => new Promise(resolve => setTimeout(() => resolve('delayed'), delay))
       );
-      
+
       const result = await circuitBreaker.execute(mockOperation);
 
       expect(result.responseTime).toBeGreaterThanOrEqual(delay - 10); // Allow 10ms tolerance
@@ -151,7 +151,7 @@ describe('CircuitBreaker', () => {
     it('should transition from closed to open after failure threshold', async () => {
       const stateChangeSpy = jest.fn();
       const failureSpy = jest.fn();
-      
+
       circuitBreaker.on('stateChange', stateChangeSpy);
       circuitBreaker.on('failure', failureSpy);
 
@@ -165,7 +165,7 @@ describe('CircuitBreaker', () => {
 
       // One more failure should open circuit
       await circuitBreaker.execute(() => Promise.reject(mockError));
-      
+
       expect(circuitBreaker.getState()).toBe('open');
       expect(stateChangeSpy).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -209,7 +209,7 @@ describe('CircuitBreaker', () => {
 
       // Next execution should trigger half-open
       await shortTimeoutCB.execute(() => Promise.resolve('test'));
-      
+
       expect(stateChangeSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           previousState: 'open',
@@ -221,11 +221,11 @@ describe('CircuitBreaker', () => {
 
     it('should transition from half-open to closed on success', async () => {
       circuitBreaker.forceOpen();
-      
+
       // Manually set to half-open state
       const stateChangeSpy = jest.fn();
       circuitBreaker.on('stateChange', stateChangeSpy);
-      
+
       // Use reflection to set state (normally done by timeout)
       (circuitBreaker as any).state = 'half-open';
       (circuitBreaker as any).halfOpenCalls = 0;
@@ -322,16 +322,16 @@ describe('CircuitBreaker', () => {
 
     it('should calculate average response time', async () => {
       const delays = [50, 100, 150];
-      
+
       for (const delay of delays) {
-        await circuitBreaker.execute(() => 
+        await circuitBreaker.execute(() =>
           new Promise(resolve => setTimeout(() => resolve('success'), delay))
         );
       }
 
       const stats = circuitBreaker.getStats();
       const expectedAverage = delays.reduce((sum, delay) => sum + delay, 0) / delays.length;
-      
+
       expect(stats.averageResponseTime).toBeCloseTo(expectedAverage, -1); // Within 10ms
     });
 
@@ -342,7 +342,7 @@ describe('CircuitBreaker', () => {
       });
 
       shortRecovery.forceOpen();
-      
+
       const stats = shortRecovery.getStats();
       expect(stats.timeToRecovery).toBeGreaterThan(0);
       expect(stats.timeToRecovery).toBeLessThanOrEqual(5000);
@@ -462,9 +462,9 @@ describe('CircuitBreaker', () => {
     });
 
     it('should maintain state consistency under concurrent operations', async () => {
-      const operations = Array.from({ length: 50 }, (_, i) => 
-        circuitBreaker.execute(() => 
-          i % 2 === 0 
+      const operations = Array.from({ length: 50 }, (_, i) =>
+        circuitBreaker.execute(() =>
+          i % 2 === 0
             ? Promise.resolve(`success-${i}`)
             : Promise.reject(new Error(`failure-${i}`))
         )
@@ -473,7 +473,7 @@ describe('CircuitBreaker', () => {
       const results = await Promise.all(operations);
 
       expect(results).toHaveLength(50);
-      
+
       const stats = circuitBreaker.getStats();
       expect(stats.totalCalls).toBe(50);
       expect(stats.successfulCalls + stats.failedCalls).toBe(50);
@@ -489,10 +489,10 @@ describe('CircuitBreaker', () => {
 
       // Create failures
       await shortWindowCB.execute(() => Promise.reject(new Error('old failure')));
-      
+
       // Wait for window to pass
       await new Promise(resolve => setTimeout(resolve, 150));
-      
+
       // Add more failures - should only count recent ones
       for (let i = 0; i < defaultConfig.failureThreshold - 1; i++) {
         await shortWindowCB.execute(() => Promise.reject(new Error('new failure')));
@@ -620,7 +620,7 @@ describe('CircuitBreakerManager', () => {
       };
 
       const cb = manager.getCircuitBreaker('custom-service', customConfig);
-      
+
       expect(cb.getConfig().failureThreshold).toBe(10);
       expect(cb.getConfig().recoveryTimeout).toBe(5000);
     });
@@ -632,7 +632,7 @@ describe('CircuitBreakerManager', () => {
 
       const cb = manager.getCircuitBreaker('partial-config-service', partialConfig);
       const config = cb.getConfig();
-      
+
       expect(config.failureThreshold).toBe(8);
       expect(config.recoveryTimeout).toBe(defaultConfig.recoveryTimeout);
     });
@@ -649,7 +649,7 @@ describe('CircuitBreakerManager', () => {
       manager.on('callRejected', (event) => rejectedEvents.push(event));
 
       const cb = manager.getCircuitBreaker('test-service');
-      
+
       // Trigger events
       cb.forceOpen('Test');
       await cb.execute(() => Promise.reject(new Error('Test failure')));
@@ -684,7 +684,7 @@ describe('CircuitBreakerManager', () => {
       manager.getCircuitBreaker('service3');
 
       const allCBs = manager.getAllCircuitBreakers();
-      
+
       expect(allCBs.size).toBe(3);
       expect(allCBs.has('service1')).toBe(true);
       expect(allCBs.has('service2')).toBe(true);
@@ -714,7 +714,7 @@ describe('CircuitBreakerManager', () => {
       // Build up some state
       await cb1.execute(() => Promise.reject(new Error('failure')));
       await cb2.execute(() => Promise.reject(new Error('failure')));
-      
+
       cb1.forceOpen('Test');
 
       const allResetSpy = jest.fn();
@@ -753,9 +753,9 @@ describe('CircuitBreakerManager', () => {
     it('should clean up event listeners when removing', () => {
       const cb = manager.getCircuitBreaker('cleanup-test');
       const initialListeners = cb.listenerCount('stateChange');
-      
+
       manager.removeCircuitBreaker('cleanup-test');
-      
+
       // Should have fewer listeners (manager's listeners removed)
       expect(cb.listenerCount('stateChange')).toBeLessThan(initialListeners);
     });
@@ -810,7 +810,7 @@ describe('CircuitBreakerManager', () => {
 
     it('should handle multiple destroy calls safely', () => {
       manager.getCircuitBreaker('test-service');
-      
+
       expect(() => {
         manager.destroy();
         manager.destroy();
@@ -824,7 +824,7 @@ describe('CircuitBreakerManager', () => {
 
       const listenersBefore = manager.listenerCount('stateChange');
       manager.destroy();
-      
+
       expect(manager.listenerCount('stateChange')).toBe(0);
     });
   });
@@ -857,7 +857,7 @@ describe('CircuitBreakerManager', () => {
     });
 
     it('should handle concurrent access to same service', () => {
-      const promises = Array.from({ length: 10 }, () => 
+      const promises = Array.from({ length: 10 }, () =>
         Promise.resolve(manager.getCircuitBreaker('concurrent-service'))
       );
 
@@ -872,9 +872,9 @@ describe('CircuitBreakerManager', () => {
 
     it('should maintain integrity under high concurrency', async () => {
       const services = Array.from({ length: 50 }, (_, i) => `service-${i}`);
-      
+
       // Create many circuit breakers concurrently
-      const creationPromises = services.map(service => 
+      const creationPromises = services.map(service =>
         Promise.resolve(manager.getCircuitBreaker(service))
       );
 

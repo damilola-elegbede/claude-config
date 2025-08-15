@@ -199,10 +199,10 @@ export class MetricsCollector extends EventEmitter {
     // Calculate overall workflow efficiency improvement
     const baselineCodeTime = 52.5;
     const baselineUITime = 10;
-    
+
     const codeImprovement = (baselineCodeTime - codeAnalysisTime) / baselineCodeTime;
     const uiImprovement = (baselineUITime - uiWorkflowDuration) / baselineUITime;
-    
+
     // Weighted average (code analysis 60%, UI workflow 40%)
     return (codeImprovement * 0.6 + uiImprovement * 0.4);
   }
@@ -221,7 +221,7 @@ export class MetricsCollector extends EventEmitter {
   private cleanupOldMetrics(): void {
     const now = Date.now();
     const retentionMs = this.config.retentionPeriods.daily * 24 * 60 * 60 * 1000;
-    
+
     for (const [key, metricsList] of this.metrics.entries()) {
       const keyDate = new Date(key).getTime();
       if (now - keyDate > retentionMs) {
@@ -312,7 +312,7 @@ export class MetricsCollector extends EventEmitter {
 
   getMetrics(timeRange?: { start: number; end: number }): PerformanceMetrics[] {
     const allMetrics: PerformanceMetrics[] = [];
-    
+
     for (const metricsList of this.metrics.values()) {
       allMetrics.push(...metricsList);
     }
@@ -354,7 +354,7 @@ export class AlertManager extends EventEmitter {
   processAlerts(alerts: Alert[]): void {
     for (const alert of alerts) {
       const alertKey = `${alert.metric}_${alert.severity}`;
-      
+
       if (!this.activeAlerts.has(alertKey)) {
         this.activeAlerts.set(alertKey, alert);
         this.sendNotification(alert);
@@ -516,7 +516,7 @@ export class DashboardServer extends EventEmitter {
 
   addWebSocketClient(ws: WebSocket): void {
     this.wsClients.add(ws);
-    
+
     // Send current state to new client
     const latestMetrics = this.metricsCollector.getLatestMetrics();
     if (latestMetrics) {
@@ -562,7 +562,7 @@ export class DashboardServer extends EventEmitter {
 
   private broadcastToClients(type: string, data: any): void {
     const message = JSON.stringify({ type, data, timestamp: Date.now() });
-    
+
     for (const client of this.wsClients) {
       if (client.readyState === WebSocket.OPEN) {
         client.send(message);
@@ -578,9 +578,9 @@ export class DashboardServer extends EventEmitter {
   } {
     const metrics = this.metricsCollector.getLatestMetrics();
     const alerts = this.alertManager.getActiveAlerts();
-    
+
     let status: 'healthy' | 'degraded' | 'critical' = 'healthy';
-    
+
     if (alerts.some(a => a.severity === 'critical' || a.severity === 'emergency')) {
       status = 'critical';
     } else if (alerts.some(a => a.severity === 'warning')) {
@@ -592,7 +592,7 @@ export class DashboardServer extends EventEmitter {
 
   getPerformanceReport(timeRange: { start: number; end: number }) {
     const metrics = this.metricsCollector.getMetrics(timeRange);
-    
+
     if (metrics.length === 0) {
       return null;
     }

@@ -144,7 +144,7 @@ describe('MCP Infrastructure Integration', () => {
 
       const status = infrastructure.getSystemStatus();
       expect(status.discoveredServers).toBe(5); // All servers from mock settings
-      
+
       const servers = infrastructure.registry.getServers();
       const serverNames = servers.map(s => s.name);
       expect(serverNames).toContain('filesystem-primary');
@@ -179,7 +179,7 @@ describe('MCP Infrastructure Integration', () => {
 
     it('should emit startup events in correct order', async () => {
       const events: string[] = [];
-      
+
       infrastructure.on('started', () => events.push('started'));
       infrastructure.discovery.on('started', () => events.push('discovery-started'));
       infrastructure.discovery.on('discoveryComplete', () => events.push('discovery-complete'));
@@ -189,12 +189,12 @@ describe('MCP Infrastructure Integration', () => {
       expect(events).toContain('discovery-started');
       expect(events).toContain('discovery-complete');
       expect(events).toContain('started');
-      
+
       // Verify order
       const discoveryStartIdx = events.indexOf('discovery-started');
       const discoveryCompleteIdx = events.indexOf('discovery-complete');
       const startedIdx = events.indexOf('started');
-      
+
       expect(discoveryStartIdx).toBeLessThan(discoveryCompleteIdx);
       expect(discoveryCompleteIdx).toBeLessThan(startedIdx);
     });
@@ -203,7 +203,7 @@ describe('MCP Infrastructure Integration', () => {
   describe('Tool Routing Integration', () => {
     beforeEach(async () => {
       await infrastructure.start();
-      
+
       // Add realistic performance metrics
       const servers = infrastructure.registry.getServers();
       servers.forEach((server, index) => {
@@ -230,7 +230,7 @@ describe('MCP Infrastructure Integration', () => {
       expect(routingDecision.selectedServer).toBeDefined();
       expect(routingDecision.decisionTime).toBeLessThan(100); // Sub-100ms requirement
       expect(routingDecision.confidence).toBeGreaterThan(0.5);
-      
+
       // Verify selected server meets requirements
       const selectedMetrics = infrastructure.registry.getServerMetrics(routingDecision.selectedServer.id);
       if (selectedMetrics) {
@@ -264,7 +264,7 @@ describe('MCP Infrastructure Integration', () => {
     it('should handle agent-specific preferences', async () => {
       // Record preferences for specific agent
       const preferredServerId = infrastructure.registry.getServers()[0].id;
-      
+
       await infrastructure.recordPerformance({
         serverId: preferredServerId,
         toolName: 'Read',
@@ -287,7 +287,7 @@ describe('MCP Infrastructure Integration', () => {
 
       // Route should prefer the better-performing server for this agent
       const decision = await infrastructure.routeTool('Read', 'preference-agent');
-      
+
       // Performance learning should influence the decision
       expect(decision.selectedServer).toBeDefined();
       expect(decision.confidence).toBeGreaterThan(0.6);
@@ -318,7 +318,7 @@ describe('MCP Infrastructure Integration', () => {
       infrastructure.router.clearCache(); // Clear cache for fresh decisions
 
       const decision1 = await infrastructure.routeTool('Read', 'adaptive-agent');
-      
+
       // Now make one server much faster
       infrastructure.registry.updateServerMetrics(fastServer.id, {
         averageResponseTime: 30 // Much faster
@@ -327,7 +327,7 @@ describe('MCP Infrastructure Integration', () => {
       infrastructure.router.clearCache(); // Clear cache for fresh decision
 
       const decision2 = await infrastructure.routeTool('Read', 'adaptive-agent');
-      
+
       // Should adapt to the faster server (though not guaranteed due to strategy complexity)
       expect(decision2.selectedServer).toBeDefined();
     });
@@ -340,15 +340,15 @@ describe('MCP Infrastructure Integration', () => {
 
     it('should execute operations with automatic resilience', async () => {
       let attemptCount = 0;
-      
+
       const operation = jest.fn().mockImplementation(async (server) => {
         attemptCount++;
-        
+
         // Fail first two attempts, succeed on third
         if (attemptCount <= 2) {
           throw new Error(`Temporary failure ${attemptCount}`);
         }
-        
+
         return { data: 'success', serverId: server.id, attempts: attemptCount };
       });
 
@@ -370,7 +370,7 @@ describe('MCP Infrastructure Integration', () => {
 
       // Simulate server failures to trigger circuit breaker
       const circuitBreaker = infrastructure.circuitBreakerManager.getCircuitBreaker(failingServerId);
-      
+
       for (let i = 0; i < 6; i++) { // Exceed failure threshold
         await circuitBreaker.execute(() => Promise.reject(new Error('Server down')));
       }
@@ -465,7 +465,7 @@ describe('MCP Infrastructure Integration', () => {
 
     it('should meet sub-100ms routing performance requirement', async () => {
       const routingTimes: number[] = [];
-      
+
       // Test multiple routing decisions
       for (let i = 0; i < 20; i++) {
         const startTime = Date.now();
@@ -504,7 +504,7 @@ describe('MCP Infrastructure Integration', () => {
 
     it('should handle high-frequency requests efficiently', async () => {
       const concurrentRequests = 100;
-      const requests = Array.from({ length: concurrentRequests }, (_, i) => 
+      const requests = Array.from({ length: concurrentRequests }, (_, i) =>
         infrastructure.routeTool('Read', `concurrent-agent-${i}`, {
           priority: Math.floor(Math.random() * 10) + 1
         })
@@ -516,7 +516,7 @@ describe('MCP Infrastructure Integration', () => {
 
       expect(results).toHaveLength(concurrentRequests);
       expect(totalTime).toBeLessThan(2000); // 100 requests in under 2 seconds
-      
+
       // All requests should succeed
       results.forEach(result => {
         expect(result.selectedServer).toBeDefined();
@@ -528,14 +528,14 @@ describe('MCP Infrastructure Integration', () => {
       const loadTestDuration = 2000; // 2 seconds
       const requestInterval = 50; // Request every 50ms
       const results: any[] = [];
-      
+
       const startTime = Date.now();
-      
+
       while (Date.now() - startTime < loadTestDuration) {
         const routingPromise = infrastructure.routeTool('Read', 'load-test-agent')
           .then(result => results.push({ success: true, time: Date.now() - startTime, ...result }))
           .catch(error => results.push({ success: false, error: error.message, time: Date.now() - startTime }));
-        
+
         await Promise.race([
           routingPromise,
           new Promise(resolve => setTimeout(resolve, requestInterval))
@@ -548,7 +548,7 @@ describe('MCP Infrastructure Integration', () => {
 
       expect(totalRequests).toBeGreaterThan(20); // Should process many requests
       expect(successfulRequests / totalRequests).toBeGreaterThan(0.95); // 95% success rate
-      
+
       // Performance should remain consistent
       const routingTimes = results.filter(r => r.success && r.decisionTime).map(r => r.decisionTime);
       const averageRoutingTime = routingTimes.reduce((sum, time) => sum + time, 0) / routingTimes.length;
@@ -567,7 +567,7 @@ describe('MCP Infrastructure Integration', () => {
 
       // Make same routing request multiple times
       const context = { agentId: 'cache-test', priority: 5 };
-      
+
       for (let i = 0; i < 5; i++) {
         await infrastructure.routeTool('Read', context.agentId, context);
       }
@@ -611,15 +611,15 @@ describe('MCP Infrastructure Integration', () => {
       if (servers.length > 0) {
         // Make request
         const decision1 = await shortTTLInfrastructure.routeTool('Read', 'ttl-test-agent');
-        
+
         // Wait for cache expiry
         await new Promise(resolve => setTimeout(resolve, 150));
-        
+
         // Make same request again - should not be cached
         const startTime = Date.now();
         const decision2 = await shortTTLInfrastructure.routeTool('Read', 'ttl-test-agent');
         const requestTime = Date.now() - startTime;
-        
+
         expect(requestTime).toBeGreaterThan(5); // Should take actual processing time
       }
 
@@ -634,7 +634,7 @@ describe('MCP Infrastructure Integration', () => {
 
     it('should monitor server health continuously', async () => {
       const healthEvents: any[] = [];
-      
+
       infrastructure.discovery.on('serverStatusChanged', (event) => {
         healthEvents.push(event);
       });
@@ -643,7 +643,7 @@ describe('MCP Infrastructure Integration', () => {
       const servers = infrastructure.registry.getServers();
       if (servers.length > 0) {
         const server = servers[0];
-        
+
         // Simulate health degradation
         infrastructure.registry.updateServerMetrics(server.id, {
           uptimePercentage: 50, // Poor uptime
@@ -665,7 +665,7 @@ describe('MCP Infrastructure Integration', () => {
       const servers = infrastructure.registry.getServers();
       if (servers.length > 0) {
         const server = servers[0];
-        
+
         // Simulate server degradation
         server.status = 'degraded';
         server.failureCount = 3;
@@ -690,7 +690,7 @@ describe('MCP Infrastructure Integration', () => {
 
     it('should provide comprehensive system health status', () => {
       const status = infrastructure.getSystemStatus();
-      
+
       expect(status).toMatchObject({
         isStarted: true,
         discoveredServers: expect.any(Number),
@@ -715,7 +715,7 @@ describe('MCP Infrastructure Integration', () => {
     it('should handle complete system failures gracefully', async () => {
       // Start with no servers available
       mockReadFile.mockResolvedValue(JSON.stringify({ mcpServers: {} }));
-      
+
       const emptyInfrastructure = new MCPInfrastructure();
       await emptyInfrastructure.start();
 
@@ -743,7 +743,7 @@ describe('MCP Infrastructure Integration', () => {
 
       // Should either fix the config or fail gracefully
       await expect(badConfigInfrastructure.start()).resolves.not.toThrow();
-      
+
       if (badConfigInfrastructure.getSystemStatus().isStarted) {
         await badConfigInfrastructure.stop();
       }
@@ -751,14 +751,14 @@ describe('MCP Infrastructure Integration', () => {
 
     it('should handle concurrent start/stop operations', async () => {
       const startPromises = Array.from({ length: 3 }, () => infrastructure.start());
-      
+
       // Multiple starts should be safe
       await Promise.all(startPromises);
-      
+
       expect(infrastructure.getSystemStatus().isStarted).toBe(true);
 
       const stopPromises = Array.from({ length: 3 }, () => infrastructure.stop());
-      
+
       // Multiple stops should be safe
       await Promise.all(stopPromises);
     });
@@ -766,7 +766,7 @@ describe('MCP Infrastructure Integration', () => {
     it('should maintain data consistency under high concurrency', async () => {
       await infrastructure.start();
 
-      const concurrentOperations = Array.from({ length: 50 }, (_, i) => 
+      const concurrentOperations = Array.from({ length: 50 }, (_, i) =>
         Promise.all([
           infrastructure.routeTool('Read', `concurrent-${i}`),
           infrastructure.recordPerformance({
@@ -796,7 +796,7 @@ describe('MCP Infrastructure Integration', () => {
 
     it('should coordinate events across all components', async () => {
       const allEvents: any[] = [];
-      
+
       // Listen to all component events
       infrastructure.on('started', (e) => allEvents.push({ component: 'infrastructure', event: 'started', ...e }));
       infrastructure.discovery.on('serverDiscovered', (e) => allEvents.push({ component: 'discovery', event: 'serverDiscovered', ...e }));
@@ -807,7 +807,7 @@ describe('MCP Infrastructure Integration', () => {
       await infrastructure.routeTool('Read', 'event-test-agent');
 
       expect(allEvents.length).toBeGreaterThan(0);
-      
+
       // Verify events from different components
       const componentTypes = [...new Set(allEvents.map(e => e.component))];
       expect(componentTypes.length).toBeGreaterThan(1);
@@ -825,7 +825,7 @@ describe('MCP Infrastructure Integration', () => {
 
       // System should continue functioning despite listener errors
       await infrastructure.routeTool('Read', 'error-handling-test');
-      
+
       const status = infrastructure.getSystemStatus();
       expect(status.isStarted).toBe(true);
     });
@@ -834,7 +834,7 @@ describe('MCP Infrastructure Integration', () => {
   describe('Resource Management', () => {
     it('should clean up all resources on shutdown', async () => {
       await infrastructure.start();
-      
+
       const servers = infrastructure.registry.getServers();
       expect(servers.length).toBeGreaterThan(0);
 
@@ -843,7 +843,7 @@ describe('MCP Infrastructure Integration', () => {
       // Verify cleanup
       const statusAfterStop = infrastructure.getSystemStatus();
       expect(statusAfterStop.isStarted).toBe(false);
-      
+
       // Verify all servers are cleaned up
       servers.forEach(server => {
         if (server.process) {
@@ -902,7 +902,7 @@ describe('MCP Infrastructure Integration', () => {
 
       const minimalInfrastructure = new MCPInfrastructure(minimalConfig);
       expect(minimalInfrastructure).toBeDefined();
-      
+
       // Should use reasonable defaults
       const status = minimalInfrastructure.getSystemStatus();
       expect(status).toBeDefined();

@@ -109,7 +109,7 @@ export interface StateChangeEvent {
 
 /**
  * Circuit breaker implementation for fault tolerance
- * 
+ *
  * Implements the circuit breaker pattern to prevent cascading failures
  * and provide fast failure detection for degraded services.
  */
@@ -130,7 +130,7 @@ class CircuitBreaker extends EventEmitter {
 
   constructor(config: CircuitBreakerConfig) {
     super();
-    
+
     this.config = {
       failureThreshold: config.failureThreshold,
       recoveryTimeout: config.recoveryTimeout,
@@ -160,18 +160,18 @@ class CircuitBreaker extends EventEmitter {
         error: new Error(`Circuit breaker ${this.config.name} is ${this.state}`),
         timestamp
       };
-      
+
       this.emit('callRejected', {
         name: this.config.name,
         state: this.state,
         timestamp
       });
-      
+
       return result;
     }
 
     this.totalCalls++;
-    
+
     // Track half-open calls
     if (this.state === 'half-open') {
       this.halfOpenCalls++;
@@ -180,10 +180,10 @@ class CircuitBreaker extends EventEmitter {
     try {
       const value = await fn();
       const responseTime = Date.now() - startTime;
-      
+
       // Record success
       this.onSuccess(responseTime);
-      
+
       const result: CircuitBreakerResult<T> = {
         value,
         executed: true,
@@ -202,10 +202,10 @@ class CircuitBreaker extends EventEmitter {
       return result;
     } catch (error) {
       const responseTime = Date.now() - startTime;
-      
+
       // Record failure
       this.onFailure(error as Error, responseTime);
-      
+
       const result: CircuitBreakerResult<T> = {
         executed: true,
         state: this.state,
@@ -317,20 +317,20 @@ class CircuitBreaker extends EventEmitter {
     switch (this.state) {
       case 'closed':
         return true;
-      
+
       case 'open':
         // Check if recovery timeout has passed
-        if (this.lastFailureTime && 
+        if (this.lastFailureTime &&
             now - this.lastFailureTime.getTime() >= this.config.recoveryTimeout) {
           this.changeState('half-open', 'Recovery timeout elapsed');
           return true;
         }
         return false;
-      
+
       case 'half-open':
         // Allow limited calls in half-open state
         return this.halfOpenCalls < this.config.halfOpenMaxCalls;
-      
+
       default:
         return false;
     }
@@ -342,7 +342,7 @@ class CircuitBreaker extends EventEmitter {
 
     if (this.state === 'half-open') {
       this.successCount++;
-      
+
       // Check if we have enough successes to close the circuit
       if (this.successCount >= this.config.successThreshold) {
         this.changeState('closed', 'Sufficient successful calls in half-open state');
@@ -451,7 +451,7 @@ class CircuitBreakerManager extends EventEmitter {
 
   constructor(defaultConfig?: Partial<CircuitBreakerConfig>) {
     super();
-    
+
     this.defaultConfig = {
       failureThreshold: 5,
       recoveryTimeout: 30000, // 30 seconds
@@ -467,7 +467,7 @@ class CircuitBreakerManager extends EventEmitter {
    */
   getCircuitBreaker(name: string, config?: Partial<CircuitBreakerConfig>): CircuitBreaker {
     let circuitBreaker = this.circuitBreakers.get(name);
-    
+
     if (!circuitBreaker) {
       circuitBreaker = new CircuitBreaker({
         ...this.defaultConfig,
@@ -504,11 +504,11 @@ class CircuitBreakerManager extends EventEmitter {
    */
   getAllStats(): Record<string, CircuitBreakerStats> {
     const stats: Record<string, CircuitBreakerStats> = {};
-    
+
     for (const [name, cb] of this.circuitBreakers) {
       stats[name] = cb.getStats();
     }
-    
+
     return stats;
   }
 

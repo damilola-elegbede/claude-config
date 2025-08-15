@@ -40,9 +40,9 @@ run_validation() {
     local start_time=$(date +%s)
     local exit_code=0
     local files_processed=0
-    
+
     log_info "Running $description..."
-    
+
     case "$validation_type" in
         "yaml")
             files_processed=$(run_yaml_validation) || exit_code=$?
@@ -61,10 +61,10 @@ run_validation() {
             exit_code=1
             ;;
     esac
-    
+
     local end_time=$(date +%s)
     local duration=$((end_time - start_time))
-    
+
     # Record metrics
     if command -v python3 >/dev/null 2>&1; then
         python3 -c "
@@ -85,7 +85,7 @@ with open('$METRICS_DIR/validation-metrics.jsonl', 'a') as f:
     f.write(json.dumps(metrics) + '\n')
 "
     fi
-    
+
     if [[ $exit_code -eq 0 ]]; then
         log_success "$description completed ($files_processed files, ${duration}s)"
         VALIDATION_RESULTS+=("$validation_type:SUCCESS:$duration")
@@ -93,7 +93,7 @@ with open('$METRICS_DIR/validation-metrics.jsonl', 'a') as f:
         log_error "$description failed ($files_processed files, ${duration}s)"
         VALIDATION_RESULTS+=("$validation_type:FAILED:$duration")
     fi
-    
+
     return $exit_code
 }
 
@@ -101,7 +101,7 @@ with open('$METRICS_DIR/validation-metrics.jsonl', 'a') as f:
 run_yaml_validation() {
     local files_processed=0
     local validation_failed=false
-    
+
     # Get staged files or all agent files if not in git hook context
     local files_to_check
     if git diff --cached --name-only >/dev/null 2>&1; then
@@ -109,12 +109,12 @@ run_yaml_validation() {
     else
         files_to_check=$(find .claude/agents -name "*.md" -type f || true)
     fi
-    
+
     if [[ -z "$files_to_check" ]]; then
         echo "0"
         return 0
     fi
-    
+
     while IFS= read -r file; do
         if [[ -f "$file" ]]; then
             if ! validate_yaml_frontmatter "$file"; then
@@ -123,7 +123,7 @@ run_yaml_validation() {
             ((files_processed++))
         fi
     done <<< "$files_to_check"
-    
+
     echo "$files_processed"
     [[ "$validation_failed" == "false" ]] || return 1
 }
@@ -135,11 +135,11 @@ validate_yaml_frontmatter() {
     local line_num=0
     local in_frontmatter=false
     local frontmatter_start=false
-    
+
     # Extract YAML front-matter
     while IFS= read -r line; do
         ((line_num++))
-        
+
         if [[ $line_num -eq 1 && "$line" == "---" ]]; then
             frontmatter_start=true
             in_frontmatter=true
@@ -150,12 +150,12 @@ validate_yaml_frontmatter() {
             echo "$line" >> "$temp_yaml"
         fi
     done < "$file"
-    
+
     if [[ "$frontmatter_start" != "true" ]]; then
         log_error "No YAML front-matter found in $file"
         return 1
     fi
-    
+
     # Validate YAML syntax
     if command -v yq >/dev/null 2>&1; then
         if ! yq eval '.' "$temp_yaml" >/dev/null 2>&1; then
@@ -182,7 +182,7 @@ except yaml.YAMLError as e:
     else
         log_warning "No YAML validator found (yq or python3+pyyaml)"
     fi
-    
+
     # Validate required fields
     local required_fields=("name" "description" "tools" "category")
     for field in "${required_fields[@]}"; do
@@ -194,7 +194,7 @@ except yaml.YAMLError as e:
             fi
         fi
     done
-    
+
     rm -f "$temp_yaml"
     return 0
 }
@@ -203,7 +203,7 @@ except yaml.YAMLError as e:
 run_format_validation() {
     local files_processed=0
     local validation_failed=false
-    
+
     # Check shell scripts
     find scripts -name "*.sh" -type f | while read -r script; do
         if command -v shellcheck >/dev/null 2>&1; then
@@ -214,7 +214,7 @@ run_format_validation() {
         fi
         ((files_processed++))
     done
-    
+
     # Check Dockerfile syntax
     if [[ -f "Dockerfile.validation" ]] && command -v hadolint >/dev/null 2>&1; then
         if ! hadolint Dockerfile.validation >/dev/null 2>&1; then
@@ -223,7 +223,7 @@ run_format_validation() {
         fi
         ((files_processed++))
     fi
-    
+
     echo "$files_processed"
     [[ "$validation_failed" == "false" ]] || return 1
 }
@@ -232,7 +232,7 @@ run_format_validation() {
 run_security_validation() {
     local files_processed=0
     local validation_failed=false
-    
+
     # Check for sensitive information in staged files
     local staged_files
     if git diff --cached --name-only >/dev/null 2>&1; then
@@ -240,36 +240,36 @@ run_security_validation() {
     else
         staged_files=$(find . -type f -name "*.md" -o -name "*.sh" -o -name "*.yml" || true)
     fi
-    
+
     if [[ -n "$staged_files" ]]; then
         while IFS= read -r file; do
             if [[ -f "$file" ]]; then
                 # Check for common secrets patterns
                 local secrets_found=false
-                
+
                 # API keys, tokens, passwords (exclude validation patterns and examples)
                 if grep -i -E "(ap_i[_-]?k_ey|tok_en|pass_word|sec_ret)" "$file" | grep -E "[:=]\s*['\"][^'\"]{20,}" >/dev/null 2>&1; then
                     log_warning "Potential secret found in $file"
                     secrets_found=true
                 fi
-                
+
                 # AWS keys
                 if grep -E "AKIA[0-9A-Z]{16}" "$file" >/dev/null 2>&1; then
                     log_error "AWS Access Key found in $file"
                     validation_failed=true
                 fi
-                
+
                 # Private keys
                 if grep -E "-----BEGIN [A-Z]+ PRIVATE KEY-----" "$file" >/dev/null 2>&1; then
                     log_error "Private key found in $file"
                     validation_failed=true
                 fi
-                
+
                 ((files_processed++))
             fi
         done <<< "$staged_files"
     fi
-    
+
     echo "$files_processed"
     [[ "$validation_failed" == "false" ]] || return 1
 }
@@ -278,14 +278,14 @@ run_security_validation() {
 run_docs_validation() {
     local files_processed=0
     local validation_failed=false
-    
+
     # Check for broken internal links
     find docs -name "*.md" -type f | while read -r doc; do
         # Extract markdown links
         grep -o '\[.*\](\..*\.md)' "$doc" 2>/dev/null | while read -r link; do
             local file_path=$(echo "$link" | sed 's/.*](\(.*\))/\1/')
             local full_path="$(dirname "$doc")/$file_path"
-            
+
             if [[ ! -f "$full_path" ]]; then
                 log_error "Broken link in $doc: $file_path"
                 validation_failed=true
@@ -293,7 +293,7 @@ run_docs_validation() {
         done
         ((files_processed++))
     done
-    
+
     echo "$files_processed"
     [[ "$validation_failed" == "false" ]] || return 1
 }
@@ -304,15 +304,15 @@ print_validation_summary() {
     local total_validations=${#results[@]}
     local successful_validations=0
     local total_duration=0
-    
+
     echo
     log_info "Validation Summary:"
     echo "===================="
-    
+
     for result in "${results[@]}"; do
         IFS=':' read -r validation_type status duration <<< "$result"
         total_duration=$((total_duration + duration))
-        
+
         if [[ "$status" == "SUCCESS" ]]; then
             log_success "$validation_type: passed (${duration}s)"
             ((successful_validations++))
@@ -320,9 +320,9 @@ print_validation_summary() {
             log_error "$validation_type: failed (${duration}s)"
         fi
     done
-    
+
     echo "===================="
-    
+
     if [[ $successful_validations -eq $total_validations ]]; then
         log_success "All $total_validations validations passed in ${total_duration}s"
     else
@@ -342,11 +342,11 @@ clear_validation_cache() {
 should_skip_validation() {
     local validation_type="$1"
     local cache_file="$VALIDATION_CACHE_DIR/${validation_type}_cache"
-    
+
     if [[ ! -f "$cache_file" ]]; then
         return 1  # Don't skip, no cache exists
     fi
-    
+
     # Check if any relevant files are newer than cache
     local relevant_files
     case "$validation_type" in
@@ -360,7 +360,7 @@ should_skip_validation() {
             return 1  # Don't skip unknown validation types
             ;;
     esac
-    
+
     [[ -z "$relevant_files" ]]  # Skip if no files are newer
 }
 

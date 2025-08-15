@@ -23,4 +23,7 @@ afterAll(() => {
 });
 
 // Global test utilities
-global.delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+(global as any).delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Export empty object to make this a module
+export {};

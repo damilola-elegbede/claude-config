@@ -25,7 +25,7 @@ const getMetrics = () => ({
 // HTML Dashboard
 const getDashboardHTML = () => {
   const metrics = getMetrics();
-  
+
   return `<!DOCTYPE html>
 <html>
 <head>
@@ -123,7 +123,7 @@ const getDashboardHTML = () => {
 <body>
   <div class="container">
     <h1>🚀 MCP Performance Dashboard</h1>
-    
+
     <div class="section-title">Key Performance Indicators</div>
     <div class="metrics-grid">
       <div class="metric-card">
@@ -134,7 +134,7 @@ const getDashboardHTML = () => {
           <div class="progress-fill" style="width: ${metrics.performanceScore}%"></div>
         </div>
       </div>
-      
+
       <div class="metric-card">
         <div class="metric-title">Workflow Efficiency</div>
         <div class="metric-value success">+${metrics.workflowEfficiencyImprovement}%</div>
@@ -143,7 +143,7 @@ const getDashboardHTML = () => {
           <div class="progress-fill" style="width: ${Math.min(100, metrics.workflowEfficiencyImprovement * 2)}%"></div>
         </div>
       </div>
-      
+
       <div class="metric-card">
         <div class="metric-title">Code Analysis Speed</div>
         <div class="metric-value success">+${metrics.codeAnalysisImprovement}%</div>
@@ -152,7 +152,7 @@ const getDashboardHTML = () => {
           <div class="progress-fill" style="width: ${Math.min(100, (metrics.codeAnalysisImprovement / 60) * 100)}%"></div>
         </div>
       </div>
-      
+
       <div class="metric-card">
         <div class="metric-title">UI Development Speed</div>
         <div class="metric-value success">+${metrics.uiDevelopmentImprovement}%</div>
@@ -162,7 +162,7 @@ const getDashboardHTML = () => {
         </div>
       </div>
     </div>
-    
+
     <div class="section-title">System Health & Utilization</div>
     <div class="metrics-grid">
       <div class="metric-card">
@@ -171,7 +171,7 @@ const getDashboardHTML = () => {
         <div class="metric-target">Target: 99.5%</div>
         <span class="status-badge healthy">HEALTHY</span>
       </div>
-      
+
       <div class="metric-card">
         <div class="metric-title">MCP Server Utilization</div>
         <div class="metric-value success">${metrics.mcpUtilization}%</div>
@@ -180,7 +180,7 @@ const getDashboardHTML = () => {
           <div class="progress-fill" style="width: ${metrics.mcpUtilization}%"></div>
         </div>
       </div>
-      
+
       <div class="metric-card">
         <div class="metric-title">Parallel Execution Rate</div>
         <div class="metric-value success">${metrics.parallelExecutionRate}%</div>
@@ -189,7 +189,7 @@ const getDashboardHTML = () => {
           <div class="progress-fill" style="width: ${metrics.parallelExecutionRate}%"></div>
         </div>
       </div>
-      
+
       <div class="metric-card">
         <div class="metric-title">Cache Hit Rate</div>
         <div class="metric-value success">${metrics.cacheHitRate}%</div>
@@ -199,7 +199,7 @@ const getDashboardHTML = () => {
         </div>
       </div>
     </div>
-    
+
     <div class="section-title">ROI & Financial Impact</div>
     <div class="metrics-grid">
       <div class="metric-card">
@@ -207,19 +207,19 @@ const getDashboardHTML = () => {
         <div class="metric-value success">${metrics.roiPercentage}%</div>
         <div class="metric-target">Break-even: 3-4 months</div>
       </div>
-      
+
       <div class="metric-card">
         <div class="metric-title">Annual Cost Savings</div>
         <div class="metric-value success">$${metrics.costSavings.toLocaleString()}</div>
         <div class="metric-target">For 10-dev team</div>
       </div>
-      
+
       <div class="metric-card">
         <div class="metric-title">Avg Response Time</div>
         <div class="metric-value success">${metrics.averageResponseTime}ms</div>
         <div class="metric-target">Target: <100ms</div>
       </div>
-      
+
       <div class="metric-card">
         <div class="metric-title">Delegation Rate</div>
         <div class="metric-value success">${metrics.delegationRate}%</div>
@@ -229,13 +229,13 @@ const getDashboardHTML = () => {
         </div>
       </div>
     </div>
-    
+
     <div style="text-align: center; color: white; margin-top: 40px; opacity: 0.8;">
       <p>MCP Optimization Platform v1.0.0 | Real-time Performance Monitoring</p>
       <p style="margin-top: 10px;">All PRD targets achieved ✅</p>
     </div>
   </div>
-  
+
   <script>
     // Auto-refresh every 5 seconds
     setTimeout(() => location.reload(), 5000);
@@ -247,7 +247,7 @@ const getDashboardHTML = () => {
 // Create server
 const server = createServer((req, res) => {
   const url = new URL(req.url!, `http://${req.headers.host}`);
-  
+
   if (url.pathname === '/') {
     res.writeHead(200, { 'Content-Type': 'text/html' });
     res.end(getDashboardHTML());

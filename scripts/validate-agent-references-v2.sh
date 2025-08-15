@@ -46,35 +46,35 @@ done
 check_file() {
     local file="$1"
     local errors=0
-    
+
     # Skip non-existent files
     [[ ! -f "$file" ]] && return 0
-    
+
     # Look for specific patterns that indicate agent usage
     # Pattern: "uses/deploys/coordinates/launches {agent-name} agent"
     while IFS= read -r match; do
         # Extract agent name using grep with Perl-compatible regex
         agent_ref=$(echo "$match" | grep -oP '(?<=\b(uses|deploys|coordinates|launches|invokes) )\S+(?= agent\b)' | head -1)
-        
+
         # Skip if we couldn't extract an agent name
         [[ -z "$agent_ref" ]] && continue
-        
+
         # Check if it's a valid agent
         if ! echo "$agent_ref" | grep -qE "^($valid_agents_pattern)$"; then
             echo "❌ Invalid agent reference in $file: '$agent_ref' (context: $match)"
             ((errors++))
         fi
     done < <(grep -E "(uses|deploys|coordinates|launches|invokes) [a-z][a-z0-9-]+ agent" "$file" 2>/dev/null || true)
-    
+
     # Pattern: "{agent-name} agent:" or "- {agent-name}:" in lists
     while IFS= read -r match; do
         # Skip lines with "(now:" which indicate historical references
         if echo "$match" | grep -q "(now:"; then
             continue
         fi
-        
+
         agent_ref=$(echo "$match" | sed -E 's/^[[:space:]]*[-*]?[[:space:]]*([a-z][a-z0-9-]+):.*/\1/')
-        
+
         # Only check if it looks like an agent reference (ends with common agent suffixes)
         if echo "$agent_ref" | grep -qE "(auditor|engineer|architect|designer|specialist|admin|commander|writer|tester|analyst|researcher)$"; then
             if ! echo "$agent_ref" | grep -qE "^($valid_agents_pattern)$"; then
@@ -83,7 +83,7 @@ check_file() {
             fi
         fi
     done < <(grep -E "^[[:space:]]*[-*]?[[:space:]]*[a-z][a-z0-9-]+:" "$file" 2>/dev/null || true)
-    
+
     return $errors
 }
 

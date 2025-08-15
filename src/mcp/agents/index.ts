@@ -1,6 +1,6 @@
 /**
  * SPEC_02: Agent Enhancement Framework
- * 
+ *
  * Provides MCP-aware agent management and enhancement capabilities
  */
 
@@ -70,7 +70,7 @@ export class MCPAgentManager extends EventEmitter {
   async loadAgents(): Promise<void> {
     console.log('⚠️ MCP YAML agent loader is deprecated. Agent directories removed.');
     console.log('📝 Primary agent system is now in system-configs/.claude/agents/ (Markdown format)');
-    
+
     this.isInitialized = true;
     console.log(`✅ MCP agent manager initialized (no YAML agents loaded)`);
     this.emit('agentsLoaded', { count: 0 });
@@ -110,8 +110,8 @@ export class MCPAgentManager extends EventEmitter {
     const agent = this.agents.get(agentId);
     if (!agent) return null;
 
-    return agent.mcp_integration.performance_profiles[profileName] || 
-           agent.mcp_integration.performance_profiles.default || 
+    return agent.mcp_integration.performance_profiles[profileName] ||
+           agent.mcp_integration.performance_profiles.default ||
            null;
   }
 
@@ -143,7 +143,7 @@ export class MCPAgentManager extends EventEmitter {
       }
 
       // Check performance profile availability
-      if (requirements?.performanceMode && 
+      if (requirements?.performanceMode &&
           agent.mcp_integration.performance_profiles[requirements.performanceMode]) {
         score += 5;
       }
@@ -151,7 +151,7 @@ export class MCPAgentManager extends EventEmitter {
       // Check capabilities match
       if (requirements?.capabilities) {
         const agentCapabilities = Object.keys(agent.mcp_integration.tool_preferences);
-        const matches = requirements.capabilities.filter(cap => 
+        const matches = requirements.capabilities.filter(cap =>
           agentCapabilities.includes(cap)
         ).length;
         score += matches * 2;
@@ -162,13 +162,13 @@ export class MCPAgentManager extends EventEmitter {
 
     // Sort by score and return best match
     scored.sort((a, b) => b.score - a.score);
-    
+
     if (scored.length > 0 && scored[0].score > 0) {
       const selected = scored[0].agent;
-      this.emit('agentSelected', { 
-        agent: selected, 
-        taskType, 
-        score: scored[0].score 
+      this.emit('agentSelected', {
+        agent: selected,
+        taskType,
+        score: scored[0].score
       });
       return selected;
     }
@@ -211,7 +211,7 @@ export class MCPAgentManager extends EventEmitter {
       if (agent.mcp_integration.enabled) {
         stats.mcpEnabled++;
       }
-      
+
       if (agent.backward_compatibility.enabled) {
         stats.backwardCompatible++;
       }
@@ -255,17 +255,17 @@ export class MCPAgentManager extends EventEmitter {
 
     // Check MCP integration
     if (agent.mcp_integration.enabled) {
-      if (!agent.mcp_integration.tool_preferences || 
+      if (!agent.mcp_integration.tool_preferences ||
           Object.keys(agent.mcp_integration.tool_preferences).length === 0) {
         errors.push('MCP enabled but no tool preferences defined');
       }
 
-      if (!agent.mcp_integration.performance_profiles || 
+      if (!agent.mcp_integration.performance_profiles ||
           Object.keys(agent.mcp_integration.performance_profiles).length === 0) {
         errors.push('MCP enabled but no performance profiles defined');
       }
 
-      if (!agent.mcp_integration.fallback_strategies || 
+      if (!agent.mcp_integration.fallback_strategies ||
           agent.mcp_integration.fallback_strategies.length === 0) {
         errors.push('MCP enabled but no fallback strategies defined');
       }

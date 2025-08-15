@@ -19,7 +19,7 @@ export interface ResilienceConfig {
     /** Per-server circuit breaker configurations */
     serverConfigs?: Record<string, Partial<CircuitBreakerConfig>>;
   };
-  
+
   /** Fallback configuration */
   fallback?: {
     /** Default fallback policies */
@@ -29,7 +29,7 @@ export interface ResilienceConfig {
     /** Enable automatic fallback discovery */
     enableAutoDiscovery?: boolean;
   };
-  
+
   /** Health monitoring configuration */
   healthMonitoring?: {
     /** Health check interval in milliseconds */
@@ -41,7 +41,7 @@ export interface ResilienceConfig {
     /** Number of consecutive successes before marking healthy */
     recoveryThreshold?: number;
   };
-  
+
   /** Performance targets */
   performance?: {
     /** Maximum acceptable response time in ms */
@@ -136,7 +136,7 @@ export interface ResilienceContext {
 
 /**
  * Comprehensive resilience manager combining circuit breakers and fallback patterns
- * 
+ *
  * Provides intelligent fault tolerance with sub-200ms detection and switching,
  * automatic recovery, and graceful degradation under load.
  */
@@ -154,15 +154,15 @@ class ResilienceManager extends EventEmitter {
     consecutiveSuccesses: number;
     lastError?: Error;
   }> = new Map();
-  
+
   private healthCheckTimer?: NodeJS.Timeout;
   private isStarted = false;
 
   constructor(registry: MCPServerRegistry, config: ResilienceConfig = {}) {
     super();
-    
+
     this.registry = registry;
-    
+
     // Initialize configuration with defaults
     this.config = {
       circuitBreaker: {
@@ -307,7 +307,7 @@ class ResilienceManager extends EventEmitter {
         this.stats.successfulOperations++;
         if (result.usedFallback) {
           this.stats.fallbackOperations++;
-          this.stats.fallbackUsageByTool[context.toolName] = 
+          this.stats.fallbackUsageByTool[context.toolName] =
             (this.stats.fallbackUsageByTool[context.toolName] || 0) + 1;
         }
 
@@ -404,7 +404,7 @@ class ResilienceManager extends EventEmitter {
    */
   getServerHealthStatus(): Record<string, any> {
     const health: Record<string, any> = {};
-    
+
     for (const [serverId, status] of this.serverHealthStatus) {
       const server = this.registry.getServer(serverId);
       const circuitBreakerStats = this.circuitBreakerManager
@@ -473,7 +473,7 @@ class ResilienceManager extends EventEmitter {
       if (event.newState === 'open') {
         this.stats.circuitBreakerActivations++;
       }
-      
+
       this.emit('circuitBreakerStateChange', event);
     });
 
@@ -507,7 +507,7 @@ class ResilienceManager extends EventEmitter {
 
   private async setupServerConfigurations(): Promise<void> {
     const servers = this.registry.getServers();
-    
+
     for (const server of servers) {
       await this.setupServerConfiguration(server);
     }
@@ -540,10 +540,10 @@ class ResilienceManager extends EventEmitter {
   private async autoDiscoverFallbacks(primaryServer: MCPServerInfo): Promise<void> {
     // Find other servers that support the same tools
     const fallbackServers: MCPServerInfo[] = [];
-    
+
     for (const capability of primaryServer.capabilities) {
       const serversForTool = this.registry.getServersForTool(capability.name);
-      
+
       for (const server of serversForTool) {
         if (server.id !== primaryServer.id && !fallbackServers.find(s => s.id === server.id)) {
           fallbackServers.push(server);
@@ -582,28 +582,28 @@ class ResilienceManager extends EventEmitter {
 
   private async performHealthChecks(): Promise<void> {
     const servers = this.registry.getServers();
-    
+
     for (const server of servers) {
       try {
         const startTime = Date.now();
-        
+
         // Perform basic health check (this would be implemented based on MCP protocol)
         // For now, we'll use the server's reported status
         const isHealthy = server.status === 'healthy';
         const responseTime = Date.now() - startTime;
-        
+
         this.updateServerHealth(server.id, isHealthy, responseTime);
-        
+
         this.emit('healthCheckCompleted', {
           serverId: server.id,
           isHealthy,
           responseTime,
           timestamp: new Date()
         } as HealthCheckResult);
-        
+
       } catch (error) {
         this.updateServerHealth(server.id, false, 0, error as Error);
-        
+
         this.emit('healthCheckFailed', {
           serverId: server.id,
           isHealthy: false,
@@ -637,14 +637,14 @@ class ResilienceManager extends EventEmitter {
     if (isHealthy) {
       updated.consecutiveSuccesses++;
       updated.consecutiveFailures = 0;
-      
+
       if (updated.consecutiveSuccesses >= this.config.healthMonitoring.recoveryThreshold) {
         updated.isHealthy = true;
       }
     } else {
       updated.consecutiveFailures++;
       updated.consecutiveSuccesses = 0;
-      
+
       if (updated.consecutiveFailures >= this.config.healthMonitoring.failureThreshold) {
         updated.isHealthy = false;
       }
@@ -655,7 +655,7 @@ class ResilienceManager extends EventEmitter {
 
   private recordResponseTime(responseTime: number): void {
     this.responseTimes.push(responseTime);
-    
+
     // Keep only recent response times (last 1000)
     if (this.responseTimes.length > 1000) {
       this.responseTimes.shift();
@@ -664,7 +664,7 @@ class ResilienceManager extends EventEmitter {
 
   private calculatePercentile(percentile: number): number {
     if (this.responseTimes.length === 0) return 0;
-    
+
     const sorted = [...this.responseTimes].sort((a, b) => a - b);
     const index = Math.ceil(percentile * sorted.length) - 1;
     return sorted[Math.max(0, index)];
@@ -688,7 +688,7 @@ class ResilienceManager extends EventEmitter {
 
   private getServerHealthSummary(): Record<string, any> {
     const summary: Record<string, any> = {};
-    
+
     for (const [serverId, status] of this.serverHealthStatus) {
       summary[serverId] = {
         isHealthy: status.isHealthy,
@@ -701,7 +701,7 @@ class ResilienceManager extends EventEmitter {
         consecutiveSuccesses: status.consecutiveSuccesses
       };
     }
-    
+
     return summary;
   }
 

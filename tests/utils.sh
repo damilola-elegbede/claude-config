@@ -28,7 +28,7 @@ assert_equals() {
     local expected=$1
     local actual=$2
     local message=${3:-""}
-    
+
     if [ "$expected" = "$actual" ]; then
         return 0
     else
@@ -42,7 +42,7 @@ assert_equals() {
 assert_file_exists() {
     local file=$1
     local message=${2:-"File should exist: $file"}
-    
+
     if [ -f "$file" ]; then
         return 0
     else
@@ -54,7 +54,7 @@ assert_file_exists() {
 assert_dir_exists() {
     local dir=$1
     local message=${2:-"Directory should exist: $dir"}
-    
+
     if [ -d "$dir" ]; then
         return 0
     else
@@ -67,7 +67,7 @@ assert_file_contains() {
     local file=$1
     local pattern=$2
     local message=${3:-"File should contain pattern"}
-    
+
     if grep -q "$pattern" "$file" 2>/dev/null; then
         return 0
     else
@@ -81,7 +81,7 @@ assert_file_contains() {
 assert_command_success() {
     local command=$1
     local message=${2:-"Command should succeed: $command"}
-    
+
     if eval "$command" > /dev/null 2>&1; then
         return 0
     else
@@ -93,7 +93,7 @@ assert_command_success() {
 assert_command_fails() {
     local command=$1
     local message=${2:-"Command should fail: $command"}
-    
+
     if eval "$command" > /dev/null 2>&1; then
         echo -e "${RED}Assertion failed${NC}: $message"
         return 1
@@ -122,7 +122,7 @@ mock_git_diff() {
 create_mock_command() {
     local name=$1
     local content=$2
-    
+
     mkdir -p system-configs/.claude/commands
     cat > "system-configs/.claude/commands/${name}.md" << EOF
 # /${name} Command
@@ -164,12 +164,12 @@ EOF
 run_isolated_test() {
     local test_name=$1
     local test_function=$2
-    
+
     echo "  Running: $test_name"
-    
+
     # Setup
     setup_test_env
-    
+
     # Run test
     if $test_function; then
         echo -e "  ${GREEN}✓${NC} $test_name"
@@ -185,19 +185,19 @@ run_isolated_test() {
 # Verify markdown file structure
 verify_markdown_structure() {
     local file=$1
-    
+
     # Check for main heading
     if ! grep -q "^# " "$file"; then
         echo "Missing main heading (#)"
         return 1
     fi
-    
+
     # Check for Description section
     if ! grep -q "^## Description" "$file"; then
         echo "Missing Description section"
         return 1
     fi
-    
+
     return 0
 }
 

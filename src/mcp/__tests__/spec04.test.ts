@@ -63,7 +63,7 @@ describe('SPEC_04: Project Orchestrator Enhancement', () => {
 
     test('Should handle automated failover', () => {
       const balancer = orchestrationPatterns.getLoadBalancer();
-      
+
       balancer.registerServer({
         id: 'primary',
         name: 'main-server',
@@ -90,18 +90,18 @@ describe('SPEC_04: Project Orchestrator Enhancement', () => {
 
     test('Should implement cross-agent resource sharing', () => {
       const conflicts = orchestrationPatterns.getConflictResolver();
-      
+
       // Test shareable resource
       const acquired1 = conflicts.acquireResource('agent1', 'cache-read', 'shareable');
       const acquired2 = conflicts.acquireResource('agent2', 'cache-read', 'shareable');
-      
+
       expect(acquired1).toBe(true);
       expect(acquired2).toBe(true); // Both should acquire shareable resource
-      
+
       // Test exclusive resource
       const exclusive1 = conflicts.acquireResource('agent3', 'db-write', 'exclusive');
       const exclusive2 = conflicts.acquireResource('agent4', 'db-write', 'exclusive');
-      
+
       expect(exclusive1).toBe(true);
       expect(exclusive2).toBe(false); // Second should fail for exclusive resource
     });
@@ -141,7 +141,7 @@ describe('SPEC_04: Project Orchestrator Enhancement', () => {
       };
 
       const plan = await orchestrator.createOrchestrationPlan(project);
-      
+
       expect(plan).toBeDefined();
       expect(plan.phases).toBeDefined();
       expect(plan.phases.length).toBeGreaterThan(0);
@@ -178,7 +178,7 @@ describe('SPEC_04: Project Orchestrator Enhancement', () => {
       };
 
       const assessment = await orchestrator.assessRisks(plan);
-      
+
       expect(assessment).toBeDefined();
       expect(assessment.overallRisk).toBeDefined();
       expect(assessment.mitigationStrategies).toBeDefined();
@@ -196,10 +196,10 @@ describe('SPEC_04: Project Orchestrator Enhancement', () => {
       };
 
       const optimizations = await orchestrator.optimizeRuntime(execution);
-      
+
       expect(optimizations).toBeDefined();
       expect(optimizations.recommendations).toBeDefined();
-      
+
       // Should provide optimization recommendations
       const hasRecommendations = optimizations.recommendations.some(
         r => r.type === 'parallel_execution' || r.type === 'resource_reallocation'
@@ -212,7 +212,7 @@ describe('SPEC_04: Project Orchestrator Enhancement', () => {
     test('Should integrate with MCP infrastructure (SPEC_01)', () => {
       // Verify infrastructure integration points
       const infra = orchestrator.getInfrastructureIntegration();
-      
+
       expect(infra).toBeDefined();
       expect(infra.loadBalancer).toBeDefined();
       expect(infra.registry).toBeDefined();
@@ -222,7 +222,7 @@ describe('SPEC_04: Project Orchestrator Enhancement', () => {
     test('Should integrate with enhanced agents (SPEC_02)', () => {
       // Verify agent integration
       const agents = orchestrator.getAgentIntegration();
-      
+
       expect(agents).toBeDefined();
       expect(agents.mcpEnabled).toBe(true);
       expect(agents.performanceProfiles).toBeDefined();
@@ -231,7 +231,7 @@ describe('SPEC_04: Project Orchestrator Enhancement', () => {
     test('Should integrate with workflow engine (SPEC_03)', () => {
       // Verify workflow integration
       const workflow = orchestrator.getWorkflowIntegration();
-      
+
       expect(workflow).toBeDefined();
       expect(workflow.optimizationEngine).toBeDefined();
       expect(workflow.coordinationPatterns).toBeDefined();
@@ -287,7 +287,7 @@ describe('SPEC_04: Project Orchestrator Enhancement', () => {
 
     test('Should maintain sub-second failover times', () => {
       const balancer = orchestrationPatterns.getLoadBalancer();
-      
+
       // Register multiple servers
       for (let i = 0; i < 5; i++) {
         balancer.registerServer({
@@ -299,12 +299,12 @@ describe('SPEC_04: Project Orchestrator Enhancement', () => {
       }
 
       const startTime = Date.now();
-      
+
       // Simulate primary failure and measure failover time
       const primary = balancer.assignServerToAgent('test-agent', 'Read');
       balancer.markServerFailed(primary!.id);
       const backup = balancer.assignServerToAgent('test-agent', 'Read');
-      
+
       const failoverTime = Date.now() - startTime;
 
       expect(backup).toBeDefined();

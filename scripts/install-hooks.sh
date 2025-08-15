@@ -45,7 +45,7 @@ mkdir -p "$SCRIPTS_DIR"
 # Backup existing hooks
 backup_existing_hooks() {
     local hooks_to_install=("pre-commit" "commit-msg" "pre-push" "prepare-commit-msg" "post-commit")
-    
+
     for hook in "${hooks_to_install[@]}"; do
         if [[ -f "$HOOKS_DIR/$hook" ]] && [[ ! -L "$HOOKS_DIR/$hook" ]]; then
             local backup_name="$hook.backup.$(date +%Y%m%d_%H%M%S)"
@@ -57,7 +57,7 @@ backup_existing_hooks() {
 
 # Create hook scripts if they don't exist
 create_hook_scripts() {
-    
+
     # Pre-commit hook
     if [[ ! -f "$SCRIPTS_DIR/pre-commit.sh" ]]; then
         cat > "$SCRIPTS_DIR/pre-commit.sh" << 'EOF'
@@ -121,7 +121,7 @@ EOF
         chmod +x "$SCRIPTS_DIR/pre-commit.sh"
         log_success "Created pre-commit hook script"
     fi
-    
+
     # Commit message hook
     if [[ ! -f "$SCRIPTS_DIR/commit-msg.sh" ]]; then
         cat > "$SCRIPTS_DIR/commit-msg.sh" << 'EOF'
@@ -166,7 +166,7 @@ EOF
         chmod +x "$SCRIPTS_DIR/commit-msg.sh"
         log_success "Created commit-msg hook script"
     fi
-    
+
     # Pre-push hook
     if [[ ! -f "$SCRIPTS_DIR/pre-push.sh" ]]; then
         cat > "$SCRIPTS_DIR/pre-push.sh" << 'EOF'
@@ -221,7 +221,7 @@ EOF
         chmod +x "$SCRIPTS_DIR/pre-push.sh"
         log_success "Created pre-push hook script"
     fi
-    
+
     # Prepare commit message hook
     if [[ ! -f "$SCRIPTS_DIR/prepare-commit-msg.sh" ]]; then
         cat > "$SCRIPTS_DIR/prepare-commit-msg.sh" << 'EOF'
@@ -237,11 +237,11 @@ SHA1="$3"
 if [[ -z "$COMMIT_SOURCE" ]]; then
     # Get current branch name
     BRANCH_NAME=$(git symbolic-ref --short HEAD 2>/dev/null || echo "detached")
-    
+
     # Extract ticket number from branch name (e.g., feature/ABC-123-description -> ABC-123)
     if [[ "$BRANCH_NAME" =~ ([A-Z]+-[0-9]+) ]]; then
         TICKET="${BASH_REMATCH[1]}"
-        
+
         # Check if commit message already contains the ticket
         if ! grep -q "$TICKET" "$COMMIT_MSG_FILE"; then
             # Prepend ticket to commit message
@@ -256,7 +256,7 @@ EOF
         chmod +x "$SCRIPTS_DIR/prepare-commit-msg.sh"
         log_success "Created prepare-commit-msg hook script"
     fi
-    
+
     # Post-commit hook
     if [[ ! -f "$SCRIPTS_DIR/post-commit.sh" ]]; then
         cat > "$SCRIPTS_DIR/post-commit.sh" << 'EOF'
@@ -292,18 +292,18 @@ EOF
 # Install hooks by creating symlinks
 install_hooks() {
     local hooks=("pre-commit" "commit-msg" "pre-push" "prepare-commit-msg" "post-commit")
-    
+
     for hook in "${hooks[@]}"; do
         local hook_script="$SCRIPTS_DIR/$hook.sh"
         local hook_link="$HOOKS_DIR/$hook"
-        
+
         if [[ -f "$hook_script" ]]; then
             # Create relative symlink
             local relative_path=$(python3 -c "
 import os.path
 print(os.path.relpath('$hook_script', '$HOOKS_DIR'))
 " 2>/dev/null || echo "../../scripts/hooks/$hook.sh")
-            
+
             ln -sf "$relative_path" "$hook_link"
             chmod +x "$hook_link"
             log_success "Installed $hook hook"
@@ -327,7 +327,7 @@ detect_hook_managers() {
             echo "Install with: pip install pre-commit"
         fi
     fi
-    
+
     # Check for Husky (Node.js)
     if [[ -f "$REPO_ROOT/package.json" ]] && grep -q "husky" "$REPO_ROOT/package.json"; then
         log_info "Husky detected in package.json"
@@ -345,19 +345,19 @@ detect_hook_managers() {
 # Test hooks installation
 test_hooks() {
     log_info "Testing hook installation..."
-    
+
     # Test pre-commit hook
     if [[ -x "$HOOKS_DIR/pre-commit" ]]; then
         # Create a temporary test change
         echo "# Test comment" >> "$REPO_ROOT/test-hook-validation.tmp"
         git add "$REPO_ROOT/test-hook-validation.tmp"
-        
+
         if "$HOOKS_DIR/pre-commit"; then
             log_success "Pre-commit hook test passed"
         else
             log_warning "Pre-commit hook test failed (this might be expected)"
         fi
-        
+
         # Clean up
         git reset HEAD "$REPO_ROOT/test-hook-validation.tmp" >/dev/null 2>&1 || true
         rm -f "$REPO_ROOT/test-hook-validation.tmp"
@@ -367,22 +367,22 @@ test_hooks() {
 # Main installation process
 main() {
     log_info "Starting hook installation process..."
-    
+
     # Step 1: Backup existing hooks
     backup_existing_hooks
-    
+
     # Step 2: Create hook scripts
     create_hook_scripts
-    
+
     # Step 3: Install hooks
     install_hooks
-    
+
     # Step 4: Detect and integrate with hook managers
     detect_hook_managers
-    
+
     # Step 5: Test installation
     test_hooks
-    
+
     echo
     log_success "Git hooks installation complete!"
     echo

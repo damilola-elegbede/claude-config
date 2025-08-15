@@ -59,7 +59,7 @@ export interface BenchmarkSchedule {
 
 export interface PerformanceThresholds {
   codeAnalysisMax: number; // 24 seconds
-  uiWorkflowMax: number; // 7.2 minutes  
+  uiWorkflowMax: number; // 7.2 minutes
   systemResponseMax: number; // 500ms
   cacheHitRateMin: number; // 85%
   uptimeMin: number; // 99.5%
@@ -114,7 +114,7 @@ export class BenchmarkEngine extends EventEmitter {
 
       // For demo purposes, using simple intervals instead of cron
       const intervalMs = this.cronToInterval(schedule.cronExpression);
-      
+
       const timer = setInterval(async () => {
         try {
           await this.runScheduledBenchmark(schedule);
@@ -176,7 +176,7 @@ export class BenchmarkEngine extends EventEmitter {
         console.log(`  Executing test: ${test.name}`);
         const result = await this.executeTest(test, suite.timeout);
         run.results.push({ testId: test.id, result });
-        
+
         if (result.success) {
           run.summary.passedTests++;
         } else {
@@ -203,7 +203,7 @@ export class BenchmarkEngine extends EventEmitter {
 
     // Regression analysis
     await this.analyzeRegression(run);
-    
+
     // PRD validation
     this.validatePRDMetrics(run);
 
@@ -216,7 +216,7 @@ export class BenchmarkEngine extends EventEmitter {
 
   private async executeTest(test: BenchmarkTest, timeout: number): Promise<TestResult> {
     const startTime = performance.now();
-    
+
     return new Promise(async (resolve, reject) => {
       const timer = setTimeout(() => {
         reject(new Error(`Test ${test.id} timed out after ${timeout}ms`));
@@ -225,7 +225,7 @@ export class BenchmarkEngine extends EventEmitter {
       try {
         const result = await this.runTestExecutor(test.executor);
         clearTimeout(timer);
-        
+
         const endTime = performance.now();
         const duration = endTime - startTime;
 
@@ -263,20 +263,20 @@ export class BenchmarkEngine extends EventEmitter {
     // Simulate code analysis benchmark
     const iterations = config.iterations || 10;
     const codebaseSize = config.codebaseSize || 'medium';
-    
+
     let totalTime = 0;
     for (let i = 0; i < iterations; i++) {
       const startTime = performance.now();
-      
+
       // Simulate code analysis work
       await this.simulateCodeAnalysis(codebaseSize);
-      
+
       const endTime = performance.now();
       totalTime += (endTime - startTime);
     }
 
     const avgTime = totalTime / iterations / 1000; // Convert to seconds
-    
+
     return {
       metrics: {
         avgAnalysisTime: avgTime,
@@ -291,20 +291,20 @@ export class BenchmarkEngine extends EventEmitter {
     // Simulate UI workflow benchmark
     const workflows = config.workflows || 5;
     const complexity = config.complexity || 'standard';
-    
+
     let totalTime = 0;
     for (let i = 0; i < workflows; i++) {
       const startTime = performance.now();
-      
+
       // Simulate UI workflow steps
       await this.simulateUIWorkflow(complexity);
-      
+
       const endTime = performance.now();
       totalTime += (endTime - startTime);
     }
 
     const avgTime = totalTime / workflows / 1000 / 60; // Convert to minutes
-    
+
     return {
       metrics: {
         avgWorkflowTime: avgTime,
@@ -320,11 +320,11 @@ export class BenchmarkEngine extends EventEmitter {
     const concurrentUsers = config.concurrentUsers || 100;
     const duration = config.duration || 30; // seconds
     const rampUp = config.rampUp || 10; // seconds
-    
+
     // Simulate gradual ramp-up
     let currentUsers = 0;
     const rampUpStep = concurrentUsers / (rampUp * 10); // 10 steps per second
-    
+
     const metrics = {
       responseTime: [],
       throughput: 0,
@@ -333,35 +333,35 @@ export class BenchmarkEngine extends EventEmitter {
     };
 
     const startTime = performance.now();
-    
+
     // Ramp up phase
     for (let i = 0; i < rampUp * 10; i++) {
       currentUsers = Math.min(currentUsers + rampUpStep, concurrentUsers);
       metrics.peakUsers = Math.max(metrics.peakUsers, Math.floor(currentUsers));
-      
+
       // Simulate requests
       const responseTime = this.simulateRequest(currentUsers);
       metrics.responseTime.push(responseTime);
-      
+
       await new Promise(resolve => setTimeout(resolve, 100)); // 100ms intervals
     }
-    
+
     // Steady state phase
     const steadyDuration = (duration - rampUp) * 10;
     for (let i = 0; i < steadyDuration; i++) {
       const responseTime = this.simulateRequest(concurrentUsers);
       metrics.responseTime.push(responseTime);
-      
+
       await new Promise(resolve => setTimeout(resolve, 100));
     }
-    
+
     const endTime = performance.now();
     const totalDuration = (endTime - startTime) / 1000;
-    
+
     const avgResponseTime = metrics.responseTime.reduce((a, b) => a + b, 0) / metrics.responseTime.length;
     const p95ResponseTime = this.calculatePercentile(metrics.responseTime, 95);
     const p99ResponseTime = this.calculatePercentile(metrics.responseTime, 99);
-    
+
     return {
       metrics: {
         avgResponseTime,
@@ -379,13 +379,13 @@ export class BenchmarkEngine extends EventEmitter {
     // Simulate cache performance testing
     const operations = config.operations || 1000;
     const hitRatio = config.expectedHitRatio || 0.85;
-    
+
     let hits = 0;
     let totalTime = 0;
-    
+
     for (let i = 0; i < operations; i++) {
       const startTime = performance.now();
-      
+
       // Simulate cache operation
       const isHit = Math.random() < hitRatio;
       if (isHit) {
@@ -396,14 +396,14 @@ export class BenchmarkEngine extends EventEmitter {
         // Cache miss - slower response
         await new Promise(resolve => setTimeout(resolve, Math.random() * 50 + 25));
       }
-      
+
       const endTime = performance.now();
       totalTime += (endTime - startTime);
     }
-    
+
     const actualHitRate = hits / operations;
     const avgLatency = totalTime / operations;
-    
+
     return {
       metrics: {
         hitRate: actualHitRate,
@@ -421,7 +421,7 @@ export class BenchmarkEngine extends EventEmitter {
       // In production, this would safely execute the script
       console.log(`Executing custom script: ${executor.script}`);
     }
-    
+
     return {
       metrics: {
         executionTime: Math.random() * 1000,
@@ -487,12 +487,12 @@ export class BenchmarkEngine extends EventEmitter {
     // Calculate average baseline performance
     const baselineAvg = baselines.reduce((sum, b) => sum + b.duration, 0) / baselines.length;
     const currentAvg = run.summary.avgDuration;
-    
+
     const regressionPercent = (currentAvg - baselineAvg) / baselineAvg;
-    
+
     if (regressionPercent > this.config.thresholds.regressionThreshold / 100) {
       run.summary.regressionDetected = true;
-      
+
       const regressionAlert = {
         type: 'regression',
         suite: run.suiteName,
@@ -501,9 +501,9 @@ export class BenchmarkEngine extends EventEmitter {
         regressionPercent: regressionPercent * 100,
         timestamp: Date.now()
       };
-      
+
       this.emit('regressionDetected', regressionAlert);
-      
+
       if (this.config.cicd.failOnRegression) {
         this.emit('cicdFailure', regressionAlert);
       }
@@ -514,38 +514,38 @@ export class BenchmarkEngine extends EventEmitter {
     // Extract performance metrics from test results
     const codeAnalysisResults = run.results.filter(r => r.testId.includes('code-analysis'));
     const uiWorkflowResults = run.results.filter(r => r.testId.includes('ui-workflow'));
-    
+
     // Validate code analysis improvement (target: 60% improvement, 18-24s)
     if (codeAnalysisResults.length > 0) {
       const avgCodeAnalysisTime = codeAnalysisResults.reduce((sum, r) => {
         return sum + (r.result.metrics.avgAnalysisTime || 0);
       }, 0) / codeAnalysisResults.length;
-      
+
       run.summary.prdValidation.codeAnalysisImprovement = avgCodeAnalysisTime <= 24;
     }
-    
+
     // Validate UI workflow improvement (target: 40% improvement, 4.8-7.2min)
     if (uiWorkflowResults.length > 0) {
       const avgUIWorkflowTime = uiWorkflowResults.reduce((sum, r) => {
         return sum + (r.result.metrics.avgWorkflowTime || 0);
       }, 0) / uiWorkflowResults.length;
-      
+
       run.summary.prdValidation.uiWorkflowImprovement = avgUIWorkflowTime <= 7.2;
     }
-    
+
     // Additional validations would be implemented based on available metrics
-    run.summary.prdValidation.overallEfficiency = 
-      run.summary.prdValidation.codeAnalysisImprovement && 
+    run.summary.prdValidation.overallEfficiency =
+      run.summary.prdValidation.codeAnalysisImprovement &&
       run.summary.prdValidation.uiWorkflowImprovement;
   }
 
   private async runScheduledBenchmark(schedule: BenchmarkSchedule): Promise<void> {
     console.log(`Running scheduled benchmark: ${schedule.id}`);
-    
+
     for (const suiteId of schedule.suiteIds) {
       let attempts = 0;
       let success = false;
-      
+
       while (attempts < schedule.retries && !success) {
         try {
           await this.runBenchmark(suiteId);
@@ -553,14 +553,14 @@ export class BenchmarkEngine extends EventEmitter {
         } catch (error) {
           attempts++;
           console.error(`Benchmark ${suiteId} attempt ${attempts} failed:`, error);
-          
+
           if (attempts < schedule.retries) {
             // Wait before retry
             await new Promise(resolve => setTimeout(resolve, 10000));
           }
         }
       }
-      
+
       if (!success) {
         this.emit('benchmarkFailed', {
           scheduleId: schedule.id,
@@ -576,7 +576,7 @@ export class BenchmarkEngine extends EventEmitter {
     try {
       const baselineDir = path.join(process.cwd(), 'benchmarks', 'baselines');
       const files = await fs.readdir(baselineDir).catch(() => []);
-      
+
       for (const file of files) {
         if (file.endsWith('.json')) {
           const suiteId = file.replace('.json', '');
@@ -586,7 +586,7 @@ export class BenchmarkEngine extends EventEmitter {
           this.baselines.set(suiteId, baselines);
         }
       }
-      
+
       console.log(`Loaded baselines for ${this.baselines.size} test suites`);
     } catch (error) {
       console.error('Failed to load baselines:', error);
@@ -597,10 +597,10 @@ export class BenchmarkEngine extends EventEmitter {
     if (!this.results.has(run.suiteId)) {
       this.results.set(run.suiteId, []);
     }
-    
+
     const suiteResults = this.results.get(run.suiteId)!;
     suiteResults.push(run);
-    
+
     // Keep only last 100 runs per suite
     if (suiteResults.length > 100) {
       suiteResults.splice(0, suiteResults.length - 100);
@@ -613,7 +613,7 @@ export class BenchmarkEngine extends EventEmitter {
     if (runs.length === 0) {
       throw new Error(`No results found for suite ${suiteId}`);
     }
-    
+
     const report = {
       suiteId,
       generatedAt: Date.now(),
@@ -621,7 +621,7 @@ export class BenchmarkEngine extends EventEmitter {
       summary: this.generateSummaryStats(runs),
       runs: runs.slice(-10) // Last 10 runs
     };
-    
+
     switch (format) {
       case 'json':
         return JSON.stringify(report, null, 2);
@@ -639,7 +639,7 @@ export class BenchmarkEngine extends EventEmitter {
     const totalPassed = runs.reduce((sum, r) => sum + r.summary.passedTests, 0);
     const avgDuration = runs.reduce((sum, r) => sum + r.summary.avgDuration, 0) / runs.length;
     const regressions = runs.filter(r => r.summary.regressionDetected).length;
-    
+
     return {
       totalTests,
       totalPassed,
@@ -679,12 +679,12 @@ export class BenchmarkEngine extends EventEmitter {
         <p>Generated: ${new Date(report.generatedAt).toISOString()}</p>
         <p>Total Runs: ${report.totalRuns}</p>
     </div>
-    
+
     <h2>Summary Statistics</h2>
     <div class="metric">Pass Rate: ${(report.summary.passRate * 100).toFixed(1)}%</div>
     <div class="metric">Average Duration: ${report.summary.avgDuration.toFixed(2)}ms</div>
     <div class="metric">Regression Rate: ${(report.summary.regressionRate * 100).toFixed(1)}%</div>
-    
+
     <h2>PRD Validation</h2>
     <div class="metric ${report.summary.prdValidation.codeAnalysisImprovement >= 0.8 ? 'success' : 'warning'}">
         Code Analysis Improvement: ${(report.summary.prdValidation.codeAnalysisImprovement * 100).toFixed(1)}%
@@ -692,7 +692,7 @@ export class BenchmarkEngine extends EventEmitter {
     <div class="metric ${report.summary.prdValidation.uiWorkflowImprovement >= 0.8 ? 'success' : 'warning'}">
         UI Workflow Improvement: ${(report.summary.prdValidation.uiWorkflowImprovement * 100).toFixed(1)}%
     </div>
-    
+
     <h2>Recent Runs</h2>
     <table>
         <tr>
@@ -722,10 +722,10 @@ export class BenchmarkEngine extends EventEmitter {
 
   private generateCSVReport(report: any): string {
     const header = 'Run ID,Date,Total Tests,Passed Tests,Failed Tests,Duration,Regression Detected\n';
-    const rows = report.runs.map((run: BenchmarkRun) => 
+    const rows = report.runs.map((run: BenchmarkRun) =>
       `${run.id},${new Date(run.startTime).toISOString()},${run.summary.totalTests},${run.summary.passedTests},${run.summary.failedTests},${run.summary.avgDuration},${run.summary.regressionDetected}`
     ).join('\n');
-    
+
     return header + rows;
   }
 

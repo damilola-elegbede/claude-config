@@ -35,19 +35,19 @@ run_test() {
     local file_content="$2"
     local expected_result="$3"  # "pass" or "fail"
     local test_file="$TEST_DIR/test_$test_name.md"
-    
+
     echo -n "Testing $test_name... "
-    
+
     # Create test file
     echo "$file_content" > "$test_file"
-    
+
     # Run validation on specific file
     if bash "$VALIDATION_SCRIPT" "$test_file" > /dev/null 2>&1; then
         result="pass"
     else
         result="fail"
     fi
-    
+
     # Check result
     if [ "$result" = "$expected_result" ]; then
         printf "${GREEN}PASSED${NC}\n"
@@ -56,7 +56,7 @@ run_test() {
         printf "${RED}FAILED (expected %s, got %s)${NC}\n" "$expected_result" "$result"
         FAILED=$((FAILED + 1))
     fi
-    
+
     # Cleanup
     rm -f "$test_file"
 }

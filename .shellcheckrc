@@ -12,7 +12,7 @@ severity=warning
 # SC2034: Variable appears unused (common in scripts with exports)
 # SC2155: Declare and assign separately (acceptable pattern in this codebase)
 # SC2250: Prefer putting braces around variable references (style preference)
-# SC2292: Prefer [[ ]] over [ ] for tests (style preference)  
+# SC2292: Prefer [[ ]] over [ ] for tests (style preference)
 # SC2310: This function is invoked in condition (common pattern)
 # SC2086: Double quote variables (acceptable in controlled contexts)
 # SC2312: Command substitution masking (info-level, not critical)

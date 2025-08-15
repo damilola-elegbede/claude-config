@@ -143,7 +143,7 @@ if [ ! -z "$markdown_files" ]; then
         if grep -E '\[.*\]\(\s*\)' "$file" > /dev/null 2>&1; then
             echo -e "${YELLOW}⚠️  Warning: Empty markdown links found in $file${NC}"
         fi
-        
+
         # Check for unmatched code blocks
         open_blocks=$(grep -c '^```' "$file" || echo 0)
         if [ $((open_blocks % 2)) -ne 0 ]; then
@@ -203,7 +203,7 @@ if [ -f "tests/test.sh" ]; then
         chmod +x tests/test.sh
         echo "Made tests/test.sh executable"
     fi
-    
+
     # Run tests and capture output
     if ./tests/test.sh > test-output.log 2>&1; then
         echo -e "${GREEN}✓ All tests passed${NC}"
@@ -259,7 +259,7 @@ if command -v npx &> /dev/null; then
             # Capture lint output
             lint_output=$(npx markdownlint-cli2 "**/*.md" 2>&1)
             lint_status=$?
-            
+
             if [ $lint_status -eq 0 ]; then
                 echo -e "${GREEN}✓ Markdown linting passed${NC}"
             else
@@ -300,7 +300,7 @@ echo -e "${BLUE}🌿 Current branch: $current_branch${NC}"
 if [[ "$current_branch" == "main" ]] || [[ "$current_branch" == "master" ]]; then
     echo -e "${YELLOW}⚠️  Warning: Pushing directly to $current_branch${NC}"
     echo "Consider creating a feature branch and pull request instead"
-    
+
     # Give user a chance to cancel
     echo -n "Continue pushing to $current_branch? (y/N): "
     read -r response
