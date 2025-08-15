@@ -6,7 +6,7 @@ This directory contains the intelligent tool preference engine implementation ac
 
 ### 1. Tool Router (`infrastructure/tool-router.ts`)
 
-**Intelligent tool routing with Strategy Pattern**
+### Intelligent tool routing with Strategy Pattern
 
 - **Sub-100ms routing decisions** for common tool types
 - **Strategy Pattern** with pluggable routing algorithms:
@@ -27,7 +27,7 @@ This directory contains the intelligent tool preference engine implementation ac
 
 ### 2. Preference Engine (`infrastructure/preference-engine.ts`)
 
-**Performance-based tool preference learning and adaptation**
+### Performance-based tool preference learning and adaptation
 
 - **Exponential moving averages** for metric smoothing
 - **Agent-specific optimization profiles** with learning configurations
@@ -45,7 +45,7 @@ This directory contains the intelligent tool preference engine implementation ac
 
 ### 3. Cache Manager (`infrastructure/cache-manager.ts`)
 
-**In-memory caching with Redis fallback**
+### In-memory caching with Redis fallback
 
 - **High-performance in-memory cache** with LRU eviction
 - **Redis fallback** for persistence and shared cache

@@ -535,20 +535,20 @@ Track these quality indicators:
 code here
 ```
 
-# After (correct)
+## After (correct)
 
 ```bash
 code here
 ```
 
-#### Issue: Improper Heading Hierarchy
+### Issue: Improper Heading Hierarchy
 
 ```markdown
 # Before (incorrect)
 # Main Title
 #### Subsection (skips H2, H3)
 
-# After (correct)
+## After (correct)
 # Main Title
 ## Major Section
 ### Subsection
@@ -563,7 +563,7 @@ Some text
 - Item 2
 More text
 
-# After (correct)
+## After (correct)
 Some text
 
 - Item 1

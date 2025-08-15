@@ -114,6 +114,7 @@
     ".git/**",
     "**/.tmp/**",
     "**/CHANGELOG.md",
+    // Agent files have special formatting requirements for system boundaries
     "system-configs/.claude/agents/*.md"
   ]
 }

@@ -246,7 +246,7 @@ TEST_CONFIG.MAX_SERVERS_PER_REGISTRY = 500;
 
 ### Common Issues
 
-**Test Timeouts**
+### Test Timeouts
 
 ```bash
 # Increase timeout for slow tests
@@ -256,7 +256,7 @@ npm test -- --testTimeout=30000
 npm test -- --testNamePattern="integration" --testTimeout=60000
 ```
 
-**Memory Issues**
+### Memory Issues
 
 ```bash
 # Run with increased memory
@@ -266,7 +266,7 @@ node --max-old-space-size=4096 node_modules/.bin/jest
 npm test -- --detectOpenHandles --forceExit
 ```
 
-**Mock Issues**
+### Mock Issues
 
 ```bash
 # Clear mocks between tests

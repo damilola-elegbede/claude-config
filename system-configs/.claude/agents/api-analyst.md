@@ -67,7 +67,7 @@ This agent is automatically deployed when:
 
 ### Performance Analysis Framework
 
-```
+```markdown
 # API Analysis Report: [Service/API Name]
 
 ## Executive Summary

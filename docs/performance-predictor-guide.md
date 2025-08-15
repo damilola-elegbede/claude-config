@@ -466,6 +466,7 @@ performance_predictor:
         emergency: 0.95
       time_horizons: [15, 60, 240]  # minutes
 ```
+
   </model-parameters>
 
   <feature-engineering>
