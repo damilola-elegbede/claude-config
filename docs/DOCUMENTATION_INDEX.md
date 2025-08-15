@@ -10,7 +10,7 @@
 
 ### 🏠 Project Overview
 
-- **[README.md](../README.md)** - Configuration management system with 40 agents
+- **[README.md](../README.md)** - Configuration management system with 41 agents
   and 14 commands
 
 - **[CLAUDE.md](../CLAUDE.md)** - Repository-specific configuration instructions
@@ -109,9 +109,9 @@
 
 ### 📁 Agent System
 
-All 40 agents are documented in the `system-configs/.claude/agents/` directory:
+All agents are documented in the `system-configs/.claude/agents/` directory:
 
-- **40 Specialized Agents**: Covering development, infrastructure, quality, security, analysis, and operations
+- **Specialized Agents**: Covering development, infrastructure, quality, security, analysis, and operations
 - **Organized by Domain**: Each agent includes YAML front-matter and SYSTEM BOUNDARY protection
 - **Validated Configurations**: All agents pass YAML compliance checking
 
@@ -151,7 +151,7 @@ All 40 agents are documented in the `system-configs/.claude/agents/` directory:
 ### Command References
 
 - `/sync` - Deploy configurations from repository to system
-- `/agent-audit` - Validate all 40 agent configurations
+- `/agent-audit` - Validate all agent configurations
 - `/test` - Auto-discover and run tests
 - `/context` - Analyze repository structure
 - `/review` - Comprehensive code quality review

@@ -79,8 +79,10 @@ and success criteria verification across all system operations.
 - No sensitive information committed
 - Temporary files cleaned up
 - Commit hash generated successfully
-- CRITICAL: Verify --no-verify flag was NOT used (check git reflog)
-- Pre-commit hooks executed successfully
+- CRITICAL: Confirm pre-commit hooks executed successfully
+  - Verify hooks path: `git config --get core.hooksPath` (or `.git/hooks`)
+  - Check hook logs/stamps (team-standardized), e.g., `.git/hooks/.pre-commit.ran`
+  - If no evidence of hook execution is found, mark verification as FAILED
 ```yaml
 
 ### /test Command
@@ -128,7 +130,9 @@ and success criteria verification across all system operations.
 - Pre-push hooks executed
 - Remote repository accessible
 - Push permissions verified
-- CRITICAL: Verify --no-verify flag was NOT used (check command history)
+- CRITICAL: Confirm `--no-verify` was not used by asserting hook execution evidence
+  - Use hooks path + team-standardized logs/stamps
+  - If hooks disabled or no evidence found, mark as FAILED
 - All quality gates passed before push
 ```yaml
 

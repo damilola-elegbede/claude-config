@@ -3,12 +3,12 @@
 ## Overview
 
 This documentation provides comprehensive information about the consolidated
-Claude configuration system with 29 specialized agents, optimized workflows,
+Claude configuration system with 41 specialized agents, optimized workflows,
 and enhanced development processes.
 
 **System Highlights:**
 
-- **29 specialized agents** with clear functional boundaries
+- **41 specialized agents** with clear functional boundaries
 - **95% agent selection accuracy** with standardized naming
 - **Clear boundaries** and standardized naming conventions
 - **Enhanced parallel execution** patterns and coordination
@@ -17,14 +17,14 @@ and enhanced development processes.
 
 ### Core Documentation
 
-- [Agent Ecosystem Overview](../agents/README.md) - Complete guide to all 29
+- [Agent Ecosystem Overview](../agents/README.md) - Complete guide to all 41
   specialized agents
 
 - [Agent Selection Guide](AGENT_SELECTION_GUIDE.md) - How to choose the right
   agent in the consolidated system
 
 - [Agent Migration Guide](AGENT_MIGRATION_GUIDE.md) - Transition guide for the
-  29-agent system
+  41-agent system
 
 - [Command Reference](#command-reference) - All available slash commands
   (unchanged)

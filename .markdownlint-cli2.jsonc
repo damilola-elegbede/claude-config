@@ -82,7 +82,9 @@
         "diagnostic-tools", "validation-scripts", "monitoring-queries", "implementation-checklist",
         "deployment-validation",
         // Additional XML elements from code-analyst report
-        "agent-name", "capability-level", "specialization", "root-causes", "symptoms"
+        "agent-name", "capability-level", "specialization", "root-causes", "symptoms",
+        // ANTML elements (hyphenated to avoid colon issues)
+        "antml-function-calls", "antml-invoke", "antml-parameter"
       ]
     },
     // MD036: Emphasis used instead of a heading (re-enabled with punctuation exception)

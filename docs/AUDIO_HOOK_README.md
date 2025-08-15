@@ -20,7 +20,7 @@ manual intervention.
 
 ### Settings Configuration
 
-Add to `/Users/damilola/.claude/settings.json`:
+Add to `$HOME/.claude/settings.json`:
 
 ```json
 {

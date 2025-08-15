@@ -339,7 +339,7 @@ with sophisticated parallel execution and multi-instance capabilities:
 | **Infrastructure** | 8 | Systems, operations, and deployment | cloud-architect, devops, platform-engineer, kubernetes-admin |
 | **Architecture** | 2 | System design and planning | principal-architect, api-architect |
 | **Design** | 4 | User experience and interfaces | ui-designer, mobile-ui, design-system, ux-researcher |
-| **Quality** | 6 | Testing, review, and validation | test-engineer, code-reviewer, performance-engineer, accessibility-auditor |
+| **Quality** | 7 | Testing, review, and validation | test-engineer, code-reviewer, performance-engineer, accessibility-auditor |
 | **Security** | 2 | Security and compliance | security-auditor, security-tester |
 | **Analysis** | 8 | Research and documentation | codebase-analyst, tech-writer, data-scientist, performance-analyst |
 | **Operations** | 11 | Support and efficiency tools | debugger, file-navigator, incident-commander, error-resolver |
@@ -403,7 +403,7 @@ Execution (8 concurrent instances):
   - agent-auditor #2: Infrastructure agents (8 specialists)
   - agent-auditor #3: Architecture agents (2 specialists)
   - agent-auditor #4: Design agents (4 specialists)
-  - agent-auditor #5: Quality agents (6 specialists)
+  - agent-auditor #5: Quality agents (7 specialists)
   - agent-auditor #6: Security agents (2 specialists)
   - agent-auditor #7: Analysis agents (8 specialists)
   - agent-auditor #8: Operations agents (11 specialists)

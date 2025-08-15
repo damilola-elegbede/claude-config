@@ -91,9 +91,9 @@ PROACTIVELY" language patterns.
 - Requirements analysis
 - Performance analysis
 
-### 8. **Operations** (teal)
+### 8. **Operations** (cyan)
 
-**Purpose**: Support, coordination, and strategic planning **Color**: `teal` **Scope**:
+**Purpose**: Support, coordination, and strategic planning **Color**: `cyan` **Scope**:
 
 - Incident management and response
 - Debugging and troubleshooting
@@ -115,7 +115,7 @@ When creating new agents, use the color associated with their primary category:
 - **green**: Quality assurance (testing, reviews)
 - **red**: Security and compliance (auditing, threat analysis)
 - **yellow**: Analysis and research (data, documentation, investigation)
-- **teal**: Operations (coordination, strategy, workflow automation)
+- **cyan**: Operations (coordination, strategy, workflow automation)
 
 ## Usage
 
