@@ -31,7 +31,7 @@ interface TaskInvocation {
   prompt: string;        // Detailed task instructions
   subagent_type: string; // Agent identifier (e.g., "backend-engineer")
 }
-```
+```yaml
 
 ### OpenAPI Specification
 
@@ -90,7 +90,7 @@ paths:
                         type: array
                         items:
                           type: string
-```
+```yaml
 
 ## Agent Capability API
 
@@ -110,7 +110,7 @@ paths:
               type: array
               items:
                 $ref: '#/components/schemas/AgentInfo'
-```
+```yaml
 
 ### Agent Suggestion API
 
@@ -147,7 +147,7 @@ paths:
                     maximum: 1
                   reasoning:
                     type: string
-```
+```yaml
 
 ## Agent YAML Specification
 
@@ -161,7 +161,7 @@ tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 color: blue
 category: development
 ---
-```
+```yaml
 
 ## System Boundary & Security Model
 
@@ -210,7 +210,7 @@ ToolAccessPatterns:
   operations:
     common_tools: [Read, Write, Grep, Glob, Bash]
     description: Operational tools for automation and management
-```
+```yaml
 
 ## API Examples
 
@@ -222,7 +222,7 @@ ToolAccessPatterns:
   "prompt": "Create a RESTful user service with authentication, including:\n- User registration and login endpoints\n- JWT token generation\n- PostgreSQL database integration\n- Input validation and error handling\n- Unit and integration tests",
   "subagent_type": "backend-engineer"
 }
-```
+```yaml
 
 ### Example 2: Security Audit
 
@@ -232,7 +232,7 @@ ToolAccessPatterns:
   "prompt": "Perform comprehensive security audit of the authentication system:\n- Check for OWASP Top 10 vulnerabilities\n- Review JWT implementation\n- Analyze password storage\n- Check for SQL injection risks\n- Provide remediation recommendations",
   "subagent_type": "security-auditor"
 }
-```
+```yaml
 
 ### Example 3: Multi-Agent Parallel Execution
 
@@ -257,7 +257,7 @@ const agents = [
 ];
 
 // Execute in parallel (orchestrated by Claude)
-```
+```yaml
 
 ## Error Handling
 
@@ -276,7 +276,7 @@ const agents = [
        }
      }
    }
-   ```
+```text
 
 2. **Boundary Violation**
 
@@ -292,7 +292,7 @@ const agents = [
        }
      }
    }
-   ```
+```yaml
 
 ## Multi-Agent Workflows
 
@@ -322,7 +322,7 @@ workflow:
           task: Review implementation
         - type: security-auditor
           task: Security validation
-```
+```yaml
 
 #### Pattern 2: Analysis Pipeline
 
@@ -342,7 +342,7 @@ workflow:
       agents:
         - type: tech-writer
           task: Consolidate findings
-```
+```yaml
 
 ### Integration Best Practices
 
@@ -406,7 +406,7 @@ workflow:
     ]
   }
 }
-```
+```yaml
 
 ## Summary
 
@@ -635,4 +635,4 @@ components:
                 timestamp:
                   type: string
                   format: date-time
-```
+```text

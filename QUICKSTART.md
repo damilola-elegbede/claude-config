@@ -12,7 +12,7 @@ npm install -g @anthropic/claude-code
 
 # Or via Homebrew (macOS)
 brew install claude-code
-```
+```yaml
 
 ### Step 2: Clone and Setup Configuration
 
@@ -24,7 +24,7 @@ cd claude-config
 # Quick setup using the sync command
 claude-code
 /sync
-```
+```yaml
 
 This deploys 40 agents and 14 commands to your system.
 
@@ -36,7 +36,7 @@ This deploys 40 agents and 14 commands to your system.
 
 # Test repository analysis
 /context
-```
+```yaml
 
 ### Step 4: Try the System
 
@@ -50,7 +50,7 @@ This deploys 40 agents and 14 commands to your system.
 # Smart git operations
 /commit
 /push
-```
+```yaml
 
 ## 🔧 Essential Commands
 
@@ -75,7 +75,7 @@ git status
 
 # Force sync
 /sync
-```
+```yaml
 
 **If agents aren't available:**
 
@@ -88,7 +88,7 @@ ls ~/.claude/agents/
 
 # Validate agent configurations
 /agent-audit
-```
+```yaml
 
 **If commands don't work:**
 
@@ -98,7 +98,7 @@ ls ~/.claude/commands/
 
 # Re-sync all configurations
 /sync
-```
+```yaml
 
 ## 📚 What Happens Now
 

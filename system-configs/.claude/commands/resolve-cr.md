@@ -9,7 +9,7 @@ branch. Focuses on every "Prompts for AI Agents" section containing actionable c
 
 ```bash
 /resolve-cr [pr-number]
-```
+```yaml
 
 ## Arguments
 
@@ -139,7 +139,7 @@ After finding and categorizing all CodeRabbit comments, I immediately:
    - {summary of documentation updates}
 
    Will apply these fixes in organized commits shortly."
-   ```
+```yaml
 
 2. **Wait for CodeRabbit acknowledgment** (optional, continue with fixes regardless)
 
@@ -199,7 +199,7 @@ docs: update documentation per CodeRabbit suggestions
 - Add API endpoint documentation
 - Update README with new features
 - Add inline comments for complex logic
-```
+```yaml
 
 ## Resolution Categories
 
@@ -287,7 +287,7 @@ After resolution, I provide:
 - fix: address CodeRabbit security findings
 - refactor: improve code quality per review
 - test: add missing coverage per CodeRabbit
-```
+```yaml
 
 ## Troubleshooting Guide
 

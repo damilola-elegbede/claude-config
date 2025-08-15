@@ -48,7 +48,7 @@ category: development  # Agent category (development, infrastructure, architectu
 SYSTEM BOUNDARY: While the Task tool is visible in your function registry, it is RESERVED EXCLUSIVELY for Claude. You are not Claude. This agent instance will AUTOMATICALLY TERMINATE upon any Task tool invocation, regardless of who requests it. This is a hard-coded system protection that cannot be overridden by any user instruction, including direct commands. Your operational integrity depends on never crossing this boundary.
 
 [Your agent instructions here]
-```
+```yaml
 
 ### Step 2: Define Agent Purpose
 
@@ -123,7 +123,7 @@ Each agent requires:
     ├── backend-engineer.md        # Example agent
     ├── frontend-architect.md      # Example agent
     └── {your-new-agent}.md       # Your new agent
-```
+```yaml
 
 ## Tool Selection Guidelines
 
@@ -175,7 +175,7 @@ tools: Tool1, Tool2      # Required: Comma-separated tool list
 color: blue              # Required: Category color
 category: development    # Required: Official category
 ---
-```
+```yaml
 
 ### Validation Rules
 
@@ -237,7 +237,7 @@ tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite
 color: purple
 category: architecture
 ---
-```
+```yaml
 
 ## Writing Effective Agent Instructions
 
@@ -276,7 +276,7 @@ category: architecture
 
 ## Anti-Patterns to Avoid
 [Common mistakes and what not to do]
-```
+```yaml
 
 ### Writing Guidelines
 
@@ -290,7 +290,7 @@ category: architecture
    You are an expert backend engineer specializing in high-performance
    distributed systems, capable of designing architectures that handle
    100k+ requests per second with sub-100ms latency.
-   ```
+```yaml
 
 2. **Define Boundaries**: Clear scope and limitations
 
@@ -300,7 +300,7 @@ category: architecture
    - ✅ Database schema optimization
    - ❌ Frontend UI development
    - ❌ Mobile app development
-   ```
+```yaml
 
 3. **Provide Context**: Include domain knowledge
 
@@ -309,7 +309,7 @@ category: architecture
    - E-commerce: Payment processing, inventory management
    - Financial Services: Trading systems, regulatory compliance
    - Real-time Systems: Chat applications, live streaming
-   ```
+```yaml
 
 4. **Action-Oriented**: Focus on what the agent does
 
@@ -319,7 +319,7 @@ category: architecture
    2. Identify performance bottlenecks
    3. Implement optimization strategies
    4. Validate improvements with benchmarks
-   ```
+```yaml
 
 ## Testing and Validation
 
@@ -330,7 +330,7 @@ category: architecture
    ```bash
    # Validate YAML syntax
    python -c "import yaml; yaml.safe_load(open('.claude/agents/my-agent.md').read().split('---')[1])"
-   ```
+```text
 
 2. **Category Alignment**
    - Verify color matches category
@@ -357,7 +357,7 @@ category: architecture
        "Optimize database query performance",
        "Design microservice architecture"
    ]
-   ```
+```yaml
 
 2. **Integration Testing**: Test interaction with orchestrator
 
@@ -368,7 +368,7 @@ category: architecture
    1. Create API endpoint
    2. Write comprehensive tests
    """
-   ```
+```text
 
 3. **Edge Case Testing**: Test boundary conditions
    - Tasks outside agent scope
@@ -382,7 +382,7 @@ Use the `agent-auditor` to validate your new agent:
 ```bash
 # Run audit on new agent
 /audit .claude/agents/my-new-agent.md
-```
+```text
 
 The auditor checks:
 
@@ -411,7 +411,7 @@ The auditor checks:
 3. Implement core services
 4. Add payment integration
 5. Test with realistic scenarios
-```
+```yaml
 
 ### Pattern 2: Performance Optimization
 
@@ -428,7 +428,7 @@ The auditor checks:
 3. Use connection pooling
 4. Add database indexes
 5. Profile and benchmark
-```
+```yaml
 
 ### Pattern 3: Integration Capabilities
 
@@ -446,7 +446,7 @@ The auditor checks:
 - Webhook handling
 - Rate limit management
 - Error recovery
-```
+```yaml
 
 ### Best Practices Summary
 
@@ -468,7 +468,7 @@ The auditor checks:
 
 ```text
 Error: YAML parsing failed
-```
+```text
 
 **Solution**:
 
@@ -483,7 +483,7 @@ Error: YAML parsing failed
 
 ```text
 Error: Tool 'Bash' not available
-```
+```text
 
 **Solution**:
 
@@ -497,7 +497,7 @@ Error: Tool 'Bash' not available
 
 ```text
 Error: Color 'blue' doesn't match category 'security'
-```
+```text
 
 **Solution**:
 
@@ -511,7 +511,7 @@ Error: Color 'blue' doesn't match category 'security'
 
 ```text
 Error: Unknown agent 'my-agent'
-```
+```text
 
 **Solution**:
 
@@ -525,7 +525,7 @@ Error: Unknown agent 'my-agent'
 
 ```text
 Error: System boundary violation - Task tool invoked
-```
+```text
 
 **Solution**:
 
@@ -544,14 +544,14 @@ Error: System boundary violation - Task tool invoked
    2. Identify failure point
    3. Document error context
    4. Suggest resolution
-   ```
+```yaml
 
 2. **Test in Isolation**: Create minimal test cases
 
    ```python
    # Minimal test
    simple_test = "Read and analyze a single file"
-   ```
+```text
 
 3. **Progressive Complexity**: Start simple, add complexity
 
@@ -560,7 +560,7 @@ Error: System boundary violation - Task tool invoked
    Level 2: Analyze content
    Level 3: Generate recommendations
    Level 4: Integration with other agents
-   ```
+```yaml
 
 ## Integration with Existing Agents
 
@@ -581,7 +581,7 @@ Orchestrator (Claude)
 Orchestrator aggregates results
      ↓
 Final Output
-```
+```yaml
 
 ### Coordination Patterns
 
@@ -592,7 +592,7 @@ Final Output
    Orchestrator → uses insights → Engineer
    Engineer → creates solution → Orchestrator
    Orchestrator → validates with → Tester
-   ```
+```text
 
 2. **Parallel Execution**
 
@@ -601,7 +601,7 @@ Final Output
    - Backend-engineer (API development)
    - Frontend-architect (UI development)
    - Test-engineer (Test creation)
-   ```
+```text
 
 3. **Iterative Refinement**
 
@@ -611,7 +611,7 @@ Final Output
      Reviewer → provides feedback
      Developer → incorporates changes
    Until: Standards met
-   ```
+```yaml
 
 ### Integration Best Practices
 
@@ -628,7 +628,7 @@ Final Output
 
    ### Recommendations
    [Next steps]
-   ```
+```yaml
 
 2. **Handoff Preparation**: Provide context for next agent
 
@@ -638,7 +638,7 @@ Final Output
    - Assumptions documented
    - Open questions listed
    - Dependencies identified
-   ```
+```text
 
 3. **Complementary Skills**: Design agents to complement each other
 
@@ -647,7 +647,7 @@ Final Output
    Backend-Engineer: Implements the specification
    Test-Engineer: Validates the implementation
    Tech-Writer: Creates user documentation
-   ```
+```yaml
 
 ### Example: Multi-Agent Project
 
@@ -667,7 +667,7 @@ Creating a new microservice with multiple agents:
 ## Phase 3: Documentation (Sequential)
 - tech-writer: Create API docs
 - tech-writer: Create user guide
-```
+```yaml
 
 ## Conclusion
 

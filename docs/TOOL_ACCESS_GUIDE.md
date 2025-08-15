@@ -16,12 +16,16 @@ WebFetch, WebSearch, TodoWrite, NotebookRead, NotebookEdit
 
 - **backend-engineer**: Needs full access for complex server-side implementation,
   database modifications, and system configuration
+
 - **frontend-architect**: Requires all tools for UI implementation, build system
   configuration, and performance optimization
+
 - **fullstack-lead**: Standard implementation agent needing complete toolset for
   feature development and bug fixes
+
 - **devops**: Essential for infrastructure automation, CI/CD configuration, and
   deployment scripts
+
 - **platform-engineer**: Needs full access for monitoring setup, infrastructure
   management, and SRE automation
 
@@ -38,10 +42,13 @@ Bash(read-only), TodoWrite
 
 - **codebase-analyst**: Focuses on understanding and reporting, not modification.
   Read-only access prevents accidental changes while allowing comprehensive analysis
+
 - **security-auditor**: Analyzes for vulnerabilities without modifying code.
   Separation of analysis and implementation ensures objective security assessment
+
 - **debugger**: Investigates issues without changing code during analysis phase.
   Modifications happen after investigation is complete
+
 - **performance-specialist**: Analyzes performance characteristics before
   recommending changes. Separation ensures objective measurement
 
@@ -57,6 +64,7 @@ bias toward immediate fixes.
 
 - **principal-architect**: Needs full access for architectural decisions, system
   design, and technical leadership across all domains
+
 - **project-orchestrator**: Requires complete toolset to coordinate multiple
   agents and manage complex project workflows
 
@@ -73,6 +81,7 @@ WebSearch, TodoWrite
 
 - **tech-writer**: Focuses on technical documentation and knowledge transfer.
   Notebook tools not needed for standard documentation workflows
+
 - **api-architect**: Creates API specifications and documentation. Primary focus
   on OpenAPI specs and contract documentation
 
@@ -101,6 +110,7 @@ execute. Direct system access could blur the design/implementation boundary.
 
 - **test-engineer**: Full access needed for test implementation, framework
   configuration, and quality automation
+
 - **code-reviewer**: Read + analysis access for objective code quality
   assessment without implementation bias
 
@@ -140,6 +150,7 @@ Tool restrictions enable clear audit trails:
 - **Full Access**: Implementation and orchestration agents need system execution
 - **Read-Only**: Analysis agents can run non-destructive commands for
   investigation
+
 - **Forbidden**: Design agents don't need system access for specification
   creation
 
@@ -153,6 +164,7 @@ Tool restrictions enable clear audit trails:
 
 - **Universal**: All agents can access external information for research and
   context
+
 - **Justification**: External information gathering doesn't pose security risks
   and enhances agent capabilities
 
@@ -160,6 +172,7 @@ Tool restrictions enable clear audit trails:
 
 - **Limited Use**: Only data-focused implementation agents need notebook
   capabilities
+
 - **Justification**: Most agents work with code and documentation rather than
   data analysis notebooks
 

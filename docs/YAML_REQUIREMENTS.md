@@ -24,7 +24,7 @@ Example:
 name: agent-name
 description: Agent description
 ---
-```
+```yaml
 
 ### 2. Required Fields
 
@@ -56,7 +56,7 @@ These fields should be included for complete agent configuration:
     - primary_skill
     - secondary_skill
     - tertiary_skill
-  ```
+```text
 
 - **tools**: Tool access configuration
 
@@ -65,7 +65,7 @@ These fields should be included for complete agent configuration:
     allowed: [Read, Write, Grep]
     forbidden: [Delete]
     rationale: "Explanation of tool permissions"
-  ```
+```yaml
 
 ### 4. Optional Fields
 
@@ -85,7 +85,7 @@ These fields can be included as needed:
 
   ```yaml
   description: Use this agent for backend development tasks requiring FAANG-level expertise
-  ```
+```text
 
 - **AVOID**: Multiline descriptions with pipe operator
 
@@ -93,7 +93,7 @@ These fields can be included as needed:
   description: |
     Use this agent for backend development...
     Multiple lines make parsing complex...
-  ```
+```yaml
 
 ### 2. Examples in Description
 
@@ -123,13 +123,13 @@ Recommended order for consistency:
 
 # Validate specific file
 ./scripts/validate_yaml.sh agent-name.md
-```
+```yaml
 
 #### Running Unit Tests
 
 ```bash
 ./test_yaml_validation.sh
-```
+```yaml
 
 #### Pre-commit Hook Setup
 
@@ -141,7 +141,7 @@ cp pre-commit-yaml-validation.sh .git/hooks/pre-commit
 
 # Or symlink it
 ln -s ../../.claude/agents/pre-commit-yaml-validation.sh .git/hooks/pre-commit
-```
+```yaml
 
 ## Common Issues and Solutions
 
@@ -167,7 +167,7 @@ Use `AGENT_TEMPLATE.md` as a starting point for new agent files:
 ```bash
 cp AGENT_TEMPLATE.md new-agent.md
 # Edit the file to customize for your agent
-```
+```yaml
 
 ## CI/CD Integration
 
@@ -188,7 +188,7 @@ jobs:
       - name: Validate YAML front-matter
         run: |
           ./scripts/validate_yaml.sh
-```
+```yaml
 
 ## Maintenance
 

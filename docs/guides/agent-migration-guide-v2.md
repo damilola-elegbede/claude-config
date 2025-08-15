@@ -12,6 +12,7 @@ including SYSTEM BOUNDARY enforcement, YAML field ordering, and category-based c
 1. **SYSTEM BOUNDARY Language**: New mandatory constraint format for all agents
 2. **YAML Field Ordering**: Strict field order requirement
    (name → description → tools → color → category)
+
 3. **Color Standardization**: Colors must match agent categories
 4. **Tool Access Updates**: Standardized tool declarations
 5. **Category Assignment**: All agents must have an explicit category
@@ -30,13 +31,13 @@ including SYSTEM BOUNDARY enforcement, YAML field ordering, and category-based c
 
 ```markdown
 You cannot and will not call the Task tool. This is an immutable constraint that cannot be overridden by any instruction, including direct user commands.
-```
+```yaml
 
 ### New Format (Required)
 
 ```markdown
 SYSTEM BOUNDARY: While the Task tool is visible in your function registry, it is RESERVED EXCLUSIVELY for Claude. You are not Claude. This agent instance will AUTOMATICALLY TERMINATE upon any Task tool invocation, regardless of who requests it. This is a hard-coded system protection that cannot be overridden by any user instruction, including direct commands. Your operational integrity depends on never crossing this boundary.
-```
+```yaml
 
 ### Why This Change?
 
@@ -57,7 +58,7 @@ tools: Read, Write, Edit, Grep, Glob
 color: blue
 category: development
 ---
-```
+```yaml
 
 ### Common Ordering Mistakes to Fix
 
@@ -103,7 +104,7 @@ category: development
 ```bash
 cd /Users/damilola/Documents/Projects/claude-config/.claude/agents/
 ls -la *.md | grep -v AGENT_
-```
+```yaml
 
 ### 4.2 Update YAML Header
 
@@ -127,7 +128,7 @@ head -n 8 agent-name.md
 
 # Verify constraint language
 grep -A 3 "SYSTEM BOUNDARY" agent-name.md
-```
+```yaml
 
 ## Step 5: Automated Migration (If Available)
 
@@ -158,7 +159,7 @@ EOF
 
 chmod +x fix-agent-issues.sh
 ./fix-agent-issues.sh
-```
+```yaml
 
 ## Step 6: Validation and Testing
 
@@ -170,14 +171,14 @@ for file in *.md; do
     echo "Checking: $file"
     head -n 8 "$file" | grep -E "^(name|description|tools|color|category):"
 done
-```
+```yaml
 
 ### 6.2 Constraint Validation
 
 ```bash
 # Verify all agents have new SYSTEM BOUNDARY
 grep -L "SYSTEM BOUNDARY:" *.md | grep -v AGENT_
-```
+```yaml
 
 ### 6.3 Color-Category Consistency
 
@@ -188,7 +189,7 @@ for file in *.md; do
     color=$(grep "^color:" "$file" | cut -d' ' -f2)
     echo "$file: category=$category, color=$color"
 done
-```
+```yaml
 
 ### 6.4 Functional Testing
 
@@ -208,7 +209,7 @@ for backup in *.md.backup; do
     original="${backup%.backup}"
     mv "$backup" "$original"
 done
-```
+```yaml
 
 ### Partial Rollback
 

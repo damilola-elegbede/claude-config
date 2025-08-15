@@ -52,7 +52,7 @@ strategies and preventing future violations through systematic controls.
 # - Quality metrics calculation
 # - Trend analysis and baseline tracking
 # - Automated fix suggestions
-```
+```yaml
 
 ### 2. Multi-Level Remediation Strategy
 
@@ -65,7 +65,7 @@ strategies and preventing future violations through systematic controls.
 
 # Level 3: Manual review (complex violations)
 # Generated recommendations in quality report
-```
+```yaml
 
 ### 3. Pre-Commit Quality Enforcement
 
@@ -78,7 +78,7 @@ ln -s ../../scripts/pre-commit-markdown-quality.sh .git/hooks/pre-commit
 # - Fast feedback (< 5 seconds)
 # - Bypass option for emergencies
 # - Clear fix instructions
-```
+```yaml
 
 ### 4. Continuous Integration Pipeline
 
@@ -97,7 +97,7 @@ The CI/CD pipeline provides:
 
 # Standalone markdown quality tests
 ./tests/markdown/test_markdown_quality.sh
-```
+```yaml
 
 ## Technical Debt Analysis
 
@@ -185,7 +185,7 @@ Recommended `.vscode/settings.json`:
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true
 }
-```
+```yaml
 
 ### 2. Development Workflow Integration
 
@@ -195,7 +195,7 @@ Developer Workflow:
   2. Stage Changes → Pre-commit hook validation
   3. Create PR → CI quality checks
   4. Merge → Baseline update and trend tracking
-```
+```yaml
 
 ### 3. Quality Monitoring
 
@@ -239,7 +239,7 @@ Developer Workflow:
 
 # Trend analysis
 cat tests/markdown/.baseline_violations  # Historical tracking
-```
+```yaml
 
 ### Key Performance Indicators
 

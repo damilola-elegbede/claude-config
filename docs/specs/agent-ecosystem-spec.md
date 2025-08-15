@@ -106,7 +106,7 @@ graph TD
         I --> J
         J --> K[Execution Engine]
     end
-```
+```yaml
 
 ### Agent Categories
 
@@ -115,6 +115,7 @@ graph TD
 - **Purpose**: Core programming and implementation
 - **Members**: backend-engineer, frontend-engineer, mobile-engineer, data-engineer, ml-engineer, database-admin,
   database-migration-specialist, integration-specialist, file-writer, dependency-manager, git-workflow
+
 - **Tool Access**: Full read/write/execute
 - **Constraints**: Cannot deploy to production
 
@@ -144,6 +145,7 @@ graph TD
 - **Purpose**: Testing, review, and validation
 - **Members**: test-engineer, code-reviewer, performance-engineer, performance-analyst, accessibility-auditor,
   api-contract-tester, agent-auditor
+
 - **Tool Access**: Read and test execution
 - **Constraints**: Cannot modify production code
 
@@ -159,6 +161,7 @@ graph TD
 - **Purpose**: Research, documentation, and analysis
 - **Members**: researcher, business-analyst, data-scientist, ux-researcher, tech-writer, api-documenter,
   log-analyst, documentation-finder
+
 - **Tool Access**: Read and analysis tools only
 - **Constraints**: Cannot modify code directly
 
@@ -167,6 +170,7 @@ graph TD
 - **Purpose**: Support, coordination, and strategic planning
 - **Members**: incident-commander, debugger, product-strategist, error-resolver, config-specialist,
   file-navigator, search-coordinator
+
 - **Tool Access**: Specialized operational tools
 - **Constraints**: Domain-specific limitations
 
@@ -266,7 +270,7 @@ def identify_quality_gates(task):
         gates.append("accessibility-auditor")
 
     return gates
-```
+```yaml
 
 ### Parallel Execution Patterns
 
@@ -286,7 +290,7 @@ execution:
       instance: service-3
       task: implement_analytics_service
   coordination: "Shared API standards, common database patterns"
-```
+```yaml
 
 #### Cross-Platform Development
 
@@ -303,7 +307,7 @@ execution:
     - type: mobile-ui
       task: design_mobile_interface
   integration_points: ["API contracts", "shared data models"]
-```
+```yaml
 
 #### Quality Gates
 
@@ -324,7 +328,7 @@ execution:
     - type: performance-engineer
       task: performance_validation
       scope: "Load testing, optimization validation"
-```
+```yaml
 
 #### Documentation Pipeline
 
@@ -340,7 +344,7 @@ execution:
       task: user_guides
     - type: tech-writer
       task: project_summary
-```
+```yaml
 
 #### Large-Scale Analysis (Multiple codebase-analyst instances)
 
@@ -361,7 +365,7 @@ execution:
       instance: infrastructure
       task: analyze_deployment_architecture
   aggregation: "Comprehensive system overview by principal-architect"
-```
+```yaml
 
 ### Tool Access Matrix
 

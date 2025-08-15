@@ -62,10 +62,13 @@ data analysis capabilities.
 
 1. **Principle of Least Privilege**: Each agent receives only the minimum tools
    necessary for its role
+
 2. **Separation of Concerns**: Analysis agents cannot modify code; implementation
    agents focus on building
+
 3. **Defense in Depth**: Multiple layers of access control prevent privilege
    escalation
+
 4. **Audit Trail**: All tool restrictions are documented with clear rationale
 
 ### Risk Mitigation Strategies
@@ -74,8 +77,10 @@ data analysis capabilities.
 
 - **Analysis Agents**: Forbidden from Write/Edit operations to prevent accidental
   production modifications
+
 - **Security Auditor**: Read-only access ensures security reviews don't alter the
   systems being audited
+
 - **Design Agents**: Limited to specification tools, preventing system-level
   access
 
@@ -83,6 +88,7 @@ data analysis capabilities.
 
 - **Documentation Agents**: Controlled file access prevents system configuration
   changes
+
 - **Coordination Agents**: Orchestrate through the general-purpose agent with
   limited system execution
 
@@ -92,12 +98,16 @@ data analysis capabilities.
 
 - **backend-engineer**: Implements complex distributed systems requiring database
   and infrastructure access
+
 - **frontend-architect**: Manages build processes and deployment configurations
   requiring full system access
+
 - **fullstack-lead**: Implements features within defined scope, needs complete
   toolset for effectiveness
+
 - **test-engineer**: Creates test infrastructure and automation requiring full
   implementation capabilities
+
 - **devops**: Manages infrastructure automation requiring comprehensive system
   access
 
@@ -105,11 +115,14 @@ data analysis capabilities.
 
 - **security-auditor**: Performs vulnerability assessment without modifying audit
   targets
+
 - **debugger**: Investigates issues through analysis without changing production
   systems
+
 - **code-reviewer**: Reviews code quality without implementing changes
 - **codebase-analyst**: Analyzes system architecture for reporting purposes
   only
+
 - **performance-specialist**: Analyzes and tests performance without modifying
   implementations
 

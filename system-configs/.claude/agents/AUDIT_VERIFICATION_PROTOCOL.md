@@ -25,7 +25,7 @@ for file in .claude/agents/*.md; do
     echo "Empty file: $file"
   fi
 done
-```
+```yaml
 
 ### 2. Audit Request Preparation
 
@@ -40,7 +40,7 @@ When requesting audits:
 
 Example:
 
-```
+```text
 "Please audit these Development & Implementation agents:
 - backend-engineer
 - frontend-engineer
@@ -49,7 +49,7 @@ Example:
 - ml-engineer
 
 First verify these files exist in .claude/agents/ directory, then proceed with compliance audit."
-```
+```yaml
 
 ### 3. Post-Audit Validation
 
@@ -68,7 +68,7 @@ grep -n "pattern" .claude/agents/[agent-name].md
 grep -n "MUST BE USED for" .claude/agents/[agent-name].md
 grep -n "Use PROACTIVELY" .claude/agents/[agent-name].md
 grep -n "Sonnet 4.1" .claude/agents/[agent-name].md
-```
+```yaml
 
 #### Cross-Check Metrics
 
@@ -87,7 +87,7 @@ When creating the executive summary:
 - ✅ Verified: Agent isolation violations in code-reviewer.md (line 127)
 - ✅ Verified: Missing agents confirmed via file system check
 - ⚠️  Unverified: Claim about 80% tool violations (needs sampling)
-```
+```yaml
 
 #### Flag Suspicious Results
 
@@ -123,7 +123,7 @@ for issue in audit_results.critical_issues:
 
 # Calculate verified metrics
 verified_score = calculate_score_from_verified_issues_only()
-```
+```yaml
 
 ## Red Flags to Watch For
 
@@ -165,4 +165,4 @@ for f in .claude/agents/*.md; do
   grep -q "Sonnet 4.1" "$f" && echo "✅ Found" || echo "❌ Missing"
   echo "---"
 done
-```
+```text

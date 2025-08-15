@@ -46,19 +46,19 @@
 
 ```mermaid
 Task Request → fullstack-lead → [complexity assessment] → staff agents → principal-architect
-```
+```yaml
 
 ### Quality Assurance Workflow
 
 ```mermaid
 Code Complete → code-reviewer → [parallel: security-auditor, test-engineer] → implementation agents
-```
+```yaml
 
 ### Analysis Request Flow
 
 ```mermaid
 Analysis Need → codebase-analyst → [domain-specific agents] → principal-architect
-```
+```yaml
 
 ## Complexity Thresholds
 

@@ -2,7 +2,9 @@
 
 ## Overview
 
-The Comprehensive Analytics and Reporting System provides advanced executive dashboard capabilities, KPI tracking, ROI analysis, and automated report generation for the MCP optimization platform. This system validates all PRD metrics and provides comprehensive insights for stakeholders.
+The Comprehensive Analytics and Reporting System provides advanced executive dashboard capabilities, KPI tracking, ROI
+analysis, and automated report generation for the MCP optimization platform.
+This system validates all PRD metrics and provides comprehensive insights for stakeholders.
 
 ## Key Features
 
@@ -72,7 +74,7 @@ ComprehensiveReportingSystem
     ├── REST API Endpoints
     ├── Webhook Notifications
     └── External System Integration
-```
+```yaml
 
 ## PRD Validation Metrics
 
@@ -95,19 +97,19 @@ The system validates all key Product Requirements Document metrics:
 ```http
 GET /api/reporting/kpis/current
 GET /api/reporting/kpis?start=<timestamp>&end=<timestamp>
-```
+```yaml
 
 ### ROI Analysis
 
 ```http
 GET /api/reporting/roi
-```
+```yaml
 
 ### Trend Analysis
 
 ```http
 GET /api/reporting/trends?start=<timestamp>&end=<timestamp>
-```
+```yaml
 
 ### Report Generation
 
@@ -124,19 +126,19 @@ Content-Type: application/json
   "format": "html",
   "recipients": ["executives@company.com"]
 }
-```
+```yaml
 
 ### Report Export
 
 ```http
 GET /api/reporting/export/{reportId}?format={json|html|pdf|csv|xlsx}
-```
+```yaml
 
 ### Available Reports
 
 ```http
 GET /api/reporting/reports
-```
+```yaml
 
 ## Configuration
 
@@ -183,7 +185,7 @@ const config: MonitoringSystemConfig = {
     }
   }
 };
-```
+```yaml
 
 ## Usage Examples
 
@@ -203,7 +205,7 @@ const system = createMonitoringSystem({
 });
 
 await system.start();
-```
+```yaml
 
 ### Generating Executive Reports
 
@@ -218,7 +220,7 @@ const report = await system.generateExecutiveReport({
 });
 
 console.log(`Report generated: ${report.id}`);
-```
+```yaml
 
 ### Accessing KPIs and ROI Data
 
@@ -233,7 +235,7 @@ console.log(`Cost Savings: $${kpis.costSavings.toLocaleString()}`);
 const roi = await system.getROIAnalysis();
 console.log(`Break-even: ${roi.breakEvenMonths} months`);
 console.log(`NPV: $${roi.netPresentValue.toLocaleString()}`);
-```
+```yaml
 
 ### Performance Trend Analysis
 
@@ -248,7 +250,7 @@ trends.forEach(trend => {
   console.log(`${trend.metricName}: ${trend.trend.direction}`);
   console.log(`Target achievement: ${trend.targetProgress.achievement}%`);
 });
-```
+```yaml
 
 ### Export Reports
 
@@ -259,7 +261,7 @@ const reportId = 'executive-dashboard-20240115';
 const htmlReport = await system.exportReport(reportId, 'html');
 const pdfReport = await system.exportReport(reportId, 'pdf');
 const csvData = await system.exportReport(reportId, 'csv');
-```
+```yaml
 
 ## Report Templates
 
@@ -353,7 +355,7 @@ Run the comprehensive demo to see all features in action:
 ```bash
 cd src/mcp/monitoring
 npx ts-node reporting-demo.ts
-```
+```text
 
 The demo showcases:
 
@@ -385,6 +387,11 @@ Automated backup procedures protect report history and configuration data.
 
 ## Conclusion
 
-The Comprehensive Analytics and Reporting System provides enterprise-grade reporting capabilities specifically designed for the MCP optimization platform. It delivers the executive visibility, ROI tracking, and performance validation required to demonstrate the value and effectiveness of the MCP infrastructure investment.
+The Comprehensive Analytics and Reporting System provides enterprise-grade reporting capabilities specifically designed
+for the MCP optimization platform.
+It delivers the executive visibility, ROI tracking, and performance validation required to demonstrate the value and
+effectiveness of the MCP infrastructure investment.
 
-With automated generation, multi-format export, and comprehensive API integration, the system ensures stakeholders have access to the insights they need when they need them, in the format that works best for their workflow.
+With automated generation,, multi-format export,, and comprehensive API integration,
+, the system ensures stakeholders have access to the insights they need when they need them,
+, in the format that works best for their workflow.

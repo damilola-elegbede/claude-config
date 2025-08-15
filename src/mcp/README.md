@@ -1,6 +1,7 @@
 # MCP Infrastructure Implementation
 
-This directory contains the intelligent tool preference engine implementation according to SPEC_01, providing sub-100ms routing decisions with performance-based learning and advanced caching.
+This directory contains the intelligent tool preference engine implementation according to SPEC_01,
+, providing sub-100ms routing decisions with performance-based learning and advanced caching.
 
 ## Components Implemented
 
@@ -104,7 +105,7 @@ await infrastructure.recordPerformance({
   success: true,
   satisfaction: 0.9
 });
-```
+```yaml
 
 ## Performance Targets (SPEC_01 Compliance)
 
@@ -130,7 +131,7 @@ src/mcp/
 ├── types/
 │   └── index.ts                 # TypeScript type definitions
 └── README.md                    # This file
-```
+```yaml
 
 ## Testing
 
@@ -138,7 +139,7 @@ Run the integration test to verify all components work correctly:
 
 ```bash
 node src/mcp/infrastructure/integration-test.ts
-```
+```text
 
 The test suite covers:
 
@@ -166,4 +167,5 @@ This implementation provides the foundation for the SPEC_01 requirements. Future
 - Multi-region deployment and distributed caching
 - Real-time monitoring dashboards
 
-The current implementation satisfies all core requirements for intelligent tool preference routing with sub-100ms performance and adaptive learning capabilities.
+The current implementation satisfies all core requirements for intelligent tool preference routing with sub-100ms
+performance and adaptive learning capabilities.

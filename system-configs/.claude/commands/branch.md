@@ -9,7 +9,7 @@ input. Always starts from the latest main branch to ensure branches are up-to-da
 
 ```bash
 /branch [context]
-```
+```yaml
 
 ## Arguments
 
@@ -95,7 +95,7 @@ Based on context analysis:
 
 /branch PROJ-789 implement user notifications
 # Creates: feature/PROJ-789-user-notifications
-```
+```yaml
 
 ### Using conversation context
 
@@ -107,7 +107,7 @@ User: /branch
 User: "The API is returning 500 errors on user profile updates"
 User: /branch
 # Creates: fix/api-500-user-profile-updates
-```
+```yaml
 
 ## Smart Context Analysis
 
@@ -129,7 +129,7 @@ Typical workflow:
 /commit                           # Commit with review
 /push                            # Push with quality gates
 /pr                              # Create pull request
-```
+```yaml
 
 ## Safety Features
 

@@ -10,7 +10,7 @@ automatically when Claude Code starts in a git repository.
 
 ```bash
 /context [scope or component]
-```
+```yaml
 
 ## Arguments
 
@@ -109,7 +109,7 @@ When you use `/context <scope>`, I will coordinate with codebase-analyst agents 
 
 ### Getting Started
 [Quick steps to start developing]
-```
+```yaml
 
 ## Auto-execution
 
@@ -138,7 +138,7 @@ To enable automatic context analysis on Claude Code startup:
 /context frontend architecture
 /context technical debt
 /context performance bottlenecks
-```
+```yaml
 
 ```text
 # Output for a React app:
@@ -154,7 +154,7 @@ A modern React application with TypeScript, using Vite for building and Jest for
 - Package Manager: npm
 
 [... continues with full analysis ...]
-```
+```yaml
 
 ## Notes
 

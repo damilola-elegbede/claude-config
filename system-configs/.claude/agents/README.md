@@ -15,17 +15,22 @@
 | **codebase-analyst** | Code search, dependency analysis | Understanding large codebases | `/context` |
 | **devops** | CI/CD, deployments, infrastructure | DevOps and deployment tasks | N/A |
 
-**Quick Decision**: Simple task (< 5 min)? → Handle directly. Complex or specialized? → Use appropriate agent. Multiple independent tasks? → Deploy in parallel.
+**Quick Decision**: Simple task (< 5 min)? → Handle directly. Complex or specialized? → Use appropriate agent.
+Multiple independent tasks? → Deploy in parallel.
 
 ---
 
 ## Overview
 
-The Claude agent ecosystem consists of 40+ specialized agents organized across 8 functional domains, providing comprehensive coverage of the software development lifecycle. This system follows the **"Right tool for the job"** principle with a **parallel-first execution strategy** for maximum efficiency.
+The Claude agent ecosystem consists of 40+ specialized agents organized across 8 functional domains, providing
+comprehensive coverage of the software development lifecycle.
+This system follows the **"Right tool for the job"** principle with a **parallel-first execution strategy** for maximum
+efficiency.
 
 ## Agent Categories
 
-The agent ecosystem is organized into 8 primary categories. For detailed category definitions and color assignments, see [AGENT_CATEGORIES.md](./AGENT_CATEGORIES.md).
+The agent ecosystem is organized into 8 primary categories.
+For detailed category definitions and color assignments, see [AGENT_CATEGORIES.md](./AGENT_CATEGORIES.md).
 
 ### 1. **Development** (blue) - 10 agents
 
@@ -226,7 +231,7 @@ Support, coordination, and strategic planning agents
 /debug        → debugger
 /context      → codebase-analyst
 /orchestrate  → project-orchestrator
-```
+```yaml
 
 ### Core Orchestration Rules
 
@@ -266,7 +271,7 @@ Pattern: Architecture → Parallel Implementation → Quality Gates
 Phase 1: principal-architect (design)
 Phase 2: [backend-engineer + frontend-architect + mobile-platform-engineer] (parallel)
 Phase 3: [test-engineer + code-reviewer + security-auditor] (parallel)
-```
+```yaml
 
 #### Performance Optimization
 
@@ -275,7 +280,7 @@ Pattern: Analysis → Optimization → Validation
 Phase 1: [performance-specialist + monitoring-specialist + metrics-analyst] (parallel)
 Phase 2: Targeted optimization by appropriate specialists
 Phase 3: performance-predictor (validation)
-```
+```yaml
 
 #### Security Audit
 
@@ -284,7 +289,7 @@ Pattern: Assessment → Remediation → Compliance
 Phase 1: security-auditor (vulnerability assessment)
 Phase 2: [backend-engineer + frontend-architect] (fixes)
 Phase 3: regulatory-compliance-specialist (compliance validation)
-```
+```yaml
 
 #### Migration Project
 
@@ -294,7 +299,7 @@ Phase 1: [codebase-analyst + dependency-analyst] (parallel)
 Phase 2: migration-specialist (planning)
 Phase 3: [backend-engineer + database-evolution-specialist] (parallel)
 Phase 4: [test-engineer + performance-specialist] (parallel)
-```
+```yaml
 
 ### Scale-Based Agent Selection
 
@@ -333,7 +338,7 @@ Multiple Instances:
   - Multi-platform (mobile-platform-engineer per platform)
   - Large-scale analysis (codebase-analyst per domain)
   - Comprehensive audits (security-auditor per security domain)
-```
+```yaml
 
 ## Coordination Patterns
 
@@ -351,7 +356,7 @@ project-orchestrator (coordination)
     ├── test-engineer (test coverage)
     ├── code-reviewer (code quality)
     └── security-auditor (security validation)
-```
+```yaml
 
 ### 2. Performance Optimization (Parallel Analysis)
 
@@ -367,7 +372,7 @@ Phase 2: Targeted Optimization
 
 Phase 3: Validation
 └── performance-predictor (capacity planning)
-```
+```yaml
 
 ### 3. Security Assessment (Comprehensive)
 
@@ -382,7 +387,7 @@ Phase 2: Compliance & Remediation
 
 Phase 3: Validation
 └── quality-gatekeeper (final security gates)
-```
+```yaml
 
 ### 4. Incident Response (Rapid Coordination)
 
@@ -397,7 +402,7 @@ incident-commander (orchestration)
 └── Phase 3: Prevention
     ├── production-reliability-engineer (resilience)
     └── test-engineer (regression tests)
-```
+```yaml
 
 ### 5. Migration Project (Phased Approach)
 
@@ -417,7 +422,7 @@ Phase 3: Validation & Optimization
 ├── test-engineer (comprehensive testing)
 ├── performance-specialist (performance validation)
 └── monitoring-specialist (observability setup)
-```
+```yaml
 
 ### 6. Multi-Platform Development (Platform-Parallel)
 
@@ -435,7 +440,7 @@ project-orchestrator
     ├── test-engineer (platform-specific testing)
     ├── ui-designer (design consistency)
     └── accessibility-auditor (accessibility compliance)
-```
+```yaml
 
 ### 7. Large-Scale Code Analysis (Domain Parallel)
 
@@ -447,7 +452,7 @@ codebase-analyst instances (parallel by domain):
 ├── codebase-analyst #4 (Infrastructure code)
 ├── codebase-analyst #5 (Database schemas)
 └── Integration: principal-architect (synthesis)
-```
+```yaml
 
 ### 8. Continuous Quality Pipeline
 
@@ -459,7 +464,7 @@ Every commit triggers (parallel quality gates):
 └── execution-evaluator (command verification)
 ├── performance-specialist (performance regression)
 └── quality-gatekeeper (release readiness)
-```
+```yaml
 
 ## Quality Gates & Success Metrics
 
@@ -560,7 +565,7 @@ Recovery:
 Example:
   - security-auditor fails → Claude does basic security check + warns user
   - performance-specialist unavailable → Use monitoring-specialist + manual analysis
-```
+```yaml
 
 #### Integration Conflicts (Parallel Agents)
 
@@ -580,7 +585,7 @@ Performance vs Security Trade-offs:
 Test Failures from Parallel Changes:
   Resolution: Re-run tests after integration
   Process: test-engineer validates after all parallel changes complete
-```
+```yaml
 
 ## Execution Best Practices & Anti-Patterns
 
@@ -623,7 +628,7 @@ RIGHT: dependency-strategist for dependency analysis
 
 WRONG: Claude doing security audit
 RIGHT: security-auditor for security assessment
-```
+```yaml
 
 #### Sequential When Parallel is Possible
 
@@ -636,7 +641,7 @@ RIGHT: Multiple codebase-analyst instances (parallel by domain)
 
 WRONG: Sequential quality checks
 RIGHT: [code-reviewer + security-auditor + test-engineer] (parallel)
-```
+```yaml
 
 #### Poor Orchestration
 
@@ -649,7 +654,7 @@ RIGHT: Validate outputs, retry or handle directly with user notification
 
 WRONG: Conflicting agent outputs without resolution
 RIGHT: Clear priority hierarchy and conflict resolution process
-```
+```yaml
 
 #### Resource Waste
 
@@ -662,7 +667,7 @@ RIGHT: Single appropriate agent or direct handling
 
 WRONG: Over-analysis before implementation
 RIGHT: Just-enough analysis to start implementation
-```
+```yaml
 
 ### Proven Execution Patterns
 
@@ -676,7 +681,7 @@ codebase-analyst #3: Mobile platforms analysis
 codebase-analyst #4: Infrastructure & DevOps analysis
 codebase-analyst #5: Database & data layer analysis
 # Integration: principal-architect synthesizes findings
-```
+```yaml
 
 #### Comprehensive Quality Assessment
 
@@ -689,7 +694,7 @@ performance-specialist: Performance bottlenecks & optimization
 accessibility-auditor: WCAG compliance & usability
 regulatory-compliance-specialist: Compliance frameworks
 # Coordination: quality-gatekeeper validates overall readiness
-```
+```yaml
 
 #### Full-Stack Feature Development
 
@@ -706,7 +711,7 @@ Phase 3: Parallel Quality Gates
   ├── code-reviewer (code quality)
   ├── security-auditor (security validation)
   └── performance-specialist (performance testing)
-```
+```yaml
 
 #### Incident Response Coordination
 
@@ -720,7 +725,7 @@ Parallel Investigation:
   └── security-auditor: Security incident assessment (if applicable)
 Resolution: Appropriate specialists based on findings
 Prevention: production-reliability-engineer (post-incident improvements)
-```
+```yaml
 
 #### Database & Migration Projects
 
@@ -739,7 +744,7 @@ Phase 3: Implementation
 Phase 4: Validation
   ├── test-engineer (data integrity testing)
   └── performance-specialist (performance validation)
-```
+```yaml
 
 ## Tool Permissions & Security Model
 
@@ -811,7 +816,7 @@ Agents are granted minimal necessary permissions following the principle of leas
 
 ### Quick Decision Tree
 
-```
+```text
 Task Request
 ├── Simple/Urgent (< 5 min)? → Handle Directly
 ├── Security/Auth related? → security-auditor (always)
@@ -819,11 +824,11 @@ Task Request
 ├── Performance critical? → performance-specialist + monitoring-specialist
 ├── Cross-platform? → Multiple mobile-platform-engineer instances
 └── Single domain expert task? → Appropriate specialist agent
-```
+```yaml
 
 ### Complexity Assessment Flow
 
-```
+```text
 Complexity Assessment
 ├── Lines of Code
 │   ├── < 50 lines → Direct handling
@@ -837,7 +842,7 @@ Complexity Assessment
     ├── Development team only → Direct or single specialist
     ├── Multiple teams → principal-architect + coordination
     └── Business critical → Full quality gate process
-```
+```yaml
 
 ### Parallel vs Sequential Decision Matrix
 
@@ -881,4 +886,6 @@ Complexity Assessment
 
 ---
 
-*This ecosystem enables efficient, high-quality software development through intelligent orchestration of specialized agents, following the principle of "Right tool for the job" with parallel-first execution strategies.*
+*This ecosystem enables efficient,
+, high-quality software development through intelligent orchestration of specialized agents,
+, following the principle of "Right tool for the job" with parallel-first execution strategies.*

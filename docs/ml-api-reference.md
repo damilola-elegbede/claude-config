@@ -24,7 +24,7 @@ with enterprise-grade security and reliability.
 - `/predict/resource-optimization` - Resource allocation optimization
 - `/predict/failure-prevention` - System failure prevention
 - `/predict/workload-forecast` - Agent workload forecasting
-```
+```text
 
     </category>
 
@@ -35,7 +35,7 @@ with enterprise-grade security and reliability.
 - `/models/{id}/deploy` - Model deployment management
 - `/models/{id}/metrics` - Model performance metrics
 - `/models/{id}/drift` - Model drift analysis
-```
+```text
 
     </category>
 
@@ -46,7 +46,7 @@ with enterprise-grade security and reliability.
 - `/analytics/trends` - Historical trend analysis
 - `/analytics/insights` - AI-generated insights
 - `/analytics/recommendations` - Optimization recommendations
-```
+```text
 
     </category>
 
@@ -57,7 +57,7 @@ with enterprise-grade security and reliability.
 - `/metrics` - Prometheus metrics endpoint
 - `/status` - System status and uptime
 - `/alerts` - Alert management
-```
+```text
 
     </category>
   </service-endpoints>
@@ -74,7 +74,7 @@ with enterprise-grade security and reliability.
 - RSA256 signing with rotation every 24 hours
 - Role-based access control (RBAC) integration
 - Automatic refresh token mechanism
-```
+```text
 
     </method>
 
@@ -85,7 +85,7 @@ with enterprise-grade security and reliability.
 - Scoped permissions per service credential
 - Rate limiting by service credential
 - Audit logging for all service credential usage
-```
+```text
 
     </method>
   </auth-methods>
@@ -97,7 +97,7 @@ with enterprise-grade security and reliability.
 - Standard prediction endpoints
 - Basic analytics queries
 - Model status checks
-```
+```text
 
     </tier>
 
@@ -107,7 +107,7 @@ with enterprise-grade security and reliability.
 - High-frequency prediction requests
 - Bulk analytics operations
 - Real-time streaming endpoints
-```
+```text
 
     </tier>
 
@@ -117,7 +117,7 @@ with enterprise-grade security and reliability.
 - Unlimited prediction requests
 - Priority queue processing
 - Dedicated infrastructure resources
-```
+```text
 
     </tier>
   </rate-limiting>
@@ -137,7 +137,7 @@ with enterprise-grade security and reliability.
 Authorization: Bearer {jwt_token}
 Content-Type: application/json
 X-Request-ID: {unique_request_id}
-```
+```text
 
     </headers>
 
@@ -162,7 +162,7 @@ X-Request-ID: {unique_request_id}
     "deployment_version": "v2.1.3"
   }
 }
-```
+```text
 
     </request-body>
   </request-specification>
@@ -209,7 +209,7 @@ X-Request-ID: {unique_request_id}
     "cached": false
   }
 }
-```
+```text
 
     </success-response>
 
@@ -226,7 +226,7 @@ X-Request-ID: {unique_request_id}
   },
   "request_id": "req_12345abcdef"
 }
-```
+```text
 
       </error>
 
@@ -241,7 +241,7 @@ X-Request-ID: {unique_request_id}
   "remaining": 0,
   "reset_time": "2024-01-15T15:30:00Z"
 }
-```
+```text
 
       </error>
     </error-responses>
@@ -286,7 +286,7 @@ X-Request-ID: {unique_request_id}
     "availability_requirement": 0.999
   }
 }
-```
+```text
 
     </request-body>
   </request-specification>
@@ -343,7 +343,7 @@ X-Request-ID: {unique_request_id}
     }
   ]
 }
-```
+```text
 
     </success-response>
   </response-specification>
@@ -373,7 +373,7 @@ X-Request-ID: {unique_request_id}
   "time_horizons": [15, 60, 240, 1440],
   "severity_threshold": 0.7
 }
-```
+```text
 
     </request-body>
   </request-specification>
@@ -435,7 +435,7 @@ X-Request-ID: {unique_request_id}
     }
   }
 }
-```
+```text
 
     </success-response>
   </response-specification>
@@ -475,7 +475,7 @@ X-Request-ID: {unique_request_id}
     "weekend_factor": 0.3
   }
 }
-```
+```text
     </request-body>
   </request-specification>
 
@@ -545,7 +545,7 @@ X-Request-ID: {unique_request_id}
     }
   }
 }
-```
+```yaml
     </success-response>
   </response-specification>
 </api-endpoint>
@@ -562,7 +562,7 @@ X-Request-ID: {unique_request_id}
 
 ```http
 ?status=active&type=prediction&limit=50&offset=0
-```
+```text
 
     </query-parameters>
   </request-specification>
@@ -605,7 +605,7 @@ X-Request-ID: {unique_request_id}
     "has_next": false
   }
 }
-```
+```yaml
     </success-response>
   </response-specification>
 </api-endpoint>
@@ -620,7 +620,7 @@ X-Request-ID: {unique_request_id}
 
 ```http
 {id}: bottleneck_predictor_v1.2.0
-```
+```text
 
     </path-parameters>
 
@@ -646,7 +646,7 @@ X-Request-ID: {unique_request_id}
     "gpu_request": 0
   }
 }
-```
+```text
     </request-body>
   </request-specification>
 
@@ -670,7 +670,7 @@ X-Request-ID: {unique_request_id}
     "metrics_dashboard": "https://grafana.claude.local/d/model-deployment/deploy_789xyz"
   }
 }
-```
+```yaml
     </success-response>
   </response-specification>
 </api-endpoint>
@@ -685,7 +685,7 @@ X-Request-ID: {unique_request_id}
 
 ```http
       ?start_time=2024-01-14T00:00:00Z&end_time=2024-01-15T00:00:00Z&granularity=hourly
-```
+```text
 
     </query-parameters>
   </request-specification>
@@ -741,7 +741,7 @@ X-Request-ID: {unique_request_id}
           "false_negative_rate": 0.008
         }
       }
-      ```
+```yaml
     </success-response>
   </response-specification>
 </api-endpoint>
@@ -758,7 +758,7 @@ X-Request-ID: {unique_request_id}
 
 ```http
       ?system_id=prod-cluster-01&time_range=7d&metrics=cpu,memory,throughput&include_predictions=true
-```
+```text
 
     </query-parameters>
   </request-specification>
@@ -836,7 +836,7 @@ X-Request-ID: {unique_request_id}
           ]
         }
       }
-      ```
+```yaml
     </success-response>
   </response-specification>
 </api-endpoint>
@@ -922,7 +922,7 @@ X-Request-ID: {unique_request_id}
           ]
         }
       }
-      ```
+```yaml
     </success-response>
   </response-specification>
 </api-endpoint>
@@ -936,7 +936,7 @@ X-Request-ID: {unique_request_id}
 
 ```bash
 pip install claude-ml-client
-```
+```text
 
   </installation>
 
@@ -984,7 +984,7 @@ pip install claude-ml-client
       for recommendation in optimization.recommendations:
           print(f"Action: {recommendation.action}")
           print(f"Expected impact: {recommendation.expected_impact}")
-      ```
+```yaml
     </example>
 
     <example name="streaming-predictions">
@@ -1003,7 +1003,7 @@ pip install claude-ml-client
 
       # Run streaming predictions
       asyncio.run(stream_predictions())
-      ```
+```yaml
     </example>
 
     <example name="batch-operations">
@@ -1023,7 +1023,7 @@ pip install claude-ml-client
       for result in batch_results:
           if result.prediction.probability > 0.7:
               print(f"Alert: {result.system_id} - {result.prediction.probability:.2f}")
-      ```
+```text
     </example>
   </usage-examples>
 
@@ -1050,7 +1050,7 @@ except AuthenticationError as e:
     print(f"Authentication failed: {e.message}")
 except MLClientError as e:
     print(f"General client error: {e}")
-```
+```yaml
 
   </error-handling>
 </client-library>
@@ -1062,7 +1062,7 @@ except MLClientError as e:
 
 ```bash
 npm install claude-ml-client
-```
+```text
 
   </installation>
 
@@ -1104,7 +1104,7 @@ npm install claude-ml-client
       }
 
       checkSystemHealth();
-      ```
+```text
     </example>
 
     <example name="websocket-streaming">
@@ -1129,7 +1129,7 @@ npm install claude-ml-client
       });
 
       stream.connect();
-      ```
+```yaml
     </example>
   </usage-examples>
 </client-library>
@@ -1177,7 +1177,7 @@ npm install claude-ml-client
           "disk_usage_percent": 45.1
         }
       }
-      ```
+```text
     </success-response>
 
     <degraded-response code="200">
@@ -1195,7 +1195,7 @@ npm install claude-ml-client
           }
         ]
       }
-      ```
+```yaml
     </degraded-response>
   </response-specification>
 </api-endpoint>
@@ -1234,7 +1234,7 @@ npm install claude-ml-client
       # HELP ml_cache_hit_rate Cache hit rate for predictions
       # TYPE ml_cache_hit_rate gauge
       ml_cache_hit_rate 0.847
-      ```
+```text
     </metrics-format>
   </response-specification>
 </api-endpoint>

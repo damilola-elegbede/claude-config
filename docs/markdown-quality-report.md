@@ -1,42 +1,41 @@
 # Markdown Quality Report
 
-**Generated:** 2025-08-14 19:25:54
+**Generated:** 2025-08-14 23:28:31
 **Configuration:** `.markdownlint-cli2.jsonc`
 
 ## Quality Gate Status
 
-🔴 **FAILED** - 46 violations detected
+🔴 **FAILED** - 34 violations detected
 
 ## Quality Metrics
 
 | Metric | Count | Status |
 |--------|-------|--------|
 | Total Files Scanned | 52 | ✅ |
-| Files Passed | 52 | ✅ |
-| Files Failed | 18 | ❌ |
-| Total Violations | 46 | ❌ |
+| Files Passed | 40 | ❌ |
+| Files Failed | 12 | ❌ |
+| Total Violations | 34 | ❌ |
 
 ## Violation Categories
 
 | Rule | Count | Priority | Fix Strategy |
 |------|-------|----------|--------------|
-| Other | 28 | Medium | Manual review required |
+| Other | 22 | Medium | Manual review required |
 | MD013 (Line Length) | 9 | Low | Reformat long lines, exclude code blocks |
-| MD036 (Emphasis as Heading) | 6 | Medium | Manual review required |
 | MD040 (Code Language) | 3 | High | Add language specifiers to code blocks |
 
 ## Quality Thresholds
 
-- **Critical Errors**: 0 tolerance (current: 46)
+- **Critical Errors**: 0 tolerance (current: 34)
 - **Warnings**: 50 tolerance (current: 0)
-- **Pass Rate**: 100% (target: 100%)
+- **Pass Rate**: 76% (target: 100%)
 
 ## Technical Debt Analysis
 
 ### High-Impact Files
 
 - `docs/performance-predictor-guide.md`: 11 violations
-- `docs/markdown-quality-report.md`: 10 violations
+- `system-configs/CLAUDE.md`: 9 violations
 
 ## Remediation Strategy
 
@@ -72,7 +71,7 @@
     }
   }
 }
-```
+```text
 
 ---
 *This report was generated automatically by the markdown quality gate system.*

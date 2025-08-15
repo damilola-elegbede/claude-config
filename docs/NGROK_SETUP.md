@@ -14,7 +14,7 @@ ngrok http 3003
 
 # This will display something like:
 # Forwarding: https://abc123.ngrok.io -> http://localhost:3003
-```
+```yaml
 
 Your dashboard will be accessible at the ngrok URL shown!
 
@@ -26,7 +26,7 @@ Your dashboard will be accessible at the ngrok URL shown!
 
 ```bash
 ngrok authtoken YOUR_AUTH_TOKEN
-```
+```yaml
 
 ### 3. Automatic Startup Script
 
@@ -37,13 +37,13 @@ Create an alias in your shell profile (`~/.zshrc` or `~/.bashrc`):
 alias mcp-public="ngrok http 3003 &"
 alias mcp-url="curl -s http://localhost:4040/api/tunnels | \
   grep -o '\"public_url\":\"[^\"]*' | grep -o 'https[^\"]*' | head -1"
-```
+```text
 
 Then reload your shell:
 
 ```bash
 source ~/.zshrc  # or ~/.bashrc
-```
+```yaml
 
 ### 4. Start Everything with One Command
 
@@ -90,7 +90,7 @@ fi
 EOF
 
 chmod +x ~/start-mcp-dashboard.sh
-```
+```yaml
 
 ## 🚀 Usage
 
@@ -98,13 +98,13 @@ chmod +x ~/start-mcp-dashboard.sh
 
 ```bash
 ~/start-mcp-dashboard.sh
-```
+```yaml
 
 ### Get Current Public URL
 
 ```bash
 ./get-dashboard-url.sh
-```
+```yaml
 
 ### Check Status
 
@@ -118,7 +118,7 @@ ps aux | grep ngrok
 # Get public URL
 curl -s http://localhost:4040/api/tunnels | \
   jq -r '.tunnels[0].public_url'
-```
+```yaml
 
 ## 🔐 Security Notes
 
@@ -152,7 +152,7 @@ pkill ngrok
 
 # Restart
 ngrok http 3003
-```
+```yaml
 
 ### Dashboard Not Accessible via Ngrok
 
@@ -162,7 +162,7 @@ curl http://localhost:3003/api/metrics
 
 # Check ngrok status
 curl http://localhost:4040/api/tunnels
-```
+```yaml
 
 ## 🎯 Auto-Start at Login (Simple Method)
 
@@ -180,7 +180,7 @@ crontab -e
 
 # Add this line
 @reboot /Users/damilola/start-mcp-dashboard.sh
-```
+```yaml
 
 ## Summary
 

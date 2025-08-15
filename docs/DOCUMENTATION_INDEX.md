@@ -12,6 +12,7 @@
 
 - **[README.md](../README.md)** - Configuration management system with 40 agents
   and 14 commands
+
 - **[CLAUDE.md](../CLAUDE.md)** - Repository-specific configuration instructions
 - **[QUICKSTART.md](../QUICKSTART.md)** - Quick setup guide for new users
 - **[LICENSE](../LICENSE)** - Project licensing information
@@ -20,6 +21,7 @@
 
 - **[Agent Ecosystem Architecture](architecture/agent-ecosystem-architecture.md)** - System architecture,
   security model, and data flows
+
 - **[Agent Ecosystem Specification](specs/agent-ecosystem-spec.md)** - Technical specifications
 - **[Parallel Execution Guide](PARALLEL_EXECUTION_GUIDE.md)** - Orchestration patterns and strategies
 
@@ -74,6 +76,7 @@
 
 - **[Phase 3 Implementation Guide](phase3-intelligence-layer.md)** - Complete Phase 3 Intelligence Layer
   implementation
+
 - **[Performance Predictor Guide](performance-predictor-guide.md)** - Performance prediction agent documentation
 - **[MLOps Guide](mlops-guide.md)** - ML operations pipeline and maintenance procedures
 - **[ML API Reference](ml-api-reference.md)** - ML service endpoints, authentication, and SDK usage

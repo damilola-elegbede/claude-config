@@ -10,7 +10,7 @@ polyglot codebases.
 
 ```bash
 /deps <action> [options]
-```
+```yaml
 
 ## Actions
 
@@ -99,7 +99,7 @@ I perform comprehensive security analysis:
 ### License Issues
 - Incompatible licenses found
 - Commercial usage restrictions
-```
+```yaml
 
 ### /deps update
 
@@ -182,7 +182,7 @@ I provide comprehensive dependency health metrics:
 1. Update these security-critical packages
 2. Consider replacing these unmaintained packages
 3. Reduce dependency on these heavy packages
-```
+```yaml
 
 ### /deps predict
 
@@ -212,7 +212,7 @@ I forecast future dependency risks:
 ### Recommendations
 - Prepare migration plan for high-risk packages
 - Set up monitoring alerts for medium-risk packages
-```
+```yaml
 
 ### /deps compare
 
@@ -245,7 +245,7 @@ I analyze dependency differences:
 ### Security Impact
 - Resolved 3 vulnerabilities
 - Introduced 1 new low-severity issue
-```
+```yaml
 
 ## Agent Coordination
 

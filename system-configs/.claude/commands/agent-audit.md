@@ -10,7 +10,7 @@ it does not make any changes automatically.**
 
 ```bash
 /agent-audit
-```
+```yaml
 
 ## Behavior
 
@@ -98,7 +98,7 @@ parallel_execution:
     validations: [template, tools, description, tier, modelAppropriateness]
   - category: operations
     validations: [template, tools, description, tier, modelAppropriateness]
-```
+```yaml
 
 ### Phase 2: Cross-Category Analysis
 
@@ -132,7 +132,7 @@ After audit completion, **execution-evaluator** is deployed to verify:
 
 ```text
 Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
-```
+```yaml
 
 ### Category Health Matrix
 
@@ -175,7 +175,7 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 - Updated agent-name: Set tier to 1
 - Fixed agent-name: Removed Task tool access
 - Updated agent-name: Added SYSTEM BOUNDARY warning
-```
+```yaml
 
 ### Manual Remediation Required
 
@@ -188,7 +188,7 @@ sed -i '' 's/category: wrong/category: correct/' agent.md
 sed -i '' 's/model: opus/model: sonnet/' agent-name.md  # Save 40% cost
 # Upgrade under-provisioned agents:
 sed -i '' 's/model: haiku/model: sonnet/' agent-name.md  # Better capability
-```
+```yaml
 
 ## Success Criteria
 

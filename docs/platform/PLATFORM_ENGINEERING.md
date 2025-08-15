@@ -46,7 +46,7 @@ claude-validate fix --auto
 
 # Performance status
 claude-validate status
-```
+```yaml
 
 ### 2. Performance Optimizer
 
@@ -73,7 +73,7 @@ Automatically analyzes repository characteristics and applies appropriate perfor
 
 # Generate performance report
 ./performance-optimizer.sh monitor report
-```
+```yaml
 
 ### 3. Developer Portal
 
@@ -100,7 +100,7 @@ Self-service portal providing interactive tools and guidance.
 
 # Performance dashboard
 ./developer-portal.sh dashboard
-```
+```yaml
 
 ### 4. Workflow Integrator
 
@@ -126,7 +126,7 @@ Seamless integration with existing development workflows and tools.
 
 # Setup CI/CD workflows
 ./workflow-integrator.sh ci
-```
+```yaml
 
 ## Platform Architecture
 
@@ -151,7 +151,7 @@ Seamless integration with existing development workflows and tools.
 │  Caching      │  Metrics      │  Monitoring   │  Notifications│
 │  System       │  Collection   │  System       │  System       │
 └─────────────────────────────────────────────────────────────┘
-```
+```yaml
 
 ## Performance Optimization Strategy
 
@@ -277,7 +277,7 @@ platform_specific:
     use_fsevents: true
   linux:
     use_inotify: true
-```
+```yaml
 
 ## Monitoring and Metrics
 
@@ -318,7 +318,7 @@ make integrate-nodejs  # or python, go, etc.
 
 # 4. Validate your setup
 make platform-doctor
-```
+```yaml
 
 ### Platform Commands
 
@@ -337,7 +337,7 @@ make platform-troubleshoot   # Interactive debugging
 make platform-optimize       # Performance optimization
 make platform-clean          # Cache cleanup
 make platform-perf-test      # Performance testing
-```
+```yaml
 
 ## Troubleshooting
 
@@ -366,7 +366,7 @@ make platform-troubleshoot
 
 # Or use the portal directly
 scripts/platform/developer-portal.sh troubleshoot
-```
+```yaml
 
 ## Extending the Platform
 

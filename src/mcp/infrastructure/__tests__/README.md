@@ -1,6 +1,7 @@
 # MCP Infrastructure Test Suite
 
-Comprehensive test suite for the MCP (Model Context Protocol) Infrastructure implementation, validating SPEC_01 requirements with 80%+ code coverage and sub-100ms performance guarantees.
+Comprehensive test suite for the MCP (Model Context Protocol) Infrastructure implementation,
+, validating SPEC_01 requirements with 80%+ code coverage and sub-100ms performance guarantees.
 
 ## 🎯 Overview
 
@@ -50,7 +51,7 @@ __tests__/
 ├── test-setup.js           # Global utilities and matchers
 ├── run-tests.sh            # Test runner script
 └── README.md               # This documentation
-```
+```yaml
 
 ### Test Categories
 
@@ -88,7 +89,7 @@ npm install
 
 # Install test dependencies
 npm install --save-dev jest @types/jest ts-jest typescript
-```
+```yaml
 
 ### Quick Start
 
@@ -104,7 +105,7 @@ npm test -- --coverage
 
 # Run integration tests only
 npm test -- --testPathPattern="integration.test.ts" --testTimeout=60000
-```
+```yaml
 
 ### Advanced Usage
 
@@ -120,7 +121,7 @@ npm test -- --testPathPattern="integration.test.ts" --runInBand
 
 # Generate HTML coverage report
 npm test -- --coverage --coverageReporters=html
-```
+```yaml
 
 ## 📊 Test Metrics and Coverage
 
@@ -161,7 +162,7 @@ expect(metrics).toHavePerformanceWithin('responseTime', 0, 200);
 
 // Date validation
 expect(timestamp).toBeValidDate();
-```
+```yaml
 
 ### Global Test Utilities
 
@@ -180,7 +181,7 @@ const perf = await TestUtils.measurePerformance(async () => {
 // Event tracking
 const tracker = TestUtils.createEventTracker();
 await tracker.waitForEvent('serverDiscovered', 5000);
-```
+```yaml
 
 ### Environment Configuration
 
@@ -193,7 +194,7 @@ TEST_CONFIG.MIN_SUCCESS_RATE = 0.95;    // 95%
 // Load testing limits
 TEST_CONFIG.MAX_CONCURRENT_REQUESTS = 1000;
 TEST_CONFIG.MAX_SERVERS_PER_REGISTRY = 500;
-```
+```yaml
 
 ## 📝 Test Scenarios
 
@@ -254,7 +255,7 @@ npm test -- --testTimeout=30000
 
 # Run specific slow test
 npm test -- --testNamePattern="integration" --testTimeout=60000
-```
+```yaml
 
 ### Memory Issues
 
@@ -264,7 +265,7 @@ node --max-old-space-size=4096 node_modules/.bin/jest
 
 # Check for memory leaks
 npm test -- --detectOpenHandles --forceExit
-```
+```yaml
 
 ### Mock Issues
 
@@ -274,7 +275,7 @@ npm test -- --clearMocks --restoreMocks
 
 # Debug mock calls
 npm test -- --verbose
-```
+```yaml
 
 ### Debug Configuration
 
@@ -286,7 +287,7 @@ process.env.DEBUG = 'mcp:*';
 // Increase Jest verbosity
 verbose: true,
 silent: false,
-```
+```yaml
 
 ## 📈 Continuous Integration
 
@@ -319,7 +320,7 @@ jobs:
       uses: codecov/codecov-action@v3
       with:
         file: ./src/mcp/infrastructure/__tests__/coverage/lcov.info
-```
+```yaml
 
 ### Quality Gates
 
@@ -329,7 +330,7 @@ npm test -- --coverage --coverageThreshold='{"global":{"lines":80,"functions":80
 
 # Fail build if performance degrades
 npm test -- --testNamePattern="performance" --verbose
-```
+```yaml
 
 ## 🎯 Best Practices
 

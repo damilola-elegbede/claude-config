@@ -24,28 +24,28 @@ prediction accuracy.
       ```text
       Identifies CPU, memory, I/O, and network bottlenecks 15-30 minutes
       before occurrence
-      ```
+```javascript
 
     </function>
     <function name="resource-optimization" efficiency="89.7%">
 
       ```text
       Recommends optimal resource allocation and scaling strategies
-      ```
+```javascript
 
     </function>
     <function name="failure-prevention" recall="93.1%">
 
       ```text
       Predicts system failures and critical errors with early warning system
-      ```
+```javascript
 
     </function>
     <function name="workload-forecasting" horizon="24-hours">
 
       ```text
       Forecasts agent workload and resource demand patterns
-      ```
+```text
 
     </function>
   </core-functions>
@@ -62,7 +62,7 @@ prediction accuracy.
       - Multi-dimensional bottleneck detection
       - Resource utilization pattern recognition
       - Performance trend analysis and forecasting
-      ```
+```text
 
     </capabilities>
   </domain>
@@ -75,7 +75,7 @@ prediction accuracy.
       - Ensemble methods combining XGBoost and Neural Networks
       - Anomaly detection using isolation forests and autoencoders
       - Statistical process control for performance monitoring
-      ```
+```text
 
     </capabilities>
   </domain>
@@ -88,7 +88,7 @@ prediction accuracy.
       - Cost-performance trade-off analysis
       - Scaling strategy recommendations
       - Capacity planning with confidence intervals
-      ```
+```text
 
     </capabilities>
   </domain>
@@ -108,7 +108,7 @@ prediction accuracy.
       - Disk I/O (read/write IOPS, throughput, queue depth)
       - Network I/O (packets/sec, bandwidth, latency)
       - Agent execution metrics (queue depth, processing time)
-      ```
+```text
 
     </input-features>
 
@@ -128,7 +128,7 @@ prediction accuracy.
       ensemble:
         xgboost_weight: 0.7
         lstm_weight: 0.3
-      ```
+```text
 
     </model-architecture>
 
@@ -139,7 +139,7 @@ prediction accuracy.
       - Time to bottleneck (minutes ahead)
       - Severity score (1-10 scale)
       - Confidence interval (95% bounds)
-      ```
+```text
 
     </output-predictions>
   </architecture>
@@ -152,7 +152,7 @@ prediction accuracy.
     - Recall: 93.1% (catches most bottlenecks)
     - F1-Score: 93.6% (balanced performance)
     - Lead time: 15-30 minutes before occurrence
-    ```
+```yaml
 
   </performance-metrics>
 </model-specification>
@@ -168,7 +168,7 @@ prediction accuracy.
       - Maximize system throughput
       - Maintain SLA compliance (>99.9% uptime)
       - Optimize energy efficiency
-      ```
+```text
 
     </optimization-objectives>
 
@@ -188,7 +188,7 @@ prediction accuracy.
       performance_requirements:
         - sla_targets
         - response_time_limits
-      ```
+```text
 
     </input-context>
 
@@ -199,7 +199,7 @@ prediction accuracy.
       - Constraint satisfaction with genetic algorithms
       - Reinforcement learning for dynamic adaptation
       - Monte Carlo simulation for uncertainty quantification
-      ```
+```text
 
     </recommendation-engine>
   </architecture>
@@ -211,7 +211,7 @@ prediction accuracy.
     - Scaling strategies (horizontal vs vertical)
     - Cost optimization opportunities (average 20-30% savings)
     - Performance improvement predictions
-    ```
+```yaml
 
   </optimization-outcomes>
 </model-specification>
@@ -227,7 +227,7 @@ prediction accuracy.
       - Autoencoder neural networks for pattern recognition
       - Statistical process control (3-sigma rules)
       - Time-series anomaly detection using Prophet
-      ```
+```text
 
     </anomaly-detection>
 
@@ -243,7 +243,7 @@ prediction accuracy.
         levels: [critical, high, medium, low]
       root_cause_attribution:
         method: SHAP_explanations
-      ```
+```text
 
     </failure-classification>
   </architecture>
@@ -255,7 +255,7 @@ prediction accuracy.
     - Escalation levels: warning (60%), critical (80%), emergency (95%)
     - Time horizons: 15min, 1hr, 4hr, 24hr predictions
     - Confidence scoring with uncertainty quantification
-    ```
+```yaml
 
   </early-warning-system>
 </model-specification>
@@ -287,7 +287,7 @@ prediction accuracy.
             - task_execution_time
             - success_failure_rate
             - resource_consumption
-      ```
+```text
 
     </metrics-collection>
 
@@ -306,7 +306,7 @@ prediction accuracy.
                   'io_intensity', 'network_congestion'
               ])
           )
-      ```
+```text
 
     </feature-computation>
   </data-pipeline>
@@ -333,7 +333,7 @@ prediction accuracy.
               'confidence_interval': prediction.confidence,
               'recommendations': generate_recommendations(prediction)
           }
-      ```
+```text
 
     </real-time-api>
 
@@ -355,7 +355,7 @@ prediction accuracy.
                   })
 
               await asyncio.sleep(30)  # Update every 30 seconds
-      ```
+```text
 
     </streaming-predictions>
   </prediction-serving>
@@ -398,7 +398,7 @@ class PerformanceAwareOrchestrator:
         return max(available_agents,
                   key=lambda x: x['expected_performance']
                       .efficiency_score)
-```
+```text
     </performance-aware-routing>
   </agent-selection>
 
@@ -425,7 +425,7 @@ class PredictiveScaler:
             await self.apply_scaling_recommendations(
                 optimization.recommendations
             )
-```
+```yaml
     </dynamic-scaling>
   </resource-optimization>
 </orchestration-integration>
@@ -465,7 +465,7 @@ performance_predictor:
         critical: 0.8
         emergency: 0.95
       time_horizons: [15, 60, 240]  # minutes
-```
+```text
 
   </model-parameters>
 
@@ -497,7 +497,7 @@ feature_engineering:
     io_intensity:
       type: composite
       formula: "sqrt(disk_read_iops^2 + disk_write_iops^2)"
-```
+```yaml
   </feature-engineering>
 </configuration-options>
 
@@ -536,7 +536,7 @@ alerts:
       condition: "failure_probability > 0.8"
       channels: ["slack", "email", "pagerduty"]
       frequency: "immediate"
-```
+```yaml
   </notification-channels>
 </alert-configuration>
 
@@ -572,7 +572,7 @@ if bottleneck_prediction.probability > 0.7:
         print(f"- {recommendation.action}: {recommendation.description}")
         print(f"  Expected Impact: {recommendation.expected_impact}")
 
-```
+```yaml
 </usage-example>
 
 ### Resource Optimization Workflow
@@ -613,7 +613,7 @@ if bottleneck_prediction.probability > 0.7:
           print(f"Confidence: {rec.confidence:.1%}")
 
       return optimization
-  ```
+```yaml
 
 </usage-example>
 
@@ -666,7 +666,7 @@ if bottleneck_prediction.probability > 0.7:
           if prediction.confidence > 0.95:
               await self.attempt_automated_mitigation(prediction)
 
-  ```
+```yaml
 </usage-example>
 
 ## Best Practices
@@ -771,7 +771,7 @@ if bottleneck_prediction.probability > 0.7:
 
         ```bash
         python ml-pipeline/retrain-models.py --days=30 --validate=true
-        ```
+```text
 
       </solution>
       <solution priority="2">
@@ -782,7 +782,7 @@ if bottleneck_prediction.probability > 0.7:
         alert_thresholds:
           warning: 0.7  # increased from 0.6
           critical: 0.85  # increased from 0.8
-        ```
+```text
 
       </solution>
       <solution priority="3">
@@ -808,7 +808,7 @@ if bottleneck_prediction.probability > 0.7:
         @cached(ttl=300)  # 5-minute cache
         async def predict_cached(system_metrics_hash):
             return await model.predict(system_metrics)
-        ```
+```text
 
       </solution>
       <solution priority="2">
@@ -836,7 +836,7 @@ if bottleneck_prediction.probability > 0.7:
 
         ```bash
         python scripts/test-feature-store.py --verbose
-        ```
+```text
 
       </solution>
       <solution priority="2">
@@ -868,7 +868,7 @@ if bottleneck_prediction.probability > 0.7:
 
     # Validate integration with orchestration system
     python scripts/test-orchestration-integration.py
-    ```
+```text
 
   </validation-scripts>
 
@@ -896,7 +896,7 @@ if bottleneck_prediction.probability > 0.7:
     WHERE false_positive = true
     AND prediction_time > NOW() - INTERVAL '7 days'
     ORDER BY prediction_time DESC;
-    ```
+```text
 
   </monitoring-queries>
 </diagnostic-tools>

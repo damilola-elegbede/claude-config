@@ -43,7 +43,7 @@ specialized auditors in parallel.
 
 ```bash
 /agent-audit
-```
+```text
 
 This triggers parallel execution of:
 
@@ -64,7 +64,7 @@ This triggers parallel execution of:
 
 # Deep compliance check
 /agent-audit --deep --compliance-focus
-```
+```yaml
 
 ### Audit Execution Strategy
 
@@ -159,7 +159,7 @@ The 100-point health score comprises:
 - YOU provide analysis and recommendations
 - The orchestrator (Claude) handles ALL tool operations
 - NEVER attempt to invoke tools directly
-```
+```yaml
 
 ### Issue 2: Self-Invocation Attempts
 
@@ -173,7 +173,7 @@ The 100-point health score comprises:
 ## CRITICAL CONSTRAINT
 SYSTEM BOUNDARY: This agent instance will AUTOMATICALLY TERMINATE
 upon any Task tool invocation. This is a hard-coded system protection.
-```
+```yaml
 
 ### Issue 3: Inconsistent Documentation
 
@@ -241,7 +241,7 @@ for file in $AGENT_FILES; do
         echo "WARNING: $file mentions tool usage - review needed"
     fi
 done
-```
+```yaml
 
 ### 2. Documentation Sync Script
 
@@ -263,7 +263,7 @@ for file in .claude/agents/*.md; do
 
     echo "| $agent | $category | $updated | $compliance |" >> agent-status.md
 done
-```
+```yaml
 
 ### 3. Performance Baseline Script
 
@@ -305,7 +305,7 @@ with open('performance-baseline.json', 'w') as f:
     json.dump(results, f, indent=2)
 
 print(f"Performance baseline established for {len(agents)} agents")
-```
+```yaml
 
 ### 4. Gap Analysis Automation
 
@@ -359,7 +359,7 @@ if gaps:
             print(f"  - {capability}")
 else:
     print("No capability gaps found!")
-```
+```yaml
 
 ## Continuous Monitoring Best Practices
 
@@ -399,7 +399,7 @@ jobs:
         with:
           name: health-report
           path: audit-report.md
-```
+```yaml
 
 ## Documentation Quality & Markdown Standards
 
@@ -457,7 +457,8 @@ The repository now includes `.markdownlint-cli2.jsonc` with optimized rules:
 ```bash
 # Example command
 ./script.sh
-```
+
+```text
 
 - Tables with proper formatting:
 
@@ -489,7 +490,7 @@ npx markdownlint-cli2 --fix "**/*.md"
 
 # Check specific directory
 npx markdownlint-cli2 "docs/**/*.md"
-```
+```yaml
 
 #### Quality Gates
 
@@ -501,7 +502,7 @@ npx markdownlint-cli2 "**/*.md" || {
     echo "Markdown quality issues found. Please fix before committing."
     exit 1
 }
-```
+```yaml
 
 ### Integration with CI/CD
 
@@ -513,7 +514,7 @@ The markdownlint configuration integrates with the existing CI pipeline:
   run: |
     npm install -g markdownlint-cli2
     markdownlint-cli2 "**/*.md"
-```
+```yaml
 
 ### Documentation Health Metrics
 
@@ -532,14 +533,18 @@ Track these quality indicators:
 # Before (incorrect)
 
 ```text
+
 code here
-```
+
+```yaml
 
 ## After (correct)
 
 ```bash
+
 code here
-```
+
+```yaml
 
 ### Issue: Improper Heading Hierarchy
 
@@ -552,13 +557,14 @@ code here
 # Main Title
 ## Major Section
 ### Subsection
-```
+```yaml
 
 #### Issue: List Formatting
 
 ```markdown
 # Before (incorrect)
 Some text
+
 - Item 1
 - Item 2
 More text
@@ -570,7 +576,8 @@ Some text
 - Item 2
 
 More text
-```
+
+```yaml
 
 ### Automated Quality Enforcement
 
@@ -590,7 +597,8 @@ echo "✅ Markdown quality check passed"
 EOF
 
 chmod +x .git/hooks/pre-commit
-```
+
+```yaml
 
 #### Documentation Update Workflow
 
@@ -736,7 +744,8 @@ def process_files_parallel(files):
         futures = [executor.submit(invoke_agent, 'backend-engineer', f) for f in files]
         for future in futures:
             process_result(future.result())
-```
+
+```yaml
 
 ### 2. Agent Response Time Optimization
 

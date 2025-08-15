@@ -13,7 +13,7 @@ launchctl load ~/Library/LaunchAgents/com.claude.mcp.dashboard.plist
 
 # 3. Verify it's running
 launchctl list | grep claude.mcp.dashboard
-```
+```yaml
 
 ## ✅ Verify Installation
 
@@ -28,7 +28,7 @@ curl -s http://localhost:3003/api/metrics | head -5
 
 # View logs if needed
 tail -f ~/Library/Logs/mcp-dashboard.log
-```
+```yaml
 
 ## 📊 Access Dashboard
 
@@ -44,39 +44,39 @@ Once installed, the dashboard will:
 
 ```bash
 launchctl start com.claude.mcp.dashboard
-```
+```yaml
 
 ### Stop Service
 
 ```bash
 launchctl stop com.claude.mcp.dashboard
-```
+```yaml
 
 ### Restart Service
 
 ```bash
 launchctl stop com.claude.mcp.dashboard
 launchctl start com.claude.mcp.dashboard
-```
+```yaml
 
 ### Disable Auto-Start
 
 ```bash
 launchctl unload ~/Library/LaunchAgents/com.claude.mcp.dashboard.plist
-```
+```yaml
 
 ### Re-enable Auto-Start
 
 ```bash
 launchctl load ~/Library/LaunchAgents/com.claude.mcp.dashboard.plist
-```
+```yaml
 
 ### Completely Remove Service
 
 ```bash
 launchctl unload ~/Library/LaunchAgents/com.claude.mcp.dashboard.plist
 rm ~/Library/LaunchAgents/com.claude.mcp.dashboard.plist
-```
+```yaml
 
 ## 📝 Service Configuration Details
 
@@ -103,7 +103,7 @@ The service is configured to:
 
    ```bash
    which node
-   ```
+```text
 
    If not `/usr/local/bin/node`, update the path in the plist file.
 
@@ -111,13 +111,13 @@ The service is configured to:
 
    ```bash
    ls -la ~/Documents/Projects/claude-config/dashboard.js
-   ```
+```text
 
 3. Check error logs:
 
    ```bash
    cat ~/Library/Logs/mcp-dashboard.error.log
-   ```
+```yaml
 
 ### Port Already in Use
 
@@ -125,7 +125,7 @@ If port 3003 is taken, edit `dashboard.js` to use a different port:
 
 ```javascript
 const PORT = 3004; // or any available port
-```
+```yaml
 
 ### Service Not Loading
 
@@ -133,7 +133,7 @@ Ensure the plist file has correct permissions:
 
 ```bash
 chmod 644 ~/Library/LaunchAgents/com.claude.mcp.dashboard.plist
-```
+```yaml
 
 ## 🎯 Benefits of System Service
 
@@ -153,7 +153,7 @@ For easy access, you can create a menu bar shortcut:
 
    ```text
    do shell script "open http://localhost:3003"
-   ```
+```yaml
 
 3. Save as application
 4. Add to Login Items for menu bar access
@@ -166,7 +166,7 @@ When you update `dashboard.js`:
 # Restart the service to load changes
 launchctl stop com.claude.mcp.dashboard
 launchctl start com.claude.mcp.dashboard
-```
+```yaml
 
 ## ✨ Success Indicators
 

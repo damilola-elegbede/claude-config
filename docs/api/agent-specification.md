@@ -26,7 +26,7 @@ tools: Read, Write, Edit, Grep, Glob
 # Agent Name
 
 [Agent documentation and instructions...]
-```
+```yaml
 
 ## YAML Frontmatter Schema
 
@@ -54,9 +54,11 @@ tools: Read, Write, Edit, Grep, Glob
 - **Type**: String (color name only)
 - **Valid Color Names**: `blue`, `green`, `red`, `purple`, `yellow`, `orange`,
   `white`, `brown`, `cyan`, `pink`, `teal`
+
 - **Description**: Visual identifier color for the agent
 - **Constraints**: Should align with the agent's category color assignment (see
   Category Colors section)
+
 - **Examples**: `"blue"`, `"green"`, `"teal"`
 
 #### `tools` (string, required)
@@ -76,6 +78,7 @@ tools: Read, Write, Edit, Grep, Glob
 - **Type**: String (enum)
 - **Valid Values**: `development`, `infrastructure`, `architecture`, `design`, `quality`, `security`, `analysis`,
   `operations`
+
 - **Description**: Primary category the agent belongs to
 - **Note**: While technically optional, this field is strongly recommended for proper categorization and
   agent organization
@@ -146,31 +149,31 @@ Different agent types typically have different tool access patterns:
 
 ```yaml
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
-```
+```text
 
 **Analysis Agents**: Read-only access with search capabilities
 
 ```yaml
 tools: Read, Grep, Glob, LS, TodoWrite
-```
+```text
 
 **Security Agents**: Read and analysis without execution
 
 ```yaml
 tools: Read, Grep, Glob, LS
-```
+```text
 
 **Infrastructure Agents**: Full system access including web tools
 
 ```yaml
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite, WebFetch
-```
+```text
 
 **Documentation Agents**: File access with web research capabilities
 
 ```yaml
 tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite, WebFetch, WebSearch
-```
+```text
 
 **Specialized Agents**: May have no tools or very specific tool combinations
 
@@ -178,7 +181,7 @@ tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite, WebFetch, WebSearch
 tools: ""
 # or
 tools: Read, Grep, Glob
-```
+```yaml
 
 ## Complete Specification Example
 
@@ -206,7 +209,7 @@ You are an expert backend engineer specializing in server-side architecture...
 
 ## Core Capabilities
 [Detailed capabilities documentation...]
-```
+```yaml
 
 ### Accessibility Auditor Agent
 
@@ -228,7 +231,7 @@ tools: Read, Edit, MultiEdit, Write, Grep, Glob, LS, WebFetch, WebSearch, TodoWr
 
 ## Identity
 You are an accessibility compliance specialist...
-```
+```yaml
 
 ## Agent Loading and Discovery
 
@@ -306,7 +309,7 @@ Example:
 ```yaml
 description: Use for building React/Vue/Angular apps, state management, and frontend optimization. MUST BE
   USED for responsive design, accessibility implementation, and Core Web Vitals
-```
+```yaml
 
 ### Tool Selection
 
@@ -331,35 +334,35 @@ description: Use for building React/Vue/Angular apps, state management, and fron
 ```text
 Error: Missing required field: tools
 Solution: Add the tools field with appropriate permissions or empty string
-```
+```yaml
 
 #### Name Mismatch
 
 ```text
 Error: Name mismatch: YAML says 'backend-engineer' but filename is 'backend.md'
 Solution: Ensure name field matches filename (without .md extension)
-```
+```yaml
 
 #### Invalid Color
 
 ```text
 Error: Invalid color format 'invalid-color'
 Solution: Use a valid color name (e.g., 'blue', 'green', 'teal')
-```
+```yaml
 
 #### Description Too Long
 
 ```text
 Error: Description too long (275 chars). Should be under 250.
 Solution: Shorten the description while keeping key information
-```
+```yaml
 
 #### Empty Tools Field
 
 ```text
 Note: Empty tools field is valid for specialized agents
 Action: No action required if intentional
-```
+```yaml
 
 ## Integration with Claude Code
 
@@ -425,7 +428,7 @@ python scripts/validate-agent-yaml.py
 # - Category distribution analysis
 # - Tool usage patterns
 # - Color validation results
-```
+```yaml
 
 ## Future Considerations
 

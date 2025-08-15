@@ -8,7 +8,7 @@ Analyzes CI/CD failures from GitHub and deploys targeted fixes using appropriate
 
 ```bash
 /fix-ci [options]
-```
+```yaml
 
 ## Options
 
@@ -24,7 +24,7 @@ Analyzes CI/CD failures from GitHub and deploys targeted fixes using appropriate
 # Get latest failure details
 gh run list --status=failure --limit=1 --json databaseId,conclusion
 gh run view <run-id> --log-failed
-```
+```text
 
 Deploy analysis agents in parallel to thoroughly understand all failures:
 
@@ -102,7 +102,7 @@ Deploying execution-evaluator for final verification...
 ✓ All failures properly addressed
 ✓ No regressions introduced
 ✓ CI genuinely passing
-```
+```yaml
 
 ## Pragmatic Rules
 

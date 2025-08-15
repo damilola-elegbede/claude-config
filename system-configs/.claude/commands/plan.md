@@ -12,7 +12,7 @@ possible, with each PR independently reviewable and following TDD methodology.
 ```bash
 /plan <task_description>
 /plan simple <task_description>  # For tasks <100 LOC
-```
+```yaml
 
 ## Command Execution Flow
 
@@ -208,7 +208,7 @@ Task T1.02.03: Implement password hashing in User model
   * Add comparePassword method
   * Never expose raw password in JSON
 - Acceptance: Password stored as hash, comparison works
-```
+```yaml
 
 ### Phase Organization
 
@@ -286,7 +286,7 @@ User: yes
 
 Claude: ✅ Plan approved! Writing files...
 📁 Files written to: .tmp/user-auth-jwt-x3f2/
-```
+```yaml
 
 ### Cancelled Plan
 
@@ -302,7 +302,7 @@ Ready to proceed?
 User: cancel
 
 Claude: ❌ Plan cancelled. No files were written.
-```
+```yaml
 
 ### Simple Mode
 
@@ -324,7 +324,7 @@ User: yes
 
 Claude: ✅ Plan approved! Writing files...
 📁 Files written to: .tmp/fix-typo-2x1/implementation.md
-```
+```yaml
 
 ## Behavior
 

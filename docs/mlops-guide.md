@@ -25,7 +25,7 @@ enterprise-scale deployments with 99.9% uptime requirements.
 - Feature engineering and validation
 - Data quality monitoring and alerts
 - Historical data management and retention
-```
+```text
 
     </stage>
 
@@ -36,7 +36,7 @@ enterprise-scale deployments with 99.9% uptime requirements.
 - Automated hyperparameter optimization
 - Cross-validation with temporal splits
 - Model comparison and selection
-```
+```text
 
     </stage>
 
@@ -47,7 +47,7 @@ enterprise-scale deployments with 99.9% uptime requirements.
 - Blue-green deployment with gradual rollout
 - A/B testing framework for model comparison
 - Rollback mechanisms and canary releases
-```
+```text
 
     </stage>
 
@@ -58,7 +58,7 @@ enterprise-scale deployments with 99.9% uptime requirements.
 - Model drift detection and alerting
 - Data quality monitoring
 - Business impact measurement
-```
+```text
 
     </stage>
   </pipeline-stages>
@@ -75,7 +75,7 @@ enterprise-scale deployments with 99.9% uptime requirements.
 - Distributed training support (Horovod, Ray)
 - Auto-scaling based on training queue depth
 - Spot instance integration for cost optimization
-```
+```text
 
     </specifications>
 
@@ -86,7 +86,7 @@ enterprise-scale deployments with 99.9% uptime requirements.
 - Memory: 256GB+ RAM for large dataset processing
 - GPU: NVIDIA V100/A100 for deep learning models
 - Storage: 1TB+ NVMe for fast data access
-```
+```text
 
     </resource-requirements>
   </component>
@@ -99,7 +99,7 @@ enterprise-scale deployments with 99.9% uptime requirements.
 - Auto-scaling based on request volume and latency
 - Multi-region deployment for disaster recovery
 - Edge caching for frequently requested predictions
-```
+```text
 
     </specifications>
 
@@ -110,7 +110,7 @@ enterprise-scale deployments with 99.9% uptime requirements.
 - Throughput: 10K+ requests per second per service
 - Availability: 99.9% uptime with 4-9s SLA
 - Scalability: 10x traffic spike handling
-```
+```text
 
     </performance-targets>
   </component>
@@ -123,7 +123,7 @@ enterprise-scale deployments with 99.9% uptime requirements.
 - Feature store with real-time serving (Redis/Feast)
 - Model registry for versioning (MLflow/DVC)
 - Data lake for historical analysis (S3/GCS)
-```
+```text
 
     </specifications>
 
@@ -134,7 +134,7 @@ enterprise-scale deployments with 99.9% uptime requirements.
 - Backup strategy: Daily incremental, weekly full backups
 - Data lifecycle: Automated archival and deletion policies
 - GDPR compliance: Data anonymization and deletion capabilities
-```
+```text
 
     </data-management>
   </component>
@@ -175,7 +175,7 @@ data_ingestion_dag:
       operator: PythonOperator
       function: load_to_feature_store
       pool: feature_store_pool
-```
+```text
 
   </ingestion-workflow>
 
@@ -233,7 +233,7 @@ class FeatureEngineeringPipeline:
                     df[col].rolling(f'{window}T').max()
                 )
         return df
-```
+```text
 
   </feature-engineering>
 
@@ -268,7 +268,7 @@ expectations:
 - expectation_type: expect_column_values_to_not_be_null
   kwargs:
     column: system_id
-```
+```yaml
 
   </data-validation>
 </data-pipeline>
@@ -333,7 +333,7 @@ class ModelTrainingPipeline:
             )
 
             return ensemble_model, validation_metrics
-```
+```text
 
   </experiment-setup>
 
@@ -393,7 +393,7 @@ class HyperparameterOptimizer:
         )
 
         return self.study.best_params
-```
+```text
 
   </hyperparameter-optimization>
 
@@ -474,7 +474,7 @@ class ModelValidator:
                 tp / (tp + fp) if (tp + fp) > 0 else 0
             )
         }
-```
+```yaml
 
   </model-validation>
 </training-pipeline>
@@ -583,7 +583,7 @@ jobs:
 
           # Cleanup old blue deployment
           kubectl delete deployment/ml-service-blue -n production
-```
+```text
 
   </ci-cd-setup>
 
@@ -654,7 +654,7 @@ class CanaryDeploymentController:
                 return False
 
         return True
-```
+```text
 
   </canary-deployment>
 
@@ -733,7 +733,7 @@ class RollbackManager:
                 return False
 
         return True
-```
+```yaml
 
   </rollback-mechanism>
 </deployment-pipeline>
@@ -809,7 +809,7 @@ class MLMetricsCollector:
                 model_name=model_name,
                 model_version=model_version
             ).observe(duration)
-```
+```text
 
   </metrics-collection>
 
@@ -906,7 +906,7 @@ class DriftDetector:
         )
 
         return psi
-```
+```text
 
   </drift-detection>
 
@@ -1000,7 +1000,7 @@ class MLAlertManager:
             ])
 
         return recommendations
-```
+```yaml
 
   </alerting-system>
 </monitoring-setup>
@@ -1098,7 +1098,7 @@ class MLAlertManager:
         ]
       }
     }
-```
+```text
 
   </grafana-dashboard>
 
@@ -1205,7 +1205,7 @@ class MLAlertManager:
                 )
             else:
                 st.success("✅ No significant drift detected")
-```
+```yaml
 
   </custom-dashboard>
 </dashboard-setup>
@@ -1300,7 +1300,7 @@ class MLAlertManager:
                     optimizer.step()
 
             return student_model
-```
+```text
 
   </model-optimization>
 
@@ -1377,7 +1377,7 @@ class MLAlertManager:
                 model.gradient_checkpointing_enable()
 
             return model
-```
+```text
 
   </serving-optimization>
 
@@ -1482,7 +1482,7 @@ class MLAlertManager:
           - type: Percent
             value: 10
             periodSeconds: 60
-```
+```yaml
 
   </resource-optimization>
 </performance-optimization>
@@ -1501,7 +1501,7 @@ class MLAlertManager:
 - Training jobs killed by Kubernetes OOMKiller
 - CUDA out of memory errors
 - Slow training performance
-```
+```text
 
       </symptoms>
       <solutions>
@@ -1521,7 +1521,7 @@ for i, batch in enumerate(data_loader):
     if (i + 1) % accumulation_steps == 0:
         optimizer.step()
         optimizer.zero_grad()
-```
+```text
 
         </solution>
         <solution priority="2">
@@ -1538,7 +1538,7 @@ with torch.cuda.amp.autocast():
 scaler.scale(loss).backward()
 scaler.step(optimizer)
 scaler.update()
-```
+```text
 
         </solution>
       </solutions>
@@ -1552,7 +1552,7 @@ scaler.update()
 - Model performance varies between training and serving
 - Feature distribution mismatches
 - Unexpected null values in features
-```
+```text
 
       </symptoms>
       <solutions>
@@ -1571,7 +1571,7 @@ batch.expect_column_values_to_not_be_null("timestamp")
 batch.expect_column_kl_divergence_to_be_less_than(
     "memory_usage", reference_distribution, threshold=0.1
 )
-```
+```text
 
         </solution>
       </solutions>
@@ -1605,7 +1605,7 @@ async def batch_predict(requests: List[PredictionRequest]):
     ])
 
     return flatten_results(results)
-```
+```text
 
         </solution>
       </solutions>
@@ -1644,7 +1644,7 @@ async def batch_predict(requests: List[PredictionRequest]):
     python scripts/generate-health-report.py --email=ops@company.com
 
     echo "Maintenance completed successfully"
-```
+```text
 
   </routine-maintenance>
 
@@ -1699,7 +1699,7 @@ async def batch_predict(requests: List[PredictionRequest]):
             for component in components_to_backup:
                 for location in self.backup_locations:
                     self.backup_component(component, location)
-```
+```text
 
   </disaster-recovery>
 </maintenance-procedures>
@@ -1717,7 +1717,7 @@ async def batch_predict(requests: List[PredictionRequest]):
 3. Scale up inference service replicas
 4. Enable fallback prediction service
 5. Alert stakeholders and create incident
-```
+```text
 
       </steps>
       <contact-info>
@@ -1726,7 +1726,7 @@ async def batch_predict(requests: List[PredictionRequest]):
 - Primary: ML Platform Team (Slack: #ml-platform)
 - Secondary: DevOps Team (PagerDuty escalation)
 - Executive: VP Engineering (for P0 incidents)
-```
+```text
 
       </contact-info>
     </procedure>
@@ -1740,7 +1740,7 @@ async def batch_predict(requests: List[PredictionRequest]):
 3. Analyze feature drift reports
 4. Initiate emergency model retraining
 5. Prepare rollback to previous stable version
-```
+```text
 
       </steps>
       <automation>
@@ -1749,7 +1749,7 @@ async def batch_predict(requests: List[PredictionRequest]):
 - Automatic rollback if accuracy drops below 85%
 - Emergency retraining triggered at 90% accuracy
 - Stakeholder notifications sent automatically
-```
+```text
 
       </automation>
     </procedure>

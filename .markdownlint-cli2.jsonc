@@ -26,7 +26,7 @@
     // MD033: Inline HTML (allow specific elements)
     "MD033": { 
       "allowed_elements": [
-        "br", "kbd", "sub", "sup", "details", "summary", "div", "id",
+        "br", "kbd", "sub", "sup", "details", "summary", "div", "id", "commentary",
         // XML-style documentation elements
         "metadata", "api-version", "specification-standard", "authentication", "base-url",
         "executive-summary", "api-architecture", "service-endpoints", "category", 
@@ -92,7 +92,8 @@
       "allowed_languages": [
         "bash", "javascript", "python", "yaml", "json", "typescript", "shell", 
         "text", "markdown", "mermaid", "http", "xml", "html", "css", "sql", 
-        "dockerfile", "go", "rust", "java", "cpp", "c", "jsonc", "prometheus"
+        "dockerfile", "go", "rust", "java", "cpp", "c", "jsonc", "prometheus",
+        "hcl", "terraform", "ruby", "php", "swift", "kotlin", "promql"
       ]
     },
     // MD041: First line in file should be a top level heading
@@ -114,7 +115,8 @@
     ".git/**",
     "**/.tmp/**",
     "**/CHANGELOG.md",
-    // Agent files have special formatting requirements for system boundaries
-    "system-configs/.claude/agents/*.md"
+    // XML-style documentation with special formatting
+    "docs/ml-api-reference.md",
+    "docs/performance-predictor-guide.md"
   ]
 }

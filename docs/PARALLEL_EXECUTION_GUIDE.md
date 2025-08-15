@@ -29,7 +29,7 @@ Sequential Handoff:
 
 Consolidation Benefit:
   Clear architect/engineer naming indicates scope and complexity
-```
+```yaml
 
 #### **Quality Assurance (Concurrent Validation - Consolidated)**
 
@@ -44,7 +44,7 @@ Coordination Point:
 
 Consolidation Benefit:
   Single test-engineer handles all testing aspects, reducing handoffs
-```
+```yaml
 
 #### **Architecture & Design (Collaborative Planning)**
 
@@ -56,7 +56,7 @@ Parallel Group: Strategic Planning
 Synchronization:
   Design specifications → Implementation agents
   Architecture decisions → All implementation agents
-```
+```yaml
 
 ### 2. Analysis & Research Patterns
 
@@ -70,7 +70,7 @@ Parallel Group: Deep Analysis
 
 Coordination:
   - All analysis agents share findings for comprehensive executive summary
-```
+```yaml
 
 #### **Problem Investigation (Multi-Perspective)**
 
@@ -83,7 +83,7 @@ Parallel Group: Investigation
 
 Convergence:
   Integrated problem analysis with recommended solutions
-```
+```yaml
 
 ### 3. Specialized Coordination Patterns
 
@@ -103,7 +103,7 @@ Platform Teams:
     - devops: Infrastructure and deployment
 
 Coordination Agent: project-orchestrator
-```
+```yaml
 
 #### **Infrastructure Modernization**
 
@@ -117,7 +117,7 @@ Infrastructure Team:
 Coordination:
   - devops builds infrastructure → platform-engineer monitors and maintains
   - tech-writer creates parallel documentation
-```
+```yaml
 
 ## Agent Compatibility Matrix
 
@@ -165,7 +165,7 @@ Phase 3 - Parallel Quality Assurance:
   - code-reviewer: Code quality review
   - security-auditor: Security assessment
   Duration: 1-2 days
-```
+```yaml
 
 #### **System Analysis & Improvement**
 
@@ -182,7 +182,7 @@ Parallel Implementation (Days 2-4):
 Parallel Validation (Day 5):
   - code-reviewer: Implementation quality
   - security-auditor: Security improvement validation
-```
+```yaml
 
 ### 2. Resource Allocation Optimization
 
@@ -202,7 +202,7 @@ Maximum Parallel Utilization:
   Documentation & Strategy:
     - tech-writer (parallel documentation)
     - project-orchestrator (coordination)
-```
+```yaml
 
 #### **Research & Analysis Phase**
 
@@ -218,7 +218,7 @@ Comprehensive Analysis:
 
   Documentation:
     - tech-writer (findings compilation)
-```
+```yaml
 
 ### 3. Communication & Synchronization
 
@@ -240,7 +240,7 @@ Agent Status Updates:
     - Architectural decisions affecting multiple agents
     - Priority changes impacting parallel work
     - Resource allocation adjustments
-```
+```yaml
 
 #### **Handoff Protocols**
 
@@ -259,7 +259,7 @@ Quality → Release:
   - All quality agents provide approval status
   - code-reviewer consolidates final approval
   - devops proceeds with deployment
-```
+```yaml
 
 ## Performance Metrics
 
@@ -287,7 +287,7 @@ Optimization Needed:
   - Quality issues discovered late requiring rework
   - Communication overhead exceeding 10% of development time
   - Parallel agents stepping on each other's work
-```
+```yaml
 
 ## Best Practices
 

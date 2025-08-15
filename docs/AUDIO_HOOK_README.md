@@ -10,9 +10,12 @@ manual intervention.
 
 ### Audio Configuration
 
-- **Completion Sound**: `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r`
-- **Stop Sound**: `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r`
-- **Notification Sound**: `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r`
+- **Completion Sound**:
+`/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r`
+- **Stop Sound**:
+`/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r`
+- **Notification Sound**:
+`/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r`
 - **Implementation**: Direct afplay commands in Claude Code hooks
 
 ### Settings Configuration
@@ -68,7 +71,7 @@ Add to `/Users/damilola/.claude/settings.json`:
     ]
   }
 }
-```
+```yaml
 
 ## Hook Types and Sounds
 
@@ -105,7 +108,7 @@ Add to `/Users/damilola/.claude/settings.json`:
    ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r"
    ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r"
    ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r"
-   ```
+```text
 
 2. Test audio manually:
 
@@ -113,7 +116,7 @@ Add to `/Users/damilola/.claude/settings.json`:
    afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r"
    afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r"
    afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r"
-   ```
+```yaml
 
 3. Verify hook configuration in settings.json
 
@@ -125,6 +128,7 @@ you're still getting too many notifications, you can:
 1. Modify the matcher patterns in settings.json to be more specific
 2. Remove specific tools from the matcher (e.g., change
    "Write|Edit|MultiEdit|Bash|TodoWrite" to "Write|Edit|MultiEdit")
+
 3. Add time-based filtering or other logic if needed
 
 ### Disabling Notifications
@@ -173,7 +177,7 @@ afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/
 
 # Test Notification hooks (Aurora.m4r)
 afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r' 2>/dev/null &
-```
+```yaml
 
 ### Expected Behavior
 

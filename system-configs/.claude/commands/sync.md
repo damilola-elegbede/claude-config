@@ -10,7 +10,7 @@ Claude configuration stays up-to-date with the repository version.
 
 ```bash
 /sync
-```
+```yaml
 
 ## Behavior
 
@@ -35,8 +35,10 @@ When you use `/sync`, I will:
    - **Remove old commands**: Delete all files in `~/.claude/commands/` (preserving the directory)
    - Copy only actual agent files from `./system-configs/.claude/agents/` to `~/.claude/agents/` (excluding
      documentation/template files)
+
    - Copy all files from `./system-configs/.claude/commands/` to `~/.claude/commands/` (explicitly excluding
      `sync.md` and `config-diff.md`)
+
    - Copy `./system-configs/settings.json` to `~/.claude/settings.json` (merge with existing settings)
    - **Important**: This ensures no deprecated agents or commands remain, and only actual agents are synced
    - **Excluded from agents sync**:
@@ -106,7 +108,7 @@ Syncing configuration files...
 
 Sync completed successfully!
 Audio notifications and specialized agents are now configured and ready to use.
-```
+```yaml
 
 ## Implementation Details
 
@@ -145,7 +147,7 @@ for file in ./system-configs/.claude/commands/*.md; do
         cp "$file" ~/.claude/commands/
     fi
 done
-```
+```yaml
 
 ## Troubleshooting
 

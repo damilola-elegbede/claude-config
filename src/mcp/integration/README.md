@@ -2,7 +2,9 @@
 
 ## Overview
 
-The MCP Optimization Engine is an advanced system designed to optimize MCP (Model Context Protocol) operations across multiple servers, providing intelligent request routing, multi-level caching, and cross-server coordination. This implementation addresses the requirements specified in SPEC_03.
+The MCP Optimization Engine is an advanced system designed to optimize MCP (Model Context Protocol) operations across
+multiple servers, providing intelligent request routing, multi-level caching, and cross-server coordination.
+This implementation addresses the requirements specified in SPEC_03.
 
 ## Performance Targets
 
@@ -43,7 +45,7 @@ const engine = new MCPOptimizationEngine({
 
 // Optimize a request
 const result = await engine.optimizeRequest(request, servers);
-```
+```yaml
 
 ### 2. IntelligentRouter
 
@@ -87,7 +89,7 @@ const decision = await router.route({
     minSuccessRate: 0.95
   }
 }, availableServers);
-```
+```yaml
 
 ### Advanced Caching
 
@@ -100,7 +102,7 @@ await cache.set('data-key', data, {
 });
 
 const cachedData = await cache.get('data-key');
-```
+```yaml
 
 ### Cross-Server Operations
 
@@ -111,7 +113,7 @@ const result = await coordinator.coordinateOperation(
   ['server-1', 'server-2', 'server-3'],
   { data: 'operation-data' }
 );
-```
+```yaml
 
 ## Performance Monitoring
 
@@ -123,7 +125,7 @@ const metrics = engine.getOptimizationMetrics();
 console.log(`Latency reduction: ${metrics.system.latencyReduction * 100}%`);
 console.log(`Cache hit rate: ${metrics.cache.hitRate * 100}%`);
 console.log(`Active servers: ${metrics.coordination.activeServers}`);
-```
+```yaml
 
 ### Available Metrics
 
@@ -150,7 +152,7 @@ const optimizer = new MCPOptimizationEngine(optimizationConfig);
 // Use together
 const servers = infrastructure.registry.getHealthyServers();
 const optimizedResult = await optimizer.optimizeRequest(request, servers);
-```
+```yaml
 
 ## Configuration
 
@@ -185,7 +187,7 @@ const config: OptimizationEngineConfig = {
     maxServerCount: 15
   }
 };
-```
+```yaml
 
 ### Advanced Configuration
 
@@ -208,7 +210,7 @@ const advancedConfig: OptimizationEngineConfig = {
     transactionTimeout: 30000
   }
 };
-```
+```yaml
 
 ## Usage Examples
 
@@ -229,7 +231,7 @@ const request: ToolExecutionRequest = {
 
 const result = await engine.optimizeRequest(request, servers);
 console.log(`Success: ${result.success}, Time: ${result.executionTime}ms`);
-```
+```yaml
 
 ### Batch Processing
 
@@ -244,7 +246,7 @@ const requests = [
 const results = await Promise.all(
   requests.map(req => engine.optimizeRequest(req, servers))
 );
-```
+```yaml
 
 ### Multi-Server Coordination
 
@@ -263,7 +265,7 @@ const coordResult = await engine.coordinateMultiServerOperation(
 );
 
 console.log(`Coordinated ${coordResult.results.size} servers`);
-```
+```yaml
 
 ## Testing
 
@@ -271,7 +273,7 @@ console.log(`Coordinated ${coordResult.results.size} servers`);
 
 ```bash
 npm test -- --testPathPattern=spec03-optimization
-```
+```yaml
 
 ### Performance Tests
 
@@ -291,7 +293,7 @@ Run the demonstration to see the optimization engine in action:
 ```typescript
 import { runSPEC03Demo } from './optimization-demo';
 await runSPEC03Demo();
-```
+```yaml
 
 ## Monitoring and Observability
 
@@ -301,7 +303,7 @@ await runSPEC03Demo();
 const health = await engine.performHealthCheck();
 console.log(`Status: ${health.status}`);
 console.log(`Details:`, health.details);
-```
+```yaml
 
 ### Real-time Metrics
 
@@ -316,7 +318,7 @@ engine.on('metricsUpdate', (metrics) => {
 engine.on('targetMet', (event) => {
   console.log(`Target met: ${event.metric} = ${event.value}`);
 });
-```
+```yaml
 
 ### Performance Events
 
@@ -335,7 +337,7 @@ engine.on('cacheHit', (event) => {
 engine.on('stateUpdated', (event) => {
   console.log(`State synchronized: ${event.stateId}`);
 });
-```
+```yaml
 
 ## Error Handling and Resilience
 
@@ -358,7 +360,7 @@ engine.on('routingError', (error) => {
   console.error('Routing failed:', error);
   // Fallback to default routing
 });
-```
+```yaml
 
 ## Best Practices
 
@@ -413,4 +415,5 @@ For questions, issues, or contributions:
 3. Monitor real-time metrics for performance insights
 4. Review integration patterns with existing infrastructure
 
-The MCP Optimization Engine represents a significant advancement in MCP infrastructure performance and reliability, meeting all SPEC_03 requirements while providing a foundation for future optimizations.
+The MCP Optimization Engine represents a significant advancement in MCP infrastructure performance and reliability,
+, meeting all SPEC_03 requirements while providing a foundation for future optimizations.

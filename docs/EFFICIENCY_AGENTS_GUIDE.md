@@ -51,7 +51,7 @@ ls
 
 # After (1 delegation):
 Task: "Use file-navigator to find all React components and utility files in the src directory"
-```
+```yaml
 
 ### 2. dependency-manager (Now: supply-chain-security-engineer)
 
@@ -78,7 +78,7 @@ npm audit fix
 
 # After (1 delegation):
 Task: "Use dependency-manager to update React and its types to latest compatible versions"
-```
+```yaml
 
 ### 3. git-workflow
 
@@ -106,7 +106,7 @@ git stash pop
 
 # After (1 delegation):
 Task: "Use git-workflow to create feature/new-feature branch from latest main"
-```
+```yaml
 
 ### 4. config-specialist
 
@@ -133,7 +133,7 @@ edit config/development.json
 
 # After (1 delegation):
 Task: "Use config-specialist to update database configuration across all environments"
-```
+```yaml
 
 ### 5. error-resolver (Now: production-reliability-engineer)
 
@@ -161,7 +161,7 @@ edit src/problem-file.js
 
 # After (1 delegation):
 Task: "Use error-resolver to diagnose and fix the TypeError in production logs"
-```
+```yaml
 
 ### 6. search-coordinator
 
@@ -187,7 +187,7 @@ find . -name "*.test.tsx" -exec grep -l "useState" {} \;
 
 # After (1 delegation):
 Task: "Use search-coordinator to find all React hooks usage in test files"
-```
+```yaml
 
 ### 7. test-runner
 
@@ -213,7 +213,7 @@ cat coverage/lcov-report/index.html
 
 # After (1 delegation):
 Task: "Use test-runner to run affected tests for recent changes with coverage"
-```
+```yaml
 
 ### 8. documentation-finder
 
@@ -240,7 +240,7 @@ cat docs/api/users.md
 
 # After (1 delegation):
 Task: "Use documentation-finder to gather all user API documentation"
-```
+```yaml
 
 ### 9. file-writer
 
@@ -268,7 +268,7 @@ cat > src/components/Button/Button.module.css
 
 # After (1 delegation):
 Task: "Use file-writer to scaffold a new Button component with tests and stories"
-```
+```yaml
 
 ## Integration Patterns
 
@@ -293,7 +293,7 @@ Efficiency agents are designed to complement specialist agents:
 4. error-resolver + debugger:
    - Error resolver handles common issues
    - Debugger tackles complex problems
-```
+```yaml
 
 ### Command Shortcuts (Historical)
 
@@ -353,19 +353,19 @@ These workflows are now handled by the main agent portfolio:
 
    ```yaml
    file-navigator → search-coordinator → file-writer
-   ```
+```text
 
 2. **Parallel Efficiency**: Run multiple efficiency agents simultaneously
 
    ```yaml
    dependency-manager + config-specialist + git-workflow
-   ```
+```text
 
 3. **Hybrid Workflows**: Combine efficiency and specialist agents
 
    ```yaml
    file-navigator → codebase-analyst → file-writer
-   ```
+```yaml
 
 ## Advanced Usage
 
@@ -382,7 +382,7 @@ workflow: create-feature-component
     - file-writer: Scaffold component structure (now: frontend-architect/backend-engineer)
     - test-runner: Verify initial tests pass
     - git-workflow: Create feature branch and commit
-```
+```yaml
 
 ### Performance Optimization Tips
 
@@ -411,7 +411,7 @@ Enable verbose output for efficiency agents:
 
 ```bash
 Task: "Use file-navigator in debug mode to trace search algorithm"
-```
+```yaml
 
 ## Future Enhancements
 

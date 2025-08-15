@@ -10,7 +10,7 @@ traditional debugging cannot solve.
 
 ```bash
 /debug <issue_description>
-```
+```yaml
 
 ## Behavior
 
@@ -187,7 +187,7 @@ After investigation, I provide:
 
 ### Test Coverage
 [Test cases to add to prevent regression]
-```
+```yaml
 
 ## Common Investigation Patterns
 

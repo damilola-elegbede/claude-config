@@ -10,7 +10,7 @@ concerns with actionable fix suggestions.
 
 ```bash
 /review [scope] [options]
-```
+```yaml
 
 ## Arguments
 
@@ -247,6 +247,7 @@ I assess:
 ### Comprehensive Review Report
 
 <!-- markdownlint-disable MD040 -->
+
 ```markdown
 ## Code Review Report
 
@@ -263,13 +264,15 @@ I assess:
 **File**: `src/api/users.js:42-45`
 **Issue**: Direct string concatenation in SQL query
 ```javascript
+
 // Current (vulnerable):
 const query = `SELECT * FROM users WHERE id = ${userId}`;
 
 // Fix:
 const query = 'SELECT * FROM users WHERE id = ?';
 db.query(query, [userId]);
-```
+
+```yaml
 
 **Impact**: Allows database manipulation via malicious input
 **References**: [OWASP SQL Injection](https://owasp.org/www-community/attacks/SQL_Injection)
@@ -280,12 +283,14 @@ db.query(query, [userId]);
 **Issue**: Weak token validation allows bypass
 
 ```javascript
+
 // Current (vulnerable):
 if (token && token.length > 0) { // Too permissive
 
 // Fix:
 if (token && jwt.verify(token, SECRET_KEY)) {
-```
+
+```yaml
 
 **Impact**: Unauthorized access to protected resources
 
@@ -297,13 +302,15 @@ if (token && jwt.verify(token, SECRET_KEY)) {
 **Issue**: Event listener not cleaned up
 
 ```javascript
+
 // Add cleanup:
 useEffect(() => {
   const handler = (e) => handleResize(e);
   window.addEventListener('resize', handler);
   return () => window.removeEventListener('resize', handler); // Missing
 }, []);
-```
+
+```yaml
 
 [Additional issues with fixes...]
 
@@ -347,7 +354,8 @@ Run `/review --fix` to automatically fix:
 4. Run tests after fixes
 5. Re-run `/review` to verify fixes
 
-```
+```yaml
+
 <!-- markdownlint-enable -->
 
 ## Fix Suggestions
@@ -386,7 +394,7 @@ if [ $? -ne 0 ]; then
   echo "Code review failed. Fix issues before committing."
   exit 1
 fi
-```
+```yaml
 
 ### CI/CD Pipeline
 
@@ -399,7 +407,7 @@ Add as PR check:
       ${{ github.event.pull_request.base.sha }}..\
       ${{ github.event.pull_request.head.sha }}
     claude /review --security  # Additional security focus
-```
+```yaml
 
 ### IDE Integration
 

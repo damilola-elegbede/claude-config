@@ -11,7 +11,7 @@ Claude coordinates with the test-engineer specialist for comprehensive test stra
 
 ```bash
 /test
-```
+```yaml
 
 ## Behavior
 
@@ -117,7 +117,7 @@ When creating new tests, I'll generate appropriate starter tests:
 # In a Go project
 /test
 # Finds and runs: go test ./...
-```
+```yaml
 
 ## Notes
 
