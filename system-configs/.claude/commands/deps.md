@@ -2,13 +2,15 @@
 
 ## Description
 
-Manages dependencies intelligently across all package managers with security scanning, safe updates, and supply chain protection. Identifies vulnerabilities, reduces technical debt, and maintains optimal dependency health for polyglot codebases.
+Manages dependencies intelligently across all package managers with security scanning, safe updates, and supply
+chain protection. Identifies vulnerabilities, reduces technical debt, and maintains optimal dependency health for
+polyglot codebases.
 
 ## Usage
 
 ```bash
 /deps <action> [options]
-```
+```yaml
 
 ## Actions
 
@@ -28,6 +30,12 @@ When you invoke `/deps`, I will:
 3. **Analyze the requested action** and deploy appropriate specialists
 4. **Execute the action** across all detected ecosystems
 5. **Provide consolidated results** with actionable recommendations
+6. **Deploy execution-evaluator** to verify:
+   - All package managers detected correctly
+   - Requested action completed successfully
+   - No dependencies broken
+   - Security scan results accurate
+   - Lock files updated appropriately
 
 ## Package Manager Detection
 
@@ -91,7 +99,7 @@ I perform comprehensive security analysis:
 ### License Issues
 - Incompatible licenses found
 - Commercial usage restrictions
-```
+```yaml
 
 ### /deps update
 
@@ -174,7 +182,7 @@ I provide comprehensive dependency health metrics:
 1. Update these security-critical packages
 2. Consider replacing these unmaintained packages
 3. Reduce dependency on these heavy packages
-```
+```yaml
 
 ### /deps predict
 
@@ -204,7 +212,7 @@ I forecast future dependency risks:
 ### Recommendations
 - Prepare migration plan for high-risk packages
 - Set up monitoring alerts for medium-risk packages
-```
+```yaml
 
 ### /deps compare
 
@@ -237,7 +245,7 @@ I analyze dependency differences:
 ### Security Impact
 - Resolved 3 vulnerabilities
 - Introduced 1 new low-severity issue
-```
+```yaml
 
 ## Agent Coordination
 

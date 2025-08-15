@@ -9,17 +9,25 @@
 <!-- markdownlint-disable-next-line MD036 -->
 *Production-ready Smart Agent Orchestration Framework for Claude Code CLI*
 
-[Quick Start](#-quick-start) • [Orchestration Framework](#-smart-agent-orchestration-framework) • [Features](#-features) • [Commands](#-commands) • [Agent Ecosystem](#-agent-ecosystem) • [Installation](#-installation) • [Contributing](#-contributing)
+[Quick Start](#-quick-start) • [Orchestration Framework](#-smart-agent-orchestration-framework) •
+[Features](#-features) • [Commands](#-commands) • [Agent Ecosystem](#-agent-ecosystem) •
+[Installation](#-installation) • [Contributing](#-contributing)
 
 </div>
 
 ## 🎯 Overview
 
-This repository delivers a **sophisticated Smart Agent Orchestration Framework** for Claude Code CLI, featuring **40+ specialized agents** and **14 essential commands**. Built from the ground up after a comprehensive cleanup that removed 85+ bloat files, this system provides intelligent task delegation, parallel execution, and continuous improvement capabilities for enhanced development workflows.
+This repository delivers a **sophisticated Smart Agent Orchestration Framework** for Claude Code CLI, featuring
+**41 specialized agents** (including the new execution-evaluator for command verification) and
+**14 essential commands**.
+Built from the ground up after a comprehensive cleanup that removed 85+ bloat files, this system provides intelligent
+task delegation, parallel execution, continuous improvement capabilities, and automatic command verification for
+enhanced development workflows.
 
 ## 🧠 Smart Agent Orchestration Framework
 
-This repository implements a **production-ready orchestration framework** that intelligently manages 40+ specialized agents with sophisticated task delegation and parallel execution capabilities.
+This repository implements a **production-ready orchestration framework** that intelligently manages 40+ specialized
+agents with sophisticated task delegation and parallel execution capabilities.
 
 ### 🌟 Framework Core Principles
 
@@ -68,7 +76,7 @@ npm install -g @anthropic/claude-code
 
 # Or via Homebrew (macOS)
 brew install claude-code
-```
+```yaml
 
 ### 2. Clone and Setup Configuration
 
@@ -85,7 +93,7 @@ claude-code
 cp system-configs/CLAUDE.md ~/CLAUDE.md
 cp -r system-configs/.claude ~/.claude
 cp system-configs/settings.json ~/.claude/settings.json
-```
+```yaml
 
 ### 3. Experience the Orchestration Framework
 
@@ -104,7 +112,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 
 # Experience parallel agent deployment
 /resolve-cr [pr-number]  # Deploys multiple specialized agents for PR comment resolution
-```
+```yaml
 
 ## ✨ Features
 
@@ -128,12 +136,16 @@ cp system-configs/settings.json ~/.claude/settings.json
 
 - **`/test`** - **Multi-Agent Test Execution**: Auto-discovers frameworks, deploys test-engineer for complex scenarios
 - **`/context`** - **Parallel Repository Analysis**: Deploys multiple codebase-analyst agents concurrently
-- **`/plan`** - **Strategic Orchestration**: Principal-architect consultation with TDD methodology and parallel execution
+- **`/plan`** - **Strategic Orchestration**: Principal-architect consultation with TDD methodology and parallel
+  execution
+
 - **`/agent-audit`** - **Ecosystem Health Check**: Parallel validation across all 8 agent categories
 - **`/resolve-cr`** - **Multi-Agent PR Resolution**: Intelligent specialist deployment based on comment analysis
 - **`/debug`** - **Systematic Investigation**: Debugger agent with evidence gathering and hypothesis testing
 - **`/pr`** - **Intelligent PR Creation**: Tech-writer + codebase-analyst collaboration for comprehensive descriptions
-- **`/review`** - **Multi-Dimensional Analysis**: Parallel deployment of code-reviewer, security-auditor, and test-engineer
+- **`/review`** - **Multi-Dimensional Analysis**: Parallel deployment of code-reviewer, security-auditor, and
+  test-engineer
+
 - **`/deps`** - **Security-First Management**: Dependency-manager agent with vulnerability scanning
 - **`/fix-ci`** - **Pattern Recognition**: DevOps agent with automated failure analysis and remediation
 
@@ -161,6 +173,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 - **Average Rating**: 4.7/5.0 - Industry-leading orchestration quality
 - **Design Philosophy**: Intelligent specialist delegation with parallel-first execution
 - **Performance Focus**: Continuous improvement through execution metrics and feedback loops
+- **Verification Layer**: Automatic execution-evaluator deployment after every command
 
 ### Core Development Commands
 
@@ -171,7 +184,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Automatically discovers and runs tests
 # Creates starter tests if none exist
 # Detects test frameworks from package.json/README
-```
+```yaml
 
 #### `/context` - Parallel Repository Analysis
 
@@ -181,7 +194,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Orchestrates comprehensive architecture, tech stack, and purpose analysis
 # Auto-executes on Claude Code startup with intelligent load balancing
 # Performance feedback loop for optimal agent allocation
-```
+```yaml
 
 #### `/review` - Multi-Agent Quality Review
 
@@ -191,7 +204,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Comprehensive quality validation with specialist expertise
 # Performance tracking and continuous improvement metrics
 # Production-ready quality gates with detailed reporting
-```
+```yaml
 
 #### `/debug` - Orchestrated Systematic Debugging
 
@@ -201,7 +214,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Coordinates evidence gathering from multiple sources
 # Hypothesis formation and testing with specialist precision
 # Root cause identification with validated fixes
-```
+```yaml
 
 ### Planning & Orchestration
 
@@ -214,7 +227,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Generates TDD phases (8-15 files each) with quality gates
 # Intelligent framework orchestration for complex feature development
 # Outputs to ./.tmp/<feature-name>/ with comprehensive documentation
-```
+```yaml
 
 #### `/fix-ci` - Intelligent CI Failure Resolution
 
@@ -225,9 +238,40 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Coordinates with test-engineer and security-auditor as needed
 # Performance tracking for continuous improvement of fix strategies
 # Automated verification with rollback capabilities
-```
+```yaml
 
 ### Quality & Security
+
+#### Shell Script Validation System
+
+This repository includes comprehensive **ShellCheck validation** to prevent bash syntax errors and ensure script quality:
+
+**Features:**
+- **Automated CI Validation**: All shell scripts validated on push/PR
+- **Pre-commit Hooks**: Local validation before commits
+- **Developer Tools**: Setup and fix scripts for easy adoption
+- **Configurable Rules**: Balanced exclusions for practical development
+
+**Usage:**
+```bash
+# One-time setup for developers
+./scripts/setup-shellcheck.sh
+
+# Run validation locally
+shellcheck scripts/*.sh
+
+# Auto-fix common issues
+./scripts/fix-shellcheck-issues.sh
+```
+
+**CI Integration:**
+
+- Critical scripts must pass strict validation
+- Comprehensive workflow validates all repository scripts
+- Results uploaded as artifacts for review
+- Excludes style-only issues while catching real problems
+
+See [ShellCheck Validation Documentation](docs/SHELLCHECK_VALIDATION.md) for complete details.
 
 #### `/deps` - Security-Focused Dependency Management
 
@@ -236,7 +280,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 /deps update   # Safe updates with testing
 /deps clean    # Remove unused packages
 # Multi-language support (npm, pip, cargo, etc.)
-```
+```yaml
 
 #### `/agent-audit` - Orchestrated Ecosystem Validation
 
@@ -247,7 +291,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Performance metrics and capability gap analysis
 # Continuous improvement recommendations with quality feedback loops
 # Production-ready health monitoring for the entire orchestration framework
-```
+```yaml
 
 #### `/resolve-cr` - Multi-Agent PR Resolution
 
@@ -258,7 +302,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 # Coordinates with test-engineer and code-reviewer for validation
 # Performance tracking and success rate optimization
 # Seamless integration with /test and /commit orchestration workflow
-```
+```yaml
 
 Note: Previously named `/resolve-rabbit`.
 
@@ -271,7 +315,7 @@ Note: Previously named `/resolve-rabbit`.
 # Analyzes changes comprehensively
 # Creates semantic commit messages
 # Adds AI co-authorship attribution
-```
+```yaml
 
 #### `/push` - Safe Push to Remote
 
@@ -280,11 +324,12 @@ Note: Previously named `/resolve-rabbit`.
 # Safety checks for branch status
 # Sets up tracking for new branches
 # Prevents accidental force pushes
-```
+```yaml
 
 ## 🎭 Agent Ecosystem: 40+ Specialists
 
-The Smart Agent Orchestration Framework includes **40+ specialized agents** organized across 8 functional domains, with sophisticated parallel execution and multi-instance capabilities:
+The Smart Agent Orchestration Framework includes **40+ specialized agents** organized across 8 functional domains,
+with sophisticated parallel execution and multi-instance capabilities:
 
 ### 📊 Agent Categories Overview
 
@@ -294,14 +339,15 @@ The Smart Agent Orchestration Framework includes **40+ specialized agents** orga
 | **Infrastructure** | 8 | Systems, operations, and deployment | cloud-architect, devops, platform-engineer, kubernetes-admin |
 | **Architecture** | 2 | System design and planning | principal-architect, api-architect |
 | **Design** | 4 | User experience and interfaces | ui-designer, mobile-ui, design-system, ux-researcher |
-| **Quality** | 6 | Testing, review, and validation | test-engineer, code-reviewer, performance-engineer, accessibility-auditor |
+| **Quality** | 7 | Testing, review, and validation | test-engineer, code-reviewer, performance-engineer, accessibility-auditor |
 | **Security** | 2 | Security and compliance | security-auditor, security-tester |
 | **Analysis** | 8 | Research and documentation | codebase-analyst, tech-writer, data-scientist, performance-analyst |
 | **Operations** | 11 | Support and efficiency tools | debugger, file-navigator, incident-commander, error-resolver |
 
 ### 🚀 Smart Orchestration Examples
 
-The framework demonstrates intelligent parallel execution and specialist coordination across complex real-world scenarios:
+The framework demonstrates intelligent parallel execution and specialist coordination across complex real-world
+scenarios:
 
 #### Multi-Platform Development Orchestration
 
@@ -310,13 +356,13 @@ Project: Mobile App with Backend
 Orchestration Strategy: Parallel specialist deployment with dependency management
 Execution:
   - backend-engineer: API development & microservices
-  - frontend-engineer: Admin dashboard & web interfaces  
+  - frontend-engineer: Admin dashboard & web interfaces
   - mobile-engineer #1: iOS native development
   - mobile-engineer #2: Android native development
   - design-system: Component library & design tokens
   - ux-researcher: User testing & feedback integration
 Performance Metrics: 70% faster delivery through parallel execution
-```
+```yaml
 
 #### Cloud Infrastructure Orchestration
 
@@ -330,7 +376,7 @@ Execution:
   - devops: CI/CD pipelines & deployment automation
   - cloud-architect: Cost optimization & multi-cloud strategy
 Continuous Improvement: Performance feedback drives resource allocation
-```
+```yaml
 
 #### Quality Assurance Orchestration
 
@@ -343,8 +389,9 @@ Execution:
   - test-engineer: Coverage analysis & test strategy optimization
   - performance-analyst: Performance profiling & bottleneck identification
   - accessibility-auditor: WCAG compliance & inclusive design validation
+  - execution-evaluator: Command verification & success assessment
 Quality Gates: 95% coverage across all quality dimensions
-```
+```yaml
 
 #### Framework Health Orchestration
 
@@ -356,12 +403,12 @@ Execution (8 concurrent instances):
   - agent-auditor #2: Infrastructure agents (8 specialists)
   - agent-auditor #3: Architecture agents (2 specialists)
   - agent-auditor #4: Design agents (4 specialists)
-  - agent-auditor #5: Quality agents (6 specialists)
+  - agent-auditor #5: Quality agents (7 specialists)
   - agent-auditor #6: Security agents (2 specialists)
   - agent-auditor #7: Analysis agents (8 specialists)
   - agent-auditor #8: Operations agents (11 specialists)
 Performance Tracking: Real-time capability assessment and gap analysis
-```
+```yaml
 
 ### 🎯 Complete Agent Roster
 
@@ -397,10 +444,11 @@ Performance Tracking: Real-time capability assessment and gap analysis
 - **ui-designer**: UI/UX design, visual hierarchy, accessibility compliance
 - **mobile-ui**: iOS/Android specific patterns, gestures, platform adaptations
 
-#### Quality & Testing (6 agents)
+#### Quality & Testing (7 agents)
 
 - **test-engineer**: Test strategy, implementation, execution, CI/CD automation
 - **code-reviewer**: Quality review, security checks, best practices validation
+- **execution-evaluator**: Command execution verification, success validation, side-effect detection
 - **performance-engineer**: Performance profiling, load testing, bottleneck analysis
 - **accessibility-auditor**: WCAG compliance audits, screen reader testing, remediation
 - **api-contract-tester**: API validation, contract tests, mock server generation
@@ -450,7 +498,7 @@ Performance Tracking: Real-time capability assessment and gap analysis
 ### Advanced Orchestration Capabilities
 
 - **Smart Agent Selection**: Context-aware specialist deployment with performance optimization
-- **Parallel Execution Engine**: Sophisticated coordination of concurrent agent operations  
+- **Parallel Execution Engine**: Sophisticated coordination of concurrent agent operations
 - **Quality Feedback Loops**: Continuous improvement based on execution success rates and performance metrics
 - **Emergency Override System**: Pragmatic thresholds for direct action when specialists unavailable
 - **Boundary Protection**: Enhanced SYSTEM BOUNDARY enforcement with automatic violation detection
@@ -476,7 +524,7 @@ claude-config/
 ├── docs/                      # 26 documentation files
 ├── scripts/                   # 17 utility and validation scripts
 └── tests/                     # Test suite for all components
-```
+```yaml
 
 ### Configuration Flow
 
@@ -490,7 +538,7 @@ graph TB
     E --> G[14 Commands Available]
     F --> H[Enhanced Claude CLI]
     G --> H
-```
+```yaml
 
 ## 💡 Real-World Orchestration Use Cases
 
@@ -513,7 +561,7 @@ cd claude-config
 
 # Multi-dimensional code review with parallel specialist deployment
 /review
-```
+```yaml
 
 ### Production-Ready Quality Assurance
 
@@ -526,7 +574,7 @@ cd claude-config
 # Continuous improvement workflow
 git pull origin main && /sync  # Framework updates
 /test                         # Orchestrated test validation
-```
+```yaml
 
 ### Advanced Framework Development
 
@@ -540,7 +588,7 @@ cp system-configs/.claude/agents/AGENT_TEMPLATE.md system-configs/.claude/agents
 /agent-audit                      # Comprehensive ecosystem validation
 
 # Performance tracking and continuous improvement
-```
+```yaml
 
 ## 💻 Installation
 
@@ -563,7 +611,7 @@ claude-code
 
 # Validate framework deployment and agent ecosystem health
 /agent-audit
-```
+```yaml
 
 ### Option 2: Manual Installation
 
@@ -578,7 +626,7 @@ cp system-configs/CLAUDE.md ~/CLAUDE.md
 # Copy Claude settings and commands
 cp -r system-configs/.claude ~/.claude
 cp system-configs/settings.json ~/.claude/settings.json
-```
+```yaml
 
 ### Option 3: Selective Installation
 
@@ -594,7 +642,7 @@ cp -r system-configs/.claude/agents ~/.claude/agents
 
 # Just the audio settings
 cp system-configs/settings.json ~/.claude/settings.json
-```
+```yaml
 
 ## 🧪 Testing
 
@@ -611,7 +659,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 
 # Validate YAML in agent definitions
 ./scripts/validate_yaml.sh
-```
+```yaml
 
 ### Test Coverage
 
@@ -636,7 +684,7 @@ cp system-configs/settings.json ~/.claude/settings.json
 
 # Check agent directory
 ls ~/.claude/agents/
-```
+```yaml
 
 #### SYSTEM BOUNDARY Violation
 
@@ -653,7 +701,7 @@ cat ~/.claude/settings.json | grep -A 10 "hooks"
 
 # Test audio playback
 afplay /System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r
-```
+```yaml
 
 #### Configuration Sync Issues
 
@@ -666,7 +714,7 @@ git status
 
 # Force sync with validation
 /sync
-```
+```yaml
 
 ## 🤝 Contributing
 
@@ -719,23 +767,28 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ### Q: How do I deploy configurations from this repository?
 
-**A:** Use the `/sync` command from within the claude-config repository. It will validate and deploy all configurations to your `~/.claude/` directory.
+**A:** Use the `/sync` command from within the claude-config repository. It will validate and deploy all
+configurations to your `~/.claude/` directory.
 
 ### Q: How often should I update my configurations?
 
-**A:** Run `git pull` in the claude-config repository periodically, then `/sync` to get the latest agent definitions and commands.
+**A:** Run `git pull` in the claude-config repository periodically, then `/sync` to get the latest agent
+definitions and commands.
 
 ### Q: What's the difference between the repository CLAUDE.md and system-configs/CLAUDE.md?
 
-**A:** The repository CLAUDE.md describes this configuration repository. The system-configs/CLAUDE.md is deployed to your home directory for global Claude configuration.
+**A:** The repository CLAUDE.md describes this configuration repository. The system-configs/CLAUDE.md is deployed
+to your home directory for global Claude configuration.
 
 ### Q: How do I know which agent to use?
 
-**A:** Check the [Agent Selection Guide](docs/AGENT_SELECTION_GUIDE.md) or use `/agent-audit` to see all available agents.
+**A:** Check the [Agent Selection Guide](docs/AGENT_SELECTION_GUIDE.md) or use `/agent-audit` to see all
+available agents.
 
 ### Q: Why did my agent task fail with "SYSTEM BOUNDARY" error?
 
-**A:** This security feature prevents agents from invoking themselves or other agents. Always let Claude handle agent coordination.
+**A:** This security feature prevents agents from invoking themselves or other agents. Always let Claude handle
+agent coordination.
 
 ### Q: Can agents write files directly?
 
@@ -743,7 +796,8 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ### Q: How can I contribute a new agent?
 
-**A:** Use the template in `system-configs/.claude/agents/AGENT_TEMPLATE.md`, ensure valid YAML front-matter and SYSTEM BOUNDARY protection, then submit a PR.
+**A:** Use the template in `system-configs/.claude/agents/AGENT_TEMPLATE.md`, ensure valid YAML front-matter and
+SYSTEM BOUNDARY protection, then submit a PR.
 
 ## 🔒 Security & Framework Protection
 
@@ -772,6 +826,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <!-- markdownlint-disable-next-line MD036 -->
 *Built with ❤️ by the Smart Agent Orchestration Community*
 
+<!-- markdownlint-disable-next-line MD036 -->
 **Experience the future of intelligent development workflows**
 
-[Report Bug](https://github.com/damilola/claude-config/issues) • [Request Feature](https://github.com/damilola/claude-config/issues) • [Documentation](https://github.com/damilola/claude-config/wiki) • [Framework Guide](system-configs/.claude/agents/README.md)
+[Report Bug](https://github.com/damilola/claude-config/issues) •
+[Request Feature](https://github.com/damilola/claude-config/issues) •
+[Documentation](https://github.com/damilola/claude-config/wiki) •
+[Framework Guide](system-configs/.claude/agents/README.md)

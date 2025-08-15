@@ -7,40 +7,59 @@
   <version>1.0</version>
 </metadata>
 
-<executive-summary>
-This comprehensive MLOps guide covers the complete machine learning operations pipeline for the Phase 3 Intelligence Layer, including model training workflows, automated deployment, monitoring systems, and performance optimization techniques. Designed for enterprise-scale deployments with 99.9% uptime requirements.
-</executive-summary>
+## Executive Summary
+
+This comprehensive MLOps guide covers the complete machine learning operations pipeline
+for the Phase 3 Intelligence Layer, including model training workflows, automated
+deployment, monitoring systems, and performance optimization techniques. Designed for
+enterprise-scale deployments with 99.9% uptime requirements.
 
 ## MLOps Architecture Overview
 
 <mlops-architecture>
   <pipeline-stages>
     <stage name="data-ingestion" sla="real-time">
-      - Metrics collection from distributed systems
-      - Feature engineering and validation
-      - Data quality monitoring and alerts
-      - Historical data management and retention
+
+```text
+- Metrics collection from distributed systems
+- Feature engineering and validation
+- Data quality monitoring and alerts
+- Historical data management and retention
+```text
+
     </stage>
 
     <stage name="model-development" sla="continuous">
-      - Experiment tracking and versioning
-      - Automated hyperparameter optimization
-      - Cross-validation with temporal splits
-      - Model comparison and selection
+
+```text
+- Experiment tracking and versioning
+- Automated hyperparameter optimization
+- Cross-validation with temporal splits
+- Model comparison and selection
+```text
+
     </stage>
 
     <stage name="model-deployment" sla="zero-downtime">
-      - Automated model packaging and testing
-      - Blue-green deployment with gradual rollout
-      - A/B testing framework for model comparison
-      - Rollback mechanisms and canary releases
+
+```text
+- Automated model packaging and testing
+- Blue-green deployment with gradual rollout
+- A/B testing framework for model comparison
+- Rollback mechanisms and canary releases
+```text
+
     </stage>
 
     <stage name="model-monitoring" sla="continuous">
-      - Real-time performance tracking
-      - Model drift detection and alerting
-      - Data quality monitoring
-      - Business impact measurement
+
+```text
+- Real-time performance tracking
+- Model drift detection and alerting
+- Data quality monitoring
+- Business impact measurement
+```text
+
     </stage>
   </pipeline-stages>
 </mlops-architecture>
@@ -50,49 +69,73 @@ This comprehensive MLOps guide covers the complete machine learning operations p
 <infrastructure-stack>
   <component name="training-infrastructure" tier="compute">
     <specifications>
-      - Kubernetes cluster with GPU nodes for training
-      - Distributed training support (Horovod, Ray)
-      - Auto-scaling based on training queue depth
-      - Spot instance integration for cost optimization
+
+```text
+- Kubernetes cluster with GPU nodes for training
+- Distributed training support (Horovod, Ray)
+- Auto-scaling based on training queue depth
+- Spot instance integration for cost optimization
+```text
+
     </specifications>
 
     <resource-requirements>
-      - CPU: 64+ cores for distributed training
-      - Memory: 256GB+ RAM for large dataset processing
-      - GPU: NVIDIA V100/A100 for deep learning models
-      - Storage: 1TB+ NVMe for fast data access
+
+```text
+- CPU: 64+ cores for distributed training
+- Memory: 256GB+ RAM for large dataset processing
+- GPU: NVIDIA V100/A100 for deep learning models
+- Storage: 1TB+ NVMe for fast data access
+```text
+
     </resource-requirements>
   </component>
 
   <component name="serving-infrastructure" tier="inference">
     <specifications>
-      - High-availability model serving with load balancing
-      - Auto-scaling based on request volume and latency
-      - Multi-region deployment for disaster recovery
-      - Edge caching for frequently requested predictions
+
+```text
+- High-availability model serving with load balancing
+- Auto-scaling based on request volume and latency
+- Multi-region deployment for disaster recovery
+- Edge caching for frequently requested predictions
+```text
+
     </specifications>
 
     <performance-targets>
-      - Latency: p99 &lt; 100ms for real-time predictions
-      - Throughput: 10K+ requests per second per service
-      - Availability: 99.9% uptime with 4-9s SLA
-      - Scalability: 10x traffic spike handling
+
+```text
+- Latency: p99 < 100ms for real-time predictions
+- Throughput: 10K+ requests per second per service
+- Availability: 99.9% uptime with 4-9s SLA
+- Scalability: 10x traffic spike handling
+```text
+
     </performance-targets>
   </component>
 
   <component name="data-infrastructure" tier="storage">
     <specifications>
-      - Time-series database for metrics storage (InfluxDB)
-      - Feature store with real-time serving (Redis/Feast)
-      - Model registry for versioning (MLflow/DVC)
-      - Data lake for historical analysis (S3/GCS)
+
+```text
+- Time-series database for metrics storage (InfluxDB)
+- Feature store with real-time serving (Redis/Feast)
+- Model registry for versioning (MLflow/DVC)
+- Data lake for historical analysis (S3/GCS)
+```text
+
     </specifications>
 
     <data-management>
-      - Data retention: 2 years for training data, 6 months for predictions
-      - Backup strategy: Daily incremental, weekly full backups
-      - Data lifecycle: Automated archival and deletion policies
-      - GDPR compliance: Data anonymization and deletion capabilities
+
+```text
+- Data retention: 2 years for training data, 6 months for predictions
+- Backup strategy: Daily incremental, weekly full backups
+- Data lifecycle: Automated archival and deletion policies
+- GDPR compliance: Data anonymization and deletion capabilities
+```text
+
     </data-management>
   </component>
 </infrastructure-stack>
@@ -103,116 +146,130 @@ This comprehensive MLOps guide covers the complete machine learning operations p
 
 <data-pipeline>
   <ingestion-workflow>
-    ```yaml
-    # Airflow DAG for data ingestion
-    data_ingestion_dag:
-      schedule_interval: "*/5 * * * *"  # Every 5 minutes
 
-      tasks:
-        extract_metrics:
-          operator: PythonOperator
-          function: extract_system_metrics
-          timeout: 300
-          retries: 3
+```yaml
+# Airflow DAG for data ingestion
+data_ingestion_dag:
+  schedule_interval: "*/5 * * * *"  # Every 5 minutes
 
-        validate_data:
-          operator: GreatExpectationsOperator
-          expectation_suite: system_metrics_suite
-          data_context: /opt/airflow/great_expectations
-        transform_features:
-          operator: SparkOperator
-          application: /opt/spark/jobs/feature_engineering.py
-          conf:
-            spark.executor.instances: 4
-            spark.executor.memory: 8g
+  tasks:
+    extract_metrics:
+      operator: PythonOperator
+      function: extract_system_metrics
+      timeout: 300
+      retries: 3
 
-        load_feature_store:
-          operator: PythonOperator
-          function: load_to_feature_store
-          pool: feature_store_pool
-    ```
+    validate_data:
+      operator: GreatExpectationsOperator
+      expectation_suite: system_metrics_suite
+      data_context: /opt/airflow/great_expectations
+
+    transform_features:
+      operator: SparkOperator
+      application: /opt/spark/jobs/feature_engineering.py
+      conf:
+        spark.executor.instances: 4
+        spark.executor.memory: 8g
+
+    load_feature_store:
+      operator: PythonOperator
+      function: load_to_feature_store
+      pool: feature_store_pool
+```text
+
   </ingestion-workflow>
 
   <feature-engineering>
-    ```python
-    # Feature engineering pipeline
-    from feast import FeatureStore
-    from great_expectations.core import ExpectationSuite
 
-    class FeatureEngineeringPipeline:
-        def __init__(self):
-            self.feature_store = FeatureStore("feature_store.yaml")
-            self.data_validator = DataValidator()
+```python
+# Feature engineering pipeline
+from feast import FeatureStore
+from great_expectations.core import ExpectationSuite
 
-        def engineer_features(self, raw_metrics: pd.DataFrame) -> pd.DataFrame:
-            """Engineer features for ML models"""
+class FeatureEngineeringPipeline:
+    def __init__(self):
+        self.feature_store = FeatureStore("feature_store.yaml")
+        self.data_validator = DataValidator()
 
-            # Time-based features
-            features = self.create_time_features(raw_metrics)
+    def engineer_features(self, raw_metrics: pd.DataFrame) -> pd.DataFrame:
+        """Engineer features for ML models"""
 
-            # Statistical aggregations
-            features = self.add_rolling_statistics(features, windows=[5, 15, 60])
+        # Time-based features
+        features = self.create_time_features(raw_metrics)
 
-            # Derived features
-            features = self.add_derived_features(features)
+        # Statistical aggregations
+        features = self.add_rolling_statistics(features, windows=[5, 15, 60])
 
-            # Validate feature quality
-            validation_result = self.data_validator.validate(features)
-            if not validation_result.success:
-                raise FeatureValidationError(validation_result.errors)
+        # Derived features
+        features = self.add_derived_features(features)
 
-            return features
+        # Validate feature quality
+        validation_result = self.data_validator.validate(features)
+        if not validation_result.success:
+            raise FeatureValidationError(validation_result.errors)
 
-        def create_time_features(self, df: pd.DataFrame) -> pd.DataFrame:
-            """Create time-based features"""
-            df['hour'] = df.timestamp.dt.hour
-            df['day_of_week'] = df.timestamp.dt.dayofweek
-            df['is_weekend'] = df.day_of_week.isin([5, 6])
-            df['is_business_hours'] = df.hour.between(9, 17)
-            return df
+        return features
 
-        def add_rolling_statistics(self, df: pd.DataFrame, windows: List[int]) -> pd.DataFrame:
-            """Add rolling window statistics"""
-            for window in windows:
-                for col in ['cpu_usage', 'memory_usage', 'disk_io']:
-                    df[f'{col}_mean_{window}m'] = df[col].rolling(f'{window}T').mean()
-                    df[f'{col}_std_{window}m'] = df[col].rolling(f'{window}T').std()
-                    df[f'{col}_max_{window}m'] = df[col].rolling(f'{window}T').max()
-            return df
-    ```
+    def create_time_features(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Create time-based features"""
+        df['hour'] = df.timestamp.dt.hour
+        df['day_of_week'] = df.timestamp.dt.dayofweek
+        df['is_weekend'] = df.day_of_week.isin([5, 6])
+        df['is_business_hours'] = df.hour.between(9, 17)
+        return df
+
+    def add_rolling_statistics(self, df: pd.DataFrame,
+                               windows: List[int]) -> pd.DataFrame:
+        """Add rolling window statistics"""
+        for window in windows:
+            for col in ['cpu_usage', 'memory_usage', 'disk_io']:
+                df[f'{col}_mean_{window}m'] = (
+                    df[col].rolling(f'{window}T').mean()
+                )
+                df[f'{col}_std_{window}m'] = (
+                    df[col].rolling(f'{window}T').std()
+                )
+                df[f'{col}_max_{window}m'] = (
+                    df[col].rolling(f'{window}T').max()
+                )
+        return df
+```text
+
   </feature-engineering>
 
   <data-validation>
-    ```yaml
-    # Great Expectations suite for data quality
-    expectation_suite_name: system_metrics_suite
 
-    expectations:
-      - expectation_type: expect_table_row_count_to_be_between
-        kwargs:
-          min_value: 100
-          max_value: 10000
+```yaml
+# Great Expectations suite for data quality
+expectation_suite_name: system_metrics_suite
 
-      - expectation_type: expect_column_values_to_not_be_null
-        kwargs:
-          column: timestamp
+expectations:
+- expectation_type: expect_table_row_count_to_be_between
+  kwargs:
+    min_value: 100
+    max_value: 10000
 
-      - expectation_type: expect_column_values_to_be_between
-        kwargs:
-          column: cpu_usage
-          min_value: 0
-          max_value: 100
+- expectation_type: expect_column_values_to_not_be_null
+  kwargs:
+    column: timestamp
 
-      - expectation_type: expect_column_values_to_be_between
-        kwargs:
-          column: memory_usage
-          min_value: 0
-          max_value: 100
+- expectation_type: expect_column_values_to_be_between
+  kwargs:
+    column: cpu_usage
+    min_value: 0
+    max_value: 100
 
-      - expectation_type: expect_column_values_to_not_be_null
-        kwargs:
-          column: system_id
-    ```
+- expectation_type: expect_column_values_to_be_between
+  kwargs:
+    column: memory_usage
+    min_value: 0
+    max_value: 100
+
+- expectation_type: expect_column_values_to_not_be_null
+  kwargs:
+    column: system_id
+```yaml
+
   </data-validation>
 </data-pipeline>
 
@@ -220,179 +277,205 @@ This comprehensive MLOps guide covers the complete machine learning operations p
 
 <training-pipeline>
   <experiment-setup>
-    ```python
-    # MLflow experiment tracking setup
-    import mlflow
-    import mlflow.xgboost
-    import mlflow.sklearn
-    from mlflow.tracking import MlflowClient
 
-    class ModelTrainingPipeline:
-        def __init__(self, experiment_name: str):
-            self.client = MlflowClient()
-            self.experiment_name = experiment_name
-            self.experiment_id = self._get_or_create_experiment()
+```python
+# MLflow experiment tracking setup
+import mlflow
+import mlflow.xgboost
+import mlflow.sklearn
+from mlflow.tracking import MlflowClient
 
-        def train_performance_predictor(self, training_data: pd.DataFrame):
-            """Train performance prediction models with experiment tracking"""
+class ModelTrainingPipeline:
+    def __init__(self, experiment_name: str):
+        self.client = MlflowClient()
+        self.experiment_name = experiment_name
+        self.experiment_id = self._get_or_create_experiment()
 
-            with mlflow.start_run(experiment_id=self.experiment_id):
-                # Log training parameters
-                mlflow.log_params({
-                    'model_type': 'xgboost_ensemble',
-                    'training_samples': len(training_data),
-                    'feature_count': training_data.shape[1] - 1,
-                    'cross_validation_folds': 5
-                })
+    def train_performance_predictor(self, training_data: pd.DataFrame):
+        """Train performance prediction models with experiment tracking"""
 
-                # Split data with temporal awareness
-                X_train, X_val, y_train, y_val = self.temporal_split(training_data)
+        with mlflow.start_run(experiment_id=self.experiment_id):
+            # Log training parameters
+            mlflow.log_params({
+                'model_type': 'xgboost_ensemble',
+                'training_samples': len(training_data),
+                'feature_count': training_data.shape[1] - 1,
+                'cross_validation_folds': 5
+            })
 
-                # Train primary model (XGBoost)
-                xgb_model = self.train_xgboost_model(X_train, y_train)
+            # Split data with temporal awareness
+            X_train, X_val, y_train, y_val = self.temporal_split(
+                training_data
+            )
 
-                # Train secondary model (LSTM)
-                lstm_model = self.train_lstm_model(X_train, y_train)
+            # Train primary model (XGBoost)
+            xgb_model = self.train_xgboost_model(X_train, y_train)
 
-                # Create ensemble model
-                ensemble_model = self.create_ensemble([xgb_model, lstm_model])
+            # Train secondary model (LSTM)
+            lstm_model = self.train_lstm_model(X_train, y_train)
 
-                # Validate on test set
-                validation_metrics = self.validate_model(ensemble_model, X_val, y_val)
+            # Create ensemble model
+            ensemble_model = self.create_ensemble([xgb_model, lstm_model])
 
-                # Log metrics
-                mlflow.log_metrics(validation_metrics)
+            # Validate on test set
+            validation_metrics = self.validate_model(
+                ensemble_model, X_val, y_val
+            )
 
-                # Log model artifacts
-                mlflow.sklearn.log_model(
-                    ensemble_model,
-                    "performance_predictor",
-                    signature=self.get_model_signature(X_train, y_train)
-                )
+            # Log metrics
+            mlflow.log_metrics(validation_metrics)
 
-                return ensemble_model, validation_metrics
-    ```
+            # Log model artifacts
+            mlflow.sklearn.log_model(
+                ensemble_model,
+                "performance_predictor",
+                signature=self.get_model_signature(X_train, y_train)
+            )
+
+            return ensemble_model, validation_metrics
+```text
+
   </experiment-setup>
 
   <hyperparameter-optimization>
-    ```python
-    # Automated hyperparameter tuning with Optuna
-    import optuna
-    from optuna.integration.mlflow import MLflowCallback
 
-    class HyperparameterOptimizer:
-        def __init__(self, n_trials: int = 100):
-            self.n_trials = n_trials
-            self.study = None
+```python
+# Automated hyperparameter tuning with Optuna
+import optuna
+from optuna.integration.mlflow import MLflowCallback
 
-        def optimize_xgboost(self, X_train, y_train, X_val, y_val):
-            """Optimize XGBoost hyperparameters"""
+class HyperparameterOptimizer:
+    def __init__(self, n_trials: int = 100):
+        self.n_trials = n_trials
+        self.study = None
 
-            def objective(trial):
-                params = {
-                    'n_estimators': trial.suggest_int('n_estimators', 100, 1000),
-                    'max_depth': trial.suggest_int('max_depth', 3, 10),
-                    'learning_rate': trial.suggest_float('learning_rate', 0.01, 0.3),
-                    'subsample': trial.suggest_float('subsample', 0.6, 1.0),
-                    'colsample_bytree': trial.suggest_float('colsample_bytree', 0.6, 1.0),
-                    'reg_alpha': trial.suggest_float('reg_alpha', 0, 10),
-                    'reg_lambda': trial.suggest_float('reg_lambda', 0, 10)
-                }
+    def optimize_xgboost(self, X_train, y_train, X_val, y_val):
+        """Optimize XGBoost hyperparameters"""
 
-                model = xgb.XGBRegressor(**params, random_state=42)
-                model.fit(X_train, y_train)
+        def objective(trial):
+            params = {
+                'n_estimators': trial.suggest_int('n_estimators', 100, 1000),
+                'max_depth': trial.suggest_int('max_depth', 3, 10),
+                'learning_rate': trial.suggest_float(
+                    'learning_rate', 0.01, 0.3
+                ),
+                'subsample': trial.suggest_float('subsample', 0.6, 1.0),
+                'colsample_bytree': trial.suggest_float(
+                    'colsample_bytree', 0.6, 1.0
+                ),
+                'reg_alpha': trial.suggest_float('reg_alpha', 0, 10),
+                'reg_lambda': trial.suggest_float('reg_lambda', 0, 10)
+            }
 
-                y_pred = model.predict(X_val)
-                mse = mean_squared_error(y_val, y_pred)
+            model = xgb.XGBRegressor(**params, random_state=42)
+            model.fit(X_train, y_train)
 
-                return mse
+            y_pred = model.predict(X_val)
+            mse = mean_squared_error(y_val, y_pred)
 
-            # Create study with MLflow integration
-            mlflow_callback = MLflowCallback(
-                tracking_uri=mlflow.get_tracking_uri(),
-                metric_name="validation_mse"
-            )
+            return mse
 
-            self.study = optuna.create_study(
-                direction='minimize',
-                sampler=optuna.samplers.TPESampler(seed=42)
-            )
+        # Create study with MLflow integration
+        mlflow_callback = MLflowCallback(
+            tracking_uri=mlflow.get_tracking_uri(),
+            metric_name="validation_mse"
+        )
 
-            self.study.optimize(
-                objective,
-                n_trials=self.n_trials,
-                callbacks=[mlflow_callback]
-            )
+        self.study = optuna.create_study(
+            direction='minimize',
+            sampler=optuna.samplers.TPESampler(seed=42)
+        )
 
-            return self.study.best_params
-    ```
+        self.study.optimize(
+            objective,
+            n_trials=self.n_trials,
+            callbacks=[mlflow_callback]
+        )
+
+        return self.study.best_params
+```text
+
   </hyperparameter-optimization>
 
   <model-validation>
-    ```python
-    # Comprehensive model validation
-    class ModelValidator:
-        def __init__(self):
-            self.validation_metrics = {}
 
-        def validate_performance_predictor(self, model, X_test, y_test):
-            """Validate performance prediction model"""
+```python
+# Comprehensive model validation
+class ModelValidator:
+    def __init__(self):
+        self.validation_metrics = {}
 
-            # Generate predictions
-            y_pred = model.predict(X_test)
-            y_pred_proba = model.predict_proba(X_test)[:, 1] if hasattr(model, 'predict_proba') else None
+    def validate_performance_predictor(self, model, X_test, y_test):
+        """Validate performance prediction model"""
 
-            # Classification metrics
-            metrics = {
-                'accuracy': accuracy_score(y_test, y_pred > 0.5),
-                'precision': precision_score(y_test, y_pred > 0.5),
-                'recall': recall_score(y_test, y_pred > 0.5),
-                'f1_score': f1_score(y_test, y_pred > 0.5),
-                'auc_roc': roc_auc_score(y_test, y_pred_proba) if y_pred_proba is not None else None
-            }
+        # Generate predictions
+        y_pred = model.predict(X_test)
+        y_pred_proba = (
+            model.predict_proba(X_test)[:, 1]
+            if hasattr(model, 'predict_proba') else None
+        )
 
-            # Regression metrics for continuous predictions
-            metrics.update({
-                'mse': mean_squared_error(y_test, y_pred),
-                'mae': mean_absolute_error(y_test, y_pred),
-                'r2_score': r2_score(y_test, y_pred)
-            })
+        # Classification metrics
+        metrics = {
+            'accuracy': accuracy_score(y_test, y_pred > 0.5),
+            'precision': precision_score(y_test, y_pred > 0.5),
+            'recall': recall_score(y_test, y_pred > 0.5),
+            'f1_score': f1_score(y_test, y_pred > 0.5),
+            'auc_roc': (
+                roc_auc_score(y_test, y_pred_proba)
+                if y_pred_proba is not None else None
+            )
+        }
 
-            # Time-series specific metrics
-            metrics.update(self.calculate_temporal_metrics(y_test, y_pred))
+        # Regression metrics for continuous predictions
+        metrics.update({
+            'mse': mean_squared_error(y_test, y_pred),
+            'mae': mean_absolute_error(y_test, y_pred),
+            'r2_score': r2_score(y_test, y_pred)
+        })
 
-            # Business-specific metrics
-            metrics.update(self.calculate_business_metrics(y_test, y_pred))
+        # Time-series specific metrics
+        metrics.update(self.calculate_temporal_metrics(y_test, y_pred))
 
-            return metrics
+        # Business-specific metrics
+        metrics.update(self.calculate_business_metrics(y_test, y_pred))
 
-        def calculate_temporal_metrics(self, y_true, y_pred):
-            """Calculate time-series specific validation metrics"""
-            return {
-                'temporal_consistency': self.calculate_temporal_consistency(y_true, y_pred),
-                'forecast_bias': np.mean(y_pred - y_true),
-                'directional_accuracy': self.calculate_directional_accuracy(y_true, y_pred)
-            }
+        return metrics
 
-        def calculate_business_metrics(self, y_true, y_pred):
-            """Calculate business-impact metrics"""
-            # Cost of false positives vs false negatives
-            false_positive_cost = 10  # Cost of unnecessary alerts
-            false_negative_cost = 100  # Cost of missed incidents
+    def calculate_temporal_metrics(self, y_true, y_pred):
+        """Calculate time-series specific validation metrics"""
+        return {
+            'temporal_consistency': self.calculate_temporal_consistency(
+                y_true, y_pred
+            ),
+            'forecast_bias': np.mean(y_pred - y_true),
+            'directional_accuracy': self.calculate_directional_accuracy(
+                y_true, y_pred
+            )
+        }
 
-            tp = np.sum((y_true == 1) & (y_pred > 0.5))
-            fp = np.sum((y_true == 0) & (y_pred > 0.5))
-            fn = np.sum((y_true == 1) & (y_pred <= 0.5))
-            tn = np.sum((y_true == 0) & (y_pred <= 0.5))
+    def calculate_business_metrics(self, y_true, y_pred):
+        """Calculate business-impact metrics"""
+        # Cost of false positives vs false negatives
+        false_positive_cost = 10  # Cost of unnecessary alerts
+        false_negative_cost = 100  # Cost of missed incidents
 
-            total_cost = fp * false_positive_cost + fn * false_negative_cost
+        tp = np.sum((y_true == 1) & (y_pred > 0.5))
+        fp = np.sum((y_true == 0) & (y_pred > 0.5))
+        fn = np.sum((y_true == 1) & (y_pred <= 0.5))
+        tn = np.sum((y_true == 0) & (y_pred <= 0.5))
 
-            return {
-                'business_cost': total_cost,
-                'cost_per_prediction': total_cost / len(y_true),
-                'alert_precision': tp / (tp + fp) if (tp + fp) > 0 else 0
-            }
-    ```
+        total_cost = fp * false_positive_cost + fn * false_negative_cost
+
+        return {
+            'business_cost': total_cost,
+            'cost_per_prediction': total_cost / len(y_true),
+            'alert_precision': (
+                tp / (tp + fp) if (tp + fp) > 0 else 0
+            )
+        }
+```yaml
+
   </model-validation>
 </training-pipeline>
 
@@ -402,232 +485,256 @@ This comprehensive MLOps guide covers the complete machine learning operations p
 
 <deployment-pipeline>
   <ci-cd-setup>
-    ```yaml
-    # GitHub Actions workflow for model deployment
-    name: ML Model Deployment
 
-    on:
-      push:
-        branches: [main]
-        paths: ['models/**', 'ml-pipeline/**']
-      pull_request:
-        branches: [main]
+```yaml
+# GitHub Actions workflow for model deployment
+name: ML Model Deployment
 
-    jobs:
-      test-models:
-        runs-on: ubuntu-latest
-        steps:
-          - uses: actions/checkout@v3
+on:
+  push:
+    branches: [main]
+    paths: ['models/**', 'ml-pipeline/**']
+  pull_request:
+    branches: [main]
 
-          - name: Set up Python
-            uses: actions/setup-python@v3
-            with:
-              python-version: '3.9'
+jobs:
+  test-models:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-          - name: Install dependencies
-            run: |
-              pip install -r requirements.txt
-              pip install -r requirements-test.txt
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
 
-          - name: Run model tests
-            run: |
-              pytest tests/models/ -v --cov=ml_pipeline
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-test.txt
 
-          - name: Validate model performance
-            run: |
-              python scripts/validate-model-performance.py --threshold=0.95
+      - name: Run model tests
+        run: |
+          pytest tests/models/ -v --cov=ml_pipeline
 
-      build-and-push:
-        needs: test-models
-        runs-on: ubuntu-latest
-        if: github.ref == 'refs/heads/main'
-        steps:
-          - uses: actions/checkout@v3
+      - name: Validate model performance
+        run: |
+          python scripts/validate-model-performance.py --threshold=0.95
 
-          - name: Build Docker image
-            run: |
-              docker build -t claude-ml:${{ github.sha }} -f docker/Dockerfile.ml-service .
+  build-and-push:
+    needs: test-models
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v3
 
-          - name: Push to registry
-            run: |
-              docker tag claude-ml:${{ github.sha }} ${{ secrets.REGISTRY }}/claude-ml:${{ github.sha }}
-              docker push ${{ secrets.REGISTRY }}/claude-ml:${{ github.sha }}
+      - name: Build Docker image
+        run: |
+          docker build -t claude-ml:${{ github.sha }} \
+            -f docker/Dockerfile.ml-service .
 
-      deploy-staging:
-        needs: build-and-push
-        runs-on: ubuntu-latest
-        environment: staging
-        steps:
-          - name: Deploy to staging
-            run: |
-              kubectl set image deployment/ml-service ml-service=${{ secrets.REGISTRY }}/claude-ml:${{ github.sha }}
-              kubectl rollout status deployment/ml-service -n staging
+      - name: Push to registry
+        run: |
+          docker tag claude-ml:${{ github.sha }} \
+            ${{ secrets.REGISTRY }}/claude-ml:${{ github.sha }}
+          docker push ${{ secrets.REGISTRY }}/claude-ml:${{ github.sha }}
 
-          - name: Run integration tests
-            run: |
-              python tests/integration/test_ml_api.py --environment=staging
+  deploy-staging:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Deploy to staging
+        run: |
+          kubectl set image deployment/ml-service \
+            ml-service=${{ secrets.REGISTRY }}/claude-ml:${{ github.sha }}
+          kubectl rollout status deployment/ml-service -n staging
 
-      deploy-production:
-        needs: deploy-staging
-        runs-on: ubuntu-latest
-        environment: production
-        if: github.ref == 'refs/heads/main'
-        steps:
-          - name: Deploy to production (blue-green)
-            run: |
-              # Deploy to green environment
-              kubectl apply -f k8s/production/ml-service-green.yaml
+      - name: Run integration tests
+        run: |
+          python tests/integration/test_ml_api.py --environment=staging
 
-              # Wait for green deployment to be ready
-              kubectl rollout status deployment/ml-service-green -n production
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment: production
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy to production (blue-green)
+        run: |
+          # Deploy to green environment
+          kubectl apply -f k8s/production/ml-service-green.yaml
 
-              # Run smoke tests on green deployment
-              python scripts/smoke-tests.py --target=green
+          # Wait for green deployment to be ready
+          kubectl rollout status deployment/ml-service-green \
+            -n production
 
-              # Switch traffic to green (gradual rollout)
-              python scripts/traffic-split.py --green-percentage=10
-              sleep 300  # Wait 5 minutes
+          # Run smoke tests on green deployment
+          python scripts/smoke-tests.py --target=green
 
-              python scripts/traffic-split.py --green-percentage=50
-              sleep 300
+          # Switch traffic to green (gradual rollout)
+          python scripts/traffic-split.py --green-percentage=10
+          sleep 300  # Wait 5 minutes
 
-              python scripts/traffic-split.py --green-percentage=100
+          python scripts/traffic-split.py --green-percentage=50
+          sleep 300
 
-              # Cleanup old blue deployment
-              kubectl delete deployment/ml-service-blue -n production
-    ```
+          python scripts/traffic-split.py --green-percentage=100
+
+          # Cleanup old blue deployment
+          kubectl delete deployment/ml-service-blue -n production
+```text
+
   </ci-cd-setup>
 
   <canary-deployment>
-    ```python
-    # Canary deployment controller
-    class CanaryDeploymentController:
-        def __init__(self, k8s_client, monitoring_client):
-            self.k8s = k8s_client
-            self.monitoring = monitoring_client
-            self.canary_config = self.load_canary_config()
 
-        def deploy_canary(self, new_model_version: str):
-            """Deploy new model version using canary strategy"""
+```python
+# Canary deployment controller
+class CanaryDeploymentController:
+    def __init__(self, k8s_client, monitoring_client):
+        self.k8s = k8s_client
+        self.monitoring = monitoring_client
+        self.canary_config = self.load_canary_config()
 
-            # Deploy canary version
-            canary_deployment = self.create_canary_deployment(new_model_version)
-            self.k8s.create_deployment(canary_deployment)
+    def deploy_canary(self, new_model_version: str):
+        """Deploy new model version using canary strategy"""
 
-            # Gradual traffic shift
-            traffic_percentages = [5, 10, 25, 50, 100]
+        # Deploy canary version
+        canary_deployment = self.create_canary_deployment(new_model_version)
+        self.k8s.create_deployment(canary_deployment)
 
-            for percentage in traffic_percentages:
-                # Update traffic split
-                self.update_traffic_split(canary_percentage=percentage)
+        # Gradual traffic shift
+        traffic_percentages = [5, 10, 25, 50, 100]
 
-                # Monitor metrics for anomalies
-                monitoring_period = 300  # 5 minutes
-                if not self.monitor_canary_health(monitoring_period):
-                    self.rollback_deployment()
-                    raise CanaryDeploymentError("Health check failed, rolling back")
+        for percentage in traffic_percentages:
+            # Update traffic split
+            self.update_traffic_split(canary_percentage=percentage)
 
-                # Gradual increase
-                time.sleep(monitoring_period)
+            # Monitor metrics for anomalies
+            monitoring_period = 300  # 5 minutes
+            if not self.monitor_canary_health(monitoring_period):
+                self.rollback_deployment()
+                raise CanaryDeploymentError("Health check failed, rolling back")
 
-            # Promote canary to stable
-            self.promote_canary_to_stable()
+            # Gradual increase
+            time.sleep(monitoring_period)
 
-        def monitor_canary_health(self, monitoring_period: int) -> bool:
-            """Monitor canary deployment health"""
+        # Promote canary to stable
+        self.promote_canary_to_stable()
 
-            # Define success criteria
-            criteria = {
-                'error_rate': 0.01,  # &lt; 1% error rate
-                'latency_p99': 100,  # &lt; 100ms p99 latency
-                'prediction_accuracy': 0.95,  # > 95% accuracy
-                'throughput_degradation': 0.1  # &lt; 10% throughput degradation
-            }
+    def monitor_canary_health(self, monitoring_period: int) -> bool:
+        """Monitor canary deployment health"""
 
-            # Collect metrics
-            end_time = time.time()
-            start_time = end_time - monitoring_period
+        # Define success criteria
+        criteria = {
+            'error_rate': 0.01,  # < 1% error rate
+            'latency_p99': 100,  # < 100ms p99 latency
+            'prediction_accuracy': 0.95,  # > 95% accuracy
+            'throughput_degradation': 0.1  # < 10% throughput degradation
+        }
 
-            metrics = self.monitoring.get_metrics(
-                start_time=start_time,
-                end_time=end_time,
-                labels={'deployment': 'canary'}
-            )
+        # Collect metrics
+        end_time = time.time()
+        start_time = end_time - monitoring_period
 
-            # Check each criterion
-            for criterion, threshold in criteria.items():
-                if metrics[criterion] > threshold:
-                    logger.error(f"Canary health check failed: {criterion} = {metrics[criterion]} > {threshold}")
-                    return False
+        metrics = self.monitoring.get_metrics(
+            start_time=start_time,
+            end_time=end_time,
+            labels={'deployment': 'canary'}
+        )
 
-            return True
-    ```
+        # Check each criterion
+        for criterion, threshold in criteria.items():
+            if metrics[criterion] > threshold:
+                logger.error(
+                    f"Canary health check failed: {criterion} = "
+                    f"{metrics[criterion]} > {threshold}"
+                )
+                return False
+
+        return True
+```text
+
   </canary-deployment>
 
   <rollback-mechanism>
-    ```python
-    # Automated rollback system
-    class RollbackManager:
-        def __init__(self):
-            self.model_registry = ModelRegistry()
-            self.deployment_manager = DeploymentManager()
 
-        def execute_rollback(self, trigger_reason: str):
-            """Execute automated rollback to previous stable version"""
+```python
+# Automated rollback system
+class RollbackManager:
+    def __init__(self):
+        self.model_registry = ModelRegistry()
+        self.deployment_manager = DeploymentManager()
 
-            logger.warning(f"Initiating rollback due to: {trigger_reason}")
+    def execute_rollback(self, trigger_reason: str):
+        """Execute automated rollback to previous stable version"""
 
-            # Get previous stable version
-            current_version = self.model_registry.get_current_version()
-            previous_version = self.model_registry.get_previous_stable_version()
+        logger.warning(f"Initiating rollback due to: {trigger_reason}")
 
-            if not previous_version:
-                raise RollbackError("No previous stable version available")
+        # Get previous stable version
+        current_version = self.model_registry.get_current_version()
+        previous_version = (
+            self.model_registry.get_previous_stable_version()
+        )
 
-            # Create rollback deployment
-            rollback_deployment = self.create_rollback_deployment(previous_version)
+        if not previous_version:
+            raise RollbackError("No previous stable version available")
 
-            # Execute rapid rollback (immediate traffic switch)
-            self.deployment_manager.rapid_deploy(rollback_deployment)
+        # Create rollback deployment
+        rollback_deployment = self.create_rollback_deployment(
+            previous_version
+        )
 
-            # Verify rollback success
-            if self.verify_rollback_success():
-                logger.info(f"Successfully rolled back from {current_version} to {previous_version}")
+        # Execute rapid rollback (immediate traffic switch)
+        self.deployment_manager.rapid_deploy(rollback_deployment)
 
-                # Mark current version as unstable
-                self.model_registry.mark_version_unstable(current_version, trigger_reason)
+        # Verify rollback success
+        if self.verify_rollback_success():
+            logger.info(
+                f"Successfully rolled back from {current_version} "
+                f"to {previous_version}"
+            )
 
-                # Send notifications
-                self.send_rollback_notifications(current_version, previous_version, trigger_reason)
-            else:
-                raise RollbackError("Rollback verification failed")
+            # Mark current version as unstable
+            self.model_registry.mark_version_unstable(
+                current_version, trigger_reason
+            )
 
-        def verify_rollback_success(self) -> bool:
-            """Verify that rollback was successful"""
+            # Send notifications
+            self.send_rollback_notifications(
+                current_version, previous_version, trigger_reason
+            )
+        else:
+            raise RollbackError("Rollback verification failed")
 
-            # Wait for deployment to stabilize
-            time.sleep(60)
+    def verify_rollback_success(self) -> bool:
+        """Verify that rollback was successful"""
 
-            # Check key metrics
-            metrics = self.monitoring.get_current_metrics()
+        # Wait for deployment to stabilize
+        time.sleep(60)
 
-            success_criteria = {
-                'deployment_ready': True,
-                'error_rate': lambda x: x &lt; 0.005,
-                'response_time': lambda x: x &lt; 50,
-                'prediction_throughput': lambda x: x > 1000
-            }
+        # Check key metrics
+        metrics = self.monitoring.get_current_metrics()
 
-            for criterion, check in success_criteria.items():
-                value = metrics.get(criterion)
-                if callable(check):
-                    if not check(value):
-                        return False
-                elif value != check:
+        success_criteria = {
+            'deployment_ready': True,
+            'error_rate': lambda x: x < 0.005,
+            'response_time': lambda x: x < 50,
+            'prediction_throughput': lambda x: x > 1000
+        }
+
+        for criterion, check in success_criteria.items():
+            value = metrics.get(criterion)
+            if callable(check):
+                if not check(value):
                     return False
+            elif value != check:
+                return False
 
-            return True
-    ```
+        return True
+```yaml
+
   </rollback-mechanism>
 </deployment-pipeline>
 
@@ -637,241 +744,264 @@ This comprehensive MLOps guide covers the complete machine learning operations p
 
 <monitoring-setup>
   <metrics-collection>
-    ```python
-    # Comprehensive metrics collection for ML models
-    from prometheus_client import Counter, Histogram, Gauge, start_http_server
 
-    class MLMetricsCollector:
-        def __init__(self):
-            # Prediction metrics
-            self.prediction_counter = Counter(
-                'ml_predictions_total',
-                'Total number of predictions made',
-                ['model_name', 'model_version', 'prediction_type']
-            )
+```python
+# Comprehensive metrics collection for ML models
+from prometheus_client import Counter, Histogram, Gauge, start_http_server
 
-            self.prediction_latency = Histogram(
-                'ml_prediction_duration_seconds',
-                'Time spent on predictions',
-                ['model_name', 'model_version'],
-                buckets=(0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 2.0, 5.0)
-            )
+class MLMetricsCollector:
+    def __init__(self):
+        # Prediction metrics
+        self.prediction_counter = Counter(
+            'ml_predictions_total',
+            'Total number of predictions made',
+            ['model_name', 'model_version', 'prediction_type']
+        )
 
-            # Model performance metrics
-            self.model_accuracy = Gauge(
-                'ml_model_accuracy',
-                'Current model accuracy',
-                ['model_name', 'model_version', 'metric_type']
-            )
+        self.prediction_latency = Histogram(
+            'ml_prediction_duration_seconds',
+            'Time spent on predictions',
+            ['model_name', 'model_version'],
+            buckets=(0.001, 0.01, 0.05, 0.1, 0.5, 1.0, 2.0, 5.0)
+        )
 
-            self.model_drift = Gauge(
-                'ml_model_drift_score',
-                'Model drift detection score',
-                ['model_name', 'feature_name', 'drift_type']
-            )
+        # Model performance metrics
+        self.model_accuracy = Gauge(
+            'ml_model_accuracy',
+            'Current model accuracy',
+            ['model_name', 'model_version', 'metric_type']
+        )
 
-            # Business metrics
-            self.false_positive_rate = Gauge(
-                'ml_false_positive_rate',
-                'False positive rate for predictions',
-                ['model_name', 'prediction_threshold']
-            )
+        self.model_drift = Gauge(
+            'ml_model_drift_score',
+            'Model drift detection score',
+            ['model_name', 'feature_name', 'drift_type']
+        )
 
-            self.business_impact = Counter(
-                'ml_business_impact_total',
-                'Business impact of predictions',
-                ['model_name', 'impact_type', 'severity']
-            )
+        # Business metrics
+        self.false_positive_rate = Gauge(
+            'ml_false_positive_rate',
+            'False positive rate for predictions',
+            ['model_name', 'prediction_threshold']
+        )
 
-        @contextmanager
-        def track_prediction(self, model_name: str, model_version: str, prediction_type: str):
-            """Context manager to track prediction metrics"""
-            start_time = time.time()
-            try:
-                yield
-                self.prediction_counter.labels(
-                    model_name=model_name,
-                    model_version=model_version,
-                    prediction_type=prediction_type
-                ).inc()
-            finally:
-                duration = time.time() - start_time
-                self.prediction_latency.labels(
-                    model_name=model_name,
-                    model_version=model_version
-                ).observe(duration)
-    ```
+        self.business_impact = Counter(
+            'ml_business_impact_total',
+            'Business impact of predictions',
+            ['model_name', 'impact_type', 'severity']
+        )
+
+    @contextmanager
+    def track_prediction(self, model_name: str, model_version: str,
+                       prediction_type: str):
+        """Context manager to track prediction metrics"""
+        start_time = time.time()
+        try:
+            yield
+            self.prediction_counter.labels(
+                model_name=model_name,
+                model_version=model_version,
+                prediction_type=prediction_type
+            ).inc()
+        finally:
+            duration = time.time() - start_time
+            self.prediction_latency.labels(
+                model_name=model_name,
+                model_version=model_version
+            ).observe(duration)
+```text
+
   </metrics-collection>
 
   <drift-detection>
-    ```python
-    # Model drift detection system
-    import scipy.stats as stats
-    from evidently.metric_preset import DataDriftPreset
-    from evidently.report import Report
 
-    class DriftDetector:
-        def __init__(self, reference_data: pd.DataFrame):
-            self.reference_data = reference_data
-            self.drift_thresholds = {
-                'kolmogorov_smirnov': 0.05,
-                'population_stability_index': 0.1,
-                'jensen_shannon_distance': 0.1
-            }
+```python
+# Model drift detection system
+import scipy.stats as stats
+from evidently.metric_preset import DataDriftPreset
+from evidently.report import Report
 
-        def detect_feature_drift(self, current_data: pd.DataFrame) -> Dict[str, float]:
-            """Detect drift in individual features"""
+class DriftDetector:
+    def __init__(self, reference_data: pd.DataFrame):
+        self.reference_data = reference_data
+        self.drift_thresholds = {
+            'kolmogorov_smirnov': 0.05,
+            'population_stability_index': 0.1,
+            'jensen_shannon_distance': 0.1
+        }
 
-            drift_scores = {}
+    def detect_feature_drift(self,
+                              current_data: pd.DataFrame) -> Dict[str, float]:
+        """Detect drift in individual features"""
 
-            for column in self.reference_data.columns:
-                if column in current_data.columns:
-                    # KS test for numerical features
-                    if pd.api.types.is_numeric_dtype(self.reference_data[column]):
-                        ks_statistic, p_value = stats.ks_2samp(
-                            self.reference_data[column].dropna(),
-                            current_data[column].dropna()
-                        )
-                        drift_scores[f'{column}_ks_test'] = ks_statistic
+        drift_scores = {}
 
-                    # PSI for categorical features
-                    else:
-                        psi_score = self.calculate_psi(
-                            self.reference_data[column],
-                            current_data[column]
-                        )
-                        drift_scores[f'{column}_psi'] = psi_score
+        for column in self.reference_data.columns:
+            if column in current_data.columns:
+                # KS test for numerical features
+                if pd.api.types.is_numeric_dtype(
+                    self.reference_data[column]
+                ):
+                    ks_statistic, p_value = stats.ks_2samp(
+                        self.reference_data[column].dropna(),
+                        current_data[column].dropna()
+                    )
+                    drift_scores[f'{column}_ks_test'] = ks_statistic
 
-            return drift_scores
+                # PSI for categorical features
+                else:
+                    psi_score = self.calculate_psi(
+                        self.reference_data[column],
+                        current_data[column]
+                    )
+                    drift_scores[f'{column}_psi'] = psi_score
 
-        def detect_prediction_drift(self, reference_predictions: np.ndarray,
-                                  current_predictions: np.ndarray) -> float:
-            """Detect drift in model predictions"""
+        return drift_scores
 
-            # Jensen-Shannon divergence for prediction distributions
-            js_distance = self.jensen_shannon_distance(
-                reference_predictions, current_predictions
-            )
+    def detect_prediction_drift(self,
+                                 reference_predictions: np.ndarray,
+                                 current_predictions: np.ndarray) -> float:
+        """Detect drift in model predictions"""
 
-            return js_distance
+        # Jensen-Shannon divergence for prediction distributions
+        js_distance = self.jensen_shannon_distance(
+            reference_predictions, current_predictions
+        )
 
-        def generate_drift_report(self, current_data: pd.DataFrame) -> Report:
-            """Generate comprehensive drift detection report"""
+        return js_distance
 
-            data_drift_report = Report(metrics=[DataDriftPreset()])
-            data_drift_report.run(
-                reference_data=self.reference_data,
-                current_data=current_data
-            )
+    def generate_drift_report(self, current_data: pd.DataFrame) -> Report:
+        """Generate comprehensive drift detection report"""
 
-            return data_drift_report
+        data_drift_report = Report(metrics=[DataDriftPreset()])
+        data_drift_report.run(
+            reference_data=self.reference_data,
+            current_data=current_data
+        )
 
-        def calculate_psi(self, reference: pd.Series, current: pd.Series,
-                         bins: int = 10) -> float:
-            """Calculate Population Stability Index"""
+        return data_drift_report
 
-            # Create bins based on reference data
-            _, bin_edges = np.histogram(reference.dropna(), bins=bins)
+    def calculate_psi(self, reference: pd.Series, current: pd.Series,
+                      bins: int = 10) -> float:
+        """Calculate Population Stability Index"""
 
-            # Calculate distributions
-            ref_counts, _ = np.histogram(reference.dropna(), bins=bin_edges)
-            cur_counts, _ = np.histogram(current.dropna(), bins=bin_edges)
+        # Create bins based on reference data
+        _, bin_edges = np.histogram(reference.dropna(), bins=bins)
 
-            # Convert to proportions
-            ref_props = ref_counts / len(reference.dropna())
-            cur_props = cur_counts / len(current.dropna())
+        # Calculate distributions
+        ref_counts, _ = np.histogram(reference.dropna(), bins=bin_edges)
+        cur_counts, _ = np.histogram(current.dropna(), bins=bin_edges)
 
-            # Add small constant to avoid division by zero
-            ref_props = np.where(ref_props == 0, 0.0001, ref_props)
-            cur_props = np.where(cur_props == 0, 0.0001, cur_props)
+        # Convert to proportions
+        ref_props = ref_counts / len(reference.dropna())
+        cur_props = cur_counts / len(current.dropna())
 
-            # Calculate PSI
-            psi = np.sum((cur_props - ref_props) * np.log(cur_props / ref_props))
+        # Add small constant to avoid division by zero
+        ref_props = np.where(ref_props == 0, 0.0001, ref_props)
+        cur_props = np.where(cur_props == 0, 0.0001, cur_props)
 
-            return psi
-    ```
+        # Calculate PSI
+        psi = np.sum(
+            (cur_props - ref_props) * np.log(cur_props / ref_props)
+        )
+
+        return psi
+```text
+
   </drift-detection>
 
   <alerting-system>
-    ```python
-    # Intelligent alerting system for ML models
-    class MLAlertManager:
-        def __init__(self):
-            self.alert_channels = self.setup_alert_channels()
-            self.alert_rules = self.load_alert_rules()
-            self.alert_history = AlertHistory()
 
-        def setup_alert_channels(self) -> Dict[str, AlertChannel]:
-            """Setup various alert channels"""
-            return {
-                'slack': SlackChannel(webhook_url=os.getenv('SLACK_WEBHOOK_URL')),
-                'email': EmailChannel(smtp_server=os.getenv('SMTP_SERVER')),
-                'pagerduty': PagerDutyChannel(integration_key=os.getenv('PAGERDUTY_KEY')),
-                'dashboard': DashboardChannel()
-            }
+```python
+# Intelligent alerting system for ML models
+class MLAlertManager:
+    def __init__(self):
+        self.alert_channels = self.setup_alert_channels()
+        self.alert_rules = self.load_alert_rules()
+        self.alert_history = AlertHistory()
 
-        def evaluate_alerts(self, metrics: Dict[str, float]):
-            """Evaluate current metrics against alert rules"""
+    def setup_alert_channels(self) -> Dict[str, AlertChannel]:
+        """Setup various alert channels"""
+        return {
+            'slack': SlackChannel(
+                webhook_url=os.getenv('SLACK_WEBHOOK_URL')
+            ),
+            'email': EmailChannel(
+                smtp_server=os.getenv('SMTP_SERVER')
+            ),
+            'pagerduty': PagerDutyChannel(
+                integration_key=os.getenv('PAGERDUTY_KEY')
+            ),
+            'dashboard': DashboardChannel()
+        }
 
-            triggered_alerts = []
+    def evaluate_alerts(self, metrics: Dict[str, float]):
+        """Evaluate current metrics against alert rules"""
 
-            for rule_name, rule in self.alert_rules.items():
-                if self.evaluate_rule(rule, metrics):
-                    alert = self.create_alert(rule_name, rule, metrics)
+        triggered_alerts = []
 
-                    # Check if this alert should be suppressed
-                    if not self.should_suppress_alert(alert):
-                        triggered_alerts.append(alert)
-                        self.send_alert(alert)
-                        self.alert_history.record(alert)
+        for rule_name, rule in self.alert_rules.items():
+            if self.evaluate_rule(rule, metrics):
+                alert = self.create_alert(rule_name, rule, metrics)
 
-            return triggered_alerts
+                # Check if this alert should be suppressed
+                if not self.should_suppress_alert(alert):
+                    triggered_alerts.append(alert)
+                    self.send_alert(alert)
+                    self.alert_history.record(alert)
 
-        def create_alert(self, rule_name: str, rule: Dict, metrics: Dict) -> Alert:
-            """Create alert object with context and recommendations"""
+        return triggered_alerts
 
-            return Alert(
-                name=rule_name,
-                severity=rule['severity'],
-                message=rule['message_template'].format(**metrics),
-                metrics=metrics,
-                timestamp=datetime.utcnow(),
-                recommendations=self.generate_recommendations(rule_name, metrics),
-                runbook_url=rule.get('runbook_url'),
-                auto_resolve=rule.get('auto_resolve', False)
-            )
+    def create_alert(self, rule_name: str, rule: Dict,
+                     metrics: Dict) -> Alert:
+        """Create alert object with context and recommendations"""
 
-        def generate_recommendations(self, rule_name: str, metrics: Dict) -> List[str]:
-            """Generate contextual recommendations for alerts"""
+        return Alert(
+            name=rule_name,
+            severity=rule['severity'],
+            message=rule['message_template'].format(**metrics),
+            metrics=metrics,
+            timestamp=datetime.utcnow(),
+            recommendations=self.generate_recommendations(
+                rule_name, metrics
+            ),
+            runbook_url=rule.get('runbook_url'),
+            auto_resolve=rule.get('auto_resolve', False)
+        )
 
-            recommendations = []
+    def generate_recommendations(self, rule_name: str,
+                                 metrics: Dict) -> List[str]:
+        """Generate contextual recommendations for alerts"""
 
-            if rule_name == 'high_prediction_latency':
-                recommendations.extend([
-                    "Check model serving resource utilization",
-                    "Consider enabling prediction caching",
-                    "Review feature computation complexity",
-                    "Scale up inference service replicas"
-                ])
+        recommendations = []
 
-            elif rule_name == 'model_accuracy_degradation':
-                recommendations.extend([
-                    "Investigate recent data changes",
-                    "Check for model drift",
-                    "Consider model retraining",
-                    "Review feature pipeline integrity"
-                ])
+        if rule_name == 'high_prediction_latency':
+            recommendations.extend([
+                "Check model serving resource utilization",
+                "Consider enabling prediction caching",
+                "Review feature computation complexity",
+                "Scale up inference service replicas"
+            ])
 
-            elif rule_name == 'high_false_positive_rate':
-                recommendations.extend([
-                    "Adjust prediction thresholds",
-                    "Review recent model changes",
-                    "Analyze false positive patterns",
-                    "Consider additional feature engineering"
-                ])
+        elif rule_name == 'model_accuracy_degradation':
+            recommendations.extend([
+                "Investigate recent data changes",
+                "Check for model drift",
+                "Consider model retraining",
+                "Review feature pipeline integrity"
+            ])
 
-            return recommendations
-    ```
+        elif rule_name == 'high_false_positive_rate':
+            recommendations.extend([
+                "Adjust prediction thresholds",
+                "Review recent model changes",
+                "Analyze false positive patterns",
+                "Consider additional feature engineering"
+            ])
+
+        return recommendations
+```yaml
+
   </alerting-system>
 </monitoring-setup>
 
@@ -879,7 +1009,8 @@ This comprehensive MLOps guide covers the complete machine learning operations p
 
 <dashboard-setup>
   <grafana-dashboard>
-    ```json
+
+```json
     {
       "dashboard": {
         "title": "ML Operations Dashboard - Phase 3 Intelligence Layer",
@@ -967,11 +1098,13 @@ This comprehensive MLOps guide covers the complete machine learning operations p
         ]
       }
     }
-    ```
+```text
+
   </grafana-dashboard>
 
   <custom-dashboard>
-    ```python
+
+```python
     # Custom ML operations dashboard
     import streamlit as st
     import plotly.graph_objects as go
@@ -1062,9 +1195,18 @@ This comprehensive MLOps guide covers the complete machine learning operations p
             st.plotly_chart(fig, use_container_width=True)
 
             # Drift summary
-            critical_drift = len([f for f, score in drift_data['current_drift'].items() if score > 0.1])
-            st.warning(f"⚠️ {critical_drift} features showing significant drift") if critical_drift > 0 else st.success("✅ No significant drift detected")
-    ```
+            critical_drift = len([
+                f for f, score in drift_data['current_drift'].items()
+                if score > 0.1
+            ])
+            if critical_drift > 0:
+                st.warning(
+                    f"⚠️ {critical_drift} features showing significant drift"
+                )
+            else:
+                st.success("✅ No significant drift detected")
+```yaml
+
   </custom-dashboard>
 </dashboard-setup>
 
@@ -1074,7 +1216,8 @@ This comprehensive MLOps guide covers the complete machine learning operations p
 
 <performance-optimization>
   <model-optimization>
-    ```python
+
+```python
     # Model optimization techniques
     class ModelOptimizer:
         def __init__(self):
@@ -1130,7 +1273,7 @@ This comprehensive MLOps guide covers the complete machine learning operations p
             return model
 
         def create_distilled_model(self, teacher_model, student_architecture,
-                                 training_data, temperature: float = 3.0):
+                                   training_data, temperature: float = 3.0):
             """Create distilled model from larger teacher model"""
 
             student_model = student_architecture()
@@ -1150,23 +1293,29 @@ This comprehensive MLOps guide covers the complete machine learning operations p
                     student_logits = student_model(batch['features'])
 
                     # Calculate distillation loss
-                    loss = criterion(student_logits, teacher_logits, batch['targets'])
+                    loss = criterion(
+                        student_logits, teacher_logits, batch['targets']
+                    )
                     loss.backward()
                     optimizer.step()
 
             return student_model
-    ```
+```text
+
   </model-optimization>
 
   <serving-optimization>
-    ```python
+
+```python
     # Inference serving optimization
     class InferenceOptimizer:
         def __init__(self):
             self.cache = RedisCache()
             self.batch_processor = BatchProcessor()
 
-        async def optimized_predict(self, request: PredictionRequest) -> PredictionResponse:
+        async def optimized_predict(self,
+                                     request: PredictionRequest
+                                     ) -> PredictionResponse:
             """Optimized prediction with caching and batching"""
 
             # Check cache first
@@ -1194,7 +1343,8 @@ This comprehensive MLOps guide covers the complete machine learning operations p
 
             return result
 
-        def setup_model_ensemble_serving(self, models: List[torch.nn.Module]):
+        def setup_model_ensemble_serving(self,
+                                          models: List[torch.nn.Module]):
             """Setup optimized ensemble model serving"""
 
             # Load balance across models based on their strengths
@@ -1227,11 +1377,13 @@ This comprehensive MLOps guide covers the complete machine learning operations p
                 model.gradient_checkpointing_enable()
 
             return model
-    ```
+```text
+
   </serving-optimization>
 
   <resource-optimization>
-    ```yaml
+
+```yaml
     # Kubernetes resource optimization
     apiVersion: apps/v1
     kind: Deployment
@@ -1330,7 +1482,8 @@ This comprehensive MLOps guide covers the complete machine learning operations p
           - type: Percent
             value: 10
             periodSeconds: 60
-    ```
+```yaml
+
   </resource-optimization>
 </performance-optimization>
 
@@ -1343,42 +1496,50 @@ This comprehensive MLOps guide covers the complete machine learning operations p
     <issue category="training-pipeline" severity="high">
       <problem>Model training jobs failing due to out-of-memory errors</problem>
       <symptoms>
-        - Training jobs killed by Kubernetes OOMKiller
-        - CUDA out of memory errors
-        - Slow training performance
+
+```text
+- Training jobs killed by Kubernetes OOMKiller
+- CUDA out of memory errors
+- Slow training performance
+```text
+
       </symptoms>
       <solutions>
         <solution priority="1">
-          **Reduce batch size and implement gradient accumulation**
-          ```python
-          # Gradient accumulation to maintain effective batch size
-          accumulation_steps = 4
-          effective_batch_size = batch_size * accumulation_steps
+          **Reduce batch size and implement gradient accumulation:**
 
-          optimizer.zero_grad()
-          for i, batch in enumerate(data_loader):
-              loss = model(batch) / accumulation_steps
-              loss.backward()
+```python
+# Gradient accumulation to maintain effective batch size
+accumulation_steps = 4
+effective_batch_size = batch_size * accumulation_steps
 
-              if (i + 1) % accumulation_steps == 0:
-                  optimizer.step()
-                  optimizer.zero_grad()
-          ```
+optimizer.zero_grad()
+for i, batch in enumerate(data_loader):
+    loss = model(batch) / accumulation_steps
+    loss.backward()
+
+    if (i + 1) % accumulation_steps == 0:
+        optimizer.step()
+        optimizer.zero_grad()
+```text
+
         </solution>
         <solution priority="2">
-          **Enable gradient checkpointing and mixed precision**
-          ```python
-          # Mixed precision training
-          scaler = torch.cuda.amp.GradScaler()
+          **Enable gradient checkpointing and mixed precision:**
 
-          with torch.cuda.amp.autocast():
-              outputs = model(inputs)
-              loss = criterion(outputs, targets)
+```python
+# Mixed precision training
+scaler = torch.cuda.amp.GradScaler()
 
-          scaler.scale(loss).backward()
-          scaler.step(optimizer)
-          scaler.update()
-          ```
+with torch.cuda.amp.autocast():
+    outputs = model(inputs)
+    loss = criterion(outputs, targets)
+
+scaler.scale(loss).backward()
+scaler.step(optimizer)
+scaler.update()
+```text
+
         </solution>
       </solutions>
     </issue>
@@ -1386,26 +1547,32 @@ This comprehensive MLOps guide covers the complete machine learning operations p
     <issue category="data-pipeline" severity="medium">
       <problem>Feature engineering pipeline producing inconsistent results</problem>
       <symptoms>
-        - Model performance varies between training and serving
-        - Feature distribution mismatches
-        - Unexpected null values in features
+
+```text
+- Model performance varies between training and serving
+- Feature distribution mismatches
+- Unexpected null values in features
+```text
+
       </symptoms>
       <solutions>
         <solution priority="1">
-          **Implement feature validation with Great Expectations**
-          ```python
-          # Add comprehensive feature validation
-          expectation_suite = context.create_expectation_suite("feature_validation")
+          **Implement feature validation with Great Expectations:**
 
-          # Validate feature ranges
-          batch.expect_column_values_to_be_between("cpu_usage", 0, 100)
-          batch.expect_column_values_to_not_be_null("timestamp")
+```python
+# Add comprehensive feature validation
+suite = context.create_expectation_suite("feature_validation")
 
-          # Validate feature distributions
-          batch.expect_column_kl_divergence_to_be_less_than(
-              "memory_usage", reference_distribution, threshold=0.1
-          )
-          ```
+# Validate feature ranges
+batch.expect_column_values_to_be_between("cpu_usage", 0, 100)
+batch.expect_column_values_to_not_be_null("timestamp")
+
+# Validate feature distributions
+batch.expect_column_kl_divergence_to_be_less_than(
+    "memory_usage", reference_distribution, threshold=0.1
+)
+```text
+
         </solution>
       </solutions>
     </issue>
@@ -1416,25 +1583,30 @@ This comprehensive MLOps guide covers the complete machine learning operations p
       <problem>High prediction latency affecting real-time performance</problem>
       <solutions>
         <solution priority="1">
-          **Enable prediction caching and optimize batch processing**
-          ```python
-          # Implement intelligent caching strategy
-          @cached(ttl=300, key_func=lambda req: hash(str(sorted(req.features.items()))))
-          async def predict_with_cache(request: PredictionRequest):
-              return await model.predict(request)
+          **Enable prediction caching and optimize batch processing:**
 
-          # Optimize batch processing
-          async def batch_predict(requests: List[PredictionRequest]):
-              # Group similar requests
-              batches = group_requests_by_similarity(requests)
+```python
+# Implement intelligent caching strategy
+@cached(
+    ttl=300,
+    key_func=lambda req: hash(str(sorted(req.features.items())))
+)
+async def predict_with_cache(request: PredictionRequest):
+    return await model.predict(request)
 
-              # Process batches in parallel
-              results = await asyncio.gather(*[
-                  process_batch(batch) for batch in batches
-              ])
+# Optimize batch processing
+async def batch_predict(requests: List[PredictionRequest]):
+    # Group similar requests
+    batches = group_requests_by_similarity(requests)
 
-              return flatten_results(results)
-          ```
+    # Process batches in parallel
+    results = await asyncio.gather(*[
+        process_batch(batch) for batch in batches
+    ])
+
+    return flatten_results(results)
+```text
+
         </solution>
       </solutions>
     </issue>
@@ -1445,7 +1617,8 @@ This comprehensive MLOps guide covers the complete machine learning operations p
 
 <maintenance-procedures>
   <routine-maintenance>
-    ```bash
+
+```bash
     #!/bin/bash
     # Weekly maintenance script
 
@@ -1471,11 +1644,13 @@ This comprehensive MLOps guide covers the complete machine learning operations p
     python scripts/generate-health-report.py --email=ops@company.com
 
     echo "Maintenance completed successfully"
-    ```
+```text
+
   </routine-maintenance>
 
   <disaster-recovery>
-    ```python
+
+```python
     # Disaster recovery procedures
     class DisasterRecoveryManager:
         def __init__(self):
@@ -1524,7 +1699,8 @@ This comprehensive MLOps guide covers the complete machine learning operations p
             for component in components_to_backup:
                 for location in self.backup_locations:
                     self.backup_component(component, location)
-    ```
+```text
+
   </disaster-recovery>
 </maintenance-procedures>
 
@@ -1534,31 +1710,47 @@ This comprehensive MLOps guide covers the complete machine learning operations p
   <emergency-procedures>
     <procedure name="model-serving-outage">
       <steps>
-        1. Check service health endpoints
-        2. Review recent deployments and rollback if necessary
-        3. Scale up inference service replicas
-        4. Enable fallback prediction service
-        5. Alert stakeholders and create incident
+
+```text
+1. Check service health endpoints
+2. Review recent deployments and rollback if necessary
+3. Scale up inference service replicas
+4. Enable fallback prediction service
+5. Alert stakeholders and create incident
+```text
+
       </steps>
       <contact-info>
-        - Primary: ML Platform Team (Slack: #ml-platform)
-        - Secondary: DevOps Team (PagerDuty escalation)
-        - Executive: VP Engineering (for P0 incidents)
+
+```text
+- Primary: ML Platform Team (Slack: #ml-platform)
+- Secondary: DevOps Team (PagerDuty escalation)
+- Executive: VP Engineering (for P0 incidents)
+```text
+
       </contact-info>
     </procedure>
 
     <procedure name="model-accuracy-degradation">
       <steps>
-        1. Verify monitoring data accuracy
-        2. Check for data pipeline issues
-        3. Analyze feature drift reports
-        4. Initiate emergency model retraining
-        5. Prepare rollback to previous stable version
+
+```text
+1. Verify monitoring data accuracy
+2. Check for data pipeline issues
+3. Analyze feature drift reports
+4. Initiate emergency model retraining
+5. Prepare rollback to previous stable version
+```text
+
       </steps>
       <automation>
-        - Automatic rollback if accuracy drops below 85%
-        - Emergency retraining triggered at 90% accuracy
-        - Stakeholder notifications sent automatically
+
+```text
+- Automatic rollback if accuracy drops below 85%
+- Emergency retraining triggered at 90% accuracy
+- Stakeholder notifications sent automatically
+```text
+
       </automation>
     </procedure>
   </emergency-procedures>

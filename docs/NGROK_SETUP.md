@@ -14,7 +14,7 @@ ngrok http 3003
 
 # This will display something like:
 # Forwarding: https://abc123.ngrok.io -> http://localhost:3003
-```
+```yaml
 
 Your dashboard will be accessible at the ngrok URL shown!
 
@@ -23,9 +23,10 @@ Your dashboard will be accessible at the ngrok URL shown!
 1. Sign up at <https://ngrok.com/signup>
 2. Get your auth token from <https://dashboard.ngrok.com/auth>
 3. Configure ngrok:
-   ```bash
-   ngrok authtoken YOUR_AUTH_TOKEN
-   ```
+
+```bash
+ngrok authtoken YOUR_AUTH_TOKEN
+```yaml
 
 ### 3. Automatic Startup Script
 
@@ -34,13 +35,15 @@ Create an alias in your shell profile (`~/.zshrc` or `~/.bashrc`):
 ```bash
 # Add this to your shell profile
 alias mcp-public="ngrok http 3003 &"
-alias mcp-url="curl -s http://localhost:4040/api/tunnels | grep -o '\"public_url\":\"[^\"]*' | grep -o 'https[^\"]*' | head -1"
-```
+alias mcp-url="curl -s http://localhost:4040/api/tunnels | \
+  grep -o '\"public_url\":\"[^\"]*' | grep -o 'https[^\"]*' | head -1"
+```text
 
 Then reload your shell:
+
 ```bash
 source ~/.zshrc  # or ~/.bashrc
-```
+```yaml
 
 ### 4. Start Everything with One Command
 
@@ -64,10 +67,11 @@ if ! pgrep -x ngrok > /dev/null; then
     ngrok http 3003 > /dev/null 2>&1 &
     echo "✅ Ngrok tunnel started"
     sleep 3
-    
+
     # Get and display the public URL
-    PUBLIC_URL=$(curl -s http://localhost:4040/api/tunnels 2>/dev/null | grep -o '"public_url":"[^"]*' | grep -o 'https[^"]*' | head -1)
-    
+    PUBLIC_URL=$(curl -s http://localhost:4040/api/tunnels 2>/dev/null | \
+      grep -o '"public_url":"[^"]*' | grep -o 'https[^"]*' | head -1)
+
     if [ -n "$PUBLIC_URL" ]; then
         echo ""
         echo "🌐 Your MCP Dashboard is available at:"
@@ -79,27 +83,31 @@ if ! pgrep -x ngrok > /dev/null; then
     fi
 else
     echo "✅ Ngrok already running"
-    PUBLIC_URL=$(curl -s http://localhost:4040/api/tunnels 2>/dev/null | grep -o '"public_url":"[^"]*' | grep -o 'https[^"]*' | head -1)
+    PUBLIC_URL=$(curl -s http://localhost:4040/api/tunnels 2>/dev/null | \
+      grep -o '"public_url":"[^"]*' | grep -o 'https[^"]*' | head -1)
     echo "   Public URL: $PUBLIC_URL"
 fi
 EOF
 
 chmod +x ~/start-mcp-dashboard.sh
-```
+```yaml
 
 ## 🚀 Usage
 
 ### Start Everything
+
 ```bash
 ~/start-mcp-dashboard.sh
-```
+```yaml
 
 ### Get Current Public URL
+
 ```bash
 ./get-dashboard-url.sh
-```
+```yaml
 
 ### Check Status
+
 ```bash
 # Check dashboard
 launchctl list | grep claude.mcp.dashboard
@@ -108,8 +116,9 @@ launchctl list | grep claude.mcp.dashboard
 ps aux | grep ngrok
 
 # Get public URL
-curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
-```
+curl -s http://localhost:4040/api/tunnels | \
+  jq -r '.tunnels[0].public_url'
+```yaml
 
 ## 🔐 Security Notes
 
@@ -124,6 +133,7 @@ curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
 ## 📱 Share Your Dashboard
 
 Once ngrok is running, you can:
+
 - Share the public URL with team members
 - Access from your phone or tablet
 - Demo to stakeholders remotely
@@ -132,6 +142,7 @@ Once ngrok is running, you can:
 ## 🛠️ Troubleshooting
 
 ### Ngrok Not Starting
+
 ```bash
 # Check if port 4040 is in use (ngrok API)
 lsof -i :4040
@@ -141,36 +152,40 @@ pkill ngrok
 
 # Restart
 ngrok http 3003
-```
+```yaml
 
 ### Dashboard Not Accessible via Ngrok
+
 ```bash
 # Verify local dashboard works
 curl http://localhost:3003/api/metrics
 
 # Check ngrok status
 curl http://localhost:4040/api/tunnels
-```
+```yaml
 
 ## 🎯 Auto-Start at Login (Simple Method)
 
 Add to your Login Items:
+
 1. Open System Preferences → Users & Groups
 2. Click Login Items tab
 3. Click "+" and add the `~/start-mcp-dashboard.sh` script
 
 Or use a simple cron job:
+
 ```bash
 # Edit crontab
 crontab -e
 
 # Add this line
 @reboot /Users/damilola/start-mcp-dashboard.sh
-```
+```yaml
 
 ## Summary
 
 Your MCP Dashboard is now:
+
 - ✅ Running as a system service (always available locally)
 - ✅ Accessible via ngrok public URL (when ngrok is running)
 - ✅ Can be shared with anyone via the public URL

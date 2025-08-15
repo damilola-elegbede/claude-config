@@ -1,0 +1,62 @@
+# Pre-commit hooks configuration
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+
+repos:
+  # Shell script quality checks
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        name: ShellCheck
+        description: Shell script analysis tool
+        entry: shellcheck
+        language: python
+        types: [shell]
+        args: [--format=gcc, --severity=warning]
+        exclude: ^(node_modules/|temp-scripts/|\.git/)
+        
+  # Basic file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^(node_modules/|\.git/)
+      - id: end-of-file-fixer
+        exclude: ^(node_modules/|\.git/)
+      - id: check-executables-have-shebangs
+        exclude: ^(node_modules/|\.git/)
+      - id: check-shebang-scripts-are-executable
+        exclude: ^(node_modules/|\.git/)
+      - id: check-bash-syntax
+        exclude: ^(node_modules/|temp-scripts/|\.git/)
+        
+  # YAML validation
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        args: [-d, relaxed]
+        exclude: ^(node_modules/|\.git/)
+        
+  # Markdown linting
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.41.0
+    hooks:
+      - id: markdownlint
+        exclude: ^(node_modules/|\.git/)
+        args: [--config, .markdownlint-cli2.jsonc]
+
+# Configuration for pre-commit
+default_language_version:
+  python: python3
+  
+minimum_pre_commit_version: '3.0.0'
+
+# Global excludes
+exclude: |
+  (?x)^(
+      node_modules/.*|
+      \.git/.*|
+      temp-scripts/.*
+  )$

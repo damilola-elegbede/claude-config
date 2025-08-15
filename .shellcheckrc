@@ -1,0 +1,38 @@
+# ShellCheck configuration file
+# See: https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md#rc-files
+
+# Default shell (can be overridden with -s)
+shell=bash
+
+# Severity level: error, warning, info, style
+severity=warning
+
+# Exclude specific checks that are commonly problematic in this codebase
+# SC1091: Not following sourced files (common in CI scripts)
+# SC2034: Variable appears unused (common in scripts with exports)
+# SC2155: Declare and assign separately (acceptable pattern in this codebase)
+# SC2250: Prefer putting braces around variable references (style preference)
+# SC2292: Prefer [[ ]] over [ ] for tests (style preference)  
+# SC2310: This function is invoked in condition (common pattern)
+# SC2086: Double quote variables (acceptable in controlled contexts)
+# SC2312: Command substitution masking (info-level, not critical)
+# SC2249: Default case in switch statements (optional style preference)
+#
+# Note: SC2164 (cd failures) and SC2154 (undefined variables) are kept as warnings
+# as they indicate real issues that should be addressed
+exclude=SC1091,SC2034,SC2155,SC2250,SC2292,SC2310,SC2086,SC2312,SC2249
+
+# Enable all optional checks
+enable=all
+
+# Format for output (gcc, checkstyle, diff, json, json1, quiet, tty)
+format=gcc
+
+# Additional excludes for specific patterns that are acceptable in this project:
+# SC2012: Use find instead of ls - acceptable for simple cases
+# SC2164: Use cd ... || exit in case cd fails - not always necessary in controlled environments
+# SC2002: Useless cat - sometimes used for readability
+
+# Note: Individual scripts can override these settings with:
+# shellcheck disable=SC2086
+# at the top of the file or specific lines

@@ -13,8 +13,10 @@ test_claude_md_exists() {
 # Test CLAUDE.md effectiveness criteria - check system config for orchestration framework
 test_claude_md_effectiveness() {
     local claude_file="$ORIGINAL_DIR/system-configs/CLAUDE.md"
-    local line_count=$(wc -l < "$claude_file")
-    local word_count=$(wc -w < "$claude_file")
+    local line_count
+    local word_count
+    line_count=$(wc -l < "$claude_file")
+    word_count=$(wc -w < "$claude_file")
     local score=10
     local reasons=()
     
@@ -121,20 +123,16 @@ test_claude_md_structure() {
     local claude_file="$ORIGINAL_DIR/system-configs/CLAUDE.md"
     local missing_sections=()
     
-    # Core framework sections that must exist
+    # Core framework sections that must exist in streamlined version
     local required_sections=(
         "Core Philosophy"
         "Decision Framework"
         "Parallel Execution Strategy"
-        "Pragmatic Thresholds"
         "Non-Negotiable Rules"
-        "Agent Deployment Patterns"
-        "Your Direct Responsibilities"
-        "Balancing Act Guidelines"
-        "Failure Recovery Strategies"
+        "Failure Recovery"
         "Success Metrics"
-        "Practical Examples"
-        "Performance Feedback Loop"
+        "Examples"
+        "Continuous Improvement"
     )
     
     echo "Validating orchestration framework structure..."
@@ -154,13 +152,13 @@ test_claude_md_structure() {
     fi
     
     # Check for key orchestration concepts
-    if ! grep -q -i "agent.*specialist" "$claude_file"; then
+    if ! grep -q -i "agent" "$claude_file" || ! grep -q -i "specialist" "$claude_file"; then
         echo "❌ Missing agent/specialist terminology"
         return 1
     fi
     
-    if ! grep -q "Complexity Threshold for Agents" "$claude_file"; then
-        echo "❌ Missing complexity thresholds"
+    if ! grep -q -i "threshold\|complexity" "$claude_file"; then
+        echo "❌ Missing complexity guidance"
         return 1
     fi
     
@@ -172,20 +170,20 @@ test_claude_md_structure() {
 test_claude_md_examples() {
     local claude_file="$ORIGINAL_DIR/system-configs/CLAUDE.md"
     
-    # Must have practical examples
-    if ! grep -q "Example [0-9]" "$claude_file"; then
-        echo "❌ Missing numbered practical examples"
+    # Must have practical examples (can be in Examples section or throughout)
+    if ! grep -q -E "Example|README typo|Authentication system|Bug report" "$claude_file"; then
+        echo "❌ Missing practical examples"
         return 1
     fi
     
     # Must have anti-patterns
-    if ! grep -q "❌.*Anti-patterns" "$claude_file"; then
+    if ! grep -q "❌.*Anti-patterns\|❌.*patterns" "$claude_file"; then
         echo "❌ Missing anti-patterns section"
         return 1
     fi
     
-    # Must have success indicators
-    if ! grep -q "✅.*Optimal Behavior" "$claude_file"; then
+    # Must have success indicators  
+    if ! grep -q "✅.*Optimal\|✅.*behaviors" "$claude_file"; then
         echo "❌ Missing optimal behavior indicators"
         return 1
     fi

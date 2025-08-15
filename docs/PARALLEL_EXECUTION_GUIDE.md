@@ -2,9 +2,12 @@
 
 ## Overview
 
-This guide provides comprehensive strategies for maximizing parallel agent execution using the consolidated 29-agent system. The consolidation improves coordination efficiency while optimizing development velocity and maintaining quality standards.
+This guide provides comprehensive strategies for maximizing parallel agent execution using the comprehensive 42-agent
+system. The expanded agent ecosystem improves coordination efficiency while optimizing development velocity and maintaining
+quality standards.
 
 **Consolidation Benefits for Parallel Execution:**
+
 - **Reduced coordination overhead**: Fewer agents mean simpler parallel patterns
 - **Clearer boundaries**: Less overlap between parallel agents
 - **Better resource utilization**: Consolidated agents handle broader scopes efficiently
@@ -14,34 +17,37 @@ This guide provides comprehensive strategies for maximizing parallel agent execu
 ### 1. Development Workflow Patterns
 
 #### **Feature Development (Multi-Agent - Consolidated)**
+
 ```yaml
 Parallel Group: Implementation
   - frontend-architect: UI/UX implementation with performance optimization
   - backend-engineer: API development with database optimization
   - devops: CI/CD pipeline setup and infrastructure preparation
-  
+
 Sequential Handoff:
   Implementation → Quality Assurance → Documentation
-  
-Consolidation Benefit: 
+
+Consolidation Benefit:
   Clear architect/engineer naming indicates scope and complexity
-```
+```yaml
 
 #### **Quality Assurance (Concurrent Validation - Consolidated)**
+
 ```yaml
 Parallel Group: Quality Gates
   - code-reviewer: Style, best practices, overall code quality
   - security-auditor: Vulnerability assessment, compliance review
   - test-engineer: Comprehensive testing, QA processes, coverage analysis (absorbed qa-engineer)
 
-Coordination Point: 
+Coordination Point:
   All agents provide findings to code-reviewer for final approval
-  
+
 Consolidation Benefit:
   Single test-engineer handles all testing aspects, reducing handoffs
-```
+```yaml
 
 #### **Architecture & Design (Collaborative Planning)**
+
 ```yaml
 Parallel Group: Strategic Planning
   - principal-architect: System architecture, technical decisions
@@ -50,11 +56,12 @@ Parallel Group: Strategic Planning
 Synchronization:
   Design specifications → Implementation agents
   Architecture decisions → All implementation agents
-```
+```yaml
 
 ### 2. Analysis & Research Patterns
 
 #### **Codebase Analysis (Comprehensive Review)**
+
 ```yaml
 Parallel Group: Deep Analysis
   - codebase-analyst: Internal code analysis, architecture assessment, technical debt
@@ -63,52 +70,54 @@ Parallel Group: Deep Analysis
 
 Coordination:
   - All analysis agents share findings for comprehensive executive summary
-```
+```yaml
 
 #### **Problem Investigation (Multi-Perspective)**
+
 ```yaml
 Parallel Group: Investigation
   - debugger: Technical root cause analysis
-  - security-auditor: Security implications assessment  
+  - security-auditor: Security implications assessment
   - codebase-analyst: System impact evaluation
   - devops: Infrastructure and deployment considerations
 
 Convergence:
   Integrated problem analysis with recommended solutions
-```
+```yaml
 
 ### 3. Specialized Coordination Patterns
 
 #### **Cross-Platform Development**
+
 ```yaml
 Platform Teams:
   Web Team:
     - frontend-architect: React/Vue implementation
     - ui-designer: Web-specific design optimization
-  
-  Mobile Team:  
+
+  Mobile Team:
     - mobile-platform-engineer: React Native/Flutter implementation
-  
+
   Backend Team:
     - backend-engineer: API and data layer implementation
     - devops: Infrastructure and deployment
 
 Coordination Agent: project-orchestrator
-```
+```yaml
 
 #### **Infrastructure Modernization**
+
 ```yaml
 Infrastructure Team:
   - devops: CI/CD pipeline modernization, deployment automation
   - platform-engineer: Production monitoring, SRE practices, observability setup
-
   - security-auditor: Infrastructure security assessment
   - principal-architect: Architecture modernization strategy
 
-Coordination: 
+Coordination:
   - devops builds infrastructure → platform-engineer monitors and maintains
   - tech-writer creates parallel documentation
-```
+```yaml
 
 ## Agent Compatibility Matrix
 
@@ -139,6 +148,7 @@ Coordination:
 ### 1. Parallel Task Decomposition
 
 #### **Large Feature Development**
+
 ```yaml
 Phase 1 - Parallel Planning:
   - principal-architect: System design
@@ -154,11 +164,11 @@ Phase 2 - Parallel Implementation:
 Phase 3 - Parallel Quality Assurance:
   - code-reviewer: Code quality review
   - security-auditor: Security assessment
-
   Duration: 1-2 days
-```
+```yaml
 
 #### **System Analysis & Improvement**
+
 ```yaml
 Parallel Analysis (Day 1):
   - codebase-analyst: Architecture and technical debt
@@ -168,70 +178,72 @@ Parallel Analysis (Day 1):
 Parallel Implementation (Days 2-4):
   - Based on analysis findings, deploy appropriate implementation agents
   - Each agent addresses domain-specific improvements
-  
+
 Parallel Validation (Day 5):
   - code-reviewer: Implementation quality
   - security-auditor: Security improvement validation
-
-```
+```yaml
 
 ### 2. Resource Allocation Optimization
 
 #### **High-Priority Development**
+
 ```yaml
 Maximum Parallel Utilization:
   Core Development:
     - frontend-architect (UI/UX critical path)
     - backend-engineer (API critical path)
     - devops (deployment critical path)
-    
+
   Quality Assurance:
     - code-reviewer (continuous integration)
     - security-auditor (security requirements)
 
-    
   Documentation & Strategy:
     - tech-writer (parallel documentation)
     - project-orchestrator (coordination)
-```
+```yaml
 
 #### **Research & Analysis Phase**
+
 ```yaml
 Comprehensive Analysis:
   Technical Assessment:
     - codebase-analyst (architecture)
     - debugger (performance)
     - security-auditor (security)
-    
+
   Strategic Assessment:
     - principal-architect (technical strategy)
-    
+
   Documentation:
     - tech-writer (findings compilation)
-```
+```yaml
 
 ### 3. Communication & Synchronization
 
 #### **Daily Standups Integration**
+
 ```yaml
 Agent Status Updates:
   Implementation Agents:
     - Progress on feature development
     - Blockers requiring cross-agent coordination
     - Dependencies on other agents
-    
+
   Quality Agents:
     - Findings from ongoing reviews
     - Required changes for implementation agents
     - Timeline for quality gate completion
-    
+
   Strategic Agents:
     - Architectural decisions affecting multiple agents
     - Priority changes impacting parallel work
     - Resource allocation adjustments
-```
+```yaml
 
 #### **Handoff Protocols**
+
 ```yaml
 Design → Implementation:
   - ui-designer provides design specifications
@@ -247,7 +259,7 @@ Quality → Release:
   - All quality agents provide approval status
   - code-reviewer consolidates final approval
   - devops proceeds with deployment
-```
+```yaml
 
 ## Performance Metrics
 
@@ -266,7 +278,7 @@ Quality → Release:
 ```yaml
 High Performance:
   - Multiple agents working on different aspects simultaneously
-  - Clear handoff protocols followed consistently  
+  - Clear handoff protocols followed consistently
   - Minimal blocking dependencies between agents
   - Quality issues caught early in parallel reviews
 
@@ -275,29 +287,33 @@ Optimization Needed:
   - Quality issues discovered late requiring rework
   - Communication overhead exceeding 10% of development time
   - Parallel agents stepping on each other's work
-```
+```yaml
 
 ## Best Practices
 
 ### 1. Parallel Planning
+
 - **Always start with architect + product strategy alignment**
 - **Define clear interfaces between parallel workstreams**
 - **Establish communication checkpoints every 24 hours**
 - **Plan for integration points and testing coordination**
 
 ### 2. Quality Integration
+
 - **Run quality agents in parallel, not sequentially**
 - **Share findings between security and code review agents**
 - **Integrate test development with feature development**
 - **Document decisions and findings for future reference**
 
 ### 3. Risk Mitigation
+
 - **Monitor for conflicting changes between parallel agents**
 - **Establish clear priority hierarchy for decision conflicts**
 - **Plan rollback procedures for parallel development branches**
 - **Maintain communication channels for rapid coordination**
 
 ### 4. Continuous Improvement
+
 - **Track parallel execution metrics weekly**
 - **Retrospectives on coordination effectiveness**
 - **Refine handoff protocols based on experience**
@@ -306,22 +322,26 @@ Optimization Needed:
 ## Common Anti-Patterns to Avoid
 
 ### ❌ **Sequential Thinking**
+
 - Running quality agents one after another instead of in parallel
 - Waiting for complete analysis before starting any implementation
 - Designing first, then implementing, then testing (instead of parallel design/implementation)
 
 ### ❌ **Poor Coordination**
+
 - Parallel agents working on conflicting requirements
-- No clear communication protocol between parallel workstreams  
+- No clear communication protocol between parallel workstreams
 - Quality agents duplicating each other's work
 - Missing handoff protocols causing delays
 
 ### ❌ **Over-Parallelization**
+
 - Running too many agents simultaneously without clear coordination
 - Parallel work on tightly coupled components causing conflicts
 - Insufficient communication bandwidth for coordination overhead
 
 ### ❌ **Under-Utilization**
+
 - Using only one agent when multiple could work in parallel
 - Missing opportunities for parallel quality assurance
 - Sequential analysis when parallel investigation would be faster

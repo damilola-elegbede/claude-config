@@ -1,6 +1,7 @@
 # Branch Protection Setup
 
-This document explains how to configure branch protection rules for the `main` branch to ensure all changes pass tests before merging.
+This document explains how to configure branch protection rules for the `main` branch to
+ensure all changes pass tests before merging.
 
 ## Setting Up Branch Protection
 
@@ -16,9 +17,10 @@ This document explains how to configure branch protection rules for the `main` b
 3. **Configure Protection Settings**
 
    ### Required Status Checks
+
    - ✅ **Require status checks to pass before merging**
    - ✅ **Require branches to be up to date before merging**
-   
+
    Select these required status checks:
    - `Run Tests`
    - `Validate Repository Structure`
@@ -28,6 +30,7 @@ This document explains how to configure branch protection rules for the `main` b
    - `Security Scan`
 
    ### Additional Settings
+
    - ✅ **Require pull request reviews before merging** (recommended)
      - Required approving reviews: 1
      - Dismiss stale pull request approvals when new commits are pushed
@@ -42,11 +45,13 @@ This document explains how to configure branch protection rules for the `main` b
 The following workflows must pass for PRs to be mergeable:
 
 ### CI Workflow (`ci.yml`)
+
 - **Run Tests**: Executes the full test suite
 - **Validate Repository Structure**: Ensures all required files exist
 - **Lint Markdown Files**: Checks markdown formatting
 
 ### PR Checks Workflow (`pr-checks.yml`)
+
 - **Test Changes**: Runs tests and identifies changed files
 - **Validate Commands**: Ensures command files have proper structure
 - **Security Scan**: Checks for sensitive data patterns
@@ -54,6 +59,7 @@ The following workflows must pass for PRs to be mergeable:
 ## Bypass Protection (Emergency Only)
 
 Administrators can bypass protection if needed:
+
 1. Check "Include administrators" when setting up rules to enforce even for admins
 2. Uncheck it if admins need ability to bypass in emergencies
 
@@ -66,6 +72,7 @@ Administrators can bypass protection if needed:
 ## Troubleshooting
 
 If checks are failing:
+
 1. Click on the failing check for details
 2. Review the logs to identify the issue
 3. Fix the issue and push new commits

@@ -120,7 +120,10 @@ def validate_agent_file(file_path):
 
 def main():
     """Validate all agent files."""
-    agents_dir = Path('/Users/damilola/Documents/Projects/claude-config/.claude/agents')
+    # Get the script's directory and navigate to the agents directory
+    script_dir = Path(__file__).parent
+    project_root = script_dir.parent
+    agents_dir = project_root / 'system-configs' / '.claude' / 'agents'
     
     if not agents_dir.exists():
         print(f"Error: Agents directory not found at {agents_dir}")
@@ -165,7 +168,7 @@ def main():
         print(f"\n❌ {invalid_count} agents have validation issues")
         
         # Save detailed report
-        report_path = Path('/Users/damilola/Documents/Projects/claude-config/docs/yaml-validation-report.md')
+        report_path = project_root / 'docs' / 'yaml-validation-report.md'
         with open(report_path, 'w') as f:
             f.write("# Agent YAML Validation Report\n\n")
             f.write(f"Total agents validated: {len(validation_results)}\n\n")

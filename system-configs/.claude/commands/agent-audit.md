@@ -2,21 +2,25 @@
 
 ## Description
 
-Comprehensive validation of agent ecosystem to ensure category integrity, template compliance, and system consistency. **This command generates a REPORT ONLY - it provides recommendations and optional patch snippets; it does not make any changes automatically.**
+Comprehensive validation of agent ecosystem to ensure category integrity, template compliance, and system
+consistency. **This command generates a REPORT ONLY - it provides recommendations and optional patch snippets;
+it does not make any changes automatically.**
 
 ## Usage
 
 ```bash
 /agent-audit
-```
+```yaml
 
 ## Behavior
 
-This command performs thorough validation of all agents across multiple dimensions, executed in parallel by category for maximum efficiency.
+This command performs thorough validation of all agents across multiple dimensions, executed in parallel by
+category for maximum efficiency.
 
 ## Purpose
 
-Ensure agent ecosystem maintains high standards of consistency, proper categorization, and adherence to system design principles.
+Ensure agent ecosystem maintains high standards of consistency, proper categorization, and adherence to system
+design principles.
 
 ## Validation Scope
 
@@ -31,7 +35,7 @@ Ensure agent ecosystem maintains high standards of consistency, proper categoriz
 
 - **AGENT_TEMPLATE.md Format**: All agents must follow the standard template
 - **Required Sections**: Verify presence of all mandatory sections
-- **YAML Frontmatter**: Validate structure and field completeness
+- **YAML Formatter**: Validate structure and field completeness
 - **System Boundary**: Ensure anti-pattern warning is present
 
 ### 3. Tool Assignment Validation
@@ -80,7 +84,7 @@ Execute validation for each category simultaneously:
 parallel_execution:
   - category: development
     validations: [template, tools, description, tier, modelAppropriateness]
-  - category: infrastructure  
+  - category: infrastructure
     validations: [template, tools, description, tier, modelAppropriateness]
   - category: quality
     validations: [template, tools, description, tier, modelAppropriateness]
@@ -94,7 +98,7 @@ parallel_execution:
     validations: [template, tools, description, tier, modelAppropriateness]
   - category: operations
     validations: [template, tools, description, tier, modelAppropriateness]
-```
+```yaml
 
 ### Phase 2: Cross-Category Analysis
 
@@ -111,13 +115,24 @@ parallel_execution:
 - Document all changes made
 - **Model changes are RECOMMENDATIONS ONLY** (not auto-applied)
 
+## Execution Verification
+
+After audit completion, **execution-evaluator** is deployed to verify:
+
+- All agent files were scanned successfully
+- YAML validation completed without errors
+- Category assignments were checked
+- Tool permissions were validated
+- Report generated with all required sections
+- Patch snippets (if any) are syntactically correct
+
 ## Report Structure
 
 ### Executive Summary
 
 ```text
 Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
-```
+```yaml
 
 ### Category Health Matrix
 
@@ -145,7 +160,7 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 **Model Distribution**:
 
 - Opus: X agents (Y% - Target: 15-20%)
-- Sonnet: X agents (Y% - Target: 60-70%)  
+- Sonnet: X agents (Y% - Target: 60-70%)
 - Haiku: X agents (Y% - Target: 15-20%)
 
 **Optimization Opportunities**:
@@ -160,7 +175,7 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 - Updated agent-name: Set tier to 1
 - Fixed agent-name: Removed Task tool access
 - Updated agent-name: Added SYSTEM BOUNDARY warning
-```
+```yaml
 
 ### Manual Remediation Required
 
@@ -173,18 +188,18 @@ sed -i '' 's/category: wrong/category: correct/' agent.md
 sed -i '' 's/model: opus/model: sonnet/' agent-name.md  # Save 40% cost
 # Upgrade under-provisioned agents:
 sed -i '' 's/model: haiku/model: sonnet/' agent-name.md  # Better capability
-```
+```yaml
 
 ## Success Criteria
 
-✅ **Category Compliance**: ≤ 8 categories with proper color mapping  
-✅ **Template Adherence**: 100% AGENT_TEMPLATE.md compliance  
-✅ **Tool Validation**: No Task tool access, appropriate permissions  
-✅ **Anti-Pattern Free**: No orchestration or self-reference  
-✅ **Description Quality**: Clear "MUST BE USED" and "use PROACTIVELY" triggers  
-✅ **Tier 1 Only**: All agents at tier 1 level  
-✅ **Model Appropriateness**: Each agent uses optimal model for its complexity  
-✅ **Documentation Sync**: All docs reflect current state  
+✅ **Category Compliance**: ≤ 8 categories with proper color mapping
+✅ **Template Adherence**: 100% AGENT_TEMPLATE.md compliance
+✅ **Tool Validation**: No Task tool access, appropriate permissions
+✅ **Anti-Pattern Free**: No orchestration or self-reference
+✅ **Description Quality**: Clear "MUST BE USED" and "use PROACTIVELY" triggers
+✅ **Tier 1 Only**: All agents at tier 1 level
+✅ **Model Appropriateness**: Each agent uses optimal model for its complexity
+✅ **Documentation Sync**: All docs reflect current state
 
 ## Implementation Notes
 

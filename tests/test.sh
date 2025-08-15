@@ -87,6 +87,11 @@ echo "------------------------------"
 run_test "CLAUDE.md Validation" "config/test_claude_md.sh"
 run_test "Command Files Validation" "config/test_command_files.sh"
 
+# Run quality tests
+echo "Running Quality Tests..."
+echo "------------------------"
+run_test "Markdown Quality Gates" "markdown/test_markdown_quality.sh"
+
 # Run integration tests
 echo "Running Integration Tests..."
 echo "----------------------------"

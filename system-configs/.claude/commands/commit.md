@@ -9,7 +9,7 @@ and co-authorship attribution.
 
 ```bash
 /commit
-```
+```yaml
 
 ## Behavior
 
@@ -52,6 +52,7 @@ When you use `/commit`, I will:
    - After remediation attempts, re-run code review
    - **Critical issues** (security, breaking changes): Must be fixed
      (commit blocked until resolved)
+
    - **Non-critical issues** with documented rationale: Proceed with warning
    - **Non-critical issues** without rationale: Block commit until justified
    - Display final compliance report with fixes applied and rationales
@@ -91,9 +92,17 @@ When you use `/commit`, I will:
      🤖 Generated with [Claude Code](https://claude.ai/code)
 
      Co-Authored-By: Claude <noreply@anthropic.com>
-     ```
+```bash
 
 9. **Verify success** by checking git status after commit
+
+10. **Deploy execution-evaluator** to validate:
+    - Commit was created successfully
+    - Message format is correct
+    - Co-authorship attribution included
+    - All intended files were committed
+    - No temporary files were committed
+    - **CRITICAL**: Verify --no-verify flag was NOT used (hooks must run)
 
 ## Commit Message Format
 
@@ -180,6 +189,7 @@ The enhanced review enforces:
 - **Style Compliance**: Auto-format with tools
 - **Test Coverage**: Maintain minimum 80% coverage on critical paths
   (coverage < 80% triggers remediation or requires documented justification)
+
 - **Documentation**: Generate missing docs automatically
 - **Performance**: Optimize or document trade-offs
 - **Error Handling**: Add error handling or explain edge cases

@@ -2,13 +2,15 @@
 
 ## Description
 
-Performs systematic root cause analysis for complex bugs using multi-agent forensics. Specializes in hard-to-reproduce issues like race conditions, memory leaks, intermittent failures, and production-only bugs that traditional debugging cannot solve.
+Performs systematic root cause analysis for complex bugs using multi-agent forensics. Specializes in
+hard-to-reproduce issues like race conditions, memory leaks, intermittent failures, and production-only bugs that
+traditional debugging cannot solve.
 
 ## Usage
 
 ```bash
 /debug <issue_description>
-```
+```yaml
 
 ## Behavior
 
@@ -20,6 +22,12 @@ When you invoke `/debug`, I will:
 4. **Conduct systematic investigation** using appropriate techniques
 5. **Generate reproduction steps** if possible
 6. **Provide root cause analysis** with fix recommendations
+7. **Deploy execution-evaluator** to verify:
+   - Debugging process completed successfully
+   - Root cause identified or hypotheses documented
+   - Reproduction steps validated
+   - Fix recommendations provided
+   - No debugging artifacts left behind
 
 ## Issue Classification
 
@@ -143,7 +151,8 @@ I deliver:
 
 ### Parallel Execution
 
-When multiple hypotheses exist, I deploy agents in parallel to investigate different theories simultaneously, reducing time to resolution.
+When multiple hypotheses exist, I deploy agents in parallel to investigate different theories simultaneously,
+reducing time to resolution.
 
 ## Output Format
 
@@ -178,7 +187,7 @@ After investigation, I provide:
 
 ### Test Coverage
 [Test cases to add to prevent regression]
-```
+```yaml
 
 ## Common Investigation Patterns
 

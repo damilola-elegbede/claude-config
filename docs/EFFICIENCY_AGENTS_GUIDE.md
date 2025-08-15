@@ -2,13 +2,18 @@
 
 ## Overview
 
-**IMPORTANT:** This document is maintained for historical reference. The efficiency agent concept has been integrated into the main 29-agent portfolio. The workflows described below are now handled by specialized agents like `production-reliability-engineer`, `supply-chain-security-engineer`, and others in the current system.
+**IMPORTANT:** This document is maintained for historical reference. The efficiency agent concept has been
+integrated into the main 29-agent portfolio. The workflows described below are now handled by specialized agents
+like `production-reliability-engineer`, `supply-chain-security-engineer`, and others in the current system.
 
-Originally, efficiency agents were specialized tools designed to minimize tool calls and streamline common development workflows in the Claude Code ecosystem. These concepts have been absorbed into our streamlined agent architecture.
+Originally, efficiency agents were specialized tools designed to minimize tool calls and streamline common
+development workflows in the Claude Code ecosystem. These concepts have been absorbed into our streamlined agent
+architecture.
 
 ## Core Philosophy
 
 The efficiency agent category follows these principles:
+
 - **Single-Purpose Excellence**: Each agent masters one specific workflow
 - **Minimal Tool Usage**: Reduces multi-step operations to single delegations
 - **Speed-Optimized**: Prioritizes rapid execution for common tasks
@@ -17,19 +22,23 @@ The efficiency agent category follows these principles:
 
 ## The Efficiency Agent Suite
 
-*Note: The efficiency agent category has been consolidated into the main 29-agent portfolio. The concepts below demonstrate streamlined workflow patterns now integrated into our specialized agents.*
+*Note: The efficiency agent category has been consolidated into the main 29-agent portfolio. The concepts below
+demonstrate streamlined workflow patterns now integrated into our specialized agents.*
 
 ### 1. file-navigator (Consolidated)
-**Purpose**: Rapid file system exploration and navigation  
+
+**Purpose**: Rapid file system exploration and navigation
 **Reduces**: Multiple `ls`, `find`, and `cd` commands to single operations
 
 **Key Capabilities:**
+
 - Intelligent directory traversal with pattern matching
 - Smart file discovery across project hierarchies
 - Bulk file location and path resolution
 - Project structure mapping and visualization
 
 **Example Usage:**
+
 ```bash
 # Before (5-7 tool calls):
 cd src
@@ -42,13 +51,15 @@ ls
 
 # After (1 delegation):
 Task: "Use file-navigator to find all React components and utility files in the src directory"
-```
+```yaml
 
 ### 2. dependency-manager (Now: supply-chain-security-engineer)
-**Purpose**: Streamlined package and dependency operations  
+
+**Purpose**: Streamlined package and dependency operations
 **Reduces**: Multiple package manager commands and version checks
 
 **Key Capabilities:**
+
 - Multi-package installation and updates
 - Cross-package-manager support (npm, yarn, pip, go mod)
 - Dependency conflict resolution
@@ -56,6 +67,7 @@ Task: "Use file-navigator to find all React components and utility files in the 
 - Lock file management
 
 **Example Usage:**
+
 ```bash
 # Before (4-6 tool calls):
 cat package.json
@@ -66,13 +78,15 @@ npm audit fix
 
 # After (1 delegation):
 Task: "Use dependency-manager to update React and its types to latest compatible versions"
-```
+```yaml
 
 ### 3. git-workflow
-**Purpose**: Complex git operations in single commands  
+
+**Purpose**: Complex git operations in single commands
 **Reduces**: Multi-step git workflows to atomic operations
 
 **Key Capabilities:**
+
 - Smart branch creation with naming conventions
 - Automated stash/restore for branch switching
 - Bulk commit operations with conventional commits
@@ -80,6 +94,7 @@ Task: "Use dependency-manager to update React and its types to latest compatible
 - Conflict resolution assistance
 
 **Example Usage:**
+
 ```bash
 # Before (6-8 tool calls):
 git status
@@ -91,13 +106,15 @@ git stash pop
 
 # After (1 delegation):
 Task: "Use git-workflow to create feature/new-feature branch from latest main"
-```
+```yaml
 
 ### 4. config-specialist
-**Purpose**: Multi-file configuration management  
+
+**Purpose**: Multi-file configuration management
 **Reduces**: Reading, parsing, and updating multiple config files
 
 **Key Capabilities:**
+
 - Cross-format config handling (JSON, YAML, TOML, INI, .env)
 - Environment-specific configuration management
 - Schema validation and migration
@@ -105,6 +122,7 @@ Task: "Use git-workflow to create feature/new-feature branch from latest main"
 - Configuration inheritance resolution
 
 **Example Usage:**
+
 ```bash
 # Before (5-7 tool calls):
 cat .env
@@ -115,13 +133,15 @@ edit config/development.json
 
 # After (1 delegation):
 Task: "Use config-specialist to update database configuration across all environments"
-```
+```yaml
 
 ### 5. error-resolver (Now: production-reliability-engineer)
-**Purpose**: Rapid error diagnosis and resolution  
+
+**Purpose**: Rapid error diagnosis and resolution
 **Reduces**: Multiple debugging and log analysis steps
 
 **Key Capabilities:**
+
 - Stack trace analysis and root cause identification
 - Common error pattern matching
 - Automated fix suggestions with code patches
@@ -129,6 +149,7 @@ Task: "Use config-specialist to update database configuration across all environ
 - Error tracking integration
 
 **Example Usage:**
+
 ```bash
 # Before (6-8 tool calls):
 cat error.log
@@ -140,13 +161,15 @@ edit src/problem-file.js
 
 # After (1 delegation):
 Task: "Use error-resolver to diagnose and fix the TypeError in production logs"
-```
+```yaml
 
 ### 6. search-coordinator
-**Purpose**: Advanced code search and analysis  
+
+**Purpose**: Advanced code search and analysis
 **Reduces**: Multiple grep/ripgrep commands across files
 
 **Key Capabilities:**
+
 - Multi-pattern simultaneous search
 - Context-aware code searching
 - Semantic search capabilities
@@ -154,6 +177,7 @@ Task: "Use error-resolver to diagnose and fix the TypeError in production logs"
 - Search result ranking and filtering
 
 **Example Usage:**
+
 ```bash
 # Before (5-7 tool calls):
 grep -r "useState" src/
@@ -163,13 +187,15 @@ find . -name "*.test.tsx" -exec grep -l "useState" {} \;
 
 # After (1 delegation):
 Task: "Use search-coordinator to find all React hooks usage in test files"
-```
+```yaml
 
 ### 7. test-runner
-**Purpose**: Intelligent test execution and management  
+
+**Purpose**: Intelligent test execution and management
 **Reduces**: Multiple test commands and coverage analysis
 
 **Key Capabilities:**
+
 - Smart test selection based on changes
 - Parallel test execution optimization
 - Coverage gap identification
@@ -177,6 +203,7 @@ Task: "Use search-coordinator to find all React hooks usage in test files"
 - Cross-framework test coordination
 
 **Example Usage:**
+
 ```bash
 # Before (4-6 tool calls):
 git diff --name-only
@@ -186,13 +213,15 @@ cat coverage/lcov-report/index.html
 
 # After (1 delegation):
 Task: "Use test-runner to run affected tests for recent changes with coverage"
-```
+```yaml
 
 ### 8. documentation-finder
-**Purpose**: Rapid documentation and knowledge retrieval  
+
+**Purpose**: Rapid documentation and knowledge retrieval
 **Reduces**: Multiple file searches for docs and comments
 
 **Key Capabilities:**
+
 - Multi-source documentation aggregation
 - API documentation extraction
 - Comment and docstring analysis
@@ -200,6 +229,7 @@ Task: "Use test-runner to run affected tests for recent changes with coverage"
 - Knowledge graph navigation
 
 **Example Usage:**
+
 ```bash
 # Before (5-7 tool calls):
 find . -name "README*"
@@ -210,13 +240,15 @@ cat docs/api/users.md
 
 # After (1 delegation):
 Task: "Use documentation-finder to gather all user API documentation"
-```
+```yaml
 
 ### 9. file-writer
-**Purpose**: Bulk file operations and scaffolding  
+
+**Purpose**: Bulk file operations and scaffolding
 **Reduces**: Multiple file creation and editing commands
 
 **Key Capabilities:**
+
 - Template-based file generation
 - Bulk file modifications with patterns
 - Project scaffolding from specifications
@@ -224,6 +256,7 @@ Task: "Use documentation-finder to gather all user API documentation"
 - Code generation from schemas
 
 **Example Usage:**
+
 ```bash
 # Before (8-10 tool calls):
 mkdir src/components/Button
@@ -235,7 +268,7 @@ cat > src/components/Button/Button.module.css
 
 # After (1 delegation):
 Task: "Use file-writer to scaffold a new Button component with tests and stories"
-```
+```yaml
 
 ## Integration Patterns
 
@@ -260,7 +293,7 @@ Efficiency agents are designed to complement specialist agents:
 4. error-resolver + debugger:
    - Error resolver handles common issues
    - Debugger tackles complex problems
-```
+```yaml
 
 ### Command Shortcuts (Historical)
 
@@ -299,6 +332,7 @@ These workflows are now handled by the main agent portfolio:
 ### When to Use Efficiency Agents
 
 ✅ **Ideal Use Cases:**
+
 - Repetitive, well-defined tasks
 - Multi-step operations with clear patterns
 - High-frequency development workflows
@@ -306,6 +340,7 @@ These workflows are now handled by the main agent portfolio:
 - Bulk operations across many files
 
 ❌ **When to Use Specialists Instead:**
+
 - Complex architectural decisions
 - Deep code analysis requirements
 - Security-critical operations
@@ -315,19 +350,22 @@ These workflows are now handled by the main agent portfolio:
 ### Composition Strategies
 
 1. **Sequential Efficiency**: Chain efficiency agents for complex workflows
-   ```
+
+   ```yaml
    file-navigator → search-coordinator → file-writer
-   ```
+```text
 
 2. **Parallel Efficiency**: Run multiple efficiency agents simultaneously
-   ```
+
+   ```yaml
    dependency-manager + config-specialist + git-workflow
-   ```
+```text
 
 3. **Hybrid Workflows**: Combine efficiency and specialist agents
-   ```
+
+   ```yaml
    file-navigator → codebase-analyst → file-writer
-   ```
+```yaml
 
 ## Advanced Usage
 
@@ -344,7 +382,7 @@ workflow: create-feature-component
     - file-writer: Scaffold component structure (now: frontend-architect/backend-engineer)
     - test-runner: Verify initial tests pass
     - git-workflow: Create feature branch and commit
-```
+```yaml
 
 ### Performance Optimization Tips
 
@@ -358,25 +396,27 @@ workflow: create-feature-component
 
 ### Common Issues
 
-**Issue**: Agent performs more operations than expected  
+**Issue**: Agent performs more operations than expected
 **Solution**: Provide more specific constraints in delegation
 
-**Issue**: Results don't match traditional approach  
+**Issue**: Results don't match traditional approach
 **Solution**: Verify agent has latest project context
 
-**Issue**: Performance not improved  
+**Issue**: Performance not improved
 **Solution**: Ensure task fits efficiency agent profile
 
 ### Debug Mode
 
 Enable verbose output for efficiency agents:
+
 ```bash
 Task: "Use file-navigator in debug mode to trace search algorithm"
-```
+```yaml
 
 ## Future Enhancements
 
 ### Planned Features
+
 - Cross-agent operation caching
 - ML-powered pattern recognition
 - Custom workflow recording
@@ -384,6 +424,7 @@ Task: "Use file-navigator in debug mode to trace search algorithm"
 - Integration with IDE plugins
 
 ### Experimental Features
+
 - Predictive file navigation
 - Automatic error prevention
 - Smart dependency suggestions
@@ -391,4 +432,6 @@ Task: "Use file-navigator in debug mode to trace search algorithm"
 
 ## Summary
 
-Efficiency agents represent a paradigm shift in development automation, reducing tool call overhead while maintaining precision and flexibility. By mastering single workflows and providing intelligent defaults, they enable developers to focus on creative problem-solving rather than repetitive operations.
+Efficiency agents represent a paradigm shift in development automation, reducing tool call overhead while
+maintaining precision and flexibility. By mastering single workflows and providing intelligent defaults, they enable
+developers to focus on creative problem-solving rather than repetitive operations.

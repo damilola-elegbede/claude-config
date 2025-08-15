@@ -2,7 +2,10 @@
 
 ## Overview
 
-The Claude Agent Ecosystem provides a sophisticated multi-agent orchestration system where specialized AI agents can be invoked to handle specific tasks. This document provides comprehensive API documentation for interacting with the agent ecosystem.
+The Claude Agent Ecosystem provides a sophisticated multi-agent orchestration
+system where specialized AI agents can be invoked to handle specific tasks. This
+document provides comprehensive API documentation for interacting with the agent
+ecosystem.
 
 ## Table of Contents
 
@@ -19,7 +22,8 @@ The Claude Agent Ecosystem provides a sophisticated multi-agent orchestration sy
 
 ### Task Tool Interface
 
-The primary method for invoking agents is through the `Task` tool. This tool serves as the orchestration interface for launching specialized agents.
+The primary method for invoking agents is through the `Task` tool. This tool serves
+as the orchestration interface for launching specialized agents.
 
 ```typescript
 interface TaskInvocation {
@@ -27,7 +31,7 @@ interface TaskInvocation {
   prompt: string;        // Detailed task instructions
   subagent_type: string; // Agent identifier (e.g., "backend-engineer")
 }
-```
+```yaml
 
 ### OpenAPI Specification
 
@@ -86,7 +90,7 @@ paths:
                         type: array
                         items:
                           type: string
-```
+```yaml
 
 ## Agent Capability API
 
@@ -106,7 +110,7 @@ paths:
               type: array
               items:
                 $ref: '#/components/schemas/AgentInfo'
-```
+```yaml
 
 ### Agent Suggestion API
 
@@ -143,7 +147,7 @@ paths:
                     maximum: 1
                   reasoning:
                     type: string
-```
+```yaml
 
 ## Agent YAML Specification
 
@@ -157,7 +161,7 @@ tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 color: blue
 category: development
 ---
-```
+```yaml
 
 ## System Boundary & Security Model
 
@@ -178,35 +182,35 @@ ToolAccessPatterns:
   development:
     common_tools: [Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite]
     description: Full development capabilities including file manipulation
-    
+
   infrastructure:
     common_tools: [Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite, WebFetch]
     description: Infrastructure management with web access for cloud APIs
-    
+
   architecture:
     common_tools: [Read, Write, Edit, Grep, Glob, LS, TodoWrite]
     description: Design and documentation focused tools
-    
+
   design:
     common_tools: [Read, Write, Edit, Grep, Glob, LS, TodoWrite]
     description: UI/UX design and documentation tools
-    
+
   quality:
     common_tools: [Read, Grep, Glob, LS, Bash, TodoWrite]
     description: Analysis and testing tools, limited write access
-    
+
   security:
     common_tools: [Read, Grep, Glob, LS, TodoWrite]
     description: Read-only analysis tools for security auditing
-    
+
   analysis:
     common_tools: [Read, Grep, Glob, LS, TodoWrite, WebFetch]
     description: Research and analysis tools with web access
-    
+
   operations:
     common_tools: [Read, Write, Grep, Glob, Bash]
     description: Operational tools for automation and management
-```
+```yaml
 
 ## API Examples
 
@@ -218,7 +222,7 @@ ToolAccessPatterns:
   "prompt": "Create a RESTful user service with authentication, including:\n- User registration and login endpoints\n- JWT token generation\n- PostgreSQL database integration\n- Input validation and error handling\n- Unit and integration tests",
   "subagent_type": "backend-engineer"
 }
-```
+```yaml
 
 ### Example 2: Security Audit
 
@@ -228,7 +232,7 @@ ToolAccessPatterns:
   "prompt": "Perform comprehensive security audit of the authentication system:\n- Check for OWASP Top 10 vulnerabilities\n- Review JWT implementation\n- Analyze password storage\n- Check for SQL injection risks\n- Provide remediation recommendations",
   "subagent_type": "security-auditor"
 }
-```
+```yaml
 
 ### Example 3: Multi-Agent Parallel Execution
 
@@ -253,13 +257,14 @@ const agents = [
 ];
 
 // Execute in parallel (orchestrated by Claude)
-```
+```yaml
 
 ## Error Handling
 
 ### Common Error Scenarios
 
 1. **Agent Not Found**
+
    ```json
    {
      "error": {
@@ -271,9 +276,10 @@ const agents = [
        }
      }
    }
-   ```
+```text
 
 2. **Boundary Violation**
+
    ```json
    {
      "error": {
@@ -286,13 +292,14 @@ const agents = [
        }
      }
    }
-   ```
+```yaml
 
 ## Multi-Agent Workflows
 
 ### Orchestration Patterns
 
 #### Pattern 1: Parallel Development
+
 ```yaml
 workflow:
   name: full-stack-feature
@@ -315,9 +322,10 @@ workflow:
           task: Review implementation
         - type: security-auditor
           task: Security validation
-```
+```yaml
 
 #### Pattern 2: Analysis Pipeline
+
 ```yaml
 workflow:
   name: codebase-analysis
@@ -334,7 +342,7 @@ workflow:
       agents:
         - type: tech-writer
           task: Consolidate findings
-```
+```yaml
 
 ### Integration Best Practices
 
@@ -398,11 +406,12 @@ workflow:
     ]
   }
 }
-```
+```yaml
 
 ## Summary
 
-The Agent Ecosystem API provides a powerful, secure, and flexible system for orchestrating specialized AI agents. Key features include:
+The Agent Ecosystem API provides a powerful, secure, and flexible system for
+orchestrating specialized AI agents. Key features include:
 
 - **Hierarchical Control**: Centralized orchestration through Claude
 - **Parallel Execution**: Efficient multi-agent workflows
@@ -503,7 +512,7 @@ components:
         - ORCHESTRATION_ERROR
         - BOUNDARY_VIOLATION
         - SYSTEM_ERROR
-    
+
     AgentInfo:
       type: object
       required:
@@ -525,7 +534,7 @@ components:
           type: string
         category:
           type: string
-    
+
     AgentInvocationRequest:
       type: object
       required:
@@ -541,7 +550,7 @@ components:
           description: Detailed task for the agent
         subagent_type:
           $ref: '#/components/schemas/AgentType'
-    
+
     AgentInvocationResponse:
       type: object
       properties:
@@ -626,4 +635,4 @@ components:
                 timestamp:
                   type: string
                   format: date-time
-```
+```text

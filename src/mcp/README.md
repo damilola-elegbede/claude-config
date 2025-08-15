@@ -1,11 +1,13 @@
 # MCP Infrastructure Implementation
 
-This directory contains the intelligent tool preference engine implementation according to SPEC_01, providing sub-100ms routing decisions with performance-based learning and advanced caching.
+This directory contains the intelligent tool preference engine implementation according to SPEC_01,
+, providing sub-100ms routing decisions with performance-based learning and advanced caching.
 
 ## Components Implemented
 
 ### 1. Tool Router (`infrastructure/tool-router.ts`)
-**Intelligent tool routing with Strategy Pattern**
+
+### Intelligent tool routing with Strategy Pattern
 
 - **Sub-100ms routing decisions** for common tool types
 - **Strategy Pattern** with pluggable routing algorithms:
@@ -17,14 +19,16 @@ This directory contains the intelligent tool preference engine implementation ac
 - **Agent-specific routing profiles** and tool-specific strategies
 - **Performance requirements** filtering (response time, success rate, load)
 
-#### Router Key Features:
+#### Router Key Features
+
 - Weighted scoring considering latency, success rate, load, and agent preferences
 - Configurable routing strategies per tool type and agent
 - Automatic fallback and circuit breaker integration
 - Comprehensive routing decision logging and metrics
 
 ### 2. Preference Engine (`infrastructure/preference-engine.ts`)
-**Performance-based tool preference learning and adaptation**
+
+### Performance-based tool preference learning and adaptation
 
 - **Exponential moving averages** for metric smoothing
 - **Agent-specific optimization profiles** with learning configurations
@@ -32,7 +36,8 @@ This directory contains the intelligent tool preference engine implementation ac
 - **Manual preference overrides** with expiration support
 - **Historical performance tracking** per server/tool/agent combination
 
-#### Engine Key Features:
+#### Engine Key Features
+
 - Continuous learning from response time, success rate, and user satisfaction
 - Agent profiles with tool usage patterns and preferences
 - Preference overrides (prefer, avoid, require, exclude) with expiration
@@ -40,7 +45,8 @@ This directory contains the intelligent tool preference engine implementation ac
 - Comprehensive learning statistics and analytics
 
 ### 3. Cache Manager (`infrastructure/cache-manager.ts`)
-**In-memory caching with Redis fallback**
+
+### In-memory caching with Redis fallback
 
 - **High-performance in-memory cache** with LRU eviction
 - **Redis fallback** for persistence and shared cache
@@ -49,7 +55,8 @@ This directory contains the intelligent tool preference engine implementation ac
 - **Pattern-based invalidation** for cache coherence
 - **Comprehensive statistics** and monitoring
 
-#### Cache Key Features:
+#### Cache Key Features
+
 - Multiple eviction policies (LRU, LFU, TTL, Random)
 - Cache warming and background refresh capabilities
 - Configurable compression for large values
@@ -98,12 +105,12 @@ await infrastructure.recordPerformance({
   success: true,
   satisfaction: 0.9
 });
-```
+```yaml
 
 ## Performance Targets (SPEC_01 Compliance)
 
 ✅ **Sub-100ms routing decisions** - Achieved through caching and optimized algorithms
-✅ **Performance-based preference learning** - Exponential moving averages with real-time adaptation  
+✅ **Performance-based preference learning** - Exponential moving averages with real-time adaptation
 ✅ **Agent-specific optimization profiles** - Comprehensive agent profiles with learning configs
 ✅ **Strategy Pattern for routing** - Pluggable strategies with configurable weights
 ✅ **Caching layer optimization** - In-memory cache with Redis fallback
@@ -111,7 +118,7 @@ await infrastructure.recordPerformance({
 
 ## File Structure
 
-```
+```text
 src/mcp/
 ├── infrastructure/
 │   ├── tool-router.ts           # Intelligent routing with Strategy Pattern
@@ -124,7 +131,7 @@ src/mcp/
 ├── types/
 │   └── index.ts                 # TypeScript type definitions
 └── README.md                    # This file
-```
+```yaml
 
 ## Testing
 
@@ -132,9 +139,10 @@ Run the integration test to verify all components work correctly:
 
 ```bash
 node src/mcp/infrastructure/integration-test.ts
-```
+```text
 
 The test suite covers:
+
 - Cache manager basic operations, TTL, and pattern invalidation
 - Tool router strategy selection and performance-based routing
 - Preference engine learning from performance data
@@ -159,4 +167,5 @@ This implementation provides the foundation for the SPEC_01 requirements. Future
 - Multi-region deployment and distributed caching
 - Real-time monitoring dashboards
 
-The current implementation satisfies all core requirements for intelligent tool preference routing with sub-100ms performance and adaptive learning capabilities.
+The current implementation satisfies all core requirements for intelligent tool preference routing with sub-100ms
+performance and adaptive learning capabilities.

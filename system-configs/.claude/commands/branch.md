@@ -2,17 +2,19 @@
 
 ## Description
 
-Intelligently creates and switches to a new git branch based on context from the conversation or explicit input. Always starts from the latest main branch to ensure branches are up-to-date.
+Intelligently creates and switches to a new git branch based on context from the conversation or explicit
+input. Always starts from the latest main branch to ensure branches are up-to-date.
 
 ## Usage
 
 ```bash
 /branch [context]
-```
+```yaml
 
 ## Arguments
 
-- `context` (optional): Description or context for the branch. If not provided, uses context from the current conversation window.
+- `context` (optional): Description or context for the branch. If not provided, uses context from the current
+  conversation window.
 
 ## Behavior
 
@@ -46,6 +48,13 @@ When you use `/branch`, I will:
    - Show current branch status
    - Display branch creation summary
    - List recent commits from main
+
+6. **Deploy execution-evaluator** to verify:
+   - Branch created successfully with correct naming
+   - Switched to new branch
+   - Branch starts from latest main/master
+   - Tracking configured if needed
+   - No uncommitted changes lost
 
 ## Branch Naming Conventions
 
@@ -86,7 +95,7 @@ Based on context analysis:
 
 /branch PROJ-789 implement user notifications
 # Creates: feature/PROJ-789-user-notifications
-```
+```yaml
 
 ### Using conversation context
 
@@ -98,7 +107,7 @@ User: /branch
 User: "The API is returning 500 errors on user profile updates"
 User: /branch
 # Creates: fix/api-500-user-profile-updates
-```
+```yaml
 
 ## Smart Context Analysis
 
@@ -120,7 +129,7 @@ Typical workflow:
 /commit                           # Commit with review
 /push                            # Push with quality gates
 /pr                              # Create pull request
-```
+```yaml
 
 ## Safety Features
 

@@ -12,7 +12,7 @@ possible, with each PR independently reviewable and following TDD methodology.
 ```bash
 /plan <task_description>
 /plan simple <task_description>  # For tasks <100 LOC
-```
+```yaml
 
 ## Command Execution Flow
 
@@ -26,6 +26,12 @@ When you invoke `/plan`, I will:
 4. **Present a preview** for your review and approval
 5. **Wait for your decision** before taking any action
 6. **Write files only if approved** - no files created until you confirm
+7. **Deploy execution-evaluator** to verify:
+   - Plan generated successfully
+   - Complexity assessment accurate
+   - PR breakdown logical and independent
+   - Files written match approved plan
+   - No unauthorized files created
 
 ### Complexity Assessment
 
@@ -34,11 +40,11 @@ I determine complexity based on task indicators and estimated lines of code:
 - **Simple** (<100 LOC): Single PR, minimal orchestration
   - Keywords: button, typo, color, text change, label, tooltip
   - Example: "Fix login button text"
-  
+
 - **Medium** (100-1000 LOC): 2-3 phases, 4-7 PRs
   - Keywords: feature, endpoint, component, integration
   - Example: "Add user profile page"
-  
+
 - **Complex** (>1000 LOC): Full phase breakdown, 8+ PRs
   - Keywords: system, migration, architecture, redesign, platform
   - Example: "Implement authentication system"
@@ -95,6 +101,7 @@ After presenting the preview:
 The command recognizes these approval signals:
 
 ### Positive Approval
+
 - "yes" - Standard approval
 - "approve" - Formal approval
 - "proceed" - Go ahead approval
@@ -104,6 +111,7 @@ The command recognizes these approval signals:
 - "create files" - Explicit file creation request
 
 ### Modification Requests
+
 - "modify" - Request changes
 - "update" - Request updates
 - "change" - Request modifications
@@ -111,6 +119,7 @@ The command recognizes these approval signals:
 - "adjust" - Request adjustments
 
 ### Rejection Signals
+
 - "no" - Standard rejection
 - "cancel" - Cancellation request
 - "abort" - Abort operation
@@ -123,7 +132,7 @@ The command recognizes these approval signals:
 The strategic plan includes:
 
 1. **Executive Summary** - High-level overview and objectives
-2. **Requirements Analysis** - Business and technical requirements  
+2. **Requirements Analysis** - Business and technical requirements
 3. **Success Criteria** - Measurable outcomes
 4. **Risk Assessment** - Potential challenges and mitigations
 5. **Architectural Decisions** - Technology choices and patterns
@@ -199,7 +208,7 @@ Task T1.02.03: Implement password hashing in User model
   * Add comparePassword method
   * Never expose raw password in JSON
 - Acceptance: Password stored as hash, comparison works
-```
+```yaml
 
 ### Phase Organization
 
@@ -277,7 +286,7 @@ User: yes
 
 Claude: ✅ Plan approved! Writing files...
 📁 Files written to: .tmp/user-auth-jwt-x3f2/
-```
+```yaml
 
 ### Cancelled Plan
 
@@ -293,7 +302,7 @@ Ready to proceed?
 User: cancel
 
 Claude: ❌ Plan cancelled. No files were written.
-```
+```yaml
 
 ### Simple Mode
 
@@ -315,13 +324,14 @@ User: yes
 
 Claude: ✅ Plan approved! Writing files...
 📁 Files written to: .tmp/fix-typo-2x1/implementation.md
-```
+```yaml
 
 ## Behavior
 
 The /plan command follows these behavioral patterns:
 
 ### Planning Phase
+
 1. **Immediate plan mode entry**: Switches to strategic planning mode
 2. **Comprehensive analysis**: Evaluates task complexity and requirements
 3. **Agent orchestration**: Identifies optimal agent assignments
@@ -329,18 +339,21 @@ The /plan command follows these behavioral patterns:
 5. **Approval waiting**: Pauses for explicit user confirmation
 
 ### Execution Phase
+
 1. **File generation**: Only occurs after explicit approval
 2. **Structured output**: Writes files to `.tmp/<feature-name>/` directory
 3. **Progress reporting**: Shows exactly where files were created
 4. **Error handling**: Gracefully handles planning failures with fallbacks
 
 ### Quality Assurance
+
 1. **TDD methodology**: Emphasizes test-driven development patterns
 2. **Phased implementation**: Breaks complex work into manageable phases
 3. **Parallel optimization**: Identifies concurrent execution opportunities
 4. **Review requirements**: Specifies required reviewers and quality gates
 
 ### User Control
+
 1. **Preview first**: Never writes files without approval
 2. **Iterative refinement**: Supports plan modifications before generation
 3. **Cancellation support**: Allows aborting without file creation

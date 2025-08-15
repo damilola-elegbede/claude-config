@@ -2,13 +2,14 @@
 
 ## Description
 
-Automatically fetches and resolves ALL CodeRabbit AI review comments from the PR associated with the current branch. Focuses on every "Prompts for AI Agents" section containing actionable code improvement suggestions.
+Automatically fetches and resolves ALL CodeRabbit AI review comments from the PR associated with the current
+branch. Focuses on every "Prompts for AI Agents" section containing actionable code improvement suggestions.
 
 ## Usage
 
 ```bash
 /resolve-cr [pr-number]
-```
+```yaml
 
 ## Arguments
 
@@ -26,6 +27,12 @@ When you invoke `/resolve-cr`, I will:
 6. **Deploy specialized agents** to implement fixes
 7. **Apply all changes** in organized commits
 8. **Report completion** with summary of resolutions
+9. **Deploy execution-evaluator** to verify:
+   - All CodeRabbit comments found and processed
+   - Fixes correctly implemented
+   - No code broken by changes
+   - Commits created with proper messages
+   - PR comment posted successfully
 
 ## Search Strategy
 
@@ -108,30 +115,31 @@ I gather all CodeRabbit feedback:
 After finding and categorizing all CodeRabbit comments, I immediately:
 
 1. **Post a comment on the PR** using `gh pr comment`:
+
    ```bash
    gh pr comment {pr-number} --body "@coderabbitai resolve
-   
+
    ## Addressing CodeRabbit Review Comments
-   
+
    Found {total} actionable items from CodeRabbit review. Now addressing:
-   
+
    ### Security ({count} items)
    - {summary of security fixes}
-   
+
    ### Performance ({count} items)
    - {summary of performance improvements}
-   
+
    ### Code Quality ({count} items)
    - {summary of quality improvements}
-   
+
    ### Tests ({count} items)
    - {summary of test additions}
-   
+
    ### Documentation ({count} items)
    - {summary of documentation updates}
-   
+
    Will apply these fixes in organized commits shortly."
-   ```
+```yaml
 
 2. **Wait for CodeRabbit acknowledgment** (optional, continue with fixes regardless)
 
@@ -191,7 +199,7 @@ docs: update documentation per CodeRabbit suggestions
 - Add API endpoint documentation
 - Update README with new features
 - Add inline comments for complex logic
-```
+```yaml
 
 ## Resolution Categories
 
@@ -279,7 +287,7 @@ After resolution, I provide:
 - fix: address CodeRabbit security findings
 - refactor: improve code quality per review
 - test: add missing coverage per CodeRabbit
-```
+```yaml
 
 ## Troubleshooting Guide
 
@@ -289,9 +297,9 @@ After resolution, I provide:
 |-------|------------|----------|
 | **404 Not Found** | Wrong repository identified | Verify git remote, check repository access, confirm PR number |
 | **Empty comment results** | Searching wrong endpoint | Try `/pulls/{pr}/comments` first, then `/pulls/{pr}/reviews` |
-| **JSON parsing failure** | Unicode control characters | Use error recovery, strip invalid characters, request raw content |
+| **JSON parsing failure** | Unicode control characters | Use error recovery, strip invalid characters, request raw |
 | **Rate limit exceeded** | Too many API calls | Implement exponential backoff, use authenticated requests |
-| **No "Prompts for AI Agents"** | CodeRabbit didn't generate suggestions | Verify CodeRabbit ran, check if PR has code changes |
+| **No "Prompts for AI Agents"** | CodeRabbit didn't generate suggestions | Verify CodeRabbit ran, check if PR has code |
 
 ### Verification Steps
 

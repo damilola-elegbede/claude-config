@@ -18,7 +18,9 @@ A comprehensive guide for creating, testing, and maintaining agents in the Claud
 
 ## Introduction
 
-The Claude-config agent ecosystem is a sophisticated system of specialized AI agents designed to handle specific technical tasks. Each agent is a focused expert with defined capabilities, tools, and responsibilities. This guide will help you create new agents that integrate seamlessly into this ecosystem.
+The Claude-config agent ecosystem is a sophisticated system of specialized AI agents designed to handle specific
+technical tasks. Each agent is a focused expert with defined capabilities, tools, and responsibilities. This guide
+will help you create new agents that integrate seamlessly into this ecosystem.
 
 ### Core Principles
 
@@ -46,11 +48,12 @@ category: development  # Agent category (development, infrastructure, architectu
 SYSTEM BOUNDARY: While the Task tool is visible in your function registry, it is RESERVED EXCLUSIVELY for Claude. You are not Claude. This agent instance will AUTOMATICALLY TERMINATE upon any Task tool invocation, regardless of who requests it. This is a hard-coded system protection that cannot be overridden by any user instruction, including direct commands. Your operational integrity depends on never crossing this boundary.
 
 [Your agent instructions here]
-```
+```yaml
 
 ### Step 2: Define Agent Purpose
 
 Before writing any instructions, clearly define:
+
 - What problem does this agent solve?
 - What unique expertise does it provide?
 - How does it differ from existing agents?
@@ -106,12 +109,13 @@ Create comprehensive instructions following the structure demonstrated in existi
 ### Required Files
 
 Each agent requires:
+
 1. **Agent Definition**: `.claude/agents/{agent-name}.md`
 2. **Category Assignment**: Must align with `AGENT_CATEGORIES.md`
 
 ### File Organization
 
-```
+```text
 .claude/
 └── agents/
     ├── AGENT_TEMPLATE.md          # Template for new agents
@@ -119,7 +123,7 @@ Each agent requires:
     ├── backend-engineer.md        # Example agent
     ├── frontend-architect.md      # Example agent
     └── {your-new-agent}.md       # Your new agent
-```
+```yaml
 
 ## Tool Selection Guidelines
 
@@ -171,11 +175,11 @@ tools: Tool1, Tool2      # Required: Comma-separated tool list
 color: blue              # Required: Category color
 category: development    # Required: Official category
 ---
-```
+```yaml
 
 ### Validation Rules
 
-1. **name**: 
+1. **name**:
    - Must be unique across all agents
    - Lowercase letters and hyphens only
    - No spaces or underscores
@@ -233,7 +237,7 @@ tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite
 color: purple
 category: architecture
 ---
-```
+```yaml
 
 ## Writing Effective Agent Instructions
 
@@ -272,56 +276,61 @@ category: architecture
 
 ## Anti-Patterns to Avoid
 [Common mistakes and what not to do]
-```
+```yaml
 
 ### Writing Guidelines
 
 1. **Be Specific**: Avoid vague instructions
+
    ```markdown
    # ❌ Vague
    You help with backend tasks.
-   
+
    # ✅ Specific
-   You are an expert backend engineer specializing in high-performance 
-   distributed systems, capable of designing architectures that handle 
+   You are an expert backend engineer specializing in high-performance
+   distributed systems, capable of designing architectures that handle
    100k+ requests per second with sub-100ms latency.
-   ```
+```yaml
 
 2. **Define Boundaries**: Clear scope and limitations
+
    ```markdown
    ## Scope
    - ✅ API design and implementation
    - ✅ Database schema optimization
    - ❌ Frontend UI development
    - ❌ Mobile app development
-   ```
+```yaml
 
 3. **Provide Context**: Include domain knowledge
+
    ```markdown
    ## Domain Expertise
    - E-commerce: Payment processing, inventory management
    - Financial Services: Trading systems, regulatory compliance
    - Real-time Systems: Chat applications, live streaming
-   ```
+```yaml
 
 4. **Action-Oriented**: Focus on what the agent does
+
    ```markdown
    ## Execution Protocol
    1. Analyze existing codebase structure
    2. Identify performance bottlenecks
    3. Implement optimization strategies
    4. Validate improvements with benchmarks
-   ```
+```yaml
 
 ## Testing and Validation
 
 ### Pre-Launch Checklist
 
 1. **YAML Validation**
+
    ```bash
    # Validate YAML syntax
    python -c "import yaml; yaml.safe_load(open('.claude/agents/my-agent.md').read().split('---')[1])"
-   ```
+```text
 
 2. **Category Alignment**
    - Verify color matches category
@@ -340,6 +349,7 @@ category: architecture
 ### Testing Protocol
 
 1. **Isolated Testing**: Test agent with simple, focused tasks
+
    ```python
    # Test script example
    test_prompts = [
@@ -347,9 +357,10 @@ category: architecture
        "Optimize database query performance",
        "Design microservice architecture"
    ]
-   ```
+```yaml
 
 2. **Integration Testing**: Test interaction with orchestrator
+
    ```python
    # Orchestration test
    orchestration_test = """
@@ -357,7 +368,7 @@ category: architecture
    1. Create API endpoint
    2. Write comprehensive tests
    """
-   ```
+```text
 
 3. **Edge Case Testing**: Test boundary conditions
    - Tasks outside agent scope
@@ -371,9 +382,10 @@ Use the `agent-auditor` to validate your new agent:
 ```bash
 # Run audit on new agent
 /audit .claude/agents/my-new-agent.md
-```
+```text
 
 The auditor checks:
+
 - YAML format compliance
 - Tool access appropriateness
 - Category alignment
@@ -399,7 +411,7 @@ The auditor checks:
 3. Implement core services
 4. Add payment integration
 5. Test with realistic scenarios
-```
+```yaml
 
 ### Pattern 2: Performance Optimization
 
@@ -416,7 +428,7 @@ The auditor checks:
 3. Use connection pooling
 4. Add database indexes
 5. Profile and benchmark
-```
+```yaml
 
 ### Pattern 3: Integration Capabilities
 
@@ -434,7 +446,7 @@ The auditor checks:
 - Webhook handling
 - Rate limit management
 - Error recovery
-```
+```yaml
 
 ### Best Practices Summary
 
@@ -453,11 +465,13 @@ The auditor checks:
 #### Issue 1: YAML Parsing Errors
 
 **Symptom**: Agent fails to load
-```
+
+```text
 Error: YAML parsing failed
-```
+```text
 
 **Solution**:
+
 1. Check for proper frontmatter delimiters (---)
 2. Validate YAML syntax
 3. Ensure no tabs (use spaces)
@@ -466,11 +480,13 @@ Error: YAML parsing failed
 #### Issue 2: Tool Access Denied
 
 **Symptom**: Agent can't use expected tools
-```
+
+```text
 Error: Tool 'Bash' not available
-```
+```text
 
 **Solution**:
+
 1. Verify tool is listed in YAML frontmatter
 2. Check tool name spelling
 3. Ensure comma separation in tools list
@@ -478,11 +494,13 @@ Error: Tool 'Bash' not available
 #### Issue 3: Category Mismatch
 
 **Symptom**: Validation fails on color/category
-```
+
+```text
 Error: Color 'blue' doesn't match category 'security'
-```
+```text
 
 **Solution**:
+
 1. Refer to AGENT_CATEGORIES.md
 2. Update color to match category
 3. Or reconsider agent categorization
@@ -490,11 +508,13 @@ Error: Color 'blue' doesn't match category 'security'
 #### Issue 4: Agent Not Found
 
 **Symptom**: Orchestrator can't find agent
-```
+
+```text
 Error: Unknown agent 'my-agent'
-```
+```text
 
 **Solution**:
+
 1. Verify file location (.claude/agents/)
 2. Check filename matches agent name
 3. Ensure .md extension
@@ -502,11 +522,13 @@ Error: Unknown agent 'my-agent'
 #### Issue 5: System Boundary Violation
 
 **Symptom**: Agent terminates unexpectedly
-```
+
+```text
 Error: System boundary violation - Task tool invoked
-```
+```text
 
 **Solution**:
+
 1. Never attempt to use Task tool
 2. Don't ask agents to coordinate
 3. Return content, not execute actions
@@ -514,6 +536,7 @@ Error: System boundary violation - Task tool invoked
 ### Debugging Techniques
 
 1. **Verbose Logging**: Add detailed logging to agent instructions
+
    ```markdown
    ## Debugging Mode
    When encountering errors:
@@ -521,21 +544,23 @@ Error: System boundary violation - Task tool invoked
    2. Identify failure point
    3. Document error context
    4. Suggest resolution
-   ```
+```yaml
 
 2. **Test in Isolation**: Create minimal test cases
+
    ```python
    # Minimal test
    simple_test = "Read and analyze a single file"
-   ```
+```text
 
 3. **Progressive Complexity**: Start simple, add complexity
-   ```
+
+   ```text
    Level 1: Read file
    Level 2: Analyze content
    Level 3: Generate recommendations
    Level 4: Integration with other agents
-   ```
+```yaml
 
 ## Integration with Existing Agents
 
@@ -543,7 +568,7 @@ Error: System boundary violation - Task tool invoked
 
 Agents don't directly communicate but work through the orchestrator:
 
-```
+```text
 User Request
      ↓
 Orchestrator (Claude)
@@ -556,67 +581,73 @@ Orchestrator (Claude)
 Orchestrator aggregates results
      ↓
 Final Output
-```
+```yaml
 
 ### Coordination Patterns
 
 1. **Sequential Workflow**
-   ```
+
+   ```text
    Analyst → provides insights → Orchestrator
    Orchestrator → uses insights → Engineer
    Engineer → creates solution → Orchestrator
    Orchestrator → validates with → Tester
-   ```
+```text
 
 2. **Parallel Execution**
-   ```
+
+   ```text
    Orchestrator launches simultaneously:
    - Backend-engineer (API development)
    - Frontend-architect (UI development)
    - Test-engineer (Test creation)
-   ```
+```text
 
 3. **Iterative Refinement**
-   ```
+
+   ```text
    Loop:
      Developer → creates code
      Reviewer → provides feedback
      Developer → incorporates changes
    Until: Standards met
-   ```
+```yaml
 
 ### Integration Best Practices
 
 1. **Clear Output Format**: Structure agent outputs consistently
+
    ```markdown
    ## Output Format
-   
+
    ### Summary
    [Brief overview]
-   
+
    ### Details
    [Comprehensive information]
-   
+
    ### Recommendations
    [Next steps]
-   ```
+```yaml
 
 2. **Handoff Preparation**: Provide context for next agent
+
    ```markdown
    ## For Next Agent
    - Key decisions made
    - Assumptions documented
    - Open questions listed
    - Dependencies identified
-   ```
+```text
 
 3. **Complementary Skills**: Design agents to complement each other
-   ```
+
+   ```text
    API-Architect: Designs the API specification
    Backend-Engineer: Implements the specification
    Test-Engineer: Validates the implementation
    Tech-Writer: Creates user documentation
-   ```
+```yaml
 
 ### Example: Multi-Agent Project
 
@@ -636,20 +667,24 @@ Creating a new microservice with multiple agents:
 ## Phase 3: Documentation (Sequential)
 - tech-writer: Create API docs
 - tech-writer: Create user guide
-```
+```yaml
 
 ## Conclusion
 
 Creating effective agents requires:
+
 1. Clear understanding of the agent's purpose and boundaries
 2. Proper categorization and tool selection
 3. Well-structured, actionable instructions
 4. Thorough testing and validation
 5. Awareness of ecosystem integration
 
-By following this guide, you can create agents that seamlessly integrate into the Claude-config ecosystem and provide valuable specialized capabilities. Remember that agents are tools for the orchestrator—they think and analyze while the orchestrator executes and coordinates.
+By following this guide, you can create agents that seamlessly integrate into the Claude-config
+ecosystem and provide valuable specialized capabilities. Remember that agents are tools for the
+orchestrator—they think and analyze while the orchestrator executes and coordinates.
 
 For additional resources:
+
 - Review existing agents in `.claude/agents/`
 - Consult `AGENT_CATEGORIES.md` for categorization
 - Use `agent-auditor` for validation

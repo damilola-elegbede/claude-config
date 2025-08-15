@@ -2,13 +2,15 @@
 
 ## Description
 
-Quickly analyzes and understands any repository by scanning its structure, dependencies, and documentation. This command provides a comprehensive overview to get you up to speed on any codebase. It can be configured to run automatically when Claude Code starts in a git repository.
+Quickly analyzes and understands any repository by scanning its structure, dependencies, and documentation. This
+command provides a comprehensive overview to get you up to speed on any codebase. It can be configured to run
+automatically when Claude Code starts in a git repository.
 
 ## Usage
 
 ```bash
 /context [scope or component]
-```
+```yaml
 
 ## Arguments
 
@@ -46,6 +48,13 @@ When you use `/context` without arguments, I will:
    - Key dependencies
    - Recent development activity
    - Development workflow
+
+5. **Deploy execution-evaluator** to verify:
+   - Repository analysis completed successfully
+   - All key directories were scanned
+   - Technology stack correctly identified
+   - Documentation parsed accurately
+   - Context report comprehensive
 
 ### Focused Component Analysis (with scope argument)
 
@@ -100,7 +109,7 @@ When you use `/context <scope>`, I will coordinate with codebase-analyst agents 
 
 ### Getting Started
 [Quick steps to start developing]
-```
+```yaml
 
 ## Auto-execution
 
@@ -129,7 +138,7 @@ To enable automatic context analysis on Claude Code startup:
 /context frontend architecture
 /context technical debt
 /context performance bottlenecks
-```
+```yaml
 
 ```text
 # Output for a React app:
@@ -145,7 +154,7 @@ A modern React application with TypeScript, using Vite for building and Jest for
 - Package Manager: npm
 
 [... continues with full analysis ...]
-```
+```yaml
 
 ## Notes
 

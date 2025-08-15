@@ -15,7 +15,10 @@
 
 ## Executive Summary
 
-The Claude Agent Ecosystem is a sophisticated multi-agent orchestration system designed to decompose complex tasks into parallel workstreams. At its core, Claude serves as the sole orchestration engine coordinating 29 specialized AI agents across 8 distinct categories. This architecture enables massive parallelization, clear separation of concerns, and robust security boundaries while maintaining a single point of execution control.
+The Claude Agent Ecosystem is a sophisticated multi-agent orchestration system designed to decompose complex tasks
+into parallel workstreams. At its core, Claude serves as the sole orchestration engine coordinating 29 specialized
+AI agents across 8 distinct categories. This architecture enables massive parallelization, clear separation of
+concerns, and robust security boundaries while maintaining a single point of execution control.
 
 ### Key Architectural Principles
 
@@ -32,7 +35,7 @@ The Claude Agent Ecosystem is a sophisticated multi-agent orchestration system d
 ```mermaid
 graph TB
     User[User] --> Claude[Claude Orchestrator<br/>Sole Executor]
-    
+
     Claude --> CAT1[Development Agents<br/>5 specialists]
     Claude --> CAT2[Infrastructure Agents<br/>9 specialists]
     Claude --> CAT3[Quality Agents<br/>4 specialists]
@@ -41,7 +44,7 @@ graph TB
     Claude --> CAT6[Security Agents<br/>2 specialists]
     Claude --> CAT7[Analysis Agents<br/>2 specialists]
     Claude --> CAT8[Operations Agents<br/>3 specialists]
-    
+
     CAT1 --> Tools1[Code Generation<br/>Pattern Analysis]
     CAT2 --> Tools2[Infrastructure<br/>Configuration]
     CAT3 --> Tools3[Testing<br/>Security Scanning]
@@ -49,10 +52,10 @@ graph TB
     CAT5 --> Tools5[Documentation<br/>Generation]
     CAT6 --> Tools6[Coordination<br/>Planning]
     CAT7 --> Tools7[Automation<br/>Optimization]
-    
+
     Claude --> FileSystem[File System<br/>Operations]
     Claude --> ExternalTools[External Tools<br/>& APIs]
-    
+
     style Claude fill:#f9f,stroke:#333,stroke-width:4px
     style CAT1 fill:#90EE90
     style CAT2 fill:#87CEEB
@@ -62,7 +65,7 @@ graph TB
     style CAT6 fill:#FFA500
     style CAT7 fill:#98FB98
     style CAT8 fill:#D3D3D3
-```
+```yaml
 
 ### Component Architecture
 
@@ -74,13 +77,13 @@ graph LR
         PM[Permission Manager]
         EM[Execution Manager]
     end
-    
+
     subgraph "Agent Layer"
         AG1[Agent Instance 1]
         AG2[Agent Instance 2]
         AG3[Agent Instance N]
     end
-    
+
     subgraph "Tool Layer"
         Read[Read Tool]
         Write[Write Tool]
@@ -88,31 +91,32 @@ graph LR
         Bash[Bash Tool]
         Task[Task Tool]
     end
-    
+
     subgraph "Security Layer"
         SB[System Boundary]
         AC[Access Control]
         AL[Audit Logging]
     end
-    
+
     OE --> TM
     TM --> PM
     PM --> EM
     EM --> AG1
     EM --> AG2
     EM --> AG3
-    
+
     SB --> AC
     AC --> Task
-    
+
     style SB fill:#ff6666,stroke:#333,stroke-width:2px
-```
+```yaml
 
 ## Agent Categorization Model
 
 ### Category Structure
 
-The ecosystem organizes 29 specialized agents into 8 functional categories, each with distinct responsibilities and color coding for visual identification:
+The ecosystem organizes 29 specialized agents into 8 functional categories, each with distinct responsibilities
+and color coding for visual identification:
 
 ```mermaid
 graph TD
@@ -134,7 +138,7 @@ graph TD
         AE[accessibility-auditor]
         INT[integration-specialist]
     end
-    
+
     subgraph "Infrastructure & Operations"
         direction TB
         CA[cloud-architect]
@@ -146,7 +150,7 @@ graph TD
         PLE[platform-engineer]
         PA[performance-analyst]
     end
-    
+
     subgraph "Quality & Security"
         direction TB
         CR[code-reviewer]
@@ -156,11 +160,11 @@ graph TD
         AA[agent-auditor]
         QA[test-engineer]
     end
-    
+
     style Development fill:#90EE90
     style Infrastructure fill:#87CEEB
     style Quality fill:green
-```
+```yaml
 
 ### Category Capabilities Matrix
 
@@ -179,7 +183,8 @@ graph TD
 
 ### System Boundary Protection
 
-The architecture implements a hard security boundary preventing agents from accessing the Task tool, ensuring only Claude maintains execution authority:
+The architecture implements a hard security boundary preventing agents from accessing the Task tool,
+ensuring only Claude maintains execution authority:
 
 ```mermaid
 graph TB
@@ -188,32 +193,32 @@ graph TB
         Tools[All Tools]
         FileOps[File Operations]
     end
-    
+
     subgraph "Agent Zone - Read Only"
         Agent1[Agent Instance]
         Agent2[Agent Instance]
         AgentN[Agent Instance]
     end
-    
+
     subgraph "System Boundary"
         SB[SYSTEM BOUNDARY<br/>Automatic Termination<br/>on Task Tool Access]
     end
-    
+
     Claude --> Tools
     Claude --> FileOps
     Claude --> Agent1
     Claude --> Agent2
     Claude --> AgentN
-    
+
     Agent1 -.->|BLOCKED| SB
     Agent2 -.->|BLOCKED| SB
     AgentN -.->|BLOCKED| SB
-    
+
     SB -.->|FORBIDDEN| Tools
-    
+
     style SB fill:#ff0000,stroke:#000,stroke-width:3px
     style Claude fill:#90EE90
-```
+```yaml
 
 ### Security Layers
 
@@ -250,25 +255,25 @@ graph LR
         CP4[Invoke Agents]
         CP5[External APIs]
     end
-    
+
     subgraph "Agent Permissions"
         AP1[Generate Content]
         AP2[Analyze Data]
         AP3[Provide Recommendations]
         AP4[Pattern Recognition]
     end
-    
+
     subgraph "Forbidden Operations"
         FO1[Task Tool Access]
         FO2[Self-Invocation]
         FO3[Agent-to-Agent Calls]
         FO4[Direct File Writes]
     end
-    
+
     style Claude fill:#90EE90
     style Agent fill:#87CEEB
     style Forbidden fill:#ff6666
-```
+```yaml
 
 ### Access Control Implementation
 
@@ -294,7 +299,7 @@ graph TB
         BE2 --> S2[Service B Code]
         BE3 --> S3[Service C Code]
     end
-    
+
     subgraph "Pattern 2: Mixed Specialist Parallel"
         Claude2[Claude] --> FE[frontend-engineer]
         Claude2 --> BE[backend-engineer]
@@ -303,17 +308,17 @@ graph TB
         BE --> API[API Code]
         TEST --> TS[Test Suite]
     end
-    
+
     subgraph "Pattern 3: Phased Parallel"
         Claude3[Claude] --> P1{Phase 1}
         P1 --> CA1[codebase-analyst]
         P1 --> SA1[security-auditor]
-        
+
         Claude3 --> P2{Phase 2}
         P2 --> BE4[backend-engineer]
         P2 --> DOC[tech-writer]
     end
-```
+```yaml
 
 ### Execution Strategies
 
@@ -344,10 +349,10 @@ sequenceDiagram
     participant Agent2
     participant FileSystem
     participant Tools
-    
+
     User->>Claude: Complex Request
     Claude->>Claude: Decompose Task
-    
+
     par Parallel Execution
         Claude->>Agent1: Subtask 1
         Agent1->>Agent1: Process
@@ -357,12 +362,12 @@ sequenceDiagram
         Agent2->>Agent2: Process
         Agent2-->>Claude: Content/Analysis
     end
-    
+
     Claude->>Claude: Aggregate Results
     Claude->>Tools: Execute Actions
     Claude->>FileSystem: Write Files
     Claude->>User: Consolidated Response
-```
+```yaml
 
 ### State Management
 
@@ -373,19 +378,19 @@ graph LR
         A2[Agent processes]
         A3[Agent returns result]
         A4[Agent terminates]
-        
+
         A1 --> A2 --> A3 --> A4
     end
-    
+
     subgraph "Stateful Orchestrator"
         C1[Claude maintains context]
         C2[Tracks agent results]
         C3[Manages dependencies]
         C4[Coordinates execution]
-        
+
         C1 --> C2 --> C3 --> C4 --> C1
     end
-```
+```yaml
 
 ## Scalability and Performance
 
@@ -395,30 +400,30 @@ graph LR
 graph TB
     subgraph "Load Distribution"
         Claude[Claude Orchestrator]
-        
+
         subgraph "Agent Pool 1"
             A1[Agent 1.1]
             A2[Agent 1.2]
             A3[Agent 1.3]
         end
-        
+
         subgraph "Agent Pool 2"
             B1[Agent 2.1]
             B2[Agent 2.2]
             B3[Agent 2.3]
         end
-        
+
         subgraph "Agent Pool N"
             N1[Agent N.1]
             N2[Agent N.2]
             N3[Agent N.3]
         end
-        
+
         Claude --> A1
         Claude --> B1
         Claude --> N1
     end
-```
+```yaml
 
 ### Performance Optimization Strategies
 
@@ -457,27 +462,27 @@ graph TD
         Registry[Agent Registry]
         Template[Agent Template]
     end
-    
+
     subgraph "Extension Mechanisms"
         NewAgent[New Agent Definition]
         NewCat[New Category]
         NewTool[New Tool Integration]
     end
-    
+
     subgraph "Integration APIs"
         WebHooks[Webhooks]
         Events[Event System]
         Plugins[Plugin Architecture]
     end
-    
+
     Template --> NewAgent
     Registry --> NewCat
     Claude --> NewTool
-    
+
     Claude --> WebHooks
     Claude --> Events
     Claude --> Plugins
-```
+```yaml
 
 ### Agent Creation Workflow
 
@@ -511,13 +516,15 @@ graph TD
 
 **Decision**: Only Claude can execute tools and write files
 
-**Rationale**: 
+**Rationale**:
+
 - Maintains single point of control
 - Prevents cascade failures
 - Simplifies security model
 - Enables comprehensive auditing
 
 **Consequences**:
+
 - All execution flows through Claude
 - Agents become pure computation units
 - Clear responsibility boundaries
@@ -527,12 +534,14 @@ graph TD
 **Decision**: Agents maintain no state between invocations
 
 **Rationale**:
+
 - Enables massive parallelization
 - Simplifies agent implementation
 - Reduces memory footprint
 - Improves fault tolerance
 
 **Consequences**:
+
 - Claude manages all state
 - Each invocation is independent
 - No agent-to-agent communication
@@ -542,12 +551,14 @@ graph TD
 **Decision**: Hard-coded termination on Task tool access by agents
 
 **Rationale**:
+
 - Prevents security breaches
 - Cannot be overridden
 - Protects execution integrity
 - Maintains architecture constraints
 
 **Consequences**:
+
 - Automatic agent termination
 - No exceptions possible
 - Strong security guarantee
@@ -557,19 +568,22 @@ graph TD
 **Decision**: Default to parallel execution wherever possible
 
 **Rationale**:
+
 - Maximizes throughput
 - Reduces total execution time
 - Leverages multi-agent architecture
 - Improves user experience
 
 **Consequences**:
+
 - Complex orchestration logic
 - Higher resource usage
 - Need for synchronization points
 
 ## Summary
 
-The Claude Agent Ecosystem represents a sophisticated approach to multi-agent orchestration, combining parallel execution capabilities with strict security boundaries. The architecture enables:
+The Claude Agent Ecosystem represents a sophisticated approach to multi-agent orchestration, combining parallel
+execution capabilities with strict security boundaries. The architecture enables:
 
 1. **Massive Parallelization**: Through multi-instance and mixed-specialist patterns
 2. **Clear Separation of Concerns**: Via category-based agent organization

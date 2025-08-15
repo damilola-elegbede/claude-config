@@ -8,7 +8,7 @@ Safely pushes changes to the remote repository with proper checks and branch tra
 
 ```bash
 /push
-```
+```yaml
 
 ## Behavior
 
@@ -82,6 +82,14 @@ When you use `/push`, I will:
    - Show updated status
    - Display pushed commit summary
 
+10. **Deploy execution-evaluator** to verify:
+    - Push completed successfully to remote
+    - Branch tracking configured correctly
+    - All quality gates passed
+    - Remote repository accessible
+    - No unintended files pushed
+    - **CRITICAL**: Verify --no-verify flag was NOT used (pre-push hooks must run)
+
 ## Safety Features
 
 - Prevents accidental pushes to main/master
@@ -100,19 +108,19 @@ When you use `/push`, I will:
 
 ```bash
 git push -u origin feature/new-feature
-```
+```yaml
 
 ### Regular push to tracked branch
 
 ```bash
 git push origin $(git branch --show-current)
-```
+```yaml
 
 ### Force push (requires confirmation)
 
 ```bash
 git push --force-with-lease
-```
+```yaml
 
 ## Enhanced Quality Gates with Remediation
 

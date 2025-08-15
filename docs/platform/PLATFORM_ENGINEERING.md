@@ -1,6 +1,7 @@
 # Claude Validation Platform Engineering
 
-This document describes the platform engineering approach for the Claude validation system, focusing on developer experience, self-service capabilities, and workflow integration.
+This document describes the platform engineering approach for the Claude validation system, focusing on
+developer experience, self-service capabilities, and workflow integration.
 
 ## Overview
 
@@ -21,6 +22,7 @@ A comprehensive command-line interface that serves as the primary interaction po
 **Location**: `scripts/platform/claude-validate`
 
 **Key Features**:
+
 - Interactive setup and configuration
 - Performance monitoring and optimization
 - Cache management
@@ -28,6 +30,7 @@ A comprehensive command-line interface that serves as the primary interaction po
 - Auto-fix capabilities
 
 **Usage Examples**:
+
 ```bash
 # Setup environment
 claude-validate setup
@@ -43,7 +46,7 @@ claude-validate fix --auto
 
 # Performance status
 claude-validate status
-```
+```yaml
 
 ### 2. Performance Optimizer
 
@@ -52,6 +55,7 @@ Automatically analyzes repository characteristics and applies appropriate perfor
 **Location**: `scripts/platform/performance-optimizer.sh`
 
 **Features**:
+
 - Repository size analysis and categorization
 - Performance benchmarking
 - Cache optimization
@@ -59,6 +63,7 @@ Automatically analyzes repository characteristics and applies appropriate perfor
 - Metrics collection and reporting
 
 **Usage Examples**:
+
 ```bash
 # Analyze and optimize
 ./performance-optimizer.sh analyze
@@ -68,7 +73,7 @@ Automatically analyzes repository characteristics and applies appropriate perfor
 
 # Generate performance report
 ./performance-optimizer.sh monitor report
-```
+```yaml
 
 ### 3. Developer Portal
 
@@ -77,6 +82,7 @@ Self-service portal providing interactive tools and guidance.
 **Location**: `scripts/platform/developer-portal.sh`
 
 **Features**:
+
 - Interactive setup wizard
 - Troubleshooting assistance
 - Performance dashboard
@@ -84,6 +90,7 @@ Self-service portal providing interactive tools and guidance.
 - Best practices guidance
 
 **Usage Examples**:
+
 ```bash
 # Run setup wizard
 ./developer-portal.sh wizard
@@ -93,7 +100,7 @@ Self-service portal providing interactive tools and guidance.
 
 # Performance dashboard
 ./developer-portal.sh dashboard
-```
+```yaml
 
 ### 4. Workflow Integrator
 
@@ -102,12 +109,14 @@ Seamless integration with existing development workflows and tools.
 **Location**: `scripts/platform/workflow-integrator.sh`
 
 **Features**:
+
 - Git hooks integration
 - CI/CD pipeline setup
 - IDE integration
 - Platform-specific workflows (Node.js, Python, Go, Rust)
 
 **Usage Examples**:
+
 ```bash
 # Initialize all integrations
 ./workflow-integrator.sh init
@@ -117,11 +126,11 @@ Seamless integration with existing development workflows and tools.
 
 # Setup CI/CD workflows
 ./workflow-integrator.sh ci
-```
+```yaml
 
 ## Platform Architecture
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    Developer Interface                       │
 ├─────────────────────────────────────────────────────────────┤
@@ -142,7 +151,7 @@ Seamless integration with existing development workflows and tools.
 │  Caching      │  Metrics      │  Monitoring   │  Notifications│
 │  System       │  Collection   │  System       │  System       │
 └─────────────────────────────────────────────────────────────┘
-```
+```yaml
 
 ## Performance Optimization Strategy
 
@@ -268,7 +277,7 @@ platform_specific:
     use_fsevents: true
   linux:
     use_inotify: true
-```
+```yaml
 
 ## Monitoring and Metrics
 
@@ -309,7 +318,7 @@ make integrate-nodejs  # or python, go, etc.
 
 # 4. Validate your setup
 make platform-doctor
-```
+```yaml
 
 ### Platform Commands
 
@@ -328,7 +337,7 @@ make platform-troubleshoot   # Interactive debugging
 make platform-optimize       # Performance optimization
 make platform-clean          # Cache cleanup
 make platform-perf-test      # Performance testing
-```
+```yaml
 
 ## Troubleshooting
 
@@ -357,7 +366,7 @@ make platform-troubleshoot
 
 # Or use the portal directly
 scripts/platform/developer-portal.sh troubleshoot
-```
+```yaml
 
 ## Extending the Platform
 

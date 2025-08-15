@@ -15,6 +15,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v5
       
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+      
     - name: Make test script executable
       run: chmod +x tests/test.sh
       
@@ -87,3 +96,51 @@ jobs:
       with:
         config: '.markdownlint-cli2.jsonc'
         globs: '**/*.md'
+
+  shellcheck-validation:
+    name: Shell Script Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+      
+    - name: Install ShellCheck
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y shellcheck
+        
+    - name: Run ShellCheck on critical scripts
+      run: |
+        echo "Running ShellCheck on critical scripts..."
+        
+        # Critical scripts that must pass
+        critical_scripts=(
+          "tests/test.sh"
+          "scripts/setup-shellcheck.sh"
+          "scripts/validate-system.sh"
+          "scripts/validate_yaml.sh"
+        )
+        
+        exit_code=0
+        
+        for script in "${critical_scripts[@]}"; do
+          if [ -f "$script" ]; then
+            echo "Checking: $script"
+            if shellcheck --severity=warning --exclude=SC1091,SC2034,SC2155,SC2250,SC2292,SC2310 "$script"; then
+              echo "✅ PASSED: $script"
+            else
+              echo "❌ FAILED: $script"
+              exit_code=1
+            fi
+          else
+            echo "⚠️ Script not found: $script"
+          fi
+        done
+        
+        if [ $exit_code -ne 0 ]; then
+          echo "❌ Critical scripts validation failed!"
+          exit 1
+        else
+          echo "✅ All critical scripts passed validation!"
+        fi

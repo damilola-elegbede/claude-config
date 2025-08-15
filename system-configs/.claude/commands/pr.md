@@ -2,13 +2,15 @@
 
 ## Description
 
-Creates comprehensive pull requests with intelligent change analysis, automated description generation, breaking change detection, and smart reviewer assignment. Generates professional PR descriptions that follow best practices and team conventions.
+Creates comprehensive pull requests with intelligent change analysis, automated description generation, breaking
+change detection, and smart reviewer assignment. Generates professional PR descriptions that follow best practices
+and team conventions.
 
 ## Usage
 
 ```bash
 /pr [target_branch] [options]
-```
+```yaml
 
 ## Arguments
 
@@ -28,6 +30,12 @@ When you invoke `/pr`, I will:
 5. **Assign metadata** - Add appropriate labels, reviewers, and projects
 6. **Create the pull request** - Submit via GitHub API with all metadata
 7. **Report PR URL** - Provide link for immediate review
+8. **Deploy execution-evaluator** to verify:
+   - PR created successfully with correct target branch
+   - Description follows template format
+   - All commits included in PR
+   - Labels and metadata properly assigned
+   - PR accessible via provided URL
 
 ## Change Analysis Process
 
@@ -72,7 +80,7 @@ chore: update dependencies to latest versions
 docs: add API documentation for new endpoints
 perf: optimize query performance with indexing
 test: add integration tests for payment flow
-```
+```yaml
 
 ### Description Structure
 
@@ -168,7 +176,7 @@ I generate comprehensive descriptions with:
 [Specific areas where reviewer attention is needed]
 [Questions for reviewers]
 [Context that might help review]
-```
+```yaml
 
 ## Intelligent Label Assignment
 
@@ -228,7 +236,9 @@ I assign reviewers based on:
 Before creating the PR, I verify:
 
 1. **Branch is up to date** with target branch
-2. **/test run executed** with passing results (attach summary). If `--draft` is set, allow creation even if tests fail, but surface results prominently.
+2. **/test run executed** with passing results (attach summary). If `--draft` is set, allow creation even if tests
+   fail, but surface results prominently.
+
 3. **No merge conflicts** exist
 4. **Commit messages** follow conventions
 5. **Required files** are included (tests, docs)
@@ -293,7 +303,7 @@ PR quality is measured by:
 # Creates: "feat: add user dashboard with analytics"
 # Assigns: frontend team, UI reviewers
 # Labels: enhancement, frontend, feature
-```
+```yaml
 
 ### Urgent Bug Fix
 
@@ -302,7 +312,7 @@ PR quality is measured by:
 # Creates: "fix: critical - resolve payment processing error"
 # Assigns: senior engineers, on-call team
 # Labels: bug, priority, critical
-```
+```yaml
 
 ### Draft WIP
 
@@ -311,7 +321,7 @@ PR quality is measured by:
 # Creates: "WIP: refactor authentication system"
 # Assigns: no reviewers yet
 # Labels: draft, wip, refactor
-```
+```yaml
 
 ## Integration with Other Commands
 
@@ -319,7 +329,9 @@ Works seamlessly with:
 
 - `/commit` - Ensures commits are ready for PR
 - `/test` - Validates tests before PR creation
-- `/plan` - Uses Plan Preview Mode; requires explicit ExitPlanMode approval before any file writes and before PR creation. The accepted plan summary is embedded in the PR description.
+- `/plan` - Uses Plan Preview Mode; requires explicit ExitPlanMode approval before any file writes and before PR
+  creation. The accepted plan summary is embedded in the PR description.
+
 - `/review` - Can trigger review after PR creation
 - `/push` - Pushes changes before PR
 - `/fix-ci` - Fixes issues before creating PR
