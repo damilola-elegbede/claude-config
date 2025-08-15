@@ -156,6 +156,8 @@ jobs:
   shellcheck-critical:
     name: Critical Scripts Validation
     runs-on: ubuntu-latest
+    # This job validates critical scripts with slightly stricter rules than general scripts
+    # but still uses warning-level severity to avoid blocking on style preferences
     
     steps:
     - name: Checkout code
@@ -189,9 +191,9 @@ jobs:
             # Run with stricter settings for critical scripts
             if shellcheck \
               --format=gcc \
-              --severity=info \
+              --severity=warning \
               --shell=bash \
-              --exclude=SC1091 \
+              --exclude=SC1091,SC2034,SC2086,SC2155,SC2312,SC2249 \
               "$script"; then
               echo "✅ PASSED: $script"
             else

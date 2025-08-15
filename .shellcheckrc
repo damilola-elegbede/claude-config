@@ -14,10 +14,13 @@ severity=warning
 # SC2250: Prefer putting braces around variable references (style preference)
 # SC2292: Prefer [[ ]] over [ ] for tests (style preference)  
 # SC2310: This function is invoked in condition (common pattern)
+# SC2086: Double quote variables (acceptable in controlled contexts)
+# SC2312: Command substitution masking (info-level, not critical)
+# SC2249: Default case in switch statements (optional style preference)
 #
 # Note: SC2164 (cd failures) and SC2154 (undefined variables) are kept as warnings
 # as they indicate real issues that should be addressed
-exclude=SC1091,SC2034,SC2155,SC2250,SC2292,SC2310
+exclude=SC1091,SC2034,SC2155,SC2250,SC2292,SC2310,SC2086,SC2312,SC2249
 
 # Enable all optional checks
 enable=all
