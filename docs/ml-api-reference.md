@@ -142,6 +142,7 @@ X-Request-ID: {unique_request_id}
     </headers>
 
     <request-body>
+
 ```json
 {
   "system_id": "prod-cluster-01",
@@ -162,6 +163,7 @@ X-Request-ID: {unique_request_id}
   }
 }
 ```
+
     </request-body>
   </request-specification>
 
@@ -213,6 +215,7 @@ X-Request-ID: {unique_request_id}
 
     <error-responses>
       <error code="400" type="validation_error">
+
 ```json
 {
   "error": "validation_error",
@@ -224,6 +227,7 @@ X-Request-ID: {unique_request_id}
   "request_id": "req_12345abcdef"
 }
 ```
+
       </error>
 
       <error code="429" type="rate_limit_exceeded">
@@ -444,6 +448,7 @@ X-Request-ID: {unique_request_id}
 
   <request-specification>
     <request-body>
+
 ```json
 {
   "forecast_horizon": 24,
@@ -476,6 +481,7 @@ X-Request-ID: {unique_request_id}
 
   <response-specification>
     <success-response code="200">
+
 ```json
 {
   "request_id": "req_forecast_456",
@@ -563,6 +569,7 @@ X-Request-ID: {unique_request_id}
 
   <response-specification>
     <success-response code="200">
+
 ```json
 {
   "models": [
@@ -610,12 +617,15 @@ X-Request-ID: {unique_request_id}
 
   <request-specification>
     <path-parameters>
+
 ```http
 {id}: bottleneck_predictor_v1.2.0
 ```
+
     </path-parameters>
 
     <request-body>
+
 ```json
 {
   "deployment_strategy": "blue_green",
@@ -642,6 +652,7 @@ X-Request-ID: {unique_request_id}
 
   <response-specification>
     <success-response code="202">
+
 ```json
 {
   "deployment_id": "deploy_789xyz",
@@ -671,9 +682,11 @@ X-Request-ID: {unique_request_id}
 
   <request-specification>
     <query-parameters>
-      ```http
+
+```http
       ?start_time=2024-01-14T00:00:00Z&end_time=2024-01-15T00:00:00Z&granularity=hourly
-      ```
+```
+
     </query-parameters>
   </request-specification>
 
@@ -741,9 +754,11 @@ X-Request-ID: {unique_request_id}
 
   <request-specification>
     <query-parameters>
-      ```http
+
+```http
       ?system_id=prod-cluster-01&time_range=7d&metrics=cpu,memory,throughput&include_predictions=true
-      ```
+```
+
     </query-parameters>
   </request-specification>
 
@@ -1188,7 +1203,7 @@ npm install claude-ml-client
   <response-specification>
     <metrics-format>
 
-```prometheus
+```text
       # HELP ml_predictions_total Total number of predictions made
       # TYPE ml_predictions_total counter
       ml_predictions_total{model="bottleneck_predictor",version="v1.2.0"} 15234

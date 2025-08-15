@@ -1,6 +1,7 @@
 # Branch Protection Setup
 
-This document explains how to configure branch protection rules for the `main` branch to ensure all changes pass tests before merging.
+This document explains how to configure branch protection rules for the `main` branch to
+ensure all changes pass tests before merging.
 
 ## Setting Up Branch Protection
 

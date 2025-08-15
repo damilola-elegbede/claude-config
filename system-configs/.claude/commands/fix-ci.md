@@ -2,8 +2,7 @@
 
 ## Description
 
-Intelligently resolves CI/CD failures through pattern recognition, automatic fix generation, and predictive failure
-prevention. Reduces mean time to recovery (MTTR) by automatically diagnosing and fixing common CI issues.
+Orchestrates multiple specialized agents to comprehensively analyze and fix CI/CD failures by fetching real data from GitHub, performing parallel analysis, and applying targeted fixes through expert agents.
 
 ## Usage
 
@@ -13,255 +12,315 @@ prevention. Reduces mean time to recovery (MTTR) by automatically diagnosing and
 
 ## Options
 
-- `--pr <number>` - Fix specific pull request CI failures
-- `--branch <name>` - Fix specific branch (default: current)
-- `--predict` - Predict and prevent failures before they occur
-- `--optimize` - Optimize CI pipeline performance
-- `--report` - Generate CI health report
+- `--pr <number>` - Fix CI failures for a specific pull request
+- `--branch <name>` - Fix CI failures for a specific branch (default: current)
+- `--run-id <id>` - Target a specific workflow run ID
+- `--all` - Analyze all recent failures (last 5 runs)
 
 ## Behavior
 
 When you invoke `/fix-ci`, I will:
 
-1. **Fetch CI failure data** from the CI/CD system
-2. **Analyze failure patterns** to identify root causes
-3. **Generate appropriate fixes** based on failure type
-4. **Apply fixes automatically** when confidence is high
-5. **Create a commit** with the fixes
-6. **Re-trigger CI** to verify the fix worked
-7. **Report results** with any manual steps needed
-8. **Deploy execution-evaluator** to verify:
-   - CI failure data fetched successfully
-   - Root cause correctly identified
-   - Fixes applied without breaking other tests
-   - CI re-triggered and passing
-   - No unintended side effects
+1. **Fetch CI Data** via git-workflow-specialist to get actual failure logs from GitHub
+2. **Parallel Analysis** - Deploy multiple agents simultaneously to analyze failures:
+   - Each agent examines the logs from their domain expertise
+   - Ambiguous failures are analyzed by ALL potentially relevant agents
+3. **Synthesize Findings** - Combine insights from all agents
+4. **Parallel Fix Implementation** - Deploy appropriate agents to fix identified issues
+5. **Verification** - Ensure all failures are addressed before completing
+6. **Re-trigger CI** - Validate fixes work
 
-## Failure Categories
+## Core Workflow
 
-I identify and fix these types of CI failures:
+### Phase 1: Data Collection
 
-### Build Failures
-
-- **Import/Module errors** - Missing dependencies, incorrect paths
-- **Compilation errors** - Syntax errors, type mismatches
-- **Configuration issues** - Invalid config files, missing env vars
-- **Resource constraints** - Out of memory, disk space issues
-
-### Test Failures
-
-- **Assertion failures** - Update test expectations
-- **Timeouts** - Increase timeout limits or optimize slow code
-- **Flaky tests** - Add retries, fix race conditions
-- **Mock/Stub issues** - Update mocks to match implementation
-- **Snapshot mismatches** - Update snapshots after verifying changes
-
-### Code Quality Failures
-
-- **Linting errors** - Auto-fix formatting and style issues
-- **Type errors** - Fix type annotations and interfaces
-- **Coverage drops** - Identify untested code paths
-- **Security vulnerabilities** - Apply security patches
-
-### Environment Issues
-
-- **Missing dependencies** - Install required packages
-- **Version mismatches** - Align versions across environments
-- **Permission errors** - Fix file/directory permissions
-- **Network failures** - Add retries for external services
-
-## Fix Strategies
-
-### Automatic Fixes (High Confidence)
-
-I automatically apply these fixes when confidence is >90%:
-
-1. **Linting/Formatting** - Run auto-fixers (prettier, black, gofmt)
-2. **Import sorting** - Organize and fix import statements
-3. **Dependency updates** - Add missing packages to manifests
-4. **Snapshot updates** - Update test snapshots after verification
-   - Only after confirming UI/output changes are intentional
-   - For broad diffs, require manual approval or linked design sign-off
-5. **Timeout increases** - Adjust timeouts for slow tests
-6. **Environment variables** - Add missing vars to CI config
-
-### Semi-Automatic Fixes (Medium Confidence)
-
-I generate fixes but request approval when confidence is 70-90%:
-
-1. **Test expectations** - Update assertions based on actual output
-2. **Type corrections** - Fix type definitions and annotations
-3. **Mock updates** - Adjust mocks to match new signatures
-4. **Config corrections** - Fix YAML/JSON configuration errors
-5. **Memory limits** - Increase resource allocations
-
-### Manual Fixes (Low Confidence)
-
-I provide guidance but require manual intervention when confidence is <70%:
-
-1. **Logic errors** - Suggest where business logic may be wrong
-2. **Breaking changes** - Identify incompatible dependency updates
-3. **Infrastructure issues** - External service problems
-4. **Security violations** - Require security team review
-
-## Failure Pattern Recognition
-
-I recognize patterns to identify root causes:
-
-### Common Patterns
-
-| Pattern | Likely Cause | Fix Strategy |
-|---------|-------------|--------------|
-| "Cannot find module" | Missing dependency | Add to package.json |
-| "Timeout of X exceeded" | Slow test/network | Increase timeout |
-| "Snapshot mismatch" | UI/output changed | Update snapshot |
-| "ECONNREFUSED" | Service not running | Start service/mock |
-| "heap out of memory" | Memory leak/limit | Increase limit/fix leak |
-| "permission denied" | File permissions | Fix chmod/chown |
-| "rate limit exceeded" | API limit hit | Add delays/caching |
-
-### Flaky Test Detection
-
-I identify flaky tests by:
-
-- Multiple runs with different results
-- Timing-dependent failures
-- Order-dependent test failures
-- Environment-specific failures
-- Random/intermittent failures
-
-For flaky tests, I:
-
-1. Add retry mechanisms
-2. Fix race conditions
-3. Isolate test dependencies
-4. Mock external services
-5. Ensure proper cleanup
-
-## Predictive Failure Prevention
-
-When using `--predict`, I:
-
-### Analyze Risk Factors
-
-- Recent code changes that often cause failures
-- Dependencies with known issues
-- Test coverage gaps
-- Complex code sections prone to bugs
-- Historical failure patterns
-
-### Preventive Actions
-
-- Run additional tests locally before push
-- Check for common issues in changed files
-- Verify dependency compatibility
-- Ensure environment consistency
-- Add missing test coverage
-
-## Pipeline Optimization
-
-When using `--optimize`, I:
-
-### Identify Bottlenecks
-
-- Slow test suites
-- Sequential jobs that could parallelize
-- Redundant test runs
-- Unnecessary build steps
-- Cache misses
-
-### Optimization Strategies
-
-- Parallelize independent jobs
-- Implement test splitting
-- Add caching for dependencies
-- Skip unchanged components
-- Use incremental builds
-- Optimize Docker layers
-
-## CI Health Report
-
-When using `--report`, I generate:
-
-```text
-## CI Health Report
-
-### Success Rate
-- Last 24 hours: 85%
-- Last 7 days: 78%
-- Last 30 days: 82%
-
-### Common Failure Causes
-1. Flaky tests (35%)
-2. Dependency issues (25%)
-3. Timeout failures (20%)
-4. Linting errors (15%)
-5. Other (5%)
-
-### Problem Areas
-- Slowest tests: [list of slow tests]
-- Flaky tests: [list of unreliable tests]
-- Frequent failures: [commonly failing jobs]
-
-### Recommendations
-1. Fix these flaky tests first
-2. Increase timeouts for these tests
-3. Add caching for these dependencies
-4. Parallelize these test suites
+```yaml
+Primary Agent:
+  - git-workflow-specialist: Fetches CI logs and failure data from GitHub
+  
+Retrieves:
+  - Failed workflow runs
+  - Error messages and stack traces
+  - Test failure details
+  - Build logs
+  - Performance metrics
 ```
 
-## Agent Coordination
+### Phase 2: Parallel Analysis
 
-### Primary Agent
+```yaml
+Simultaneous Deployment:
+  debugger:
+    - Analyzes stack traces
+    - Identifies code-level bugs
+    - Traces execution paths
+    - Pinpoints logic errors
+    
+  devops:
+    - Reviews CI/CD configuration
+    - Checks environment variables
+    - Validates pipeline syntax
+    - Identifies infrastructure issues
+    
+  test-engineer:
+    - Examines test failures
+    - Identifies flaky tests
+    - Reviews test coverage gaps
+    - Analyzes assertion failures
+    
+  performance-specialist:
+    - Detects performance regressions
+    - Identifies resource bottlenecks
+    - Analyzes timeout issues
+    - Reviews memory/CPU usage
+    
+  security-auditor:
+    - Checks security scan failures
+    - Reviews vulnerability reports
+    - Validates compliance checks
+    - Analyzes authentication issues
+    
+  principal-architect: (if no clear owner)
+    - Handles complex architectural issues
+    - Reviews system-wide problems
+    - Analyzes cross-cutting concerns
+```
 
-- **devops**: Leads CI/CD troubleshooting and fixes
+### Phase 3: Ambiguity Resolution
 
-### Supporting Agents
+When a failure could belong to multiple domains:
 
-- **test-engineer**: For test-related failures
-- **debugger**: For complex failure analysis
-- **performance-specialist**: For performance issues
-- **quality-gatekeeper**: For quality gates and standards
+```yaml
+Example: "Connection timeout in auth test"
+Deploy ALL relevant agents:
+  - test-engineer (test failure)
+  - performance-specialist (timeout)
+  - security-auditor (auth-related)
+  - debugger (potential code issue)
 
-## Success Metrics
+Each provides their perspective, ensuring comprehensive coverage
+```
 
-Fix success is measured by:
+### Phase 4: Fix Implementation
 
-- CI passes after fix application
-- No regression in other tests
-- Fix doesn't break other branches
-- Solution is permanent, not temporary
-- MTTR reduced from baseline
+Based on analysis results, deploy fixing agents in parallel:
 
-## Workflow Example
+```yaml
+Parallel Fix Deployment:
+  Code Issues → backend-engineer/frontend-architect
+  Test Issues → test-engineer
+  CI Config → devops
+  Performance → performance-specialist
+  Security → security-auditor
+  Architecture → principal-architect
+```
+
+### Phase 5: Verification Loop
+
+```yaml
+Verification:
+  1. Check all identified issues have fixes
+  2. If any unaddressed → return to Phase 2
+  3. Create comprehensive fix commit
+  4. Push changes
+  5. Re-trigger CI
+  6. Monitor for success
+  7. Deploy execution-evaluator to verify:
+     - All CI failures were properly fetched
+     - Analysis covered all failure types
+     - Fixes were correctly applied
+     - No regressions introduced
+     - CI genuinely passing (not false positive)
+```
+
+## Failure Analysis Matrix
+
+| Failure Type | Primary Analyst | Secondary Analysts | Fix Agent |
+|-------------|-----------------|-------------------|-----------|
+| Syntax Error | debugger | devops | backend-engineer |
+| Test Failure | test-engineer | debugger | test-engineer |
+| Build Config | devops | principal-architect | devops |
+| Timeout | performance-specialist | test-engineer, debugger | performance-specialist |
+| Security Scan | security-auditor | devops | security-auditor |
+| Import Error | debugger | devops, test-engineer | backend-engineer |
+| Type Error | debugger | test-engineer | backend-engineer |
+| Resource Limit | performance-specialist | devops | devops |
+| Flaky Test | test-engineer | debugger, performance-specialist | test-engineer |
+| Network Error | devops | debugger, test-engineer | devops |
+| Permission Error | devops | security-auditor | devops |
+| Dependency Issue | devops | debugger, principal-architect | dependency-strategist |
+| Unknown/Complex | principal-architect | ALL agents | varies |
+
+## Parallel Execution Strategy
+
+### Maximum Parallelization Points
+
+1. **Initial Analysis**: ALL analysis agents run simultaneously
+2. **Ambiguous Failures**: Multiple agents analyze the same failure
+3. **Independent Fixes**: Different fixes applied to different files/systems
+4. **Verification**: Multiple verification checks run in parallel
+
+### Example Parallel Flow
 
 ```text
 User: /fix-ci
 
-Claude: 🔍 Analyzing CI failure on current branch...
+[PARALLEL BATCH 1]
+├── git-workflow-specialist: Fetch GitHub CI data
+│
+[PARALLEL BATCH 2 - Analysis]
+├── debugger: Analyze code errors
+├── devops: Check CI configuration
+├── test-engineer: Review test failures
+├── performance-specialist: Check performance issues
+└── security-auditor: Scan security failures
 
-Found 3 failures:
-1. ❌ Test timeout in auth.test.js
-2. ❌ Linting errors in 5 files
-3. ❌ Snapshot mismatch in Button.test.jsx
+[SYNTHESIS]
+└── Claude: Combine all findings
 
-Applying automatic fixes:
-✅ Fixed linting errors (auto-formatted)
-✅ Updated snapshot after verifying changes
-✅ Increased timeout from 5s to 10s
+[PARALLEL BATCH 3 - Fixes]
+├── backend-engineer: Fix syntax errors in api/
+├── test-engineer: Fix flaky tests
+├── devops: Update CI timeout settings
+└── performance-specialist: Optimize slow queries
 
-Creating commit: "fix: resolve CI failures - timeout, lint, snapshot"
+[VERIFICATION]
+└── All issues addressed? If no, return to BATCH 2
+```
+
+## Real GitHub Integration
+
+### Data Fetched by git-workflow-specialist
+
+```bash
+# Get latest failed workflow runs
+gh run list --workflow=ci.yml --status=failure --limit=5
+
+# Get detailed failure logs
+gh run view <run-id> --log-failed
+
+# Get specific job failures
+gh run view <run-id> --job=<job-id>
+
+# Get PR check failures
+gh pr checks <pr-number> --watch
+```
+
+### Failure Pattern Extraction
+
+The git-workflow-specialist extracts:
+- Error messages with line numbers
+- Failed test names and assertions
+- Build error details
+- Timeout locations
+- Security scan results
+- Coverage reports
+
+## Comprehensive Coverage Guarantee
+
+The command continues until:
+
+1. **All failures analyzed**: Every error in the CI log has been examined
+2. **All fixes attempted**: Each identified issue has a fix implemented or documented
+3. **No stone unturned**: Even unclear errors get principal-architect review
+4. **Verification complete**: CI runs successfully or all blockers are documented
+
+### Iteration Loop
+
+```python
+while ci_failures_exist:
+    failures = git_workflow_specialist.fetch_failures()
+    
+    # Parallel analysis
+    analyses = parallel_deploy([
+        debugger.analyze(failures),
+        devops.analyze(failures),
+        test_engineer.analyze(failures),
+        performance_specialist.analyze(failures),
+        security_auditor.analyze(failures)
+    ])
+    
+    # Determine fix agents
+    fix_agents = determine_fix_agents(analyses)
+    
+    # Parallel fixes
+    fixes = parallel_deploy(fix_agents)
+    
+    # Apply and verify
+    apply_fixes(fixes)
+    ci_failures_exist = check_ci_status()
+    
+    # Final validation
+    if not ci_failures_exist:
+        execution_evaluator.verify_complete_resolution()
+```
+
+## Success Criteria
+
+The command succeeds when:
+
+- ✅ All CI checks pass
+- ✅ All identified issues have fixes applied
+- ✅ No new failures introduced
+- ✅ Performance not degraded
+- ✅ Security checks still pass
+- ✅ execution-evaluator confirms successful resolution
+
+## Example Execution
+
+```text
+User: /fix-ci --pr 1234
+
+Claude: Orchestrating CI fix for PR #1234...
+
+[Phase 1: Data Collection]
+Deploying git-workflow-specialist to fetch CI failures...
+
+Found 4 failures in workflow run #5678:
+1. ❌ TypeError in user.service.ts:45
+2. ❌ Test timeout in auth.test.js
+3. ❌ ESLint errors in 3 files
+4. ❌ Docker build failed - missing dependency
+
+[Phase 2: Parallel Analysis]
+Deploying 5 agents for comprehensive analysis...
+
+debugger: TypeError is null reference on undefined user object
+test-engineer: Timeout suggests slow API mock or race condition
+devops: Docker failure due to missing npm package in dockerfile
+performance-specialist: Test timeout correlates with unoptimized query
+security-auditor: No security implications detected
+
+[Phase 3: Fix Implementation]
+Deploying parallel fixes:
+- backend-engineer: Fixing null reference with proper validation
+- test-engineer: Adding proper async/await and increasing timeout
+- devops: Updating Dockerfile with missing dependency
+- code-reviewer: Auto-fixing ESLint issues
+
+[Phase 4: Creating Fix]
+All issues addressed. Creating fix commit...
 Pushing fixes...
 Re-triggering CI...
 
-✅ CI is now passing! All failures resolved.
+[Phase 5: Final Verification]
+Deploying execution-evaluator to verify success...
+
+execution-evaluator confirms:
+✅ All 4 original failures properly identified
+✅ Each failure received appropriate analysis
+✅ Fixes correctly applied without side effects
+✅ CI genuinely passing (not masking issues)
+✅ No performance regressions detected
+
+✅ CI is now passing! All 4 failures comprehensively resolved.
 ```
 
 ## Notes
 
-- Always verify fixes don't introduce new issues
-- Some failures may indicate real bugs, not CI issues
-- Flaky tests should be fixed, not just retried
-- Document why timeouts were increased
-- Regular CI optimization prevents accumulation of tech debt
-- Consider splitting long-running test suites
+- Leverages real GitHub CLI data, not assumptions
+- Parallel analysis ensures no blind spots
+- Multiple agents can analyze the same failure for comprehensive coverage
+- Continues until ALL failures are addressed
+- Fix delegation based on actual analysis, not patterns
+- Maximum parallelization for speed

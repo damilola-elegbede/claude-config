@@ -34,6 +34,7 @@
 ## Technical Debt Analysis
 
 ### High-Impact Files
+
 - `docs/guides/ecosystem-health-guide.md`: 13 violations
 - `docs/guides/agent-development-guide.md`: 12 violations
 - `docs/markdown-quality-report.md`: 10 violations
@@ -59,6 +60,7 @@
 ## Configuration Updates Required
 
 ### .markdownlint-cli2.jsonc Updates
+
 ```jsonc
 {
   "config": {

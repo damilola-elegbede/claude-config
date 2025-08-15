@@ -328,35 +328,35 @@ description: Use for building React/Vue/Angular apps, state management, and fron
 
 #### Missing Required Field
 
-```
+```text
 Error: Missing required field: tools
 Solution: Add the tools field with appropriate permissions or empty string
 ```
 
 #### Name Mismatch
 
-```
+```text
 Error: Name mismatch: YAML says 'backend-engineer' but filename is 'backend.md'
 Solution: Ensure name field matches filename (without .md extension)
 ```
 
 #### Invalid Color
 
-```
+```text
 Error: Invalid color format 'invalid-color'
 Solution: Use a valid color name (e.g., 'blue', 'green', 'teal')
 ```
 
 #### Description Too Long
 
-```
+```text
 Error: Description too long (275 chars). Should be under 250.
 Solution: Shorten the description while keeping key information
 ```
 
 #### Empty Tools Field
 
-```
+```text
 Note: Empty tools field is valid for specialized agents
 Action: No action required if intentional
 ```

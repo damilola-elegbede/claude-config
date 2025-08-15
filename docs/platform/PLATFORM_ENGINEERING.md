@@ -130,7 +130,7 @@ Seamless integration with existing development workflows and tools.
 
 ## Platform Architecture
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    Developer Interface                       │
 ├─────────────────────────────────────────────────────────────┤

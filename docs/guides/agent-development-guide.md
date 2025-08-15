@@ -555,7 +555,7 @@ Error: System boundary violation - Task tool invoked
 
 3. **Progressive Complexity**: Start simple, add complexity
 
-   ```
+   ```text
    Level 1: Read file
    Level 2: Analyze content
    Level 3: Generate recommendations
@@ -587,7 +587,7 @@ Final Output
 
 1. **Sequential Workflow**
 
-   ```
+   ```text
    Analyst → provides insights → Orchestrator
    Orchestrator → uses insights → Engineer
    Engineer → creates solution → Orchestrator
@@ -596,7 +596,7 @@ Final Output
 
 2. **Parallel Execution**
 
-   ```
+   ```text
    Orchestrator launches simultaneously:
    - Backend-engineer (API development)
    - Frontend-architect (UI development)
@@ -605,7 +605,7 @@ Final Output
 
 3. **Iterative Refinement**
 
-   ```
+   ```text
    Loop:
      Developer → creates code
      Reviewer → provides feedback
@@ -642,7 +642,7 @@ Final Output
 
 3. **Complementary Skills**: Design agents to complement each other
 
-   ```
+   ```text
    API-Architect: Designs the API specification
    Backend-Engineer: Implements the specification
    Test-Engineer: Validates the implementation
@@ -679,7 +679,9 @@ Creating effective agents requires:
 4. Thorough testing and validation
 5. Awareness of ecosystem integration
 
-By following this guide, you can create agents that seamlessly integrate into the Claude-config ecosystem and provide valuable specialized capabilities. Remember that agents are tools for the orchestrator—they think and analyze while the orchestrator executes and coordinates.
+By following this guide, you can create agents that seamlessly integrate into the Claude-config
+ecosystem and provide valuable specialized capabilities. Remember that agents are tools for the
+orchestrator—they think and analyze while the orchestrator executes and coordinates.
 
 For additional resources:
 

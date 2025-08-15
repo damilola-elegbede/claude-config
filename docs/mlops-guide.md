@@ -146,6 +146,7 @@ enterprise-scale deployments with 99.9% uptime requirements.
 
 <data-pipeline>
   <ingestion-workflow>
+
 ```yaml
 # Airflow DAG for data ingestion
 data_ingestion_dag:
@@ -175,9 +176,11 @@ data_ingestion_dag:
       function: load_to_feature_store
       pool: feature_store_pool
 ```
+
   </ingestion-workflow>
 
   <feature-engineering>
+
 ```python
 # Feature engineering pipeline
 from feast import FeatureStore
@@ -231,39 +234,42 @@ class FeatureEngineeringPipeline:
                 )
         return df
 ```
+
   </feature-engineering>
 
   <data-validation>
+
 ```yaml
 # Great Expectations suite for data quality
 expectation_suite_name: system_metrics_suite
 
 expectations:
-  - expectation_type: expect_table_row_count_to_be_between
-    kwargs:
-      min_value: 100
-      max_value: 10000
+- expectation_type: expect_table_row_count_to_be_between
+  kwargs:
+    min_value: 100
+    max_value: 10000
 
-  - expectation_type: expect_column_values_to_not_be_null
-    kwargs:
-      column: timestamp
+- expectation_type: expect_column_values_to_not_be_null
+  kwargs:
+    column: timestamp
 
-  - expectation_type: expect_column_values_to_be_between
-    kwargs:
-      column: cpu_usage
-      min_value: 0
-      max_value: 100
+- expectation_type: expect_column_values_to_be_between
+  kwargs:
+    column: cpu_usage
+    min_value: 0
+    max_value: 100
 
-  - expectation_type: expect_column_values_to_be_between
-    kwargs:
-      column: memory_usage
-      min_value: 0
-      max_value: 100
+- expectation_type: expect_column_values_to_be_between
+  kwargs:
+    column: memory_usage
+    min_value: 0
+    max_value: 100
 
-  - expectation_type: expect_column_values_to_not_be_null
-    kwargs:
-      column: system_id
+- expectation_type: expect_column_values_to_not_be_null
+  kwargs:
+    column: system_id
 ```
+
   </data-validation>
 </data-pipeline>
 
@@ -271,6 +277,7 @@ expectations:
 
 <training-pipeline>
   <experiment-setup>
+
 ```python
 # MLflow experiment tracking setup
 import mlflow
@@ -327,9 +334,11 @@ class ModelTrainingPipeline:
 
             return ensemble_model, validation_metrics
 ```
+
   </experiment-setup>
 
   <hyperparameter-optimization>
+
 ```python
 # Automated hyperparameter tuning with Optuna
 import optuna
@@ -385,9 +394,11 @@ class HyperparameterOptimizer:
 
         return self.study.best_params
 ```
+
   </hyperparameter-optimization>
 
   <model-validation>
+
 ```python
 # Comprehensive model validation
 class ModelValidator:
@@ -464,6 +475,7 @@ class ModelValidator:
             )
         }
 ```
+
   </model-validation>
 </training-pipeline>
 
@@ -473,6 +485,7 @@ class ModelValidator:
 
 <deployment-pipeline>
   <ci-cd-setup>
+
 ```yaml
 # GitHub Actions workflow for model deployment
 name: ML Model Deployment
@@ -571,9 +584,11 @@ jobs:
           # Cleanup old blue deployment
           kubectl delete deployment/ml-service-blue -n production
 ```
+
   </ci-cd-setup>
 
   <canary-deployment>
+
 ```python
 # Canary deployment controller
 class CanaryDeploymentController:
@@ -640,9 +655,11 @@ class CanaryDeploymentController:
 
         return True
 ```
+
   </canary-deployment>
 
   <rollback-mechanism>
+
 ```python
 # Automated rollback system
 class RollbackManager:
@@ -717,6 +734,7 @@ class RollbackManager:
 
         return True
 ```
+
   </rollback-mechanism>
 </deployment-pipeline>
 
@@ -726,6 +744,7 @@ class RollbackManager:
 
 <monitoring-setup>
   <metrics-collection>
+
 ```python
 # Comprehensive metrics collection for ML models
 from prometheus_client import Counter, Histogram, Gauge, start_http_server
@@ -791,9 +810,11 @@ class MLMetricsCollector:
                 model_version=model_version
             ).observe(duration)
 ```
+
   </metrics-collection>
 
   <drift-detection>
+
 ```python
 # Model drift detection system
 import scipy.stats as stats
@@ -886,9 +907,11 @@ class DriftDetector:
 
         return psi
 ```
+
   </drift-detection>
 
   <alerting-system>
+
 ```python
 # Intelligent alerting system for ML models
 class MLAlertManager:
@@ -978,6 +1001,7 @@ class MLAlertManager:
 
         return recommendations
 ```
+
   </alerting-system>
 </monitoring-setup>
 
@@ -985,7 +1009,8 @@ class MLAlertManager:
 
 <dashboard-setup>
   <grafana-dashboard>
-    ```json
+
+```json
     {
       "dashboard": {
         "title": "ML Operations Dashboard - Phase 3 Intelligence Layer",
@@ -1073,11 +1098,13 @@ class MLAlertManager:
         ]
       }
     }
-    ```
+```
+
   </grafana-dashboard>
 
   <custom-dashboard>
-    ```python
+
+```python
     # Custom ML operations dashboard
     import streamlit as st
     import plotly.graph_objects as go
@@ -1178,7 +1205,8 @@ class MLAlertManager:
                 )
             else:
                 st.success("✅ No significant drift detected")
-    ```
+```
+
   </custom-dashboard>
 </dashboard-setup>
 
@@ -1188,7 +1216,8 @@ class MLAlertManager:
 
 <performance-optimization>
   <model-optimization>
-    ```python
+
+```python
     # Model optimization techniques
     class ModelOptimizer:
         def __init__(self):
@@ -1271,11 +1300,13 @@ class MLAlertManager:
                     optimizer.step()
 
             return student_model
-    ```
+```
+
   </model-optimization>
 
   <serving-optimization>
-    ```python
+
+```python
     # Inference serving optimization
     class InferenceOptimizer:
         def __init__(self):
@@ -1346,11 +1377,13 @@ class MLAlertManager:
                 model.gradient_checkpointing_enable()
 
             return model
-    ```
+```
+
   </serving-optimization>
 
   <resource-optimization>
-    ```yaml
+
+```yaml
     # Kubernetes resource optimization
     apiVersion: apps/v1
     kind: Deployment
@@ -1449,7 +1482,8 @@ class MLAlertManager:
           - type: Percent
             value: 10
             periodSeconds: 60
-    ```
+```
+
   </resource-optimization>
 </performance-optimization>
 
@@ -1572,6 +1606,7 @@ async def batch_predict(requests: List[PredictionRequest]):
 
     return flatten_results(results)
 ```
+
         </solution>
       </solutions>
     </issue>
@@ -1582,7 +1617,8 @@ async def batch_predict(requests: List[PredictionRequest]):
 
 <maintenance-procedures>
   <routine-maintenance>
-    ```bash
+
+```bash
     #!/bin/bash
     # Weekly maintenance script
 
@@ -1608,11 +1644,13 @@ async def batch_predict(requests: List[PredictionRequest]):
     python scripts/generate-health-report.py --email=ops@company.com
 
     echo "Maintenance completed successfully"
-    ```
+```
+
   </routine-maintenance>
 
   <disaster-recovery>
-    ```python
+
+```python
     # Disaster recovery procedures
     class DisasterRecoveryManager:
         def __init__(self):
@@ -1661,7 +1699,8 @@ async def batch_predict(requests: List[PredictionRequest]):
             for component in components_to_backup:
                 for location in self.backup_locations:
                     self.backup_component(component, location)
-    ```
+```
+
   </disaster-recovery>
 </maintenance-procedures>
 

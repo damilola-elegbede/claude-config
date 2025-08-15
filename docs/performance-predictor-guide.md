@@ -366,6 +366,7 @@ prediction accuracy.
 <orchestration-integration>
   <agent-selection>
     <performance-aware-routing>
+
 ```python
 class PerformanceAwareOrchestrator:
     def __init__(self, performance_predictor):
@@ -403,6 +404,7 @@ class PerformanceAwareOrchestrator:
 
   <resource-optimization>
     <dynamic-scaling>
+
 ```python
 class PredictiveScaler:
     async def optimize_resources(self):
