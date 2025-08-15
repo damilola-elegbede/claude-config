@@ -101,7 +101,7 @@ Syncing configuration files...
 ✓ Copied system-configs/CLAUDE.md to ~/CLAUDE.md
 ✓ Removed old agents from ~/.claude/agents/
 ✓ Removed old commands from ~/.claude/commands/
-✓ Copied 35 command files to ~/.claude/commands/ (excluding sync.md, config-diff.md, and command-audit.md)
+✓ Copied 12 command files to ~/.claude/commands/ (15 total - 3 excluded: sync.md, config-diff.md, and command-audit.md)
 ✓ Copied 35 agent files to ~/.claude/agents/
 ✓ Copied system-configs/settings.json to ~/.claude/settings.json
 ✓ Excluded documentation files: AGENT_TEMPLATE.md, AGENT_CATEGORIES.md, AUDIT_VERIFICATION_PROTOCOL.md, README.md
@@ -140,7 +140,7 @@ done
 # Remove old command files (but preserve directory)
 rm -f ~/.claude/commands/*.md
 
-# Copy commands except sync.md, config-diff.md, and command-audit.md
+# Copy 12 commands (15 total - 3 excluded: sync.md, config-diff.md, and command-audit.md)
 shopt -s nullglob
 for file in ./system-configs/.claude/commands/*.md; do
     filename=$(basename "$file")
