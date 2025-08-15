@@ -248,7 +248,7 @@ This repository includes comprehensive **ShellCheck validation** to prevent bash
 
 **Features:**
 - **Automated CI Validation**: All shell scripts validated on push/PR
-- **Pre-commit Hooks**: Local validation before commits  
+- **Pre-commit Hooks**: Local validation before commits
 - **Developer Tools**: Setup and fix scripts for easy adoption
 - **Configurable Rules**: Balanced exclusions for practical development
 
@@ -265,6 +265,7 @@ shellcheck scripts/*.sh
 ```
 
 **CI Integration:**
+
 - Critical scripts must pass strict validation
 - Comprehensive workflow validates all repository scripts
 - Results uploaded as artifacts for review

@@ -1,6 +1,6 @@
 # Markdown Quality Report
 
-**Generated:** 2025-08-15 00:34:09
+**Generated:** 2025-08-15 00:41:35
 **Configuration:** `.markdownlint-cli2.jsonc`
 
 ## Quality Gate Status
@@ -52,9 +52,9 @@ No violations detected.
 ```jsonc
 {
   "config": {
-    "MD040": {
+    "MD040": { 
       "allowed_languages": [
-        "bash", "javascript", "python", "yaml", "json",
+        "bash", "javascript", "python", "yaml", "json", 
         "typescript", "shell", "text", "markdown", "mermaid", "http"
       ]
     }
