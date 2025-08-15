@@ -27,8 +27,8 @@ echo -e "${YELLOW}Running Markdown Quality Tests...${NC}"
 echo -n "Testing basic markdownlint validation... "
 cd "$BASE_DIR"
 
-# Count initial violations
-initial_violations=$(npx markdownlint-cli2 "**/*.md" --config .markdownlint-cli2.jsonc 2>&1 | grep -c ":" || echo "0")
+# Count initial violations - use exact same command as validation script
+initial_violations=$(npx markdownlint-cli2 "**/*.md" --config .markdownlint-cli2.jsonc 2>&1 | grep -E "^.+:[0-9]+(:([0-9]+))?[[:space:]]+" | wc -l | tr -d ' ')
 
 if [[ $initial_violations -eq 0 ]]; then
     echo -e "${GREEN}PASS${NC}"
@@ -60,7 +60,7 @@ critical_files=(
 CRITICAL_TEST_PASS=true
 for file in "${critical_files[@]}"; do
     if [[ -f "$file" ]]; then
-        file_violations=$(npx markdownlint-cli2 "$file" --config .markdownlint-cli2.jsonc 2>&1 | grep -c ":" || echo "0")
+        file_violations=$(npx markdownlint-cli2 "$file" --config .markdownlint-cli2.jsonc 2>&1 | grep -E "^.+:[0-9]+(:([0-9]+))?[[:space:]]+" | wc -l | tr -d ' ')
         if [[ $file_violations -gt 0 ]]; then
             echo -e "${RED}FAIL${NC} ($file has $file_violations violations)"
             CRITICAL_TEST_PASS=false

@@ -6,7 +6,7 @@ set -euo pipefail
 
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "$(dirname "$SCRIPT_DIR")")"
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || dirname "$SCRIPT_DIR")"
 CONFIG_FILE="$REPO_ROOT/.markdownlint-cli2.jsonc"
 QUALITY_REPORT="$REPO_ROOT/docs/markdown-quality-report.md"
 
@@ -30,7 +30,6 @@ total_files=0
 passed_files=0
 failed_files=0
 total_errors=0
-total_warnings=0
 
 # Quality thresholds (configurable)
 CRITICAL_ERROR_THRESHOLD=0  # Zero tolerance for critical errors
@@ -91,22 +90,23 @@ categorize_error() {
 
 # Function to run markdownlint and capture results
 run_markdownlint() {
-    local temp_file=$(mktemp)
+    local temp_file
+    temp_file=$(mktemp)
     local exit_code=0
     
     echo -e "${YELLOW}Running markdownlint validation...${NC}"
     
     # Run markdownlint and capture both stdout and stderr
     if ! npx markdownlint-cli2 "**/*.md" --config "$CONFIG_FILE" > "$temp_file" 2>&1; then
-        exit_code=$?
     fi
     
-    # Process results
+    # Reset error count
+    total_errors=0
+    
+    # Process results - count individual violation lines
     while IFS= read -r line; do
         if [[ "$line" =~ ^(.+):([0-9]+)(:([0-9]+))?[[:space:]]+(.+) ]]; then
             local file="${BASH_REMATCH[1]}"
-            local line_num="${BASH_REMATCH[2]}"
-            local col_num="${BASH_REMATCH[4]:-}"
             local error_desc="${BASH_REMATCH[5]}"
             
             ((total_errors++))
@@ -114,11 +114,17 @@ run_markdownlint() {
         fi
     done < "$temp_file"
     
-    # Extract summary info
+    # Also extract summary for verification (but use counted errors as authoritative)
     if grep -q "Summary:" "$temp_file"; then
         local summary_line=$(grep "Summary:" "$temp_file")
         if [[ "$summary_line" =~ ([0-9]+)[[:space:]]+error\(s\) ]]; then
-            total_errors="${BASH_REMATCH[1]}"
+            local summary_errors="${BASH_REMATCH[1]}"
+            # Verify our count matches the summary
+            if [[ $total_errors -ne $summary_errors ]]; then
+                echo "Warning: Error count mismatch (counted: $total_errors, summary: $summary_errors)" >&2
+                # Use the summary count as it's more reliable
+                total_errors=$summary_errors
+            fi
         fi
     fi
     
@@ -141,7 +147,13 @@ run_markdownlint() {
     passed_files=$((total_files - failed_files))
     
     rm -f "$temp_file"
-    return $exit_code
+    
+    # Return appropriate exit code based on violations
+    if [[ $total_errors -gt 0 ]]; then
+        return 1
+    else
+        return 0
+    fi
 }
 
 # Function to analyze quality patterns
@@ -364,7 +376,8 @@ main() {
         "validate"|"")
             if run_markdownlint; then
                 echo -e "${GREEN}✅ No markdownlint violations detected${NC}"
-                passed_files=$total_files
+            else
+                echo -e "${RED}❌ Found $total_errors markdownlint violations${NC}"
             fi
             
             analyze_quality_patterns

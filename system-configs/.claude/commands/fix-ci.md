@@ -1,8 +1,22 @@
-# /fix-ci
+# /fix-ci Command
 
 ## Description
 
 Analyzes CI/CD failures from GitHub and deploys targeted fixes using appropriate specialists.
+
+## Behavior
+
+Automatically detects and fixes CI/CD pipeline failures by:
+
+1. **Fetching failure details** from GitHub Actions using `gh` CLI
+2. **Parallel analysis** deploying multiple specialist agents (debugger, devops, test-engineer, principal-architect)
+3. **Synthesizing findings** to create a comprehensive fix plan
+4. **Executing targeted fixes** using appropriate specialists based on failure patterns
+5. **Verifying success** with execution-evaluator to ensure genuine CI resolution
+
+The command operates with smart defaults for common issues (lint, tests, dependencies) while escalating
+complex failures to appropriate domain experts. Includes automatic retry logic and fail-fast patterns for
+infrastructure issues.
 
 ## Usage
 

@@ -35,7 +35,7 @@ design principles.
 
 - **AGENT_TEMPLATE.md Format**: All agents must follow the standard template
 - **Required Sections**: Verify presence of all mandatory sections
-- **YAML Frontmatter**: Validate structure and field completeness
+- **YAML Formatter**: Validate structure and field completeness
 - **System Boundary**: Ensure anti-pattern warning is present
 
 ### 3. Tool Assignment Validation
