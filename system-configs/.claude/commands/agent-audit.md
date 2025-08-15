@@ -59,13 +59,28 @@ design principles.
 - **Usage Context**: When Claude should select this agent
 - **Updated Descriptions**: Derive from agent's actual capabilities if needed
 
-### 6. Tier Validation
+### 6. Markdown Parsing Standards
+
+- **Code Fencing Consistency**: Ensure all code blocks use proper language tags (```bash, ```yaml, ```python, etc.)
+- **Example Quality**: Verify examples are focused, well-commented, and provide clear context
+- **Structured Formats**: Validate use of YAML for workflows and structured data
+- **Code Format Separation**: Ensure clean separation between inline code and code blocks
+- **Command Clarity**: Multi-line commands must include explanations and context
+
+**Anti-Patterns to Detect**:
+- Overly complex multi-line commands without explanation
+- Inconsistent formatting between sections
+- Mixed inline/block code formats creating ambiguity
+- Missing language tags on code fences
+- Poorly structured workflow examples
+
+### 7. Tier Validation
 
 - **Tier 1 Only**: All agents must be tier 1 (no tier 2 agents allowed)
 - **Model Assignment**: Verify appropriate model selection
 - **Performance Optimization**: Ensure efficient agent deployment
 
-### 7. Model Appropriateness Analysis
+### 8. Model Appropriateness Analysis
 
 - **Strategic Tasks → Opus**: Complex reasoning, cross-domain expertise, high-stakes decisions
 - **Technical Tasks → Sonnet**: Implementation, analysis, specialized domain work
@@ -83,21 +98,21 @@ Execute validation for each category simultaneously:
 ```yaml
 parallel_execution:
   - category: development
-    validations: [template, tools, description, tier, modelAppropriateness]
+    validations: [template, tools, description, markdownParsing, tier, modelAppropriateness]
   - category: infrastructure
-    validations: [template, tools, description, tier, modelAppropriateness]
+    validations: [template, tools, description, markdownParsing, tier, modelAppropriateness]
   - category: quality
-    validations: [template, tools, description, tier, modelAppropriateness]
+    validations: [template, tools, description, markdownParsing, tier, modelAppropriateness]
   - category: security
-    validations: [template, tools, description, tier, modelAppropriateness]
+    validations: [template, tools, description, markdownParsing, tier, modelAppropriateness]
   - category: analysis
-    validations: [template, tools, description, tier, modelAppropriateness]
+    validations: [template, tools, description, markdownParsing, tier, modelAppropriateness]
   - category: architecture
-    validations: [template, tools, description, tier, modelAppropriateness]
+    validations: [template, tools, description, markdownParsing, tier, modelAppropriateness]
   - category: design
-    validations: [template, tools, description, tier, modelAppropriateness]
+    validations: [template, tools, description, markdownParsing, tier, modelAppropriateness]
   - category: operations
-    validations: [template, tools, description, tier, modelAppropriateness]
+    validations: [template, tools, description, markdownParsing, tier, modelAppropriateness]
 ```yaml
 
 ### Phase 2: Cross-Category Analysis
@@ -123,6 +138,8 @@ After audit completion, **execution-evaluator** is deployed to verify:
 - YAML validation completed without errors
 - Category assignments were checked
 - Tool permissions were validated
+- Markdown parsing standards were enforced
+- Code fencing and formatting consistency validated
 - Report generated with all required sections
 - Patch snippets (if any) are syntactically correct
 
@@ -149,6 +166,26 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 2. **Orchestration Attempts**: [Agents trying to coordinate others]
 3. **Missing Templates**: [Non-compliant agent formats]
 4. **Tier 2 Agents**: [Any agents not at tier 1]
+5. **Markdown Parsing Violations**: [Agents with formatting/parsing issues]
+
+### Markdown Parsing Compliance
+
+| Agent | Code Fencing | Language Tags | Example Quality | Format Consistency | Issues |
+|-------|--------------|---------------|-----------------|-------------------|---------|
+| agent-name | ✅ | ❌ | ✅ | ✅ | Missing bash tags |
+| agent-name | ✅ | ✅ | ❌ | ✅ | Complex examples without explanation |
+
+**Parsing Standards Summary**:
+- Code Fencing: XX/XX agents compliant
+- Language Tags: XX/XX agents compliant  
+- Example Quality: XX/XX agents compliant
+- Format Consistency: XX/XX agents compliant
+
+**Common Anti-Patterns Found**:
+- Missing language tags on code fences: X agents
+- Complex commands without explanation: X agents
+- Mixed inline/block formatting: X agents
+- Inconsistent section formatting: X agents
 
 ### Model Appropriateness Analysis
 
@@ -197,6 +234,7 @@ sed -i '' 's/model: haiku/model: sonnet/' agent-name.md  # Better capability
 ✅ **Tool Validation**: No Task tool access, appropriate permissions
 ✅ **Anti-Pattern Free**: No orchestration or self-reference
 ✅ **Description Quality**: Clear "MUST BE USED" and "use PROACTIVELY" triggers
+✅ **Markdown Parsing Standards**: Consistent code fencing, language tags, and example quality
 ✅ **Tier 1 Only**: All agents at tier 1 level
 ✅ **Model Appropriateness**: Each agent uses optimal model for its complexity
 ✅ **Documentation Sync**: All docs reflect current state
