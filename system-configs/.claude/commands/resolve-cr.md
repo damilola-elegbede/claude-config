@@ -26,7 +26,9 @@ When you invoke `/resolve-cr`, I will:
 5. **Deploy specialized agents** to implement fixes
 6. **Apply all changes** in organized commits
 7. **Push changes** to the remote repository
-8. **Post comprehensive PR comment** with "@coderabbitai resolve" and detailed summary of all fixes applied
+8. **Post two PR comments**:
+   - First: "@coderabbitai resolve" (standalone trigger)
+   - Second: Detailed summary of all fixes applied
 9. **Report completion** with summary of resolutions
 10. **Deploy execution-evaluator** to verify:
     - All CodeRabbit comments found and processed
@@ -34,7 +36,7 @@ When you invoke `/resolve-cr`, I will:
     - No code broken by changes
     - Commits created with proper messages
     - Changes pushed successfully
-    - PR comment posted with full details
+    - Both PR comments posted successfully
 
 ## Search Strategy
 
@@ -178,12 +180,18 @@ git push origin {current-branch}
 
 ### Phase 5: PR Notification
 
-After successfully pushing all changes, I post a comprehensive comment on the PR:
+After successfully pushing all changes, I post two separate comments on the PR:
+
+**First comment - Trigger resolution:**
 
 ```bash
-gh pr comment {pr-number} --body "@coderabbitai resolve
+gh pr comment {pr-number} --body "@coderabbitai resolve"
+```
 
-## ✅ CodeRabbit Review Comments Resolved
+**Second comment - Detailed summary:**
+
+```bash
+gh pr comment {pr-number} --body "## ✅ CodeRabbit Review Comments Resolved
 
 Successfully addressed all {total} actionable items from CodeRabbit review.
 
@@ -365,9 +373,10 @@ When searches fail:
 2. **Run tests after each commit** to catch regressions
 3. **Document resolution reasoning** in commit messages
 4. **Push all commits** to remote repository
-5. **Post comprehensive PR comment** with detailed resolution summary
-6. **Check CI status** after pushing changes
-7. **Verify CodeRabbit marks items as resolved** (if applicable)
+5. **Post first PR comment** with "@coderabbitai resolve" only
+6. **Post second PR comment** with detailed resolution summary
+7. **Check CI status** after pushing changes
+8. **Verify CodeRabbit marks items as resolved** (if applicable)
 
 ## Important Notes
 
@@ -376,8 +385,8 @@ When searches fail:
 - **Repository identification is essential** - 404 errors are usually caused by wrong repository context
 - **Start with `/pulls/{pr}/comments` endpoint** - this contains most CodeRabbit inline comments
 - **Always verify comments with user** - prevents processing wrong or outdated suggestions
-- **Push changes before posting PR comment** - ensures all fixes are complete and available
-- **Post comprehensive PR comment only after successful push** - provides detailed summary of all applied changes
+- **Push changes before posting PR comments** - ensures all fixes are complete and available
+- **Post two separate PR comments** - first "@coderabbitai resolve" alone, then detailed summary
 - **Handle JSON parsing gracefully** - Unicode control characters can break parsing
 
 ### Processing Guidelines
