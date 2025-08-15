@@ -31,6 +31,7 @@ When you use `/push`, I will:
    - Discover and execute all test suites
    - Check test coverage requirements
    - Ensure 100% test pass rate
+   - Generate quality reports in `.tmp/reports/` directory
    - If tests fail: Deploy test-engineer to fix or add missing tests
    - Re-run tests after fixes
 
@@ -39,6 +40,7 @@ When you use `/push`, I will:
    - **Comprehensive markdown linting**: Use markdownlint-cli2 with same config as CI
      - Run: `npx markdownlint-cli2 "**/*.md" --config .markdownlint-cli2.jsonc`
      - **Auto-fix markdown violations**: Use --fix flag where possible
+     - **Generate linting reports** in `.tmp/reports/` directory
      - **Line length enforcement**: MD013 rule (120 character limit)
      - **Code fence validation**: Ensure proper language tags
      - **Block push for unfixable markdown violations**
@@ -68,29 +70,36 @@ When you use `/push`, I will:
    - **Phase 3**: Re-review after remediation
    - **Phase 4**: Document rationales for unfixed issues
 
-7. **Smart quality gate enforcement**:
+7. **Auto-commit fixes if changes were made**:
+   - If any fixes were applied (tests, linting, code review):
+     - Stage all modified files
+     - Create commit with message: `fix: apply automated quality fixes before push`
+     - Include details of what was fixed in commit body
+   - This ensures all fixes are included in the push
+
+8. **Smart quality gate enforcement**:
    - After remediation attempts, evaluate remaining issues:
      - **Critical/Security**: Must be fixed (no push until resolved)
      - **With Rationale**: Log warning but allow push
      - **Without Rationale**: Block push until justified
-   - Generate comprehensive report:
+   - Generate comprehensive report in `.tmp/reports/push-quality-report.md`:
      - Issues fixed by agents
      - Remaining issues with rationales
      - Test results and coverage
      - Linting compliance status
    - User confirmation required if issues remain
 
-8. **Push to remote**:
+9. **Push to remote**:
    - Use `-u` flag if branch needs upstream tracking
    - Push to appropriate remote (usually origin)
    - Always specify current branch explicitly: `git push origin <current-branch>`
 
-9. **Confirm success**:
+10. **Confirm success**:
    - Verify push completed
    - Show updated status
    - Display pushed commit summary
 
-10. **Deploy execution-evaluator** to verify:
+11. **Deploy execution-evaluator** to verify:
     - Push completed successfully to remote
     - Branch tracking configured correctly
     - All quality gates passed
@@ -200,6 +209,12 @@ Before push, agents automatically attempt to fix issues:
   - Pre-commit hooks ensure consistency with CI
   - markdownlint-cli2 prevents MD013 and formatting violations
   - All language-specific linters match CI configuration
+- **Quality reports are generated in `.tmp/reports/`** directory:
+  - Test results and coverage reports
+  - Linting violation reports
+  - Code review findings
+  - Push quality summary
+- **Auto-commit of fixes**: Any fixes applied during push are automatically committed
 - Critical issues (security, breaking tests, unfixable linting) always block push
 - Non-critical issues are auto-fixed when possible
 - Unfixed issues require documented rationale
