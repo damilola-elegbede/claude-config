@@ -253,12 +253,38 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 ### Manual Remediation Required
 
 ```bash
-# YAML Parsing Fixes (CRITICAL - Fix these first):
-# Fix multi-line description without quotes:
-sed -i '' '/^description:$/,/^[a-z]/s/^description:$/description: |/' agent-name.md
-# Or wrap in quotes:
-sed -i '' 's/^description:$/description: "/' agent-name.md
-sed -i '' '/^description: "/,/^tools:/s/^tools:/"\\ntools:/' agent-name.md
+# YAML Parsing Fixes (CRITICAL - Prefer YAML-aware tooling)
+# Recommended (portable): use Python with python-frontmatter + PyYAML
+#   pip install python-frontmatter pyyaml
+python - <<'PY'
+import io, yaml, frontmatter
+path = 'agent-name.md'
+post = frontmatter.load(path)
+
+# Ensure multi-line description uses block scalar style (|).
+desc = post.get('description')
+if isinstance(desc, str) and '\n' in desc:
+    class LiteralStr(str): pass
+    def literal_representer(dumper, data):
+        return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
+    yaml.add_representer(LiteralStr, literal_representer)
+    post['description'] = LiteralStr(desc)
+
+# Ensure tools is a comma-separated string, not a YAML list.
+tools = post.get('tools')
+if isinstance(tools, list):
+    post['tools'] = ', '.join(tools)
+
+with io.open(path, 'w', encoding='utf-8') as f:
+    frontmatter.dump(post, f)
+PY
+
+# Fallback (manual edit):
+# ---
+# description: |
+#   Your multi-line description...
+# tools: Read, Write, Grep
+# ---
 
 # Execute these commands to fix remaining issues:
 sed -i '' 's/category: wrong/category: correct/' agent.md
