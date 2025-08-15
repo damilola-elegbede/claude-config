@@ -23,16 +23,18 @@ When you invoke `/resolve-cr`, I will:
 2. **Exhaustively search** for ALL CodeRabbit review comments
 3. **Extract improvement suggestions** from "Prompts for AI Agents" sections
 4. **Verify comment authenticity** with user confirmation
-5. **Post PR comment** with "@coderabbitai resolve" and summary of fixes about to be addressed
-6. **Deploy specialized agents** to implement fixes
-7. **Apply all changes** in organized commits
-8. **Report completion** with summary of resolutions
-9. **Deploy execution-evaluator** to verify:
-   - All CodeRabbit comments found and processed
-   - Fixes correctly implemented
-   - No code broken by changes
-   - Commits created with proper messages
-   - PR comment posted successfully
+5. **Deploy specialized agents** to implement fixes
+6. **Apply all changes** in organized commits
+7. **Push changes** to the remote repository
+8. **Post comprehensive PR comment** with "@coderabbitai resolve" and detailed summary of all fixes applied
+9. **Report completion** with summary of resolutions
+10. **Deploy execution-evaluator** to verify:
+    - All CodeRabbit comments found and processed
+    - Fixes correctly implemented
+    - No code broken by changes
+    - Commits created with proper messages
+    - Changes pushed successfully
+    - PR comment posted with full details
 
 ## Search Strategy
 
@@ -110,40 +112,7 @@ I gather all CodeRabbit feedback:
    - Bug fixes
    - Style/formatting issues
 
-### Phase 2: PR Notification
-
-After finding and categorizing all CodeRabbit comments, I immediately:
-
-1. **Post a comment on the PR** using `gh pr comment`:
-
-   ```bash
-   gh pr comment {pr-number} --body "@coderabbitai resolve
-
-   ## Addressing CodeRabbit Review Comments
-
-   Found {total} actionable items from CodeRabbit review. Now addressing:
-
-   ### Security ({count} items)
-   - {summary of security fixes}
-
-   ### Performance ({count} items)
-   - {summary of performance improvements}
-
-   ### Code Quality ({count} items)
-   - {summary of quality improvements}
-
-   ### Tests ({count} items)
-   - {summary of test additions}
-
-   ### Documentation ({count} items)
-   - {summary of documentation updates}
-
-   Will apply these fixes in organized commits shortly."
-```yaml
-
-2. **Wait for CodeRabbit acknowledgment** (optional, continue with fixes regardless)
-
-### Phase 3: Agent Deployment
+### Phase 2: Agent Deployment
 
 I deploy appropriate specialists based on issue type:
 
@@ -158,7 +127,7 @@ I deploy appropriate specialists based on issue type:
 | API problems | api-architect | backend-engineer |
 | Type errors | backend-engineer | - |
 
-### Phase 4: Implementation
+### Phase 3: Implementation
 
 I apply fixes systematically:
 
@@ -175,7 +144,7 @@ I apply fixes systematically:
    - Ensure tests still pass
    - Verify no new issues introduced
 
-### Phase 5: Commit Organization
+### Phase 4: Commit Organization and Push
 
 I create organized commits:
 
@@ -199,6 +168,59 @@ docs: update documentation per CodeRabbit suggestions
 - Add API endpoint documentation
 - Update README with new features
 - Add inline comments for complex logic
+```
+
+Then push all commits to the remote repository:
+
+```bash
+git push origin {current-branch}
+```
+
+### Phase 5: PR Notification
+
+After successfully pushing all changes, I post a comprehensive comment on the PR:
+
+```bash
+gh pr comment {pr-number} --body "@coderabbitai resolve
+
+## ✅ CodeRabbit Review Comments Resolved
+
+Successfully addressed all {total} actionable items from CodeRabbit review.
+
+### 🛡️ Security Fixes ({count} items)
+- ✅ Fixed SQL injection vulnerability in `user.js` (line 45)
+- ✅ Added input validation for API endpoints in `api.js`
+- ✅ Escaped HTML in template rendering (`template.jsx`)
+
+### ⚡ Performance Optimizations ({count} items)
+- ✅ Optimized database query in `posts.js` (reduced from O(n²) to O(n))
+- ✅ Added caching layer to expensive computation in `calculations.js`
+- ✅ Implemented lazy loading for large datasets
+
+### 🎨 Code Quality Improvements ({count} items)
+- ✅ Extracted complex logic from `auth.js` into separate utility functions
+- ✅ Reduced cyclomatic complexity from 15 to 8 in authentication module
+- ✅ Added comprehensive type hints to all public methods in `utils.ts`
+- ✅ Removed code duplication across 3 modules
+
+### ✅ Test Coverage ({count} items)
+- ✅ Added 12 unit tests for error handling paths
+- ✅ Created integration test suite for new endpoints
+- ✅ Increased overall coverage from 65% to 82%
+
+### 📚 Documentation Updates ({count} items)
+- ✅ Added API endpoint documentation with examples
+- ✅ Updated README with new authentication features
+- ✅ Added inline comments for complex business logic
+
+### Commits Created
+- `fix: address CodeRabbit security findings` (3 files changed)
+- `refactor: improve code quality per CodeRabbit review` (5 files changed)
+- `test: add missing test coverage identified by CodeRabbit` (4 files changed)
+- `docs: update documentation per CodeRabbit suggestions` (3 files changed)
+
+All changes have been pushed to the branch and are ready for review.
+Tests are passing ✅ and no regressions detected."
 ```yaml
 
 ## Resolution Categories
@@ -332,18 +354,20 @@ When searches fail:
 ### During Execution
 
 1. **Always show found comments** for user verification
-2. **Post "@coderabbitai resolve" comment** immediately after verification
-3. **Process comments in priority order** (security first)
-4. **Group related fixes** in logical commits
-5. **Validate each change** against original suggestion
+2. **Process comments in priority order** (security first)
+3. **Group related fixes** in logical commits
+4. **Validate each change** against original suggestion
+5. **Push changes** before posting PR comment
 
 ### Post-Execution
 
 1. **Review applied changes** before committing
 2. **Run tests after each commit** to catch regressions
 3. **Document resolution reasoning** in commit messages
-4. **Check CI status** after pushing changes
-5. **Verify CodeRabbit marks items as resolved** (if applicable)
+4. **Push all commits** to remote repository
+5. **Post comprehensive PR comment** with detailed resolution summary
+6. **Check CI status** after pushing changes
+7. **Verify CodeRabbit marks items as resolved** (if applicable)
 
 ## Important Notes
 
@@ -352,7 +376,8 @@ When searches fail:
 - **Repository identification is essential** - 404 errors are usually caused by wrong repository context
 - **Start with `/pulls/{pr}/comments` endpoint** - this contains most CodeRabbit inline comments
 - **Always verify comments with user** - prevents processing wrong or outdated suggestions
-- **Post PR comment immediately** - notify CodeRabbit of resolution intent before starting fixes
+- **Push changes before posting PR comment** - ensures all fixes are complete and available
+- **Post comprehensive PR comment only after successful push** - provides detailed summary of all applied changes
 - **Handle JSON parsing gracefully** - Unicode control characters can break parsing
 
 ### Processing Guidelines
