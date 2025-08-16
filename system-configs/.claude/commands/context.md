@@ -17,7 +17,8 @@ automatically when Claude Code starts in a git repository.
 ## Arguments
 
 - `scope or component` (optional): Specific area to analyze deeply. If omitted, provides full repository overview.
-- `--lite` or `-l` (optional): Perform a lightweight context analysis by reading only CLAUDE.md, README.md, git status, and current PR information instead of full repository scan.
+- `--lite` or `-l` (optional): Perform a lightweight context analysis by reading only CLAUDE.md, README.md,
+  git status, and current PR information instead of full repository scan.
 
 ## Behavior
 
@@ -28,25 +29,26 @@ When you use `/context --lite` or `/context -l`, I will perform a quick, focused
 1. **Read essential documentation**:
    - Parse CLAUDE.md for project-specific instructions and configurations
    - Scan README.md for project overview and quick start information
-   
+
 2. **Check git status**:
    - Identify current branch
    - Show modified/staged/untracked files
    - Display recent commits
-   
+
 3. **Get PR information**:
    - Use `gh pr status` to find current PR if one exists for this branch
    - Show PR title, number, and review status
    - Display any CI/CD check results
-   
+
 4. **Generate lightweight context report** including:
    - Project name and purpose (from README)
    - Current working branch and its status
    - Active PR details (if applicable)
    - Modified files overview
    - Key project instructions (from CLAUDE.md)
-   
+
 This mode is ideal for:
+
 - Quick orientation when switching between tasks
 - Understanding current work context without full analysis
 - Rapid project status checks

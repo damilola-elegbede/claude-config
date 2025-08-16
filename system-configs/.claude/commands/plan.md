@@ -56,6 +56,7 @@ When using `--file <file_path>` or `-f <file_path>`:
 6. **Ignore conversation context** when --file or -f is used (file is the sole source)
 
 **Supported File Formats**:
+
 - `.md` - Markdown specifications
 - `.txt` - Plain text requirements
 - `.yaml`/`.yml` - Structured task definitions

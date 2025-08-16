@@ -1,30 +1,34 @@
 # Markdown Quality Report
 
-**Generated:** 2025-08-16 01:08:50
+**Generated:** 2025-08-16 01:24:42
 **Configuration:** `.markdownlint-cli2.jsonc`
 
 ## Quality Gate Status
 
-🟢 **PASSED** - No violations detected
+🔴 **FAILED** - 15 violations detected
 
 ## Quality Metrics
 
 | Metric | Count | Status |
 |--------|-------|--------|
 | Total Files Scanned | 53 | ✅ |
-| Files Passed | 53 | ✅ |
-| Files Failed | 0 | ✅ |
-| Total Violations | 0 | ✅ |
+| Files Passed | 38 | ❌ |
+| Files Failed | 15 | ❌ |
+| Total Violations | 15 | ❌ |
 
 ## Violation Categories
 
-No violations detected.
+| Rule | Count | Priority | Fix Strategy |
+|------|-------|----------|--------------|
+| MD009 (Trailing Spaces) | 8 | High | Remove trailing whitespace |
+| Other | 4 | Medium | Manual review required |
+| MD013 (Line Length) | 3 | Low | Reformat long lines, exclude code blocks |
 
 ## Quality Thresholds
 
-- **Critical Errors**: 0 tolerance (current: 0)
+- **Critical Errors**: 0 tolerance (current: 15)
 - **Warnings**: 50 tolerance (current: 0)
-- **Pass Rate**: 100% (target: 100%)
+- **Pass Rate**: 71% (target: 100%)
 
 ## Technical Debt Analysis
 

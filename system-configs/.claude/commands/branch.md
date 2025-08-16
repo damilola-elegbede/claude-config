@@ -17,7 +17,8 @@ input. Always starts from the latest main branch to ensure branches are up-to-da
 
 - `context` (optional): Description or context for the branch. If not provided, uses context from the current
   conversation window.
-- `--file <file_path>` or `-f <file_path>` (optional): Read context from a file instead of using conversation context or explicit arguments.
+- `--file <file_path>` or `-f <file_path>` (optional): Read context from a file instead of using conversation
+  context or explicit arguments.
 
 ## Behavior
 
@@ -81,6 +82,7 @@ When using `--file <file_path>` or `-f <file_path>`:
 5. **Ignore conversation context** when --file or -f is used (file is the sole source)
 
 **Supported File Formats**:
+
 - `.md` - Markdown documents
 - `.txt` - Plain text files
 - `.yaml`/`.yml` - YAML specifications
