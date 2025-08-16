@@ -72,7 +72,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: markdown-quality-report
-        path: docs/markdown-quality-report.md
+        path: .tmp/docs/markdown-quality-report.md
         retention-days: 30
 
     - name: Comment on PR with quality report
@@ -81,7 +81,7 @@ jobs:
       with:
         script: |
           const fs = require('fs');
-          const path = 'docs/markdown-quality-report.md';
+          const path = '.tmp/docs/markdown-quality-report.md';
 
           if (fs.existsSync(path)) {
             const report = fs.readFileSync(path, 'utf8');
