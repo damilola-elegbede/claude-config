@@ -11,6 +11,7 @@ with all necessary components for successful execution.
 ```bash
 /prompt <raw_text>                # Convert text to optimized prompt
 /prompt --file <file_path>        # Convert file content to prompt
+/prompt -f <file_path>            # Convert file content to prompt (short form)
 /prompt                           # Interactive mode with guided input
 ```
 
@@ -209,6 +210,8 @@ Claude: ✅ Prompt optimized and ready for use!
 
 ```text
 User: /prompt --file requirements/feature-spec.md
+# Or alternatively:
+User: /prompt -f requirements/feature-spec.md
 
 Claude: 🎯 Entering prompt engineering mode...
 [Reading file: requirements/feature-spec.md]

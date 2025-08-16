@@ -92,7 +92,7 @@ claude-code
 # Or manual setup
 cp system-configs/CLAUDE.md ~/CLAUDE.md
 cp -r system-configs/.claude ~/.claude
-cp system-configs/settings.json ~/.claude/settings.json
+cp system-configs/.claude/settings.json ~/.claude/settings.json
 ```
 
 ### 3. Experience the Orchestration Framework
@@ -643,7 +643,7 @@ cp system-configs/CLAUDE.md ~/CLAUDE.md
 
 # Copy Claude settings and commands
 cp -r system-configs/.claude ~/.claude
-cp system-configs/settings.json ~/.claude/settings.json
+cp system-configs/.claude/settings.json ~/.claude/settings.json
 ```
 
 ### Option 3: Selective Installation
@@ -659,7 +659,7 @@ cp -r system-configs/.claude/commands ~/.claude/commands
 cp -r system-configs/.claude/agents ~/.claude/agents
 
 # Just the audio settings
-cp system-configs/settings.json ~/.claude/settings.json
+cp system-configs/.claude/settings.json ~/.claude/settings.json
 ```
 
 ## 🧪 Testing

@@ -13,7 +13,9 @@ possible, with each PR independently reviewable and following TDD methodology.
 /plan <task_description>
 /plan simple <task_description>  # For tasks <100 LOC
 /plan --file <file_path>         # Read task from file
+/plan -f <file_path>             # Read task from file (short form)
 /plan simple --file <file_path>  # Simple mode with file input
+/plan simple -f <file_path>      # Simple mode with file input (short form)
 ```yaml
 
 ## Command Execution Flow
@@ -23,7 +25,7 @@ possible, with each PR independently reviewable and following TDD methodology.
 When you invoke `/plan`, I will:
 
 1. **Enter plan mode** immediately to begin strategic planning
-2. **Read file if provided** with --file flag, otherwise use provided description
+2. **Read file if provided** with --file or -f flag, otherwise use provided description
 3. **Analyze task complexity** from file content or description
 4. **Generate a complete plan** in memory without writing any files
 5. **Present a preview** for your review and approval
@@ -39,7 +41,7 @@ When you invoke `/plan`, I will:
 
 ### File Input Processing
 
-When using `--file <file_path>`:
+When using `--file <file_path>` or `-f <file_path>`:
 
 1. **Read the entire file** using the Read tool
 2. **Extract requirements** from the file content
@@ -51,7 +53,7 @@ When using `--file <file_path>`:
    - Feature requests
    - Architecture documents
 5. **Generate plan** based solely on file content
-6. **Ignore conversation context** when --file is used (file is the sole source)
+6. **Ignore conversation context** when --file or -f is used (file is the sole source)
 
 **Supported File Formats**:
 - `.md` - Markdown specifications
@@ -303,6 +305,8 @@ After 3 failed attempts, generate a simple single-file plan as fallback.
 
 ```text
 User: /plan --file requirements/auth-system.md
+# Or alternatively:
+User: /plan -f requirements/auth-system.md
 
 Claude: 📋 Entering plan mode for strategic planning...
 [Reading file: requirements/auth-system.md]
@@ -334,6 +338,8 @@ Claude: [Exiting plan mode with approved plan...]
 
 ```text
 User: /plan simple --file bugs/button-fix.txt
+# Or alternatively:
+User: /plan simple -f bugs/button-fix.txt
 
 Claude: 📋 Entering plan mode...
 [Reading file: bugs/button-fix.txt]
@@ -353,6 +359,8 @@ Ready to proceed with file generation?
 
 ```text
 User: /plan --file tasks/feature.yaml
+# Or alternatively:
+User: /plan -f tasks/feature.yaml
 
 Claude: 📋 Entering plan mode...
 [Reading file: tasks/feature.yaml]
@@ -442,9 +450,9 @@ Claude: [Exiting plan mode with approved plan...]
 
 - `task_description` (optional): Direct task description or requirements
 - `simple` (optional): Forces simple mode for tasks <100 LOC
-- `--file <file_path>` (optional): Path to file containing task requirements
+- `--file <file_path>` or `-f <file_path>` (optional): Path to file containing task requirements
 
-**Note**: When using `--file`, the file content becomes the sole source of requirements. Any additional task description is ignored.
+**Note**: When using `--file` or `-f`, the file content becomes the sole source of requirements. Any additional task description is ignored.
 
 ## Behavior
 
@@ -488,7 +496,7 @@ The /plan command follows these behavioral patterns:
 - Users maintain full control over the planning process for both simple and complex tasks
 - Supports iterative refinement without generating unwanted files
 - **Even simple tasks require explicit approval before file generation**
-- **File input**: When using `--file`, the file content is the sole source of truth for requirements
+- **File input**: When using `--file` or `-f`, the file content is the sole source of truth for requirements
 - **File formats**: Any text-based file with clear requirements can be used as input
 - **Absolute paths**: File paths can be relative or absolute
 - **Large files**: The entire file is read, so very large files may take longer to process

@@ -10,13 +10,14 @@ input. Always starts from the latest main branch to ensure branches are up-to-da
 ```bash
 /branch [context]
 /branch --file <file_path>
+/branch -f <file_path>
 ```yaml
 
 ## Arguments
 
 - `context` (optional): Description or context for the branch. If not provided, uses context from the current
   conversation window.
-- `--file <file_path>` (optional): Read context from a file instead of using conversation context or explicit arguments.
+- `--file <file_path>` or `-f <file_path>` (optional): Read context from a file instead of using conversation context or explicit arguments.
 
 ## Behavior
 
@@ -28,7 +29,7 @@ When you use `/branch`, I will:
    - Ensure local main is up-to-date
 
 2. **Analyze context**:
-   - If --file flag provided: Read and analyze file content for context
+   - If --file or -f flag provided: Read and analyze file content for context
    - If explicit context provided: Use that for branch naming
    - If no argument: Analyze conversation context for:
      - Feature being discussed
@@ -61,7 +62,7 @@ When you use `/branch`, I will:
 
 ## File Input Processing
 
-When using `--file <file_path>`:
+When using `--file <file_path>` or `-f <file_path>`:
 
 1. **Read the entire file** using the Read tool
 2. **Extract context** from the file content:
@@ -77,7 +78,7 @@ When using `--file <file_path>`:
    - Performance issues → `perf/`
    - Refactoring plans → `refactor/`
 4. **Generate branch name** based solely on file content
-5. **Ignore conversation context** when --file is used (file is the sole source)
+5. **Ignore conversation context** when --file or -f is used (file is the sole source)
 
 **Supported File Formats**:
 - `.md` - Markdown documents
@@ -133,15 +134,19 @@ Based on context analysis:
 
 ```bash
 /branch --file requirements/oauth-integration.md
+/branch -f requirements/oauth-integration.md
 # Reads OAuth feature spec, creates: feature/oauth-integration
 
 /branch --file bugs/login-timeout.txt
+/branch -f bugs/login-timeout.txt
 # Reads bug report, creates: fix/login-timeout-issue
 
 /branch --file tasks/JIRA-1234.yaml
+/branch -f tasks/JIRA-1234.yaml
 # Reads JIRA export, creates: feature/JIRA-1234-user-dashboard
 
 /branch --file errors/production-crash.log
+/branch -f errors/production-crash.log
 # Reads error log, creates: fix/production-crash-nullpointer
 ```yaml
 
@@ -191,14 +196,14 @@ User: /branch
 
 The command analyzes multiple context sources in priority order:
 
-1. **File input (--file)** - Highest priority when provided
+1. **File input (--file or -f)** - Highest priority when provided
 2. **Explicit arguments** - Direct context passed to command
 3. **Recent conversation** - Last 5-10 messages
 4. **Issue/ticket mentions** - JIRA, GitHub issues, etc.
 5. **Code snippets** - Feature/component names
 6. **Error messages** - For bug fix branches
 
-When --file is used, it becomes the sole source of context, overriding all other sources.
+When --file or -f is used, it becomes the sole source of context, overriding all other sources.
 
 ## Integration with Other Commands
 
@@ -265,7 +270,7 @@ Respects repository settings:
 - Creates from main/master (configurable)
 - Supports both GitHub Flow and Git Flow conventions
 - Context window includes last 10 messages by default
-- **File input**: When using --file, the file content is the sole source for branch naming
+- **File input**: When using --file or -f, the file content is the sole source for branch naming
 - **File formats**: Any text-based file can be used as input
 - **File paths**: Can be relative or absolute paths
 - **Large files**: The entire file is read and analyzed for context extraction

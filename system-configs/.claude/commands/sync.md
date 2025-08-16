@@ -39,7 +39,7 @@ When you use `/sync`, I will:
    - Copy all files from `./system-configs/.claude/commands/` to `~/.claude/commands/` (explicitly excluding
      `sync.md`, `config-diff.md`, and `command-audit.md`)
 
-   - Copy `./system-configs/settings.json` to `~/.claude/settings.json` (merge with existing settings)
+   - Copy `./system-configs/.claude/settings.json` to `~/.claude/settings.json` (merge with existing settings)
    - **Important**: This ensures no deprecated agents or commands remain, and only actual agents are synced
    - **Excluded from agents sync**:
      - `AGENT_TEMPLATE.md` (template file, not an agent)
@@ -60,7 +60,7 @@ When you use `/sync`, I will:
 - `system-configs/CLAUDE.md` - Main configuration with coding standards
 - `system-configs/.claude/commands/*.md` - All command files (except repo-specific commands below)
 - `system-configs/.claude/agents/*.md` - Only actual agent configurations (excludes documentation/template files)
-- `system-configs/settings.json` - Claude Code settings with audio notification hooks
+- `system-configs/.claude/settings.json` - Claude Code settings with audio notification hooks
 
 ## Files NOT Synced
 
@@ -103,7 +103,7 @@ Syncing configuration files...
 ✓ Removed old commands from ~/.claude/commands/
 ✓ Copied 12 command files to ~/.claude/commands/ (15 total - 3 excluded: sync.md, config-diff.md, and command-audit.md)
 ✓ Copied 41 agent files to ~/.claude/agents/
-✓ Copied system-configs/settings.json to ~/.claude/settings.json
+✓ Copied system-configs/.claude/settings.json to ~/.claude/settings.json
 ✓ Excluded documentation files: AGENT_TEMPLATE.md, AGENT_CATEGORIES.md, AUDIT_VERIFICATION_PROTOCOL.md, README.md
 ✓ Excluded repo-specific: sync.md, config-diff.md, command-audit.md
 

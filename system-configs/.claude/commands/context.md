@@ -10,13 +10,47 @@ automatically when Claude Code starts in a git repository.
 
 ```bash
 /context [scope or component]
+/context --lite
+/context -l
 ```yaml
 
 ## Arguments
 
 - `scope or component` (optional): Specific area to analyze deeply. If omitted, provides full repository overview.
+- `--lite` or `-l` (optional): Perform a lightweight context analysis by reading only CLAUDE.md, README.md, git status, and current PR information instead of full repository scan.
 
 ## Behavior
+
+### Lightweight Analysis (--lite or -l flag)
+
+When you use `/context --lite` or `/context -l`, I will perform a quick, focused analysis:
+
+1. **Read essential documentation**:
+   - Parse CLAUDE.md for project-specific instructions and configurations
+   - Scan README.md for project overview and quick start information
+   
+2. **Check git status**:
+   - Identify current branch
+   - Show modified/staged/untracked files
+   - Display recent commits
+   
+3. **Get PR information**:
+   - Use `gh pr status` to find current PR if one exists for this branch
+   - Show PR title, number, and review status
+   - Display any CI/CD check results
+   
+4. **Generate lightweight context report** including:
+   - Project name and purpose (from README)
+   - Current working branch and its status
+   - Active PR details (if applicable)
+   - Modified files overview
+   - Key project instructions (from CLAUDE.md)
+   
+This mode is ideal for:
+- Quick orientation when switching between tasks
+- Understanding current work context without full analysis
+- Rapid project status checks
+- Minimal resource usage
 
 ### Full Repository Analysis (no arguments)
 
@@ -122,16 +156,22 @@ To enable automatic context analysis on Claude Code startup:
 
 ## Performance
 
-- Completes in under 5 seconds for typical repositories
-- Uses parallel analysis with multiple codebase-analyst agents for large codebases
+- **Full mode**: Completes in under 5 seconds for typical repositories
+- **Lite mode**: Completes in under 2 seconds for instant context
+- Uses parallel analysis with multiple codebase-analyst agents for large codebases (full mode)
 - Caches results to speed up repeated analysis
 - Limits depth for extremely large repositories
+- Lite mode has minimal resource usage, reading only essential files
 
 ## Examples
 
 ```bash
 # Full repository overview
 /context
+
+# Lightweight quick context
+/context --lite
+/context -l
 
 # Specific component analysis
 /context authentication service
@@ -141,7 +181,33 @@ To enable automatic context analysis on Claude Code startup:
 ```yaml
 
 ```text
-# Output for a React app:
+# Output for --lite mode:
+## Lightweight Context: my-react-app
+
+### Current Branch
+- Branch: feature/user-authentication
+- Status: 3 files modified, 1 untracked
+
+### Active PR
+- PR #42: "Add user authentication flow"
+- Status: Open, awaiting review
+- Checks: All passing ✓
+
+### Modified Files
+- src/components/Login.tsx (modified)
+- src/services/auth.ts (modified)
+- tests/auth.test.ts (modified)
+- src/types/user.ts (untracked)
+
+### Project Overview (from README)
+A modern React application for task management with real-time collaboration.
+
+### Key Instructions (from CLAUDE.md)
+- Run tests before committing
+- Use TypeScript strict mode
+- Follow atomic commit practices
+
+# Output for full analysis:
 ## Repository Context: my-react-app
 
 ### Overview
@@ -161,3 +227,5 @@ A modern React application with TypeScript, using Vite for building and Jest for
 - Works with any programming language or framework
 - Particularly useful when switching between projects
 - Results are tailored to the repository type
+- Use `--lite` flag for quick context without full repository scan
+- Lite mode completes in under 2 seconds for instant context
