@@ -11,7 +11,7 @@ input. Always starts from the latest main branch to ensure branches are up-to-da
 /branch [context]
 /branch --file <file_path>
 /branch -f <file_path>
-```yaml
+```
 
 ## Arguments
 

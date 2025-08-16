@@ -16,7 +16,7 @@ possible, with each PR independently reviewable and following TDD methodology.
 /plan -f <file_path>             # Read task from file (short form)
 /plan simple --file <file_path>  # Simple mode with file input
 /plan simple -f <file_path>      # Simple mode with file input (short form)
-```yaml
+```
 
 ## Command Execution Flow
 

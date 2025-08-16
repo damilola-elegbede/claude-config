@@ -12,7 +12,7 @@ automatically when Claude Code starts in a git repository.
 /context [scope or component]
 /context --lite
 /context -l
-```yaml
+```
 
 ## Arguments
 
@@ -178,7 +178,7 @@ To enable automatic context analysis on Claude Code startup:
 /context frontend architecture
 /context technical debt
 /context performance bottlenecks
-```yaml
+```
 
 ```text
 # Output for --lite mode:
@@ -220,7 +220,7 @@ A modern React application with TypeScript, using Vite for building and Jest for
 - Package Manager: npm
 
 [... continues with full analysis ...]
-```yaml
+```
 
 ## Notes
 
