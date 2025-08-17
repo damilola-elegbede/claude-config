@@ -121,6 +121,6 @@
     "docs/ml-api-reference.md",
     "docs/performance-predictor-guide.md",
     // Auto-generated quality report
-    "docs/markdown-quality-report.md"
+    ".tmp/docs/markdown-quality-report.md"
   ]
 }

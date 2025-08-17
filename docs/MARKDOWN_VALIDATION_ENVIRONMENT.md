@@ -33,7 +33,7 @@ npx markdownlint-cli2 --version
 - **Key exclusions**:
   - `node_modules/**` - Package dependencies
   - `.git/**` - Git metadata
-  - `docs/markdown-quality-report.md` - Auto-generated report
+  - `.tmp/docs/markdown-quality-report.md` - Auto-generated report
   - `system-configs/.claude/agents/*.md` - Agent definitions (special format)
 
 ### Baseline Tracking
@@ -104,7 +104,7 @@ grep -E "^.+:[0-9]+(:([0-9]+))?[[:space:]]+"
 ```jsonc
 {
   "ignores": [
-    "docs/markdown-quality-report.md"
+    ".tmp/docs/markdown-quality-report.md"
   ]
 }
 ```

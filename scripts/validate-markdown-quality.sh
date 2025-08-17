@@ -8,7 +8,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || dirname "$SCRIPT_DIR")"
 CONFIG_FILE="$REPO_ROOT/.markdownlint-cli2.jsonc"
-QUALITY_REPORT="$REPO_ROOT/docs/markdown-quality-report.md"
+QUALITY_REPORT="$REPO_ROOT/.tmp/docs/markdown-quality-report.md"
 
 # Colors for output
 if [ -n "${CI:-}" ] || [ ! -t 1 ]; then
@@ -186,6 +186,9 @@ analyze_quality_patterns() {
 # Function to generate quality report
 generate_quality_report() {
     echo -e "${YELLOW}Generating quality report...${NC}"
+    
+    # Ensure the directory exists
+    mkdir -p "$(dirname "$QUALITY_REPORT")"
 
     cat > "$QUALITY_REPORT" << EOF
 # Markdown Quality Report
