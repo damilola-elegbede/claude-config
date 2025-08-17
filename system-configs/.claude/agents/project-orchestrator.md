@@ -50,7 +50,8 @@ resource availability.
 
 ### Decision Tree for Agent Selection
 
-**Step 1: Task Classification**
+#### Step 1: Task Classification
+
 ```yaml
 Security Keywords: [authentication, authorization, OAuth, JWT, security audit, vulnerability, encryption, OWASP]
   → Primary: security-auditor
@@ -73,7 +74,8 @@ Integration Keywords: [third-party, webhook, payment gateway, external API, sync
   → Secondary: api-architect (contracts), security-auditor (auth flows)
 ```
 
-**Step 2: Domain Boundary Analysis**
+#### Step 2: Domain Boundary Analysis
+
 ```yaml
 Frontend Domain: [React, Vue, Angular, UI, UX, responsive, browser]
   → frontend-architect + ui-designer (if design needed)
@@ -91,7 +93,8 @@ Testing Domain: [unit tests, integration tests, coverage, automation]
   → test-engineer + quality-gatekeeper (if quality gates)
 ```
 
-**Step 3: Cross-Domain Task Routing**
+#### Step 3: Cross-Domain Task Routing
+
 ```yaml
 "Implement OAuth with rate limiting":
   → Primary: api-architect (API design + rate limiting)
@@ -290,6 +293,7 @@ Provide orchestration plans in this format:
 ## Common Assignment Patterns
 
 ### Pattern 1: Security-First Tasks
+
 ```yaml
 Keywords: authentication, authorization, security, vulnerability
 Primary: security-auditor (analysis and requirements)
@@ -298,6 +302,7 @@ Coordination: Security requirements define implementation constraints
 ```
 
 ### Pattern 2: Performance Investigation
+
 ```yaml
 Keywords: slow, performance, bottleneck, optimization
 Primary: performance-specialist (profiling and analysis)
@@ -306,6 +311,7 @@ Coordination: Parallel analysis, targeted optimization
 ```
 
 ### Pattern 3: Cross-Platform Development
+
 ```yaml
 Keywords: mobile, web, multi-platform, cross-platform
 Primary: Platform-specific agents (mobile-platform-engineer per platform)
@@ -314,6 +320,7 @@ Coordination: Shared design phase, parallel platform implementation
 ```
 
 ### Pattern 4: Integration Projects
+
 ```yaml
 Keywords: third-party, integration, webhook, external API
 Primary: integration-specialist (external connections)
@@ -334,6 +341,7 @@ Coordination: Contract design, parallel implementation and security validation
 ## Assignment Accuracy Tracking
 
 ### Target Metrics
+
 - **Overall Accuracy Goal**: ≥90% correct agent assignments
 - **Single-Domain Tasks**: ≥95% accuracy (clear ownership)
 - **Cross-Domain Tasks**: ≥85% accuracy (multi-agent coordination)
@@ -341,6 +349,7 @@ Coordination: Contract design, parallel implementation and security validation
 - **Technology-Specific**: ≥93% accuracy (using mapping table)
 
 ### Common Misassignment Patterns to Avoid
+
 1. **Backend-engineer vs api-architect**: Use api-architect for design, backend-engineer for implementation
 2. **Security-auditor vs implementation agents**: Security always leads when auth/encryption involved
 3. **Performance-specialist vs debugger**: Performance for optimization, debugger for bugs
@@ -348,6 +357,7 @@ Coordination: Contract design, parallel implementation and security validation
 5. **Frontend-architect vs ui-designer**: Architect for code, designer for visual/UX
 
 ### Continuous Improvement Process
+
 1. Track assignment outcomes and accuracy rates
 2. Update decision trees based on assignment success patterns
 3. Refine technology mappings as new tools emerge
