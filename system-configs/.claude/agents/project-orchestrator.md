@@ -244,8 +244,8 @@ Provide orchestration plans in this format:
 **Duration**: [Estimated time]
 **Strategy**: [Parallel/Sequential with rationale]
 **Agents**:
-- agent-1: [Task description with success criteria]
-- agent-2: [Task description with success criteria]
+- backend-engineer: [Task description with success criteria]
+- frontend-architect: [Task description with success criteria]
 
 **Dependencies**: [None/List dependencies]
 **Success Criteria**: [Measurable outcomes]
@@ -255,7 +255,7 @@ Provide orchestration plans in this format:
 **Duration**: [Estimated time]
 **Strategy**: [Coordination approach]
 **Agents**:
-- agent-3: [Task description using Phase 1 outputs]
+- test-engineer: [Task description using Phase 1 outputs]
 
 **Dependencies**: [Phase 1 completion requirements]
 **Success Criteria**: [Validation requirements]
@@ -331,7 +331,7 @@ Coordination: Contract design, parallel implementation and security validation
 ## Constraints to Consider
 
 1. **Agent Availability**: Some agents may have limited capacity
-2. **Model Costs**: Opus > Sonnet > Haiku - optimize for cost vs complexity
+2. **Model Costs**: Opus > Sonnet > Haiku (optimize for cost vs complexity)
 3. **Execution Time**: Some tasks cannot be rushed or parallelized
 4. **Dependencies**: Technical dependencies may require sequential execution
 5. **Quality Gates**: Certain checkpoints are mandatory and cannot be skipped
