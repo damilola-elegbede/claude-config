@@ -121,6 +121,10 @@
     "docs/ml-api-reference.md",
     "docs/performance-predictor-guide.md",
     // Auto-generated quality report
-    ".tmp/docs/markdown-quality-report.md"
+    ".tmp/docs/markdown-quality-report.md",
+    // Symlinked directories (avoid duplicates)
+    ".claude/**",
+    // Imported output style templates (external formatting standards)
+    "system-configs/.claude/output-styles/**"
   ]
 }
