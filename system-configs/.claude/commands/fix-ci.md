@@ -13,6 +13,12 @@ Learns from successful fixes to improve success rate over time.
 /fix-ci --learn          # Update fix patterns from history
 ```
 
+## Behavior
+
+When invoked, I will diagnose and fix GitHub Actions failures using pattern
+recognition and historical fix data. I fetch failure details, apply quick fixes
+for known patterns, and learn from successful fixes to improve success rate over time.
+
 ## Failure Pattern Library
 
 ```yaml

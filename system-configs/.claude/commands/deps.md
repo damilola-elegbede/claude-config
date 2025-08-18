@@ -16,6 +16,13 @@ polyglot codebases.
 /deps --quick               # Fast check without deep analysis
 ```
 
+## Behavior
+
+When invoked, I will manage dependencies across all detected package managers,
+performing security scanning and safe updates. Quick mode provides essential
+health checks in 30 seconds, while audit mode performs comprehensive analysis
+with supply chain assessment.
+
 ## Two-Mode Operation
 
 ### Quick Mode (default) - 30 Second Analysis

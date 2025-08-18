@@ -56,7 +56,7 @@ refactor/auth-module
 chore/dependency-updates
 ```
 
-## Execution Process
+## Behavior
 
 ### Phase 1: Repository Preparation
 

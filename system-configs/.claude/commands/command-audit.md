@@ -14,6 +14,12 @@ command excluded from sync.
 /command-audit <command-name> # Audit specific command
 ```
 
+## Behavior
+
+When invoked, I will systematically validate command files for structure compliance,
+content quality, and markdown parsing requirements. The audit generates actionable
+reports highlighting issues with specific fixes.
+
 ## Validation Framework
 
 ### Core Validation (Required)

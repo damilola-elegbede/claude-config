@@ -16,6 +16,13 @@ test suites when none exist.
 /test --coverage         # Run with coverage reporting
 ```
 
+## Behavior
+
+When invoked, I will automatically discover and run tests using a 3-phase
+algorithm: README analysis, package manager detection, and framework conventions.
+If no tests exist, I can generate comprehensive test suites appropriate for
+the detected framework.
+
 ## Discovery Algorithm
 
 ### Phase 1: README Analysis (Highest Priority)

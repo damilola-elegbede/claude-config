@@ -12,6 +12,12 @@ Optimizes prompts using the SCOPE framework. Removes fluff, clarifies objectives
 /prompt                  # Interactive mode
 ```
 
+## Behavior
+
+When invoked, I will apply the SCOPE framework to optimize prompts for maximum
+clarity and effectiveness. I remove unnecessary words, clarify objectives, and
+structure prompts to achieve better results with fewer tokens.
+
 ## SCOPE Framework
 
 ```yaml

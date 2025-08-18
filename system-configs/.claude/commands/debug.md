@@ -14,6 +14,13 @@ production-only failures.
 /debug --performance            # Performance-specific debugging
 ```
 
+## Behavior
+
+When invoked, I will systematically investigate complex bugs using multi-agent
+forensics. I deploy specialized agents based on the issue type (memory leaks,
+race conditions, performance degradation) to perform root cause analysis and
+provide targeted fixes.
+
 ## Investigation Framework
 
 ### Issue Classification & Agent Deployment

@@ -12,6 +12,12 @@ Finds and resolves CodeRabbit review comments from PR. Extracts actionable sugge
 /resolve-cr --dry-run    # Preview without fixing
 ```
 
+## Behavior
+
+When invoked, I will fetch and address CodeRabbit review comments from the
+specified or current pull request. I analyze comments, apply fixes where
+possible, and generate a summary of resolutions.
+
 ## Workflow
 
 ### Find Comments

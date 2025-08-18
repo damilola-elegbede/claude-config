@@ -14,6 +14,13 @@ comprehensive project understanding. Three modes: lite (quick), full
 /context <component>         # Focused component analysis
 ```
 
+## Behavior
+
+When invoked, I will analyze the repository structure, dependencies, and documentation
+to provide comprehensive project understanding. The analysis adapts based on the
+chosen mode: lite for quick overview, full for comprehensive analysis, or focused
+for specific components.
+
 ## Analysis Modes
 
 ### Lite Mode (--lite) - 2 Second Analysis

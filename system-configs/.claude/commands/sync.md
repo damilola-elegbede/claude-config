@@ -14,6 +14,12 @@ Supports any configuration management scenario with validation and safety checks
 /sync --dry-run          # Preview changes without syncing
 ```
 
+## Behavior
+
+When invoked, I will synchronize configurations between directories based on
+the .syncconfig file. This enables bidirectional sync, backup creation, and
+intelligent file filtering with rsync efficiency.
+
 ## Configuration File
 
 Create `.syncconfig` in project root:

@@ -16,6 +16,12 @@ dimensions.
 /review --performance     # Performance-focused review
 ```
 
+## Behavior
+
+When invoked, I will orchestrate multiple specialized agents for comprehensive
+code review. Agents work in parallel to analyze security, performance, testing,
+and accessibility aspects, with results aggregated by severity.
+
 ## Agent Orchestration Strategy
 
 ### Standard Review (default)

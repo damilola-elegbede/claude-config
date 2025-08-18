@@ -14,6 +14,13 @@ Supports both simple push mode and comprehensive quality-checked push.
 /push --dry-run             # Preview what would be pushed
 ```
 
+## Behavior
+
+When invoked, I will safely push changes to the remote repository. Simple mode
+performs basic safety checks and pushes quickly. Full mode runs comprehensive
+quality gates including tests, linting, code review, and security scanning
+before pushing.
+
 ## Two-Mode Operation
 
 ### Simple Mode (--simple) - Quick Push
