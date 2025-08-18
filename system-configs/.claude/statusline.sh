@@ -1,7 +1,7 @@
 #!/bin/bash
 # Claude Code StatusLine Configuration
-# Shows: mode | model | git_branch | directory | output_mode | usage% | last_command_summary
-# Color scheme: pink | red | blue | bright cyan (from LSCOLORS) | yellow | default | green
+# Shows: model | git_branch | directory | output_mode | usage% | last_command_summary
+# Color scheme: red | orange | bright cyan (from LSCOLORS) | yellow | default | green
 
 # Read Claude session data from stdin
 input=$(cat)
@@ -27,8 +27,7 @@ git_branch=$(git branch --show-current 2>/dev/null || echo "no-git")
 # \033[32m = green (last command)
 # \033[0m = reset
 
-printf '\033[95m%s\033[0m | \033[31m%s\033[0m | \033[38;5;208m%s\033[0m | \033[96m%s\033[0m | \033[33m%s\033[0m | %s%% | \033[32m%s\033[0m' \
-  "$mode" \
+printf '\033[31m%s\033[0m | \033[38;5;208m%s\033[0m | \033[96m%s\033[0m | \033[33m%s\033[0m | %s%% | \033[32m%s\033[0m' \
   "$model_name" \
   "$git_branch" \
   "$current_dir" \
