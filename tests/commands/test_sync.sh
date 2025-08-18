@@ -24,8 +24,8 @@ test_sync_structure() {
     assert_file_contains "$sync_file" "## Usage" \
         "Should have Usage section"
 
-    assert_file_contains "$sync_file" "## Configuration File" \
-        "Should have Configuration File section"
+    assert_file_contains "$sync_file" "## What Gets Synced" \
+        "Should have What Gets Synced section"
 
     assert_file_contains "$sync_file" "## Notes" \
         "Should have Notes section"
@@ -36,23 +36,23 @@ test_sync_content() {
     local sync_file="$ORIGINAL_DIR/system-configs/.claude/commands/sync.md"
 
     # Check for key behavior descriptions
-    assert_file_contains "$sync_file" ".syncconfig" \
-        "Should mention .syncconfig file"
+    assert_file_contains "$sync_file" "system-configs/.claude/" \
+        "Should mention source directory"
 
-    assert_file_contains "$sync_file" "Synchronizes configuration" \
-        "Should mention synchronization"
+    assert_file_contains "$sync_file" "Synchronizes Claude configuration" \
+        "Should mention Claude configuration synchronization"
 
     assert_file_contains "$sync_file" "rsync" \
         "Should mention rsync"
 
-    assert_file_contains "$sync_file" "Bidirectional" \
-        "Should mention bidirectional sync"
+    assert_file_contains "$sync_file" "statusline.sh" \
+        "Should mention statusline.sh"
 
-    assert_file_contains "$sync_file" "\\-\\-pull" \
-        "Should mention pull mode"
+    assert_file_contains "$sync_file" "\\-\\-dry-run" \
+        "Should mention dry-run mode"
 
-    assert_file_contains "$sync_file" "\\-\\-push" \
-        "Should mention push mode"
+    assert_file_contains "$sync_file" "\\-\\-backup" \
+        "Should mention backup mode"
 }
 
 # Run all tests
