@@ -18,7 +18,6 @@ last_prompt=$(echo "$input" | jq -r '.last_prompt.summary // "Ready"')
 git_branch=$(git branch --show-current 2>/dev/null || echo "no-git")
 
 # Color codes
-# \033[95m = pink (mode)
 # \033[31m = red (model)
 # \033[38;5;208m = orange (git branch)
 # \033[96m = bright cyan (directory - matches LSCOLORS 'G' for directories)
