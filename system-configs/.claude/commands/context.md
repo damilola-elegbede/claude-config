@@ -10,7 +10,7 @@ comprehensive project understanding. Three modes: lite (quick), full
 
 ```bash
 /context                     # Full repository analysis
-/context --lite              # Quick essential context only  
+/context --lite              # Quick essential context only
 /context <component>         # Focused component analysis
 ```
 
@@ -102,7 +102,7 @@ Analysis Types:
   Quality: "technical debt", "code quality"
   Security: "vulnerability assessment", "security review"
 
-Agent Deployment: 
+Agent Deployment:
   - Single codebase-analyst for specific focus
   - Multiple codebase-analyst instances for complex analysis
   - Coordinated parallel execution for comprehensive coverage
@@ -125,15 +125,15 @@ Output Format:
 read_essential_files() {
   # Project instructions
   cat CLAUDE.md 2>/dev/null || echo "No CLAUDE.md found"
-  
-  # Project overview  
+
+  # Project overview
   head -50 README.md 2>/dev/null || echo "No README.md found"
-  
+
   # Git context
   git status --porcelain
   git log --oneline -5
   git branch --show-current
-  
+
   # PR status
   gh pr status 2>/dev/null || echo "No active PR"
 }
@@ -146,7 +146,7 @@ read_essential_files() {
 analyze_repository() {
   # Count files to determine strategy
   file_count=$(find . -type f -name "*.py" -o -name "*.js" -o -name "*.ts" -o -name "*.go" -o -name "*.rs" -o -name "*.java" | wc -l)
-  
+
   if [ "$file_count" -gt 1000 ]; then
     echo "Large repository detected. Deploying codebase-analyst..."
     # Deploy agent for comprehensive analysis
@@ -161,26 +161,26 @@ analyze_repository() {
 
 ```yaml
 Component Analysis Patterns:
-  "authentication" / "auth": 
+  "authentication" / "auth":
     agent: codebase-analyst
     focus: Security patterns, authentication flows, session management
-    
+
   "database" / "data":
-    agent: codebase-analyst  
+    agent: codebase-analyst
     focus: Schema design, query patterns, performance optimization
-    
+
   "api" / "endpoints":
     agent: codebase-analyst
     focus: API design, endpoint analysis, integration patterns
-    
+
   "frontend" / "ui":
     agent: codebase-analyst
     focus: Component architecture, state management, performance
-    
+
   "performance":
     agent: codebase-analyst
     focus: Bottleneck identification, optimization opportunities
-    
+
   "security":
     agent: codebase-analyst
     focus: Vulnerability assessment, security patterns
@@ -200,7 +200,7 @@ Component Analysis Patterns:
 
 ### Modified Files
 - src/components/Login.tsx (modified)
-- src/services/auth.ts (modified) 
+- src/services/auth.ts (modified)
 - tests/auth.test.ts (modified)
 - src/types/user.ts (untracked)
 
@@ -332,7 +332,7 @@ Claude: 📖 Reading essential files...
 🎯 Node.js/Express API for ecommerce platform
 ```
 
-### New Repository Exploration  
+### New Repository Exploration
 
 ```bash
 User: /context

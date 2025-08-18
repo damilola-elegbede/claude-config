@@ -33,7 +33,7 @@ Conversation Context:
 
 File Context (--file):
   - Bug reports → fix/ prefix
-  - Feature specs → feature/ prefix  
+  - Feature specs → feature/ prefix
   - Documentation → docs/ prefix
   - Performance → perf/ prefix
   - Refactoring → refactor/ prefix
@@ -51,7 +51,7 @@ feature/user-authentication
 feature/JIRA-123-payment-gateway
 feature/oauth-integration
 
-# Bug fixes  
+# Bug fixes
 fix/login-timeout-issue
 fix/GH-456-memory-leak
 fix/csrf-validation
@@ -81,7 +81,7 @@ git status --porcelain
 ```bash
 # Context priority (highest to lowest):
 1. File content (if --file provided)
-2. Explicit description argument  
+2. Explicit description argument
 3. Recent conversation messages
 4. Fallback to timestamp-based name
 
@@ -90,7 +90,7 @@ analyze_context() {
   if grep -qi "bug\|error\|fix\|issue" context; then
     prefix="fix"
   elif grep -qi "feature\|add\|implement\|create" context; then
-    prefix="feature" 
+    prefix="feature"
   elif grep -qi "doc\|readme\|guide" context; then
     prefix="docs"
   elif grep -qi "performance\|slow\|optimize" context; then
@@ -125,7 +125,7 @@ git log --oneline -3
 User: "Need to fix the login timeout issue that's affecting mobile users"
 Branch: fix/login-timeout-issue
 
-User: "Let's implement OAuth authentication for third-party logins"  
+User: "Let's implement OAuth authentication for third-party logins"
 Branch: feature/oauth-authentication
 
 User: "Working on JIRA-456 to add payment processing"
@@ -141,7 +141,7 @@ Branch: fix/sql-injection-user-search
 File: feature-spec.md containing "Real-time notifications system"
 Branch: feature/realtime-notifications
 
-File: performance.md containing "Database query optimization"  
+File: performance.md containing "Database query optimization"
 Branch: perf/database-query-optimization
 ```
 
@@ -152,7 +152,7 @@ Branch: perf/database-query-optimization
 ```bash
 # Regex patterns for common ticket formats:
 JIRA-\d+     # JIRA-123
-GH-\d+       # GH-456  
+GH-\d+       # GH-456
 #\d+         # #789
 [A-Z]+-\d+   # ABC-123
 

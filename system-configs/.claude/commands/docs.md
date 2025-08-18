@@ -2,7 +2,7 @@
 
 ## Description
 
-Comprehensive documentation management system that identifies gaps, updates existing docs, 
+Comprehensive documentation management system that identifies gaps, updates existing docs,
 and maintains current documentation aligned with codebase reality. Deploys multiple agents
 in parallel for efficient analysis and updates.
 
@@ -30,7 +30,7 @@ Agent Deployment:
   codebase-analyst: Repository structure and component analysis
   tech-writer: Documentation inventory and gap identification
   api-analyst: API documentation requirements assessment
-  
+
 Parallel Tasks:
   - Scan existing documentation completeness
   - Identify undocumented features and components
@@ -43,17 +43,17 @@ Parallel Tasks:
 
 ```yaml
 Agent Coordination:
-  tech-writer: 
+  tech-writer:
     - Update CLAUDE.md with current project reality
     - Refresh README.md with accurate setup/usage
     - Generate missing API documentation
     - Update architecture and design docs
-    
+
   api-architect:
     - Create/update OpenAPI specifications
     - Document endpoint contracts and schemas
     - Generate API usage examples
-    
+
   codebase-analyst:
     - Extract inline documentation from code
     - Document component interfaces and patterns
@@ -69,10 +69,10 @@ File Management:
     - Archive status documents to .tmp/reports/
     - Organize meeting notes to .tmp/drafts/
     - Clean up workspace documentation
-    
+
   Organization Structure:
     - /docs/api/ - API documentation
-    - /docs/architecture/ - System design docs  
+    - /docs/architecture/ - System design docs
     - /docs/guides/ - User and developer guides
     - .tmp/analysis/ - Analysis reports
     - .tmp/reports/ - Status and progress reports
@@ -87,15 +87,15 @@ File Management:
 CLAUDE.md:
   purpose: Project-specific instructions and context
   updates: Current tech stack, workflows, agent usage patterns
-  
+
 README.md:
   purpose: Project overview and quick start
   updates: Installation, usage, examples, contribution guidelines
-  
+
 API Documentation:
   purpose: Endpoint documentation and contracts
   updates: OpenAPI specs, example requests/responses, authentication
-  
+
 Architecture Docs:
   purpose: System design and technical decisions
   updates: Component diagrams, data flow, integration patterns
@@ -109,13 +109,13 @@ Missing Documentation:
   - API endpoints lacking documentation
   - Configuration options not documented
   - Installation/setup steps outdated
-  
+
 Outdated Content:
   - Version mismatches in installation guides
   - Deprecated API references
   - Broken links and examples
   - Incorrect command examples
-  
+
 Quality Issues:
   - Unclear explanations or missing context
   - Incomplete code examples
@@ -163,12 +163,12 @@ Wave 1 (Analysis - 2 minutes):
   - codebase-analyst: Repository scan and component mapping
   - tech-writer: Documentation audit and gap analysis
   - api-analyst: API endpoint documentation assessment
-  
+
 Wave 2 (Generation - 5 minutes):
   - tech-writer: Core documentation updates (README, CLAUDE.md)
   - api-architect: API documentation generation
   - codebase-analyst: Technical reference creation
-  
+
 Wave 3 (Cleanup - 1 minute):
   - Direct execution: File organization and cleanup
   - Directory structure creation
@@ -179,7 +179,7 @@ Wave 3 (Cleanup - 1 minute):
 
 ```bash
 /docs api           # API documentation only
-/docs readme        # README.md refresh only  
+/docs readme        # README.md refresh only
 /docs architecture  # System design docs only
 /docs setup         # Installation and setup docs
 ```
@@ -194,13 +194,13 @@ Completeness:
   - Setup instructions tested and current
   - Examples include expected outputs
   - Error scenarios documented
-  
+
 Accuracy:
   - Code examples execute successfully
   - Version numbers match current release
   - Links resolve correctly
   - Screenshots reflect current UI
-  
+
 Clarity:
   - Clear headings and organization
   - Consistent formatting and style

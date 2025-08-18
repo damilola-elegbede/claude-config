@@ -16,8 +16,8 @@ Deploys agents, commands, output-styles, and settings with validation and backup
 
 ## Behavior
 
-When invoked, I will synchronize all Claude configuration files from 
-`system-configs/.claude/` to `~/.claude/`. This includes agents, commands, 
+When invoked, I will synchronize all Claude configuration files from
+`system-configs/.claude/` to `~/.claude/`. This includes agents, commands,
 output-styles, settings.json, and statusline.sh with automatic validation.
 
 ## What Gets Synced
@@ -28,11 +28,11 @@ Destination: ~/.claude/
 
 Files Synced:
   - agents/*.md           → ~/.claude/agents/
-  - commands/*.md         → ~/.claude/commands/  
+  - commands/*.md         → ~/.claude/commands/
   - output-styles/*.md    → ~/.claude/output-styles/
   - settings.json         → ~/.claude/settings.json
   - statusline.sh         → ~/.claude/statusline.sh
-  
+
 Excluded:
   - README.md files
   - AGENT_TEMPLATE.md
@@ -106,7 +106,7 @@ Claude: 🔄 Syncing Claude configurations...
 📁 Source: system-configs/.claude/ (50 files)
 📁 Destination: ~/.claude/
 ✅ Agents synced (41 files)
-✅ Commands synced (15 files)  
+✅ Commands synced (15 files)
 ✅ Output styles synced (8 files)
 ✅ Settings and statusline synced
 🎯 All configurations deployed successfully

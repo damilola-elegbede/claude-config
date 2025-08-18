@@ -37,7 +37,7 @@ Race Conditions:
   approach: Thread analysis, lock inspection, timing manipulation
 
 Memory Issues:
-  symptoms: ["memory leak", "crashes", "growing heap", "OOM errors"]  
+  symptoms: ["memory leak", "crashes", "growing heap", "OOM errors"]
   agents: [debugger, code-archaeologist]
   approach: Heap analysis, reference tracking, allocation patterns
 
@@ -60,19 +60,19 @@ Performance Degradation:
 # Heap dump analysis pattern
 investigate_memory_leak() {
   echo "🔍 Analyzing memory patterns..."
-  
+
   # Heap dump collection
   if command -v jcmd >/dev/null; then
     jcmd $PID GC.run_finalization
     jcmd $PID VM.gc
     jcmd $PID GC.dump_heap heap_before.hprof
   fi
-  
+
   # Python memory profiling
   if python --version 2>/dev/null | grep -q "Python"; then
     echo "import tracemalloc; tracemalloc.start()" >> memory_trace.py
   fi
-  
+
   # Node.js heap snapshots
   if node --version 2>/dev/null; then
     echo "console.log(process.memoryUsage())" >> memory_check.js
@@ -109,18 +109,18 @@ investigate_memory_leak() {
 # Thread synchronization analysis
 analyze_race_condition() {
   echo "🧵 Analyzing concurrent access patterns..."
-  
+
   # Thread dump analysis (Java)
   if command -v jstack >/dev/null; then
     jstack $PID > thread_dump.txt
     grep -A5 -B5 "BLOCKED\|WAITING" thread_dump.txt
   fi
-  
+
   # Go race detector
   if go version 2>/dev/null; then
     echo "Run with: go run -race main.go"
   fi
-  
+
   # Python thread analysis
   if python --version 2>/dev/null; then
     echo "import threading; print(threading.active_count())" >> thread_check.py
@@ -157,17 +157,17 @@ analyze_race_condition() {
 # Environment difference analysis
 compare_environments() {
   echo "🔍 Comparing dev vs production environments..."
-  
+
   # Configuration diff
   diff dev.env prod.env || echo "Environment variables differ"
-  
+
   # Dependency versions
   if [ -f package.json ]; then
     npm list --production > prod_deps.txt
     npm list > dev_deps.txt
     diff dev_deps.txt prod_deps.txt
   fi
-  
+
   # Resource constraints
   echo "Production resource limits:"
   cat /proc/meminfo | grep MemTotal
@@ -209,7 +209,7 @@ const performance_debug = {
     // Run suspect code
     console.profileEnd('cpu-analysis');
   },
-  
+
   // Memory allocation tracking
   track_allocations: () => {
     const used = process.memoryUsage();
@@ -219,7 +219,7 @@ const performance_debug = {
       heapUsed: Math.round(used.heapUsed / 1024 / 1024 * 100) / 100 + ' MB'
     });
   },
-  
+
   // Database query analysis
   analyze_queries: () => {
     // Enable query logging
@@ -258,14 +258,14 @@ const performance_debug = {
 ```yaml
 Primary Investigation:
   debugger: "Lead investigator, coordinates analysis"
-  
+
 Supporting Specialists:
   performance-specialist: "When performance-related symptoms detected"
   backend-engineer: "For server-side logic issues"
   frontend-architect: "For UI/UX related problems"
   database-admin: "For data integrity or query issues"
   security-auditor: "When security implications suspected"
-  
+
 Advanced Analysis:
   code-archaeologist: "For legacy code interactions"
   production-reliability-engineer: "For production environment issues"
@@ -278,7 +278,7 @@ Advanced Analysis:
 # Multi-agent debugging coordination
 coordinate_debugging() {
   local issue_type="$1"
-  
+
   case "$issue_type" in
     "memory")
       echo "Deploying debugger + code-archaeologist for memory analysis..."
@@ -312,7 +312,7 @@ debug_java() {
   jstat -gc $PID 5s
 }
 
-# Node.js debugging  
+# Node.js debugging
 debug_nodejs() {
   node --inspect-brk=9229 app.js
   # Chrome DevTools: chrome://inspect
@@ -338,10 +338,10 @@ debug_go() {
 
 ```sql
 -- PostgreSQL debugging
-EXPLAIN ANALYZE VERBOSE 
+EXPLAIN ANALYZE VERBOSE
 SELECT u.id, u.email, COUNT(o.id) as order_count
-FROM users u 
-LEFT JOIN orders o ON u.id = o.user_id 
+FROM users u
+LEFT JOIN orders o ON u.id = o.user_id
 WHERE u.created_at > '2024-01-01'
 GROUP BY u.id, u.email
 ORDER BY order_count DESC;
@@ -360,10 +360,10 @@ SET log_min_duration_statement = 1000; -- Log slow queries
 reproduce_intermittent() {
   local attempts=100
   local success_count=0
-  
+
   for i in $(seq 1 $attempts); do
     echo "Attempt $i/$attempts"
-    
+
     if run_test_scenario; then
       success_count=$((success_count + 1))
     else
@@ -371,11 +371,11 @@ reproduce_intermittent() {
       capture_failure_state
       break
     fi
-    
+
     # Vary conditions
     sleep $((RANDOM % 5))
   done
-  
+
   echo "Success rate: $((success_count * 100 / attempts))%"
 }
 ```
@@ -387,10 +387,10 @@ reproduce_intermittent() {
 simulate_production() {
   # Resource constraints
   docker run --memory=512m --cpus=0.5 myapp
-  
+
   # Network latency
   tc qdisc add dev eth0 root netem delay 100ms
-  
+
   # High load simulation
   ab -n 10000 -c 100 http://localhost:8080/api/endpoint
 }

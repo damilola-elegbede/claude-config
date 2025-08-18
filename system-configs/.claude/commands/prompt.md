@@ -48,8 +48,8 @@ File input: Supports .md, .txt, .yaml, .json
 **Original (52 words):**
 
 ```text
-I need you to please help me write a Python function that can validate 
-email addresses and return true if they're valid or false if they're not. 
+I need you to please help me write a Python function that can validate
+email addresses and return true if they're valid or false if they're not.
 It should handle various edge cases and be robust.
 ```
 

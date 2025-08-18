@@ -35,13 +35,13 @@ Analysis Scope:
   - Check for known critical vulnerabilities
   - Identify outdated packages
   - Flag unused dependencies
-  
+
 Agent Usage: None (direct tooling)
 
 Output: Summary with actionable items only
 ```
 
-### Deep Mode (audit) - 2 Minute Analysis  
+### Deep Mode (audit) - 2 Minute Analysis
 
 **What it does**: Comprehensive dependency analysis
 
@@ -51,7 +51,7 @@ Analysis Scope:
   - Supply chain risk assessment
   - License compliance checking
   - Dependency tree analysis
-  
+
 Agent Usage: dependency-manager + supply-chain-security-engineer
 
 Output: Detailed report with risk scoring
@@ -65,9 +65,9 @@ Output: Detailed report with risk scoring
 # Detection patterns
 detect_package_managers() {
   managers=()
-  
+
   [ -f "package.json" ] && managers+=("npm")
-  [ -f "yarn.lock" ] && managers+=("yarn") 
+  [ -f "yarn.lock" ] && managers+=("yarn")
   [ -f "requirements.txt" ] && managers+=("pip")
   [ -f "pyproject.toml" ] && managers+=("poetry")
   [ -f "go.mod" ] && managers+=("go")
@@ -76,7 +76,7 @@ detect_package_managers() {
   [ -f "build.gradle" ] && managers+=("gradle")
   [ -f "Gemfile" ] && managers+=("bundler")
   [ -f "composer.json" ] && managers+=("composer")
-  
+
   echo "Detected: ${managers[*]}"
 }
 ```
@@ -89,15 +89,15 @@ quick_scan() {
   if [ -f "package.json" ]; then
     npm audit --audit-level high --parseable
   fi
-  
+
   if [ -f "requirements.txt" ]; then
     pip-audit --format=json
   fi
-  
+
   if [ -f "go.mod" ]; then
     go list -json -m all | nancy sleuth
   fi
-  
+
   if [ -f "Cargo.toml" ]; then
     cargo audit --json
   fi
@@ -134,13 +134,13 @@ pip install --upgrade-strategy eager
 🔴 **Critical Vulnerabilities**: 2 found
 - lodash@4.17.15: Prototype pollution (CVE-2020-8203)
   Fix: npm install lodash@4.17.21
-- pillow@8.2.0: Buffer overflow (CVE-2021-34552)  
+- pillow@8.2.0: Buffer overflow (CVE-2021-34552)
   Fix: pip install pillow>=8.3.2
 
 🟡 **Medium Risk**: 3 vulnerabilities
 🟢 **Low Risk**: 7 vulnerabilities
 
-### Supply Chain Assessment  
+### Supply Chain Assessment
 ✅ **Package Authenticity**: All packages verified
 ⚠️ **Maintainer Risk**: 2 packages have single maintainer
 🔍 **Suspicious Activity**: None detected
@@ -165,25 +165,25 @@ pip install --upgrade-strategy eager
 # Staged update process
 safe_update() {
   echo "🔄 Performing safe dependency updates..."
-  
+
   # Backup current state
   cp package-lock.json package-lock.json.backup 2>/dev/null
   cp requirements.txt requirements.txt.backup 2>/dev/null
-  
+
   # Update in stages
   echo "Stage 1: Security patches only"
   npm audit fix --force
-  
-  echo "Stage 2: Minor version updates"  
+
+  echo "Stage 2: Minor version updates"
   npm update --save
-  
+
   echo "Stage 3: Test compatibility"
   npm test || {
     echo "❌ Tests failed, rolling back..."
     restore_backup
     return 1
   }
-  
+
   echo "✅ Updates completed successfully"
 }
 ```
@@ -194,22 +194,22 @@ safe_update() {
 # Remove unused dependencies
 cleanup_dependencies() {
   echo "🗑️ Removing unused dependencies..."
-  
+
   # Node.js unused packages
   if command -v depcheck >/dev/null; then
     depcheck --json | jq -r '.dependencies[]' | xargs npm uninstall
   fi
-  
-  # Python unused packages  
+
+  # Python unused packages
   if command -v unimport >/dev/null; then
     unimport --check --diff requirements.txt
   fi
-  
+
   # Go module cleanup
   if [ -f "go.mod" ]; then
     go mod tidy
   fi
-  
+
   echo "✅ Cleanup completed"
 }
 ```
@@ -223,13 +223,13 @@ cleanup_dependencies() {
 npm_workflow() {
   # Quick vulnerability check
   npm audit --audit-level high
-  
+
   # Automated fixes for non-breaking changes
   npm audit fix
-  
+
   # Manual review for breaking changes
   npm audit fix --force --dry-run
-  
+
   # Update outdated packages
   npm outdated
   npm update
@@ -243,13 +243,13 @@ npm_workflow() {
 python_workflow() {
   # Security scanning
   pip-audit --desc --format=json
-  
+
   # Check for outdated packages
   pip list --outdated --format=json
-  
+
   # Safe updates (patch versions only)
   pip install --upgrade --upgrade-strategy only-if-needed
-  
+
   # Requirements file update
   pip freeze > requirements.txt
 }
@@ -262,13 +262,13 @@ python_workflow() {
 go_workflow() {
   # Vulnerability scanning
   go list -json -m all | nancy sleuth
-  
+
   # Update all dependencies
   go get -u ./...
-  
+
   # Clean unused dependencies
   go mod tidy
-  
+
   # Verify dependencies
   go mod verify
 }
@@ -283,7 +283,7 @@ Direct Tooling:
   - npm audit, pip-audit, cargo audit
   - Built-in package manager commands
   - Simple vulnerability databases
-  
+
 Speed: 30 seconds average
 Accuracy: High for known CVEs
 Coverage: Basic security + outdated packages
@@ -296,11 +296,11 @@ Agent Deployment:
   dependency-manager:
     role: "Coordinate dependency analysis across ecosystems"
     tools: "All package manager integrations"
-    
+
   supply-chain-security-engineer:
-    role: "Advanced threat detection and supply chain analysis"  
+    role: "Advanced threat detection and supply chain analysis"
     tools: "CVE databases, package reputation analysis"
-    
+
 Coordination:
   - dependency-manager handles basic scanning
   - supply-chain-security-engineer provides threat intelligence
@@ -319,7 +319,7 @@ Critical (CVSS 9.0-10.0):
   Action: Immediate update required
 
 High (CVSS 7.0-8.9):
-  - Authentication bypass  
+  - Authentication bypass
   - SQL injection
   - XSS vulnerabilities
   Action: Update within 48 hours
@@ -364,7 +364,7 @@ Low Risk Indicators:
 Deploy execution-evaluator to verify:
 
 - ✅ **Package managers detected** - All present ecosystems identified
-- ✅ **Vulnerabilities scanned** - Security databases queried successfully  
+- ✅ **Vulnerabilities scanned** - Security databases queried successfully
 - ✅ **Updates applied safely** - No breaking changes introduced
 - ✅ **Dependencies functional** - Applications still work after changes
 - ✅ **Lock files updated** - Dependency versions properly recorded
@@ -399,7 +399,7 @@ Claude: 🔒 Deploying dependency-manager + supply-chain-security-engineer...
 ### Safe Update Process
 
 ```bash
-User: /deps update  
+User: /deps update
 Claude: 🔄 Starting safe dependency update process...
 💾 Backing up current dependency state...
 🔒 Stage 1: Applying security patches (3 updates)...

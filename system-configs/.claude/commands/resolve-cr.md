@@ -41,7 +41,7 @@ grep -A 10 "## Prompts for AI Agents" | \
 
 ```yaml
 Security: ["XSS", "SQL injection", "vulnerability"]
-Performance: ["slow", "N+1", "optimization"]  
+Performance: ["slow", "N+1", "optimization"]
 Quality: ["refactor", "complexity", "duplicate"]
 Testing: ["test", "coverage", "assertion"]
 ```
@@ -52,46 +52,46 @@ Testing: ["test", "coverage", "assertion"]
 # Main resolution function
 resolve_cr() {
   local pr="${1:-$(gh pr view --json number -q .number)}"
-  
+
   # Find CodeRabbit comments
   comments=$(gh api "repos/:owner/:repo/pulls/$pr/comments" \
     --jq '.[] | select(.user.login == "coderabbitai[bot]") | .body')
-  
+
   if [[ -z "$comments" ]]; then
     echo "✅ No CodeRabbit comments found"
     return 0
   fi
-  
+
   # Extract suggestions from "Prompts for AI Agents"
   suggestions=$(echo "$comments" | \
     grep -A 10 "## Prompts for AI Agents" | \
     grep -E "^[-*]")
-  
+
   # Count by category
   security=$(echo "$suggestions" | grep -ci "security\|XSS\|injection" || true)
   performance=$(echo "$suggestions" | grep -ci "performance\|slow\|N+1" || true)
   tests=$(echo "$suggestions" | grep -ci "test\|coverage" || true)
   quality=$(echo "$suggestions" | grep -ci "refactor\|complexity" || true)
-  
+
   echo "📋 Found: $security security, $performance perf, $tests test, $quality quality issues"
-  
+
   # Deploy appropriate agents to fix issues
   [[ $security -gt 0 ]] && echo "🔒 Fixing security issues..."
   [[ $performance -gt 0 ]] && echo "⚡ Fixing performance issues..."
   [[ $tests -gt 0 ]] && echo "🧪 Adding test coverage..."
   [[ $quality -gt 0 ]] && echo "🔧 Improving code quality..."
-  
+
   # Commit if changes made
   if ! git diff --quiet; then
     git add .
     git commit -m "fix: resolve CodeRabbit suggestions
 
 - Security: $security issues
-- Performance: $performance issues  
+- Performance: $performance issues
 - Tests: $tests issues
 - Quality: $quality issues"
     git push
-    
+
     # Notify CodeRabbit
     gh pr comment $pr --body "@coderabbitai resolve"
   fi

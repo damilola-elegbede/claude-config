@@ -205,12 +205,12 @@ Discovery Result Processing:
   Single Command Found:
     - Execute immediately with appropriate environment
     - Display real-time output with syntax highlighting
-    
+
   Multiple Commands Found:
     - Present interactive selection menu
     - Show estimated execution time for each
     - Allow parallel execution of compatible tests
-    
+
   No Commands Found:
     - Trigger test generation workflow
     - Create basic test suite using test-engineer
