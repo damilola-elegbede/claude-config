@@ -2,7 +2,8 @@
 
 ## Description
 
-Creates pull requests with concise change summaries from git diff analysis. Focuses on what actually changed rather than hypothetical features.
+Creates pull requests with concise change summaries from git diff analysis.
+Focuses on what actually changed rather than hypothetical features.
 
 ## Usage
 
@@ -49,7 +50,8 @@ Closes #123 (if applicable)
 
 ### Template Format (--template flag)
 
-Uses `.github/pull_request_template.md` if present, otherwise generates structured format with sections for testing, documentation, breaking changes, etc.
+Uses `.github/pull_request_template.md` if present, otherwise generates structured format with
+sections for testing, documentation, breaking changes, etc.
 
 ## Examples
 

@@ -22,7 +22,7 @@ Multiple independent tasks? → Deploy in parallel.
 
 ## Overview
 
-The Claude agent ecosystem consists of 40+ specialized agents organized across 8 functional domains, providing
+The Claude agent ecosystem consists of 42 specialized agents organized across 8 functional domains, providing
 comprehensive coverage of the software development lifecycle.
 This system follows the **"Right tool for the job"** principle with a **parallel-first execution strategy** for maximum
 efficiency.
@@ -32,42 +32,40 @@ efficiency.
 The agent ecosystem is organized into 8 primary categories.
 For detailed category definitions and color assignments, see [AGENT_CATEGORIES.md](./AGENT_CATEGORIES.md).
 
-### 1. **Development** (blue) - 10 agents
+### 1. **Development** (blue) - 8 agents
 
 Core programming and implementation agents
 
 - backend-engineer
-- data-platform-engineer
-- database-evolution-specialist
 - frontend-architect
+- git-workflow-specialist
 - integration-specialist
+- migration-specialist
 - ml-engineer
 - mobile-platform-engineer
-- platform-engineer
-- production-reliability-engineer
-- supply-chain-security-engineer
+- test-engineer
 
-### 2. **Infrastructure** (orange) - 8 agents
+### 2. **Infrastructure** (orange) - 7 agents
 
 Systems, operations, and deployment agents
 
-- cloud-architect
-- cloud-network-architect
 - cost-optimization-engineer
 - database-admin
+- database-evolution-specialist
 - devops
 - kubernetes-admin
-- migration-specialist
 - monitoring-specialist
+- platform-engineer
 
-### 3. **Architecture** (purple) - 4 agents
+### 3. **Architecture** (purple) - 5 agents
 
 System design and technical planning agents
 
 - api-architect
+- cloud-architect
+- cloud-network-architect
+- data-platform-engineer
 - principal-architect
-- project-orchestrator
-- api-analyst
 
 ### 4. **Design** (pink) - 2 agents
 
@@ -76,7 +74,7 @@ User experience and interface design agents
 - ui-designer
 - ux-researcher
 
-### 5. **Quality** (green) - 8 agents
+### 5. **Quality** (green) - 5 agents
 
 Testing, review, validation, and verification agents
 
@@ -84,39 +82,64 @@ Testing, review, validation, and verification agents
 - code-reviewer
 - execution-evaluator
 - performance-specialist
-- performance-predictor
 - quality-gatekeeper
-- test-engineer
-- metrics-analyst
 
-### 6. **Security** (red) - 2 agents
+### 6. **Security** (red) - 3 agents
 
 Security assessment and compliance agents
 
-- security-auditor
 - regulatory-compliance-specialist
+- security-auditor
+- supply-chain-security-engineer
 
-### 7. **Analysis** (yellow) - 4 agents
+### 7. **Analysis** (cyan) - 8 agents
 
 Research, documentation, and analysis agents
 
+- api-analyst
 - code-archaeologist
 - codebase-analyst
 - dependency-analyst
+- dependency-strategist
+- metrics-analyst
+- performance-predictor
 - tech-writer
 
-### 8. **Operations** (teal) - 4 agents
+### 8. **Operations** (yellow) - 4 agents
 
 Support, coordination, and strategic planning agents
 
 - debugger
-- dependency-strategist
-- git-workflow-specialist
 - incident-commander
+- production-reliability-engineer
+- project-orchestrator
+
+## Model Distribution
+
+The agent ecosystem uses three model tiers optimized for task complexity:
+
+### Current Distribution (42 agents)
+
+- **Opus (7 agents, 16.7%)**: Strategic and high-complexity tasks
+  - principal-architect, performance-specialist, project-orchestrator
+  - database-evolution-specialist, production-reliability-engineer
+  - cloud-network-architect, data-platform-engineer
+- **Sonnet (34 agents, 81.0%)**: Standard technical implementation
+  - Most development, infrastructure, and quality agents
+  - Recently optimized: platform-engineer, cloud-architect, api-architect
+- **Haiku (1 agent, 2.4%)**: Simple rule-based validation
+  - execution-evaluator
+
+### Optimization Strategy
+
+- Target distribution: Opus (15-20%), Sonnet (60-70%), Haiku (15-20%)
+- Cost optimization: ~$120/month saved through recent model adjustments
+- Performance balance: Strategic tasks get Opus, implementation gets Sonnet, validation gets Haiku
 
 ## Table of Contents
 
 - [Agent Categories](#agent-categories)
+- [Model Distribution](#model-distribution)
 - [Agent Directory](#agent-directory)
 - [Quick Reference](#quick-reference)
 - [Agent Selection Guide](#agent-selection-guide)
@@ -126,7 +149,7 @@ Support, coordination, and strategic planning agents
 
 ## Agent Directory
 
-### Development & Implementation Agents (10)
+### Development & Implementation Agents (8)
 
 - **backend-engineer** - Server-side systems, APIs, microservices, databases, and distributed architectures
 - **frontend-architect** - Advanced React/Vue/Angular architectures, state management, and performance optimization
@@ -139,7 +162,7 @@ Support, coordination, and strategic planning agents
 - **production-reliability-engineer** - Site reliability, incident response, and system resilience
 - **supply-chain-security-engineer** - Dependency security, software supply chain, and vulnerability management
 
-### Infrastructure & DevOps Agents (8)
+### Infrastructure & DevOps Agents (7)
 
 - **devops** - CI/CD pipelines, containerization, IaC, deployment automation, and SRE practices
 - **cloud-architect** - Multi-cloud architecture design, migration planning, and optimization
@@ -150,7 +173,7 @@ Support, coordination, and strategic planning agents
 - **migration-specialist** - Large-scale system migrations and legacy modernization
 - **cost-optimization-engineer** - Cloud cost analysis, resource optimization, and financial governance
 
-### Architecture & Design Agents (4)
+### Architecture & Design Agents (5)
 
 - **principal-architect** - System-wide architecture design, technical roadmaps, and strategic coordination
 - **api-architect** - API design, OpenAPI specs, governance policies, and SDK generation
@@ -162,7 +185,7 @@ Support, coordination, and strategic planning agents
 - **ui-designer** - UI/UX design, design systems, visual hierarchy, and user interface optimization
 - **ux-researcher** - User research, usability testing, analytics, and experience optimization
 
-### Quality & Testing Agents (8)
+### Quality & Testing Agents (5)
 
 - **test-engineer** - Test strategy, automation, coverage analysis, and quality assurance
 - **code-reviewer** - Code quality review, security checks, and best practices validation
@@ -173,19 +196,19 @@ Support, coordination, and strategic planning agents
 - **quality-gatekeeper** - Quality gates coordination, compliance checking, and release readiness
 - **metrics-analyst** - Performance metrics analysis, trend identification, and optimization insights
 
-### Security & Compliance Agents (2)
+### Security & Compliance Agents (3)
 
 - **security-auditor** - Security audits, vulnerability assessment, OWASP compliance, and threat modeling
 - **regulatory-compliance-specialist** - Compliance frameworks (SOC2, GDPR, HIPAA), audit preparation, and governance
 
-### Analysis & Documentation Agents (4)
+### Analysis & Documentation Agents (8)
 
 - **codebase-analyst** - Code architecture analysis, technical debt assessment, and dependency mapping
 - **code-archaeologist** - Legacy code analysis, historical change patterns, and technical archaeology
 - **dependency-analyst** - Dependency analysis, security scanning, and supply chain assessment
 - **tech-writer** - Technical documentation, API docs, guides, and knowledge management
 
-### Operations & Coordination Agents (6)
+### Operations & Coordination Agents (4)
 
 - **incident-commander** - Production incidents, crisis management, and post-mortem coordination
 - **debugger** - Complex bug investigation, race conditions, memory leaks, and root cause analysis

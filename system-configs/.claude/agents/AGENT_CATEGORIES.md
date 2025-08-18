@@ -79,9 +79,9 @@ PROACTIVELY" language patterns.
 - Security architecture review
 - Agent ecosystem security validation
 
-### 7. **Analysis** (yellow)
+### 7. **Analysis** (cyan)
 
-**Purpose**: Research, documentation, and analysis **Color**: `yellow` **Scope**:
+**Purpose**: Research, documentation, and analysis **Color**: `cyan` **Scope**:
 
 - Business process analysis
 - Codebase analysis and technical debt assessment
@@ -91,9 +91,9 @@ PROACTIVELY" language patterns.
 - Requirements analysis
 - Performance analysis
 
-### 8. **Operations** (cyan)
+### 8. **Operations** (yellow)
 
-**Purpose**: Support, coordination, and strategic planning **Color**: `cyan` **Scope**:
+**Purpose**: Support, coordination, and strategic planning **Color**: `yellow` **Scope**:
 
 - Incident management and response
 - Debugging and troubleshooting
@@ -114,8 +114,8 @@ When creating new agents, use the color associated with their primary category:
 - **pink**: Design (UI/UX, user experience, interface design)
 - **green**: Quality assurance (testing, reviews)
 - **red**: Security and compliance (auditing, threat analysis)
-- **yellow**: Analysis and research (data, documentation, investigation)
-- **cyan**: Operations (coordination, strategy, workflow automation)
+- **cyan**: Analysis and research (data, documentation, investigation)
+- **yellow**: Operations (coordination, strategy, workflow automation)
 
 ## Usage
 

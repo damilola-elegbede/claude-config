@@ -2,7 +2,8 @@
 
 ## Description
 
-Synchronizes configuration files between source and destination directories based on `.syncconfig` file. Supports any configuration management scenario with validation and safety checks.
+Synchronizes configuration files between source and destination directories based on `.syncconfig` file.
+Supports any configuration management scenario with validation and safety checks.
 
 ## Usage
 
@@ -82,14 +83,18 @@ fi
 ## Bidirectional Sync
 
 ### Pull Mode (--pull)
+
 Downloads configuration from remote location to local:
+
 ```bash
 /sync --pull
 # Remote → Local based on .syncconfig
 ```
 
 ### Push Mode (--push)
+
 Uploads local configuration to remote location:
+
 ```bash
 /sync --push  
 # Local → Remote based on .syncconfig
@@ -98,6 +103,7 @@ Uploads local configuration to remote location:
 ## Examples
 
 ### Basic Sync
+
 ```bash
 User: /sync
 Claude: 📖 Reading .syncconfig...
@@ -108,6 +114,7 @@ Claude: 📖 Reading .syncconfig...
 ```
 
 ### Dry Run
+
 ```bash
 User: /sync --dry-run
 Claude: 📖 Preview mode...

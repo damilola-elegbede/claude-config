@@ -23,11 +23,11 @@ E - Examples: Input/output (if ambiguous)
 ```
 
 ### Rules
+
 1. Remove: "please", "thank you", "I need you to"
 2. Use active voice and start with verbs
 3. Every word must be essential
 4. Structure with bullets or numbered lists
-
 
 ## Interactive Mode
 
@@ -40,6 +40,7 @@ File input: Supports .md, .txt, .yaml, .json
 ## Before/After Example
 
 **Original (52 words):**
+
 ```text
 I need you to please help me write a Python function that can validate 
 email addresses and return true if they're valid or false if they're not. 
@@ -47,6 +48,7 @@ It should handle various edge cases and be robust.
 ```
 
 **Optimized (15 words):**
+
 ```text
 Write Python email validation function.
 Requirements:
@@ -56,7 +58,6 @@ Requirements:
 ```
 
 **Result**: 71% shorter, 100% clearer
-
 
 ## Examples
 
@@ -84,7 +85,6 @@ Output: Ranked complaints with frequency
 User: approve
 Claude: ✅ Prompt optimized!
 ```
-
 
 ## Notes
 

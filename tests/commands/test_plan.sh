@@ -27,8 +27,8 @@ test_plan_structure() {
     assert_file_contains "$plan_file" "## Command Execution Flow" \
         "Should have Command Execution Flow section"
 
-    assert_file_contains "$plan_file" "## Strategic Plan Format" \
-        "Should have Strategic Plan Format section"
+    assert_file_contains "$plan_file" "## Plan Preview Format" \
+        "Should have Plan Preview Format section"
 }
 
 # Test plan command content
@@ -36,14 +36,14 @@ test_plan_content() {
     local plan_file="$ORIGINAL_DIR/system-configs/.claude/commands/plan.md"
 
     # Check for key behavior descriptions
-    assert_file_contains "$plan_file" "TDD methodology" \
-        "Should mention TDD methodology"
+    assert_file_contains "$plan_file" "phases" \
+        "Should mention phases"
 
-    assert_file_contains "$plan_file" "phased implementation" \
-        "Should mention phased implementation"
+    assert_file_contains "$plan_file" "Phase Organization" \
+        "Should have Phase Organization section"
 
-    assert_file_contains "$plan_file" "Executive Summary" \
-        "Should include plan template sections"
+    assert_file_contains "$plan_file" "dependencies" \
+        "Should mention dependencies"
 }
 
 # Run all tests

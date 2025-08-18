@@ -2,241 +2,444 @@
 
 ## Description
 
-Performs systematic root cause analysis for complex bugs using multi-agent forensics. Specializes in
-hard-to-reproduce issues like race conditions, memory leaks, intermittent failures, and production-only bugs that
-traditional debugging cannot solve.
+Systematic root cause analysis for complex bugs using multi-agent forensics.
+Specializes in hard-to-reproduce issues, race conditions, memory leaks, and
+production-only failures.
 
 ## Usage
 
 ```bash
-/debug <issue_description>
+/debug <issue_description>      # Investigate specific bug
+/debug --repro <steps>          # Focus on reproduction
+/debug --performance            # Performance-specific debugging
+```
+
+## Investigation Framework
+
+### Issue Classification & Agent Deployment
+
 ```yaml
+Intermittent Issues:
+  symptoms: ["works sometimes", "random failures", "can't reproduce"]
+  agents: [debugger, performance-specialist]
+  approach: Statistical analysis, environmental factor testing
 
-## Behavior
+Race Conditions:
+  symptoms: ["deadlock", "data corruption", "concurrent access errors"]
+  agents: [debugger, backend-engineer]
+  approach: Thread analysis, lock inspection, timing manipulation
 
-When you invoke `/debug`, I will:
+Memory Issues:
+  symptoms: ["memory leak", "crashes", "growing heap", "OOM errors"]  
+  agents: [debugger, code-archaeologist]
+  approach: Heap analysis, reference tracking, allocation patterns
 
-1. **Deploy the debugger agent** as the primary investigator
-2. **Analyze the issue description** to identify symptom patterns
-3. **Deploy specialized agents** based on the issue type
-4. **Conduct systematic investigation** using appropriate techniques
-5. **Generate reproduction steps** if possible
-6. **Provide root cause analysis** with fix recommendations
-7. **Deploy execution-evaluator** to verify:
-   - Debugging process completed successfully
-   - Root cause identified or hypotheses documented
-   - Reproduction steps validated
-   - Fix recommendations provided
-   - No debugging artifacts left behind
+Production-Only:
+  symptoms: ["works locally", "staging ok", "prod fails"]
+  agents: [debugger, production-reliability-engineer, monitoring-specialist]
+  approach: Environment comparison, scale simulation
 
-## Issue Classification
+Performance Degradation:
+  symptoms: ["getting slower", "timeouts", "resource exhaustion"]
+  agents: [debugger, performance-specialist, performance-predictor]
+  approach: Profiling, bottleneck analysis, load testing
+```
 
-I classify bugs into categories to determine the investigation approach:
+## Concrete Investigation Patterns
 
-### Intermittent Issues
+### Memory Leak Investigation
 
-- **Symptoms**: Works sometimes, fails unpredictably
-- **Approach**: Statistical analysis, multiple reproduction attempts
-- **Agents**: debugger, performance-specialist
-- **Focus**: Timing, load conditions, environmental factors
+```bash
+# Heap dump analysis pattern
+investigate_memory_leak() {
+  echo "🔍 Analyzing memory patterns..."
+  
+  # Heap dump collection
+  if command -v jcmd >/dev/null; then
+    jcmd $PID GC.run_finalization
+    jcmd $PID VM.gc
+    jcmd $PID GC.dump_heap heap_before.hprof
+  fi
+  
+  # Python memory profiling
+  if python --version 2>/dev/null | grep -q "Python"; then
+    echo "import tracemalloc; tracemalloc.start()" >> memory_trace.py
+  fi
+  
+  # Node.js heap snapshots
+  if node --version 2>/dev/null; then
+    echo "console.log(process.memoryUsage())" >> memory_check.js
+  fi
+}
+```
 
-### Race Conditions
-
-- **Symptoms**: Concurrency failures, deadlocks, data corruption
-- **Approach**: Thread analysis, lock inspection, timing manipulation
-- **Agents**: debugger, backend-engineer
-- **Focus**: Shared resources, synchronization points, atomic operations
-
-### Memory Issues
-
-- **Symptoms**: Growing memory usage, crashes, slow degradation
-- **Approach**: Heap analysis, reference tracking, allocation patterns
-- **Agents**: debugger, code-archaeologist
-- **Focus**: Leak sources, circular references, resource cleanup
-
-### Production-Only Bugs
-
-- **Symptoms**: Works in dev/staging, fails in production
-- **Approach**: Environment comparison, configuration analysis, scale testing
-- **Agents**: debugger, production-reliability-engineer, monitoring-specialist
-- **Focus**: Environment differences, data volumes, external dependencies
-
-### Performance Degradation
-
-- **Symptoms**: Slowness, timeouts, resource exhaustion
-- **Approach**: Profiling, bottleneck analysis, load testing
-- **Agents**: debugger, performance-specialist, performance-predictor
-- **Focus**: Hot paths, N+1 queries, inefficient algorithms
-
-## Investigation Process
-
-### Phase 1: Evidence Collection
-
-I gather all available information in parallel:
-
-- **Logs**: Application, system, error, and audit logs
-- **PII Handling**: Redact sensitive data in logs/traces; avoid exporting raw production data
-- **Stack Traces**: All available error traces and core dumps
-- **Metrics**: CPU, memory, disk, network utilization
-- **User Reports**: Symptoms, reproduction steps, affected users
-- **Code Changes**: Recent commits, deployments, configuration changes
-- **Environment**: Differences between working and failing environments
-
-### Phase 2: Hypothesis Formation
-
-Based on evidence, I form hypotheses about the root cause:
-
-1. **Most Likely**: Based on symptom patterns and similar past issues
-2. **Alternative**: Other possible causes to investigate
-3. **Edge Cases**: Unlikely but severe possibilities to rule out
-
-### Phase 3: Systematic Investigation
-
-I use appropriate techniques based on the issue type:
-
-#### Binary Search (for regressions)
-
-- Find last working version
-- Find first broken version
-- Bisect commits to find exact breaking change
-- Analyze the specific changes that caused the issue
-
-#### Reproduction Attempts
-
-- **Deterministic**: Exact step-by-step reproduction
-- **Statistical**: Multiple runs to catch intermittent issues
-- **Stress Testing**: High load to trigger race conditions
-- **Time-Based**: For time-dependent issues
-- **Synthetic**: Using artificial data/conditions
-
-#### Differential Analysis
-
-- Compare working vs failing environments
-- Analyze configuration differences
-- Examine data variations
-- Review dependency versions
-
-### Phase 4: Root Cause Identification
-
-Once identified, I provide:
-
-- **Primary Cause**: The direct cause of the issue
-- **Contributing Factors**: Conditions that enable the bug
-- **Impact Scope**: What systems/users are affected
-- **Risk Assessment**: Likelihood of recurrence
-
-### Phase 5: Solution Development
-
-I deliver:
-
-- **Immediate Fix**: Quick resolution to stop the bleeding
-- **Proper Solution**: Comprehensive fix addressing root cause
-- **Prevention Measures**: How to prevent similar issues
-- **Test Cases**: To verify the fix and prevent regression
-
-## Agent Coordination
-
-### Primary Investigator
-
-- **debugger**: Leads the investigation, coordinates other agents
-
-### Specialist Support (deployed as needed)
-
-- **performance-specialist**: For performance-related issues
-- **code-archaeologist**: For historical code analysis and memory leaks
-- **backend-engineer**: For concurrency and system-level issues
-- **production-reliability-engineer**: For production-specific problems
-- **monitoring-specialist**: For observability and metrics analysis
-- **security-auditor**: When security implications are suspected
-
-### Parallel Execution
-
-When multiple hypotheses exist, I deploy agents in parallel to investigate different theories simultaneously,
-reducing time to resolution.
-
-## Output Format
-
-After investigation, I provide:
-
-### Bug Report
+**Real Example Output:**
 
 ```text
-## Issue: [Title]
+🔍 Memory Leak Investigation: User Session Cache
 
-### Summary
-[One paragraph description of the issue and its impact]
+📊 Evidence Collected:
+- Heap growing 50MB/hour consistently
+- No GC pressure, allocations not being freed
+- Correlates with user login frequency
 
-### Root Cause
-[Specific technical cause of the issue]
+🎯 Root Cause Found:
+- Session objects stored in WeakMap but never cleaned
+- Event listeners maintaining references
+- No TTL on session cache
 
-### Evidence
-- [Key evidence point 1]
-- [Key evidence point 2]
-- [Key evidence point 3]
+🔧 Fix Applied:
+- Added session cleanup timer (5min intervals)
+- Implemented proper event listener removal
+- Set 24h TTL on session cache entries
 
-### Reproduction Steps
-1. [Step to reproduce]
-2. [Step to reproduce]
-3. [Expected vs actual behavior]
+✅ Verification: Memory stable after 2h testing
+```
 
-### Solution
-[Recommended fix with code changes if applicable]
+### Race Condition Analysis
 
-### Prevention
-[How to prevent this class of bug in the future]
+```bash
+# Thread synchronization analysis
+analyze_race_condition() {
+  echo "🧵 Analyzing concurrent access patterns..."
+  
+  # Thread dump analysis (Java)
+  if command -v jstack >/dev/null; then
+    jstack $PID > thread_dump.txt
+    grep -A5 -B5 "BLOCKED\|WAITING" thread_dump.txt
+  fi
+  
+  # Go race detector
+  if go version 2>/dev/null; then
+    echo "Run with: go run -race main.go"
+  fi
+  
+  # Python thread analysis
+  if python --version 2>/dev/null; then
+    echo "import threading; print(threading.active_count())" >> thread_check.py
+  fi
+}
+```
 
-### Test Coverage
-[Test cases to add to prevent regression]
+**Real Example Output:**
+
+```text
+🧵 Race Condition Investigation: Payment Processing
+
+📊 Evidence Collected:
+- Duplicate charges appearing ~0.1% of transactions
+- Only under high load (>100 req/sec)
+- Database shows conflicting timestamps
+
+🎯 Root Cause Found:
+- Payment validation and charge creation not atomic
+- Two requests can pass validation simultaneously
+- No idempotency key enforcement
+
+🔧 Fix Applied:
+- Wrapped validation + charge in database transaction
+- Added unique constraint on idempotency_key
+- Implemented distributed lock for payment flow
+
+✅ Verification: No duplicates in 1000 concurrent test transactions
+```
+
+### Production-Only Bug Analysis
+
+```bash
+# Environment difference analysis
+compare_environments() {
+  echo "🔍 Comparing dev vs production environments..."
+  
+  # Configuration diff
+  diff dev.env prod.env || echo "Environment variables differ"
+  
+  # Dependency versions
+  if [ -f package.json ]; then
+    npm list --production > prod_deps.txt
+    npm list > dev_deps.txt
+    diff dev_deps.txt prod_deps.txt
+  fi
+  
+  # Resource constraints
+  echo "Production resource limits:"
+  cat /proc/meminfo | grep MemTotal
+  ulimit -a
+}
+```
+
+**Real Example Output:**
+
+```text
+🏭 Production-Only Investigation: API Timeout Errors
+
+📊 Evidence Collected:
+- API works perfectly in dev/staging
+- 504 timeouts only in production
+- Affects 30% of requests to /users/search
+
+🎯 Root Cause Found:
+- Production database has 10M users vs 1K in staging
+- Query missing index on frequently searched columns
+- Query optimizer choosing table scan at scale
+
+🔧 Fix Applied:
+- Added composite index on (email, status, created_at)
+- Optimized query to use covering index
+- Added query timeout with proper error handling
+
+✅ Verification: Response time dropped from 8s to 120ms
+```
+
+### Performance Degradation Analysis
+
+```javascript
+// Performance profiling patterns
+const performance_debug = {
+  // CPU profiling
+  profile_cpu: () => {
+    console.profile('cpu-analysis');
+    // Run suspect code
+    console.profileEnd('cpu-analysis');
+  },
+  
+  // Memory allocation tracking
+  track_allocations: () => {
+    const used = process.memoryUsage();
+    console.log('Memory usage:', {
+      rss: Math.round(used.rss / 1024 / 1024 * 100) / 100 + ' MB',
+      heapTotal: Math.round(used.heapTotal / 1024 / 1024 * 100) / 100 + ' MB',
+      heapUsed: Math.round(used.heapUsed / 1024 / 1024 * 100) / 100 + ' MB'
+    });
+  },
+  
+  // Database query analysis
+  analyze_queries: () => {
+    // Enable query logging
+    console.log('EXPLAIN ANALYZE SELECT ...');
+  }
+};
+```
+
+**Real Example Output:**
+
+```text
+⚡ Performance Investigation: Dashboard Loading Slowly
+
+📊 Evidence Collected:
+- Dashboard load time increased from 2s to 15s
+- Started 3 days ago after user growth
+- CPU usage normal, database shows slow queries
+
+🎯 Root Cause Found:
+- N+1 query problem in user dashboard
+- Each dashboard widget making separate DB call
+- 50+ queries for single dashboard load
+
+🔧 Fix Applied:
+- Implemented GraphQL DataLoader pattern
+- Batched widget data queries into single call
+- Added Redis caching for user preferences
+
+✅ Verification: Dashboard loads in 1.8s (faster than before)
+```
+
+## Multi-Agent Coordination
+
+### Complex Bug Investigation Team
+
 ```yaml
+Primary Investigation:
+  debugger: "Lead investigator, coordinates analysis"
+  
+Supporting Specialists:
+  performance-specialist: "When performance-related symptoms detected"
+  backend-engineer: "For server-side logic issues"
+  frontend-architect: "For UI/UX related problems"
+  database-admin: "For data integrity or query issues"
+  security-auditor: "When security implications suspected"
+  
+Advanced Analysis:
+  code-archaeologist: "For legacy code interactions"
+  production-reliability-engineer: "For production environment issues"
+  monitoring-specialist: "For observability and metrics analysis"
+```
 
-## Common Investigation Patterns
+### Investigation Workflow
 
-### Pattern: Intermittent Test Failures
+```bash
+# Multi-agent debugging coordination
+coordinate_debugging() {
+  local issue_type="$1"
+  
+  case "$issue_type" in
+    "memory")
+      echo "Deploying debugger + code-archaeologist for memory analysis..."
+      # Primary: debugger analyzes heap dumps
+      # Secondary: code-archaeologist reviews allocation patterns
+      ;;
+    "performance")
+      echo "Deploying debugger + performance-specialist + monitoring-specialist..."
+      # Primary: debugger identifies bottlenecks
+      # Secondary: performance-specialist optimizes
+      # Tertiary: monitoring-specialist sets up alerting
+      ;;
+    "production")
+      echo "Deploying debugger + production-reliability-engineer..."
+      # Primary: debugger analyzes failure patterns
+      # Secondary: production-reliability-engineer fixes infrastructure
+      ;;
+  esac
+}
+```
 
-1. Collect failure history and patterns
-2. Identify environmental factors (time, load, data)
-3. Add logging around failure points
-4. Run with various conditions to find trigger
-5. Implement deterministic reproduction
+## Debugging Toolchain
 
-### Pattern: Memory Leak
+### Language-Specific Tools
 
-1. Monitor memory growth over time
-2. Identify allocation patterns
-3. Track reference chains
-4. Find retention points
-5. Implement proper cleanup
+```bash
+# Java debugging
+debug_java() {
+  jstack $PID > thread_dump.txt
+  jmap -dump:live,format=b,file=heap.hprof $PID
+  jstat -gc $PID 5s
+}
 
-### Pattern: Race Condition
+# Node.js debugging  
+debug_nodejs() {
+  node --inspect-brk=9229 app.js
+  # Chrome DevTools: chrome://inspect
+  kill -USR1 $PID  # Enable debugger
+}
 
-1. Identify shared resources
-2. Analyze synchronization mechanisms
-3. Add strategic delays to expose timing issues
-4. Review lock ordering
-5. Implement proper synchronization
+# Python debugging
+debug_python() {
+  py-spy top --pid $PID
+  python -m cProfile -o profile.stats script.py
+  python -c "import pdb; pdb.set_trace()"
+}
 
-### Pattern: Production-Only Failure
+# Go debugging
+debug_go() {
+  go run -race main.go
+  dlv attach $PID
+  go tool pprof http://localhost:6060/debug/pprof/profile
+}
+```
 
-1. Compare all environment variables
-2. Analyze data volume differences
-3. Check external service behaviors
-4. Review configuration management
-5. Implement environment parity
+### Database Query Analysis
 
-## Success Criteria
+```sql
+-- PostgreSQL debugging
+EXPLAIN ANALYZE VERBOSE 
+SELECT u.id, u.email, COUNT(o.id) as order_count
+FROM users u 
+LEFT JOIN orders o ON u.id = o.user_id 
+WHERE u.created_at > '2024-01-01'
+GROUP BY u.id, u.email
+ORDER BY order_count DESC;
 
-The investigation is complete when:
+-- Enable query logging
+SET log_statement = 'all';
+SET log_min_duration_statement = 1000; -- Log slow queries
+```
 
-- Root cause is identified with evidence
-- Issue can be reproduced reliably (or explanation why not)
-- Fix is implemented and tested
-- Prevention measures are in place
-- Documentation is updated
+## Reproduction Strategies
+
+### Intermittent Bug Reproduction
+
+```bash
+# Automated reproduction attempts
+reproduce_intermittent() {
+  local attempts=100
+  local success_count=0
+  
+  for i in $(seq 1 $attempts); do
+    echo "Attempt $i/$attempts"
+    
+    if run_test_scenario; then
+      success_count=$((success_count + 1))
+    else
+      echo "Failure reproduced on attempt $i"
+      capture_failure_state
+      break
+    fi
+    
+    # Vary conditions
+    sleep $((RANDOM % 5))
+  done
+  
+  echo "Success rate: $((success_count * 100 / attempts))%"
+}
+```
+
+### Environment Simulation
+
+```bash
+# Production environment simulation
+simulate_production() {
+  # Resource constraints
+  docker run --memory=512m --cpus=0.5 myapp
+  
+  # Network latency
+  tc qdisc add dev eth0 root netem delay 100ms
+  
+  # High load simulation
+  ab -n 10000 -c 100 http://localhost:8080/api/endpoint
+}
+```
+
+## Verification & Follow-up
+
+Deploy execution-evaluator to verify:
+
+- ✅ **Root cause identified** - Clear explanation of why bug occurs
+- ✅ **Reproduction steps** - Reliable way to trigger the issue
+- ✅ **Fix implemented** - Solution addresses root cause
+- ✅ **Verification tests** - Proof the fix works
+- ✅ **Prevention measures** - Steps to avoid similar issues
+- ✅ **Documentation** - Investigation findings documented
+
+## Examples
+
+### Memory Leak Investigation
+
+```bash
+User: /debug Application memory keeps growing, crashes after 6 hours
+Claude: 🔍 Deploying debugger + code-archaeologist for memory leak analysis...
+📊 Collecting heap dumps and allocation patterns...
+🎯 Found: Event listeners not being removed in component cleanup
+🔧 Fix: Added proper cleanup in useEffect dependencies
+✅ Verified: Memory stable after 12h test run
+```
+
+### Race Condition
+
+```bash
+User: /debug Users sometimes see duplicate charges in payment system
+Claude: 🧵 Deploying debugger + backend-engineer for concurrency analysis...
+📊 Analyzing payment flow under load...
+🎯 Found: Payment validation + charge not atomic, race condition possible
+🔧 Fix: Wrapped in database transaction + added idempotency keys
+✅ Verified: No duplicates in 1000 concurrent payment test
+```
+
+### Production Mystery
+
+```bash
+User: /debug API timeouts only in production, works fine locally
+Claude: 🏭 Deploying debugger + production-reliability-engineer...
+📊 Comparing environments and analyzing production metrics...
+🎯 Found: Missing database index causes table scan at production scale
+🔧 Fix: Added composite index on high-traffic query columns
+✅ Verified: Response time improved from 8s to 120ms
+```
 
 ## Notes
 
-- Complex bugs often have multiple contributing factors
-- Production issues take priority over development issues
-- Always consider the cost of the bug vs cost of investigation
-- Some bugs may require accepting and working around rather than fixing
-- Document all findings for future reference
+- Focuses on systematic investigation over guesswork
+- Uses appropriate tools for each programming language
+- Emphasizes reproduction before attempting fixes
+- Documents findings for future similar issues
+- Coordinates multiple specialist agents for complex problems
+- Always verifies fixes under realistic conditions

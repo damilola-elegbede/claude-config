@@ -2,7 +2,8 @@
 
 ## Description
 
-Enters plan mode to generate strategic implementation plans organized by phases. Creates a roadmap of focused PRs with clear dependencies and parallel opportunities.
+Enters plan mode to generate strategic implementation plans organized by phases.
+Creates a roadmap of focused PRs with clear dependencies and parallel opportunities.
 
 ## Usage
 
@@ -28,6 +29,7 @@ When you invoke `/plan`, I will:
 ### File Input Processing
 
 When using `--file <file_path>` or `-f <file_path>`:
+
 - Reads entire file as sole requirement source
 - Supports `.md`, `.txt`, `.yaml`, `.json`, `.rst` formats
 - Parses user stories, specs, bug reports, feature requests
@@ -52,6 +54,7 @@ When using `--file <file_path>` or `-f <file_path>`:
 ## Plan Preview Format
 
 Preview includes:
+
 - Task summary with complexity
 - Phase breakdown with dependencies
 - Agent assignments per phase
@@ -91,18 +94,21 @@ Each phase file contains:
 ## Phase Organization
 
 ### Phase 1: Foundation
+
 - Set up core infrastructure
 - Define interfaces and contracts
 - Create test framework
 - Can execute tasks in parallel
 
 ### Phase 2: Implementation
+
 - Build core functionality
 - Implement business logic
 - Create UI components
 - Independent tasks run concurrently
 
 ### Phase 3: Integration
+
 - Connect components
 - Validate functionality
 - Optimize performance

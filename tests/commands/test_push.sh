@@ -24,8 +24,8 @@ test_push_structure() {
     assert_file_contains "$push_file" "## Usage" \
         "Should have Usage section"
 
-    assert_file_contains "$push_file" "## Behavior" \
-        "Should have Behavior section"
+    assert_file_contains "$push_file" "## Two-Mode Operation" \
+        "Should have Two-Mode Operation section"
 }
 
 # Test push command content

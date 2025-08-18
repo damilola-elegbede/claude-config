@@ -3,7 +3,7 @@ name: api-analyst
 description: MUST BE USED for API usage analysis, endpoint performance monitoring, and contract validation. Use PROACTIVELY when analyzing API patterns, detecting breaking changes, rate limit optimization, or API versioning strategies
 tools: Read, Grep, Glob, LS
 model: sonnet
-color: yellow
+color: cyan
 category: analysis
 ---
 

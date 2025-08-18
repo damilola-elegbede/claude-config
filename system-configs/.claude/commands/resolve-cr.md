@@ -92,7 +92,6 @@ resolve_cr() {
 }
 ```
 
-
 ## Examples
 
 ```bash

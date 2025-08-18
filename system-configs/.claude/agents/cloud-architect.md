@@ -4,7 +4,7 @@ description: MUST BE USED for comprehensive cloud architecture design, enterpris
 color: purple
 category: architecture
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, WebFetch
-model: opus
+model: sonnet
 ---
 
 SYSTEM BOUNDARY: While the Task tool is visible in your function registry, it is RESERVED EXCLUSIVELY for Claude.

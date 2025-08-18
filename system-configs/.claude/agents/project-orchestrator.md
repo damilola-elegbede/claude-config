@@ -3,7 +3,7 @@ name: project-orchestrator
 description: Use PROACTIVELY to orchestrate multi-agent execution strategies. MUST BE USED for planning parallel agent execution, optimizing resource allocation, coordinating 3+ agent workflows, and maximizing team efficiency
 tools: Read, Write, Grep, Glob, LS
 model: opus
-color: cyan
+color: yellow
 category: operations
 ---
 
@@ -72,7 +72,7 @@ Database Keywords: [migration, schema, query optimization, backup, replication]
 Integration Keywords: [third-party, webhook, payment gateway, external API, sync]
   → Primary: integration-specialist
   → Secondary: api-architect (contracts), security-auditor (auth flows)
-```
+```yaml
 
 #### Step 2: Domain Boundary Analysis
 
@@ -91,7 +91,7 @@ Infrastructure Domain: [Docker, Kubernetes, CI/CD, deployment, monitoring]
 
 Testing Domain: [unit tests, integration tests, coverage, automation]
   → test-engineer + quality-gatekeeper (if quality gates)
-```
+```yaml
 
 #### Step 3: Cross-Domain Task Routing
 
@@ -115,7 +115,7 @@ Testing Domain: [unit tests, integration tests, coverage, automation]
   → Primary: mobile-platform-engineer (per platform), backend-engineer
   → Secondary: api-architect (API contracts), ui-designer (design consistency)
   → Coordination: Parallel after API design phase
-```
+```yaml
 
 ### Technology-Specific Agent Mapping
 
@@ -133,7 +133,7 @@ Technologies:
   WebSocket: → backend-engineer (primary), frontend-architect (client handling)
   Microservices: → principal-architect (design), backend-engineer (implementation)
   CDN: → cloud-network-architect (primary), frontend-architect (optimization)
-```
+```yaml
 
 ### Context Clue Analysis for Ambiguous Tasks
 
@@ -158,7 +158,7 @@ Scale Context Routing:
   "enterprise" → principal-architect + security-auditor + regulatory-compliance-specialist
   "high-traffic" → performance-specialist + cloud-architect + monitoring-specialist
   "multi-region" → cloud-architect + cloud-network-architect
-```
+```yaml
 
 ## Orchestration Methodology
 
@@ -215,7 +215,7 @@ Tier 3 (Quality Authority):
 Tier 4 (Implementation Authority):
   - Domain specialists make domain-specific decisions
   - Subject to higher-tier architectural and quality constraints
-```
+```yaml
 
 ## Output Format
 
@@ -278,7 +278,7 @@ Provide orchestration plans in this format:
 
 ## Estimated Total Duration
 [Critical path analysis with time breakdown]
-```
+```markdown
 
 ## Best Practices
 
@@ -299,7 +299,7 @@ Keywords: authentication, authorization, security, vulnerability
 Primary: security-auditor (analysis and requirements)
 Secondary: Appropriate implementation agent based on domain
 Coordination: Security requirements define implementation constraints
-```
+```yaml
 
 ### Pattern 2: Performance Investigation
 
@@ -308,7 +308,7 @@ Keywords: slow, performance, bottleneck, optimization
 Primary: performance-specialist (profiling and analysis)
 Secondary: Domain-specific agents based on performance location
 Coordination: Parallel analysis, targeted optimization
-```
+```yaml
 
 ### Pattern 3: Cross-Platform Development
 
@@ -317,7 +317,7 @@ Keywords: mobile, web, multi-platform, cross-platform
 Primary: Platform-specific agents (mobile-platform-engineer per platform)
 Secondary: Shared infrastructure agents (api-architect, backend-engineer)
 Coordination: Shared design phase, parallel platform implementation
-```
+```yaml
 
 ### Pattern 4: Integration Projects
 
@@ -326,7 +326,7 @@ Keywords: third-party, integration, webhook, external API
 Primary: integration-specialist (external connections)
 Secondary: api-architect (contracts), security-auditor (auth flows)
 Coordination: Contract design, parallel implementation and security validation
-```
+```yaml
 
 ## Constraints to Consider
 

@@ -2,277 +2,232 @@
 
 ## Description
 
-Intelligently creates and switches to a new git branch based on context from the conversation or explicit
-input. Always starts from the latest main branch to ensure branches are up-to-date.
+Creates intelligent git branches from conversation context, explicit input, or
+file content. Always starts from updated main branch with conventional naming
+patterns.
 
 ## Usage
 
 ```bash
-/branch [context]
-/branch --file <file_path>
-/branch -f <file_path>
+/branch [description]        # Create branch from description
+/branch --file <path>        # Create branch from file context
+/branch                      # Create branch from conversation context
 ```
 
-## Arguments
+## Smart Branch Creation
 
-- `context` (optional): Description or context for the branch. If not provided, uses context from the current
-  conversation window.
-- `--file <file_path>` or `-f <file_path>` (optional): Read context from a file instead of using conversation
-  context or explicit arguments.
+### Automatic Context Analysis
 
-## Behavior
-
-When you use `/branch`, I will:
-
-1. **Switch to main and update**:
-   - Checkout main/master branch
-   - Pull latest changes from remote
-   - Ensure local main is up-to-date
-
-2. **Analyze context**:
-   - If --file or -f flag provided: Read and analyze file content for context
-   - If explicit context provided: Use that for branch naming
-   - If no argument: Analyze conversation context for:
-     - Feature being discussed
-     - Bug being fixed
-     - Task being implemented
-     - Issue number or ticket reference
-
-3. **Generate intelligent branch name**:
-   - Follow git-flow conventions (feature/, fix/, chore/, etc.)
-   - Use kebab-case for branch names
-   - Include ticket numbers if mentioned (e.g., feature/JIRA-123-user-auth)
-   - Keep names concise but descriptive
-
-4. **Create and switch to new branch**:
-   - Create branch from updated main
-   - Switch to the new branch
-   - Set up tracking if needed
-
-5. **Confirm branch creation**:
-   - Show current branch status
-   - Display branch creation summary
-   - List recent commits from main
-
-6. **Deploy execution-evaluator** to verify:
-   - Branch created successfully with correct naming
-   - Switched to new branch
-   - Branch starts from latest main/master
-   - Tracking configured if needed
-   - No uncommitted changes lost
-
-## File Input Processing
-
-When using `--file <file_path>` or `-f <file_path>`:
-
-1. **Read the entire file** using the Read tool
-2. **Extract context** from the file content:
-   - Issue descriptions or bug reports
-   - Feature specifications or requirements
-   - Task definitions or user stories
-   - Technical design documents
-   - Error logs or stack traces
-3. **Analyze content type** to determine appropriate branch prefix:
-   - Bug reports/errors → `fix/`
-   - Feature specs → `feature/`
-   - Documentation → `docs/`
-   - Performance issues → `perf/`
-   - Refactoring plans → `refactor/`
-4. **Generate branch name** based solely on file content
-5. **Ignore conversation context** when --file or -f is used (file is the sole source)
-
-**Supported File Formats**:
-
-- `.md` - Markdown documents
-- `.txt` - Plain text files
-- `.yaml`/`.yml` - YAML specifications
-- `.json` - JSON data
-- `.log` - Log files
-- `.rst` - reStructuredText
-- Any text-based format
-
-## Branch Naming Conventions
-
-### Automatic Prefixes
-
-Based on context analysis:
-
-- `feature/` - New functionality or enhancements
-- `fix/` - Bug fixes or issue resolutions
-- `chore/` - Maintenance, refactoring, or tooling
-- `docs/` - Documentation updates
-- `test/` - Test additions or modifications
-- `perf/` - Performance improvements
-- `style/` - Code style or formatting changes
-- `refactor/` - Code restructuring without behavior change
-
-### Name Generation Examples
-
-| Context | Generated Branch Name |
-|---------|----------------------|
-| "Add user authentication" | `feature/user-authentication` |
-| "Fix login timeout issue" | `fix/login-timeout` |
-| "Update README" | `docs/update-readme` |
-| "JIRA-456: Add payment gateway" | `feature/JIRA-456-payment-gateway` |
-| "Refactor database queries" | `refactor/database-queries` |
-| "Improve API performance" | `perf/api-optimization` |
-
-## Examples
-
-### With explicit context
-
-```bash
-/branch add stripe payment integration
-# Creates: feature/stripe-payment-integration
-
-/branch fix memory leak in worker process
-# Creates: fix/memory-leak-worker-process
-
-/branch PROJ-789 implement user notifications
-# Creates: feature/PROJ-789-user-notifications
 ```yaml
+Conversation Context:
+  - Scans recent messages for features, bugs, tasks
+  - Extracts ticket numbers (JIRA-123, GH-456, #789)
+  - Identifies work type from keywords
 
-### Using file input
+File Context (--file):
+  - Bug reports → fix/ prefix
+  - Feature specs → feature/ prefix  
+  - Documentation → docs/ prefix
+  - Performance → perf/ prefix
+  - Refactoring → refactor/ prefix
 
-```bash
-/branch --file requirements/oauth-integration.md
-/branch -f requirements/oauth-integration.md
-# Reads OAuth feature spec, creates: feature/oauth-integration
-
-/branch --file bugs/login-timeout.txt
-/branch -f bugs/login-timeout.txt
-# Reads bug report, creates: fix/login-timeout-issue
-
-/branch --file tasks/JIRA-1234.yaml
-/branch -f tasks/JIRA-1234.yaml
-# Reads JIRA export, creates: feature/JIRA-1234-user-dashboard
-
-/branch --file errors/production-crash.log
-/branch -f errors/production-crash.log
-# Reads error log, creates: fix/production-crash-nullpointer
-```yaml
-
-### File content examples
-
-**Feature specification file** (requirements/payment.md):
-
-```markdown
-# Payment Gateway Integration
-Implement Stripe payment processing for subscriptions...
+Explicit Description:
+  - Uses provided text directly
+  - Applies conventional prefixes automatically
 ```
 
-→ Creates: `feature/stripe-payment-gateway`
+### Branch Naming Conventions
 
-**Bug report file** (bugs/api-error.txt):
+```bash
+# Feature development
+feature/user-authentication
+feature/JIRA-123-payment-gateway
+feature/oauth-integration
+
+# Bug fixes  
+fix/login-timeout-issue
+fix/GH-456-memory-leak
+fix/csrf-validation
+
+# Other work types
+docs/api-documentation
+perf/database-optimization
+refactor/auth-module
+chore/dependency-updates
+```
+
+## Execution Process
+
+### Phase 1: Repository Preparation
+
+```bash
+# Switch to main and update
+git checkout main
+git pull origin main
+
+# Verify clean state
+git status --porcelain
+```
+
+### Phase 2: Context Analysis & Naming
+
+```bash
+# Context priority (highest to lowest):
+1. File content (if --file provided)
+2. Explicit description argument  
+3. Recent conversation messages
+4. Fallback to timestamp-based name
+
+# Apply conventional prefixes based on keywords:
+analyze_context() {
+  if grep -qi "bug\|error\|fix\|issue" context; then
+    prefix="fix"
+  elif grep -qi "feature\|add\|implement\|create" context; then
+    prefix="feature" 
+  elif grep -qi "doc\|readme\|guide" context; then
+    prefix="docs"
+  elif grep -qi "performance\|slow\|optimize" context; then
+    prefix="perf"
+  elif grep -qi "refactor\|cleanup\|reorganize" context; then
+    prefix="refactor"
+  else
+    prefix="feature"  # Default
+  fi
+}
+```
+
+### Phase 3: Branch Creation & Verification
+
+```bash
+# Create and switch to new branch
+git checkout -b "$branch_name"
+
+# Set upstream tracking if remote exists
+git push -u origin "$branch_name" 2>/dev/null || true
+
+# Verify success
+git branch --show-current
+git log --oneline -3
+```
+
+## Context Extraction Examples
+
+### From Conversation
 
 ```text
-Users reporting 403 Forbidden errors when accessing profile endpoint
-after recent deployment. Affects approximately 15% of requests...
+User: "Need to fix the login timeout issue that's affecting mobile users"
+Branch: fix/login-timeout-issue
+
+User: "Let's implement OAuth authentication for third-party logins"  
+Branch: feature/oauth-authentication
+
+User: "Working on JIRA-456 to add payment processing"
+Branch: feature/JIRA-456-payment-processing
 ```
 
-→ Creates: `fix/api-403-profile-endpoint`
-
-**Task definition file** (tasks/refactor.yaml):
-
-```yaml
-title: Refactor database connection pooling
-type: technical-debt
-description: Current connection pool implementation is inefficient...
-```
-
-→ Creates: `refactor/database-connection-pooling`
-
-### Using conversation context
+### From File Content
 
 ```text
-User: "I need to add a dark mode toggle to the settings page"
-User: /branch
-# Creates: feature/dark-mode-settings-toggle
+File: bug-report.md containing "SQL injection vulnerability in user search"
+Branch: fix/sql-injection-user-search
 
-User: "The API is returning 500 errors on user profile updates"
-User: /branch
-# Creates: fix/api-500-user-profile-updates
-```yaml
+File: feature-spec.md containing "Real-time notifications system"
+Branch: feature/realtime-notifications
 
-## Smart Context Analysis
-
-The command analyzes multiple context sources in priority order:
-
-1. **File input (--file or -f)** - Highest priority when provided
-2. **Explicit arguments** - Direct context passed to command
-3. **Recent conversation** - Last 5-10 messages
-4. **Issue/ticket mentions** - JIRA, GitHub issues, etc.
-5. **Code snippets** - Feature/component names
-6. **Error messages** - For bug fix branches
-
-When --file or -f is used, it becomes the sole source of context, overriding all other sources.
-
-## Integration with Other Commands
-
-Typical workflow:
-
-```bash
-/branch implement oauth2 login    # Create feature branch
-# ... make changes ...
-/commit                           # Commit with review
-/push                            # Push with quality gates
-/pr                              # Create pull request
-```yaml
-
-## Safety Features
-
-- **Always from main**: Ensures branches start from latest stable code
-- **Automatic fetch**: Gets latest remote changes before branching
-- **Name validation**: Ensures git-compatible branch names
-- **Duplicate prevention**: Warns if branch already exists
-- **Context preservation**: Branch name reflects actual work being done
+File: performance.md containing "Database query optimization"  
+Branch: perf/database-query-optimization
+```
 
 ## Advanced Features
 
-### Issue Integration
+### Ticket Number Detection
 
-Automatically detects and includes:
+```bash
+# Regex patterns for common ticket formats:
+JIRA-\d+     # JIRA-123
+GH-\d+       # GH-456  
+#\d+         # #789
+[A-Z]+-\d+   # ABC-123
 
-- JIRA ticket numbers (PROJ-123)
-- GitHub issue numbers (#456)
-- Linear issue IDs (ENG-789)
-- Shortcut story IDs (sc-1234)
+# Automatic inclusion in branch names:
+"Fix JIRA-123 user auth" → feature/JIRA-123-user-auth
+"Resolve GH-456" → fix/GH-456
+"Implement #789 notifications" → feature/789-notifications
+```
 
-### Multi-word Handling
+### Conflict Resolution
 
-Intelligently converts phrases:
+```bash
+# Handle existing branch names
+check_branch_exists() {
+  if git branch --list "$branch_name" | grep -q "$branch_name"; then
+    echo "Branch exists, appending suffix..."
+    branch_name="${branch_name}-$(date +%m%d)"
+  fi
+}
 
-- "User Profile Manager" → `user-profile-manager`
-- "API v2 Migration" → `api-v2-migration`
-- "iOS/Android Support" → `ios-android-support`
+# Handle uncommitted changes
+handle_uncommitted_changes() {
+  if ! git diff --quiet || ! git diff --cached --quiet; then
+    echo "Uncommitted changes detected. Stashing..."
+    git stash push -m "Auto-stash before branch creation"
+    echo "Use 'git stash pop' to restore changes"
+  fi
+}
+```
 
-### Context Inference
+## Execution Verification
 
-Can understand intent from:
+Deploy execution-evaluator to verify:
 
-- Error stack traces → fix branch
-- Feature descriptions → feature branch
-- "Update docs" mentions → docs branch
-- Performance discussions → perf branch
+- ✅ **Main branch updated** - Latest changes pulled successfully
+- ✅ **Branch created** - New branch exists with correct name
+- ✅ **Switched successfully** - Currently on new branch
+- ✅ **Proper naming** - Follows conventions with appropriate prefix
+- ✅ **Clean state** - No uncommitted changes lost
+- ✅ **Tracking setup** - Upstream configured if applicable
 
-## Configuration
+## Examples
 
-Respects repository settings:
+### Basic Usage
 
-- Branch naming conventions in `.gitmessage`
-- Protected branch rules
-- Team-specific prefixes
-- Organization standards
+```bash
+User: /branch user authentication system
+Claude: 🔄 Updating main branch...
+✅ Switched to main, pulled latest changes
+🌿 Creating branch: feature/user-authentication-system
+✅ Created and switched to feature/user-authentication-system
+📊 3 commits ahead of origin/main
+```
+
+### File-Based Context
+
+```bash
+User: /branch --file bug-report.md
+Claude: 📖 Reading bug-report.md...
+🔍 Detected: Bug report about memory leak
+🔄 Updating main branch...
+🌿 Creating branch: fix/memory-leak
+✅ Created and switched to fix/memory-leak
+```
+
+### Conversation Context
+
+```bash
+User: Need to optimize the database queries, they're really slow
+User: /branch
+Claude: 🔍 Analyzing conversation context...
+💡 Detected: Performance optimization work
+🔄 Updating main branch...
+🌿 Creating branch: perf/database-queries
+✅ Created and switched to perf/database-queries
+```
 
 ## Notes
 
-- Branch names are limited to 50 characters for readability
-- Special characters are converted to hyphens
-- Uppercase converted to lowercase
-- Creates from main/master (configurable)
-- Supports both GitHub Flow and Git Flow conventions
-- Context window includes last 10 messages by default
-- **File input**: When using --file or -f, the file content is the sole source for branch naming
-- **File formats**: Any text-based file can be used as input
-- **File paths**: Can be relative or absolute paths
-- **Large files**: The entire file is read and analyzed for context extraction
+- Always starts from updated main/master branch
+- Handles uncommitted changes by stashing
+- Resolves naming conflicts automatically
+- Supports all major ticket numbering systems
+- Includes execution verification for reliability
+- Maintains git-flow conventions for team consistency

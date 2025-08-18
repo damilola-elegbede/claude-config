@@ -2,7 +2,8 @@
 
 ## Description
 
-Diagnoses and fixes GitHub Actions failures using pattern recognition and historical fix data. Learns from successful fixes to improve success rate over time.
+Diagnoses and fixes GitHub Actions failures using pattern recognition and historical fix data.
+Learns from successful fixes to improve success rate over time.
 
 ## Usage
 
@@ -140,7 +141,6 @@ Automated fix applied by /fix-ci"
   fi
 }
 ```
-
 
 ## Success Tracking
 
