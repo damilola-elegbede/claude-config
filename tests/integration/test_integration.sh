@@ -100,20 +100,23 @@ test_repo_structure() {
         "tests/test.sh should exist"
 }
 
-# Test that sync command is excluded from global commands
-test_sync_exclusion() {
+# Test that sync command works for Claude configs
+test_sync_functionality() {
     local sync_file="$ORIGINAL_DIR/system-configs/.claude/commands/sync.md"
 
     # Verify sync.md exists
     assert_file_exists "$sync_file" \
         "sync.md should exist in repo"
 
-    # Verify it mentions configuration-based sync
-    assert_file_contains "$sync_file" ".syncconfig" \
-        "sync.md should mention configuration file"
+    # Verify it mentions Claude configuration sync
+    assert_file_contains "$sync_file" "system-configs/.claude/" \
+        "sync.md should mention source directory"
 
     assert_file_contains "$sync_file" "rsync" \
         "sync.md should mention rsync usage"
+
+    assert_file_contains "$sync_file" "statusline.sh" \
+        "sync.md should mention statusline.sh"
 }
 
 # Run all tests
@@ -123,6 +126,6 @@ test_sync_simulation || exit 1
 test_command_consistency || exit 1
 test_claude_md_consistency || exit 1
 test_repo_structure || exit 1
-test_sync_exclusion || exit 1
+test_sync_functionality || exit 1
 
 echo "All integration tests passed!"

@@ -23,10 +23,10 @@ for known patterns, and learn from successful fixes to improve success rate over
 
 ```yaml
 # Patterns tracked with success rates
-Lint/Format: 
+Lint/Format:
   fix: "npm run lint:fix"
   success_rate: 95%
-  
+
 Missing Dependencies:
   fix: "npm install"
   success_rate: 88%
@@ -34,7 +34,7 @@ Missing Dependencies:
 Test Timeouts:
   fix: "Add async/await, increase timeout"
   success_rate: 72%
-  
+
 Type Errors:
   fix: "Update type definitions"
   success_rate: 65%
@@ -50,27 +50,27 @@ Build Cache:
 # Apply fixes based on error pattern
 apply_fix() {
   local error_log="$1"
-  
+
   # Lint/format (95% success)
   if grep -q "ESLint\|Prettier" "$error_log"; then
     npm run lint:fix || npx eslint . --fix
     npx prettier --write .
     return 0
   fi
-  
+
   # Dependencies (88% success)
   if grep -q "Module not found\|Cannot resolve" "$error_log"; then
     npm install
     return 0
   fi
-  
+
   # Test timeout (72% success)
   if grep -q "Timeout.*exceeded\|Async.*timeout" "$error_log"; then
     # Find test files and add timeout
     find . -name "*.test.js" -exec sed -i 's/test(/test.timeout(10000)(/' {} \;
     return 0
   fi
-  
+
   # No quick fix available
   return 1
 }
@@ -84,7 +84,7 @@ record_fix() {
   local pattern="$1"
   local fix="$2"
   local success="$3"
-  
+
   echo "${pattern}|${fix}|${success}" >> ~/.fix-ci-history
 }
 
@@ -92,7 +92,7 @@ record_fix() {
 update_patterns() {
   # Calculate success rates from history
   awk -F'|' '
-    {patterns[$1]++; if($3=="true") success[$1]++} 
+    {patterns[$1]++; if($3=="true") success[$1]++}
     END {for(p in patterns) print p, int(success[p]/patterns[p]*100)"%"}
   ' ~/.fix-ci-history | sort -t' ' -k2 -rn
 }
@@ -114,7 +114,7 @@ fix_ci() {
   # Get failure logs
   local run_id="${1:-$(gh run list --status=failure --limit=1 --jq '.[0].databaseId')}"
   local logs=$(gh run view "$run_id" --log-failed)
-  
+
   # Try quick fixes first
   if apply_fix "$logs"; then
     echo "✅ Applied quick fix"
@@ -132,7 +132,7 @@ fix_ci() {
       return 1
     fi
   fi
-  
+
   # Commit and push
   if ! git diff --quiet; then
     git add .
@@ -140,7 +140,7 @@ fix_ci() {
 
 Automated fix applied by /fix-ci"
     git push
-    
+
     # Record outcome
     sleep 60  # Wait for CI
     local result=$(gh run list --limit=1 --jq '.[0].conclusion')
@@ -176,7 +176,7 @@ Claude: 🔍 Getting latest failure...
 User: /fix-ci --learn
 Claude: 📦 Updating fix patterns from history...
 Top patterns by success rate:
-- Lint/Format: 95% 
+- Lint/Format: 95%
 - Dependencies: 88%
 - Test Timeouts: 72%
 📊 Overall success rate: 74%

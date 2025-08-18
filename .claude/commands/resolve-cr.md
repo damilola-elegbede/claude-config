@@ -1,1 +1,0 @@
-../../system-configs/.claude/commands/resolve-cr.md

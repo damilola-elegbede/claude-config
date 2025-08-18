@@ -2,108 +2,98 @@
 
 ## Description
 
-Synchronizes configuration files between source and destination directories based on `.syncconfig` file.
-Supports any configuration management scenario with validation and safety checks.
+Synchronizes Claude configuration files from `system-configs/.claude/` to `~/.claude/`.
+Deploys agents, commands, output-styles, and settings with validation and backup creation.
 
 ## Usage
 
 ```bash
-/sync                    # Sync based on .syncconfig
-/sync --pull             # Pull from remote to local
-/sync --push             # Push from local to remote
+/sync                    # Sync system-configs/.claude/ to ~/.claude/
 /sync --dry-run          # Preview changes without syncing
+/sync --backup           # Create backup before syncing
+/sync --force            # Overwrite existing files without prompting
 ```
 
 ## Behavior
 
-When invoked, I will synchronize configurations between directories based on
-the .syncconfig file. This enables bidirectional sync, backup creation, and
-intelligent file filtering with rsync efficiency.
+When invoked, I will synchronize all Claude configuration files from
+`system-configs/.claude/` to `~/.claude/`. This includes agents, commands,
+output-styles, settings.json, and statusline.sh with automatic validation.
 
-## Configuration File
-
-Create `.syncconfig` in project root:
+## What Gets Synced
 
 ```yaml
-# .syncconfig example
-sync:
-  - source: ./configs/
-    dest: ~/.myapp/
-    exclude: ["*.tmp", "*.backup"]
-  
-  - source: ./templates/
-    dest: ~/.myapp/templates/
-    validate: true
-    
-  - source: ./settings.json
-    dest: ~/.myapp/settings.json
-    merge: true  # Merge instead of overwrite
+Source: ./system-configs/.claude/
+Destination: ~/.claude/
+
+Files Synced:
+  - agents/*.md           → ~/.claude/agents/
+  - commands/*.md         → ~/.claude/commands/
+  - output-styles/*.md    → ~/.claude/output-styles/
+  - settings.json         → ~/.claude/settings.json
+  - statusline.sh         → ~/.claude/statusline.sh
+
+Excluded:
+  - README.md files
+  - AGENT_TEMPLATE.md
+  - AGENT_CATEGORIES.md
+  - AUDIT_VERIFICATION_PROTOCOL.md
+  - *.tmp, *.backup files
 ```
 
 ## Sync Process
 
-### Phase 1: Read Configuration
+### Phase 1: Pre-Sync Validation
 
 ```bash
-# Parse .syncconfig file
-if [[ ! -f ".syncconfig" ]]; then
-  echo "❌ No .syncconfig file found"
-  echo "💡 Create .syncconfig with source/dest mappings"
+# Validate source directory exists
+if [[ ! -d "system-configs/.claude" ]]; then
+  echo "❌ Source directory not found: system-configs/.claude"
   exit 1
 fi
-```
 
-### Phase 2: Validate & Sync
+# Create destination directory if needed
+mkdir -p ~/.claude/{agents,commands,output-styles}
 
-```bash
-# For each mapping in .syncconfig
-for mapping in mappings; do
-  # Validate source exists
-  if [[ ! -e "$source" ]]; then
-    echo "❌ Source not found: $source"
-    continue
-  fi
-  
-  # Create dest directory if needed
-  mkdir -p "$(dirname "$dest")"
-  
-  # Apply exclusion patterns
-  rsync -av --exclude-from=<(printf '%s\n' "${excludes[@]}") \
-    "$source" "$dest"
-done
-```
-
-### Phase 3: Optional Validation
-
-```bash
-# Run validation if specified
-if [[ "$validate" == "true" ]]; then
-  # Check JSON validity
-  if [[ "$dest" == *.json ]] && ! jq empty "$dest" 2>/dev/null; then
-    echo "❌ Invalid JSON in $dest"
-    return 1
-  fi
+# Backup existing files if --backup specified
+if [[ "$backup" == "true" ]]; then
+  timestamp=$(date +%Y%m%d_%H%M%S)
+  cp -r ~/.claude ~/.claude.backup.$timestamp
 fi
 ```
 
-## Bidirectional Sync
-
-### Pull Mode (--pull)
-
-Downloads configuration from remote location to local:
+### Phase 2: Sync Files
 
 ```bash
-/sync --pull
-# Remote → Local based on .syncconfig
+# Sync with rsync for efficiency
+rsync -av \
+  --exclude="README.md" \
+  --exclude="AGENT_TEMPLATE.md" \
+  --exclude="AGENT_CATEGORIES.md" \
+  --exclude="AUDIT_VERIFICATION_PROTOCOL.md" \
+  --exclude="*.tmp" \
+  --exclude="*.backup" \
+  system-configs/.claude/ ~/.claude/
+
+# Set executable permissions for statusline.sh
+chmod +x ~/.claude/statusline.sh 2>/dev/null || true
 ```
 
-### Push Mode (--push)
-
-Uploads local configuration to remote location:
+### Phase 3: Validation
 
 ```bash
-/sync --push  
-# Local → Remote based on .syncconfig
+# Validate JSON files
+if ! jq empty ~/.claude/settings.json 2>/dev/null; then
+  echo "❌ Invalid JSON in settings.json"
+  return 1
+fi
+
+# Verify critical files exist
+for file in agents commands output-styles settings.json statusline.sh; do
+  if [[ ! -e ~/.claude/$file ]]; then
+    echo "⚠️  Missing: ~/.claude/$file"
+  fi
+done
 ```
 
 ## Examples
@@ -112,28 +102,43 @@ Uploads local configuration to remote location:
 
 ```bash
 User: /sync
-Claude: 📖 Reading .syncconfig...
-🔄 Syncing 3 mappings...
-✅ ./configs/ → ~/.myapp/ (12 files)
-✅ ./templates/ → ~/.myapp/templates/ (5 files)
-✅ ./settings.json → ~/.myapp/settings.json (merged)
+Claude: 🔄 Syncing Claude configurations...
+📁 Source: system-configs/.claude/ (50 files)
+📁 Destination: ~/.claude/
+✅ Agents synced (41 files)
+✅ Commands synced (15 files)
+✅ Output styles synced (8 files)
+✅ Settings and statusline synced
+🎯 All configurations deployed successfully
 ```
 
 ### Dry Run
 
 ```bash
 User: /sync --dry-run
-Claude: 📖 Preview mode...
+Claude: 📖 Preview mode - no changes will be made
 Would sync:
-- ./configs/ → ~/.myapp/ (12 files, 2.3KB)
-- ./templates/ → ~/.myapp/templates/ (5 files, 1.1KB)
-- ./settings.json → ~/.myapp/settings.json (merge)
+- 41 agent files to ~/.claude/agents/
+- 15 command files to ~/.claude/commands/
+- 8 output style files to ~/.claude/output-styles/
+- settings.json to ~/.claude/settings.json
+- statusline.sh to ~/.claude/statusline.sh (executable)
+```
+
+### Backup and Sync
+
+```bash
+User: /sync --backup
+Claude: 💾 Creating backup: ~/.claude.backup.20240818_164500
+🔄 Syncing configurations...
+✅ Backup created and sync completed
 ```
 
 ## Notes
 
 - Uses rsync for efficient file synchronization
-- .syncconfig uses YAML for readability
-- Supports patterns for exclusion (gitignore syntax)
-- Merge option for JSON files preserves existing settings
-- Version control .syncconfig for team consistency
+- Automatically sets executable permissions on statusline.sh
+- Validates JSON files after sync
+- Excludes documentation and template files
+- Built-in backup functionality for safety
+- No external configuration files needed

@@ -67,20 +67,20 @@ validate_push_safety() {
     echo "❌ Cannot push directly to $current_branch"
     return 1
   fi
-  
+
   # Check for uncommitted changes
   if ! git diff --quiet || ! git diff --cached --quiet; then
     echo "❌ Uncommitted changes detected. Commit first."
     return 1
   fi
-  
+
   # Check if there's anything to push
   ahead_count=$(git rev-list --count HEAD ^origin/$current_branch 2>/dev/null || echo "0")
   if [ "$ahead_count" -eq 0 ]; then
     echo "✅ Already up to date with remote"
     return 1
   fi
-  
+
   echo "📊 Ready to push $ahead_count commits"
 }
 ```
@@ -91,27 +91,27 @@ validate_push_safety() {
 # Comprehensive quality validation
 run_quality_gates() {
   local issues_found=0
-  
+
   echo "🧪 Running test suite..."
   if ! run_tests; then
     echo "🤖 Deploying test-engineer to fix failing tests..."
     # Deploy agent to fix tests
     ((issues_found++))
   fi
-  
+
   echo "🔍 Running linters with auto-fix..."
   if ! run_linters_with_autofix; then
     echo "🔧 Some linting issues require manual attention"
     ((issues_found++))
   fi
-  
+
   echo "👁️ Performing code review..."
   if ! run_automated_review; then
     echo "🤖 Deploying specialists for automated remediation..."
     # Deploy code-reviewer + specialists
     ((issues_found++))
   fi
-  
+
   return $issues_found
 }
 ```
@@ -122,20 +122,20 @@ run_quality_gates() {
 # Linting with automatic fixes
 run_linters_with_autofix() {
   local fixes_applied=0
-  
+
   # JavaScript/TypeScript
   if [ -f "package.json" ]; then
     if npm run lint:fix 2>/dev/null || npx eslint . --fix; then
       echo "✅ JavaScript linting auto-fixed"
       ((fixes_applied++))
     fi
-    
+
     if npx prettier --write . 2>/dev/null; then
       echo "✅ Code formatting applied"
       ((fixes_applied++))
     fi
   fi
-  
+
   # Python
   if find . -name "*.py" -not -path "./venv/*" | head -1 | grep -q ".py"; then
     if command -v black >/dev/null && black . --check --diff; then
@@ -143,14 +143,14 @@ run_linters_with_autofix() {
       echo "✅ Python formatting applied"
       ((fixes_applied++))
     fi
-    
+
     if command -v isort >/dev/null; then
       isort .
       echo "✅ Import sorting applied"
       ((fixes_applied++))
     fi
   fi
-  
+
   # Go
   if [ -f "go.mod" ]; then
     gofmt -w .
@@ -158,7 +158,7 @@ run_linters_with_autofix() {
     echo "✅ Go formatting applied"
     ((fixes_applied++))
   fi
-  
+
   # Markdown
   if command -v markdownlint-cli2 >/dev/null; then
     if npx markdownlint-cli2 "**/*.md" --fix; then
@@ -166,7 +166,7 @@ run_linters_with_autofix() {
       ((fixes_applied++))
     fi
   fi
-  
+
   # Commit fixes if any were applied
   if [ $fixes_applied -gt 0 ]; then
     git add .
@@ -180,7 +180,7 @@ Applied fixes:
 Auto-generated before push to maintain quality standards."
     echo "📝 Committed $fixes_applied auto-fixes"
   fi
-  
+
   return 0
 }
 ```
@@ -194,7 +194,7 @@ Operations:
   - Direct git commands only
   - Basic validation checks
   - No quality analysis
-  
+
 Benefits:
   - Fast execution (10-15 seconds)
   - No agent overhead
@@ -208,19 +208,19 @@ Quality Gate Agents:
   test-engineer:
     trigger: "Test failures detected"
     role: "Fix failing tests, add missing coverage"
-    
+
   code-reviewer:
     trigger: "Always for full mode"
     role: "Identify code quality issues"
-    
+
   backend-engineer:
     trigger: "Server-side code issues"
     role: "Fix backend linting and logic issues"
-    
+
   frontend-architect:
     trigger: "Client-side code issues"
     role: "Fix frontend linting and performance"
-    
+
   security-auditor:
     trigger: "Security vulnerabilities found"
     role: "Patch security issues before push"
@@ -261,25 +261,25 @@ run_tests() {
 # Quick security checks
 run_security_scan() {
   local security_issues=0
-  
+
   # Dependency vulnerabilities
   if [ -f "package.json" ] && npm audit --audit-level high; then
     echo "⚠️ npm security vulnerabilities found"
     ((security_issues++))
   fi
-  
+
   # Secrets detection
   if command -v git-secrets >/dev/null && ! git secrets --scan; then
     echo "⚠️ Potential secrets detected in code"
     ((security_issues++))
   fi
-  
+
   # Basic pattern matching for common issues
   if grep -r "password\s*=" . --include="*.js" --include="*.py" --include="*.go"; then
     echo "⚠️ Hardcoded passwords detected"
     ((security_issues++))
   fi
-  
+
   return $security_issues
 }
 ```

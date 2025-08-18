@@ -32,12 +32,12 @@ and accessibility aspects, with results aggregated by severity.
 Always Deployed:
   code-reviewer: "Code quality, patterns, maintainability analysis"
   security-auditor: "OWASP compliance, vulnerability detection"
-  
+
 Conditionally Deployed:
   test-engineer: "If test files present or coverage gaps detected"
   performance-specialist: "If performance issues or slow code detected"
   accessibility-auditor: "If frontend/UI files present (.jsx, .vue, .html)"
-  
+
 Coordination: All agents work simultaneously, results aggregated by severity
 ```
 
@@ -47,11 +47,11 @@ Coordination: All agents work simultaneously, results aggregated by severity
 --security Mode:
   agents: [security-auditor, code-reviewer]
   focus: "OWASP Top 10, dependency vulnerabilities, secrets"
-  
+
 --performance Mode:
   agents: [performance-specialist, code-reviewer]
   focus: "Algorithm complexity, database queries, memory usage"
-  
+
 --fix Mode:
   agents: [code-reviewer + auto-remediation specialists]
   behavior: "Auto-apply safe fixes, report non-automatable issues"
@@ -74,7 +74,7 @@ function getUserEmail(user) {
   return user?.email?.toLowerCase() || '';
 }
 
-// ❌ High: O(n²) complexity  
+// ❌ High: O(n²) complexity
 function findDuplicates(arr) {
   const duplicates = [];
   for (let i = 0; i < arr.length; i++) {
@@ -154,11 +154,11 @@ describe('processPayment', () => {
   test('throws error for negative amounts', () => {
     expect(() => processPayment(-10, 'token')).toThrow('Invalid amount');
   });
-  
+
   test('throws error for zero amounts', () => {
     expect(() => processPayment(0, 'token')).toThrow('Invalid amount');
   });
-  
+
   test('processes valid payment', async () => {
     const result = await processPayment(100, 'valid-token');
     expect(result.success).toBe(true);
@@ -175,53 +175,53 @@ describe('processPayment', () => {
 coordinate_review() {
   local target="$1"
   local mode="$2"
-  
+
   echo "🔍 Starting multi-agent review of $target..."
-  
+
   # Analyze file types to determine agent deployment
   file_types=$(find "$target" -type f -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.go" | \
                head -10 | xargs file --mime-type)
-  
+
   # Deploy agents based on file content
   agents_to_deploy=("code-reviewer" "security-auditor")
-  
+
   if echo "$file_types" | grep -q "test\|spec"; then
     agents_to_deploy+=("test-engineer")
   fi
-  
+
   if echo "$file_types" | grep -q "html\|jsx\|vue"; then
     agents_to_deploy+=("accessibility-auditor")
   fi
-  
+
   if [[ "$mode" == "--performance" ]] || detect_performance_concerns "$target"; then
     agents_to_deploy+=("performance-specialist")
   fi
-  
+
   echo "🤖 Deploying agents: ${agents_to_deploy[*]}"
-  
+
   # Execute review in parallel
   for agent in "${agents_to_deploy[@]}"; do
     echo "Deploying $agent for $target review..." &
   done
   wait
-  
+
   echo "📋 Aggregating findings..."
 }
 
 # Detect performance-related files
 detect_performance_concerns() {
   local target="$1"
-  
+
   # Look for performance-sensitive patterns
   if grep -r "setTimeout\|setInterval\|for.*length\|O(n" "$target" >/dev/null 2>&1; then
     return 0
   fi
-  
+
   # Check for database query files
   if grep -r "SELECT\|INSERT\|UPDATE\|DELETE" "$target" >/dev/null 2>&1; then
     return 0
   fi
-  
+
   return 1
 }
 ```
@@ -232,10 +232,10 @@ detect_performance_concerns() {
 Critical Issues (Block Merge):
   Security:
     - SQL injection vulnerabilities
-    - XSS attack vectors  
+    - XSS attack vectors
     - Hardcoded secrets/API keys
     - Authentication bypasses
-    
+
   Reliability:
     - Null pointer exceptions
     - Infinite loops
@@ -248,7 +248,7 @@ High Priority (Fix Before Merge):
     - N+1 database queries
     - Memory allocation in loops
     - Blocking I/O on main thread
-    
+
   Testing:
     - Critical functions untested
     - Payment/security logic without tests
@@ -260,7 +260,7 @@ Medium Priority (Consider Fixing):
     - Functions >50 lines
     - Code duplication
     - Inconsistent naming
-    
+
   Documentation:
     - Missing JSDoc/docstrings
     - Complex logic without comments
@@ -286,12 +286,12 @@ Low Priority (Optional):
 1. **SQL Injection** in `auth/login.js:45`
    - **Risk**: Remote code execution via login form
    - **Fix**: Use parameterized queries: `db.query('SELECT * FROM users WHERE email = ?', [email])`
-   
+
 2. **Hardcoded JWT Secret** in `config/jwt.js:12`
    - **Risk**: Token forgery if secret leaked
    - **Fix**: Move to environment variable: `process.env.JWT_SECRET`
 
-### 🟠 High Priority Issues  
+### 🟠 High Priority Issues
 1. **Weak Password Hashing** in `auth/password.js:23`
    - **Current**: MD5 hashing (cryptographically broken)
    - **Fix**: Use bcrypt with salt rounds ≥12
@@ -310,7 +310,7 @@ Low Priority (Optional):
 ### Performance Review
 
 ```markdown
-## Performance Review Report  
+## Performance Review Report
 **Target**: src/api/ | **Issues**: 1 High, 3 Medium | **Estimated Impact**: 60% response time reduction
 
 ### 🟠 High Impact Issues
@@ -330,7 +330,7 @@ Low Priority (Optional):
 
 ### 📊 Performance Metrics
 - **Database Queries**: 15 → 3 (80% reduction)
-- **Memory Usage**: 150MB → 90MB (40% reduction)  
+- **Memory Usage**: 150MB → 90MB (40% reduction)
 - **Bundle Size**: 2.3MB → 400KB (83% reduction)
 ```
 
@@ -344,8 +344,8 @@ Low Priority (Optional):
 1. **Payment Processing** (`payments/charge.js`)
    - 0% coverage on critical financial logic
    - **Required**: Unit tests for validation, error handling, success flows
-   
-2. **Authentication Logic** (`auth/validate.js`)  
+
+2. **Authentication Logic** (`auth/validate.js`)
    - Missing edge case tests (expired tokens, malformed input)
    - **Required**: Integration tests for auth flow
 
@@ -386,7 +386,7 @@ User: /review src/auth/
 Claude: 🔍 Starting multi-agent review of src/auth/...
 🤖 Deploying: code-reviewer, security-auditor, test-engineer
 🔒 security-auditor: Found 2 critical SQL injection vulnerabilities
-🧪 test-engineer: 23% test coverage, missing critical payment tests  
+🧪 test-engineer: 23% test coverage, missing critical payment tests
 🔧 code-reviewer: 3 high complexity functions, 1 code duplication
 📋 Generated comprehensive review report with 8 actionable fixes
 ```
