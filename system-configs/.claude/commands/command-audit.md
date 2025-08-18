@@ -32,25 +32,35 @@ reports highlighting issues with specific fixes.
 ### Category Standards
 
 ```yaml
-git_workflow: [commit, branch, push, pr]
-  - Must use execution-evaluator
-  - Git safety features documented
+git_workflow:
+  commands: [commit, branch, push, pr]
+  requirements:
+    - Must use execution-evaluator
+    - Git safety features documented
 
-repository_analysis: [context, test, debug]  
-  - Framework detection capabilities
-  - Universal project compatibility
+repository_analysis:
+  commands: [context, test, debug]  
+  requirements:
+    - Framework detection capabilities
+    - Universal project compatibility
 
-system_management: [sync, deps, fix-ci]
-  - Environment validation
-  - Backup procedures
+system_management:
+  commands: [sync, deps, fix-ci]
+  requirements:
+    - Environment validation
+    - Backup procedures
 
-quality_assurance: [review, agent-audit, command-audit]
-  - Comprehensive validation
-  - Detailed reporting
+quality_assurance:
+  commands: [review, agent-audit, command-audit]
+  requirements:
+    - Comprehensive validation
+    - Detailed reporting
 
-development_support: [plan, resolve-cr, prompt]
-  - Workflow integration
-  - User guidance
+development_support:
+  commands: [plan, resolve-cr, prompt]
+  requirements:
+    - Workflow integration
+    - User guidance
 ```
 
 ## Execution Process

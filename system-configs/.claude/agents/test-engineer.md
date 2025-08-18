@@ -118,7 +118,7 @@ detect_python_framework() {
     echo "unittest"
   fi
 }
-```yaml
+```
 
 ### Smart Test Running
 
@@ -146,7 +146,7 @@ run_pattern_tests() {
    # Go
   go test -run "$pattern" ./...
 }
-```yaml
+```
 
 ### Coverage Analysis
 
@@ -159,7 +159,7 @@ pytest --cov=src --cov-report=html --cov-fail-under=80
 
 # Go with coverage
 go test -coverprofile=coverage.out ./... && go tool cover -html=coverage.out
-```yaml
+```
 
 ## Intelligent Test Organization
 
@@ -179,7 +179,7 @@ tests/
 ├── fixtures/      # Test data
 ├── helpers/       # Test utilities
 └── __mocks__/     # Mock implementations
-```yaml
+```
 
 ## Quality Standards
 
@@ -269,7 +269,7 @@ describe('API Integration', () => {
        expect(getResponse.body).toMatchObject(response.body);
   });
 });
-```yaml
+```
 
 ### CI/CD Integration
 
@@ -288,7 +288,7 @@ test:
     - run: npm ci
     - run: npm test -- --coverage
     - uses: codecov/codecov-action@v3
-```yaml
+```
 
 ## Advanced Success Metrics
 

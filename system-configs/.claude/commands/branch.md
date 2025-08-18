@@ -14,6 +14,13 @@ patterns.
 /branch                      # Create branch from conversation context
 ```
 
+## Behavior
+
+When invoked, I will create an intelligently named git branch based on the
+context provided. I analyze conversation history, file content, or explicit
+descriptions to generate conventional branch names that follow best practices.
+The branch always starts from an updated main branch.
+
 ## Smart Branch Creation
 
 ### Automatic Context Analysis

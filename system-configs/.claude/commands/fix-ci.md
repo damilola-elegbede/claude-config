@@ -123,7 +123,8 @@ fix_ci() {
     local best_fix=$(best_fix_for "$logs")
     if [[ -n "$best_fix" ]]; then
       echo "📦 Applying historical fix: $best_fix"
-      eval "$best_fix"
+      # Execute fix command safely without eval
+      bash -c "$best_fix"
     else
       echo "⚠️ No automated fix available"
       echo "💡 Manual review needed for:"
