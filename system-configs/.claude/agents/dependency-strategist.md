@@ -3,7 +3,7 @@ name: dependency-strategist
 description: MUST BE USED for advanced dependency management requiring ML-powered vulnerability forecasting and strategic planning. Use PROACTIVELY when detecting complex dependency trees with transitive risks or potential supply chain attacks
 model: sonnet
 tools: [Read, Write, Bash, WebFetch, Grep, Glob, LS]
-color: yellow
+color: cyan
 category: analysis
 trigger_words: [dependencies, vulnerabilities, licenses, packages, security, supply chain, CVE, SBOM, audit, compliance]
 priority: high

@@ -108,12 +108,12 @@ test_sync_exclusion() {
     assert_file_exists "$sync_file" \
         "sync.md should exist in repo"
 
-    # Verify it mentions exclusion
-    assert_file_contains "$sync_file" "will NOT be copied" \
-        "sync.md should mention it won't be copied"
+    # Verify it mentions configuration-based sync
+    assert_file_contains "$sync_file" ".syncconfig" \
+        "sync.md should mention configuration file"
 
-    assert_file_contains "$sync_file" "repo-specific" \
-        "sync.md should be marked as repo-specific"
+    assert_file_contains "$sync_file" "rsync" \
+        "sync.md should mention rsync usage"
 }
 
 # Run all tests

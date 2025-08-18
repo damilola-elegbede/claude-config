@@ -154,7 +154,6 @@ After audit completion, **execution-evaluator** is deployed to verify:
 - YAML front matter parsing attempted for all agents
 - Unparseable YAML agents were identified and reported
 - Valid agents proceeded through full validation
-- Category assignments were checked
 - Tool permissions were validated
 - Markdown parsing standards were enforced
 - Code fencing and formatting consistency validated
@@ -193,7 +192,6 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 | Agent | Parseable | Valid Fields | Description Format | Error Details |
 |-------|-----------|--------------|-------------------|---------------|
 | debugger | ❌ | N/A | Multi-line without quotes | Line 3-4: Invalid YAML syntax |
-| agent-name | ✅ | ✅ | ✅ | None |
 
 **YAML Parsing Issues Found**:
 
@@ -215,7 +213,6 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 - Language Tags: XX/XX agents compliant
 - Example Quality: XX/XX agents compliant
 - Format Consistency: XX/XX agents compliant
-
 **Common Anti-Patterns Found**:
 
 - Missing language tags on code fences: X agents

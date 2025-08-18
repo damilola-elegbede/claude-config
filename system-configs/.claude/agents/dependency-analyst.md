@@ -3,7 +3,7 @@ name: dependency-analyst
 description: MUST BE USED for supply chain security, package vulnerability scanning, and dependency management. Use PROACTIVELY when auditing third-party packages, managing version updates, or identifying security risks in dependencies
 tools: Read, Grep, Glob, LS
 model: sonnet
-color: yellow
+color: cyan
 category: analysis
 ---
 

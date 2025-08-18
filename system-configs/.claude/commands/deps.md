@@ -2,291 +2,417 @@
 
 ## Description
 
-Manages dependencies intelligently across all package managers with security scanning, safe updates, and supply
-chain protection. Identifies vulnerabilities, reduces technical debt, and maintains optimal dependency health for
+Manages dependencies across all package managers with security scanning and
+safe updates. Provides quick audit, update, and cleanup operations for
 polyglot codebases.
 
 ## Usage
 
 ```bash
-/deps <action> [options]
-```yaml
-
-## Actions
-
-- `audit` - Deep vulnerability scan with risk assessment
-- `update` - Safe, staged dependency updates with rollback capability
-- `clean` - Remove unused dependencies to reduce attack surface
-- `analyze` - Comprehensive dependency health and risk scoring
-- `predict` - Forecast potential future vulnerabilities
-- `compare` - Compare dependencies across environments
+/deps                        # Quick audit of all dependencies
+/deps audit                  # Detailed security scan
+/deps update                 # Safe dependency updates
+/deps clean                  # Remove unused dependencies
+/deps --quick               # Fast check without deep analysis
+```
 
 ## Behavior
 
-When you invoke `/deps`, I will:
+When invoked, I will manage dependencies across all detected package managers,
+performing security scanning and safe updates. Quick mode provides essential
+health checks in 30 seconds, while audit mode performs comprehensive analysis
+with supply chain assessment.
 
-1. **Detect all package managers** in the codebase
-2. **Deploy dependency-manager agent** as the primary coordinator
-3. **Analyze the requested action** and deploy appropriate specialists
-4. **Execute the action** across all detected ecosystems
-5. **Provide consolidated results** with actionable recommendations
-6. **Deploy execution-evaluator** to verify:
-   - All package managers detected correctly
-   - Requested action completed successfully
-   - No dependencies broken
-   - Security scan results accurate
-   - Lock files updated appropriately
+## Two-Mode Operation
 
-## Package Manager Detection
+### Quick Mode (default) - 30 Second Analysis
 
-I automatically detect and work with:
+**What it does**: Essential dependency health check
 
-- **JavaScript/Node**: npm, yarn, pnpm
-- **Python**: pip, pipenv, poetry, conda
-- **Go**: go modules
-- **Rust**: cargo
-- **Java**: maven, gradle
-- **Ruby**: bundler
-- **PHP**: composer
-- **.NET**: nuget
-- **Swift**: swift package manager
-- **Elixir**: mix
-
-## Action Details
-
-### /deps audit
-
-I perform comprehensive security analysis:
-
-#### Vulnerability Scanning
-
-- Check against CVE databases
-- Identify known security issues
-- Assess severity levels (Critical, High, Medium, Low)
-- Check for available patches
-
-#### Supply Chain Analysis
-
-- Verify package authenticity
-- Check maintainer reputation
-- Identify typosquatting risks
-- Detect suspicious package behaviors
-- Analyze download statistics anomalies
-
-#### License Compliance
-
-- Identify license types
-- Check for incompatible licenses
-- Flag copyleft requirements
-- Verify commercial usage rights
-
-#### Output Format
-
-```text
-## Dependency Audit Report
-
-### Critical Issues (Immediate Action Required)
-- Package: version → vulnerability → fix available
-
-### High Risk (Address Within 48 Hours)
-- Package: version → issue → recommendation
-
-### Supply Chain Risks
-- Suspicious packages detected
-- Unmaintained dependencies
-- Single maintainer risks
-
-### License Issues
-- Incompatible licenses found
-- Commercial usage restrictions
 ```yaml
+Analysis Scope:
+  - Detect package managers automatically
+  - Check for known critical vulnerabilities
+  - Identify outdated packages
+  - Flag unused dependencies
+  
+Agent Usage: None (direct tooling)
 
-### /deps update
+Output: Summary with actionable items only
+```
 
-I perform safe, intelligent updates:
+### Deep Mode (audit) - 2 Minute Analysis  
 
-#### Update Strategy
+**What it does**: Comprehensive dependency analysis
 
-1. **Analyze update impact** - breaking changes, compatibility
-2. **Create update plan** - staged approach for safety
-3. **Test each stage** - run tests after each update group
-4. **Automatic rollback** - revert on test failures
-5. **Generate report** - document all changes
+```yaml
+Analysis Scope:
+  - Full CVE vulnerability scanning
+  - Supply chain risk assessment
+  - License compliance checking
+  - Dependency tree analysis
+  
+Agent Usage: dependency-manager + supply-chain-security-engineer
 
-#### Update Priorities
+Output: Detailed report with risk scoring
+```
 
-- **Security patches**: Immediate, even if breaking
-- **Minor updates**: Grouped by compatibility
-- **Major updates**: Individual attention with migration notes
-- **Dev dependencies**: Updated more aggressively
+## Package Manager Support
 
-#### Safety Measures
+### Auto-Detection
 
-- Lock file backups before changes
-- Incremental updates (patch → minor → major)
-- Compatibility verification between packages
-- Test suite validation after each change
-- Rollback capability at each stage
-- Dry-run diff preview for all changes (show lockfile and manifest diffs)
-- Require ExitPlanMode approval for major/breaking updates before write operations
+```bash
+# Detection patterns
+detect_package_managers() {
+  managers=()
+  
+  [ -f "package.json" ] && managers+=("npm")
+  [ -f "yarn.lock" ] && managers+=("yarn") 
+  [ -f "requirements.txt" ] && managers+=("pip")
+  [ -f "pyproject.toml" ] && managers+=("poetry")
+  [ -f "go.mod" ] && managers+=("go")
+  [ -f "Cargo.toml" ] && managers+=("cargo")
+  [ -f "pom.xml" ] && managers+=("maven")
+  [ -f "build.gradle" ] && managers+=("gradle")
+  [ -f "Gemfile" ] && managers+=("bundler")
+  [ -f "composer.json" ] && managers+=("composer")
+  
+  echo "Detected: ${managers[*]}"
+}
+```
 
-### /deps clean
+### Quick Vulnerability Checks
 
-I remove unnecessary dependencies:
+```bash
+# Fast security scanning per ecosystem
+quick_scan() {
+  if [ -f "package.json" ]; then
+    npm audit --audit-level high --parseable
+  fi
+  
+  if [ -f "requirements.txt" ]; then
+    pip-audit --format=json
+  fi
+  
+  if [ -f "go.mod" ]; then
+    go list -json -m all | nancy sleuth
+  fi
+  
+  if [ -f "Cargo.toml" ]; then
+    cargo audit --json
+  fi
+}
+```
 
-#### Detection Methods
+## Core Operations
 
-- **Static analysis** - find unused imports/requires
-- **Dynamic analysis** - runtime usage tracking
-- **Test coverage** - dependencies only used in dead code
-- **Build analysis** - unnecessary build dependencies
-- **Transitive analysis** - duplicated sub-dependencies
-- **Peer/optional dependency awareness** - avoid false positives in removal
-
-#### Cleanup Process
-
-1. Identify unused packages
-2. Check for hidden usages
-3. Verify removal safety
-4. Remove packages incrementally
-5. Run full test suite
-6. Update lock files
-7. Create a reversible PR per removal batch with rollback plan
-
-### /deps analyze
-
-I provide comprehensive dependency health metrics:
-
-#### Health Indicators
-
-- **Freshness**: How up-to-date are dependencies
-- **Security**: Known vulnerabilities count
-- **Maintenance**: Last update, open issues, responsiveness
-- **Popularity**: Downloads, stars, community size
-- **Complexity**: Dependency tree depth and breadth
-- **Technical Debt**: Update effort required
-
-#### Risk Assessment
+### /deps (Quick Mode)
 
 ```text
-## Dependency Health Score: B+ (78/100)
+🔍 Scanning dependencies...
+📦 Detected: npm, pip (2 package managers)
 
-### Breakdown
-- Security: A (95/100) - 1 low severity issue
-- Freshness: B (75/100) - 12 updates available
-- Maintenance: B+ (82/100) - Well maintained
-- Complexity: C (65/100) - Deep dependency tree
-- License: A (100/100) - All compatible
+⚠️ Issues Found:
+🔴 Critical: lodash@4.17.15 (prototype pollution CVE-2020-8203)
+🟡 Medium: axios@0.21.0 (SSRF vulnerability)
+📊 Outdated: 12 packages have newer versions
+🗑️ Unused: 3 packages not imported
+
+💡 Quick Fixes:
+npm audit fix
+pip install --upgrade-strategy eager
+
+⏱️ Completed in 28 seconds
+```
+
+### /deps audit (Deep Mode)
+
+```text
+## Comprehensive Dependency Audit
+
+### Security Analysis
+🔴 **Critical Vulnerabilities**: 2 found
+- lodash@4.17.15: Prototype pollution (CVE-2020-8203)
+  Fix: npm install lodash@4.17.21
+- pillow@8.2.0: Buffer overflow (CVE-2021-34552)  
+  Fix: pip install pillow>=8.3.2
+
+🟡 **Medium Risk**: 3 vulnerabilities
+🟢 **Low Risk**: 7 vulnerabilities
+
+### Supply Chain Assessment  
+✅ **Package Authenticity**: All packages verified
+⚠️ **Maintainer Risk**: 2 packages have single maintainer
+🔍 **Suspicious Activity**: None detected
+
+### License Compliance
+✅ **Compatible Licenses**: 94% (47/50 packages)
+⚠️ **GPL Dependencies**: 2 packages require review
+❌ **License Conflicts**: 1 incompatible license found
 
 ### Recommendations
-1. Update these security-critical packages
-2. Consider replacing these unmaintained packages
-3. Reduce dependency on these heavy packages
-```yaml
+1. Update critical vulnerabilities immediately
+2. Consider alternatives for single-maintainer packages
+3. Review GPL license requirements for commercial use
+4. Remove 3 unused dependencies to reduce attack surface
 
-### /deps predict
+⏱️ Completed in 1m 47s
+```
 
-I forecast future dependency risks:
+### /deps update (Safe Updates)
 
-#### Prediction Factors
+```bash
+# Staged update process
+safe_update() {
+  echo "🔄 Performing safe dependency updates..."
+  
+  # Backup current state
+  cp package-lock.json package-lock.json.backup 2>/dev/null
+  cp requirements.txt requirements.txt.backup 2>/dev/null
+  
+  # Update in stages
+  echo "Stage 1: Security patches only"
+  npm audit fix --force
+  
+  echo "Stage 2: Minor version updates"  
+  npm update --save
+  
+  echo "Stage 3: Test compatibility"
+  npm test || {
+    echo "❌ Tests failed, rolling back..."
+    restore_backup
+    return 1
+  }
+  
+  echo "✅ Updates completed successfully"
+}
+```
 
-- **Historical vulnerability patterns** of the package
-- **Maintenance activity trends** and responsiveness
-- **Dependency chain risks** from sub-dependencies
-- **Community health indicators** and adoption trends
-- **Code complexity metrics** suggesting bug likelihood
+### /deps clean (Unused Removal)
 
-#### Prediction Output
+```bash
+# Remove unused dependencies
+cleanup_dependencies() {
+  echo "🗑️ Removing unused dependencies..."
+  
+  # Node.js unused packages
+  if command -v depcheck >/dev/null; then
+    depcheck --json | jq -r '.dependencies[]' | xargs npm uninstall
+  fi
+  
+  # Python unused packages  
+  if command -v unimport >/dev/null; then
+    unimport --check --diff requirements.txt
+  fi
+  
+  # Go module cleanup
+  if [ -f "go.mod" ]; then
+    go mod tidy
+  fi
+  
+  echo "✅ Cleanup completed"
+}
+```
 
-```text
-## 30-Day Risk Forecast
+## Language-Specific Patterns
 
-### High Risk Packages (>70% probability)
-- package-a: Likely security disclosure based on patterns
-- package-b: Maintenance stopping, seek alternatives
+### Node.js/npm
 
-### Medium Risk (40-70% probability)
-- package-c: Increasing issue reports, monitor closely
-- package-d: Major version coming, breaking changes expected
+```bash
+# Complete npm audit and fix workflow
+npm_workflow() {
+  # Quick vulnerability check
+  npm audit --audit-level high
+  
+  # Automated fixes for non-breaking changes
+  npm audit fix
+  
+  # Manual review for breaking changes
+  npm audit fix --force --dry-run
+  
+  # Update outdated packages
+  npm outdated
+  npm update
+}
+```
 
-### Recommendations
-- Prepare migration plan for high-risk packages
-- Set up monitoring alerts for medium-risk packages
-```yaml
+### Python/pip
 
-### /deps compare
+```bash
+# Python dependency management
+python_workflow() {
+  # Security scanning
+  pip-audit --desc --format=json
+  
+  # Check for outdated packages
+  pip list --outdated --format=json
+  
+  # Safe updates (patch versions only)
+  pip install --upgrade --upgrade-strategy only-if-needed
+  
+  # Requirements file update
+  pip freeze > requirements.txt
+}
+```
 
-I analyze dependency differences:
+### Go Modules
 
-#### Comparison Scenarios
-
-- **Environment comparison**: dev vs prod vs staging
-- **Branch comparison**: main vs feature branches
-- **Time comparison**: current vs last month
-- **Team comparison**: different projects/services
-
-#### Comparison Output
-
-```text
-## Dependency Comparison: main vs feature/new-ui
-
-### Added (5 packages)
-- react-charts@2.1.0 (visualization)
-- lodash@4.17.21 (utilities)
-
-### Removed (2 packages)
-- old-chart-lib@1.0.0
-- jquery@3.6.0
-
-### Version Changes (8 packages)
-- react: 17.0.2 → 18.2.0 (major update)
-- typescript: 4.5.0 → 4.9.5 (minor update)
-
-### Security Impact
-- Resolved 3 vulnerabilities
-- Introduced 1 new low-severity issue
-```yaml
+```bash
+# Go dependency management
+go_workflow() {
+  # Vulnerability scanning
+  go list -json -m all | nancy sleuth
+  
+  # Update all dependencies
+  go get -u ./...
+  
+  # Clean unused dependencies
+  go mod tidy
+  
+  # Verify dependencies
+  go mod verify
+}
+```
 
 ## Agent Coordination
 
-### Primary Coordinator
+### Quick Mode (No Agents)
 
-- **dependency-manager**: Orchestrates the analysis and updates
+```yaml
+Direct Tooling:
+  - npm audit, pip-audit, cargo audit
+  - Built-in package manager commands
+  - Simple vulnerability databases
+  
+Speed: 30 seconds average
+Accuracy: High for known CVEs
+Coverage: Basic security + outdated packages
+```
 
-### Specialist Support
+### Deep Mode (Multi-Agent)
 
-- **security-auditor**: For vulnerability assessment
-- **supply-chain-security-engineer**: For supply chain risks
-- **code-archaeologist**: For usage analysis in legacy code
-- **test-engineer**: For validating updates
-- **migration-specialist**: For major version upgrades
+```yaml
+Agent Deployment:
+  dependency-manager:
+    role: "Coordinate dependency analysis across ecosystems"
+    tools: "All package manager integrations"
+    
+  supply-chain-security-engineer:
+    role: "Advanced threat detection and supply chain analysis"  
+    tools: "CVE databases, package reputation analysis"
+    
+Coordination:
+  - dependency-manager handles basic scanning
+  - supply-chain-security-engineer provides threat intelligence
+  - Results merged for comprehensive assessment
+```
 
-## Configuration Support
+## Risk Assessment Matrix
 
-I respect and use configuration files:
+### Vulnerability Severity
 
-- `.dependabot.yml` - GitHub dependency updates
-- `.npmrc` / `.yarnrc` - Node.js configurations
-- `pip.conf` - Python package settings
-- `renovate.json` - Renovate bot configuration
-- `.snyk` - Snyk security policies
+```yaml
+Critical (CVSS 9.0-10.0):
+  - Remote code execution
+  - Privilege escalation
+  - Data exfiltration
+  Action: Immediate update required
 
-## Success Metrics
+High (CVSS 7.0-8.9):
+  - Authentication bypass  
+  - SQL injection
+  - XSS vulnerabilities
+  Action: Update within 48 hours
 
-Operation success is measured by:
+Medium (CVSS 4.0-6.9):
+  - Information disclosure
+  - DoS potential
+  - Input validation issues
+  Action: Schedule update within 1 week
 
-- **No new vulnerabilities** introduced
-- **All tests passing** after updates
-- **Reduced attack surface** through cleanup
-- **Improved health scores** over time
-- **Faster build times** from optimization
-- **License compliance** maintained
+Low (CVSS 0.1-3.9):
+  - Minor information leaks
+  - Edge case vulnerabilities
+  Action: Update during next maintenance
+```
+
+### Supply Chain Risk Factors
+
+```yaml
+High Risk Indicators:
+  - Single maintainer packages
+  - Recent maintainer changes
+  - Unusual download patterns
+  - Missing or incomplete metadata
+  - Packages with embedded malware history
+
+Medium Risk Indicators:
+  - Infrequent updates (>1 year)
+  - Small user base (<1000 downloads/week)
+  - Typosquatting potential
+  - Complex dependency chains
+
+Low Risk Indicators:
+  - Well-established packages
+  - Active maintenance
+  - Large user base
+  - Corporate sponsorship
+```
+
+## Execution Verification
+
+Deploy execution-evaluator to verify:
+
+- ✅ **Package managers detected** - All present ecosystems identified
+- ✅ **Vulnerabilities scanned** - Security databases queried successfully  
+- ✅ **Updates applied safely** - No breaking changes introduced
+- ✅ **Dependencies functional** - Applications still work after changes
+- ✅ **Lock files updated** - Dependency versions properly recorded
+- ✅ **Tests passing** - Quality gates maintained during updates
+
+## Examples
+
+### Quick Dependency Check
+
+```bash
+User: /deps
+Claude: 🔍 Scanning dependencies across 3 package managers...
+⚠️ Found 2 critical vulnerabilities in npm packages
+📊 12 packages have updates available
+🗑️ 3 unused dependencies detected
+💡 Run 'npm audit fix' for immediate security fixes
+⏱️ Scan completed in 31 seconds
+```
+
+### Security-Focused Audit
+
+```bash
+User: /deps audit
+Claude: 🔒 Deploying dependency-manager + supply-chain-security-engineer...
+📊 Deep scanning 247 dependencies across npm, pip, go modules...
+🔴 Critical: 1 RCE vulnerability in express@4.16.1
+🟡 Medium: 5 other security issues found
+⚠️ Supply chain: 2 packages flagged for single-maintainer risk
+📋 Generating comprehensive security report...
+```
+
+### Safe Update Process
+
+```bash
+User: /deps update  
+Claude: 🔄 Starting safe dependency update process...
+💾 Backing up current dependency state...
+🔒 Stage 1: Applying security patches (3 updates)...
+📦 Stage 2: Minor version updates (12 packages)...
+🧪 Stage 3: Running tests to verify compatibility...
+✅ All updates successful, tests passing
+```
 
 ## Notes
 
-- Always backup lock files before updates
-- Security updates take priority over features
-- Consider maintenance burden when adding dependencies
-- Prefer well-maintained packages over features
-- Regular audits prevent security debt accumulation
-- Document why each dependency is needed
+- Quick mode for daily workflow, deep mode for security reviews
+- Automatically detects all package managers in polyglot repos
+- Prioritizes security fixes over feature updates
+- Always backs up state before making changes
+- Integrates with CI/CD pipelines for automated scanning
+- Supports both individual and batch dependency operations

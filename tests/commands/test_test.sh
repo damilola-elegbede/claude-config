@@ -24,11 +24,11 @@ test_test_structure() {
     assert_file_contains "$test_file" "## Usage" \
         "Should have Usage section"
 
-    assert_file_contains "$test_file" "## Behavior" \
-        "Should have Behavior section"
+    assert_file_contains "$test_file" "## Discovery Algorithm" \
+        "Should have Discovery Algorithm section"
 
-    assert_file_contains "$test_file" "## Test Generation Templates" \
-        "Should have Test Generation Templates section"
+    assert_file_contains "$test_file" "## Test Generation" \
+        "Should have Test Generation section"
 }
 
 # Test test command content

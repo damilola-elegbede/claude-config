@@ -2,163 +2,138 @@
 
 ## Description
 
-Repository-specific command that synchronizes Claude configuration files from this repository to your user
-settings. This command copies the latest CLAUDE.md and command files to your home directory, ensuring your global
-Claude configuration stays up-to-date with the repository version.
+Synchronizes configuration files between source and destination directories based on `.syncconfig` file.
+Supports any configuration management scenario with validation and safety checks.
 
 ## Usage
 
 ```bash
-/sync
+/sync                    # Sync based on .syncconfig
+/sync --pull             # Pull from remote to local
+/sync --push             # Push from local to remote
+/sync --dry-run          # Preview changes without syncing
 ```
 
 ## Behavior
 
-When you use `/sync`, I will:
+When invoked, I will synchronize configurations between directories based on
+the .syncconfig file. This enables bidirectional sync, backup creation, and
+intelligent file filtering with rsync efficiency.
 
-1. **Validate agent YAML compliance**:
-   - Run YAML validation on all agent files
-   - Ensure all required fields are present
-   - Check description length (<200 chars)
-   - Verify color and specialization level values
-   - Stop sync if validation fails
+## Configuration File
 
-2. **Backup existing files** (if any):
-   - Create backups of `~/CLAUDE.md` as `~/CLAUDE.md.backup`
-   - Create backups of `~/.claude/commands/` as `~/.claude/commands.backup/`
-   - Create backups of `~/.claude/agents/` as `~/.claude/agents.backup/`
-   - Create backups of `~/.claude/settings.json` as `~/.claude/settings.json.backup`
+Create `.syncconfig` in project root:
 
-3. **Replace configuration directories**:
-   - Copy `./system-configs/CLAUDE.md` to `~/CLAUDE.md`
-   - **Remove old agents**: Delete `~/.claude/agents/` directory completely
-   - **Remove old commands**: Delete all files in `~/.claude/commands/` (preserving the directory)
-   - Copy only actual agent files from `./system-configs/.claude/agents/` to `~/.claude/agents/` (excluding
-     documentation/template files)
-
-   - Copy all files from `./system-configs/.claude/commands/` to `~/.claude/commands/` (explicitly excluding
-     `sync.md`, `config-diff.md`, and `command-audit.md`)
-
-   - Copy `./system-configs/.claude/settings.json` to `~/.claude/settings.json` (merge with existing settings)
-   - **Important**: This ensures no deprecated agents or commands remain, and only actual agents are synced
-   - **Excluded from agents sync**:
-     - `AGENT_TEMPLATE.md` (template file, not an agent)
-     - `AGENT_CATEGORIES.md` (documentation file)
-     - `AUDIT_VERIFICATION_PROTOCOL.md` (documentation file)
-     - `README.md` (documentation file)
-     - Any other non-agent documentation files
-
-4. **Verify the sync**:
-   - Check that files were copied successfully
-   - Report any errors or conflicts
-   - Show summary of synced files
-   - Confirm actual agent files are present (excluding documentation)
-   - Deploy execution-evaluator to validate sync success
-
-## Files Synced
-
-- `system-configs/CLAUDE.md` - Main configuration with coding standards
-- `system-configs/.claude/commands/*.md` - All command files (except repo-specific commands below)
-- `system-configs/.claude/agents/*.md` - Only actual agent configurations (excludes documentation/template files)
-- `system-configs/.claude/settings.json` - Claude Code settings with audio notification hooks
-
-## Files NOT Synced
-
-- `system-configs/.claude/agents/AGENT_TEMPLATE.md` - Template file for creating new agents
-- `system-configs/.claude/agents/AGENT_CATEGORIES.md` - Documentation of agent categories
-- `system-configs/.claude/agents/AUDIT_VERIFICATION_PROTOCOL.md` - Audit documentation
-- `system-configs/.claude/agents/README.md` - Agent directory documentation
-- `system-configs/.claude/commands/sync.md` - Repository-specific sync command
-- `system-configs/.claude/commands/config-diff.md` - Repository-specific config comparison command
-- `system-configs/.claude/commands/command-audit.md` - Repository-specific command validation tool
-
-## Important Notes
-
-- **This command is specific to the claude-config repository**
-- It will NOT be copied to your global commands during sync
-- Always creates backups before overwriting existing files
-- **Completely replaces agent and command directories** to remove deprecated files
-- **Validates YAML compliance** before syncing to ensure agent quality
-- Use this after pulling latest changes from the repository
-- Run from within the claude-config repository only
-- Old/deprecated agents and commands are removed to prevent confusion
-- Ensures only actual agent files are synced (excludes documentation)
-
-## Example Output
-
-```text
-/sync
-Validating agent YAML compliance...
-✓ All 42 agents have valid YAML front-matter
-
-Creating backups...
-✓ Backed up ~/CLAUDE.md to ~/CLAUDE.md.backup
-✓ Backed up ~/.claude/commands/ to ~/.claude/commands.backup/
-✓ Backed up ~/.claude/agents/ to ~/.claude/agents.backup/
-✓ Backed up ~/.claude/settings.json to ~/.claude/settings.json.backup
-
-Syncing configuration files...
-✓ Copied system-configs/CLAUDE.md to ~/CLAUDE.md
-✓ Removed old agents from ~/.claude/agents/
-✓ Removed old commands from ~/.claude/commands/
-✓ Copied 12 command files to ~/.claude/commands/ (15 total - 3 excluded: sync.md, config-diff.md, and command-audit.md)
-✓ Copied 41 agent files to ~/.claude/agents/
-✓ Copied system-configs/.claude/settings.json to ~/.claude/settings.json
-✓ Excluded documentation files: AGENT_TEMPLATE.md, AGENT_CATEGORIES.md, AUDIT_VERIFICATION_PROTOCOL.md, README.md
-✓ Excluded repo-specific: sync.md, config-diff.md, command-audit.md
-
-Sync completed successfully!
-Audio notifications and specialized agents are now configured and ready to use.
+```yaml
+# .syncconfig example
+sync:
+  - source: ./configs/
+    dest: ~/.myapp/
+    exclude: ["*.tmp", "*.backup"]
+  
+  - source: ./templates/
+    dest: ~/.myapp/templates/
+    validate: true
+    
+  - source: ./settings.json
+    dest: ~/.myapp/settings.json
+    merge: true  # Merge instead of overwrite
 ```
 
-## Implementation Details
+## Sync Process
 
-When implementing the sync, ensure validation passes and only actual agent files are copied:
+### Phase 1: Read Configuration
 
 ```bash
-# First validate YAML compliance
-python3 scripts/validate-agent-yaml.py || exit 1
+# Parse .syncconfig file
+if [[ ! -f ".syncconfig" ]]; then
+  echo "❌ No .syncconfig file found"
+  echo "💡 Create .syncconfig with source/dest mappings"
+  exit 1
+fi
+```
 
-# Remove old agents directory completely
-rm -rf ~/.claude/agents/
+### Phase 2: Validate & Sync
 
-# Create fresh agents directory
-mkdir -p ~/.claude/agents/
-
-# Copy only actual agent files (exclude documentation/template files)
-for file in ./system-configs/.claude/agents/*.md; do
-    filename=$(basename "$file")
-    # Skip non-agent files
-    if [[ "$filename" != "AGENT_TEMPLATE.md" && \
-          "$filename" != "AGENT_CATEGORIES.md" && \
-          "$filename" != "AUDIT_VERIFICATION_PROTOCOL.md" && \
-          "$filename" != "README.md" ]]; then
-        cp "$file" ~/.claude/agents/
-    fi
-done
-
-# Remove old command files (but preserve directory)
-rm -f ~/.claude/commands/*.md
-
-# Safety options for robust scripting (recommended)
-set -euo pipefail
-IFS=$'\n\t'
-shopt -s nullglob
-
-# Copy 12 commands (15 total - 3 excluded: sync.md, config-diff.md, and command-audit.md)
-for file in ./system-configs/.claude/commands/*.md; do
-    filename=$(basename "$file")
-    if [[ -f "$file" ]] && [[ "$filename" != "sync.md" && "$filename" != "config-diff.md" && "$filename" != "command-audit.md" ]]; then
-        cp "$file" ~/.claude/commands/
-    fi
+```bash
+# For each mapping in .syncconfig
+for mapping in mappings; do
+  # Validate source exists
+  if [[ ! -e "$source" ]]; then
+    echo "❌ Source not found: $source"
+    continue
+  fi
+  
+  # Create dest directory if needed
+  mkdir -p "$(dirname "$dest")"
+  
+  # Apply exclusion patterns
+  rsync -av --exclude-from=<(printf '%s\n' "${excludes[@]}") \
+    "$source" "$dest"
 done
 ```
 
-## Troubleshooting
+### Phase 3: Optional Validation
 
-- If sync fails, check file permissions
-- If YAML validation fails, run `python3 scripts/fix-agent-descriptions.py`
-- Ensure you're in the claude-config repository
-- Backups are always created with timestamp if multiple syncs occur
-- If audio notifications don't work after sync, check the settings.json hooks configuration
-- Settings.json merge preserves existing configurations while adding new hooks
+```bash
+# Run validation if specified
+if [[ "$validate" == "true" ]]; then
+  # Check JSON validity
+  if [[ "$dest" == *.json ]] && ! jq empty "$dest" 2>/dev/null; then
+    echo "❌ Invalid JSON in $dest"
+    return 1
+  fi
+fi
+```
+
+## Bidirectional Sync
+
+### Pull Mode (--pull)
+
+Downloads configuration from remote location to local:
+
+```bash
+/sync --pull
+# Remote → Local based on .syncconfig
+```
+
+### Push Mode (--push)
+
+Uploads local configuration to remote location:
+
+```bash
+/sync --push  
+# Local → Remote based on .syncconfig
+```
+
+## Examples
+
+### Basic Sync
+
+```bash
+User: /sync
+Claude: 📖 Reading .syncconfig...
+🔄 Syncing 3 mappings...
+✅ ./configs/ → ~/.myapp/ (12 files)
+✅ ./templates/ → ~/.myapp/templates/ (5 files)
+✅ ./settings.json → ~/.myapp/settings.json (merged)
+```
+
+### Dry Run
+
+```bash
+User: /sync --dry-run
+Claude: 📖 Preview mode...
+Would sync:
+- ./configs/ → ~/.myapp/ (12 files, 2.3KB)
+- ./templates/ → ~/.myapp/templates/ (5 files, 1.1KB)
+- ./settings.json → ~/.myapp/settings.json (merge)
+```
+
+## Notes
+
+- Uses rsync for efficient file synchronization
+- .syncconfig uses YAML for readability
+- Supports patterns for exclusion (gitignore syntax)
+- Merge option for JSON files preserves existing settings
+- Version control .syncconfig for team consistency

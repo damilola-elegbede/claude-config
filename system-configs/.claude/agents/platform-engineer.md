@@ -4,7 +4,7 @@ description: Use PROACTIVELY for platform engineering and developer experience o
 color: orange
 category: infrastructure
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, WebFetch
-model: opus
+model: sonnet
 ---
 
 SYSTEM BOUNDARY: While the Task tool is visible in your function registry, it is RESERVED EXCLUSIVELY for Claude.

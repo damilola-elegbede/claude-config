@@ -3,7 +3,7 @@ name: production-reliability-engineer
 description: Use PROACTIVELY for production incident resolution and reliability engineering. MUST BE USED for SLO definition, error budget management, production debugging across distributed systems, and automated recovery mechanisms
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash
 model: opus
-color: cyan
+color: yellow
 category: operations
 ---
 

@@ -2,334 +2,241 @@
 
 ## Description
 
-Comprehensive validation of command ecosystem to ensure structure integrity, content quality, and system
-consistency. **This command generates a REPORT ONLY - it provides recommendations and optional patch snippets;
-it does not make any changes automatically.** Repository-specific command that is excluded from sync process.
+Validates command structure, content quality, and markdown parsing compliance.
+Generates focused audit report with actionable fixes. Repository-specific
+command excluded from sync.
 
 ## Usage
 
 ```bash
-/command-audit
+/command-audit                 # Audit all commands
+/command-audit --fix          # Auto-fix safe issues
+/command-audit <command-name> # Audit specific command
 ```
 
 ## Behavior
 
-This command performs thorough validation of all commands across multiple dimensions, executed in parallel by
-category for maximum efficiency.
+When invoked, I will systematically validate command files for structure compliance,
+content quality, and markdown parsing requirements. The audit generates actionable
+reports highlighting issues with specific fixes.
 
-## Purpose
+## Validation Framework
 
-Ensure command ecosystem maintains high standards of documentation, proper categorization, and adherence to system
-design principles for optimal Claude Code CLI experience.
+### Core Validation (Required)
 
-## Validation Scope
+1. **Structure**: Required sections (Description, Usage, Behavior)
+2. **Content**: Clear descriptions, practical examples
+3. **Markdown**: Code blocks with language tags
+4. **Length**: Commands under 400 lines
 
-### 1. Structure Compliance
-
-- **Required Sections**: Verify presence of Description, Usage, Behavior, Arguments (if applicable)
-- **Section Order**: Validate consistent section ordering across commands
-- **Format Consistency**: Ensure uniform markdown structure and styling
-- **Header Hierarchy**: Proper H1/H2/H3 usage and nesting
-
-### 2. Content Quality
-
-- **Description Clarity**: Clear, concise command purpose statements
-- **Behavior Documentation**: Comprehensive step-by-step workflow explanation
-- **Usage Examples**: Practical, well-commented examples with context
-- **Error Handling**: Documented troubleshooting and failure scenarios
-- **Integration Points**: How command works with other commands in workflow
-
-### 3. Markdown Parsing Standards
-
-- **Code Fencing Consistency**: Ensure all code blocks use proper language tags (`bash`, `yaml`, `text`, etc.)
-- **Example Quality**: Verify examples are focused, well-commented, and provide clear context
-- **Structured Formats**: Validate use of YAML for workflows and structured data
-- **Code Format Separation**: Ensure clean separation between inline code and code blocks
-- **Command Clarity**: Multi-line commands must include explanations and context
-
-**Anti-Patterns to Detect**:
-
-- Overly complex multi-line commands without explanation
-- Inconsistent formatting between sections
-- Mixed inline/block code formats creating ambiguity
-- Missing language tags on code fences
-- Poorly structured workflow examples
-
-### 4. Functional Completeness
-
-- **Execution-Evaluator Usage**: Commands performing actions must use execution-evaluator
-- **Argument Handling**: Proper documentation of optional/required arguments
-- **Output Format**: Consistent and predictable command output structure
-- **Performance Considerations**: Documented timeouts, parallel execution patterns
-- **Safety Features**: Error prevention, validation, and rollback mechanisms
-
-### 5. Command Categories & Standards
-
-Commands are validated based on their category with appropriate standards:
-
-**Git Workflow** (commit, branch, push, pr):
-
-- Must use execution-evaluator for git operations
-- Git safety features documented
-- Integration with other git workflow commands
-- Proper branch management and cleanup
-
-**Repository Analysis** (context, test, debug):
-
-- Framework detection capabilities
-- Parallel analysis when beneficial
-- Caching and performance optimization
-- Universal compatibility across project types
-
-**System Management** (sync, deps, fix-ci):
-
-- Environment validation
-- Backup and rollback procedures
-- Dependency management
-- System state verification
-
-**Quality Assurance** (review, agent-audit, command-audit):
-
-- Comprehensive validation frameworks
-- Detailed reporting with metrics
-- Auto-remediation suggestions
-- Standards enforcement
-
-**Development Support** (plan, resolve-cr):
-
-- Workflow integration
-- Context awareness
-- User guidance and assistance
-- Documentation generation
-
-### 6. Repository-Specific Command Detection
-
-- **Sync Exclusion Validation**: Verify repository-specific commands are properly excluded from sync
-- **Auto-Detection**: Identify commands that should be repository-specific
-- **Sync Command Updates**: Ensure sync.md exclusion list is current and complete
-- **Documentation Consistency**: Repository-specific nature properly documented
-
-### 7. Length & Complexity Analysis
-
-Based on current command analysis:
-
-- **Simple Commands** (100-150 lines): Basic functionality, minimal configuration
-- **Standard Commands** (150-250 lines): Moderate complexity with examples
-- **Complex Commands** (250-400 lines): Advanced features, multiple workflows
-- **Ultra-Complex Commands** (400+ lines): Requires justification and potential refactoring
-
-**Warning Thresholds**:
-
-- 275+ lines for standard commands
-- 425+ lines for complex commands
-- 500+ lines triggers refactoring recommendation
-
-### 8. Usage Pattern Analysis
-
-- **Command Dependencies**: Which commands reference other commands
-- **Workflow Integration**: How commands work together in typical workflows
-- **Argument Consistency**: Similar arguments across related commands
-- **Naming Conventions**: Consistent command naming and argument patterns
-
-## Execution Strategy
-
-### Phase 1: Parallel Category Audits
-
-Execute validation for each category simultaneously:
+### Category Standards
 
 ```yaml
-parallel_execution:
-  - category: git_workflow
-    commands: [commit, branch, push, pr]
-    validations: [structure, content, markdownParsing, functional, length, repoSpecific]
-  - category: repository_analysis
-    commands: [context, test, debug]
-    validations: [structure, content, markdownParsing, functional, length, repoSpecific]
-  - category: system_management
-    commands: [sync, deps, fix-ci]
-    validations: [structure, content, markdownParsing, functional, length, repoSpecific]
-  - category: quality_assurance
-    commands: [review, agent-audit, command-audit]
-    validations: [structure, content, markdownParsing, functional, length, repoSpecific]
-  - category: development_support
-    commands: [plan, resolve-cr]
-    validations: [structure, content, markdownParsing, functional, length, repoSpecific]
+git_workflow:
+  commands: [commit, branch, push, pr]
+  requirements:
+    - Must use execution-evaluator
+    - Git safety features documented
+
+repository_analysis:
+  commands: [context, test, debug]  
+  requirements:
+    - Framework detection capabilities
+    - Universal project compatibility
+
+system_management:
+  commands: [sync, deps, fix-ci]
+  requirements:
+    - Environment validation
+    - Backup procedures
+
+quality_assurance:
+  commands: [review, agent-audit, command-audit]
+  requirements:
+    - Comprehensive validation
+    - Detailed reporting
+
+development_support:
+  commands: [plan, resolve-cr, prompt]
+  requirements:
+    - Workflow integration
+    - User guidance
 ```
 
-### Phase 2: Cross-Command Analysis
+## Execution Process
 
-- Command count validation per category
-- Usage pattern consistency
-- Integration point verification
-- Workflow completeness assessment
+### Phase 1: Structure & Content Validation
 
-### Phase 3: Remediation
+```bash
+# Check required sections exist and are properly ordered
+for cmd in system-configs/.claude/commands/*.md; do
+  # Validate: Description → Usage → Behavior sections
+  # Check: Clear purpose statement in description
+  # Verify: Usage examples with proper syntax
+done
+```
 
-- Auto-fix where possible (formatting, structure standardization)
-- Generate specific fix commands for manual issues
-- Update documentation based on actual functionality
-- Document all changes made
-- **Complexity reduction recommendations** for oversized commands
+### Phase 2: Markdown Compliance Check
 
-## Execution Verification
+```bash
+# Scan for code blocks without language tags
+grep -n '```$' **/*.md
 
-After audit completion, **execution-evaluator** is deployed to verify:
+# Validate common language tags present
+grep -c '```\(bash\|yaml\|text\|json\|javascript\|python\)' **/*.md
+```
 
-- All command files were scanned successfully
-- Structure validation completed without errors
-- Category assignments were checked
-- Content quality standards were validated
-- Markdown parsing standards were enforced
-- Functional completeness verified
-- Length analysis completed
-- Repository-specific command detection accurate
-- Report generated with all required sections
-- Patch snippets (if any) are syntactically correct
+### Phase 3: Length & Complexity Analysis
+
+```yaml
+Thresholds:
+  Standard: 150-250 lines (optimal)
+  Complex: 250-400 lines (justified complexity)
+  Over-limit: 400+ lines (requires refactoring)
+  
+Assessment:
+  - Count total lines per command
+  - Identify commands exceeding thresholds
+  - Suggest refactoring opportunities
+```
+
+## Auto-Fix Capabilities (--fix)
+
+### Safe Automatic Fixes
+
+```bash
+# Add missing language tags to common patterns
+sed -i 's/```$/```bash/g' commands/*.md  # For shell commands
+sed -i 's/```\n#/```bash\n#/g' commands/*.md  # For commented bash
+
+# Standardize section headers
+sed -i 's/^# Usage$/## Usage/g' commands/*.md
+sed -i 's/^# Description$/## Description/g' commands/*.md
+```
+
+### Manual Fix Guidance
+
+Commands requiring human review:
+
+- Complex refactoring for oversized commands
+- Content quality improvements  
+- Integration point clarification
+- Repository-specific exclusion updates
 
 ## Report Structure
 
 ### Executive Summary
 
 ```text
-Total Commands: XX | Categories: X/5 | Compliance: XX% | Issues Fixed: XX
-Average Length: XXX lines | Repository-Specific: X commands
+Commands: 16 | Compliance: 87% | Issues: 8 | Auto-fixed: 12
 ```
 
-### Category Health Matrix
+### Issues by Category
 
-| Category | Command Count | Avg Length | Compliance | Issues |
-|----------|---------------|------------|------------|--------|
-| git_workflow | 4 | 210 lines | XX% | X |
-| repository_analysis | 3 | 165 lines | XX% | X |
-| system_management | 3 | 195 lines | XX% | X |
-| quality_assurance | 3 | 320 lines | XX% | X |
-| development_support | 2 | 380 lines | XX% | X |
+```yaml
+Structure Issues: 3
+  - Missing required sections
+  - Incorrect section ordering
+  
+Content Issues: 2  
+  - Vague descriptions
+  - Missing examples
+  
+Markdown Issues: 7
+  - Code blocks without language tags
+  - Inconsistent formatting
+  
+Length Issues: 4
+  - Commands over 400 lines
+  - Complexity not justified
+```
 
-### Critical Issues
+### Command Status Matrix
 
-1. **Missing execution-evaluator**: [Commands performing actions without verification]
-2. **Structure Violations**: [Commands missing required sections]
-3. **Repository-Specific Detection**: [Commands that should be excluded from sync]
-4. **Length Violations**: [Commands exceeding complexity thresholds]
-5. **Markdown Parsing Violations**: [Commands with formatting/parsing issues]
+| Command | Lines | Structure | Content | Markdown | Status |
+|---------|-------|-----------|---------|----------|--------|
+| plan | 230 | ✅ | ✅ | ✅ | ✅ Compliant |
+| test | 384 | ✅ | ✅ | ❌ | ⚠️ Markdown issues |
+| resolve-cr | 401 | ✅ | ✅ | ✅ | ⚠️ Over length |
 
-### Markdown Parsing Compliance
-
-| Command | Code Fencing | Language Tags | Example Quality | Format Consistency | Issues |
-|---------|--------------|---------------|-----------------|-------------------|---------|
-| commit | ✅ | ❌ | ✅ | ✅ | Missing yaml tags |
-| branch | ✅ | ✅ | ❌ | ✅ | Complex examples without explanation |
-
-**Parsing Standards Summary**:
-
-- Code Fencing: XX/XX commands compliant
-- Language Tags: XX/XX commands compliant
-- Example Quality: XX/XX commands compliant
-- Format Consistency: XX/XX commands compliant
-
-### Length & Complexity Analysis
-
-| Command | Current Length | Category Limit | Status | Recommendation |
-|---------|----------------|----------------|--------|----------------|
-| review | 472 lines | 400 lines | ⚠️ Over | Consider refactoring into sub-commands |
-| resolve-cr | 371 lines | 400 lines | ✅ OK | Good complexity for feature set |
-| plan | 370 lines | 400 lines | ✅ OK | Well-structured complex command |
-
-**Length Distribution**:
-
-- Simple (100-150): X commands
-- Standard (150-250): X commands
-- Complex (250-400): X commands
-- Ultra-complex (400+): X commands
-
-### Repository-Specific Command Analysis
-
-**Current Repository-Specific Commands**:
-
-- `sync.md` - ✅ Properly excluded from sync
-- `command-audit.md` - ✅ Should be excluded (this audit command)
-
-**Sync Exclusion Validation**:
-
-- `sync.md` exclusion pattern: ✅ Current
-- `command-audit.md` exclusion: ✅ Present in sync.md
-- Repository-specific documentation: ✅ Proper
-
-### Usage Pattern Analysis
-
-**Command Integration Matrix**:
-
-- Most referenced: execution-evaluator (used by X commands)
-- Workflow chains: branch → commit → push → pr
-- Missing integrations: X command pairs could benefit from integration
-- Argument consistency: XX% commands use consistent patterns
-
-### Auto-Remediation Log
+### Auto-Remediation Applied
 
 ```bash
-# Fixes applied automatically:
-- Updated command-name: Standardized section ordering
-- Fixed command-name: Added missing language tags
-- Updated command-name: Added execution-evaluator verification
+# Fixed missing language tags (12 commands):
+- Added 'bash' tags to shell command blocks
+- Added 'yaml' tags to configuration examples
+- Added 'text' tags to output examples
+
+# Standardized section headers (8 commands):
+- Fixed ## Usage formatting
+- Corrected ## Description positioning
 ```
 
-### Manual Remediation Required
+### Manual Actions Required
 
 ```bash
-# Execute these commands to fix remaining issues:
+# Length reduction needed:
+# /resolve-cr: 401 → <400 lines (trim examples, consolidate sections)
+# /prompt: 401 → <400 lines (reduce verbose documentation)
 
-# Add command-audit.md to sync exclusion list (WARNING: Verify $filename content before execution):
-# SAFE: First check the filename variable content, then execute:
-# if [[ "$filename" =~ ^[a-zA-Z0-9._-]+\.md$ ]]; then
-#   sed -i '' 's/config-diff\.md"/config-diff.md" \&\& "$filename" != "command-audit.md"/' system-configs/.claude/commands/sync.md
-# fi
+# Structure improvements:
+# /debug: Add execution-evaluator verification section
+# /deps: Clarify agent coordination patterns
 
-# Standardize section formatting:
-
-# Manually ensure required sections appear in the prescribed order:
-# Description, Usage, Behavior, Arguments (if applicable)
-
-# Add missing execution-evaluator usage:
-# Review command-name.md and add execution-evaluator verification section
-
-# Length reduction suggestions:
-# Consider breaking down oversized commands into focused sub-commands
+# Content enhancements:
+# /fix-ci: Add concrete implementation examples
+# /context: Clarify lite vs full mode differences
 ```
+
+## Repository-Specific Commands
+
+Commands excluded from sync process:
+
+- `command-audit.md` (this audit tool)
+- `sync.md` (sync operation itself)
+- `config-diff.md` (repository comparison)
+
+Validation ensures these commands are properly excluded in sync.md.
 
 ## Success Criteria
 
-✅ **Structure Compliance**: 100% commands have required sections in proper order
-✅ **Content Quality**: Clear descriptions, comprehensive behavior documentation, practical examples
-✅ **Markdown Parsing Standards**: Consistent code fencing, language tags, and example quality
-✅ **Functional Completeness**: Execution-evaluator usage, proper argument handling, error documentation
-✅ **Category Standards**: Commands meet category-specific requirements and integration patterns
-✅ **Length Management**: Commands within reasonable complexity limits with justification for exceptions
-✅ **Repository-Specific Detection**: Proper identification and exclusion from sync process
-✅ **Usage Pattern Consistency**: Coherent argument patterns and workflow integration
+✅ **Structure**: All commands have required sections in correct order  
+✅ **Content**: Clear descriptions with practical examples  
+✅ **Markdown**: 100% code blocks have language tags  
+✅ **Length**: Commands under 400 lines or complexity justified  
+✅ **Categories**: Commands meet category-specific standards  
+✅ **Repository-Specific**: Proper sync exclusions maintained
 
-## Implementation Notes
+## Examples
 
-- Claude executes all validations directly (no command-auditor agent needed)
-- Parallel execution by category for efficiency
-- Auto-fix safe issues, provide commands for complex ones
-- Focus on maintaining established categories and patterns
-- Generate actionable report suitable for immediate implementation
-- **This command is repository-specific** and excluded from sync process
-- Integration patterns should be documented and followed consistently
-- Repository-specific commands must be properly excluded from sync.md
+### Basic Audit
 
-## Architectural Justification for Complexity
+```bash
+/command-audit
+# Validates all 16 commands across all criteria
+# Generates comprehensive compliance report
+```
 
-**Command Length**: 302 lines (approaching 400-line complexity threshold)
+### Auto-Fix Run
 
-**Justification**: This command establishes the validation framework for the entire command ecosystem
-(15 commands). The complexity is justified by:
+```bash
+/command-audit --fix
+# Applies safe automatic fixes for common issues
+# Reports what was fixed and what needs manual attention
+```
 
-1. **Comprehensive Validation**: 8 distinct validation dimensions requiring detailed specifications
-2. **Parallel Execution Framework**: Complex orchestration logic for category-based validation
-3. **Detailed Reporting**: Extensive reporting structure with metrics, remediation, and auto-fix guidance
-4. **Standards Definition**: Establishes quality standards that other commands must follow
-5. **Repository Integration**: Complex sync exclusion and repository-specific command handling
+### Specific Command
 
-**Refactoring Consideration**: While approaching the complexity limit, breaking this command into sub-commands would
-fragment the cohesive validation framework and make it harder to maintain consistency across the validation process.
+```bash
+/command-audit plan
+# Focused audit of /plan command only
+# Detailed analysis with specific recommendations
+```
+
+## Notes
+
+- Repository-specific command (excluded from sync)
+- Focuses on actionable feedback over comprehensive analysis
+- Auto-fix capability for common formatting issues
+- Length thresholds based on actual command analysis
+- Integrates with execution-evaluator for verification

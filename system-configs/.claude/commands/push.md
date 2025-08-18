@@ -2,223 +2,396 @@
 
 ## Description
 
-Safely pushes changes to the remote repository with proper checks and branch tracking.
+Safely pushes changes to remote repository using git push with optional quality gates.
+Supports both simple push mode and comprehensive quality-checked push.
 
 ## Usage
 
 ```bash
-/push
-```yaml
+/push                        # Full quality gate push
+/push --simple               # Quick push without quality checks
+/push --force                # Force push (use carefully)
+/push --dry-run             # Preview what would be pushed
+```
 
 ## Behavior
 
-When you use `/push`, I will:
+When invoked, I will safely push changes to the remote repository. Simple mode
+performs basic safety checks and pushes quickly. Full mode runs comprehensive
+quality gates including tests, linting, code review, and security scanning
+before pushing.
 
-1. **Verify branch status**:
-   - Check current branch name
-   - Verify it's not main/master (unless explicitly allowed)
-   - Check if branch has upstream tracking
+## Two-Mode Operation
 
-2. **Check for unpushed commits**:
-   - Run `git status` to see if ahead of remote
-   - Show commit count to be pushed
+### Simple Mode (--simple) - Quick Push
 
-3. **Ensure clean working directory**:
-   - Verify no uncommitted changes
-   - Suggest committing if changes exist
+**What it does**: Basic safety checks then push
 
-4. **Run comprehensive tests** using test-engineer agent:
-   - Discover and execute all test suites
-   - Check test coverage requirements
-   - Ensure 100% test pass rate
-   - Generate quality reports in `.tmp/reports/` directory
-   - If tests fail: Deploy test-engineer to fix or add missing tests
-   - Re-run tests after fixes
+```yaml
+Checks Performed:
+  - Verify not on main/master branch
+  - Ensure no uncommitted changes
+  - Check branch has commits to push
+  - Set upstream tracking if needed
 
-5. **Run comprehensive linting checks** across all files (matching CI environment):
-   - **Pre-commit hooks validation**: Run pre-commit hooks locally to match CI checks
-   - **Comprehensive markdown linting**: Use markdownlint-cli2 with same config as CI
-     - Run: `npx markdownlint-cli2 "**/*.md" --config .markdownlint-cli2.jsonc`
-     - **Auto-fix markdown violations**: Use --fix flag where possible
-     - **Generate linting reports** in `.tmp/reports/` directory
-     - **Line length enforcement**: MD013 rule (120 character limit)
-     - **Code fence validation**: Ensure proper language tags
-     - **Block push for unfixable markdown violations**
-   - **Auto-detect other linters**: ESLint, Prettier, Black, RuboCop, etc.
-   - **Execute all applicable linters** on modified files
-   - **Auto-fix violations** where possible:
-     - JavaScript/TypeScript: ESLint --fix, Prettier --write
-     - Python: Black, autopep8, isort
-     - Ruby: RuboCop --auto-correct
-     - Go: gofmt, goimports
-     - YAML: yamllint validation
-     - Shell: shellcheck validation
-   - **Deploy agents for complex fixes**:
-     - backend-engineer for server-side linting
-     - frontend-architect for client-side linting
-   - **Block push if unfixable violations** remain
-   - Stage and commit any auto-fixes
+Agent Usage: None
+Duration: 10-15 seconds
+```
 
-6. **Run ENHANCED code review** with automated remediation:
-   - **Phase 1**: code-reviewer identifies all issues
-   - **Phase 2**: Deploy specialist agents in parallel:
-     - backend-engineer for server-side fixes
-     - frontend-architect for client-side improvements
-     - security-auditor for vulnerability patches
-     - performance-specialist for optimizations
-     - test-engineer for coverage gaps
-   - **Phase 3**: Re-review after remediation
-   - **Phase 4**: Document rationales for unfixed issues
+### Full Mode (default) - Quality Gate Push
 
-7. **Auto-commit fixes if changes were made**:
-   - If any fixes were applied (tests, linting, code review):
-     - Stage all modified files
-     - Create commit with message: `fix: apply automated quality fixes before push`
-     - Include details of what was fixed in commit body
-   - This ensures all fixes are included in the push
+**What it does**: Comprehensive quality validation
 
-8. **Smart quality gate enforcement**:
-   - After remediation attempts, evaluate remaining issues:
-     - **Critical/Security**: Must be fixed (no push until resolved)
-     - **With Rationale**: Log warning but allow push
-     - **Without Rationale**: Block push until justified
-   - Generate comprehensive report in `.tmp/reports/push-quality-report.md`:
-     - Issues fixed by agents
-     - Remaining issues with rationales
-     - Test results and coverage
-     - Linting compliance status
-   - User confirmation required if issues remain
+```yaml
+Quality Gates:
+  - Run test suite (test-engineer if failures)
+  - Comprehensive linting with auto-fix
+  - Code review with automated remediation
+  - Security scan for vulnerabilities
+  - Generate quality reports
 
-9. **Push to remote**:
-   - Use `-u` flag if branch needs upstream tracking
-   - Push to appropriate remote (usually origin)
-   - Always specify current branch explicitly: `git push origin <current-branch>`
+Agent Usage: Multiple specialists as needed
+Duration: 2-5 minutes depending on issues found
+```
 
-10. **Confirm success**:
-   - Verify push completed
-   - Show updated status
-   - Display pushed commit summary
+## Push Workflow
 
-11. **Deploy execution-evaluator** to verify:
-    - Push completed successfully to remote
-    - Branch tracking configured correctly
-    - All quality gates passed
-    - Remote repository accessible
-    - No unintended files pushed
-    - **CRITICAL**: Verify --no-verify flag was NOT used (pre-push hooks must run)
-
-## Safety Features
-
-- Prevents accidental pushes to main/master
-- Warns about uncommitted changes
-- Sets up branch tracking automatically
-- Shows what will be pushed before pushing
-- Requires all tests to pass (100% success rate)
-- **Enforces comprehensive linting standards** matching CI environment:
-  - Pre-commit hooks validation (identical to CI)
-  - Comprehensive markdown linting with markdownlint-cli2
-  - Line length enforcement (MD013: 120 characters)
-  - Code fence and language tag validation
-  - YAML, Shell, and language-specific linting
-- Blocks push if critical code issues detected
-- Enforces code review before any push
-- Provides quality gate summary before push confirmation
-
-## Common Scenarios
-
-### First push of new branch
+### Phase 1: Pre-Push Validation
 
 ```bash
-git push -u origin feature/new-feature
-```yaml
+# Basic safety checks
+validate_push_safety() {
+  # Check current branch
+  current_branch=$(git branch --show-current)
+  if [[ "$current_branch" =~ ^(main|master)$ ]]; then
+    echo "❌ Cannot push directly to $current_branch"
+    return 1
+  fi
+  
+  # Check for uncommitted changes
+  if ! git diff --quiet || ! git diff --cached --quiet; then
+    echo "❌ Uncommitted changes detected. Commit first."
+    return 1
+  fi
+  
+  # Check if there's anything to push
+  ahead_count=$(git rev-list --count HEAD ^origin/$current_branch 2>/dev/null || echo "0")
+  if [ "$ahead_count" -eq 0 ]; then
+    echo "✅ Already up to date with remote"
+    return 1
+  fi
+  
+  echo "📊 Ready to push $ahead_count commits"
+}
+```
 
-### Regular push to tracked branch
+### Phase 2: Quality Gates (Full Mode Only)
 
 ```bash
-git push origin $(git branch --show-current)
-```yaml
+# Comprehensive quality validation
+run_quality_gates() {
+  local issues_found=0
+  
+  echo "🧪 Running test suite..."
+  if ! run_tests; then
+    echo "🤖 Deploying test-engineer to fix failing tests..."
+    # Deploy agent to fix tests
+    ((issues_found++))
+  fi
+  
+  echo "🔍 Running linters with auto-fix..."
+  if ! run_linters_with_autofix; then
+    echo "🔧 Some linting issues require manual attention"
+    ((issues_found++))
+  fi
+  
+  echo "👁️ Performing code review..."
+  if ! run_automated_review; then
+    echo "🤖 Deploying specialists for automated remediation..."
+    # Deploy code-reviewer + specialists
+    ((issues_found++))
+  fi
+  
+  return $issues_found
+}
+```
 
-### Force push (requires confirmation)
+### Phase 3: Auto-Fix Integration
 
 ```bash
-git push --force-with-lease
+# Linting with automatic fixes
+run_linters_with_autofix() {
+  local fixes_applied=0
+  
+  # JavaScript/TypeScript
+  if [ -f "package.json" ]; then
+    if npm run lint:fix 2>/dev/null || npx eslint . --fix; then
+      echo "✅ JavaScript linting auto-fixed"
+      ((fixes_applied++))
+    fi
+    
+    if npx prettier --write . 2>/dev/null; then
+      echo "✅ Code formatting applied"
+      ((fixes_applied++))
+    fi
+  fi
+  
+  # Python
+  if find . -name "*.py" -not -path "./venv/*" | head -1 | grep -q ".py"; then
+    if command -v black >/dev/null && black . --check --diff; then
+      black .
+      echo "✅ Python formatting applied"
+      ((fixes_applied++))
+    fi
+    
+    if command -v isort >/dev/null; then
+      isort .
+      echo "✅ Import sorting applied"
+      ((fixes_applied++))
+    fi
+  fi
+  
+  # Go
+  if [ -f "go.mod" ]; then
+    gofmt -w .
+    goimports -w . 2>/dev/null
+    echo "✅ Go formatting applied"
+    ((fixes_applied++))
+  fi
+  
+  # Markdown
+  if command -v markdownlint-cli2 >/dev/null; then
+    if npx markdownlint-cli2 "**/*.md" --fix; then
+      echo "✅ Markdown formatting applied"
+      ((fixes_applied++))
+    fi
+  fi
+  
+  # Commit fixes if any were applied
+  if [ $fixes_applied -gt 0 ]; then
+    git add .
+    git commit -m "fix: apply automated formatting and linting fixes
+
+Applied fixes:
+- Code formatting and style corrections
+- Import organization
+- Markdown formatting compliance
+
+Auto-generated before push to maintain quality standards."
+    echo "📝 Committed $fixes_applied auto-fixes"
+  fi
+  
+  return 0
+}
+```
+
+## Agent Coordination Strategy
+
+### Simple Mode (No Agents)
+
 ```yaml
+Operations:
+  - Direct git commands only
+  - Basic validation checks
+  - No quality analysis
+  
+Benefits:
+  - Fast execution (10-15 seconds)
+  - No agent overhead
+  - Perfect for hot fixes
+```
 
-## Enhanced Quality Gates with Remediation
+### Full Mode (Multi-Agent)
 
-### Automated Fix Process
+```yaml
+Quality Gate Agents:
+  test-engineer:
+    trigger: "Test failures detected"
+    role: "Fix failing tests, add missing coverage"
+    
+  code-reviewer:
+    trigger: "Always for full mode"
+    role: "Identify code quality issues"
+    
+  backend-engineer:
+    trigger: "Server-side code issues"
+    role: "Fix backend linting and logic issues"
+    
+  frontend-architect:
+    trigger: "Client-side code issues"
+    role: "Fix frontend linting and performance"
+    
+  security-auditor:
+    trigger: "Security vulnerabilities found"
+    role: "Patch security issues before push"
 
-Before push, agents automatically attempt to fix issues:
+Coordination Pattern:
+  1. Run quality checks in parallel
+  2. Deploy agents based on issues found
+  3. Allow agents to auto-remediate
+  4. Re-run checks after fixes
+  5. Generate comprehensive report
+```
 
-1. **Test Failures**: test-engineer debugs and fixes failing tests
-2. **Linting Violations**: Auto-fix with language-specific formatters
-   - ESLint --fix for JavaScript/TypeScript
-   - Black/autopep8 for Python
-   - gofmt for Go
-   - Prettier for multiple formats
-3. **Code Quality**: Refactor using backend/frontend engineers
-4. **Security**: security-auditor patches vulnerabilities
-5. **Documentation**: tech-writer generates missing docs
-6. **Performance**: performance-specialist optimizes bottlenecks
+## Concrete Quality Checks
 
-### Quality Gate Levels
+### Test Execution
 
-1. **Critical (Blocking)**:
-   - Security vulnerabilities
-   - Breaking test failures
-   - Data corruption risks
-   - Must be fixed before push
+```bash
+# Universal test runner
+run_tests() {
+  if [ -f "package.json" ] && npm run test 2>/dev/null; then
+    echo "✅ npm tests passed"
+  elif [ -f "requirements.txt" ] && python -m pytest 2>/dev/null; then
+    echo "✅ Python tests passed"
+  elif [ -f "go.mod" ] && go test ./... 2>/dev/null; then
+    echo "✅ Go tests passed"
+  elif [ -f "Cargo.toml" ] && cargo test 2>/dev/null; then
+    echo "✅ Rust tests passed"
+  else
+    echo "⚠️ No test framework detected or tests failed"
+    return 1
+  fi
+}
+```
 
-2. **Important (Fix or Justify)**:
-   - Code quality issues
-   - Missing documentation
-   - Performance degradation
-   - Fix automatically or provide rationale
+### Security Scanning
 
-3. **Advisory (Document)**:
-   - Style preferences
-   - Optional optimizations
-   - Future improvements
-   - Document for technical debt tracking
+```bash
+# Quick security checks
+run_security_scan() {
+  local security_issues=0
+  
+  # Dependency vulnerabilities
+  if [ -f "package.json" ] && npm audit --audit-level high; then
+    echo "⚠️ npm security vulnerabilities found"
+    ((security_issues++))
+  fi
+  
+  # Secrets detection
+  if command -v git-secrets >/dev/null && ! git secrets --scan; then
+    echo "⚠️ Potential secrets detected in code"
+    ((security_issues++))
+  fi
+  
+  # Basic pattern matching for common issues
+  if grep -r "password\s*=" . --include="*.js" --include="*.py" --include="*.go"; then
+    echo "⚠️ Hardcoded passwords detected"
+    ((security_issues++))
+  fi
+  
+  return $security_issues
+}
+```
 
-### Push Decision Matrix
+## Quality Report Generation
 
-- **All Fixed**: Push proceeds automatically
-- **Critical Issues**: Push blocked until resolved
-- **Non-critical + Rationale**: Push with warnings and documentation
-- **Non-critical No Rationale**: Request justification or fix
+### Comprehensive Report
 
-## Prerequisites
+```markdown
+# Push Quality Report
 
-- Git repository with remote configured
-- Commits to push
-- Clean working directory (or explicit override)
-- All tests passing (100% success rate)
-- **Comprehensive linting compliance** (matching CI environment):
-  - Pre-commit hooks installed and passing
-  - Markdown linting with markdownlint-cli2 (120 char line limit)
-  - Language-specific linting (ESLint, Black, etc.)
-  - YAML and Shell validation
-- Code review approval (no critical issues)
+## Summary
+- **Branch**: feature/user-authentication
+- **Commits**: 3 commits ready to push
+- **Quality Gates**: 4/5 passed
+- **Auto-fixes Applied**: 12 formatting issues
+
+## Test Results ✅
+- **Test Suite**: All 47 tests passed
+- **Coverage**: 85.3% (target: 80%)
+- **Duration**: 23.4 seconds
+
+## Linting Results ✅
+- **ESLint**: 8 issues auto-fixed
+- **Prettier**: 4 formatting issues resolved
+- **Markdown**: 2 line length violations fixed
+
+## Code Review ⚠️
+- **Issues Found**: 3 medium-priority suggestions
+- **Auto-Fixed**: 2/3 issues resolved by agents
+- **Remaining**: 1 issue requires manual review
+
+## Security Scan ✅
+- **Vulnerabilities**: None detected
+- **Secrets**: No leaked credentials found
+- **Dependencies**: All security patches applied
+
+## Recommendation
+✅ **Safe to push** - All critical issues resolved
+```
+
+## Examples
+
+### Simple Push
+
+```bash
+User: /push --simple
+Claude: 🚀 Simple push mode...
+✅ Not on main branch (feature/auth-improvements)
+✅ No uncommitted changes
+📊 3 commits ready to push
+🔗 Setting upstream tracking...
+✅ Pushed to origin/feature/auth-improvements
+```
+
+### Quality Gate Push
+
+```bash
+User: /push
+Claude: 🛡️ Running quality gates...
+🧪 Testing... ✅ All 47 tests passed
+🔍 Linting... 🔧 Auto-fixed 8 ESLint issues
+👁️ Code review... 🤖 Deploying backend-engineer for 2 issues
+✅ All quality gates passed
+📝 Committed auto-fixes
+🚀 Pushing 4 commits to origin/feature/auth-improvements
+```
+
+### Quality Issues Found
+
+```bash
+User: /push
+Claude: 🛡️ Running quality gates...
+❌ Tests failed: 3/47 failing
+🤖 Deploying test-engineer to fix failing tests...
+✅ Tests fixed and passing
+⚠️ Security scan found 1 medium vulnerability
+🤖 Deploying security-auditor for remediation...
+✅ Vulnerability patched
+📊 Generated quality report: .tmp/reports/push-quality-report.md
+🚀 All issues resolved, safe to push
+```
+
+### Blocked Push
+
+```bash
+User: /push
+Claude: 🛡️ Running quality gates...
+❌ Critical security vulnerability found
+❌ 12 test failures detected
+🛑 Push blocked until critical issues are resolved
+📋 Run /review for detailed analysis
+💡 Suggestion: Fix security issue, then re-run /push
+```
+
+## Execution Verification
+
+Deploy execution-evaluator to verify:
+
+- ✅ **Quality gates executed** - All checks ran according to mode
+- ✅ **Auto-fixes committed** - Changes properly staged and committed
+- ✅ **Push successful** - Commits reached remote repository
+- ✅ **Branch tracking set** - Upstream configured correctly
+- ✅ **No regressions** - Push didn't break existing functionality
+- ✅ **Reports generated** - Quality documentation created
 
 ## Notes
 
-- Force pushes require explicit confirmation
-- Protected branches follow repository rules
-- **Comprehensive linting is automatically run** matching CI environment exactly:
-  - Pre-commit hooks ensure consistency with CI
-  - markdownlint-cli2 prevents MD013 and formatting violations
-  - All language-specific linters match CI configuration
-- **Quality reports are generated in `.tmp/reports/`** directory:
-  - Test results and coverage reports
-  - Linting violation reports
-  - Code review findings
-  - Push quality summary
-- **Auto-commit of fixes**: Any fixes applied during push are automatically committed
-- Critical issues (security, breaking tests, unfixable linting) always block push
-- Non-critical issues are auto-fixed when possible
-- Unfixed issues require documented rationale
-- User can override non-critical blocks with justification
-- All remediation attempts are logged for audit trail
-- Linting auto-fixes are committed before push
-- Local environment now mirrors CI linting exactly
+- Simple mode perfect for hot fixes and trusted branches
+- Full mode ensures code quality and prevents issues reaching main
+- Auto-fixes are committed automatically to include in push
+- Quality reports provide audit trail for compliance
+- Agents only deployed when issues are detected
+- Push is blocked only for critical/security issues
+- All fixes are verified before push proceeds

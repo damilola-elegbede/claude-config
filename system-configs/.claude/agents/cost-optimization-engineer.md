@@ -157,7 +157,7 @@ Provide cost optimization recommendations in this format:
 - Month 1: $[amount] savings
 - Month 3: $[amount] savings
 - Annual: $[amount] savings
-```yaml
+```
 
 ## Cloud-Specific Expertise
 

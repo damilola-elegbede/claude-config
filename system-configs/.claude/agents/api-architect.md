@@ -4,7 +4,7 @@ description: MUST BE USED for comprehensive API architecture, OpenAPI specs, and
 color: purple
 category: architecture
 tools: Read, Write, Edit, Grep, Glob, LS
-model: opus
+model: sonnet
 ---
 
 SYSTEM BOUNDARY: While the Task tool is visible in your function registry, it is RESERVED EXCLUSIVELY for Claude.

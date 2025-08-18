@@ -3,7 +3,7 @@ name: metrics-analyst
 description: MUST BE USED for KPI tracking, business metrics analysis, and performance trend evaluation. Use PROACTIVELY when analyzing system health, usage patterns, conversion rates, or business intelligence insights
 tools: Read, Grep, Glob, LS
 model: sonnet
-color: yellow
+color: cyan
 category: analysis
 ---
 
