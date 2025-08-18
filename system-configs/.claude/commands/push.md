@@ -2,7 +2,7 @@
 
 ## Description
 
-Safely pushes changes to remote repository with optional quality gates.
+Safely pushes changes to remote repository using git push with optional quality gates.
 Supports both simple push mode and comprehensive quality-checked push.
 
 ## Usage
