@@ -9,7 +9,8 @@ Creates a roadmap of focused PRs with clear dependencies and parallel opportunit
 
 ```bash
 /plan <task_description>
-/plan simple <task_description>  # For tasks <100 LOC
+/plan -s <task_description>      # Simple mode flag
+/plan --simple <task_description> # Simple mode flag (long form)
 /plan --file <file_path>         # Read task from file
 /plan -f <file_path>             # Read task from file (short form)
 ```
@@ -133,6 +134,8 @@ Each phase file contains:
 
 ## Examples
 
+### Complex Planning
+
 ```bash
 User: /plan implement authentication
 Claude: 📋 Entering plan mode...
@@ -160,10 +163,48 @@ User: yes
 Claude: ✅ Plan files created in .tmp/authentication/
 ```
 
+### Simple Mode Planning
+
+```bash
+User: /plan -s fix login button styling
+Claude: 📋 Entering plan mode...
+
+## Plan Preview: Fix Login Button Styling
+
+### Single Phase Implementation
+- Update button CSS classes in LoginForm component
+- Test styling changes across different screen sizes
+- Verify accessibility contrast ratios
+
+Estimated: <30 minutes, single PR
+
+Ready to proceed? (yes/no/modify)
+
+User: yes
+Claude: ✅ Simple plan created in .tmp/login-button-fix/
+```
+
+### File-Based Planning
+
+```bash
+User: /plan --simple --file feature-spec.md
+Claude: 📋 Entering plan mode...
+📖 Reading requirements from feature-spec.md...
+
+## Plan Preview: Add Dark Mode Toggle
+
+### Single Phase Implementation
+- Create toggle component with theme context
+- Update CSS variables for dark theme
+- Add persistence with localStorage
+
+Ready to proceed? (yes/no/modify)
+```
+
 ## Arguments
 
 - `task_description`: Direct requirements
-- `simple`: Force simple mode (<100 LOC)
+- `-s/--simple`: Simple mode flag for streamlined single-phase plans
 - `--file/-f <path>`: Read requirements from file
 
 ## Behavior Summary
