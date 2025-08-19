@@ -18,15 +18,15 @@ last_prompt=$(echo "$input" | jq -r '.last_prompt.summary // "Ready"')
 git_branch=$(git branch --show-current 2>/dev/null || echo "no-git")
 
 # Color codes
-# \033[31m = red (model)
+# \033[91m = bright red (model)
 # \033[38;5;208m = orange (git branch)
 # \033[96m = bright cyan (directory - matches LSCOLORS 'G' for directories)
 # \033[33m = yellow (output mode)
-# \033[0m = default (usage percent)
+# \033[90m = grey/silver (usage percent)
 # \033[32m = green (last prompt)
 # \033[0m = reset
 
-printf '\033[31m%s\033[0m | \033[38;5;208m%s\033[0m | \033[96m%s\033[0m | \033[33m%s\033[0m | %s%% | \033[32m%s\033[0m' \
+printf '\033[91m%s\033[0m | \033[38;5;208m%s\033[0m | \033[96m%s\033[0m | \033[33m%s\033[0m | \033[90m%s%%\033[0m | \033[32m%s\033[0m' \
   "$model_name" \
   "$git_branch" \
   "$current_dir" \
