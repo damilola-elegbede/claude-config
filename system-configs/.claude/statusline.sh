@@ -1,35 +1,28 @@
 #!/bin/bash
 # Claude Code StatusLine Configuration
-# Shows: model | git_branch | directory | output_mode | usage% | last_prompt_summary
-# Color scheme: red | orange | bright cyan (from LSCOLORS) | yellow | default | green
+# Shows: model | git_branch | directory | output_mode | version
 
 # Read Claude session data from stdin
 input=$(cat)
 
 # Extract information using jq
-mode=$(echo "$input" | jq -r '.mode // "normal"')
-model_name=$(echo "$input" | jq -r '.model.display_name // "Unknown Model"')
-current_dir=$(basename "$(echo "$input" | jq -r '.workspace.current_dir // "/"')")
+model_name=$(echo "$input" | jq -r '.model.display_name // "Unknown"')
+current_dir=$(basename "$(echo "$input" | jq -r '.workspace.current_dir // .cwd // "/"')")
 output_style=$(echo "$input" | jq -r '.output_style.name // "default"')
-usage_percent=$(echo "$input" | jq -r '.usage.percentage_before_compacting // 0')
-last_prompt=$(echo "$input" | jq -r '.last_prompt.summary // "Ready"')
+version=$(echo "$input" | jq -r '.version // "unknown"')
 
 # Get git branch (fallback if git command fails)
 git_branch=$(git branch --show-current 2>/dev/null || echo "no-git")
 
-# Color codes
-# \033[91m = bright red (model)
-# \033[38;5;208m = orange (git branch)
-# \033[96m = bright cyan (directory - matches LSCOLORS 'G' for directories)
-# \033[33m = yellow (output mode)
-# \033[90m = grey/silver (usage percent)
-# \033[32m = green (last prompt)
-# \033[0m = reset
+# Reset any previous formatting first
+printf '\033[0m'
 
-printf '\033[91m%s\033[0m | \033[38;5;208m%s\033[0m | \033[96m%s\033[0m | \033[33m%s\033[0m | \033[90m%s%%\033[0m | \033[32m%s\033[0m' \
+# Output with colors
+# Model: red | Branch: orange | Dir: cyan | Style: yellow | Version: green
+# Using • (bullet) as separator
+printf '\033[31m%s\033[0m \033[90m•\033[0m \033[38;5;208m%s\033[0m \033[90m•\033[0m \033[36m%s\033[0m \033[90m•\033[0m \033[33m%s\033[0m \033[90m•\033[0m \033[32m%s\033[0m\n' \
   "$model_name" \
   "$git_branch" \
   "$current_dir" \
   "$output_style" \
-  "$usage_percent" \
-  "$last_prompt"
+  "$version"
