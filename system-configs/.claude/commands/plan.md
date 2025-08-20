@@ -80,11 +80,12 @@ Example ambiguities:
 - **Performance**: performance-specialist + monitoring-specialist
 - **Security**: security-auditor + code-reviewer
 
-## Approval Signals
+## Approval Workflow
 
-- **Approve**: yes, approve, proceed, 👍
-- **Modify**: modify, update, change
-- **Cancel**: no, cancel, abort, stop
+Stay in plan mode until user responds:
+- **Approve**: yes, approve, proceed, 👍 → Exit plan mode, write files
+- **Modify**: modify, update, change → Stay in plan mode, adjust
+- **Cancel**: no, cancel, abort, stop → Exit without writing
 
 ## Example
 
