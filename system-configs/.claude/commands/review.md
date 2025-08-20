@@ -9,7 +9,8 @@ accessibility validation.
 ## Usage
 
 ```bash
-/review                    # Review all changed files
+/review                    # Review changed files only (default)
+/review --full             # Review entire codebase comprehensively
 /review <file|directory>   # Review specific target
 /review --fix             # Auto-fix safe issues
 /review --security        # Security-focused review
@@ -19,13 +20,19 @@ accessibility validation.
 ## Behavior
 
 When invoked, I first read all documentation for context understanding, then
-orchestrate multiple specialized agents for comprehensive code review. Agents
-receive documentation context and work in parallel to analyze security,
-performance, testing, and accessibility aspects with informed decisions.
+orchestrate multiple specialized agents for code review. By default, only
+changed files are reviewed for efficiency. Agents receive documentation context
+and work in parallel to analyze security, performance, testing, and accessibility
+aspects with informed decisions.
+
+**Default Mode**: Reviews only changed files (git diff) for fast feedback
+**Full Mode**: Reviews entire repository for comprehensive system analysis
 
 ## Agent Orchestration Strategy
 
-### Standard Review (default)
+### Standard Review (default - changed files only)
+
+**Scope**: Reviews files changed in current branch (git diff main...HEAD)
 
 **Parallel Agent Deployment:**
 
@@ -42,18 +49,46 @@ Conditionally Deployed:
 Coordination: All agents work simultaneously, results aggregated by severity
 ```
 
+### Full Repository Review (--full mode)
+
+**Scope**: Reviews entire codebase for comprehensive system analysis
+
+**Extended Agent Deployment:**
+
+```yaml
+Core Quality:
+  code-reviewer: "Repository-wide code quality analysis"
+  security-auditor: "Complete security audit"
+  performance-specialist: "System-wide performance analysis"
+
+Infrastructure:
+  devops: "CI/CD pipeline and deployment analysis"
+  dependency-analyst: "Supply chain and dependency security"
+  database-admin: "Database schema and performance review"
+
+Testing & Documentation:
+  test-engineer: "Complete test coverage and quality analysis"
+  tech-writer: "Documentation completeness and accuracy"
+  accessibility-auditor: "Comprehensive accessibility compliance"
+
+Coordination: Comprehensive multi-domain analysis with executive summary
+```
+
 ### Focused Reviews
 
 ```yaml
 --security Mode:
+  scope: "Changed files or full repository based on base command"
   agents: [security-auditor, code-reviewer]
   focus: "OWASP Top 10, dependency vulnerabilities, secrets"
 
 --performance Mode:
+  scope: "Changed files or full repository based on base command"
   agents: [performance-specialist, code-reviewer]
   focus: "Algorithm complexity, database queries, memory usage"
 
 --fix Mode:
+  scope: "Changed files only (safety requirement)"
   agents: [code-reviewer + auto-remediation specialists]
   behavior: "Auto-apply safe fixes, report non-automatable issues"
 ```
@@ -176,6 +211,7 @@ describe('processPayment', () => {
 coordinate_review() {
   local target="$1"
   local mode="$2"
+  local scope="$3"  # "changed" (default) or "full"
 
   echo "📚 Reading documentation for context..."
 
@@ -211,25 +247,69 @@ coordinate_review() {
   # Execute documentation reading
   read_project_documentation
 
-  echo "🔍 Starting context-aware multi-agent review of $target..."
+  # Determine review scope and target files
+  determine_review_scope() {
+    local scope="$1"
+    local target="$2"
+    
+    if [[ "$scope" == "full" ]]; then
+      echo "🔍 Starting context-aware FULL REPOSITORY review..."
+      review_target="."
+      echo "📊 Scope: Complete codebase analysis"
+    elif [[ -n "$target" ]]; then
+      echo "🔍 Starting context-aware review of specific target: $target..."
+      review_target="$target"
+      echo "📊 Scope: Specific file/directory"
+    else
+      echo "🔍 Starting context-aware review of CHANGED FILES..."
+      # Get changed files in current branch
+      changed_files=$(git diff --name-only main...HEAD 2>/dev/null || git diff --name-only HEAD~1)
+      if [[ -z "$changed_files" ]]; then
+        echo "ℹ️ No changed files found, falling back to staged files"
+        changed_files=$(git diff --cached --name-only)
+      fi
+      if [[ -z "$changed_files" ]]; then
+        echo "ℹ️ No staged files found, falling back to working directory changes"
+        changed_files=$(git diff --name-only)
+      fi
+      review_target="$changed_files"
+      echo "📊 Scope: $(echo "$changed_files" | wc -l) changed files"
+    fi
+  }
+  
+  determine_review_scope "$scope" "$target"
 
   # Analyze file types to determine agent deployment
-  file_types=$(find "$target" -type f -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.go" | \
-               head -10 | xargs file --mime-type)
-
-  # Deploy agents based on file content
-  agents_to_deploy=("code-reviewer" "security-auditor")
-
-  if echo "$file_types" | grep -q "test\|spec"; then
-    agents_to_deploy+=("test-engineer")
+  if [[ "$scope" == "full" ]]; then
+    file_types=$(find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.go" -o -name "*.sh" -o -name "*.md" \) | \
+                 head -20 | xargs file --mime-type 2>/dev/null || echo "text/plain")
+  else
+    file_types=$(echo "$review_target" | head -10 | xargs file --mime-type 2>/dev/null || echo "text/plain")
   fi
 
-  if echo "$file_types" | grep -q "html\|jsx\|vue"; then
-    agents_to_deploy+=("accessibility-auditor")
-  fi
+  # Deploy agents based on scope and file content
+  if [[ "$scope" == "full" ]]; then
+    # Full repository review - deploy comprehensive agent set
+    agents_to_deploy=("code-reviewer" "security-auditor" "performance-specialist" "test-engineer")
+    agents_to_deploy+=("devops" "dependency-analyst" "tech-writer" "accessibility-auditor")
+    echo "🤖 Full repository mode: Deploying comprehensive agent set"
+  else
+    # Changed files review - deploy targeted agents
+    agents_to_deploy=("code-reviewer" "security-auditor")
+    
+    if echo "$file_types" | grep -q "test\|spec"; then
+      agents_to_deploy+=("test-engineer")
+    fi
 
-  if [[ "$mode" == "--performance" ]] || detect_performance_concerns "$target"; then
-    agents_to_deploy+=("performance-specialist")
+    if echo "$file_types" | grep -q "html\|jsx\|vue"; then
+      agents_to_deploy+=("accessibility-auditor")
+    fi
+
+    if [[ "$mode" == "--performance" ]] || detect_performance_concerns "$review_target"; then
+      agents_to_deploy+=("performance-specialist")
+    fi
+    
+    echo "🎯 Changed files mode: Deploying targeted agents"
   fi
 
   echo "🤖 Deploying context-aware agents: ${agents_to_deploy[*]}"
@@ -240,15 +320,21 @@ coordinate_review() {
   - Configuration standards from config files
   - System boundaries and security models from agent definitions
   - Command vs agent distinctions from .claude/ structure
+  - Review scope: $(if [[ "$scope" == "full" ]]; then echo "Full repository analysis"; else echo "Changed files only"; fi)
 
   Apply this context when reviewing code to make informed decisions about:
   - Whether security patterns are appropriate for the file type
   - What architectural patterns should be followed
-  - How this code fits into the overall system design"
+  - How this code fits into the overall system design
+  - Focus review effort based on scope (comprehensive vs. incremental)"
 
   # Execute context-aware review in parallel
   for agent in "${agents_to_deploy[@]}"; do
-    echo "Deploying $agent with project context for $target review..." &
+    if [[ "$scope" == "full" ]]; then
+      echo "Deploying $agent with project context for FULL REPOSITORY review..." &
+    else
+      echo "Deploying $agent with project context for CHANGED FILES review..." &
+    fi
     # Agent receives both target code AND documentation context
   done
   wait
@@ -427,20 +513,51 @@ Deploy execution-evaluator to verify:
 
 ## Examples
 
-### Standard Multi-Agent Review
+### Standard Review (Changed Files Only)
+
+```bash
+User: /review
+Claude: 📚 Reading documentation for context...
+📖 Reading: README.md, CLAUDE.md, package.json
+🔍 Starting context-aware review of CHANGED FILES...
+📊 Scope: 3 changed files
+🎯 Changed files mode: Deploying targeted agents
+🤖 Deploying context-aware agents: code-reviewer, security-auditor
+🔒 security-auditor: Found 1 input validation issue in auth.js
+🔧 code-reviewer: 2 minor style issues, following project patterns from CLAUDE.md
+📋 Generated context-aware review with 3 actionable fixes (focused on changes)
+```
+
+### Full Repository Review
+
+```bash
+User: /review --full
+Claude: 📚 Reading documentation for context...
+📖 Reading: README.md, CLAUDE.md, package.json, all config files
+🔍 Starting context-aware FULL REPOSITORY review...
+📊 Scope: Complete codebase analysis
+🤖 Full repository mode: Deploying comprehensive agent set
+🤖 Deploying agents: code-reviewer, security-auditor, performance-specialist, test-engineer, devops, dependency-analyst, tech-writer, accessibility-auditor
+🔒 security-auditor: Found 8 vulnerabilities across codebase
+🧪 test-engineer: 67% coverage, 23 functions lack tests
+⚡ performance-specialist: 5 N+1 queries, 3 memory leaks
+🚀 devops: CI/CD pipeline needs 4 improvements
+📋 Generated comprehensive system review with 62 blocking issues
+```
+
+### Specific Target Review
 
 ```bash
 User: /review src/auth/
 Claude: 📚 Reading documentation for context...
-📖 Reading: README.md, CLAUDE.md, package.json
-📋 Reading ADR: docs/adr/001-authentication-pattern.md
-⚙️ Reading config: .claude/agents/security-auditor.md
-🔍 Starting context-aware multi-agent review of src/auth/...
+🔍 Starting context-aware review of specific target: src/auth/...
+📊 Scope: Specific file/directory
+🎯 Changed files mode: Deploying targeted agents
 🤖 Deploying context-aware agents: code-reviewer, security-auditor, test-engineer
-🔒 security-auditor: Found 2 SQL injection vulnerabilities (correctly identified as critical for commands)
+🔒 security-auditor: Found 2 SQL injection vulnerabilities in login.js
 🧪 test-engineer: 23% test coverage, missing critical payment tests
-🔧 code-reviewer: 3 high complexity functions, but following project patterns from CLAUDE.md
-📋 Generated context-aware review with 6 actionable fixes (avoided system boundary false positive)
+🔧 code-reviewer: 3 high complexity functions, but following project patterns
+📋 Generated targeted review with 8 actionable fixes
 ```
 
 ### Security-Focused Review
@@ -449,13 +566,24 @@ Claude: 📚 Reading documentation for context...
 User: /review --security
 Claude: 📚 Reading security documentation for context...
 📖 Reading: .claude/agents/security-auditor.md, docs/security/
+🔍 Starting context-aware review of CHANGED FILES...
 🔒 Context-aware security-focused review mode...
+🎯 Changed files mode: Deploying targeted agents
 🤖 Deploying: security-auditor, code-reviewer with security context
-🚨 Critical: Hardcoded API keys found in config/ (validated against project standards)
-🚨 Critical: SQL injection vulnerability in user search
-⚠️ High: Weak password hashing (MD5)
+🚨 Critical: Input validation missing in new login endpoint
+⚠️ High: Weak password hashing in updated auth module
 ✅ Correctly identified: Commands don't need system boundary protection
-📋 Context-aware security review: 3 critical, 2 high priority issues
+📋 Security review of changes: 1 critical, 1 high priority issue
+
+User: /review --full --security  
+Claude: 📚 Reading security documentation for context...
+🔍 Starting context-aware FULL REPOSITORY review...
+🔒 Context-aware security-focused review mode...
+🤖 Full repository mode: Deploying comprehensive agent set
+🚨 Critical: 8 hardcoded API keys found across codebase
+🚨 Critical: 3 SQL injection vulnerabilities in legacy code
+⚠️ High: 12 authentication bypass scenarios
+📋 Complete security audit: 11 critical, 15 high priority issues
 ```
 
 ### Auto-Fix Review
@@ -472,11 +600,15 @@ Claude: 🔧 Review with auto-remediation...
 
 ## Notes
 
+- **Smart Scope Detection**: Reviews changed files by default, full repository with --full
 - **Context-First Approach**: Reads all documentation before code review
 - **Informed Agent Deployment**: Agents receive project context for accurate analysis
+- **Efficiency-Focused**: Default mode provides fast feedback on recent changes
+- **Comprehensive Option**: --full mode enables complete system analysis when needed
 - **Architecture-Aware**: Understands command vs agent distinctions, system boundaries
 - **Pattern Recognition**: Applies project-specific patterns from CLAUDE.md/README.md
 - **False Positive Prevention**: Context prevents misapplication of security models
+- **Targeted Analysis**: Agent deployment adapts to review scope and file types
 - Deploys multiple agents in parallel for comprehensive coverage
 - Focuses on actionable feedback with specific code examples
 - Prioritizes issues by severity and business impact
