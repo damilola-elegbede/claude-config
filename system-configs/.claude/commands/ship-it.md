@@ -21,6 +21,11 @@ Basic: /review --quick → /commit → /push
 Quick: /commit → /push
 ```
 
+## Behavior
+
+Orchestrates development workflows by executing multiple `/` commands sequentially.
+Uses local progress tracking and fails fast on any command failure.
+
 ## Execution Logic
 
 ```bash
