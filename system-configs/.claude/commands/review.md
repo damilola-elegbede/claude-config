@@ -251,7 +251,7 @@ coordinate_review() {
   determine_review_scope() {
     local scope="$1"
     local target="$2"
-    
+
     if [[ "$scope" == "full" ]]; then
       echo "🔍 Starting context-aware FULL REPOSITORY review..."
       review_target="."
@@ -276,7 +276,7 @@ coordinate_review() {
       echo "📊 Scope: $(echo "$changed_files" | wc -l) changed files"
     fi
   }
-  
+
   determine_review_scope "$scope" "$target"
 
   # Analyze file types to determine agent deployment
@@ -296,7 +296,7 @@ coordinate_review() {
   else
     # Changed files review - deploy targeted agents
     agents_to_deploy=("code-reviewer" "security-auditor")
-    
+
     if echo "$file_types" | grep -q "test\|spec"; then
       agents_to_deploy+=("test-engineer")
     fi
@@ -308,7 +308,7 @@ coordinate_review() {
     if [[ "$mode" == "--performance" ]] || detect_performance_concerns "$review_target"; then
       agents_to_deploy+=("performance-specialist")
     fi
-    
+
     echo "🎯 Changed files mode: Deploying targeted agents"
   fi
 
@@ -575,7 +575,7 @@ Claude: 📚 Reading security documentation for context...
 ✅ Correctly identified: Commands don't need system boundary protection
 📋 Security review of changes: 1 critical, 1 high priority issue
 
-User: /review --full --security  
+User: /review --full --security
 Claude: 📚 Reading security documentation for context...
 🔍 Starting context-aware FULL REPOSITORY review...
 🔒 Context-aware security-focused review mode...
