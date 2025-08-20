@@ -228,7 +228,7 @@ Claude: ✅ Created in .tmp/authentication/:
 
 ### Requirement Format: `REQ-[CATEGORY]-[NUMBER]`
 
-**Categories**: DB, API, SEC, PERF, SCALE, UI, DEPLOY, MONITOR, ROLLBACK, COMPLIANCE
+**Categories**: AUTH, DB, API, SEC, PERF, SCALE, UI, DEPLOY, MONITOR, ROLLBACK, COMPLIANCE
 
 ### Task Requirements
 
