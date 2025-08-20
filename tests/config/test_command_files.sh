@@ -53,9 +53,9 @@ test_command_specifics() {
     assert_file_contains "$commands_dir/test.md" "## Test Generation" \
         "/test command should have generation section"
 
-    # Test /sync command mentions .syncconfig
-    assert_file_contains "$commands_dir/sync.md" ".syncconfig" \
-        "/sync command should mention .syncconfig"
+    # Test /sync command mentions settings.json
+    assert_file_contains "$commands_dir/sync.md" "settings.json" \
+        "/sync command should mention settings.json"
 
     # Test /plan command has approval workflow
     assert_file_contains "$commands_dir/plan.md" "## Approval Workflow" \
@@ -81,7 +81,7 @@ test_documentation_completeness() {
 
         # Check for either Behavior or a main content section (varies by command)
         # Some commands use different section names for their main content
-        if ! grep -q "## Behavior\|## Workflow\|## Discovery Algorithm\|## Analysis Modes\|## Two-Mode Operation\|## SCOPE Framework\|## Smart Branch Creation\|## Validation Framework\|## Investigation Framework\|## Failure Pattern Library\|## Agent Orchestration Strategy\|## Configuration File" "$cmd_file"; then
+        if ! grep -q "## Behavior\|## Workflow\|## Discovery Algorithm\|## Analysis Modes\|## Two-Mode Operation\|## SCOPE Framework\|## Smart Branch Creation\|## Validation Framework\|## Investigation Framework\|## Failure Pattern Library\|## Agent Orchestration Strategy\|## Configuration File\|## Command Execution Flow\|## File Structure" "$cmd_file"; then
             echo "${cmd_name}: Should have a main content section"
             return 1
         fi
