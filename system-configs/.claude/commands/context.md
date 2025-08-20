@@ -11,6 +11,7 @@ comprehensive project understanding. Three modes: lite (quick), full
 ```bash
 /context                     # Full repository analysis
 /context --lite              # Quick essential context only
+/context -l                  # Quick essential context only (short form)
 /context <component>         # Focused component analysis
 ```
 
@@ -23,7 +24,7 @@ for specific components.
 
 ## Analysis Modes
 
-### Lite Mode (--lite) - 2 Second Analysis
+### Lite Mode (--lite or -l) - 2 Second Analysis
 
 **What it does**: Essential context without deep scanning
 

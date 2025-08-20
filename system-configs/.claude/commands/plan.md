@@ -2,223 +2,126 @@
 
 ## Description
 
-Enters plan mode to generate strategic implementation plans organized by phases.
-Creates a roadmap of focused PRs with clear dependencies and parallel opportunities.
+Generates Product Requirements Document (PRD) and PR-based task files with agent assignments.
+Never guesses unclear requirements - asks for clarification while staying in plan mode.
 
 ## Usage
 
 ```bash
-/plan <task_description>
-/plan -s <task_description>      # Simple mode flag
-/plan --simple <task_description> # Simple mode flag (long form)
-/plan --file <file_path>         # Read task from file
-/plan -f <file_path>             # Read task from file (short form)
+/plan <task_description>             # Standard mode
+/plan -s <task_description>          # Simple mode (single PR)
+/plan --simple <task_description>    # Simple mode (single PR)
+/plan -f <file_path>                 # Read from file
+/plan --file <file_path>             # Read from file
 ```
 
 ## Command Execution Flow
 
-When you invoke `/plan`, I will:
+1. Enter plan mode
+2. Analyze requirements, ask clarification if needed
+3. Generate PRD preview
+4. Wait for approval (yes/no/modify)
+5. Create files in `.tmp/<feature-name>/` only after approval
 
-1. **Enter plan mode** for strategic planning
-2. **Read file if provided** with --file flag
-3. **Generate phased plan** with clear task breakdown
-4. **Present preview** showing phases and dependencies
-5. **Stay in plan mode** awaiting your decision
-6. **Exit plan mode** only after approval
-7. **Generate plan files** to `.tmp/<feature-name>/` if approved
+## Plan Preview Format
 
-### File Input Processing
+PRD preview shows:
 
-When using `--file <file_path>` or `-f <file_path>`:
+- Executive Summary
+- Implementation Phases with PR counts
+- Key Requirements
+- Approval prompt
 
-- Reads entire file as sole requirement source
-- Supports `.md`, `.txt`, `.yaml`, `.json`, `.rst` formats
-- Parses user stories, specs, bug reports, feature requests
-- Ignores conversation context when file flag is used
+## File Structure
 
-## Complexity Assessment
+### Generated Files
 
-- **Simple**: Single phase, one PR
-  - Keywords: button, typo, color, text change
-- **Medium**: 2-3 phases, multiple PRs
-  - Keywords: feature, endpoint, component
-- **Complex**: Multiple phases with dependencies
-  - Keywords: system, migration, architecture
+- `prd.md` - Product Requirements Document
+- `phase_X_pr_Y_<description>.md` - PR implementation files
+- `rollback.md` - Rollback procedures (if needed)
 
-## Agent Deployment Patterns
+### PRD Contents
+
+- Executive Summary
+- Business Objectives & Scope
+- Technical Requirements
+- Implementation Phases
+- Success Metrics & Risks
+- Dependencies & Timeline
+
+### Phase Organization
+
+Phases are organized with clear dependencies:
+
+- Phase 1: Foundation (infrastructure, contracts)
+- Phase 2: Implementation (features, logic)
+- Phase 3: Integration (connections, validation)
+
+### Phase Files (Auto-Generated)
+
+Each PR file contains tasks with:
+
+- **Task ID**: `Task_X_Y_ZZ` format
+- **Assignees**: Specialized agents
+- **Execution**: Independent/Concurrent/Depends
+- **Technical Details**: Implementation steps
+- **Testing**: Acceptance criteria
+
+## Clarification Protocol
+
+**Never guess requirements.** When unclear:
+
+- Present what's understood
+- Ask specific questions
+- Stay in plan mode awaiting answers
+- Generate PRD only after clarity
+
+Example ambiguities:
+
+- "Make it faster" → Ask for specific metrics
+- "Add search" → Ask scope, volume, features needed
+- "Integrate API" → Ask which API, what operations
+
+## Agent Patterns
 
 - **Features**: backend-engineer + frontend-architect + test-engineer
 - **Bug fixes**: debugger → specialist → test-engineer
 - **Performance**: performance-specialist + monitoring-specialist
-- **Security**: security-auditor with code-reviewer gates
-
-## Plan Preview Format
-
-Preview includes:
-
-- Task summary with complexity
-- Phase breakdown with dependencies
-- Agent assignments per phase
-- Parallel execution opportunities
+- **Security**: security-auditor + code-reviewer
 
 ## Approval Workflow
 
-**IMPORTANT**: Stay IN plan mode until user responds.
+Stay in plan mode until user responds:
 
-1. **Present and wait** in plan mode
-2. **Process response**:
-   - "yes"/"approve": Exit plan mode, write files
-   - "modify": Stay in plan mode, adjust
-   - "cancel": Exit without writing
-3. **Report completion** if approved
+- **Approve**: yes, approve, proceed, 👍 → Exit plan mode, write files
+- **Modify**: modify, update, change → Stay in plan mode, adjust
+- **Cancel**: no, cancel, abort, stop → Exit without writing
 
-**Approval signals**: yes, approve, proceed, 👍, looks good
-**Modification**: modify, update, change, revise
-**Rejection**: no, cancel, abort, stop, reject, 👎
-
-## File Generation
-
-- `plan.md` - Overall strategy and phases
-- `phase_X_description.md` - Detailed phase implementation
-- `rollback.md` - Rollback procedures (if needed)
-
-### Phase File Structure
-
-Each phase file contains:
-
-1. **Phase Overview**: What this phase accomplishes
-2. **Tasks**: Numbered list with clear descriptions
-3. **Dependencies**: What must complete before this phase
-4. **Implementation Details**: Specific changes needed
-5. **Acceptance Criteria**: How to verify completion
-
-## Phase Organization
-
-### Phase 1: Foundation
-
-- Set up core infrastructure
-- Define interfaces and contracts
-- Create test framework
-- Can execute tasks in parallel
-
-### Phase 2: Implementation
-
-- Build core functionality
-- Implement business logic
-- Create UI components
-- Independent tasks run concurrently
-
-### Phase 3: Integration
-
-- Connect components
-- Validate functionality
-- Optimize performance
-- Final security review
-
-## Error Handling
-
-- File not found: Request valid path
-- Empty/binary files: Reject, request text input
-- Agent unavailable: Use fallback agents
-- Complexity overflow: Auto-split tasks
-- Circular dependencies: Serialize execution
-- After 3 failures: Generate simple fallback plan
-
-## Benefits of Plan Mode
-
-- **No wasted files**: Only created after approval
-- **User control**: Review before commitment
-- **Transparency**: See exactly what will be created
-- **Optimized assignments**: Project-orchestrator ensures efficiency
-- **Time savings**: 40-60% reduction through parallelization
-
-## Examples
-
-### Complex Planning
+## Example
 
 ```bash
 User: /plan implement authentication
 Claude: 📋 Entering plan mode...
 
-## Plan Preview: Authentication System
+## PRD Preview: Authentication System
 
-### Phase 1: Foundation
-- Set up JWT configuration
-- Create user model and schema
-- Define auth middleware
-
-### Phase 2: Implementation
-- Build login/logout endpoints
-- Implement password hashing
-- Create session management
-
-### Phase 3: Integration
-- Add auth to existing routes
-- Create auth UI components
-- Security validation
+Executive Summary: JWT-based auth with registration/login
+Phases: 3 phases, 9 PRs, 33 tasks
+Key Requirements: Bcrypt, RS256, <500ms response
 
 Ready to proceed? (yes/no/modify)
 
 User: yes
-Claude: ✅ Plan files created in .tmp/authentication/
+Claude: ✅ Created in .tmp/authentication/:
+- prd.md
+- phase_1_pr_1_database.md (3 tasks)
+- phase_1_pr_2_services.md (4 tasks)
+[... 7 more PR files]
 ```
-
-### Simple Mode Planning
-
-```bash
-User: /plan -s fix login button styling
-Claude: 📋 Entering plan mode...
-
-## Plan Preview: Fix Login Button Styling
-
-### Single Phase Implementation
-- Update button CSS classes in LoginForm component
-- Test styling changes across different screen sizes
-- Verify accessibility contrast ratios
-
-Estimated: <30 minutes, single PR
-
-Ready to proceed? (yes/no/modify)
-
-User: yes
-Claude: ✅ Simple plan created in .tmp/login-button-fix/
-```
-
-### File-Based Planning
-
-```bash
-User: /plan --simple --file feature-spec.md
-Claude: 📋 Entering plan mode...
-📖 Reading requirements from feature-spec.md...
-
-## Plan Preview: Add Dark Mode Toggle
-
-### Single Phase Implementation
-- Create toggle component with theme context
-- Update CSS variables for dark theme
-- Add persistence with localStorage
-
-Ready to proceed? (yes/no/modify)
-```
-
-## Arguments
-
-- `task_description`: Direct requirements
-- `-s/--simple`: Simple mode flag for streamlined single-phase plans
-- `--file/-f <path>`: Read requirements from file
-
-## Behavior Summary
-
-1. **Planning**: Enter plan mode, analyze, orchestrate, preview
-2. **Approval**: Wait for user decision in plan mode
-3. **Execution**: Write files only after approval
-4. **Quality**: TDD methodology, phased implementation
-5. **Control**: Preview first, iterative refinement, cancellation support
 
 ## Notes
 
-- Plans require explicit approval before file generation
-- Phase organization ensures logical progression
-- Dependencies clearly marked between phases
-- Parallel opportunities highlighted within phases
-- Use --file flag for requirements from files
+- PRD drives all phase file generation
+- Tasks auto-assigned to appropriate agents
+- Parallel execution where possible
+- Every task traces to PRD requirements
