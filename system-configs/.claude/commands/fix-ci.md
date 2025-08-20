@@ -36,6 +36,7 @@ Build Issues: {confidence: 70%, test: "npm run build", fix: "rebuild"}
 # Whitelist of safe commands
 SAFE_COMMANDS=(
   "npm run lint:fix"
+  "npm run lint"
   "npx eslint . --fix"
   "npm install"
   "npm test"
@@ -65,13 +66,18 @@ apply_fix() {
   elif grep -q "Module not found\|Cannot resolve" "$error_log"; then
     confidence=92; fix_cmd="npm install"; test_cmd="npm test"
   elif grep -q "Test.*failed\|expect.*received" "$error_log"; then
-    confidence=85; fix_cmd="echo 'Manual test fix needed'"; test_cmd="npm test"
+    confidence=85; fix_cmd="MANUAL"; test_cmd="npm test"
   elif grep -q "Type.*error\|TS[0-9]" "$error_log"; then
-    confidence=78; fix_cmd="echo 'Manual type fix needed'"; test_cmd="npm run typecheck"
+    confidence=78; fix_cmd="MANUAL"; test_cmd="npm run typecheck"
   else
     return 1
   fi
 
+  # If manual fix is required, return sentinel without validation
+  if [[ "$fix_cmd" == "MANUAL" ]]; then
+    echo "$confidence,$fix_cmd,$test_cmd"
+    return 0
+  fi
   # Validate fix command is safe
   if ! validate_fix_command "$fix_cmd"; then
     return 1
@@ -101,8 +107,10 @@ record_outcome() {
 # Calculate confidence from historical success
 get_confidence() {
   local pattern="$1"
-  [[ -f .tmp/fix-ci/history.log ]] || echo "50"
-
+  if [[ ! -f .tmp/fix-ci/history.log ]]; then
+    echo "50"
+    return 0
+  fi
   awk -F',' -v p="$pattern" '
     $2 == p { total++; if($4=="true") success++ }
     END { if(total==0) print 50; else print int(success/total*100) }
@@ -128,6 +136,10 @@ fix_ci() {
 
   echo "🔍 Pattern confidence: ${final_confidence}%"
 
+  if [[ "$fix_cmd" == "MANUAL" ]]; then
+    echo "📝 Pattern matched but requires manual remediation. Recommended test: $test_cmd"
+    return 1
+  fi
   # Only proceed if 95%+ confident
   if [[ $final_confidence -lt 95 ]]; then
     echo "⚠️ Confidence too low (${final_confidence}% < 95%)"

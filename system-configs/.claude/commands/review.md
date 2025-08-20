@@ -197,7 +197,7 @@ coordinate_review() {
     done
 
     # Look for architecture decision records
-    find . -name "*.md" -path "*/adr/*" -o -path "*/decisions/*" | while read -r adr; do
+    find . \( -path "*/adr/*" -o -path "*/decisions/*" \) -name "*.md" | while read -r adr; do
       echo "📋 Reading ADR: $adr"
     done
 

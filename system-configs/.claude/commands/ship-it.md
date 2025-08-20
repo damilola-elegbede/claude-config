@@ -50,6 +50,20 @@ execute_workflow() {
   IFS=',' read -ra COMMANDS <<< "$steps"
   local total=${#COMMANDS[@]}
 
+  # portable in-place sed
+  inplace_sed() {
+    local expr="$1" file="$2"
+    if command -v gsed >/dev/null 2>&1; then
+      gsed -i "${expr}" "${file}"
+    elif sed --version >/dev/null 2>&1; then
+      # GNU sed present
+      sed -i "${expr}" "${file}"
+    else
+      # BSD sed (macOS)
+      sed -i '' "${expr}" "${file}"
+    fi
+  }
+
   # Track commands in local progress file
   mkdir -p .tmp/ship-it
   echo "# Ship-It Progress - $(date)" > .tmp/ship-it/progress.log
@@ -64,14 +78,14 @@ execute_workflow() {
     local cmd_id=$((i+1))
 
     echo "🚀 Step $cmd_id/$total: /$cmd"
-    sed -i "s/\[$cmd_id\] PENDING/\[$cmd_id\] IN_PROGRESS/" .tmp/ship-it/progress.log
+    inplace_sed "s/\[$cmd_id\] PENDING/\[$cmd_id\] IN_PROGRESS/" .tmp/ship-it/progress.log
 
     if execute_command "$cmd"; then
       echo "✅ /$cmd completed"
-      sed -i "s/\[$cmd_id\] IN_PROGRESS/\[$cmd_id\] COMPLETED/" .tmp/ship-it/progress.log
+      inplace_sed "s/\[$cmd_id\] IN_PROGRESS/\[$cmd_id\] COMPLETED/" .tmp/ship-it/progress.log
     else
       echo "❌ /$cmd failed - stopping workflow"
-      sed -i "s/\[$cmd_id\] IN_PROGRESS/\[$cmd_id\] FAILED/" .tmp/ship-it/progress.log
+      inplace_sed "s/\[$cmd_id\] IN_PROGRESS/\[$cmd_id\] FAILED/" .tmp/ship-it/progress.log
       return 1
     fi
   done
@@ -97,7 +111,12 @@ execute_command() {
       ;;
     "pr")
       if ! pr_exists_for_branch; then
-        run_pr_command
+        if run_pr_command; then
+          echo "✅ /pr completed"
+        else
+          echo "⚠️ /pr failed - continuing (non-fatal)"
+          return 0
+        fi
       else
         echo "ℹ️ PR exists - skipping"
         return 0
@@ -111,9 +130,17 @@ execute_command() {
 }
 
 pr_exists_for_branch() {
-  local current_branch=$(git branch --show-current)
-  local pr_count=$(gh pr list --head "$current_branch" --json number --jq 'length')
-  [[ "$pr_count" -gt 0 ]]
+  command -v git >/dev/null 2>&1 || { echo "❌ git not found"; return 2; }
+  command -v gh  >/dev/null 2>&1 || { echo "❌ GitHub CLI (gh) not found"; return 2; }
+  local current_branch
+  current_branch="$(git branch --show-current)"
+  if [[ -z "$current_branch" ]]; then
+    echo "❌ Unable to determine current branch"
+    return 2
+  fi
+  local pr_count
+  pr_count="$(gh pr list --head "$current_branch" --json number --jq 'length' 2>/dev/null || echo 0)"
+  [[ "${pr_count:-0}" -gt 0 ]]
 }
 
 update_progress_status() {
