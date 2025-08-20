@@ -2,8 +2,8 @@
 
 ## Description
 
-Generates Product Requirements Document (PRD) and PR-based task files with 
-agent assignments. Never guesses unclear requirements - asks for clarification 
+Generates Product Requirements Document (PRD) and PR-based task files with
+agent assignments. Never guesses unclear requirements - asks for clarification
 while staying in plan mode.
 
 ## Usage
@@ -128,8 +128,8 @@ Infrastructure: database-admin, database-evolution-specialist, api-architect,
   devops, monitoring-specialist, security-auditor
 Implementation: backend-engineer, frontend-architect, mobile-platform-engineer, 
   ui-designer
-Quality: code-reviewer, security-auditor, performance-specialist, test-engineer, 
-  accessibility-auditor
+Quality: code-reviewer, security-auditor, performance-specialist, 
+  test-engineer, accessibility-auditor
 Technology: React/Vue→frontend-architect, Node/Python→backend-engineer, 
   K8s→kubernetes-admin, Auth→security-auditor
 ```
