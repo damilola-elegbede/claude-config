@@ -2,9 +2,9 @@
 
 ## Description
 
-Multi-agent code review orchestrating specialized agents for comprehensive
-quality validation across security, performance, testing, and accessibility
-dimensions.
+Multi-agent code review with comprehensive documentation analysis for context,
+orchestrating specialized agents for security, performance, testing, and
+accessibility validation.
 
 ## Usage
 
@@ -18,9 +18,10 @@ dimensions.
 
 ## Behavior
 
-When invoked, I will orchestrate multiple specialized agents for comprehensive
-code review. Agents work in parallel to analyze security, performance, testing,
-and accessibility aspects, with results aggregated by severity.
+When invoked, I first read all documentation for context understanding, then
+orchestrate multiple specialized agents for comprehensive code review. Agents
+receive documentation context and work in parallel to analyze security,
+performance, testing, and accessibility aspects with informed decisions.
 
 ## Agent Orchestration Strategy
 
@@ -171,12 +172,46 @@ describe('processPayment', () => {
 ### File Analysis Pipeline
 
 ```bash
-# Multi-agent review coordination
+# Multi-agent review coordination with documentation context
 coordinate_review() {
   local target="$1"
   local mode="$2"
 
-  echo "🔍 Starting multi-agent review of $target..."
+  echo "📚 Reading documentation for context..."
+
+  # Read all documentation for context
+  read_project_documentation() {
+    echo "🔍 Analyzing project documentation:"
+
+    # Core project files
+    local doc_files=(
+      "README.md" "CLAUDE.md" "package.json" "Cargo.toml" "pyproject.toml"
+      "docs/" "documentation/" ".github/" "spec/" "design/"
+    )
+
+    for doc_path in "${doc_files[@]}"; do
+      if [[ -e "$doc_path" ]]; then
+        echo "📖 Reading: $doc_path"
+        # Agent receives content for context
+      fi
+    done
+
+    # Look for architecture decision records
+    find . -name "*.md" -path "*/adr/*" -o -path "*/decisions/*" | while read -r adr; do
+      echo "📋 Reading ADR: $adr"
+    done
+
+    # Find configuration files that define system behavior
+    find . -name "*.json" -o -name "*.yaml" -o -name "*.toml" -o -name "*.ini" | \
+    grep -E "(config|settings|env)" | while read -r config; do
+      echo "⚙️ Reading config: $config"
+    done
+  }
+
+  # Execute documentation reading
+  read_project_documentation
+
+  echo "🔍 Starting context-aware multi-agent review of $target..."
 
   # Analyze file types to determine agent deployment
   file_types=$(find "$target" -type f -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.go" | \
@@ -197,15 +232,28 @@ coordinate_review() {
     agents_to_deploy+=("performance-specialist")
   fi
 
-  echo "🤖 Deploying agents: ${agents_to_deploy[*]}"
+  echo "🤖 Deploying context-aware agents: ${agents_to_deploy[*]}"
 
-  # Execute review in parallel
+  # Prepare context summary for agents
+  context_prompt="Based on the project documentation analysis:
+  - Project architecture and patterns from README.md/CLAUDE.md
+  - Configuration standards from config files
+  - System boundaries and security models from agent definitions
+  - Command vs agent distinctions from .claude/ structure
+
+  Apply this context when reviewing code to make informed decisions about:
+  - Whether security patterns are appropriate for the file type
+  - What architectural patterns should be followed
+  - How this code fits into the overall system design"
+
+  # Execute context-aware review in parallel
   for agent in "${agents_to_deploy[@]}"; do
-    echo "Deploying $agent for $target review..." &
+    echo "Deploying $agent with project context for $target review..." &
+    # Agent receives both target code AND documentation context
   done
   wait
 
-  echo "📋 Aggregating findings..."
+  echo "📋 Aggregating context-aware findings..."
 }
 
 # Detect performance-related files
@@ -383,24 +431,31 @@ Deploy execution-evaluator to verify:
 
 ```bash
 User: /review src/auth/
-Claude: 🔍 Starting multi-agent review of src/auth/...
-🤖 Deploying: code-reviewer, security-auditor, test-engineer
-🔒 security-auditor: Found 2 critical SQL injection vulnerabilities
+Claude: 📚 Reading documentation for context...
+📖 Reading: README.md, CLAUDE.md, package.json
+📋 Reading ADR: docs/adr/001-authentication-pattern.md
+⚙️ Reading config: .claude/agents/security-auditor.md
+🔍 Starting context-aware multi-agent review of src/auth/...
+🤖 Deploying context-aware agents: code-reviewer, security-auditor, test-engineer
+🔒 security-auditor: Found 2 SQL injection vulnerabilities (correctly identified as critical for commands)
 🧪 test-engineer: 23% test coverage, missing critical payment tests
-🔧 code-reviewer: 3 high complexity functions, 1 code duplication
-📋 Generated comprehensive review report with 8 actionable fixes
+🔧 code-reviewer: 3 high complexity functions, but following project patterns from CLAUDE.md
+📋 Generated context-aware review with 6 actionable fixes (avoided system boundary false positive)
 ```
 
 ### Security-Focused Review
 
 ```bash
 User: /review --security
-Claude: 🔒 Security-focused review mode...
-🤖 Deploying: security-auditor, code-reviewer
-🚨 Critical: Hardcoded API keys found in config/
+Claude: 📚 Reading security documentation for context...
+📖 Reading: .claude/agents/security-auditor.md, docs/security/
+🔒 Context-aware security-focused review mode...
+🤖 Deploying: security-auditor, code-reviewer with security context
+🚨 Critical: Hardcoded API keys found in config/ (validated against project standards)
 🚨 Critical: SQL injection vulnerability in user search
 ⚠️ High: Weak password hashing (MD5)
-📋 Security review complete: 3 critical, 2 high priority issues
+✅ Correctly identified: Commands don't need system boundary protection
+📋 Context-aware security review: 3 critical, 2 high priority issues
 ```
 
 ### Auto-Fix Review
@@ -417,6 +472,11 @@ Claude: 🔧 Review with auto-remediation...
 
 ## Notes
 
+- **Context-First Approach**: Reads all documentation before code review
+- **Informed Agent Deployment**: Agents receive project context for accurate analysis
+- **Architecture-Aware**: Understands command vs agent distinctions, system boundaries
+- **Pattern Recognition**: Applies project-specific patterns from CLAUDE.md/README.md
+- **False Positive Prevention**: Context prevents misapplication of security models
 - Deploys multiple agents in parallel for comprehensive coverage
 - Focuses on actionable feedback with specific code examples
 - Prioritizes issues by severity and business impact

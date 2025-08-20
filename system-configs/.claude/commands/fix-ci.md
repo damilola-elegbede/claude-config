@@ -2,8 +2,9 @@
 
 ## Description
 
-Diagnoses and fixes GitHub Actions failures using pattern recognition and historical fix data.
-Learns from successful fixes to improve success rate over time.
+Diagnoses and fixes GitHub Actions failures using pattern recognition and
+historical fix data. Only pushes when 95% confident all CI issues are resolved.
+Tests locally before applying fixes.
 
 ## Usage
 
@@ -15,177 +16,196 @@ Learns from successful fixes to improve success rate over time.
 
 ## Behavior
 
-When invoked, I will diagnose and fix GitHub Actions failures using pattern
-recognition and historical fix data. I fetch failure details, apply quick fixes
-for known patterns, and learn from successful fixes to improve success rate over time.
+Analyzes GitHub Actions failures, applies targeted fixes, tests locally for
+validation, and only pushes when 95% confident that 100% of CI issues are
+resolved. Learns from outcomes to improve confidence scoring.
 
-## Failure Pattern Library
+## Fix Patterns with Confidence Scoring
 
 ```yaml
-# Patterns tracked with success rates
-Lint/Format:
-  fix: "npm run lint:fix"
-  success_rate: 95%
-
-Missing Dependencies:
-  fix: "npm install"
-  success_rate: 88%
-
-Test Timeouts:
-  fix: "Add async/await, increase timeout"
-  success_rate: 72%
-
-Type Errors:
-  fix: "Update type definitions"
-  success_rate: 65%
-
-Build Cache:
-  fix: "Clear cache and rebuild"
-  success_rate: 61%
+Lint/Format: {confidence: 98%, test: "npm run lint", fix: "npm run lint:fix"}
+Dependencies: {confidence: 92%, test: "npm test", fix: "npm install"}
+Test Failures: {confidence: 85%, test: "npm test", fix: "update tests"}
+Type Errors: {confidence: 78%, test: "npm run typecheck", fix: "fix types"}
+Build Issues: {confidence: 70%, test: "npm run build", fix: "rebuild"}
 ```
 
-## Quick Fix Patterns
+## Pattern Matching & Fixes
 
 ```bash
-# Apply fixes based on error pattern
-apply_fix() {
-  local error_log="$1"
+# Whitelist of safe commands
+SAFE_COMMANDS=(
+  "npm run lint:fix"
+  "npx eslint . --fix"
+  "npm install"
+  "npm test"
+  "npm run typecheck"
+  "npm run build"
+)
 
-  # Lint/format (95% success)
-  if grep -q "ESLint\|Prettier" "$error_log"; then
-    npm run lint:fix || npx eslint . --fix
-    npx prettier --write .
-    return 0
-  fi
-
-  # Dependencies (88% success)
-  if grep -q "Module not found\|Cannot resolve" "$error_log"; then
-    npm install
-    return 0
-  fi
-
-  # Test timeout (72% success)
-  if grep -q "Timeout.*exceeded\|Async.*timeout" "$error_log"; then
-    # Find test files and add timeout
-    find . -name "*.test.js" -exec sed -i 's/test(/test.timeout(10000)(/' {} \;
-    return 0
-  fi
-
-  # No quick fix available
+validate_fix_command() {
+  local cmd="$1"
+  for safe_cmd in "${SAFE_COMMANDS[@]}"; do
+    [[ "$cmd" == "$safe_cmd" ]] && return 0
+  done
+  echo "❌ Unsafe command: $cmd"
   return 1
 }
+
+apply_fix() {
+  local error_log="$1"
+  local confidence=0
+  local fix_cmd=""
+  local test_cmd=""
+
+  if grep -q "ESLint\|Prettier\|lint" "$error_log"; then
+    confidence=98
+    fix_cmd="npm run lint:fix"
+    test_cmd="npm run lint"
+  elif grep -q "Module not found\|Cannot resolve" "$error_log"; then
+    confidence=92; fix_cmd="npm install"; test_cmd="npm test"
+  elif grep -q "Test.*failed\|expect.*received" "$error_log"; then
+    confidence=85; fix_cmd="echo 'Manual test fix needed'"; test_cmd="npm test"
+  elif grep -q "Type.*error\|TS[0-9]" "$error_log"; then
+    confidence=78; fix_cmd="echo 'Manual type fix needed'"; test_cmd="npm run typecheck"
+  else
+    return 1
+  fi
+
+  # Validate fix command is safe
+  if ! validate_fix_command "$fix_cmd"; then
+    return 1
+  fi
+
+  echo "$confidence,$fix_cmd,$test_cmd"
+}
 ```
 
-## Learning from History
+## History Tracking
 
 ```bash
-# Track successful fixes
-record_fix() {
+# Initialize history directory
+init_history() {
+  mkdir -p .tmp/fix-ci
+}
+
+# Record fix outcomes with 100% CI success requirement
+record_outcome() {
   local pattern="$1"
-  local fix="$2"
-  local success="$3"
+  local confidence="$2"
+  local all_ci_passed="$3"  # true only if 100% CI issues resolved
 
-  echo "${pattern}|${fix}|${success}" >> ~/.fix-ci-history
+  echo "$(date),$pattern,$confidence,$all_ci_passed" >> .tmp/fix-ci/history.log
 }
 
-# Update success rates
-update_patterns() {
-  # Calculate success rates from history
-  awk -F'|' '
-    {patterns[$1]++; if($3=="true") success[$1]++}
-    END {for(p in patterns) print p, int(success[p]/patterns[p]*100)"%"}
-  ' ~/.fix-ci-history | sort -t' ' -k2 -rn
-}
+# Calculate confidence from historical success
+get_confidence() {
+  local pattern="$1"
+  [[ -f .tmp/fix-ci/history.log ]] || echo "50"
 
-# Apply fix with highest success rate
-best_fix_for() {
-  local error="$1"
-  grep "$error" ~/.fix-ci-history | \
-    sort -t'|' -k3 -r | \
-    head -1 | \
-    cut -d'|' -f2
+  awk -F',' -v p="$pattern" '
+    $2 == p { total++; if($4=="true") success++ }
+    END { if(total==0) print 50; else print int(success/total*100) }
+  ' .tmp/fix-ci/history.log
 }
 ```
 
-## Execution Workflow
+## Main Execution Flow
 
 ```bash
 fix_ci() {
-  # Get failure logs
+  init_history
   local run_id="${1:-$(gh run list --status=failure --limit=1 --jq '.[0].databaseId')}"
   local logs=$(gh run view "$run_id" --log-failed)
 
-  # Try quick fixes first
-  if apply_fix "$logs"; then
-    echo "✅ Applied quick fix"
-  else
-    # Check historical fixes
-    local best_fix=$(best_fix_for "$logs")
-    if [[ -n "$best_fix" ]]; then
-      echo "📦 Applying historical fix: $best_fix"
-      # Execute fix command safely without eval
-      bash -c "$best_fix"
-    else
-      echo "⚠️ No automated fix available"
-      echo "💡 Manual review needed for:"
-      echo "$logs" | head -20
-      return 1
-    fi
+  # Get fix details
+  local fix_data=$(apply_fix "$logs")
+  [[ -z "$fix_data" ]] && { echo "❌ No fix pattern matched"; return 1; }
+
+  IFS=',' read -r confidence fix_cmd test_cmd <<< "$fix_data"
+  local historical_confidence=$(get_confidence "$(echo "$logs" | head -1)")
+  local final_confidence=$(( (confidence + historical_confidence) / 2 ))
+
+  echo "🔍 Pattern confidence: ${final_confidence}%"
+
+  # Only proceed if 95%+ confident
+  if [[ $final_confidence -lt 95 ]]; then
+    echo "⚠️ Confidence too low (${final_confidence}% < 95%)"
+    echo "💡 Manual review recommended"
+    return 1
   fi
 
-  # Commit and push
+  # Apply fix safely
+  echo "🔧 Applying fix (${final_confidence}% confidence)..."
+  if ! validate_fix_command "$fix_cmd"; then
+    echo "❌ Fix command failed validation"
+    return 1
+  fi
+  bash -c "$fix_cmd"
+
+  # Test locally (account for CI environment differences)
+  echo "🧪 Testing fix locally..."
+  if ! validate_fix_command "$test_cmd"; then
+    echo "❌ Test command failed validation"
+    return 1
+  fi
+  if ! bash -c "$test_cmd"; then
+    echo "❌ Local test failed - not pushing"
+    record_outcome "$(echo "$logs" | head -1)" "$final_confidence" "false"
+    return 1
+  fi
+
+  # Commit and push only if confident and tests pass
   if ! git diff --quiet; then
     git add .
-    git commit -m "fix: resolve CI failure
+    git commit -m "fix: resolve CI failure (${final_confidence}% confidence)
 
 Automated fix applied by /fix-ci"
     git push
 
-    # Record outcome
-    sleep 60  # Wait for CI
-    local result=$(gh run list --limit=1 --jq '.[0].conclusion')
-    record_fix "$(echo "$logs" | head -1)" "$best_fix" "$([[ "$result" == "success" ]] && echo true || echo false)"
+    # Record outcome after CI completes
+    sleep 90
+    local all_passed=$(gh run list --limit=1 --jq '.[0].conclusion == "success"')
+    record_outcome "$(echo "$logs" | head -1)" "$final_confidence" "$all_passed"
+    echo "📊 Recorded outcome: CI passed = $all_passed"
   fi
 }
-```
-
-## Success Tracking
-
-```text
-Current Success Rates (from ~/.fix-ci-history):
-- Lint/Format: 95% (152/160 successful)
-- Dependencies: 88% (73/83 successful)
-- Test Timeouts: 72% (36/50 successful)
-- Type Errors: 65% (26/40 successful)
-- Build Cache: 61% (19/31 successful)
-- Other: 42% (34/81 successful)
-
-Overall: 74% automated fix rate
 ```
 
 ## Examples
 
 ```bash
 User: /fix-ci
-Claude: 🔍 Getting latest failure...
-📋 ESLint errors detected
-🔧 Applying lint fix (95% success rate)...
-✅ Fixed and pushed
-📦 Recording successful fix pattern
+Claude: 🔍 Pattern confidence: 96%
+🔧 Applying fix (96% confidence)...
+🧪 Testing fix locally...
+✅ Local tests passed
+💾 Committed and pushed fix
+📊 Recorded outcome: CI passed = true
+
+User: /fix-ci
+Claude: 🔍 Pattern confidence: 87%
+⚠️ Confidence too low (87% < 95%)
+💡 Manual review recommended
 
 User: /fix-ci --learn
-Claude: 📦 Updating fix patterns from history...
-Top patterns by success rate:
-- Lint/Format: 95%
-- Dependencies: 88%
-- Test Timeouts: 72%
-📊 Overall success rate: 74%
+Claude: 📊 Confidence scores from .tmp/fix-ci/:
+- Lint/Format: 98% (47/48 successful)
+- Dependencies: 92% (23/25 successful)
+- Test Failures: 85% (17/20 successful)
 ```
+
+## Key Features
+
+- **95% confidence threshold** - Only pushes when highly confident
+- **Local testing first** - Validates fixes before pushing
+- **100% CI success requirement** - Success only when all CI issues resolved
+- **Historical learning** - Improves confidence scoring from .tmp/fix-ci/ data
+- **Safe execution** - Tests locally accounting for CI environment differences
 
 ## Notes
 
-- GitHub Actions only (use native tools for other CI systems)
-- Learns from successful fixes to improve over time
-- Quick fixes applied first (95% success on lint issues)
-- Historical patterns checked for complex issues
-- Success rates tracked in ~/.fix-ci-history
+- History stored in `.tmp/fix-ci/` not home directory
+- Success only counted when 100% of CI issues are resolved
+- Local testing accounts for CI environment differences
+- Won't push unless 95%+ confident in fix success

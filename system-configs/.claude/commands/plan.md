@@ -90,14 +90,14 @@ Example ambiguities:
 Each PR contains **3-5 granular tasks** (1-8 hours each) following this hierarchy:
 
 - **Phase 1**: Infrastructure (schema, APIs, configs)
-- **Phase 2**: Implementation (logic, endpoints, components)  
+- **Phase 2**: Implementation (logic, endpoints, components)
 - **Phase 3**: Integration (testing, docs, deployment)
 
 ### Breakdown Patterns
 
 ```yaml
 Backend: Schema → Service → Controller → Validation → Tests
-Frontend: Design → Component → State → Styling → Tests  
+Frontend: Design → Component → State → Styling → Tests
 Infrastructure: Config → Build → Deploy → Monitor → Rollback
 Database: Schema → Migration → Rollback → Validation → Performance
 API: Contract → Implementation → Security → Testing → Docs
@@ -124,20 +124,20 @@ Coordination: API contracts, schema approval, integration checkpoints
 ### Assignment Matrix
 
 ```yaml
-Infrastructure: database-admin, database-evolution-specialist, api-architect, 
+Infrastructure: database-admin, database-evolution-specialist, api-architect,
   devops, monitoring-specialist, security-auditor
-Implementation: backend-engineer, frontend-architect, mobile-platform-engineer, 
+Implementation: backend-engineer, frontend-architect, mobile-platform-engineer,
   ui-designer
-Quality: code-reviewer, security-auditor, performance-specialist, 
+Quality: code-reviewer, security-auditor, performance-specialist,
   test-engineer, accessibility-auditor
-Technology: React/Vue→frontend-architect, Node/Python→backend-engineer, 
+Technology: React/Vue→frontend-architect, Node/Python→backend-engineer,
   K8s→kubernetes-admin, Auth→security-auditor
 ```
 
 ### Priority Rules
 
 1. **Security-First**: Auth/security → security-auditor (always)
-2. **Specialist-Preferred**: Domain experts for specialized tech  
+2. **Specialist-Preferred**: Domain experts for specialized tech
 3. **Multi-Agent**: Complex tasks get primary + secondary + quality agents
 
 ## Execution Sequencing
@@ -145,7 +145,7 @@ Technology: React/Vue→frontend-architect, Node/Python→backend-engineer,
 ### Task Types
 
 - **Independent**: Start immediately, full parallel (separate services/components)
-- **Concurrent**: Parallel with coordination (Frontend/Backend shared API)  
+- **Concurrent**: Parallel with coordination (Frontend/Backend shared API)
 - **Depends**: Sequential execution (Migration before code, API before implementation)
 
 ### Sequencing Patterns
@@ -188,7 +188,7 @@ Stay in plan mode until user responds:
 
 ### Task_X_Y_ZZ: [Task Name]
 - **Assignee**: [agent-name]
-- **Execution**: [Independent/Concurrent/Depends on Task_X_Y_ZZ]  
+- **Execution**: [Independent/Concurrent/Depends on Task_X_Y_ZZ]
 - **Duration**: X-Y hours
 - **PRD Requirements**: REQ-XXX-001, REQ-YYY-002
 - **Technical Details**: Implementation steps (reference requirements)
@@ -235,7 +235,7 @@ Claude: ✅ Created in .tmp/authentication/:
 Every task must include:
 
 - **PRD Requirements**: Specific REQ-XXX-001 IDs addressed
-- **PRD Reference**: Link to relevant prd.md section  
+- **PRD Reference**: Link to relevant prd.md section
 - **PRD Validation**: Verification step against specifications
 - **Requirement Traceability**: Technical details reference requirements
 
@@ -250,5 +250,5 @@ Complex requirements span phases:
 
 - PRD drives all phase file generation with explicit requirement traceability
 - Tasks auto-assigned based on requirement type and technical domain
-- Parallel execution optimized while maintaining requirement dependencies  
+- Parallel execution optimized while maintaining requirement dependencies
 - PRD compliance validation required before phase completion
