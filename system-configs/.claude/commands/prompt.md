@@ -9,6 +9,7 @@ Optimizes prompts using the SCOPE framework. Removes fluff, clarifies objectives
 ```bash
 /prompt <text>           # Optimize text
 /prompt --file <path>    # Optimize from file
+/prompt -f <path>        # Optimize from file (short form)
 /prompt                  # Interactive mode
 ```
 

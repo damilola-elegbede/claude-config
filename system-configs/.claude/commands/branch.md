@@ -11,6 +11,7 @@ patterns.
 ```bash
 /branch [description]        # Create branch from description
 /branch --file <path>        # Create branch from file context
+/branch -f <path>            # Create branch from file context (short form)
 /branch                      # Create branch from conversation context
 ```
 
@@ -31,7 +32,7 @@ Conversation Context:
   - Extracts ticket numbers (JIRA-123, GH-456, #789)
   - Identifies work type from keywords
 
-File Context (--file):
+File Context (--file or -f):
   - Bug reports → fix/ prefix
   - Feature specs → feature/ prefix
   - Documentation → docs/ prefix
