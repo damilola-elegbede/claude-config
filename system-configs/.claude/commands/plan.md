@@ -26,6 +26,7 @@ Never guesses unclear requirements - asks for clarification while staying in pla
 ## Plan Preview Format
 
 PRD preview shows:
+
 - Executive Summary
 - Implementation Phases with PR counts
 - Key Requirements
@@ -34,11 +35,13 @@ PRD preview shows:
 ## File Structure
 
 ### Generated Files
+
 - `prd.md` - Product Requirements Document
 - `phase_X_pr_Y_<description>.md` - PR implementation files
 - `rollback.md` - Rollback procedures (if needed)
 
 ### PRD Contents
+
 - Executive Summary
 - Business Objectives & Scope
 - Technical Requirements
@@ -47,13 +50,17 @@ PRD preview shows:
 - Dependencies & Timeline
 
 ### Phase Organization
+
 Phases are organized with clear dependencies:
+
 - Phase 1: Foundation (infrastructure, contracts)
 - Phase 2: Implementation (features, logic)
 - Phase 3: Integration (connections, validation)
 
 ### Phase Files (Auto-Generated)
+
 Each PR file contains tasks with:
+
 - **Task ID**: `Task_X_Y_ZZ` format
 - **Assignees**: Specialized agents
 - **Execution**: Independent/Concurrent/Depends
@@ -63,12 +70,14 @@ Each PR file contains tasks with:
 ## Clarification Protocol
 
 **Never guess requirements.** When unclear:
+
 - Present what's understood
 - Ask specific questions
 - Stay in plan mode awaiting answers
 - Generate PRD only after clarity
 
 Example ambiguities:
+
 - "Make it faster" → Ask for specific metrics
 - "Add search" → Ask scope, volume, features needed
 - "Integrate API" → Ask which API, what operations
@@ -83,6 +92,7 @@ Example ambiguities:
 ## Approval Workflow
 
 Stay in plan mode until user responds:
+
 - **Approve**: yes, approve, proceed, 👍 → Exit plan mode, write files
 - **Modify**: modify, update, change → Stay in plan mode, adjust
 - **Cancel**: no, cancel, abort, stop → Exit without writing
