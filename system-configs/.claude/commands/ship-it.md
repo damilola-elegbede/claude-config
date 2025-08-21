@@ -23,8 +23,16 @@ Quick: /commit → /push
 
 ## Behavior
 
-Orchestrates development workflows by executing multiple `/` commands sequentially.
-Uses local progress tracking and fails fast on any command failure.
+- **Fail-fast**: Stops on first failure (except `/pr` which is skippable when PR exists)
+- **Smart PR detection**: Creates PR only if none exists for current branch
+- **Local progress tracking**: `.tmp/ship-it/progress.log` shows PENDING → IN_PROGRESS → COMPLETED/FAILED
+- **Three modes**: full (default), basic, quick
+
+## Command Execution Flow
+
+- Select workflow (full/basic/quick)
+- Initialize progress log and mark steps PENDING
+- For each step: mark IN_PROGRESS → run → mark COMPLETED or FAILED; abort on failure
 
 ## Execution Logic
 
@@ -110,16 +118,22 @@ execute_command() {
       run_push_command
       ;;
     "pr")
-      if ! pr_exists_for_branch; then
+      pr_exists_for_branch
+      ec=$?
+      if [[ $ec -eq 1 ]]; then
+        # No PR exists → try to create
         if run_pr_command; then
           echo "✅ /pr completed"
         else
           echo "⚠️ /pr failed - continuing (non-fatal)"
           return 0
         fi
-      else
+      elif [[ $ec -eq 0 ]]; then
         echo "ℹ️ PR exists - skipping"
         return 0
+      else
+        echo "❌ Unable to determine PR state (environment error) - stopping workflow"
+        return 1
       fi
       ;;
     *)

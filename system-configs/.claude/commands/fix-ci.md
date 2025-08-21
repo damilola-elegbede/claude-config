@@ -4,7 +4,7 @@
 
 Diagnoses and fixes GitHub Actions failures using pattern recognition and
 historical fix data. Only pushes when 95% confident all CI issues are resolved.
-Tests locally before applying fixes.
+Tests locally before pushing fixes.
 
 ## Usage
 
@@ -58,24 +58,25 @@ apply_fix() {
   local confidence=0
   local fix_cmd=""
   local test_cmd=""
+  local pattern=""
 
   if grep -q "ESLint\|Prettier\|lint" "$error_log"; then
-    confidence=98
+    pattern="Lint/Format"; confidence=98
     fix_cmd="npm run lint:fix"
     test_cmd="npm run lint"
   elif grep -q "Module not found\|Cannot resolve" "$error_log"; then
-    confidence=92; fix_cmd="npm install"; test_cmd="npm test"
+    pattern="Dependencies"; confidence=92; fix_cmd="npm install"; test_cmd="npm test"
   elif grep -q "Test.*failed\|expect.*received" "$error_log"; then
-    confidence=85; fix_cmd="MANUAL"; test_cmd="npm test"
+    pattern="Test Failures"; confidence=85; fix_cmd="MANUAL"; test_cmd="npm test"
   elif grep -q "Type.*error\|TS[0-9]" "$error_log"; then
-    confidence=78; fix_cmd="MANUAL"; test_cmd="npm run typecheck"
+    pattern="Type Errors"; confidence=78; fix_cmd="MANUAL"; test_cmd="npm run typecheck"
   else
     return 1
   fi
 
   # If manual fix is required, return sentinel without validation
   if [[ "$fix_cmd" == "MANUAL" ]]; then
-    echo "$confidence,$fix_cmd,$test_cmd"
+    echo "$pattern,$confidence,$fix_cmd,$test_cmd"
     return 0
   fi
   # Validate fix command is safe
@@ -83,7 +84,7 @@ apply_fix() {
     return 1
   fi
 
-  echo "$confidence,$fix_cmd,$test_cmd"
+  echo "$pattern,$confidence,$fix_cmd,$test_cmd"
 }
 ```
 
@@ -123,15 +124,27 @@ get_confidence() {
 ```bash
 fix_ci() {
   init_history
+  command -v gh >/dev/null 2>&1 || { echo "❌ GitHub CLI (gh) not found"; return 1; }
+  if ! gh auth status >/dev/null 2>&1; then
+    echo "❌ gh is not authenticated. Run: gh auth login"
+    return 1
+  fi
   local run_id="${1:-$(gh run list --status=failure --limit=1 --jq '.[0].databaseId')}"
-  local logs=$(gh run view "$run_id" --log-failed)
+  if [[ -z "$run_id" || "$run_id" == "null" ]]; then
+    echo "ℹ️ No failed GitHub Actions runs found."
+    return 1
+  fi
+  local logs
+  logs=$(gh run view "$run_id" --log-failed)
 
   # Get fix details
-  local fix_data=$(apply_fix "$logs")
+  local fix_data
+  fix_data=$(apply_fix "$logs")
   [[ -z "$fix_data" ]] && { echo "❌ No fix pattern matched"; return 1; }
 
-  IFS=',' read -r confidence fix_cmd test_cmd <<< "$fix_data"
-  local historical_confidence=$(get_confidence "$(echo "$logs" | head -1)")
+  IFS=',' read -r pattern confidence fix_cmd test_cmd <<< "$fix_data"
+  local historical_confidence
+  historical_confidence=$(get_confidence "$pattern")
   local final_confidence=$(( (confidence + historical_confidence) / 2 ))
 
   echo "🔍 Pattern confidence: ${final_confidence}%"
@@ -163,7 +176,7 @@ fix_ci() {
   fi
   if ! bash -c "$test_cmd"; then
     echo "❌ Local test failed - not pushing"
-    record_outcome "$(echo "$logs" | head -1)" "$final_confidence" "false"
+    record_outcome "$pattern" "$final_confidence" "false"
     return 1
   fi
 
@@ -177,8 +190,9 @@ Automated fix applied by /fix-ci"
 
     # Record outcome after CI completes
     sleep 90
-    local all_passed=$(gh run list --limit=1 --jq '.[0].conclusion == "success"')
-    record_outcome "$(echo "$logs" | head -1)" "$final_confidence" "$all_passed"
+    local all_passed
+    all_passed=$(gh run list --limit=1 --jq '.[0].conclusion == "success"')
+    record_outcome "$pattern" "$final_confidence" "$all_passed"
     echo "📊 Recorded outcome: CI passed = $all_passed"
   fi
 }
