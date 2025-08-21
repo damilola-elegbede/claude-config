@@ -11,7 +11,7 @@
 ### 🏠 Project Overview
 
 - **[README.md](../README.md)** - Configuration management system with 41 agents
-  and 15 commands
+  and 18 commands
 
 - **[CLAUDE.md](../CLAUDE.md)** - Repository-specific configuration instructions
 - **[QUICKSTART.md](../QUICKSTART.md)** - Quick setup guide for new users
@@ -125,7 +125,7 @@ All agents are documented in the `system-configs/.claude/agents/` directory:
 
 ### 🔧 Commands
 
-- **15 Essential Commands**: Located in `system-configs/.claude/commands/`
+- **18 Essential Commands**: Located in `system-configs/.claude/commands/`
 - **Quality-Focused**: Average rating 4.7/5.0 with comprehensive functionality
 - **Repository Integration**: Commands like `/sync`, `/agent-audit`, `/command-audit`, `/test`, `/review`
 

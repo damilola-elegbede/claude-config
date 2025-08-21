@@ -1,0 +1,1134 @@
+openapi: 3.0.3
+info:
+  title: Claude MCP Tool Router API
+  description: Intelligent tool routing infrastructure for Claude MCP servers
+  version: 1.0.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:3000/api/mcp
+    description: Local development server
+  - url: https://api.claude.ai/mcp
+    description: Production MCP server
+
+paths:
+  /tool-router/route:
+    post:
+      tags:
+        - Routing
+      summary: Route tool execution request
+      description: |
+        Route a tool execution request to the optimal MCP server using intelligent
+        routing strategies. Provides sub-100ms routing decisions with caching.
+      operationId: routeToolExecution
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoutingRequest'
+            examples:
+              basic_routing:
+                summary: Basic tool routing
+                value:
+                  toolName: "read_file"
+                  candidates:
+                    - id: "file-server-1"
+                      name: "Primary File Server"
+                      status: "healthy"
+                      responseTime: 45
+                      capabilities:
+                        - name: "read_file"
+                          version: "1.0"
+                  context:
+                    agentId: "backend-engineer"
+                    priority: 5
+              high_priority:
+                summary: High priority routing
+                value:
+                  toolName: "execute_command"
+                  candidates:
+                    - id: "exec-server-1"
+                      name: "Execution Server 1"
+                      status: "healthy"
+                      responseTime: 30
+                    - id: "exec-server-2"
+                      name: "Execution Server 2"
+                      status: "degraded"
+                      responseTime: 150
+                  context:
+                    agentId: "devops"
+                    priority: 9
+                    timeout: 30
+              agent_optimized:
+                summary: Agent-specific optimization
+                value:
+                  toolName: "analyze_code"
+                  candidates:
+                    - id: "analysis-server-1"
+                      name: "Code Analysis Server"
+                      status: "healthy"
+                      responseTime: 200
+                  context:
+                    agentId: "security-auditor"
+                    priority: 7
+                    requirements:
+                      maxResponseTime: 1000
+                      minSuccessRate: 0.95
+      responses:
+        '200':
+          description: Routing decision completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoutingResponse'
+              examples:
+                successful_routing:
+                  summary: Successful routing decision
+                  value:
+                    success: true
+                    decision:
+                      selectedServer:
+                        id: "file-server-1"
+                        name: "Primary File Server"
+                        status: "healthy"
+                        responseTime: 45
+                      confidence: 0.94
+                      reasoning: "Performance-first selection: Primary File Server (score: 0.942, response time: 45ms)"
+                      timestamp: "2024-01-15T10:30:00Z"
+                      decisionTime: 12
+                      alternatives: []
+                    cacheHit: false
+                    strategy: "performance-first"
+                cached_decision:
+                  summary: Cached routing decision
+                  value:
+                    success: true
+                    decision:
+                      selectedServer:
+                        id: "exec-server-1"
+                        name: "Execution Server 1"
+                        status: "healthy"
+                        responseTime: 30
+                      confidence: 0.98
+                      reasoning: "Agent-optimized for devops: Execution Server 1 (score: 0.987)"
+                      timestamp: "2024-01-15T10:29:45Z"
+                      decisionTime: 3
+                    cacheHit: true
+                    strategy: "agent-optimized"
+        '400':
+          description: Invalid routing request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                no_candidates:
+                  summary: No candidate servers provided
+                  value:
+                    error:
+                      code: "NO_CANDIDATES"
+                      message: "No candidate servers available for routing"
+                      details:
+                        toolName: "read_file"
+                        suggestedAction: "Register MCP servers that support this tool"
+                invalid_tool:
+                  summary: Invalid tool name
+                  value:
+                    error:
+                      code: "INVALID_TOOL_NAME"
+                      message: "Tool name is required and cannot be empty"
+        '404':
+          description: No suitable server found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                no_supporting_servers:
+                  summary: No servers support the requested tool
+                  value:
+                    error:
+                      code: "NO_SUPPORTING_SERVERS"
+                      message: "No servers found supporting tool: analyze_database"
+                      details:
+                        toolName: "analyze_database"
+                        candidateCount: 3
+                        suggestions: ["Register database analysis MCP server"]
+        '408':
+          description: Routing decision timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                routing_timeout:
+                  summary: Routing decision took too long
+                  value:
+                    error:
+                      code: "ROUTING_TIMEOUT"
+                      message: "Routing decision timeout"
+                      details:
+                        timeoutMs: 50
+                        fallbackUsed: true
+                        fallbackServer: "backup-server-1"
+        '500':
+          description: Routing system failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /tool-router/strategies:
+    get:
+      tags:
+        - Configuration
+      summary: List available routing strategies
+      description: Get list of all available routing strategies and their configurations
+      operationId: getRoutingStrategies
+      responses:
+        '200':
+          description: Routing strategies retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StrategiesResponse'
+
+    post:
+      tags:
+        - Configuration
+      summary: Register custom routing strategy
+      description: Register a new custom routing strategy
+      operationId: registerRoutingStrategy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StrategyRegistration'
+      responses:
+        '201':
+          description: Strategy registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistrationResponse'
+
+  /tool-router/cache:
+    get:
+      tags:
+        - Cache Management
+      summary: Get cache statistics
+      description: Retrieve detailed cache performance statistics
+      operationId: getCacheStats
+      responses:
+        '200':
+          description: Cache statistics retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CacheStats'
+
+    delete:
+      tags:
+        - Cache Management
+      summary: Clear routing cache
+      description: Clear all cached routing decisions
+      operationId: clearRoutingCache
+      responses:
+        '200':
+          description: Cache cleared successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CacheOperationResponse'
+
+  /tool-router/metrics:
+    get:
+      tags:
+        - Monitoring
+      summary: Get routing performance metrics
+      description: Retrieve comprehensive routing performance metrics and statistics
+      operationId: getRoutingMetrics
+      parameters:
+        - name: timeRange
+          in: query
+          description: Time range for metrics
+          required: false
+          schema:
+            type: string
+            enum: [1h, 6h, 24h, 7d, 30d]
+            default: 24h
+        - name: includeAgents
+          in: query
+          description: Include agent-specific metrics
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Routing metrics retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoutingMetrics'
+
+  /tool-router/agent-profiles:
+    get:
+      tags:
+        - Agent Management
+      summary: List agent profiles
+      description: Get all registered agent profiles for routing optimization
+      operationId: getAgentProfiles
+      responses:
+        '200':
+          description: Agent profiles retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentProfilesResponse'
+
+    post:
+      tags:
+        - Agent Management
+      summary: Create or update agent profile
+      description: Create a new agent profile or update an existing one for routing optimization
+      operationId: updateAgentProfile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentProfile'
+      responses:
+        '200':
+          description: Agent profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileUpdateResponse'
+
+  /tool-router/agent-profiles/{agentId}:
+    get:
+      tags:
+        - Agent Management
+      summary: Get specific agent profile
+      description: Retrieve detailed profile for a specific agent
+      operationId: getAgentProfile
+      parameters:
+        - name: agentId
+          in: path
+          required: true
+          description: Agent identifier
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Agent profile retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentProfile'
+        '404':
+          description: Agent profile not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - Agent Management
+      summary: Delete agent profile
+      description: Remove an agent profile from the routing system
+      operationId: deleteAgentProfile
+      parameters:
+        - name: agentId
+          in: path
+          required: true
+          description: Agent identifier
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Agent profile deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileDeleteResponse'
+
+  /tool-router/health:
+    get:
+      tags:
+        - Health
+      summary: Check tool router health
+      description: Get health status of the tool router system
+      operationId: getRouterHealth
+      responses:
+        '200':
+          description: Router health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthStatus'
+
+components:
+  schemas:
+    RoutingRequest:
+      type: object
+      required:
+        - toolName
+        - candidates
+      properties:
+        toolName:
+          type: string
+          description: Name of the tool to route
+          example: "read_file"
+        candidates:
+          type: array
+          items:
+            $ref: '#/components/schemas/MCPServerInfo'
+          description: Available MCP servers that could handle this tool
+          minItems: 1
+        context:
+          $ref: '#/components/schemas/RoutingContext'
+
+    RoutingContext:
+      type: object
+      properties:
+        agentId:
+          type: string
+          description: ID of the agent making the request
+          example: "backend-engineer"
+        priority:
+          type: integer
+          minimum: 1
+          maximum: 10
+          default: 5
+          description: Request priority (1=lowest, 10=highest)
+        timeout:
+          type: integer
+          minimum: 10
+          maximum: 30000
+          default: 50
+          description: Maximum routing decision time in milliseconds
+        parameters:
+          type: object
+          description: Tool-specific parameters that might influence routing
+          additionalProperties: true
+        requirements:
+          $ref: '#/components/schemas/PerformanceRequirements'
+
+    PerformanceRequirements:
+      type: object
+      properties:
+        maxResponseTime:
+          type: integer
+          description: Maximum acceptable response time in milliseconds
+          example: 1000
+        minSuccessRate:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Minimum acceptable success rate (0-1)
+          example: 0.95
+        maxLoad:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Maximum acceptable server load (0-1)
+          example: 0.8
+
+    MCPServerInfo:
+      type: object
+      required:
+        - id
+        - name
+        - status
+        - responseTime
+        - capabilities
+      properties:
+        id:
+          type: string
+          description: Unique server identifier
+          example: "file-server-1"
+        name:
+          type: string
+          description: Human-readable server name
+          example: "Primary File Server"
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy, unknown]
+          description: Current server health status
+        responseTime:
+          type: integer
+          minimum: 0
+          description: Average response time in milliseconds
+          example: 45
+        capabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolCapability'
+          description: Tools supported by this server
+        metrics:
+          $ref: '#/components/schemas/ServerMetrics'
+        version:
+          type: string
+          description: Server version
+          example: "1.2.3"
+        region:
+          type: string
+          description: Server region/location
+          example: "us-west-2"
+
+    ToolCapability:
+      type: object
+      required:
+        - name
+        - version
+      properties:
+        name:
+          type: string
+          description: Tool name
+          example: "read_file"
+        version:
+          type: string
+          description: Supported tool version
+          example: "1.0"
+        features:
+          type: array
+          items:
+            type: string
+          description: Additional features or options supported
+        limitations:
+          type: array
+          items:
+            type: string
+          description: Known limitations or restrictions
+
+    ServerMetrics:
+      type: object
+      properties:
+        load:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Current server load (0-1)
+          example: 0.65
+        totalRequests:
+          type: integer
+          minimum: 0
+          description: Total requests processed
+        successfulRequests:
+          type: integer
+          minimum: 0
+          description: Successfully completed requests
+        averageResponseTime:
+          type: number
+          format: float
+          description: Average response time in milliseconds
+        errorRate:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Error rate (0-1)
+        lastUpdate:
+          type: string
+          format: date-time
+          description: When metrics were last updated
+
+    RoutingResponse:
+      type: object
+      required:
+        - success
+        - decision
+      properties:
+        success:
+          type: boolean
+          description: Whether routing was successful
+        decision:
+          $ref: '#/components/schemas/RoutingDecision'
+        cacheHit:
+          type: boolean
+          description: Whether result came from cache
+        strategy:
+          type: string
+          description: Routing strategy that was used
+        executionTime:
+          type: number
+          format: float
+          description: Total execution time in milliseconds
+
+    RoutingDecision:
+      type: object
+      required:
+        - selectedServer
+        - confidence
+        - reasoning
+        - timestamp
+        - decisionTime
+      properties:
+        selectedServer:
+          $ref: '#/components/schemas/MCPServerInfo'
+        confidence:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Confidence in the routing decision (0-1)
+        reasoning:
+          type: string
+          description: Human-readable explanation of the decision
+          example: "Performance-first selection: Primary File Server (score: 0.942, response time: 45ms)"
+        timestamp:
+          type: string
+          format: date-time
+          description: When the decision was made
+        decisionTime:
+          type: integer
+          minimum: 0
+          description: Time taken to make decision in milliseconds
+        alternatives:
+          type: array
+          items:
+            $ref: '#/components/schemas/MCPServerInfo'
+          description: Alternative servers that were considered
+
+    StrategiesResponse:
+      type: object
+      required:
+        - strategies
+      properties:
+        strategies:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoutingStrategy'
+          description: Available routing strategies
+        defaultStrategy:
+          type: string
+          description: Currently configured default strategy
+
+    RoutingStrategy:
+      type: object
+      required:
+        - name
+        - description
+      properties:
+        name:
+          type: string
+          description: Strategy name
+          example: "performance-first"
+        description:
+          type: string
+          description: Strategy description
+          example: "Prioritizes servers with best response time and reliability"
+        configuration:
+          type: object
+          description: Strategy-specific configuration
+          additionalProperties: true
+        metrics:
+          type: object
+          properties:
+            usageCount:
+              type: integer
+            averageDecisionTime:
+              type: number
+              format: float
+            successRate:
+              type: number
+              format: float
+
+    StrategyRegistration:
+      type: object
+      required:
+        - name
+        - description
+        - implementation
+      properties:
+        name:
+          type: string
+          description: Unique strategy name
+        description:
+          type: string
+          description: Strategy description
+        implementation:
+          type: string
+          description: Strategy implementation code or reference
+        configuration:
+          type: object
+          description: Default configuration for the strategy
+          additionalProperties: true
+
+    RegistrationResponse:
+      type: object
+      required:
+        - success
+        - strategyName
+      properties:
+        success:
+          type: boolean
+          description: Whether registration was successful
+        strategyName:
+          type: string
+          description: Name of registered strategy
+        validationResults:
+          type: object
+          properties:
+            valid:
+              type: boolean
+            errors:
+              type: array
+              items:
+                type: string
+            warnings:
+              type: array
+              items:
+                type: string
+
+    CacheStats:
+      type: object
+      required:
+        - hits
+        - misses
+        - hitRatio
+        - entryCount
+      properties:
+        hits:
+          type: integer
+          description: Number of cache hits
+        misses:
+          type: integer
+          description: Number of cache misses
+        hitRatio:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Cache hit ratio (0-1)
+        entryCount:
+          type: integer
+          description: Number of entries currently in cache
+        totalSize:
+          type: integer
+          description: Total cache size in bytes
+        memoryUsage:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Memory usage as fraction of max size (0-1)
+        averageAge:
+          type: number
+          format: float
+          description: Average age of cache entries in milliseconds
+        topKeys:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+              accessCount:
+                type: integer
+          description: Most frequently accessed cache keys
+        operationsPerSecond:
+          type: number
+          format: float
+          description: Cache operations per second
+
+    CacheOperationResponse:
+      type: object
+      required:
+        - success
+        - operation
+      properties:
+        success:
+          type: boolean
+          description: Whether operation was successful
+        operation:
+          type: string
+          description: Operation that was performed
+        entriesCleared:
+          type: integer
+          description: Number of cache entries cleared
+        memoryFreed:
+          type: integer
+          description: Memory freed in bytes
+
+    RoutingMetrics:
+      type: object
+      required:
+        - totalRoutingDecisions
+        - averageDecisionTime
+        - cacheHitRate
+        - strategyUsage
+      properties:
+        totalRoutingDecisions:
+          type: integer
+          description: Total number of routing decisions made
+        averageDecisionTime:
+          type: number
+          format: float
+          description: Average decision time in milliseconds
+        cacheHitRate:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Overall cache hit rate
+        strategyUsage:
+          type: object
+          additionalProperties:
+            type: integer
+          description: Usage count for each strategy
+        timeRange:
+          type: string
+          description: Time range these metrics cover
+        performanceDistribution:
+          type: object
+          properties:
+            sub10ms:
+              type: integer
+              description: Decisions completed in <10ms
+            sub50ms:
+              type: integer
+              description: Decisions completed in <50ms
+            sub100ms:
+              type: integer
+              description: Decisions completed in <100ms
+            over100ms:
+              type: integer
+              description: Decisions taking >100ms
+        errorStats:
+          type: object
+          properties:
+            timeouts:
+              type: integer
+            noServersFound:
+              type: integer
+            strategyFailures:
+              type: integer
+        agentMetrics:
+          type: array
+          items:
+            type: object
+            properties:
+              agentId:
+                type: string
+              requestCount:
+                type: integer
+              averageDecisionTime:
+                type: number
+                format: float
+              preferredStrategy:
+                type: string
+          description: Agent-specific routing metrics (if includeAgents=true)
+
+    AgentProfilesResponse:
+      type: object
+      required:
+        - profiles
+      properties:
+        profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentProfile'
+          description: Registered agent profiles
+        totalProfiles:
+          type: integer
+          description: Total number of profiles
+
+    AgentProfile:
+      type: object
+      required:
+        - agentId
+        - name
+        - preferences
+      properties:
+        agentId:
+          type: string
+          description: Unique agent identifier
+          example: "backend-engineer"
+        name:
+          type: string
+          description: Human-readable agent name
+          example: "Backend Engineer"
+        description:
+          type: string
+          description: Agent description and capabilities
+        preferences:
+          $ref: '#/components/schemas/AgentPreferences'
+        toolUsage:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ToolUsageStats'
+          description: Tool usage statistics for this agent
+        createdAt:
+          type: string
+          format: date-time
+          description: When profile was created
+        lastUpdated:
+          type: string
+          format: date-time
+          description: When profile was last updated
+
+    AgentPreferences:
+      type: object
+      required:
+        - weights
+        - responseTimeThreshold
+        - minSuccessRate
+        - maxServerLoad
+      properties:
+        weights:
+          type: object
+          properties:
+            responseTime:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 1
+              description: Weight for response time in routing decisions
+            reliability:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 1
+              description: Weight for server reliability
+            load:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 1
+              description: Weight for server load
+            satisfaction:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 1
+              description: Weight for historical satisfaction
+          description: Weights for different routing factors
+        responseTimeThreshold:
+          type: integer
+          description: Maximum acceptable response time in milliseconds
+          example: 1000
+        minSuccessRate:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Minimum acceptable success rate
+          example: 0.95
+        maxServerLoad:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Maximum acceptable server load
+          example: 0.8
+        serverPreferences:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ServerPreference'
+          description: Manual server preferences
+
+    ServerPreference:
+      type: object
+      required:
+        - preference
+      properties:
+        preference:
+          type: number
+          format: float
+          minimum: -1
+          maximum: 1
+          description: Preference score (-1=avoid, 0=neutral, 1=prefer)
+        reason:
+          type: string
+          description: Reason for this preference
+        expiresAt:
+          type: string
+          format: date-time
+          description: When this preference expires
+
+    ToolUsageStats:
+      type: object
+      properties:
+        totalUsage:
+          type: integer
+          description: Total times this tool was used
+        averageResponseTime:
+          type: number
+          format: float
+          description: Average response time for this tool
+        satisfactionHistory:
+          type: array
+          items:
+            type: number
+            format: float
+            minimum: 0
+            maximum: 1
+          description: Historical satisfaction scores
+        preferredServers:
+          type: array
+          items:
+            type: string
+          description: Servers this agent prefers for this tool
+        lastUsed:
+          type: string
+          format: date-time
+          description: When this tool was last used
+
+    ProfileUpdateResponse:
+      type: object
+      required:
+        - success
+        - agentId
+      properties:
+        success:
+          type: boolean
+          description: Whether profile update was successful
+        agentId:
+          type: string
+          description: ID of updated agent
+        operation:
+          type: string
+          enum: [created, updated]
+          description: Whether profile was created or updated
+        validationResults:
+          type: object
+          properties:
+            valid:
+              type: boolean
+            warnings:
+              type: array
+              items:
+                type: string
+
+    ProfileDeleteResponse:
+      type: object
+      required:
+        - success
+        - agentId
+      properties:
+        success:
+          type: boolean
+          description: Whether profile deletion was successful
+        agentId:
+          type: string
+          description: ID of deleted agent
+        cacheCleared:
+          type: boolean
+          description: Whether related cache entries were cleared
+
+    HealthStatus:
+      type: object
+      required:
+        - status
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+          description: Overall router health status
+        timestamp:
+          type: string
+          format: date-time
+          description: When health check was performed
+        version:
+          type: string
+          description: Router version
+        uptime:
+          type: number
+          format: float
+          description: Uptime in seconds
+        components:
+          type: object
+          properties:
+            cache:
+              type: string
+              enum: [healthy, degraded, unhealthy]
+            strategies:
+              type: string
+              enum: [healthy, degraded, unhealthy]
+            agentProfiles:
+              type: string
+              enum: [healthy, degraded, unhealthy]
+          description: Health of individual components
+        metrics:
+          type: object
+          properties:
+            averageDecisionTime:
+              type: number
+              format: float
+            cacheHitRate:
+              type: number
+              format: float
+            errorRate:
+              type: number
+              format: float
+          description: Key performance metrics
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: object
+              description: Additional error context
+              additionalProperties: true
+            timestamp:
+              type: string
+              format: date-time
+              description: When error occurred
+            requestId:
+              type: string
+              description: Unique request identifier
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - ApiKeyAuth: []
+  - BearerAuth: []
+
+tags:
+  - name: Routing
+    description: Core tool routing operations
+  - name: Configuration
+    description: Routing strategy configuration
+  - name: Cache Management
+    description: Routing cache operations
+  - name: Monitoring
+    description: Performance monitoring and metrics
+  - name: Agent Management
+    description: Agent profile management for optimized routing
+  - name: Health
+    description: System health and status monitoring

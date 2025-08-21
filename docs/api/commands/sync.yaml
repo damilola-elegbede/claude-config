@@ -1,0 +1,624 @@
+openapi: 3.0.3
+info:
+  title: Claude Sync Command API
+  description: Configuration synchronization API for Claude Code CLI
+  version: 1.0.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: Claude Configuration Support
+    email: support@anthropic.com
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local development server
+  - url: https://api.claude.ai/config
+    description: Production configuration server
+
+paths:
+  /commands/sync:
+    post:
+      tags:
+        - Configuration Management
+      summary: Synchronize Claude configurations
+      description: |
+        Synchronizes Claude configuration files from `system-configs/.claude/` to `~/.claude/`.
+        Deploys agents, commands, output-styles, and settings with validation and backup creation.
+      operationId: syncConfigurations
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SyncRequest'
+            examples:
+              basic_sync:
+                summary: Basic synchronization
+                value:
+                  options: {}
+              dry_run:
+                summary: Preview changes without syncing
+                value:
+                  options:
+                    dryRun: true
+              with_backup:
+                summary: Create backup before syncing
+                value:
+                  options:
+                    backup: true
+                    force: false
+      responses:
+        '200':
+          description: Synchronization completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncResponse'
+              examples:
+                successful_sync:
+                  summary: Successful synchronization
+                  value:
+                    success: true
+                    operation: "sync"
+                    message: "All configurations deployed successfully"
+                    stats:
+                      agentsSynced: 41
+                      commandsSynced: 18
+                      outputStylesSynced: 8
+                      settingsSynced: true
+                      statuslineSynced: true
+                    backupCreated: false
+                    duration: 1.2
+                dry_run_preview:
+                  summary: Dry run preview
+                  value:
+                    success: true
+                    operation: "dry-run"
+                    message: "Preview mode - no changes will be made"
+                    preview:
+                      wouldSync:
+                        - "41 agent files to ~/.claude/agents/"
+                        - "18 command files to ~/.claude/commands/"
+                        - "8 output style files to ~/.claude/output-styles/"
+                        - "settings.json to ~/.claude/settings.json"
+                        - "statusline.sh to ~/.claude/statusline.sh (executable)"
+                    duration: 0.3
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_options:
+                  summary: Invalid sync options
+                  value:
+                    error:
+                      code: "INVALID_SYNC_OPTIONS"
+                      message: "Invalid synchronization options provided"
+                      details:
+                        invalidFields: ["invalidOption"]
+        '404':
+          description: Source directory not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                source_not_found:
+                  summary: Source directory missing
+                  value:
+                    error:
+                      code: "SOURCE_DIRECTORY_NOT_FOUND"
+                      message: "Source directory not found: system-configs/.claude"
+                      details:
+                        expectedPath: "system-configs/.claude"
+                        currentDirectory: "/project/path"
+        '500':
+          description: Synchronization failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                sync_failure:
+                  summary: Synchronization failure
+                  value:
+                    error:
+                      code: "SYNC_FAILED"
+                      message: "Failed to synchronize configurations"
+                      details:
+                        failedOperations: ["copy_agents", "validate_settings"]
+                        partialSuccess: true
+                        rollbackAvailable: true
+
+  /commands/sync/status:
+    get:
+      tags:
+        - Configuration Management
+      summary: Get synchronization status
+      description: Check the current synchronization status and last sync information
+      operationId: getSyncStatus
+      responses:
+        '200':
+          description: Synchronization status retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncStatus'
+              examples:
+                current_status:
+                  summary: Current sync status
+                  value:
+                    lastSync: "2024-01-15T10:30:00Z"
+                    sourceFiles: 67
+                    destinationFiles: 67
+                    inSync: true
+                    differences: []
+                    backupsAvailable: 3
+                    lastBackup: "2024-01-14T15:45:00Z"
+
+  /commands/sync/validate:
+    post:
+      tags:
+        - Configuration Management
+      summary: Validate configuration files
+      description: Validate configuration files without performing synchronization
+      operationId: validateConfigurations
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateRequest'
+      responses:
+        '200':
+          description: Validation completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResponse'
+              examples:
+                valid_config:
+                  summary: Valid configuration
+                  value:
+                    valid: true
+                    validationResults:
+                      agentYaml: "passed"
+                      settingsJson: "passed"
+                      commandStructure: "passed"
+                    warnings: []
+                validation_errors:
+                  summary: Validation errors found
+                  value:
+                    valid: false
+                    validationResults:
+                      agentYaml: "failed"
+                      settingsJson: "passed"
+                      commandStructure: "passed"
+                    errors:
+                      - file: "agents/invalid-agent.md"
+                        error: "Invalid YAML front matter"
+                        line: 5
+                    warnings:
+                      - file: "settings.json"
+                        warning: "Audio hook path not found"
+
+  /commands/sync/backups:
+    get:
+      tags:
+        - Configuration Management
+      summary: List available backups
+      description: Get a list of all available configuration backups
+      operationId: listBackups
+      responses:
+        '200':
+          description: Backup list retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupList'
+
+    delete:
+      tags:
+        - Configuration Management
+      summary: Clean up old backups
+      description: Remove old configuration backups based on retention policy
+      operationId: cleanupBackups
+      parameters:
+        - name: keepCount
+          in: query
+          description: Number of recent backups to keep
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10
+            default: 5
+      responses:
+        '200':
+          description: Backup cleanup completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupCleanupResponse'
+
+components:
+  schemas:
+    SyncRequest:
+      type: object
+      properties:
+        options:
+          type: object
+          properties:
+            dryRun:
+              type: boolean
+              description: Preview changes without actually syncing
+              default: false
+            backup:
+              type: boolean
+              description: Create backup before syncing
+              default: false
+            force:
+              type: boolean
+              description: Overwrite existing files without prompting
+              default: false
+            excludePatterns:
+              type: array
+              items:
+                type: string
+              description: Additional patterns to exclude from sync
+              example: ["*.tmp", "debug_*"]
+          additionalProperties: false
+      additionalProperties: false
+
+    SyncResponse:
+      type: object
+      required:
+        - success
+        - operation
+        - message
+      properties:
+        success:
+          type: boolean
+          description: Whether the synchronization was successful
+        operation:
+          type: string
+          enum: [sync, dry-run]
+          description: Type of operation performed
+        message:
+          type: string
+          description: Human-readable result message
+        stats:
+          $ref: '#/components/schemas/SyncStats'
+        preview:
+          $ref: '#/components/schemas/SyncPreview'
+        backupCreated:
+          type: boolean
+          description: Whether a backup was created
+        backupPath:
+          type: string
+          description: Path to created backup (if applicable)
+        duration:
+          type: number
+          format: float
+          description: Operation duration in seconds
+        warnings:
+          type: array
+          items:
+            type: string
+          description: Non-fatal warnings encountered
+
+    SyncStats:
+      type: object
+      properties:
+        agentsSynced:
+          type: integer
+          description: Number of agent files synchronized
+        commandsSynced:
+          type: integer
+          description: Number of command files synchronized
+        outputStylesSynced:
+          type: integer
+          description: Number of output style files synchronized
+        settingsSynced:
+          type: boolean
+          description: Whether settings.json was synchronized
+        statuslineSynced:
+          type: boolean
+          description: Whether statusline.sh was synchronized
+        totalFiles:
+          type: integer
+          description: Total number of files processed
+        bytesTransferred:
+          type: integer
+          description: Total bytes transferred
+
+    SyncPreview:
+      type: object
+      properties:
+        wouldSync:
+          type: array
+          items:
+            type: string
+          description: List of operations that would be performed
+        conflicts:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileConflict'
+          description: Files that would conflict with existing files
+        newFiles:
+          type: integer
+          description: Number of new files that would be created
+        updatedFiles:
+          type: integer
+          description: Number of existing files that would be updated
+
+    FileConflict:
+      type: object
+      required:
+        - path
+        - reason
+      properties:
+        path:
+          type: string
+          description: Path to conflicting file
+        reason:
+          type: string
+          description: Reason for conflict
+        resolution:
+          type: string
+          enum: [overwrite, skip, backup]
+          description: Suggested resolution
+
+    SyncStatus:
+      type: object
+      required:
+        - inSync
+      properties:
+        lastSync:
+          type: string
+          format: date-time
+          description: Timestamp of last successful synchronization
+        sourceFiles:
+          type: integer
+          description: Number of files in source directory
+        destinationFiles:
+          type: integer
+          description: Number of files in destination directory
+        inSync:
+          type: boolean
+          description: Whether source and destination are in sync
+        differences:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileDifference'
+          description: Files that differ between source and destination
+        backupsAvailable:
+          type: integer
+          description: Number of backup copies available
+        lastBackup:
+          type: string
+          format: date-time
+          description: Timestamp of most recent backup
+
+    FileDifference:
+      type: object
+      required:
+        - path
+        - status
+      properties:
+        path:
+          type: string
+          description: Path to file that differs
+        status:
+          type: string
+          enum: [modified, added, deleted, conflict]
+          description: Type of difference
+        sourceModified:
+          type: string
+          format: date-time
+          description: Last modification time in source
+        destinationModified:
+          type: string
+          format: date-time
+          description: Last modification time in destination
+
+    ValidateRequest:
+      type: object
+      properties:
+        target:
+          type: string
+          enum: [all, agents, commands, settings, output-styles]
+          default: all
+          description: Specific component to validate
+        strict:
+          type: boolean
+          default: false
+          description: Enable strict validation mode
+
+    ValidationResponse:
+      type: object
+      required:
+        - valid
+        - validationResults
+      properties:
+        valid:
+          type: boolean
+          description: Whether all validations passed
+        validationResults:
+          type: object
+          additionalProperties:
+            type: string
+            enum: [passed, failed, skipped]
+          description: Results for each validation category
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          description: Validation errors found
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationWarning'
+          description: Validation warnings
+
+    ValidationError:
+      type: object
+      required:
+        - file
+        - error
+      properties:
+        file:
+          type: string
+          description: File containing the error
+        error:
+          type: string
+          description: Description of the validation error
+        line:
+          type: integer
+          description: Line number where error occurred (if applicable)
+        severity:
+          type: string
+          enum: [critical, high, medium, low]
+          default: high
+
+    ValidationWarning:
+      type: object
+      required:
+        - file
+        - warning
+      properties:
+        file:
+          type: string
+          description: File containing the warning
+        warning:
+          type: string
+          description: Description of the validation warning
+        suggestion:
+          type: string
+          description: Suggested fix for the warning
+
+    BackupList:
+      type: object
+      required:
+        - backups
+      properties:
+        backups:
+          type: array
+          items:
+            $ref: '#/components/schemas/BackupInfo'
+          description: List of available backups
+        totalSize:
+          type: integer
+          description: Total size of all backups in bytes
+        retentionPolicy:
+          type: object
+          properties:
+            maxBackups:
+              type: integer
+            maxAge:
+              type: string
+              description: Maximum age in ISO 8601 duration format
+
+    BackupInfo:
+      type: object
+      required:
+        - id
+        - timestamp
+        - size
+      properties:
+        id:
+          type: string
+          description: Unique backup identifier
+        timestamp:
+          type: string
+          format: date-time
+          description: When the backup was created
+        size:
+          type: integer
+          description: Backup size in bytes
+        description:
+          type: string
+          description: Human-readable backup description
+        files:
+          type: integer
+          description: Number of files in backup
+        compressed:
+          type: boolean
+          description: Whether backup is compressed
+
+    BackupCleanupResponse:
+      type: object
+      required:
+        - success
+        - removed
+        - kept
+      properties:
+        success:
+          type: boolean
+          description: Whether cleanup was successful
+        removed:
+          type: integer
+          description: Number of backups removed
+        kept:
+          type: integer
+          description: Number of backups retained
+        freedSpace:
+          type: integer
+          description: Disk space freed in bytes
+        removedBackups:
+          type: array
+          items:
+            type: string
+          description: IDs of removed backups
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: object
+              description: Additional error context
+              additionalProperties: true
+            timestamp:
+              type: string
+              format: date-time
+              description: When the error occurred
+            requestId:
+              type: string
+              description: Unique identifier for the request
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for authentication
+
+security:
+  - ApiKeyAuth: []
+  - BearerAuth: []
+
+tags:
+  - name: Configuration Management
+    description: Operations for managing Claude configuration synchronization

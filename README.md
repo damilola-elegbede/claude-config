@@ -18,15 +18,15 @@
 ## 🎯 Overview
 
 This repository delivers a **sophisticated Smart Agent Orchestration Framework** for Claude Code CLI, featuring
-**43 specialized agents** (including execution-evaluator for command verification) and
-**15 essential commands** (including the new command-audit for command ecosystem validation).
+**41 specialized agents** (including execution-evaluator for command verification) and
+**18 essential commands** (including the new command-audit for command ecosystem validation).
 Built from the ground up after a comprehensive cleanup that removed 85+ bloat files, this system provides intelligent
 task delegation, parallel execution, continuous improvement capabilities, and automatic command verification for
 enhanced development workflows.
 
 ## 🧠 Smart Agent Orchestration Framework
 
-This repository implements a **production-ready orchestration framework** that intelligently manages 40+ specialized
+This repository implements a **production-ready orchestration framework** that intelligently manages 41 specialized
 agents with sophisticated task delegation and parallel execution capabilities.
 
 ### 🌟 Framework Core Principles
@@ -57,13 +57,13 @@ agents with sophisticated task delegation and parallel execution capabilities.
 
 ### Key Framework Benefits
 
-- **🎭 42 Specialized Agents**: Complete coverage across 8 functional domains
+- **🎭 41 Specialized Agents**: Complete coverage across 8 functional domains
 - **⚡ Parallel Execution Engine**: Maximize concurrent operations for faster delivery
 - **🧠 Intelligent Task Delegation**: Automatic specialist selection based on task requirements
 - **🔄 One-Command Synchronization**: Deploy entire framework with `/sync`
 - **🛡️ Quality Enforcement**: YAML validation, SYSTEM BOUNDARY protection, and compliance checking
 - **📚 Comprehensive Documentation**: 26 essential documentation files with usage patterns
-- **🔧 15 Essential Commands**: Carefully curated for maximum operational utility
+- **🔧 18 Essential Commands**: Carefully curated for maximum operational utility
 - **🎯 Production-Ready**: Battle-tested configurations with quality gates and security boundaries
 
 ## 🚀 Quick Start
@@ -132,9 +132,9 @@ cp -r system-configs/.claude ~/.claude
 - **Automatic Validation**: YAML compliance and security boundary checking
 - **Backup Management**: Automatic backups with rollback capabilities
 
-### 🛠️ Core Commands (15 Essential Tools)
+### 🛠️ Core Commands (18 Essential Tools)
 
-#### ⭐⭐⭐⭐⭐ Five-Star Commands (11) - Orchestration Excellence
+#### ⭐⭐⭐⭐⭐ Five-Star Commands (12) - Orchestration Excellence
 
 - **`/test`** - **Multi-Agent Test Execution**: Auto-discovers frameworks, deploys test-engineer for complex scenarios
 - **`/context`** - **Parallel Repository Analysis**: Deploys multiple codebase-analyst agents concurrently
@@ -151,13 +151,19 @@ cp -r system-configs/.claude ~/.claude
 
 - **`/deps`** - **Security-First Management**: Dependency-manager agent with vulnerability scanning
 - **`/fix-ci`** - **Pattern Recognition**: DevOps agent with automated failure analysis and remediation
+- **`/docs`** - **Documentation Orchestration**: Tech-writer agent with comprehensive documentation management
 
 #### ⭐⭐⭐⭐ Four-Star Commands (4) - Enhanced Operations
 
 - **`/commit`** - **Smart Git Operations**: Git-workflow agent with semantic commit generation and quality gates
 - **`/push`** - **Safe Repository Operations**: Comprehensive pre-push validation with rollback capabilities
-- **`/branch`** - **Context-Aware Branching**: Intelligent naming conventions based on repository analysis
 - **`/sync`** - **Framework Deployment**: Complete orchestration framework synchronization with validation
+- **`/branch`** - **Context-Aware Branching**: Intelligent naming conventions based on repository analysis
+
+#### ⭐⭐⭐ Three-Star Commands (2) - Utility & Development Support
+
+- **`/ship-it`** - **Release Management**: Comprehensive release workflow with quality gates and automation
+- **`/prompt`** - **Prompt Development**: Interactive prompt engineering and testing utility
 
 ### 🔊 Audio Notifications
 
@@ -170,9 +176,10 @@ cp -r system-configs/.claude ~/.claude
 
 ### Orchestration Framework Command Portfolio
 
-- **Total Commands**: 15 essential orchestration commands (refined from 40+ candidates)
-- **5-Star Commands**: 11 (73%) - Production-ready with sophisticated agent coordination
-- **4-Star Commands**: 4 (27%) - Enhanced operations with multi-agent capabilities
+- **Total Commands**: 18 essential orchestration commands (refined from 40+ candidates)
+- **5-Star Commands**: 12 (67%) - Production-ready with sophisticated agent coordination
+- **4-Star Commands**: 4 (22%) - Enhanced operations with multi-agent capabilities
+- **3-Star Commands**: 2 (11%) - Utility and development support
 - **Average Rating**: 4.7/5.0 - Industry-leading orchestration quality
 - **Design Philosophy**: Intelligent specialist delegation with parallel-first execution
 - **Performance Focus**: Continuous improvement through execution metrics and feedback loops
@@ -292,7 +299,7 @@ See [ShellCheck Validation Documentation](docs/SHELLCHECK_VALIDATION.md) for com
 ```bash
 /agent-audit
 # Deploys 8 parallel agent-auditor instances across all categories
-# Comprehensive validation of 40+ agent configurations
+# Comprehensive validation of 41 agent configurations
 # Performance metrics and capability gap analysis
 # Continuous improvement recommendations with quality feedback loops
 # Production-ready health monitoring for the entire orchestration framework
@@ -302,7 +309,7 @@ See [ShellCheck Validation Documentation](docs/SHELLCHECK_VALIDATION.md) for com
 
 ```bash
 /command-audit
-# Comprehensive validation of all 15 command files
+# Comprehensive validation of all 18 command files
 # Structure compliance, content quality, and markdown parsing standards
 # Length analysis with complexity thresholds and refactoring recommendations
 # Repository-specific command detection and sync exclusion validation
@@ -342,9 +349,9 @@ Note: Previously named `/resolve-rabbit`.
 # Prevents accidental force pushes
 ```
 
-## 🎭 Agent Ecosystem: 42 Specialists
+## 🎭 Agent Ecosystem: 41 Specialists
 
-The Smart Agent Orchestration Framework includes **42 specialized agents** organized across 8 functional domains,
+The Smart Agent Orchestration Framework includes **41 specialized agents** organized across 8 functional domains,
 with sophisticated parallel execution and multi-instance capabilities:
 
 ### 📊 Agent Categories Overview
@@ -506,7 +513,7 @@ Performance Tracking: Real-time capability assessment and gap analysis
 
 - **Production-Ready Orchestration**: Sophisticated task delegation with performance feedback loops
 - **Parallel-First Architecture**: Concurrent agent deployment optimized for maximum efficiency
-- **40+ Specialized Agents**: Complete coverage across 8 functional domains with continuous expansion
+- **41 Specialized Agents**: Complete coverage across 8 functional domains with continuous expansion
 - **Intelligent Task Routing**: Automatic specialist selection based on task complexity and requirements
 - **Performance Monitoring**: Real-time execution metrics with continuous improvement algorithms
 - **Multi-Instance Coordination**: Scalable agent deployment with intelligent load balancing
@@ -532,10 +539,10 @@ claude-config/
 ├── system-configs/             # Source configurations
 │   ├── CLAUDE.md              # Core configuration file
 │   ├── .claude/               # Claude Code configuration
-│   │   ├── agents/            # 43 agent definitions + 4 docs
+│   │   ├── agents/            # 41 agent definitions + 5 docs
 │   │   │   ├── README.md      # Agent ecosystem guide
 │   │   │   └── *.md           # Individual agent specs
-│   │   └── commands/          # 15 command definitions
+│   │   └── commands/          # 18 command definitions
 │   └── settings.json          # Audio hooks and preferences
 ├── docs/                      # 26 documentation files
 ├── scripts/                   # 17 utility and validation scripts
@@ -550,8 +557,8 @@ graph TB
     B --> C{Validation}
     C --> D[Backup Existing]
     D --> E[Deploy to ~/.claude/]
-    E --> F[43 Agents Available]
-    E --> G[15 Commands Available]
+    E --> F[41 Agents Available]
+    E --> G[18 Commands Available]
     F --> H[Enhanced Claude CLI]
     G --> H
 ```
@@ -568,7 +575,7 @@ cd claude-config
 # One-command framework deployment
 /sync
 
-# Experience intelligent orchestration: 43 agents and 15 commands available
+# Experience intelligent orchestration: 41 agents and 18 commands available
 # Multi-agent repository analysis with performance optimization
 /context
 
