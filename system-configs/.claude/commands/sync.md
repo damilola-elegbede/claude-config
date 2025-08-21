@@ -119,7 +119,7 @@ User: /sync --dry-run
 Claude: 📖 Preview mode - no changes will be made
 Would sync:
 - 41 agent files to ~/.claude/agents/
-- 15 command files to ~/.claude/commands/
+- 18 command files to ~/.claude/commands/
 - 8 output style files to ~/.claude/output-styles/
 - settings.json to ~/.claude/settings.json
 - statusline.sh to ~/.claude/statusline.sh (executable)

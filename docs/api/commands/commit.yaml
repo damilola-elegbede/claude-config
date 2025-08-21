@@ -1,0 +1,739 @@
+openapi: 3.0.3
+info:
+  title: Claude Commit Command API
+  description: Enhanced commit workflow API with automated review and remediation
+  version: 1.0.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local development server
+  - url: https://api.claude.ai/commands
+    description: Production command server
+
+paths:
+  /commands/commit:
+    post:
+      tags:
+        - Git Workflow
+      summary: Create enhanced git commit
+      description: |
+        Creates a git commit following Claude's standards with proper formatting,
+        co-authorship attribution, automated code review, and remediation.
+        
+        Process includes:
+        1. Repository status analysis
+        2. Enhanced code review using specialized agents
+        3. Automated remediation of issues
+        4. File cleanup and staging
+        5. Commit creation with validation
+      operationId: createCommit
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommitRequest'
+            examples:
+              basic_commit:
+                summary: Basic commit with review
+                value:
+                  options:
+                    skipReview: false
+                    autoFix: true
+              quick_commit:
+                summary: Skip review for urgent fixes
+                value:
+                  message: "hotfix: resolve critical security vulnerability"
+                  options:
+                    skipReview: true
+                    urgent: true
+              custom_message:
+                summary: Custom commit message
+                value:
+                  message: "feat(auth): implement JWT token refresh mechanism"
+                  options:
+                    autoFix: true
+                    strictValidation: true
+      responses:
+        '200':
+          description: Commit created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommitResponse'
+              examples:
+                successful_commit:
+                  summary: Successful commit with review
+                  value:
+                    success: true
+                    commitHash: "a1b2c3d4e5f6789"
+                    message: "feat(auth): add JWT token refresh mechanism"
+                    filesCommitted: 8
+                    reviewSummary:
+                      issuesFound: 5
+                      issuesFixed: 4
+                      criticalIssues: 0
+                      agentsDeployed: ["code-reviewer", "security-auditor", "test-engineer"]
+                    cleanup:
+                      filesRemoved: 3
+                      tempFilesCleared: true
+                    duration: 45.2
+                urgent_commit:
+                  summary: Urgent commit bypassing review
+                  value:
+                    success: true
+                    commitHash: "f6e5d4c3b2a1098"
+                    message: "hotfix: resolve critical security vulnerability"
+                    filesCommitted: 2
+                    reviewSummary:
+                      skipped: true
+                      reason: "urgent flag specified"
+                    duration: 2.1
+        '400':
+          description: Invalid commit request or repository state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                no_changes:
+                  summary: No changes to commit
+                  value:
+                    error:
+                      code: "NO_CHANGES_TO_COMMIT"
+                      message: "No staged or unstaged changes found"
+                      details:
+                        gitStatus: "working tree clean"
+                        suggestions: ["Make changes to files", "Stage files with git add"]
+                invalid_message:
+                  summary: Invalid commit message format
+                  value:
+                    error:
+                      code: "INVALID_COMMIT_MESSAGE"
+                      message: "Commit message doesn't follow conventional format"
+                      details:
+                        providedMessage: "fixed stuff"
+                        expectedFormat: "type(scope): description"
+                        examples: ["feat(auth): add login", "fix(api): resolve timeout"]
+        '409':
+          description: Review blocking issues found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewBlockedResponse'
+              examples:
+                critical_issues:
+                  summary: Critical issues blocking commit
+                  value:
+                    success: false
+                    blocked: true
+                    reason: "Critical security vulnerabilities must be fixed"
+                    review:
+                      criticalIssues: 2
+                      highPriorityIssues: 3
+                      blockingIssues:
+                        - type: "security"
+                          file: "auth/login.js"
+                          issue: "SQL injection vulnerability"
+                          line: 45
+                        - type: "security"
+                          file: "config/jwt.js"
+                          issue: "Hardcoded JWT secret"
+                          line: 12
+                    remediation:
+                      attempted: true
+                      fixesApplied: 1
+                      manualFixesRequired: 2
+        '500':
+          description: Commit operation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                git_failure:
+                  summary: Git operation failed
+                  value:
+                    error:
+                      code: "GIT_COMMIT_FAILED"
+                      message: "Failed to create git commit"
+                      details:
+                        gitError: "pre-commit hook failed"
+                        hookOutput: "ESLint found 3 errors"
+                        rollbackPerformed: true
+
+  /commands/commit/review:
+    post:
+      tags:
+        - Code Review
+      summary: Run enhanced code review
+      description: |
+        Execute comprehensive code review using specialized agents without creating a commit.
+        Useful for pre-commit validation and continuous quality assurance.
+      operationId: runCodeReview
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewRequest'
+      responses:
+        '200':
+          description: Code review completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewResponse'
+              examples:
+                clean_review:
+                  summary: No issues found
+                  value:
+                    success: true
+                    overallScore: 9.2
+                    results:
+                      codeQuality: "excellent"
+                      security: "passed"
+                      performance: "good"
+                      testing: "adequate"
+                    issues: []
+                    agentsDeployed: ["code-reviewer", "security-auditor"]
+                    duration: 12.5
+                issues_found:
+                  summary: Issues found and categorized
+                  value:
+                    success: true
+                    overallScore: 7.1
+                    results:
+                      codeQuality: "good"
+                      security: "passed"
+                      performance: "needs_improvement"
+                      testing: "inadequate"
+                    issues:
+                      - severity: "high"
+                        type: "performance"
+                        file: "api/users.js"
+                        line: 67
+                        description: "N+1 query problem detected"
+                        agent: "performance-specialist"
+                        autoFixable: false
+                      - severity: "medium"
+                        type: "testing"
+                        file: "auth/login.js"
+                        description: "Missing unit tests for error handling"
+                        agent: "test-engineer"
+                        autoFixable: true
+                    duration: 18.7
+
+  /commands/commit/cleanup:
+    post:
+      tags:
+        - File Management
+      summary: Clean up temporary files
+      description: |
+        Remove temporary files and build artifacts before staging files for commit.
+        Includes automatic detection of temp files, build artifacts, and development files.
+      operationId: cleanupFiles
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CleanupRequest'
+      responses:
+        '200':
+          description: Cleanup completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CleanupResponse'
+
+  /commands/commit/validate:
+    post:
+      tags:
+        - Validation
+      summary: Validate commit readiness
+      description: |
+        Validate that repository is ready for commit without performing the actual commit.
+        Checks repository state, staged files, and potential issues.
+      operationId: validateCommitReadiness
+      responses:
+        '200':
+          description: Validation completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResponse'
+
+components:
+  schemas:
+    CommitRequest:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Custom commit message (optional, will be generated if not provided)
+          example: "feat(auth): implement JWT token refresh mechanism"
+        options:
+          type: object
+          properties:
+            skipReview:
+              type: boolean
+              default: false
+              description: Skip the automated code review process
+            autoFix:
+              type: boolean
+              default: true
+              description: Automatically fix issues found during review
+            urgent:
+              type: boolean
+              default: false
+              description: Mark as urgent commit (affects review strictness)
+            strictValidation:
+              type: boolean
+              default: false
+              description: Enable strict validation mode
+            cleanup:
+              type: boolean
+              default: true
+              description: Perform file cleanup before commit
+            allowPartialFix:
+              type: boolean
+              default: true
+              description: Allow commit with documented rationale for unfixed issues
+          additionalProperties: false
+        reviewScope:
+          type: array
+          items:
+            type: string
+          description: Specific files or directories to include in review
+          example: ["src/auth/", "tests/auth/"]
+
+    CommitResponse:
+      type: object
+      required:
+        - success
+        - commitHash
+        - message
+        - filesCommitted
+      properties:
+        success:
+          type: boolean
+          description: Whether the commit was successful
+        commitHash:
+          type: string
+          description: Git commit hash
+          example: "a1b2c3d4e5f6789"
+        message:
+          type: string
+          description: Final commit message used
+        filesCommitted:
+          type: integer
+          description: Number of files included in the commit
+        reviewSummary:
+          $ref: '#/components/schemas/ReviewSummary'
+        cleanup:
+          $ref: '#/components/schemas/CleanupSummary'
+        duration:
+          type: number
+          format: float
+          description: Total operation duration in seconds
+        coAuthors:
+          type: array
+          items:
+            type: string
+          description: Co-authors included in commit
+          example: ["Claude <noreply@anthropic.com>"]
+
+    ReviewBlockedResponse:
+      type: object
+      required:
+        - success
+        - blocked
+        - reason
+        - review
+      properties:
+        success:
+          type: boolean
+          enum: [false]
+          description: Always false for blocked commits
+        blocked:
+          type: boolean
+          enum: [true]
+          description: Always true indicating commit is blocked
+        reason:
+          type: string
+          description: Human-readable reason why commit is blocked
+        review:
+          $ref: '#/components/schemas/ReviewResults'
+        remediation:
+          $ref: '#/components/schemas/RemediationSummary'
+        recommendations:
+          type: array
+          items:
+            type: string
+          description: Suggested actions to resolve blocking issues
+
+    ReviewRequest:
+      type: object
+      properties:
+        scope:
+          type: string
+          enum: [changed, staged, all, custom]
+          default: changed
+          description: Scope of files to review
+        target:
+          type: array
+          items:
+            type: string
+          description: Specific files to review (when scope is custom)
+        agents:
+          type: array
+          items:
+            type: string
+          description: Specific agents to deploy for review
+          example: ["security-auditor", "performance-specialist"]
+        strict:
+          type: boolean
+          default: false
+          description: Enable strict review mode
+
+    ReviewResponse:
+      type: object
+      required:
+        - success
+        - overallScore
+        - results
+        - issues
+      properties:
+        success:
+          type: boolean
+          description: Whether review completed successfully
+        overallScore:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 10
+          description: Overall code quality score (0-10)
+        results:
+          type: object
+          properties:
+            codeQuality:
+              type: string
+              enum: [excellent, good, fair, poor]
+            security:
+              type: string
+              enum: [passed, warnings, failed]
+            performance:
+              type: string
+              enum: [excellent, good, needs_improvement, poor]
+            testing:
+              type: string
+              enum: [comprehensive, adequate, insufficient, missing]
+          description: Results by category
+        issues:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReviewIssue'
+          description: Issues found during review
+        agentsDeployed:
+          type: array
+          items:
+            type: string
+          description: List of agents that participated in review
+        duration:
+          type: number
+          format: float
+          description: Review duration in seconds
+
+    ReviewIssue:
+      type: object
+      required:
+        - severity
+        - type
+        - description
+        - agent
+      properties:
+        severity:
+          type: string
+          enum: [critical, high, medium, low]
+          description: Issue severity level
+        type:
+          type: string
+          enum: [security, performance, testing, quality, style, documentation]
+          description: Category of issue
+        file:
+          type: string
+          description: File containing the issue
+        line:
+          type: integer
+          description: Line number (if applicable)
+        description:
+          type: string
+          description: Detailed description of the issue
+        agent:
+          type: string
+          description: Agent that identified the issue
+        autoFixable:
+          type: boolean
+          description: Whether issue can be automatically fixed
+        suggestion:
+          type: string
+          description: Suggested fix or improvement
+        rationale:
+          type: string
+          description: Documented rationale if issue won't be fixed
+
+    ReviewSummary:
+      type: object
+      properties:
+        skipped:
+          type: boolean
+          description: Whether review was skipped
+        reason:
+          type: string
+          description: Reason for skipping review (if applicable)
+        issuesFound:
+          type: integer
+          description: Total number of issues found
+        issuesFixed:
+          type: integer
+          description: Number of issues automatically fixed
+        criticalIssues:
+          type: integer
+          description: Number of critical issues
+        agentsDeployed:
+          type: array
+          items:
+            type: string
+          description: Agents used in review process
+        duration:
+          type: number
+          format: float
+          description: Review duration in seconds
+
+    ReviewResults:
+      type: object
+      required:
+        - criticalIssues
+        - highPriorityIssues
+      properties:
+        criticalIssues:
+          type: integer
+          description: Number of critical issues that block commit
+        highPriorityIssues:
+          type: integer
+          description: Number of high priority issues
+        mediumPriorityIssues:
+          type: integer
+          description: Number of medium priority issues
+        lowPriorityIssues:
+          type: integer
+          description: Number of low priority issues
+        blockingIssues:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlockingIssue'
+          description: Specific issues that prevent commit
+
+    BlockingIssue:
+      type: object
+      required:
+        - type
+        - file
+        - issue
+      properties:
+        type:
+          type: string
+          enum: [security, critical_bug, breaking_change]
+          description: Type of blocking issue
+        file:
+          type: string
+          description: File containing the issue
+        issue:
+          type: string
+          description: Description of the blocking issue
+        line:
+          type: integer
+          description: Line number where issue occurs
+        severity:
+          type: string
+          enum: [critical, high]
+          description: Issue severity
+
+    RemediationSummary:
+      type: object
+      properties:
+        attempted:
+          type: boolean
+          description: Whether automatic remediation was attempted
+        fixesApplied:
+          type: integer
+          description: Number of fixes successfully applied
+        manualFixesRequired:
+          type: integer
+          description: Number of issues requiring manual intervention
+        agentsDeployed:
+          type: array
+          items:
+            type: string
+          description: Remediation agents that were deployed
+        duration:
+          type: number
+          format: float
+          description: Remediation duration in seconds
+
+    CleanupRequest:
+      type: object
+      properties:
+        patterns:
+          type: array
+          items:
+            type: string
+          description: Additional file patterns to clean up
+          example: ["*.tmp", "debug_*"]
+        dryRun:
+          type: boolean
+          default: false
+          description: Preview cleanup without actually removing files
+        preserveImportant:
+          type: boolean
+          default: true
+          description: Avoid removing files that might be important
+        createBackup:
+          type: boolean
+          default: true
+          description: Create backup of removed files
+
+    CleanupResponse:
+      type: object
+      required:
+        - success
+        - filesRemoved
+        - spaceFreed
+      properties:
+        success:
+          type: boolean
+          description: Whether cleanup was successful
+        filesRemoved:
+          type: integer
+          description: Number of files removed
+        spaceFreed:
+          type: integer
+          description: Disk space freed in bytes
+        backupCreated:
+          type: boolean
+          description: Whether backup was created
+        backupPath:
+          type: string
+          description: Path to backup directory (if created)
+        removedFiles:
+          type: array
+          items:
+            type: string
+          description: List of files that were removed
+        preservedFiles:
+          type: array
+          items:
+            type: string
+          description: Files that were identified but preserved
+
+    CleanupSummary:
+      type: object
+      properties:
+        filesRemoved:
+          type: integer
+          description: Number of temporary files removed
+        tempFilesCleared:
+          type: boolean
+          description: Whether temp file cleanup was performed
+        spaceFreed:
+          type: integer
+          description: Disk space freed in bytes
+        backupCreated:
+          type: boolean
+          description: Whether cleanup backup was created
+
+    ValidationResponse:
+      type: object
+      required:
+        - ready
+        - checks
+      properties:
+        ready:
+          type: boolean
+          description: Whether repository is ready for commit
+        checks:
+          type: object
+          properties:
+            hasChanges:
+              type: boolean
+              description: Whether there are changes to commit
+            validGitRepo:
+              type: boolean
+              description: Whether current directory is a valid git repository
+            noConflicts:
+              type: boolean
+              description: Whether there are no merge conflicts
+            hooksValid:
+              type: boolean
+              description: Whether git hooks are properly configured
+          description: Results of readiness checks
+        warnings:
+          type: array
+          items:
+            type: string
+          description: Non-blocking warnings
+        blockers:
+          type: array
+          items:
+            type: string
+          description: Issues that prevent commit
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: object
+              description: Additional error context
+              additionalProperties: true
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - ApiKeyAuth: []
+  - BearerAuth: []
+
+tags:
+  - name: Git Workflow
+    description: Git workflow automation and enhancement
+  - name: Code Review
+    description: Automated code review and quality assurance
+  - name: File Management
+    description: File cleanup and organization
+  - name: Validation
+    description: Pre-commit validation and readiness checks

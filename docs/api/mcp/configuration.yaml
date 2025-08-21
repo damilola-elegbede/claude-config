@@ -1,0 +1,971 @@
+openapi: 3.0.3
+info:
+  title: Claude MCP Configuration Management API
+  description: Configuration management API for Claude MCP infrastructure and settings
+  version: 1.0.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:3000/api/mcp
+    description: Local development server
+  - url: https://api.claude.ai/mcp
+    description: Production MCP server
+
+paths:
+  /config/settings:
+    get:
+      tags:
+        - Configuration
+      summary: Get current MCP configuration
+      description: Retrieve complete MCP system configuration including audio hooks, agents, and commands
+      operationId: getMCPConfiguration
+      responses:
+        '200':
+          description: Configuration retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MCPConfiguration'
+
+    put:
+      tags:
+        - Configuration
+      summary: Update MCP configuration
+      description: Update MCP system configuration with validation and rollback support
+      operationId: updateMCPConfiguration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfigurationUpdate'
+      responses:
+        '200':
+          description: Configuration updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigurationUpdateResponse'
+        '400':
+          description: Invalid configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /config/audio-hooks:
+    get:
+      tags:
+        - Audio Configuration
+      summary: Get audio hook configuration
+      description: Retrieve audio notification hook settings and sound file paths
+      operationId: getAudioHookConfig
+      responses:
+        '200':
+          description: Audio configuration retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AudioHookConfiguration'
+
+    put:
+      tags:
+        - Audio Configuration
+      summary: Update audio hook configuration
+      description: Update audio notification settings and hook configurations
+      operationId: updateAudioHookConfig
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AudioHookUpdate'
+      responses:
+        '200':
+          description: Audio configuration updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AudioHookUpdateResponse'
+
+  /config/audio-hooks/test:
+    post:
+      tags:
+        - Audio Configuration
+      summary: Test audio hooks
+      description: Test audio notification hooks by playing specified sounds
+      operationId: testAudioHooks
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AudioTestRequest'
+      responses:
+        '200':
+          description: Audio test completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AudioTestResponse'
+
+  /config/agent-preferences:
+    get:
+      tags:
+        - Agent Configuration
+      summary: Get agent preference configuration
+      description: Retrieve tool routing preferences and agent-specific settings
+      operationId: getAgentPreferences
+      responses:
+        '200':
+          description: Agent preferences retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentPreferencesConfiguration'
+
+    put:
+      tags:
+        - Agent Configuration
+      summary: Update agent preferences
+      description: Update tool routing preferences and agent-specific configurations
+      operationId: updateAgentPreferences
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentPreferencesUpdate'
+      responses:
+        '200':
+          description: Agent preferences updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentPreferencesUpdateResponse'
+
+  /config/tool-overrides:
+    get:
+      tags:
+        - Tool Configuration
+      summary: Get tool routing overrides
+      description: Retrieve tool-specific routing strategy overrides
+      operationId: getToolOverrides
+      responses:
+        '200':
+          description: Tool overrides retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToolOverridesConfiguration'
+
+    put:
+      tags:
+        - Tool Configuration
+      summary: Update tool routing overrides
+      description: Update tool-specific routing strategy configurations
+      operationId: updateToolOverrides
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToolOverridesUpdate'
+      responses:
+        '200':
+          description: Tool overrides updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToolOverridesUpdateResponse'
+
+  /config/validate:
+    post:
+      tags:
+        - Validation
+      summary: Validate configuration
+      description: Validate configuration before applying changes
+      operationId: validateConfiguration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfigurationValidationRequest'
+      responses:
+        '200':
+          description: Validation completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResponse'
+
+  /config/backup:
+    post:
+      tags:
+        - Backup & Restore
+      summary: Create configuration backup
+      description: Create a backup of current configuration
+      operationId: createConfigurationBackup
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackupRequest'
+      responses:
+        '200':
+          description: Backup created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupResponse'
+
+    get:
+      tags:
+        - Backup & Restore
+      summary: List configuration backups
+      description: Get list of available configuration backups
+      operationId: listConfigurationBackups
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of backups to return
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 10
+      responses:
+        '200':
+          description: Backup list retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupListResponse'
+
+  /config/backup/{backupId}/restore:
+    post:
+      tags:
+        - Backup & Restore
+      summary: Restore configuration from backup
+      description: Restore configuration from a specific backup
+      operationId: restoreConfigurationBackup
+      parameters:
+        - name: backupId
+          in: path
+          required: true
+          description: Backup identifier
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RestoreRequest'
+      responses:
+        '200':
+          description: Configuration restored successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestoreResponse'
+
+  /config/schema:
+    get:
+      tags:
+        - Schema
+      summary: Get configuration schema
+      description: Retrieve JSON schema for configuration validation
+      operationId: getConfigurationSchema
+      responses:
+        '200':
+          description: Configuration schema retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigurationSchema'
+
+components:
+  schemas:
+    MCPConfiguration:
+      type: object
+      required:
+        - version
+        - toolRouter
+        - audioHooks
+        - agentPreferences
+      properties:
+        version:
+          type: string
+          description: Configuration version
+          example: "1.0.0"
+        toolRouter:
+          $ref: '#/components/schemas/ToolRouterConfig'
+        audioHooks:
+          $ref: '#/components/schemas/AudioHookConfiguration'
+        agentPreferences:
+          $ref: '#/components/schemas/AgentPreferencesConfiguration'
+        toolOverrides:
+          $ref: '#/components/schemas/ToolOverridesConfiguration'
+        systemSettings:
+          $ref: '#/components/schemas/SystemSettings'
+        lastModified:
+          type: string
+          format: date-time
+          description: When configuration was last modified
+        checksum:
+          type: string
+          description: Configuration checksum for integrity verification
+
+    ToolRouterConfig:
+      type: object
+      required:
+        - defaultStrategy
+        - decisionTimeout
+        - enableTelemetry
+      properties:
+        defaultStrategy:
+          type: string
+          enum: [performance-first, agent-optimized, load-balanced]
+          description: Default routing strategy
+        strategies:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/StrategyConfiguration'
+          description: Strategy-specific configurations
+        decisionTimeout:
+          type: integer
+          minimum: 10
+          maximum: 5000
+          description: Maximum routing decision time in milliseconds
+        enableAdaptiveRouting:
+          type: boolean
+          description: Enable adaptive routing based on performance
+        enableTelemetry:
+          type: boolean
+          description: Enable telemetry collection
+        cacheSettings:
+          $ref: '#/components/schemas/CacheSettings'
+
+    StrategyConfiguration:
+      type: object
+      properties:
+        weights:
+          type: object
+          properties:
+            performance:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 1
+            availability:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 1
+            load:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 1
+            preference:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 1
+        options:
+          type: object
+          additionalProperties: true
+          description: Strategy-specific options
+
+    CacheSettings:
+      type: object
+      properties:
+        maxSize:
+          type: integer
+          minimum: 1000
+          maximum: 100000
+          description: Maximum number of cache entries
+        defaultTtl:
+          type: integer
+          minimum: 1000
+          maximum: 3600000
+          description: Default TTL in milliseconds
+        enabled:
+          type: boolean
+          description: Enable routing cache
+
+    AudioHookConfiguration:
+      type: object
+      required:
+        - hooks
+      properties:
+        hooks:
+          type: object
+          properties:
+            PostToolUse:
+              type: array
+              items:
+                $ref: '#/components/schemas/HookDefinition'
+            Stop:
+              type: array
+              items:
+                $ref: '#/components/schemas/HookDefinition'
+            SubagentStop:
+              type: array
+              items:
+                $ref: '#/components/schemas/HookDefinition'
+            Notification:
+              type: array
+              items:
+                $ref: '#/components/schemas/HookDefinition'
+        soundFiles:
+          $ref: '#/components/schemas/SoundFileConfiguration'
+        enabled:
+          type: boolean
+          description: Enable audio notifications globally
+
+    HookDefinition:
+      type: object
+      required:
+        - matcher
+        - hooks
+      properties:
+        matcher:
+          type: string
+          description: Pattern to match events
+        hooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/HookAction'
+
+    HookAction:
+      type: object
+      required:
+        - type
+        - command
+      properties:
+        type:
+          type: string
+          enum: [command]
+          description: Type of hook action
+        command:
+          type: string
+          description: Command to execute
+        async:
+          type: boolean
+          default: true
+          description: Execute command asynchronously
+
+    SoundFileConfiguration:
+      type: object
+      properties:
+        completion:
+          type: string
+          description: Sound file for completion events
+          example: "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r"
+        stop:
+          type: string
+          description: Sound file for stop events
+        notification:
+          type: string
+          description: Sound file for notifications
+        error:
+          type: string
+          description: Sound file for errors
+        volume:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          default: 1.0
+          description: Default volume level
+
+    AgentPreferencesConfiguration:
+      type: object
+      additionalProperties:
+        type: object
+        additionalProperties:
+          type: string
+        description: Tool-specific strategy preferences for each agent
+
+    ToolOverridesConfiguration:
+      type: object
+      additionalProperties:
+        type: string
+      description: Tool-specific routing strategy overrides
+
+    SystemSettings:
+      type: object
+      properties:
+        logLevel:
+          type: string
+          enum: [debug, info, warn, error]
+          default: info
+          description: System log level
+        enableMetrics:
+          type: boolean
+          default: true
+          description: Enable metrics collection
+        maxConcurrentAgents:
+          type: integer
+          minimum: 1
+          maximum: 50
+          default: 10
+          description: Maximum concurrent agent executions
+        requestTimeout:
+          type: integer
+          minimum: 1000
+          maximum: 300000
+          default: 30000
+          description: Default request timeout in milliseconds
+
+    ConfigurationUpdate:
+      type: object
+      properties:
+        toolRouter:
+          $ref: '#/components/schemas/ToolRouterConfig'
+        audioHooks:
+          $ref: '#/components/schemas/AudioHookConfiguration'
+        agentPreferences:
+          $ref: '#/components/schemas/AgentPreferencesConfiguration'
+        toolOverrides:
+          $ref: '#/components/schemas/ToolOverridesConfiguration'
+        systemSettings:
+          $ref: '#/components/schemas/SystemSettings'
+        options:
+          type: object
+          properties:
+            validateOnly:
+              type: boolean
+              default: false
+              description: Only validate, don't apply changes
+            createBackup:
+              type: boolean
+              default: true
+              description: Create backup before applying changes
+
+    ConfigurationUpdateResponse:
+      type: object
+      required:
+        - success
+        - updated
+      properties:
+        success:
+          type: boolean
+          description: Whether update was successful
+        updated:
+          type: array
+          items:
+            type: string
+          description: Configuration sections that were updated
+        validation:
+          $ref: '#/components/schemas/ValidationSummary'
+        backup:
+          type: object
+          properties:
+            created:
+              type: boolean
+            backupId:
+              type: string
+            path:
+              type: string
+        restartRequired:
+          type: boolean
+          description: Whether system restart is required
+
+    AudioHookUpdate:
+      type: object
+      properties:
+        hooks:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/HookDefinition'
+        soundFiles:
+          $ref: '#/components/schemas/SoundFileConfiguration'
+        enabled:
+          type: boolean
+
+    AudioHookUpdateResponse:
+      type: object
+      required:
+        - success
+        - updated
+      properties:
+        success:
+          type: boolean
+        updated:
+          type: array
+          items:
+            type: string
+          description: Hook types that were updated
+        validation:
+          $ref: '#/components/schemas/ValidationSummary'
+        soundFilesValidated:
+          type: boolean
+          description: Whether sound file paths were validated
+
+    AudioTestRequest:
+      type: object
+      properties:
+        hooks:
+          type: array
+          items:
+            type: string
+            enum: [PostToolUse, Stop, SubagentStop, Notification]
+          description: Specific hooks to test
+        volume:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Volume for test playback
+
+    AudioTestResponse:
+      type: object
+      required:
+        - success
+        - results
+      properties:
+        success:
+          type: boolean
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              hook:
+                type: string
+              status:
+                type: string
+                enum: [success, failed, skipped]
+              soundFile:
+                type: string
+              error:
+                type: string
+
+    AgentPreferencesUpdate:
+      type: object
+      additionalProperties:
+        type: object
+        additionalProperties:
+          type: string
+
+    AgentPreferencesUpdateResponse:
+      type: object
+      required:
+        - success
+        - updated
+      properties:
+        success:
+          type: boolean
+        updated:
+          type: object
+          properties:
+            agents:
+              type: array
+              items:
+                type: string
+            tools:
+              type: array
+              items:
+                type: string
+        validation:
+          $ref: '#/components/schemas/ValidationSummary'
+
+    ToolOverridesUpdate:
+      type: object
+      additionalProperties:
+        type: string
+
+    ToolOverridesUpdateResponse:
+      type: object
+      required:
+        - success
+        - updated
+      properties:
+        success:
+          type: boolean
+        updated:
+          type: array
+          items:
+            type: string
+          description: Tools that had overrides updated
+        validation:
+          $ref: '#/components/schemas/ValidationSummary'
+
+    ConfigurationValidationRequest:
+      type: object
+      required:
+        - config
+      properties:
+        config:
+          $ref: '#/components/schemas/MCPConfiguration'
+        strict:
+          type: boolean
+          default: false
+          description: Enable strict validation mode
+
+    ValidationResponse:
+      type: object
+      required:
+        - valid
+        - results
+      properties:
+        valid:
+          type: boolean
+          description: Whether configuration is valid
+        results:
+          $ref: '#/components/schemas/ValidationSummary'
+        suggestions:
+          type: array
+          items:
+            type: string
+          description: Suggestions for improving configuration
+
+    ValidationSummary:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationWarning'
+        summary:
+          type: object
+          properties:
+            totalErrors:
+              type: integer
+            totalWarnings:
+              type: integer
+            criticalErrors:
+              type: integer
+
+    ValidationError:
+      type: object
+      required:
+        - field
+        - message
+        - severity
+      properties:
+        field:
+          type: string
+          description: Configuration field with error
+        message:
+          type: string
+          description: Error description
+        severity:
+          type: string
+          enum: [critical, high, medium, low]
+        code:
+          type: string
+          description: Error code for programmatic handling
+
+    ValidationWarning:
+      type: object
+      required:
+        - field
+        - message
+      properties:
+        field:
+          type: string
+          description: Configuration field with warning
+        message:
+          type: string
+          description: Warning description
+        suggestion:
+          type: string
+          description: Suggested fix
+
+    BackupRequest:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Human-readable backup description
+        includeMetadata:
+          type: boolean
+          default: true
+          description: Include system metadata in backup
+
+    BackupResponse:
+      type: object
+      required:
+        - success
+        - backupId
+      properties:
+        success:
+          type: boolean
+        backupId:
+          type: string
+          description: Unique backup identifier
+        path:
+          type: string
+          description: Backup file path
+        size:
+          type: integer
+          description: Backup size in bytes
+        timestamp:
+          type: string
+          format: date-time
+          description: When backup was created
+
+    BackupListResponse:
+      type: object
+      required:
+        - backups
+      properties:
+        backups:
+          type: array
+          items:
+            $ref: '#/components/schemas/BackupInfo'
+        totalSize:
+          type: integer
+          description: Total size of all backups
+
+    BackupInfo:
+      type: object
+      required:
+        - id
+        - timestamp
+        - size
+      properties:
+        id:
+          type: string
+          description: Backup identifier
+        description:
+          type: string
+          description: Backup description
+        timestamp:
+          type: string
+          format: date-time
+          description: When backup was created
+        size:
+          type: integer
+          description: Backup size in bytes
+        configVersion:
+          type: string
+          description: Configuration version at time of backup
+
+    RestoreRequest:
+      type: object
+      properties:
+        sections:
+          type: array
+          items:
+            type: string
+            enum: [toolRouter, audioHooks, agentPreferences, toolOverrides, systemSettings]
+          description: Specific sections to restore (default: all)
+        createBackup:
+          type: boolean
+          default: true
+          description: Create backup before restore
+
+    RestoreResponse:
+      type: object
+      required:
+        - success
+        - restored
+      properties:
+        success:
+          type: boolean
+        restored:
+          type: array
+          items:
+            type: string
+          description: Configuration sections that were restored
+        backupCreated:
+          type: object
+          properties:
+            created:
+              type: boolean
+            backupId:
+              type: string
+        validation:
+          $ref: '#/components/schemas/ValidationSummary'
+        restartRequired:
+          type: boolean
+
+    ConfigurationSchema:
+      type: object
+      required:
+        - schema
+        - version
+      properties:
+        schema:
+          type: object
+          description: JSON schema for configuration validation
+        version:
+          type: string
+          description: Schema version
+        examples:
+          type: array
+          items:
+            type: object
+          description: Example configurations
+        documentation:
+          type: object
+          additionalProperties:
+            type: string
+          description: Field-level documentation
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: object
+              description: Additional error context
+              additionalProperties: true
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - ApiKeyAuth: []
+  - BearerAuth: []
+
+tags:
+  - name: Configuration
+    description: Core MCP configuration management
+  - name: Audio Configuration
+    description: Audio notification hook management
+  - name: Agent Configuration
+    description: Agent preference and routing configuration
+  - name: Tool Configuration
+    description: Tool-specific routing overrides
+  - name: Validation
+    description: Configuration validation and verification
+  - name: Backup & Restore
+    description: Configuration backup and restore operations
+  - name: Schema
+    description: Configuration schema and documentation
