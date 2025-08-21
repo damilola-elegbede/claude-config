@@ -122,6 +122,9 @@
     "docs/performance-predictor-guide.md",
     // Auto-generated quality report
     ".tmp/docs/markdown-quality-report.md",
+    // Auto-generated documentation with complex formatting
+    "docs/analysis/**",
+    "docs/api/**",
     // Symlinked directories (avoid duplicates)
     ".claude/**",
     // Imported output style templates (external formatting standards)

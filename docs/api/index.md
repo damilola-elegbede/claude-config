@@ -2,7 +2,9 @@
 
 ## Overview
 
-The Claude Code CLI provides a comprehensive API ecosystem for command orchestration, agent management, and MCP infrastructure. This documentation covers all public APIs available for integration and automation.
+The Claude Code CLI provides a comprehensive API ecosystem for command orchestration,
+agent management, and MCP infrastructure. This documentation covers all public APIs
+available for integration and automation.
 
 ## API Categories
 
@@ -89,6 +91,7 @@ Security Schemes:
 ### Usage Examples
 
 #### API Key Authentication
+
 ```bash
 curl -H "X-API-Key: your-api-key" \
      -H "Content-Type: application/json" \
@@ -96,6 +99,7 @@ curl -H "X-API-Key: your-api-key" \
 ```
 
 #### JWT Bearer Token
+
 ```bash
 curl -H "Authorization: Bearer your-jwt-token" \
      -H "Content-Type: application/json" \
@@ -232,6 +236,7 @@ Accept: application/json; version=1.0
 ### Local Development
 
 1. **Setup Local API Server**:
+
    ```bash
    cd claude-config
    npm install
@@ -239,6 +244,7 @@ Accept: application/json; version=1.0
    ```
 
 2. **API Server Configuration**:
+
    ```bash
    export CLAUDE_API_PORT=3000
    export CLAUDE_API_HOST=localhost
@@ -300,4 +306,5 @@ Accept: application/json; version=1.0
 - **API Status Page**: [status.claude.ai](https://status.claude.ai)
 - **Developer Blog**: [blog.claude.ai/developers](https://blog.claude.ai/developers)
 
-For questions about API usage, integration support, or feature requests, please refer to our [Developer Guide](../guides/developer-guide.md) or create an issue in the GitHub repository.
+For questions about API usage, integration support, or feature requests, please refer to our
+[Developer Guide](../guides/developer-guide.md) or create an issue in the GitHub repository.
