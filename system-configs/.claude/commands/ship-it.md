@@ -16,9 +16,9 @@ Leverages Claude's full intelligence and agent orchestration for each step.
 ## Workflows
 
 ```yaml
-Full (Default): /review → /test → /commit → /push → /pr (if no PR exists)
-Basic: /review --quick → /commit → /push
-Quick: /commit → /push
+Full (Default): /commit → /review → /test → /push --simple → /pr (if no PR exists)
+Basic: /commit → /review --quick → /push --simple
+Quick: /commit → /push --simple
 ```
 
 ## Behavior
@@ -39,21 +39,21 @@ ship_it() {
   case "$workflow" in
     "quick")
       echo "I will now execute the Quick workflow:"
-      echo "1. /commit - Smart git operations with quality gates"
-      echo "2. /push - Safe repository operations with validation"
+      echo "1. /commit - Stage changes and create commit (no review)"
+      echo "2. /push --simple - Safe repository operations with basic validation"
       ;;
     "basic") 
       echo "I will now execute the Basic workflow:"
-      echo "1. /review --quick - Quick code review with essential checks"
-      echo "2. /commit - Smart git operations with quality gates"
-      echo "3. /push - Safe repository operations with validation"
+      echo "1. /commit - Stage changes and create commit with semantic messaging"
+      echo "2. /review --quick - Quick code review with essential checks on staged commit"
+      echo "3. /push --simple - Safe repository operations (review already done)"
       ;;
     "full"|*)
       echo "I will now execute the Full workflow:"
-      echo "1. /review - Multi-agent code analysis with comprehensive quality gates"
-      echo "2. /test - Intelligent test discovery and execution with framework detection"
-      echo "3. /commit - Smart git operations with semantic commit generation"
-      echo "4. /push - Safe repository operations with pre-push validation"
+      echo "1. /commit - Stage changes and create commit with semantic messaging"
+      echo "2. /review - Multi-agent code analysis with comprehensive quality gates on staged commit"
+      echo "3. /test - Intelligent test discovery and execution with framework detection"
+      echo "4. /push --simple - Safe repository operations (review already done)"
       echo "5. /pr - Intelligent PR creation with context-aware descriptions (if no PR exists)"
       ;;
   esac
@@ -77,10 +77,10 @@ User: /ship-it
 Claude: 🚀 Starting ship-it workflow: full
 
 I will now execute the Full workflow:
-1. /review - Multi-agent code analysis with comprehensive quality gates
-2. /test - Intelligent test discovery and execution with framework detection
-3. /commit - Smart git operations with semantic commit generation
-4. /push - Safe repository operations with pre-push validation
+1. /commit - Stage changes and create commit with semantic messaging
+2. /review - Multi-agent code analysis with comprehensive quality gates on staged commit
+3. /test - Intelligent test discovery and execution with framework detection
+4. /push --simple - Safe repository operations (review already done)
 5. /pr - Intelligent PR creation with context-aware descriptions (if no PR exists)
 
 Each command will use Claude's full intelligence with:
@@ -100,9 +100,9 @@ User: /ship-it --basic
 Claude: 🚀 Starting ship-it workflow: basic
 
 I will now execute the Basic workflow:
-1. /review --quick - Quick code review with essential checks
-2. /commit - Smart git operations with quality gates
-3. /push - Safe repository operations with validation
+1. /commit - Stage changes and create commit with semantic messaging
+2. /review --quick - Quick code review with essential checks on staged commit
+3. /push --simple - Safe repository operations (review already done)
 
 Each command will use Claude's full intelligence with:
 • Agent orchestration and specialized expertise
@@ -119,8 +119,8 @@ User: /ship-it --quick
 Claude: 🚀 Starting ship-it workflow: quick
 
 I will now execute the Quick workflow:
-1. /commit - Smart git operations with quality gates
-2. /push - Safe repository operations with validation
+1. /commit - Stage changes and create commit (no review)
+2. /push --simple - Safe repository operations with basic validation
 
 Each command will use Claude's full intelligence with:
 • Agent orchestration and specialized expertise

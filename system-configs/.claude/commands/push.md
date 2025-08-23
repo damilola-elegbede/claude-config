@@ -17,9 +17,8 @@ Supports both simple push mode and comprehensive quality-checked push.
 ## Behavior
 
 When invoked, I will safely push changes to the remote repository. Simple mode
-performs basic safety checks and pushes quickly. Full mode runs comprehensive
-quality gates including tests, linting, code review, and security scanning
-before pushing.
+performs basic safety checks and pushes quickly. Full mode performs safety checks
+with basic auto-fixing but relies on /review command for comprehensive quality gates.
 
 ## Two-Mode Operation
 
@@ -38,20 +37,20 @@ Agent Usage: None
 Duration: 10-15 seconds
 ```
 
-### Full Mode (default) - Quality Gate Push
+### Full Mode (default) - Standard Push with Safety Checks
 
-**What it does**: Comprehensive quality validation
+**What it does**: Push with basic validation (no quality gates - use /review separately)
 
 ```yaml
-Quality Gates:
-  - Run test suite (test-engineer if failures)
-  - Comprehensive linting with auto-fix
-  - Code review with automated remediation
-  - Security scan for vulnerabilities
-  - Generate quality reports
+Checks Performed:
+  - Verify not on main/master branch
+  - Ensure no uncommitted changes  
+  - Check branch has commits to push
+  - Set upstream tracking if needed
+  - Basic linting auto-fix only
 
-Agent Usage: Multiple specialists as needed
-Duration: 2-5 minutes depending on issues found
+Agent Usage: None (quality review handled by /review command)
+Duration: 30-60 seconds
 ```
 
 ## Push Workflow
@@ -85,38 +84,24 @@ validate_push_safety() {
 }
 ```
 
-### Phase 2: Quality Gates (Full Mode Only)
+### Phase 2: Basic Auto-Fixes (Full Mode Only)
 
 ```bash
-# Comprehensive quality validation
-run_quality_gates() {
-  local issues_found=0
-
-  echo "🧪 Running test suite..."
-  if ! run_tests; then
-    echo "🤖 Deploying test-engineer to fix failing tests..."
-    # Deploy agent to fix tests
-    ((issues_found++))
-  fi
-
-  echo "🔍 Running linters with auto-fix..."
+# Basic linting with automatic fixes only
+run_basic_fixes() {
+  echo "🔍 Running basic linters with auto-fix..."
+  
   if ! run_linters_with_autofix; then
-    echo "🔧 Some linting issues require manual attention"
-    ((issues_found++))
+    echo "⚠️ Some linting issues require manual attention"
+    echo "💡 Run /review for comprehensive quality analysis"
+    return 1
   fi
-
-  echo "👁️ Performing code review..."
-  if ! run_automated_review; then
-    echo "🤖 Deploying specialists for automated remediation..."
-    # Deploy code-reviewer + specialists
-    ((issues_found++))
-  fi
-
-  return $issues_found
+  
+  return 0
 }
 ```
 
-### Phase 3: Auto-Fix Integration
+### Phase 3: Linting Auto-Fix Implementation
 
 ```bash
 # Linting with automatic fixes
@@ -185,140 +170,57 @@ Auto-generated before push to maintain quality standards."
 }
 ```
 
-## Agent Coordination Strategy
+## Push Strategy
 
-### Simple Mode (No Agents)
+### Simple Mode (No Processing)
 
 ```yaml
 Operations:
   - Direct git commands only
   - Basic validation checks
-  - No quality analysis
+  - No linting or processing
 
 Benefits:
   - Fast execution (10-15 seconds)
-  - No agent overhead
-  - Perfect for hot fixes
+  - No overhead
+  - Perfect for hot fixes and reviewed code
 ```
 
-### Full Mode (Multi-Agent)
+### Full Mode (Basic Auto-Fix)
 
 ```yaml
-Quality Gate Agents:
-  test-engineer:
-    trigger: "Test failures detected"
-    role: "Fix failing tests, add missing coverage"
+Operations:
+  - Basic validation checks
+  - Automatic linting fixes
+  - No agent deployment
+  - No comprehensive quality gates
 
-  code-reviewer:
-    trigger: "Always for full mode"
-    role: "Identify code quality issues"
-
-  backend-engineer:
-    trigger: "Server-side code issues"
-    role: "Fix backend linting and logic issues"
-
-  frontend-architect:
-    trigger: "Client-side code issues"
-    role: "Fix frontend linting and performance"
-
-  security-auditor:
-    trigger: "Security vulnerabilities found"
-    role: "Patch security issues before push"
-
-Coordination Pattern:
-  1. Run quality checks in parallel
-  2. Deploy agents based on issues found
-  3. Allow agents to auto-remediate
-  4. Re-run checks after fixes
-  5. Generate comprehensive report
+Benefits:
+  - Quick formatting fixes
+  - Safe push with basic validation
+  - Relies on separate /review for quality
 ```
 
-## Concrete Quality Checks
+## Basic Push Report
 
-### Test Execution
-
-```bash
-# Universal test runner
-run_tests() {
-  if [ -f "package.json" ] && npm run test 2>/dev/null; then
-    echo "✅ npm tests passed"
-  elif [ -f "requirements.txt" ] && python -m pytest 2>/dev/null; then
-    echo "✅ Python tests passed"
-  elif [ -f "go.mod" ] && go test ./... 2>/dev/null; then
-    echo "✅ Go tests passed"
-  elif [ -f "Cargo.toml" ] && cargo test 2>/dev/null; then
-    echo "✅ Rust tests passed"
-  else
-    echo "⚠️ No test framework detected or tests failed"
-    return 1
-  fi
-}
-```
-
-### Security Scanning
-
-```bash
-# Quick security checks
-run_security_scan() {
-  local security_issues=0
-
-  # Dependency vulnerabilities
-  if [ -f "package.json" ] && npm audit --audit-level high; then
-    echo "⚠️ npm security vulnerabilities found"
-    ((security_issues++))
-  fi
-
-  # Secrets detection
-  if command -v git-secrets >/dev/null && ! git secrets --scan; then
-    echo "⚠️ Potential secrets detected in code"
-    ((security_issues++))
-  fi
-
-  # Basic pattern matching for common issues
-  if grep -r "password\s*=" . --include="*.js" --include="*.py" --include="*.go"; then
-    echo "⚠️ Hardcoded passwords detected"
-    ((security_issues++))
-  fi
-
-  return $security_issues
-}
-```
-
-## Quality Report Generation
-
-### Comprehensive Report
+When auto-fixes are applied, a simple report is generated:
 
 ```markdown
-# Push Quality Report
+# Push Auto-Fix Report
 
 ## Summary
-- **Branch**: feature/user-authentication
+- **Branch**: feature/user-authentication  
 - **Commits**: 3 commits ready to push
-- **Quality Gates**: 4/5 passed
-- **Auto-fixes Applied**: 12 formatting issues
-
-## Test Results ✅
-- **Test Suite**: All 47 tests passed
-- **Coverage**: 85.3% (target: 80%)
-- **Duration**: 23.4 seconds
+- **Auto-fixes Applied**: 8 formatting issues
 
 ## Linting Results ✅
-- **ESLint**: 8 issues auto-fixed
-- **Prettier**: 4 formatting issues resolved
-- **Markdown**: 2 line length violations fixed
-
-## Code Review ⚠️
-- **Issues Found**: 3 medium-priority suggestions
-- **Auto-Fixed**: 2/3 issues resolved by agents
-- **Remaining**: 1 issue requires manual review
-
-## Security Scan ✅
-- **Vulnerabilities**: None detected
-- **Secrets**: No leaked credentials found
-- **Dependencies**: All security patches applied
+- **ESLint**: 5 issues auto-fixed
+- **Prettier**: 2 formatting issues resolved  
+- **Markdown**: 1 line length violation fixed
 
 ## Recommendation
-✅ **Safe to push** - All critical issues resolved
+✅ **Ready to push** - Basic formatting applied
+💡 **Note**: Run /review for comprehensive quality analysis
 ```
 
 ## Examples
@@ -335,63 +237,45 @@ Claude: 🚀 Simple push mode...
 ✅ Pushed to origin/feature/auth-improvements
 ```
 
-### Quality Gate Push
+### Standard Push
 
 ```bash
 User: /push
-Claude: 🛡️ Running quality gates...
-🧪 Testing... ✅ All 47 tests passed
-🔍 Linting... 🔧 Auto-fixed 8 ESLint issues
-👁️ Code review... 🤖 Deploying backend-engineer for 2 issues
-✅ All quality gates passed
+Claude: 🚀 Standard push with basic validation...
+✅ Not on main branch (feature/auth-improvements)  
+✅ No uncommitted changes
+📊 3 commits ready to push
+🔍 Auto-fixing linting issues... 🔧 Fixed 5 ESLint issues
 📝 Committed auto-fixes
 🚀 Pushing 4 commits to origin/feature/auth-improvements
+💡 Tip: Run /review for comprehensive quality analysis
 ```
 
-### Quality Issues Found
+### Push with Manual Review Needed
 
 ```bash
 User: /push
-Claude: 🛡️ Running quality gates...
-❌ Tests failed: 3/47 failing
-🤖 Deploying test-engineer to fix failing tests...
-✅ Tests fixed and passing
-⚠️ Security scan found 1 medium vulnerability
-🤖 Deploying security-auditor for remediation...
-✅ Vulnerability patched
-📊 Generated quality report: .tmp/reports/push-quality-report.md
-🚀 All issues resolved, safe to push
-```
-
-### Blocked Push
-
-```bash
-User: /push
-Claude: 🛡️ Running quality gates...
-❌ Critical security vulnerability found
-❌ 12 test failures detected
-🛑 Push blocked until critical issues are resolved
-📋 Run /review for detailed analysis
-💡 Suggestion: Fix security issue, then re-run /push
+Claude: 🚀 Standard push with basic validation...
+✅ Basic checks passed
+🔍 Auto-fixing... ⚠️ Some linting issues require manual attention  
+💡 Run /review for comprehensive quality analysis
+🚀 Pushing 3 commits to origin/feature/auth-improvements
 ```
 
 ## Execution Verification
 
 Deploy execution-evaluator to verify:
 
-- ✅ **Quality gates executed** - All checks ran according to mode
-- ✅ **Auto-fixes committed** - Changes properly staged and committed
+- ✅ **Basic validation executed** - Safety checks ran according to mode
+- ✅ **Auto-fixes committed** - Linting changes properly staged and committed  
 - ✅ **Push successful** - Commits reached remote repository
 - ✅ **Branch tracking set** - Upstream configured correctly
-- ✅ **No regressions** - Push didn't break existing functionality
-- ✅ **Reports generated** - Quality documentation created
 
 ## Notes
 
-- Simple mode perfect for hot fixes and trusted branches
-- Full mode ensures code quality and prevents issues reaching main
+- Simple mode perfect for hot fixes and already-reviewed code
+- Full mode provides basic linting with auto-fix capability
 - Auto-fixes are committed automatically to include in push
-- Quality reports provide audit trail for compliance
-- Agents only deployed when issues are detected
-- Push is blocked only for critical/security issues
-- All fixes are verified before push proceeds
+- Comprehensive quality gates handled by separate /review command
+- Focus on safe pushing rather than comprehensive validation
+- Use ship-it workflow for proper review → push sequence
