@@ -14,7 +14,7 @@ polyglot codebases.
 /deps update                 # Safe dependency updates
 /deps clean                  # Remove unused dependencies
 /deps --quick               # Fast check without deep analysis
-```
+```bash
 
 ## Behavior
 
@@ -39,7 +39,7 @@ Analysis Scope:
 Agent Usage: None (direct tooling)
 
 Output: Summary with actionable items only
-```
+```bash
 
 ### Deep Mode (audit) - 2 Minute Analysis
 
@@ -55,54 +55,23 @@ Analysis Scope:
 Agent Usage: dependency-manager + supply-chain-security-engineer
 
 Output: Detailed report with risk scoring
-```
+```bash
 
 ## Package Manager Support
 
 ### Auto-Detection
 
 ```bash
-# Detection patterns
-detect_package_managers() {
-  managers=()
+# Auto-detects: npm, pip, go, cargo, maven, gradle, bundler, composer
+# Based on presence of manifest files (package.json, requirements.txt, etc.)
+```text
 
-  [ -f "package.json" ] && managers+=("npm")
-  [ -f "yarn.lock" ] && managers+=("yarn")
-  [ -f "requirements.txt" ] && managers+=("pip")
-  [ -f "pyproject.toml" ] && managers+=("poetry")
-  [ -f "go.mod" ] && managers+=("go")
-  [ -f "Cargo.toml" ] && managers+=("cargo")
-  [ -f "pom.xml" ] && managers+=("maven")
-  [ -f "build.gradle" ] && managers+=("gradle")
-  [ -f "Gemfile" ] && managers+=("bundler")
-  [ -f "composer.json" ] && managers+=("composer")
-
-  echo "Detected: ${managers[*]}"
-}
-```
-
-### Quick Vulnerability Checks
+### Security Scanning
 
 ```bash
-# Fast security scanning per ecosystem
-quick_scan() {
-  if [ -f "package.json" ]; then
-    npm audit --audit-level high --parseable
-  fi
-
-  if [ -f "requirements.txt" ]; then
-    pip-audit --format=json
-  fi
-
-  if [ -f "go.mod" ]; then
-    go list -json -m all | nancy sleuth
-  fi
-
-  if [ -f "Cargo.toml" ]; then
-    cargo audit --json
-  fi
-}
-```
+# Uses ecosystem-specific tools:
+# npm audit, pip-audit, cargo audit, nancy (Go), etc.
+```text
 
 ## Core Operations
 
@@ -123,7 +92,7 @@ npm audit fix
 pip install --upgrade-strategy eager
 
 ⏱️ Completed in 28 seconds
-```
+```bash
 
 ### /deps audit (Deep Mode)
 
@@ -157,47 +126,21 @@ pip install --upgrade-strategy eager
 4. Remove 3 unused dependencies to reduce attack surface
 
 ⏱️ Completed in 1m 47s
-```
+```bash
 
 ### /deps update (Safe Updates)
 
 ```bash
-# Staged update process
-safe_update() {
-  echo "🔄 Performing safe dependency updates..."
-
-  # Backup current state
-  cp package-lock.json package-lock.json.backup 2>/dev/null
-  cp requirements.txt requirements.txt.backup 2>/dev/null
-
-  # Update in stages
-  echo "Stage 1: Security patches only"
-  npm audit fix --force
-
-  echo "Stage 2: Minor version updates"
-  npm update --save
-
-  echo "Stage 3: Test compatibility"
-  npm test || {
-    echo "❌ Tests failed, rolling back..."
-    restore_backup
-    return 1
-  }
-
-  echo "✅ Updates completed successfully"
-}
+# Staged process: backup → security patches → minor updates → test
+# → rollback if needed
 ```
 
 ### /deps clean (Unused Removal)
 
 ```bash
-# Remove unused dependencies
-cleanup_dependencies() {
-  echo "🗑️ Removing unused dependencies..."
-
-  # Node.js unused packages
-  if command -v depcheck >/dev/null; then
-    depcheck --json | jq -r '.dependencies[]' | xargs npm uninstall
+# Uses depcheck (npm), pip-check (python), cargo machete (rust)
+# Safely removes unused dependencies after verification
+```text
   fi
 
   # Python unused packages
@@ -212,7 +155,7 @@ cleanup_dependencies() {
 
   echo "✅ Cleanup completed"
 }
-```
+```bash
 
 ## Language-Specific Patterns
 
@@ -234,45 +177,15 @@ npm_workflow() {
   npm outdated
   npm update
 }
-```
+```bash
 
-### Python/pip
+### Language-Specific Workflows
 
 ```bash
-# Python dependency management
-python_workflow() {
-  # Security scanning
-  pip-audit --desc --format=json
-
-  # Check for outdated packages
-  pip list --outdated --format=json
-
-  # Safe updates (patch versions only)
-  pip install --upgrade --upgrade-strategy only-if-needed
-
-  # Requirements file update
-  pip freeze > requirements.txt
-}
-```
-
-### Go Modules
-
-```bash
-# Go dependency management
-go_workflow() {
-  # Vulnerability scanning
-  go list -json -m all | nancy sleuth
-
-  # Update all dependencies
-  go get -u ./...
-
-  # Clean unused dependencies
-  go mod tidy
-
-  # Verify dependencies
-  go mod verify
-}
-```
+# Python: pip-audit, pip upgrade, pip-autoremove
+# Go: nancy sleuth, go get -u, go mod tidy
+# Rust: cargo audit, cargo update
+```text
 
 ## Agent Coordination
 
@@ -287,7 +200,7 @@ Direct Tooling:
 Speed: 30 seconds average
 Accuracy: High for known CVEs
 Coverage: Basic security + outdated packages
-```
+```bash
 
 ### Deep Mode (Multi-Agent)
 
@@ -305,7 +218,7 @@ Coordination:
   - dependency-manager handles basic scanning
   - supply-chain-security-engineer provides threat intelligence
   - Results merged for comprehensive assessment
-```
+```bash
 
 ## Risk Assessment Matrix
 
@@ -334,7 +247,7 @@ Low (CVSS 0.1-3.9):
   - Minor information leaks
   - Edge case vulnerabilities
   Action: Update during next maintenance
-```
+```bash
 
 ### Supply Chain Risk Factors
 
@@ -357,7 +270,7 @@ Low Risk Indicators:
   - Active maintenance
   - Large user base
   - Corporate sponsorship
-```
+```bash
 
 ## Execution Verification
 
@@ -382,7 +295,7 @@ Claude: 🔍 Scanning dependencies across 3 package managers...
 🗑️ 3 unused dependencies detected
 💡 Run 'npm audit fix' for immediate security fixes
 ⏱️ Scan completed in 31 seconds
-```
+```bash
 
 ### Security-Focused Audit
 
@@ -394,7 +307,7 @@ Claude: 🔒 Deploying dependency-manager + supply-chain-security-engineer...
 🟡 Medium: 5 other security issues found
 ⚠️ Supply chain: 2 packages flagged for single-maintainer risk
 📋 Generating comprehensive security report...
-```
+```bash
 
 ### Safe Update Process
 

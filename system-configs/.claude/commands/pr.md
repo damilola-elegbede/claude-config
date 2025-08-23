@@ -9,7 +9,7 @@ Focuses on what actually changed rather than hypothetical features.
 
 ```bash
 /pr [target_branch] [options]
-```
+```bash
 
 ## Arguments
 
@@ -46,7 +46,7 @@ When you invoke `/pr`, I will:
 
 ## Related Issues
 Closes #123 (if applicable)
-```
+```bash
 
 ### Template Format (--template flag)
 
@@ -67,7 +67,7 @@ sections for testing, documentation, breaking changes, etc.
 
 /pr --template
 # Uses comprehensive template format
-```
+```bash
 
 ## Notes
 

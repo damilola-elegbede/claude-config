@@ -12,7 +12,7 @@ Supports both simple push mode and comprehensive quality-checked push.
 /push --simple               # Quick push without quality checks
 /push --force                # Force push (use carefully)
 /push --dry-run             # Preview what would be pushed
-```
+```bash
 
 ## Behavior
 
@@ -35,7 +35,7 @@ Checks Performed:
 
 Agent Usage: None
 Duration: 10-15 seconds
-```
+```bash
 
 ### Full Mode (default) - Standard Push with Safety Checks
 
@@ -51,7 +51,7 @@ Checks Performed:
 
 Agent Usage: None (quality review handled by /review command)
 Duration: 30-60 seconds
-```
+```bash
 
 ## Push Workflow
 
@@ -82,7 +82,7 @@ validate_push_safety() {
 
   echo "📊 Ready to push $ahead_count commits"
 }
-```
+```bash
 
 ### Phase 2: Basic Auto-Fixes (Full Mode Only)
 
@@ -99,7 +99,7 @@ run_basic_fixes() {
 
   return 0
 }
-```
+```bash
 
 ### Phase 3: Linting Auto-Fix Implementation
 
@@ -168,7 +168,7 @@ Auto-generated before push to maintain quality standards."
 
   return 0
 }
-```
+```bash
 
 ## Push Strategy
 
@@ -184,7 +184,7 @@ Benefits:
   - Fast execution (10-15 seconds)
   - No overhead
   - Perfect for hot fixes and reviewed code
-```
+```bash
 
 ### Full Mode (Basic Auto-Fix)
 
@@ -199,7 +199,7 @@ Benefits:
   - Quick formatting fixes
   - Safe push with basic validation
   - Relies on separate /review for quality
-```
+```bash
 
 ## Basic Push Report
 
@@ -221,7 +221,7 @@ When auto-fixes are applied, a simple report is generated:
 ## Recommendation
 ✅ **Ready to push** - Basic formatting applied
 💡 **Note**: Run /review for comprehensive quality analysis
-```
+```bash
 
 ## Examples
 
@@ -235,7 +235,7 @@ Claude: 🚀 Simple push mode...
 📊 3 commits ready to push
 🔗 Setting upstream tracking...
 ✅ Pushed to origin/feature/auth-improvements
-```
+```bash
 
 ### Standard Push
 
@@ -249,7 +249,7 @@ Claude: 🚀 Standard push with basic validation...
 📝 Committed auto-fixes
 🚀 Pushing 4 commits to origin/feature/auth-improvements
 💡 Tip: Run /review for comprehensive quality analysis
-```
+```bash
 
 ### Push with Manual Review Needed
 
@@ -260,7 +260,7 @@ Claude: 🚀 Standard push with basic validation...
 🔍 Auto-fixing... ⚠️ Some linting issues require manual attention
 💡 Run /review for comprehensive quality analysis
 🚀 Pushing 3 commits to origin/feature/auth-improvements
-```
+```bash
 
 ## Execution Verification
 

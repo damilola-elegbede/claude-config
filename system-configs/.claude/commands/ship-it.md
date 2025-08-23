@@ -2,8 +2,10 @@
 
 ## Description
 
-Instructs Claude to execute a development workflow by running multiple Claude commands in sequence.
-Leverages Claude's full intelligence and agent orchestration for each step.
+Orchestrates development workflows by running multiple `/` commands in sequence
+with **automatic issue resolution**. When commands report problems, deploys
+specialized agents to fix them and retries until success. Never stops on
+failures - always finds a way forward.
 
 ## Usage
 
@@ -15,255 +17,311 @@ Leverages Claude's full intelligence and agent orchestration for each step.
 
 ## Workflows
 
-```text
-Full (Default): /commit → /review → /test → /push --simple → /pr (if no PR exists)
-Basic: /commit → /review --quick → /push --simple
-Quick: /commit → /push --simple
+```yaml
+Full (Default): /review → /test → /commit → /push → /pr (if no PR exists)
+Basic: /review --quick → /commit → /push
+Quick: /commit → /push
 ```
 
 ## Behavior
 
-When invoked, I will execute a sequence of Claude commands with full agent orchestration.
-Each command runs with complete context awareness, specialized agents, and quality gates.
-The workflow continues sequentially with **automatic issue resolution** - when commands report
-problems, I deploy appropriate agents to fix them and retry until success.
+When invoked, I execute a sequence of Claude commands with full agent
+orchestration. Each command runs with complete context awareness, specialized
+agents, and quality gates. The workflow continues sequentially with **automatic
+issue resolution** - when commands report problems, I deploy appropriate agents
+to fix them and retry until success.
 
-## Execution Logic
+**Core Principles:**
 
-```bash
-ship_it() {
-  local workflow="${1:-full}"
+- **Auto-Remediation**: Commands don't fail - they deploy agents to fix issues
+- **Progressive Problem Solving**: Identify → Deploy Specialists → Apply Fixes → Retry → Continue
+- **Resilient Execution**: Handles all failure modes through agent deployment
+- **Smart PR Detection**: Creates PR only if none exists for current branch
+- **Never Give Up**: Retries with fixes until success (except /pr which is optional)
 
-  echo "🚀 Starting ship-it workflow: $workflow"
-  echo ""
+## Auto-Remediation Workflow
 
-  case "$workflow" in
-    "quick")
-      echo "I will now execute the Quick workflow:"
-      echo "1. /commit - Stage changes and create commit (no review)"
-      echo "2. /push --simple - Safe repository operations with basic validation"
-      ;;
-    "basic")
-      echo "I will now execute the Basic workflow:"
-      echo "1. /commit - Stage changes and create commit with semantic messaging"
-      echo "2. /review --quick - Quick code review with essential checks on staged commit"
-      echo "3. /push --simple - Safe repository operations (review already done)"
-      ;;
-    "full"|*)
-      echo "I will now execute the Full workflow:"
-      echo "1. /commit - Stage changes and create commit with semantic messaging"
-      echo "2. /review - Multi-agent code analysis with comprehensive quality gates on staged commit"
-      echo "3. /test - Intelligent test discovery and execution with framework detection"
-      echo "4. /push --simple - Safe repository operations (review already done)"
-      echo "5. /pr - Intelligent PR creation with context-aware descriptions (if no PR exists)"
-      ;;
-  esac
-  echo ""
-  echo "Each command will use Claude's full intelligence with:"
-  echo "• Agent orchestration and specialized expertise"
-  echo "• Context awareness and quality gates"
-  echo "• Automatic issue resolution (deploy agents to fix problems)"
-  echo "• Retry failed steps until success (except /pr which is non-fatal)"
-  echo ""
-  echo "Ready to begin the workflow."
-}
+### When Commands Report Problems
+
+```yaml
+Step 1 - Identify Issue: Parse command output for specific error patterns
+Step 2 - Deploy Specialist: Route to appropriate agent based on error type
+Step 3 - Apply Fixes: Let agent implement solutions automatically
+Step 4 - Verify Resolution: Re-run original command to confirm success
+Step 5 - Continue Workflow: Move to next step once resolved
 ```
-
-## Automatic Issue Resolution
-
-When commands report problems, I automatically deploy appropriate agents to resolve them:
-
-### /commit Issues
-
-```text
-Staging conflicts: Use git-workflow-specialist to resolve merge issues
-Temp file cleanup: Execute cleanup and retry commit
-Pre-commit hooks fail: Apply fixes from hooks and retry commit
-Large files detected: Use .gitignore rules and retry
-```
-
-### /review Issues
-
-```text
-Security vulnerabilities: Deploy security-auditor → fix issues → retry
-Performance problems: Deploy performance-specialist → optimize → retry
-Code quality issues: Deploy code-reviewer + specialists → remediate → retry
-Test coverage gaps: Deploy test-engineer → add tests → retry
-Documentation missing: Deploy tech-writer → generate docs → retry
-```
-
-### /test Issues
-
-```text
-Test failures: Deploy test-engineer → fix failing tests → retry
-Coverage too low: Deploy test-engineer → add missing tests → retry
-Test env issues: Deploy devops → fix environment → retry
-Dependencies missing: Install requirements → retry
-```
-
-### /push Issues
-
-```text
-Pre-push hooks fail: Apply hook fixes → commit fixes → retry push
-Linting failures: Auto-fix with formatters → commit → retry push
-Merge conflicts: Deploy git-workflow-specialist → resolve → retry
-Branch protection: Create PR instead of direct push
-Network failures: Retry with exponential backoff
-```
-
-### /pr Issues
-
-```text
-Template missing: Generate PR template → retry
-Description incomplete: Deploy tech-writer → enhance description → retry
-Branch conflicts: Deploy git-workflow-specialist → resolve → retry
-CI checks failing: Wait for checks → deploy specialists if needed
-```
-
-## Resolution Strategies
-
-### Progressive Problem Solving
-
-1. **Identify Issue**: Parse command output for specific error patterns
-2. **Deploy Specialist**: Route to appropriate agent based on error type
-3. **Apply Fixes**: Let agent implement solutions automatically
-4. **Verify Resolution**: Re-run original command to confirm success
-5. **Continue Workflow**: Move to next step once resolved
 
 ### Agent Routing Logic
 
-```text
-Security Issues → security-auditor (always, non-negotiable)
-Performance Issues → performance-specialist + monitoring-specialist
-Code Quality → code-reviewer + backend-engineer/frontend-architect
-Testing Issues → test-engineer + execution-evaluator
-Git Issues → git-workflow-specialist + execution-evaluator
-Infrastructure → devops + platform-engineer
-Documentation → tech-writer
-Dependencies → dependency-analyst + package managers
+```yaml
+Security Issues: security-auditor (always, non-negotiable)
+Performance Issues: performance-specialist + monitoring-specialist
+Code Quality: code-reviewer + backend-engineer/frontend-architect
+Testing Issues: test-engineer + execution-evaluator
+Git Issues: git-workflow-specialist + execution-evaluator
+Infrastructure: devops + platform-engineer
+Documentation: tech-writer + accessibility-auditor
+Dependencies: dependency-analyst + supply-chain-security-engineer
+Linting: code-reviewer + auto-remediation
+Markdown: tech-writer + code-reviewer
 ```
 
-### Retry Patterns
+## Issue Resolution by Command
+
+### /review Issues → Auto-Fix and Retry
 
 ```text
-Transient Failures: Retry up to 3 times with backoff
-Fix-and-Retry: Apply fixes, commit if needed, then retry original command
-Agent-Mediated: Deploy specialist → verify fix → retry original
-Escalation: If 3 attempts fail, surface to user with analysis
+Security vulnerabilities: Deploy security-auditor → fix issues → retry /review
+Performance problems: Deploy performance-specialist → optimize → retry /review
+Code quality issues: Deploy code-reviewer + specialists → remediate → retry /review
+Test coverage gaps: Deploy test-engineer → add tests → retry /review
+Documentation missing: Deploy tech-writer → generate docs → retry /review
+Linting failures: Deploy code-reviewer → auto-fix → commit fixes → retry /review
+Markdown violations: Deploy tech-writer → fix formatting → retry /review
+Structure issues: Deploy code-reviewer → fix structure → retry /review
+```
+
+### /test Issues → Auto-Fix and Retry
+
+```text
+Test failures: Deploy test-engineer → fix failing tests → retry /test
+Coverage too low: Deploy test-engineer → add missing tests → retry /test
+Test env issues: Deploy devops → fix environment → retry /test
+Dependencies missing: Deploy dependency-analyst → install deps → retry /test
+Framework issues: Deploy test-engineer → configure framework → retry /test
+```
+
+### /commit Issues → Auto-Fix and Retry
+
+```text
+Staging conflicts: Deploy git-workflow-specialist → resolve conflicts → retry /commit
+Pre-commit hooks fail: Apply hook fixes → commit remediation → retry /commit
+Large files detected: Use .gitignore rules → stage properly → retry /commit
+Temp file cleanup: Execute cleanup → retry /commit
+No changes to commit: Skip gracefully, continue workflow
+```
+
+### /push Issues → Auto-Fix and Retry
+
+```text
+Pre-push hooks fail: Deploy specialists → fix issues → commit → retry /push
+Linting failures: Deploy code-reviewer → auto-fix → commit → retry /push
+Merge conflicts: Deploy git-workflow-specialist → resolve → retry /push
+Branch protection: Create PR instead of direct push
+Network failures: Retry with exponential backoff (up to 3 attempts)
+Authentication: Guide user through auth setup → retry /push
+```
+
+### /pr Issues → Auto-Fix and Retry (Optional)
+
+```text
+Template missing: Deploy tech-writer → generate template → retry /pr
+Description incomplete: Deploy tech-writer → enhance description → retry /pr
+Branch conflicts: Deploy git-workflow-specialist → resolve → retry /pr
+CI checks failing: Wait for checks → deploy specialists if needed
+No PR needed: Skip gracefully if PR already exists
+```
+
+## Retry Patterns
+
+### Automatic Retry Strategy
+
+```yaml
+Immediate Retry: For transient failures (network, temporary locks)
+Fix-and-Retry: Deploy agent → apply fixes → commit if needed → retry command
+Agent-Mediated: Route to specialist → verify comprehensive fix → retry original
+Escalation: After 3 fix attempts, surface to user with detailed analysis
+```
+
+### Retry Limits
+
+```yaml
+Network/Transient Issues: Up to 3 retries with exponential backoff
+Agent-Mediated Fixes: Up to 2 fix-and-retry cycles per command
+Total Command Attempts: Maximum 5 attempts per command before escalation
+Workflow Timeout: 30 minutes maximum for complete ship-it workflow
 ```
 
 ## Examples
 
-### Full Workflow
+### Full Workflow with Auto-Remediation
 
 ```bash
 User: /ship-it
 Claude: 🚀 Starting ship-it workflow: full
 
-I will now execute the Full workflow:
-1. /commit - Stage changes and create commit with semantic messaging
-2. /review - Multi-agent code analysis with comprehensive quality gates on staged commit
-3. /test - Intelligent test discovery and execution with framework detection
-4. /push --simple - Safe repository operations (review already done)
-5. /pr - Intelligent PR creation with context-aware descriptions (if no PR exists)
+Step 1/5: /review
+📚 Reading documentation for context...
+🤖 Deploying: code-reviewer, security-auditor
+❌ Found 7 blocking issues: 6 line length, 1 missing section
 
-Each command will use Claude's full intelligence with:
-• Agent orchestration and specialized expertise
-• Context awareness and quality gates
-• Automatic issue resolution (deploy agents to fix problems)
-• Retry failed steps until success (except /pr which is non-fatal)
+🔧 Auto-remediation triggered:
+🤖 Deploying code-reviewer for line length fixes...
+✅ Fixed 6 line length violations
+🤖 Deploying tech-writer for missing execution verification...
+✅ Added execution verification section to plan.md
+📝 Committing auto-fixes...
 
-Ready to begin the workflow.
+⏳ Retrying /review...
+🤖 Re-deploying: code-reviewer, security-auditor
+✅ All issues resolved - review passed!
 
-[Claude executes /commit successfully]
-[Claude executes /review - finds 3 security issues]
-🤖 Deploying security-auditor to fix vulnerabilities...
-✅ Security issues resolved, committing fixes
-[Claude retries /review - all checks pass]
-[Claude executes /test - 2 tests failing]
-🤖 Deploying test-engineer to fix failing tests...
-✅ Tests fixed and passing
-[Claude executes /push --simple successfully]
-[Claude executes /pr successfully]
+Step 2/5: /test
+🔍 Auto-discovering test framework...
+✅ Tests passed (85% coverage)
+
+Step 3/5: /commit
+📝 Creating semantic commit...
+✅ Commit created successfully
+
+Step 4/5: /push
+🚀 Pushing to remote...
+✅ Push completed successfully
+
+Step 5/5: /pr
+🔍 Checking if PR exists...
+ℹ️ PR already exists - skipping
+
+🎉 Ship-it workflow completed with auto-remediation!
 ```
 
-### Basic Workflow
+### Basic Workflow with Issue Resolution
 
 ```bash
 User: /ship-it --basic
 Claude: 🚀 Starting ship-it workflow: basic
 
-I will now execute the Basic workflow:
-1. /commit - Stage changes and create commit with semantic messaging
-2. /review --quick - Quick code review with essential checks on staged commit
-3. /push --simple - Safe repository operations (review already done)
+Step 1/3: /review --quick
+🤖 Deploying: code-reviewer, security-auditor (quick mode)
+❌ Found linting issues in 3 files
 
-Each command will use Claude's full intelligence with:
-• Agent orchestration and specialized expertise
-• Context awareness and quality gates
-• Automatic issue resolution (deploy agents to fix problems)
-• Retry failed steps until success (except /pr which is non-fatal)
+🔧 Auto-remediation triggered:
+🤖 Deploying code-reviewer for auto-fixes...
+✅ Applied ESLint fixes to 3 files
+📝 Committing linting fixes...
 
-Ready to begin the workflow.
+⏳ Retrying /review --quick...
+✅ Quick review passed!
+
+Step 2/3: /commit
+✅ Changes already committed during auto-remediation
+
+Step 3/3: /push
+✅ Push completed successfully
+
+🎉 Basic workflow completed with auto-remediation!
 ```
 
-### Quick Workflow
-
-```bash
-User: /ship-it --quick
-Claude: 🚀 Starting ship-it workflow: quick
-
-I will now execute the Quick workflow:
-1. /commit - Stage changes and create commit (no review)
-2. /push --simple - Safe repository operations with basic validation
-
-Each command will use Claude's full intelligence with:
-• Agent orchestration and specialized expertise
-• Context awareness and quality gates
-• Automatic issue resolution (deploy agents to fix problems)
-• Retry failed steps until success (except /pr which is non-fatal)
-
-Ready to begin the workflow.
-```
-
-### Problem Resolution Example
+### Advanced Problem Resolution
 
 ```bash
 User: /ship-it
 Claude: 🚀 Starting ship-it workflow: full
 
-[Claude executes /commit successfully]
-[Claude executes /review - finds linting issues]
-🤖 Deploying code-reviewer + frontend-architect for auto-remediation...
-✅ Linting issues fixed, committing remediation
-[Claude retries /review - all checks pass]
-[Claude executes /test successfully]
-[Claude executes /push --simple - pre-push hooks fail]
-⚠️ Pre-push hooks failed: ESLint errors detected
-🤖 Applying ESLint auto-fixes...
-📝 Committing hook fixes
-[Claude retries /push --simple successfully]
-[Claude executes /pr successfully]
+Step 1/5: /review
+❌ Found security vulnerabilities + performance issues + test gaps
 
-🎉 Full workflow completed with automatic issue resolution
+🔧 Multi-agent auto-remediation:
+🤖 Deploying security-auditor for 2 SQL injection fixes...
+✅ Fixed authentication vulnerabilities
+🤖 Deploying performance-specialist for N+1 query optimization...
+✅ Optimized database queries (8s → 120ms response time)
+🤖 Deploying test-engineer for missing critical tests...
+✅ Added comprehensive payment processing tests
+📝 Committing comprehensive fixes...
+
+⏳ Retrying /review...
+✅ All security, performance, and test issues resolved!
+
+Step 2/5: /test
+❌ 3 new tests failing due to recent fixes
+
+🔧 Auto-remediation triggered:
+🤖 Deploying test-engineer for test fixes...
+✅ Updated tests to work with security changes
+✅ Fixed mock data for performance optimizations
+
+⏳ Retrying /test...
+✅ All tests passing (92% coverage)
+
+[Continues through /commit, /push, /pr successfully]
+
+🎉 Ship-it completed - automatically resolved 15+ issues across 3 domains!
 ```
+
+## Command Execution Flow
+
+### Progressive Enhancement Pattern
+
+```yaml
+Execute Command:
+  Try: Run command with full agent orchestration
+  Catch: Parse errors and classify by domain
+  Fix: Deploy appropriate specialists for remediation
+  Retry: Re-run command with fixes applied
+  Verify: Confirm issue resolution with execution-evaluator
+  Continue: Move to next workflow step
+
+Domain Routing:
+  Security → security-auditor (mandatory)
+  Performance → performance-specialist + monitoring-specialist
+  Quality → code-reviewer + domain specialists
+  Testing → test-engineer + execution-evaluator
+  Infrastructure → devops + platform-engineer
+  Documentation → tech-writer + accessibility-auditor
+```
+
+### Workflow State Management
+
+```yaml
+Progress Tracking: .tmp/ship-it/progress.log with detailed issue resolution
+Command Status: PENDING → EXECUTING → ISSUES_FOUND → REMEDIATING → RESOLVED → COMPLETED
+Issue Classification: Security, Performance, Quality, Testing, Infrastructure
+Fix History: Track all auto-remediation actions for audit trail
+Success Metrics: Commands fixed, agents deployed, retry attempts, total time
+```
+
+## Execution Verification
+
+Deploy execution-evaluator to verify:
+
+- ✅ **Workflow completed** - All steps executed successfully with issue resolution
+- ✅ **Auto-remediation functional** - Issues automatically fixed when detected
+- ✅ **Agent deployment correct** - Appropriate specialists used for each issue type
+- ✅ **Retry logic working** - Failed commands retried after fixes applied
+- ✅ **Progressive enhancement** - Each step builds on previous with quality gates
+- ✅ **Issue classification** - Problems correctly routed to domain experts
+- ✅ **State management** - Progress tracked with detailed resolution history
+- ✅ **Success criteria** - All original objectives achieved despite initial failures
 
 ## Key Features
 
-- **Meta-Command**: Instructs Claude to execute command sequences with full intelligence
-- **Agent Orchestration**: Each command uses specialized agents and quality gates
-- **Three Workflows**: Full (5 commands), basic (3 commands), quick (2 commands)
-- **Context Awareness**: Commands run with complete repository and change context
-- **Auto-Remediation**: Automatically deploys agents to fix issues and retries until success
-- **Resilient Execution**: Handles pre-push hooks, test failures, security issues, and linting errors
-- **Progressive Problem Solving**: Identifies → Deploy Specialists → Apply Fixes → Retry → Continue
+- **Meta-Command**: Orchestrates Claude to execute command sequences intelligently
+- **Auto-Remediation**: Never stops - deploys agents to fix issues and retries
+- **Progressive Problem Solving**: Systematic approach to issue resolution
+- **Multi-Domain Expertise**: Routes issues to appropriate specialist agents
+- **Resilient Execution**: Handles all common failure modes automatically
+- **Three Workflows**: Full (comprehensive), basic (essential), quick (minimal)
+- **Context Awareness**: Commands run with complete repository understanding
+- **Quality Gates**: Each step includes comprehensive validation
+- **Audit Trail**: Complete history of issues found and fixes applied
+
+## Success Philosophy
+
+The `/ship-it` command embodies the principle that **development workflows should
+never fail due to solvable problems**. By combining Claude's intelligence with
+specialized agent deployment, it automatically resolves issues that would
+traditionally require manual intervention, ensuring that code always ships
+when technically feasible.
+
+**"Fix Forward, Never Fail Back"** - The ship-it mindset.
 
 ## Notes
 
-- Commands are executed by Claude with full agent orchestration, not bash functions
+- Commands are executed by Claude with full agent orchestration
+- **Auto-remediation is mandatory** - workflows don't stop for solvable issues
 - Each command leverages Claude's specialized agents and intelligence
-- **Auto-remediation**: Commands don't fail - they deploy agents to fix issues and retry
-- **Resilient workflow**: Handles pre-push hooks, test failures, review comments automatically
-- /pr command is non-fatal and will continue workflow even if it fails
-- Default workflow is "full" if no flags specified
-- Up to 3 retry attempts per command with specialized agent intervention
+- /pr command is optional and won't block workflow if it fails
+- Maximum 3 fix-and-retry cycles per command before escalation
+- All auto-fixes are committed with detailed commit messages
+- Progress tracked in `.tmp/ship-it/` for audit and debugging

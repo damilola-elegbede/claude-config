@@ -14,7 +14,7 @@ test suites when none exist.
 /test --create           # Generate test suite if missing
 /test --framework <name> # Use specific framework (jest, pytest, etc.)
 /test --coverage         # Run with coverage reporting
-```
+```bash
 
 ## Behavior
 
@@ -40,7 +40,7 @@ grep -i "test\|testing\|run.*test" README.md
 - pytest
 - go test ./...
 - cargo test
-```
+```bash
 
 ### Phase 2: Package Manager Detection
 
@@ -75,7 +75,7 @@ Java:
 .NET:
   files: [*.csproj, *.sln]
   command: dotnet test
-```
+```bash
 
 ### Phase 3: Framework Convention Detection
 
@@ -92,7 +92,7 @@ find . -name "*test*" -o -name "*spec*" | head -10
 - **/test_*.py     # pytest
 - **/*.spec.js     # Jasmine/Mocha
 - **/tests/**      # General test directory
-```
+```bash
 
 ## Test Generation (--create)
 
@@ -115,7 +115,7 @@ describe('Utils Functions', () => {
     expect(multiply(0, 5)).toBe(0);
   });
 });
-```
+```bash
 
 Package.json script addition:
 
@@ -127,7 +127,7 @@ Package.json script addition:
     "test:coverage": "jest --coverage"
   }
 }
-```
+```bash
 
 ### Python Projects
 
@@ -148,7 +148,7 @@ class TestUtils:
     def test_add_edge_cases(self):
         with pytest.raises(TypeError):
             add("string", 5)
-```
+```bash
 
 Configuration files:
 
@@ -159,7 +159,7 @@ testpaths = tests
 python_files = test_*.py
 python_functions = test_*
 addopts = --verbose --tb=short
-```
+```bash
 
 ### Go Projects
 
@@ -188,7 +188,7 @@ func TestAdd(t *testing.T) {
         })
     }
 }
-```
+```bash
 
 ## Test Execution Process
 
@@ -215,7 +215,7 @@ Discovery Result Processing:
     - Trigger test generation workflow
     - Create basic test suite using test-engineer
     - Run generated tests to verify setup
-```
+```bash
 
 ### Output Enhancement
 
@@ -236,7 +236,7 @@ Discovery Result Processing:
   Tests:  4 passed, 4 total
   Time:   3.3s
   Coverage: 85.2% (lines), 78.9% (branches)
-```
+```bash
 
 ## Framework-Specific Optimizations
 
@@ -254,7 +254,7 @@ npm test -- --watch
 
 # CI optimizations:
 npm test -- --ci --coverage --watchAll=false
-```
+```bash
 
 ### pytest (Python)
 
@@ -270,7 +270,7 @@ pytest -n auto  # if pytest-xdist installed
 
 # XML output for CI:
 pytest --junitxml=test-results.xml
-```
+```bash
 
 ### Go Testing
 
@@ -286,7 +286,7 @@ go test -v ./...
 
 # Race condition detection:
 go test -race ./...
-```
+```bash
 
 ## Error Handling & Recovery
 
@@ -312,7 +312,7 @@ Permission Issues:
   Detection: EACCES, permission denied errors
   Recovery: Suggest chmod fixes or container usage
   Example: chmod +x node_modules/.bin/jest
-```
+```bash
 
 ### Graceful Degradation
 
@@ -362,7 +362,7 @@ Claude: 🔍 Discovering tests...
 
 ✅ All tests passed (4/4)
 📊 Coverage: 87.3% lines, 82.1% branches
-```
+```bash
 
 ### Python Project (No Tests)
 
@@ -375,7 +375,7 @@ Claude: 🔍 Discovering tests...
 🧪 Running: pytest -v
 
 ✅ All tests passed (6/6)
-```
+```bash
 
 ### Go Project with Custom Command
 
@@ -387,7 +387,7 @@ Claude: 🔍 Discovering tests...
 
 ✅ All tests passed
 📊 Coverage: 78.9% of statements
-```
+```bash
 
 ## Notes
 

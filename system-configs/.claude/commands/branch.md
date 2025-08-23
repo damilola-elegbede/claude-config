@@ -13,7 +13,7 @@ patterns.
 /branch --file <path>        # Create branch from file context
 /branch -f <path>            # Create branch from file context (short form)
 /branch                      # Create branch from conversation context
-```
+```bash
 
 ## Behavior
 
@@ -42,7 +42,7 @@ File Context (--file or -f):
 Explicit Description:
   - Uses provided text directly
   - Applies conventional prefixes automatically
-```
+```bash
 
 ### Branch Naming Conventions
 
@@ -62,7 +62,7 @@ docs/api-documentation
 perf/database-optimization
 refactor/auth-module
 chore/dependency-updates
-```
+```bash
 
 ## Execution Process
 
@@ -75,7 +75,7 @@ git pull origin main
 
 # Verify clean state
 git status --porcelain
-```
+```bash
 
 ### Phase 2: Context Analysis & Naming
 
@@ -102,7 +102,7 @@ analyze_context() {
     prefix="feature"  # Default
   fi
 }
-```
+```bash
 
 ### Phase 3: Branch Creation & Verification
 
@@ -116,7 +116,7 @@ git push -u origin "$branch_name" 2>/dev/null || true
 # Verify success
 git branch --show-current
 git log --oneline -3
-```
+```bash
 
 ## Context Extraction Examples
 
@@ -131,7 +131,7 @@ Branch: feature/oauth-authentication
 
 User: "Working on JIRA-456 to add payment processing"
 Branch: feature/JIRA-456-payment-processing
-```
+```bash
 
 ### From File Content
 
@@ -144,7 +144,7 @@ Branch: feature/realtime-notifications
 
 File: performance.md containing "Database query optimization"
 Branch: perf/database-query-optimization
-```
+```bash
 
 ## Advanced Features
 
@@ -161,7 +161,7 @@ GH-\d+       # GH-456
 "Fix JIRA-123 user auth" → feature/JIRA-123-user-auth
 "Resolve GH-456" → fix/GH-456
 "Implement #789 notifications" → feature/789-notifications
-```
+```bash
 
 ### Conflict Resolution
 
@@ -182,7 +182,7 @@ handle_uncommitted_changes() {
     echo "Use 'git stash pop' to restore changes"
   fi
 }
-```
+```bash
 
 ## Execution Verification
 
@@ -206,7 +206,7 @@ Claude: 🔄 Updating main branch...
 🌿 Creating branch: feature/user-authentication-system
 ✅ Created and switched to feature/user-authentication-system
 📊 3 commits ahead of origin/main
-```
+```bash
 
 ### File-Based Context
 
@@ -217,7 +217,7 @@ Claude: 📖 Reading bug-report.md...
 🔄 Updating main branch...
 🌿 Creating branch: fix/memory-leak
 ✅ Created and switched to fix/memory-leak
-```
+```bash
 
 ### Conversation Context
 
@@ -229,7 +229,7 @@ Claude: 🔍 Analyzing conversation context...
 🔄 Updating main branch...
 🌿 Creating branch: perf/database-queries
 ✅ Created and switched to perf/database-queries
-```
+```bash
 
 ## Notes
 
