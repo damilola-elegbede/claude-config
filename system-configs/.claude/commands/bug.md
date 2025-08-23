@@ -12,11 +12,14 @@ Extracts context automatically and creates professional bug reports with proper 
 /bug --priority <level>          # Set priority (low, medium, high, critical)  
 /bug --labels <label1,label2>    # Add specific labels
 /bug --assign <username>         # Auto-assign to user
-```bash
+```
 
 ## Behavior
 
-Creates GitHub issues using `mcp__github_create_issue` with automatic context extraction from conversation history, git status, current branch, and recent commits. Applies intelligent labeling and formatting based on issue content. Returns the created issue number (e.g., "#123") immediately after successful creation for tracking and reference.
+Creates GitHub issues using `mcp__github_create_issue` with automatic context extraction from conversation
+history, git status, current branch, and recent commits. Applies intelligent labeling and formatting based on
+issue content. Returns the created issue number (e.g., "#123") immediately after successful creation for
+tracking and reference.
 
 **Input Validation:**
 
@@ -28,6 +31,7 @@ Creates GitHub issues using `mcp__github_create_issue` with automatic context ex
 ## Context & Classification
 
 **Auto-Classification Keywords:**
+
 - `security`: "injection", "XSS", "authentication", "breach" → security label + high priority
 - `performance`: "slow", "timeout", "memory", "CPU" → performance label  
 - `ui/ux`: "layout", "responsive", "design" → ui/ux label
@@ -35,6 +39,7 @@ Creates GitHub issues using `mcp__github_create_issue` with automatic context ex
 - Default: bug label
 
 **Issue Template:**
+
 ```markdown
 **Description:** [Issue summary]
 **Steps to Reproduce:** [Auto-extracted or manual]
