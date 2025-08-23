@@ -25,7 +25,8 @@ Quick: /commit → /push --simple
 
 When invoked, I will execute a sequence of Claude commands with full agent orchestration.
 Each command runs with complete context awareness, specialized agents, and quality gates.
-The workflow continues sequentially with fail-fast behavior (except /pr which is non-fatal).
+The workflow continues sequentially with **automatic issue resolution** - when commands report
+problems, I deploy appropriate agents to fix them and retry until success.
 
 ## Execution Logic
 
@@ -62,10 +63,86 @@ ship_it() {
   echo "Each command will use Claude's full intelligence with:"
   echo "• Agent orchestration and specialized expertise"
   echo "• Context awareness and quality gates"  
-  echo "• Fail-fast behavior (stopping on first failure except /pr)"
+  echo "• Automatic issue resolution (deploy agents to fix problems)"
+  echo "• Retry failed steps until success (except /pr which is non-fatal)"
   echo ""
   echo "Ready to begin the workflow."
 }
+```
+
+## Automatic Issue Resolution
+
+When commands report problems, I automatically deploy appropriate agents to resolve them:
+
+### /commit Issues
+```yaml
+Staging conflicts: Use git-workflow-specialist to resolve merge issues
+Temp file cleanup: Execute cleanup and retry commit
+Pre-commit hooks fail: Apply fixes from hooks and retry commit  
+Large files detected: Use .gitignore rules and retry
+```
+
+### /review Issues
+```yaml
+Security vulnerabilities: Deploy security-auditor → fix issues → retry
+Performance problems: Deploy performance-specialist → optimize → retry
+Code quality issues: Deploy code-reviewer + specialists → remediate → retry
+Test coverage gaps: Deploy test-engineer → add tests → retry
+Documentation missing: Deploy tech-writer → generate docs → retry
+```
+
+### /test Issues
+```yaml
+Test failures: Deploy test-engineer → fix failing tests → retry
+Coverage too low: Deploy test-engineer → add missing tests → retry
+Test env issues: Deploy devops → fix environment → retry
+Dependencies missing: Install requirements → retry
+```
+
+### /push Issues
+```yaml
+Pre-push hooks fail: Apply hook fixes → commit fixes → retry push
+Linting failures: Auto-fix with formatters → commit → retry push
+Merge conflicts: Deploy git-workflow-specialist → resolve → retry
+Branch protection: Create PR instead of direct push
+Network failures: Retry with exponential backoff
+```
+
+### /pr Issues
+```yaml
+Template missing: Generate PR template → retry
+Description incomplete: Deploy tech-writer → enhance description → retry
+Branch conflicts: Deploy git-workflow-specialist → resolve → retry
+CI checks failing: Wait for checks → deploy specialists if needed
+```
+
+## Resolution Strategies
+
+### Progressive Problem Solving
+1. **Identify Issue**: Parse command output for specific error patterns
+2. **Deploy Specialist**: Route to appropriate agent based on error type
+3. **Apply Fixes**: Let agent implement solutions automatically  
+4. **Verify Resolution**: Re-run original command to confirm success
+5. **Continue Workflow**: Move to next step once resolved
+
+### Agent Routing Logic
+```yaml
+Security Issues → security-auditor (always, non-negotiable)
+Performance Issues → performance-specialist + monitoring-specialist
+Code Quality → code-reviewer + backend-engineer/frontend-architect
+Testing Issues → test-engineer + execution-evaluator
+Git Issues → git-workflow-specialist + execution-evaluator
+Infrastructure → devops + platform-engineer
+Documentation → tech-writer
+Dependencies → dependency-analyst + package managers
+```
+
+### Retry Patterns
+```yaml
+Transient Failures: Retry up to 3 times with backoff
+Fix-and-Retry: Apply fixes, commit if needed, then retry original command
+Agent-Mediated: Deploy specialist → verify fix → retry original
+Escalation: If 3 attempts fail, surface to user with analysis
 ```
 
 ## Examples
@@ -86,11 +163,21 @@ I will now execute the Full workflow:
 Each command will use Claude's full intelligence with:
 • Agent orchestration and specialized expertise
 • Context awareness and quality gates
-• Fail-fast behavior (stopping on first failure except /pr)
+• Automatic issue resolution (deploy agents to fix problems)
+• Retry failed steps until success (except /pr which is non-fatal)
 
 Ready to begin the workflow.
 
-[Claude then executes each command with full agent orchestration]
+[Claude executes /commit successfully]
+[Claude executes /review - finds 3 security issues]
+🤖 Deploying security-auditor to fix vulnerabilities...
+✅ Security issues resolved, committing fixes
+[Claude retries /review - all checks pass]
+[Claude executes /test - 2 tests failing]
+🤖 Deploying test-engineer to fix failing tests...
+✅ Tests fixed and passing
+[Claude executes /push --simple successfully]
+[Claude executes /pr successfully]
 ```
 
 ### Basic Workflow
@@ -107,7 +194,8 @@ I will now execute the Basic workflow:
 Each command will use Claude's full intelligence with:
 • Agent orchestration and specialized expertise
 • Context awareness and quality gates
-• Fail-fast behavior (stopping on first failure except /pr)
+• Automatic issue resolution (deploy agents to fix problems)
+• Retry failed steps until success (except /pr which is non-fatal)
 
 Ready to begin the workflow.
 ```
@@ -125,9 +213,32 @@ I will now execute the Quick workflow:
 Each command will use Claude's full intelligence with:
 • Agent orchestration and specialized expertise
 • Context awareness and quality gates
-• Fail-fast behavior (stopping on first failure except /pr)
+• Automatic issue resolution (deploy agents to fix problems)
+• Retry failed steps until success (except /pr which is non-fatal)
 
 Ready to begin the workflow.
+```
+
+### Problem Resolution Example
+
+```bash
+User: /ship-it
+Claude: 🚀 Starting ship-it workflow: full
+
+[Claude executes /commit successfully]
+[Claude executes /review - finds linting issues]
+🤖 Deploying code-reviewer + frontend-architect for auto-remediation...
+✅ Linting issues fixed, committing remediation
+[Claude retries /review - all checks pass]
+[Claude executes /test successfully]
+[Claude executes /push --simple - pre-push hooks fail]
+⚠️ Pre-push hooks failed: ESLint errors detected
+🤖 Applying ESLint auto-fixes...
+📝 Committing hook fixes
+[Claude retries /push --simple successfully]
+[Claude executes /pr successfully]
+
+🎉 Full workflow completed with automatic issue resolution
 ```
 
 ## Key Features
@@ -136,11 +247,16 @@ Ready to begin the workflow.
 - **Agent Orchestration**: Each command uses specialized agents and quality gates  
 - **Three Workflows**: Full (5 commands), basic (3 commands), quick (2 commands)
 - **Context Awareness**: Commands run with complete repository and change context
-- **Fail-Fast**: Workflow stops on first failure (except /pr which is non-fatal)
+- **Auto-Remediation**: Automatically deploys agents to fix issues and retries until success
+- **Resilient Execution**: Handles pre-push hooks, test failures, security issues, and linting errors
+- **Progressive Problem Solving**: Identifies → Deploy Specialists → Apply Fixes → Retry → Continue
 
 ## Notes
 
 - Commands are executed by Claude with full agent orchestration, not bash functions
 - Each command leverages Claude's specialized agents and intelligence
+- **Auto-remediation**: Commands don't fail - they deploy agents to fix issues and retry
+- **Resilient workflow**: Handles pre-push hooks, test failures, review comments automatically  
 - /pr command is non-fatal and will continue workflow even if it fails
 - Default workflow is "full" if no flags specified
+- Up to 3 retry attempts per command with specialized agent intervention
