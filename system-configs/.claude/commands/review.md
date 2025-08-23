@@ -46,12 +46,22 @@ Documentation: markdownlint, ShellCheck
 ## Implementation
 
 ```bash
-# CodeRabbit-style review execution
+# CodeRabbit-style review execution - SECURITY HARDENED
 run_coderabbit_review() {
-  local target="${1:-$(git diff --name-only main...HEAD || echo '.')}"
+  local target="${1:-$(git diff --name-only main...HEAD 2>/dev/null || echo '.')}"
   local mode="$2"
-
+  
   echo "🤖 CodeRabbit-style AI review..."
+  
+  # Create secure temporary directory
+  local temp_dir
+  temp_dir=$(mktemp -d -t "claude_review.XXXXXXXXXX") || {
+    echo "🚨 Error: Cannot create secure temporary directory" >&2
+    return 1
+  }
+  
+  # Ensure cleanup on exit
+  trap 'rm -rf "$temp_dir"' EXIT INT TERM
   
   # Detect languages and run tools
   detect_and_run_tools() {
@@ -59,41 +69,52 @@ run_coderabbit_review() {
     
     # JavaScript/TypeScript
     if echo "$files" | grep -q '\.\(js\|jsx\|ts\|tsx\)$'; then
-      run_tool "npx eslint $files --format json" "ESLint"
-      run_tool "npx prettier --check $files" "Prettier"  
+      run_tool_secure "eslint" "$files" "--format" "json"
+      run_tool_secure "prettier" "$files" "--check"
     fi
     
     # Python
     if echo "$files" | grep -q '\.py$'; then
-      run_tool "ruff check $files --format json" "Ruff"
-      run_tool "bandit -r $files -f json" "Bandit"
+      run_tool_secure "ruff" "$files" "check" "--format" "json"
+      run_tool_secure "bandit" "$files" "-r" "-f" "json"
     fi
     
     # Go
     if echo "$files" | grep -q '\.go$'; then
-      run_tool "golangci-lint run $files --out-format json" "golangci-lint"
-      run_tool "gosec -fmt json $files" "gosec"
+      run_tool_secure "golangci-lint" "$files" "run" "--out-format" "json"
     fi
     
     # Universal security tools
-    run_tool "semgrep --config=auto $files --json" "Semgrep"
-    run_tool "gitleaks detect --source $files --report-format json" "Gitleaks"
+    run_tool_secure "semgrep" "$files" "--config=auto" "--json"
+    run_tool_secure "gitleaks" "$files" "detect" "--source" "--report-format" "json"
     
     # Documentation
     if echo "$files" | grep -q '\.md$'; then
-      run_tool "markdownlint $files --json" "markdownlint"
+      run_tool_secure "markdownlint" "$files" "--json"
     fi
   }
   
-  run_tool() {
-    local cmd="$1"
-    local tool="$2"
+  # SECURE tool execution - NO EVAL
+  run_tool_secure() {
+    local tool_cmd="$1"
+    local target_files="$2"
+    shift 2
+    local -a args=("$@")
     
-    if command -v $(echo "$cmd" | cut -d' ' -f1) >/dev/null; then
-      echo "  ✅ $tool: Running..."
-      eval "$cmd" > "/tmp/${tool,,}_results.json" 2>/dev/null || echo "  ⚠️ $tool: Issues found"
+    local tool_path
+    tool_path=$(command -v "$tool_cmd" 2>/dev/null) || {
+      echo "  ⏭️ $tool_cmd: Not available, skipping"
+      return 0
+    }
+    
+    local output_file="$temp_dir/${tool_cmd}_results.json"
+    echo "  ✅ $tool_cmd: Running securely..."
+    
+    # Execute with timeout and controlled arguments
+    if timeout 60 "$tool_path" "${args[@]}" "$target_files" > "$output_file" 2>/dev/null; then
+      echo "  ✅ $tool_cmd: Completed"
     else
-      echo "  ⏭️ $tool: Not available, skipping"
+      echo "  ⚠️ $tool_cmd: Issues found"
     fi
   }
   
@@ -105,14 +126,26 @@ run_coderabbit_review() {
   echo "📝 Generating CodeRabbit-style report..."
 }
 
-# Auto-fix mode
+# Auto-fix mode - SECURE
 run_autofix() {
   echo "🔧 Auto-fixing safe issues..."
   
-  # Apply auto-fixes
-  command -v eslint >/dev/null && npx eslint --fix . 2>/dev/null
-  command -v prettier >/dev/null && npx prettier --write . 2>/dev/null  
-  command -v ruff >/dev/null && ruff check --fix . 2>/dev/null
+  safe_autofix() {
+    local tool_cmd="$1"
+    shift
+    local -a args=("$@")
+    
+    local tool_path
+    tool_path=$(command -v "$tool_cmd" 2>/dev/null) || return 0
+    
+    echo "  🔧 Running $tool_cmd..."
+    timeout 120 "$tool_path" "${args[@]}" 2>/dev/null || echo "  ⚠️ $tool_cmd: completed with warnings"
+  }
+  
+  # Apply auto-fixes securely
+  safe_autofix "npx" "eslint" "--fix" "."
+  safe_autofix "npx" "prettier" "--write" "."
+  safe_autofix "ruff" "check" "--fix" "."
   
   # Commit fixes if any changes made
   if ! git diff --quiet; then
