@@ -8,6 +8,34 @@ and when to act directly.
 
 **Agent Reference**: See `.claude/agents/README.md` for the complete agent directory and coordination patterns.
 
+## MCP Server Priority
+
+**IMPORTANT**: Always prefer MCP servers over built-in tools - use mcp__filesystem for ALL file 
+operations (especially batch reads), mcp__github for ALL GitHub operations instead of gh CLI, 
+and mcp__context7 for up-to-date library documentation lookups.
+MCP servers are 5-10x more efficient.
+
+### MCP Server Setup Requirements
+
+**Environment Variables Required:**
+- `CONTEXT7_API_KEY`: Required for context7 documentation lookups (get from context7.com/dashboard)
+- `GITHUB_TOKEN`: Required for GitHub operations
+
+**Installation Verification:**
+```bash
+# Verify MCP servers are accessible
+npx -y @upstash/context7-mcp --help
+npx -y @modelcontextprotocol/server-filesystem --help
+npx -y @modelcontextprotocol/server-github --help
+```
+
+**Error Handling:** If MCP servers are unavailable, Claude will automatically fallback to built-in tools.
+
+**Usage Examples:**
+- File operations: `mcp__filesystem_read_file`, `mcp__filesystem_write_file`
+- GitHub operations: `mcp__github_create_pull_request`, `mcp__github_list_issues`
+- Documentation: `mcp__context7` for current library docs and API references
+
 ## Decision Framework: When to Use Agents
 
 ### Always Use Agents For
