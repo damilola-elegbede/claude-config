@@ -18,8 +18,8 @@ failures - always finds a way forward.
 ## Workflows
 
 ```yaml
-Basic (Default): /review --quick → /commit → /push
-Full (-f, --full): /review → /test → /commit → /push → /pr (if no PR exists)
+Basic (Default): /docs --audit → /docs readme → /review --quick → /commit → /push
+Full (-f, --full): /docs --audit → /docs → /review → /test → /docs --clean → /commit → /push → /pr (if no PR exists)
 Lite (-l, --lite): /commit → /push
 ```
 
@@ -67,6 +67,16 @@ Markdown: tech-writer + code-reviewer
 ```
 
 ## Issue Resolution by Command
+
+### /docs Issues → Auto-Fix and Retry
+
+```text
+Documentation gaps: Deploy tech-writer → generate missing docs → retry /docs
+Outdated content: Deploy tech-writer → update documentation → retry /docs
+API docs missing: Deploy api-architect → generate API docs → retry /docs
+Broken examples: Deploy codebase-analyst → fix code samples → retry /docs
+Organization issues: Execute cleanup → organize files → retry /docs --clean
+```
 
 ### /review Issues → Auto-Fix and Retry
 
@@ -150,8 +160,17 @@ Workflow Timeout: 30 minutes maximum for complete ship-it workflow
 User: /ship-it --full
 Claude: 🚀 Starting ship-it workflow: full
 
-Step 1/5: /review
-📚 Reading documentation for context...
+Step 1/8: /docs --audit
+🔍 Running documentation gap analysis...
+📋 Found: 5 missing API endpoints, outdated README
+
+Step 2/8: /docs
+📚 Updating all documentation...
+🤖 Deploying: tech-writer, api-architect, codebase-analyst
+✅ Documentation suite updated
+
+Step 3/8: /review
+📚 Reading code and documentation...
 🤖 Deploying: code-reviewer, security-auditor
 ❌ Found 7 blocking issues: 6 line length, 1 missing section
 
@@ -166,19 +185,23 @@ Step 1/5: /review
 🤖 Re-deploying: code-reviewer, security-auditor
 ✅ All issues resolved - review passed!
 
-Step 2/5: /test
+Step 4/8: /test
 🔍 Auto-discovering test framework...
 ✅ Tests passed (85% coverage)
 
-Step 3/5: /commit
+Step 5/8: /docs --clean
+🧹 Organizing temporary documentation files...
+✅ Moved 8 files to .tmp/
+
+Step 6/8: /commit
 📝 Creating semantic commit...
 ✅ Commit created successfully
 
-Step 4/5: /push
+Step 7/8: /push
 🚀 Pushing to remote...
 ✅ Push completed successfully
 
-Step 5/5: /pr
+Step 8/8: /pr
 🔍 Checking if PR exists...
 ℹ️ PR already exists - skipping
 
@@ -191,7 +214,16 @@ Step 5/5: /pr
 User: /ship-it
 Claude: 🚀 Starting ship-it workflow: basic
 
-Step 1/3: /review --quick
+Step 1/5: /docs --audit
+🔍 Running documentation gap analysis...
+📋 Found: README setup instructions outdated
+
+Step 2/5: /docs readme
+📚 Updating README.md...
+🤖 Deploying: tech-writer
+✅ README.md refreshed with current setup instructions
+
+Step 3/5: /review --quick
 🤖 Deploying: code-reviewer, security-auditor (quick mode)
 ❌ Found linting issues in 3 files
 
@@ -203,10 +235,10 @@ Step 1/3: /review --quick
 ⏳ Retrying /review --quick...
 ✅ Quick review passed!
 
-Step 2/3: /commit
+Step 4/5: /commit
 ✅ Changes already committed during auto-remediation
 
-Step 3/3: /push
+Step 5/5: /push
 ✅ Push completed successfully
 
 🎉 Basic workflow completed with auto-remediation!
