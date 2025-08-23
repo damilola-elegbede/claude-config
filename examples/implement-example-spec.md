@@ -32,26 +32,26 @@ authentication system with OAuth2 integration, demonstrating parallel task execu
 
 ### Phase 2: Core Implementation (Parallel)
 
-3. [ ] Implement user registration endpoint (depends on: 1, 2)
-4. [ ] Implement login endpoint (depends on: 1, 2)
-5. [ ] Implement OAuth2 integration (depends on: 2)
-6. [ ] Create frontend login/registration forms (depends on: 2)
-7. [ ] Setup test framework and fixtures (independent)
+1. [ ] Implement user registration endpoint (depends on: task 1, 2)
+2. [ ] Implement login endpoint (depends on: task 1, 2)
+3. [ ] Implement OAuth2 integration (depends on: task 2)
+4. [ ] Create frontend login/registration forms (depends on: task 2)
+5. [ ] Setup test framework and fixtures (independent)
 
 ### Phase 3: Security & Features (Parallel)
 
-8. [ ] Implement password reset flow (depends on: 3, 4)
-9. [ ] Add email verification (depends on: 3)
-10. [ ] Implement RBAC system (depends on: 1, 4)
-11. [ ] Add rate limiting and brute force protection (depends on: 4)
-12. [ ] Write unit tests (depends on: 3, 4, 5)
+1. [ ] Implement password reset flow (depends on: Phase 2 tasks 1, 2)
+2. [ ] Add email verification (depends on: Phase 2 task 1)
+3. [ ] Implement RBAC system (depends on: Phase 1 task 1, Phase 2 task 2)
+4. [ ] Add rate limiting and brute force protection (depends on: Phase 2 task 2)
+5. [ ] Write unit tests (depends on: Phase 2 tasks 1, 2, 3)
 
 ### Phase 4: Integration & Documentation (Parallel)
 
-13. [ ] Integration testing (depends on: all implementation tasks)
-14. [ ] Performance testing and optimization (depends on: all implementation tasks)
-15. [ ] API documentation (depends on: all endpoints)
-16. [ ] Security audit (depends on: all implementation tasks)
+1. [ ] Integration testing (depends on: all implementation tasks)
+2. [ ] Performance testing and optimization (depends on: all implementation tasks)
+3. [ ] API documentation (depends on: all endpoints)
+4. [ ] Security audit (depends on: all implementation tasks)
 
 ## Acceptance Criteria
 
@@ -185,4 +185,3 @@ CREATE TABLE user_roles (
 - Performance benchmarks achieved
 - Documentation reviewed and approved
 - Successful deployment to staging environment
-

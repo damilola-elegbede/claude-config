@@ -2,7 +2,9 @@
 
 ## Description
 
-Reads a markdown specification file and automatically implements the described features using intelligent multi-agent orchestration. Analyzes the specification for tasks, dependencies, and parallelization opportunities, then deploys appropriate specialized agents to complete the implementation.
+Reads a markdown specification file and automatically implements the described features using intelligent
+multi-agent orchestration. Analyzes the specification for tasks, dependencies, and parallelization opportunities,
+then deploys appropriate specialized agents to complete the implementation.
 
 ## Usage
 
@@ -25,21 +27,21 @@ When invoked, I will:
 
 ### Specification Analysis
 
-**Phase 1: Document Parsing**
+#### Phase 1: Document Parsing
 
 - Read the entire markdown specification file
 - Extract all file references and load them for context
 - Identify code blocks, examples, and requirements
 - Parse task lists, acceptance criteria, and dependencies
 
-**Phase 2: Task Extraction**
+#### Phase 2: Task Extraction
 
 - Identify explicit tasks (numbered lists, checkboxes)
 - Infer implicit tasks from requirements
 - Categorize tasks by domain (backend, frontend, testing, etc.)
 - Determine task dependencies and ordering
 
-**Phase 3: Agent Mapping**
+#### Phase 3: Agent Mapping
 
 - Map tasks to appropriate specialized agents
 - Identify opportunities for parallel execution
@@ -421,4 +423,3 @@ Specific implementation notes
 - Provides detailed progress tracking for long-running implementations
 - Validates implementation against original specification
 - Supports incremental implementation for complex projects
-
