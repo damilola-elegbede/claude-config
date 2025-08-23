@@ -1,6 +1,7 @@
 # Claude Agent Ecosystem
 
 ## Quick Reference - Top 10 Most-Used Agents
+
 category: analysis
 
 | Agent | Purpose | When to Use | Command |
