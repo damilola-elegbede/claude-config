@@ -51,6 +51,18 @@ assert_file_exists() {
     fi
 }
 
+assert_directory_exists() {
+    local dir=$1
+    local message=${2:-"Directory should exist: $dir"}
+
+    if [ -d "$dir" ]; then
+        return 0
+    else
+        echo -e "${RED}Assertion failed${NC}: $message"
+        return 1
+    fi
+}
+
 assert_dir_exists() {
     local dir=$1
     local message=${2:-"Directory should exist: $dir"}
