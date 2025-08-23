@@ -19,7 +19,8 @@ When creating agents, use the template in `system-configs/.claude/agents/AGENT_T
 - Include valid YAML front-matter
 - Add SYSTEM BOUNDARY protection
 - Define clear capabilities
-- Run validation: `./scripts/validate-agent-yaml.py`
+- Run validation (mandatory): `./scripts/validate-agent-yaml.py`
+- Keep the agents reference up to date: `system-configs/.claude/agents/README.md`
 
 ### Command Development
 
@@ -29,6 +30,7 @@ Commands go in `system-configs/.claude/commands/`:
 - Include comprehensive documentation
 - Add usage examples
 - Test thoroughly before committing
+- Perform behavioral testing for commands in `system-configs/.claude/commands/*` prior to PR (dry-run and happy-path runs)
 
 ### Code Standards
 
@@ -39,7 +41,7 @@ Commands go in `system-configs/.claude/commands/`:
 
 ## Testing
 
-Run all tests before submitting:
+Run all tests before submitting (GitHub CLI and required tools installed):
 
 ```bash
 /test
@@ -67,12 +69,12 @@ docs(commands): update test documentation
 
 ## Quality Gates
 
-All contributions must pass:
+All contributions must pass the following gates:
 
-- YAML validation for agents
-- Test suite execution
-- Documentation consistency
-- Security boundary checks
+- Agent YAML schema validation
+- Full test suite execution
+- Documentation consistency checks
+- Security boundary checks (SYSTEM BOUNDARY present and correct)
 
 ## Getting Help
 

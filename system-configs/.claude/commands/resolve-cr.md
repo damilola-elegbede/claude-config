@@ -10,7 +10,7 @@ Finds and resolves CodeRabbit review comments from PR. Extracts actionable sugge
 /resolve-cr              # Current branch's PR
 /resolve-cr <pr-number>  # Specific PR
 /resolve-cr --dry-run    # Preview without fixing
-```bash
+```
 
 ## Behavior
 
@@ -40,7 +40,7 @@ gh api "repos/:owner/:repo/pulls/$PR/reviews" \
 # Strategy 4: Recent comments across all sources
 gh pr view $PR --json comments,reviews \
   --jq '.comments[],.reviews[] | select(.author.login == "coderabbitai[bot]")'
-```bash
+```
 
 ### Extract Suggestions
 
@@ -49,7 +49,7 @@ gh pr view $PR --json comments,reviews \
 grep -A 10 "## Prompts for AI Agents" | \
   grep -E "^[-*]" | \
   sed 's/^[-*] //'
-```bash
+```
 
 ### Fix Pattern Matching
 
@@ -58,7 +58,7 @@ Security: ["XSS", "SQL injection", "vulnerability"]
 Performance: ["slow", "N+1", "optimization"]
 Quality: ["refactor", "complexity", "duplicate"]
 Testing: ["test", "coverage", "assertion"]
-```bash
+```
 
 ## Implementation
 
@@ -66,6 +66,11 @@ Testing: ["test", "coverage", "assertion"]
 # Main resolution function with aggressive comment finding
 resolve_cr() {
   local pr="${1:-$(gh pr view --json number -q .number)}"
+
+  # Preflight: required tools
+  for dep in gh jq grep sed sort; do
+    command -v "$dep" >/dev/null 2>&1 || { echo "❌ Missing dependency: $dep"; return 1; }
+  done
 
   # Aggressive search across multiple endpoints - MUST find comments
   echo "🔍 Aggressively searching for CodeRabbit comments in PR #$pr..."
@@ -157,13 +162,16 @@ Working on fixes now. Will push changes after your acknowledgment."
   while [[ $attempt -lt $max_attempts ]]; do
     sleep 10
     
-    # Check for CodeRabbit's acknowledgment in recent comments
-    latest_comment=$(gh api "repos/:owner/:repo/issues/$pr/comments" \
-      --jq '.[-1] | select(.user.login == "coderabbitai[bot]") | .body' 2>/dev/null || echo "")
-    
-    if echo "$latest_comment" | grep -q "acknowledged\|resolved\|Thank you\|Great work"; then
+    # Check for CodeRabbit's acknowledgment across recent issue + review comments
+    recent_issue=$(gh api "repos/:owner/:repo/issues/$pr/comments?per_page=20" \
+      --jq '.[] | select(.user.login == "coderabbitai[bot]") | .body' 2>/dev/null || echo "")
+    recent_reviews=$(gh api "repos/:owner/:repo/pulls/$pr/reviews?per_page=20" \
+      --jq '.[] | select(.user.login == "coderabbitai[bot]") | .body' 2>/dev/null || echo "")
+    latest_comment=$(printf "%s\n%s\n" "$recent_issue" "$recent_reviews")
+
+    if echo "$latest_comment" | grep -qiE 'acknowledged|resolved|thank you|great work|confirmed|on it'; then
       echo "✅ CodeRabbit acknowledged! Pushing changes..."
-      git push
+      git push -u origin "$(git rev-parse --abbrev-ref HEAD)"
       echo "🚀 Changes pushed successfully after CodeRabbit acknowledgment"
       break
     fi
@@ -177,7 +185,7 @@ Working on fixes now. Will push changes after your acknowledgment."
     echo "💡 Push manually with: git push"
   fi
 }
-```bash
+```
 
 ## Examples
 
@@ -205,7 +213,7 @@ Claude: 🔍 Aggressively searching for CodeRabbit comments...
 - Testing: Missing edge case coverage
 - Quality: Complex function needs refactoring
 💡 Run without --dry-run to apply fixes and notify CodeRabbit
-```bash
+```
 
 ## Notes
 
