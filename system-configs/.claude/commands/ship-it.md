@@ -74,6 +74,7 @@ ship_it() {
 When commands report problems, I automatically deploy appropriate agents to resolve them:
 
 ### /commit Issues
+
 ```text
 Staging conflicts: Use git-workflow-specialist to resolve merge issues
 Temp file cleanup: Execute cleanup and retry commit
@@ -82,6 +83,7 @@ Large files detected: Use .gitignore rules and retry
 ```
 
 ### /review Issues
+
 ```text
 Security vulnerabilities: Deploy security-auditor → fix issues → retry
 Performance problems: Deploy performance-specialist → optimize → retry
@@ -91,6 +93,7 @@ Documentation missing: Deploy tech-writer → generate docs → retry
 ```
 
 ### /test Issues
+
 ```text
 Test failures: Deploy test-engineer → fix failing tests → retry
 Coverage too low: Deploy test-engineer → add missing tests → retry
@@ -99,6 +102,7 @@ Dependencies missing: Install requirements → retry
 ```
 
 ### /push Issues
+
 ```text
 Pre-push hooks fail: Apply hook fixes → commit fixes → retry push
 Linting failures: Auto-fix with formatters → commit → retry push
@@ -108,6 +112,7 @@ Network failures: Retry with exponential backoff
 ```
 
 ### /pr Issues
+
 ```text
 Template missing: Generate PR template → retry
 Description incomplete: Deploy tech-writer → enhance description → retry
@@ -118,6 +123,7 @@ CI checks failing: Wait for checks → deploy specialists if needed
 ## Resolution Strategies
 
 ### Progressive Problem Solving
+
 1. **Identify Issue**: Parse command output for specific error patterns
 2. **Deploy Specialist**: Route to appropriate agent based on error type
 3. **Apply Fixes**: Let agent implement solutions automatically
@@ -125,6 +131,7 @@ CI checks failing: Wait for checks → deploy specialists if needed
 5. **Continue Workflow**: Move to next step once resolved
 
 ### Agent Routing Logic
+
 ```text
 Security Issues → security-auditor (always, non-negotiable)
 Performance Issues → performance-specialist + monitoring-specialist
@@ -137,6 +144,7 @@ Dependencies → dependency-analyst + package managers
 ```
 
 ### Retry Patterns
+
 ```text
 Transient Failures: Retry up to 3 times with backoff
 Fix-and-Retry: Apply fixes, commit if needed, then retry original command

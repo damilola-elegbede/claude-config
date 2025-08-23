@@ -18,11 +18,13 @@ to generate structured reports with "Prompts for AI Agents" sections.
 ## Behavior
 
 **Multi-Layer Analysis:**
+
 1. **Tool Pipeline**: Runs available linters (ESLint, Semgrep, Gitleaks, etc.) in parallel
 2. **AI Synthesis**: Processes tool outputs with contextual reasoning
 3. **Structured Report**: CodeRabbit-style output with "Prompts for AI Agents"
 
 **Default**: Reviews changed files only for fast feedback
+
 **--full**: Comprehensive repository analysis with all tools
 
 ## Tool Integration
@@ -39,6 +41,7 @@ Documentation: markdownlint, ShellCheck
 ```
 
 ### Execution Strategy
+
 - **Language Detection**: Auto-run appropriate tools based on file extensions
 - **Parallel Execution**: All tools run simultaneously for speed
 - **Graceful Degradation**: Skip missing tools, continue with available ones
@@ -165,6 +168,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 ## Report Format
 
 ### CodeRabbit-Style Output
+
 ```text
 # 🤖 AI Code Review Report
 
@@ -212,6 +216,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 ## Examples
 
 ### Standard Review
+
 ```bash
 User: /review
 Claude: 🤖 CodeRabbit-style AI review...
@@ -229,6 +234,7 @@ Claude: 🤖 CodeRabbit-style AI review...
 ```
 
 ### Auto-Fix Mode
+
 ```bash
 User: /review --fix
 Claude: 🔧 Auto-fixing safe issues...
@@ -239,6 +245,7 @@ Claude: 🔧 Auto-fixing safe issues...
 ```
 
 ### Security Focus
+
 ```bash
 User: /review --security
 Claude: 🔒 Security-focused analysis...
@@ -252,6 +259,7 @@ Claude: 🔒 Security-focused analysis...
 ## Notes
 
 **CodeRabbit-Inspired Features:**
+
 - **Tool Integration**: Auto-detects and runs appropriate linters/security scanners
 - **AI Synthesis**: Processes all tool outputs with intelligent reasoning
 - **Structured Reports**: Markdown format with issue classification and metrics
@@ -259,6 +267,7 @@ Claude: 🔒 Security-focused analysis...
 - **Auto-Fix Capability**: Applies safe fixes and commits them automatically
 
 **Core Capabilities:**
+
 - **Fast Feedback**: Default mode reviews only changed files
 - **Comprehensive Analysis**: --full mode for complete repository review
 - **Security Focus**: Specialized security scanning with --security mode
@@ -266,6 +275,7 @@ Claude: 🔒 Security-focused analysis...
 - **Quality Gates**: Blocks critical issues while allowing minor improvements
 
 **Efficiency:**
+
 - **Parallel Execution**: All tools run simultaneously for maximum speed
 - **Graceful Degradation**: Continues with available tools if some are missing
 - **Smart Targeting**: Reviews changed files by default, full repo when requested
