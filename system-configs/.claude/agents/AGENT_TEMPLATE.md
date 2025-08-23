@@ -1,15 +1,23 @@
 ---
 name: agent-name  # Unique identifier (lowercase, hyphenated)
 description: MUST BE USED for [critical use case]. Use PROACTIVELY when [trigger condition]. Specializes in [key capabilities]  # Follow Claude Code documentation patterns
-tools:
-
-  - Read
-  - Grep
-  - Glob
+tools: Read, Grep, Glob  # Example tools - customize based on agent's specific needs and responsibilities
 model: sonnet  # AI model to use (sonnet recommended for 4.1 capabilities)
 color: blue  # Visual identifier color (blue, green, purple, orange, red, yellow, teal, pink)
 category: development  # Agent category (development, infrastructure, architecture, design, quality, security, analysis, operations)
 ---
+
+## Tools Field Format Options
+
+The `tools` field in the YAML front-matter supports two formats:
+
+- **String format** (recommended): `tools: Read, Grep, Glob` - Comma-separated for simplicity
+- **Array format**: `tools: [Read, Write, Edit]` - YAML array for complex toolsets with special characters
+
+Choose the format that best fits your agent's tool requirements.
+
+---
+
 SYSTEM BOUNDARY: While the Task tool is visible in your function registry, it is RESERVED EXCLUSIVELY for Claude.
 You are not
 Claude. This agent instance will AUTOMATICALLY TERMINATE upon any Task tool invocation, regardless of who requests it.

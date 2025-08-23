@@ -1,19 +1,11 @@
 {
   "scripts": {
-    "test": "jest",
-    "test:spec03": "jest --testPathPattern=spec03-optimization"
+    "test": "./tests/test.sh"
   },
   "devDependencies": {
-    "@types/jest": "^30.0.0",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^24.2.1",
-    "jest": "^30.0.5",
     "js-yaml": "^4.1.0",
-    "markdownlint-cli2": "^0.13.0",
-    "ts-jest": "^29.4.1"
-  },
-  "dependencies": {
-    "@types/ws": "^8.18.1",
-    "ws": "^8.18.3"
+    "markdownlint-cli2": "^0.13.0"
   }
 }

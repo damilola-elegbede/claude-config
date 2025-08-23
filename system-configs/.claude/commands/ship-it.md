@@ -2,37 +2,31 @@
 
 ## Description
 
-Orchestrates development workflows by running multiple `/` commands in sequence.
-Automates commit, push, PR creation, and quality gates with todo list tracking.
+Instructs Claude to execute a development workflow by running multiple Claude commands in sequence.
+Leverages Claude's full intelligence and agent orchestration for each step.
 
 ## Usage
 
 ```bash
 /ship-it                    # Full workflow (default)
-/ship-it --basic            # review --quick → commit → push
-/ship-it --quick            # commit → push
+/ship-it --basic            # Basic workflow
+/ship-it --quick            # Quick workflow
 ```
 
 ## Workflows
 
-```yaml
-Full (Default): /review → /test → /commit → /push → /pr (if no PR exists)
-Basic: /review --quick → /commit → /push
-Quick: /commit → /push
+```text
+Full (Default): /commit → /review → /test → /push --simple → /pr (if no PR exists)
+Basic: /commit → /review --quick → /push --simple
+Quick: /commit → /push --simple
 ```
 
 ## Behavior
 
-- **Fail-fast**: Stops on first failure (except `/pr` which is skippable when PR exists)
-- **Smart PR detection**: Creates PR only if none exists for current branch
-- **Local progress tracking**: `.tmp/ship-it/progress.log` shows PENDING → IN_PROGRESS → COMPLETED/FAILED
-- **Three modes**: full (default), basic, quick
-
-## Command Execution Flow
-
-- Select workflow (full/basic/quick)
-- Initialize progress log and mark steps PENDING
-- For each step: mark IN_PROGRESS → run → mark COMPLETED or FAILED; abort on failure
+When invoked, I will execute a sequence of Claude commands with full agent orchestration.
+Each command runs with complete context awareness, specialized agents, and quality gates.
+The workflow continues sequentially with **automatic issue resolution** - when commands report
+problems, I deploy appropriate agents to fix them and retry until success.
 
 ## Execution Logic
 
@@ -40,197 +34,236 @@ Quick: /commit → /push
 ship_it() {
   local workflow="${1:-full}"
 
+  echo "🚀 Starting ship-it workflow: $workflow"
+  echo ""
+
   case "$workflow" in
     "quick")
-      execute_workflow "commit,push"
+      echo "I will now execute the Quick workflow:"
+      echo "1. /commit - Stage changes and create commit (no review)"
+      echo "2. /push --simple - Safe repository operations with basic validation"
       ;;
     "basic")
-      execute_workflow "review --quick,commit,push"
+      echo "I will now execute the Basic workflow:"
+      echo "1. /commit - Stage changes and create commit with semantic messaging"
+      echo "2. /review --quick - Quick code review with essential checks on staged commit"
+      echo "3. /push --simple - Safe repository operations (review already done)"
       ;;
     "full"|*)
-      execute_workflow "review,test,commit,push,pr"
+      echo "I will now execute the Full workflow:"
+      echo "1. /commit - Stage changes and create commit with semantic messaging"
+      echo "2. /review - Multi-agent code analysis with comprehensive quality gates on staged commit"
+      echo "3. /test - Intelligent test discovery and execution with framework detection"
+      echo "4. /push --simple - Safe repository operations (review already done)"
+      echo "5. /pr - Intelligent PR creation with context-aware descriptions (if no PR exists)"
       ;;
   esac
-}
-
-execute_workflow() {
-  local steps="$1"
-  IFS=',' read -ra COMMANDS <<< "$steps"
-  local total=${#COMMANDS[@]}
-
-  # portable in-place sed
-  inplace_sed() {
-    local expr="$1" file="$2"
-    if command -v gsed >/dev/null 2>&1; then
-      gsed -i "${expr}" "${file}"
-    elif sed --version >/dev/null 2>&1; then
-      # GNU sed present
-      sed -i "${expr}" "${file}"
-    else
-      # BSD sed (macOS)
-      sed -i '' "${expr}" "${file}"
-    fi
-  }
-
-  # Track commands in local progress file
-  mkdir -p .tmp/ship-it
-  echo "# Ship-It Progress - $(date)" > .tmp/ship-it/progress.log
-  for i in "${!COMMANDS[@]}"; do
-    local cmd="${COMMANDS[$i]}"
-    echo "[$((i+1))] PENDING: /$cmd command" >> .tmp/ship-it/progress.log
-  done
-
-  # Execute each command
-  for i in "${!COMMANDS[@]}"; do
-    local cmd="${COMMANDS[$i]}"
-    local cmd_id=$((i+1))
-
-    echo "🚀 Step $cmd_id/$total: /$cmd"
-    inplace_sed "s/\[$cmd_id\] PENDING/\[$cmd_id\] IN_PROGRESS/" .tmp/ship-it/progress.log
-
-    if execute_command "$cmd"; then
-      echo "✅ /$cmd completed"
-      inplace_sed "s/\[$cmd_id\] IN_PROGRESS/\[$cmd_id\] COMPLETED/" .tmp/ship-it/progress.log
-    else
-      echo "❌ /$cmd failed - stopping workflow"
-      inplace_sed "s/\[$cmd_id\] IN_PROGRESS/\[$cmd_id\] FAILED/" .tmp/ship-it/progress.log
-      return 1
-    fi
-  done
-
-  echo "🎉 Ship-it workflow completed!"
-}
-
-execute_command() {
-  local cmd="$1"
-
-  case "$cmd" in
-    "review"|"review --quick")
-      run_review_command "$cmd"
-      ;;
-    "test")
-      run_test_command
-      ;;
-    "commit")
-      run_commit_command
-      ;;
-    "push")
-      run_push_command
-      ;;
-    "pr")
-      pr_exists_for_branch
-      ec=$?
-      if [[ $ec -eq 1 ]]; then
-        # No PR exists → try to create
-        if run_pr_command; then
-          echo "✅ /pr completed"
-        else
-          echo "⚠️ /pr failed - continuing (non-fatal)"
-          return 0
-        fi
-      elif [[ $ec -eq 0 ]]; then
-        echo "ℹ️ PR exists - skipping"
-        return 0
-      else
-        echo "❌ Unable to determine PR state (environment error) - stopping workflow"
-        return 1
-      fi
-      ;;
-    *)
-      echo "Unknown command: $cmd"
-      return 1
-      ;;
-  esac
-}
-
-pr_exists_for_branch() {
-  command -v git >/dev/null 2>&1 || { echo "❌ git not found"; return 2; }
-  command -v gh  >/dev/null 2>&1 || { echo "❌ GitHub CLI (gh) not found"; return 2; }
-  local current_branch
-  current_branch="$(git branch --show-current)"
-  if [[ -z "$current_branch" ]]; then
-    echo "❌ Unable to determine current branch"
-    return 2
-  fi
-  local pr_count
-  pr_count="$(gh pr list --head "$current_branch" --json number --jq 'length' 2>/dev/null || echo 0)"
-  [[ "${pr_count:-0}" -gt 0 ]]
-}
-
-update_progress_status() {
-  local id="$1"
-  local status="$2"
-  # Progress tracked via .tmp/ship-it/progress.log file
-}
-
-# Command execution functions
-run_review_command() {
-  # Execute /review command logic with args: $1
-}
-
-run_test_command() {
-  # Execute /test command logic
-}
-
-run_commit_command() {
-  # Execute /commit command logic
-}
-
-run_push_command() {
-  # Execute /push command logic
-}
-
-run_pr_command() {
-  # Execute /pr command logic
+  echo ""
+  echo "Each command will use Claude's full intelligence with:"
+  echo "• Agent orchestration and specialized expertise"
+  echo "• Context awareness and quality gates"
+  echo "• Automatic issue resolution (deploy agents to fix problems)"
+  echo "• Retry failed steps until success (except /pr which is non-fatal)"
+  echo ""
+  echo "Ready to begin the workflow."
 }
 ```
 
-## Error Handling
+## Automatic Issue Resolution
 
-```yaml
-Strategy: Stop on first failure (fail-fast)
-/review fails: Stop, manual fix needed
-/test fails: Stop, fix tests first
-/commit fails: Stop, resolve issues
-/push fails: Stop, check remote
-/pr fails: Continue (user can create manually)
+When commands report problems, I automatically deploy appropriate agents to resolve them:
+
+### /commit Issues
+
+```text
+Staging conflicts: Use git-workflow-specialist to resolve merge issues
+Temp file cleanup: Execute cleanup and retry commit
+Pre-commit hooks fail: Apply fixes from hooks and retry commit
+Large files detected: Use .gitignore rules and retry
+```
+
+### /review Issues
+
+```text
+Security vulnerabilities: Deploy security-auditor → fix issues → retry
+Performance problems: Deploy performance-specialist → optimize → retry
+Code quality issues: Deploy code-reviewer + specialists → remediate → retry
+Test coverage gaps: Deploy test-engineer → add tests → retry
+Documentation missing: Deploy tech-writer → generate docs → retry
+```
+
+### /test Issues
+
+```text
+Test failures: Deploy test-engineer → fix failing tests → retry
+Coverage too low: Deploy test-engineer → add missing tests → retry
+Test env issues: Deploy devops → fix environment → retry
+Dependencies missing: Install requirements → retry
+```
+
+### /push Issues
+
+```text
+Pre-push hooks fail: Apply hook fixes → commit fixes → retry push
+Linting failures: Auto-fix with formatters → commit → retry push
+Merge conflicts: Deploy git-workflow-specialist → resolve → retry
+Branch protection: Create PR instead of direct push
+Network failures: Retry with exponential backoff
+```
+
+### /pr Issues
+
+```text
+Template missing: Generate PR template → retry
+Description incomplete: Deploy tech-writer → enhance description → retry
+Branch conflicts: Deploy git-workflow-specialist → resolve → retry
+CI checks failing: Wait for checks → deploy specialists if needed
+```
+
+## Resolution Strategies
+
+### Progressive Problem Solving
+
+1. **Identify Issue**: Parse command output for specific error patterns
+2. **Deploy Specialist**: Route to appropriate agent based on error type
+3. **Apply Fixes**: Let agent implement solutions automatically
+4. **Verify Resolution**: Re-run original command to confirm success
+5. **Continue Workflow**: Move to next step once resolved
+
+### Agent Routing Logic
+
+```text
+Security Issues → security-auditor (always, non-negotiable)
+Performance Issues → performance-specialist + monitoring-specialist
+Code Quality → code-reviewer + backend-engineer/frontend-architect
+Testing Issues → test-engineer + execution-evaluator
+Git Issues → git-workflow-specialist + execution-evaluator
+Infrastructure → devops + platform-engineer
+Documentation → tech-writer
+Dependencies → dependency-analyst + package managers
+```
+
+### Retry Patterns
+
+```text
+Transient Failures: Retry up to 3 times with backoff
+Fix-and-Retry: Apply fixes, commit if needed, then retry original command
+Agent-Mediated: Deploy specialist → verify fix → retry original
+Escalation: If 3 attempts fail, surface to user with analysis
 ```
 
 ## Examples
 
+### Full Workflow
+
 ```bash
 User: /ship-it
-Claude: 🚀 Step 1/5: /review
-✅ /review completed
-🚀 Step 2/5: /test
-✅ /test completed
-🚀 Step 3/5: /commit
-✅ /commit completed
-🚀 Step 4/5: /push
-✅ /push completed
-🚀 Step 5/5: /pr
-ℹ️ PR exists - skipping
-🎉 Ship-it workflow completed!
+Claude: 🚀 Starting ship-it workflow: full
 
+I will now execute the Full workflow:
+1. /commit - Stage changes and create commit with semantic messaging
+2. /review - Multi-agent code analysis with comprehensive quality gates on staged commit
+3. /test - Intelligent test discovery and execution with framework detection
+4. /push --simple - Safe repository operations (review already done)
+5. /pr - Intelligent PR creation with context-aware descriptions (if no PR exists)
+
+Each command will use Claude's full intelligence with:
+• Agent orchestration and specialized expertise
+• Context awareness and quality gates
+• Automatic issue resolution (deploy agents to fix problems)
+• Retry failed steps until success (except /pr which is non-fatal)
+
+Ready to begin the workflow.
+
+[Claude executes /commit successfully]
+[Claude executes /review - finds 3 security issues]
+🤖 Deploying security-auditor to fix vulnerabilities...
+✅ Security issues resolved, committing fixes
+[Claude retries /review - all checks pass]
+[Claude executes /test - 2 tests failing]
+🤖 Deploying test-engineer to fix failing tests...
+✅ Tests fixed and passing
+[Claude executes /push --simple successfully]
+[Claude executes /pr successfully]
+```
+
+### Basic Workflow
+
+```bash
+User: /ship-it --basic
+Claude: 🚀 Starting ship-it workflow: basic
+
+I will now execute the Basic workflow:
+1. /commit - Stage changes and create commit with semantic messaging
+2. /review --quick - Quick code review with essential checks on staged commit
+3. /push --simple - Safe repository operations (review already done)
+
+Each command will use Claude's full intelligence with:
+• Agent orchestration and specialized expertise
+• Context awareness and quality gates
+• Automatic issue resolution (deploy agents to fix problems)
+• Retry failed steps until success (except /pr which is non-fatal)
+
+Ready to begin the workflow.
+```
+
+### Quick Workflow
+
+```bash
 User: /ship-it --quick
-Claude: 🚀 Step 1/2: /commit
-✅ /commit completed
-🚀 Step 2/2: /push
-✅ /push completed
-🎉 Ship-it workflow completed!
+Claude: 🚀 Starting ship-it workflow: quick
+
+I will now execute the Quick workflow:
+1. /commit - Stage changes and create commit (no review)
+2. /push --simple - Safe repository operations with basic validation
+
+Each command will use Claude's full intelligence with:
+• Agent orchestration and specialized expertise
+• Context awareness and quality gates
+• Automatic issue resolution (deploy agents to fix problems)
+• Retry failed steps until success (except /pr which is non-fatal)
+
+Ready to begin the workflow.
+```
+
+### Problem Resolution Example
+
+```bash
+User: /ship-it
+Claude: 🚀 Starting ship-it workflow: full
+
+[Claude executes /commit successfully]
+[Claude executes /review - finds linting issues]
+🤖 Deploying code-reviewer + frontend-architect for auto-remediation...
+✅ Linting issues fixed, committing remediation
+[Claude retries /review - all checks pass]
+[Claude executes /test successfully]
+[Claude executes /push --simple - pre-push hooks fail]
+⚠️ Pre-push hooks failed: ESLint errors detected
+🤖 Applying ESLint auto-fixes...
+📝 Committing hook fixes
+[Claude retries /push --simple successfully]
+[Claude executes /pr successfully]
+
+🎉 Full workflow completed with automatic issue resolution
 ```
 
 ## Key Features
 
-- **Command Orchestration**: Executes actual `/` commands in sequence
-- **Todo Integration**: Each command becomes a tracked todo item
-- **Smart PR Logic**: Only creates PR if none exists for branch
-- **Fail-Fast**: Stops on first command failure
-- **Three Workflows**: Full, basic, and quick options
+- **Meta-Command**: Instructs Claude to execute command sequences with full intelligence
+- **Agent Orchestration**: Each command uses specialized agents and quality gates
+- **Three Workflows**: Full (5 commands), basic (3 commands), quick (2 commands)
+- **Context Awareness**: Commands run with complete repository and change context
+- **Auto-Remediation**: Automatically deploys agents to fix issues and retries until success
+- **Resilient Execution**: Handles pre-push hooks, test failures, security issues, and linting errors
+- **Progressive Problem Solving**: Identifies → Deploy Specialists → Apply Fixes → Retry → Continue
 
 ## Notes
 
-- Default is full workflow (review → test → commit → push → pr)
-- Each `/` command executed with full functionality
-- Todo list tracks progress and shows failures
-- PR creation intelligently skipped if PR already exists
+- Commands are executed by Claude with full agent orchestration, not bash functions
+- Each command leverages Claude's specialized agents and intelligence
+- **Auto-remediation**: Commands don't fail - they deploy agents to fix issues and retry
+- **Resilient workflow**: Handles pre-push hooks, test failures, review comments automatically
+- /pr command is non-fatal and will continue workflow even if it fails
+- Default workflow is "full" if no flags specified
+- Up to 3 retry attempts per command with specialized agent intervention

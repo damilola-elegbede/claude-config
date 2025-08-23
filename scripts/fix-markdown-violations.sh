@@ -50,7 +50,7 @@ apply_fix() {
 
 # Function to fix trailing spaces (MD009)
 fix_trailing_spaces() {
-    echo -e "${YELLOW}Fixing trailing spaces (MD009)...${NC}"
+    echo -e "${YELLOW}Fixing trailing spaces MD009...${NC}"
 
     find "$REPO_ROOT" -name "*.md" -type f \
         ! -path "*/node_modules/*" \
@@ -68,7 +68,7 @@ fix_trailing_spaces() {
 
 # Function to fix blank lines around headings (MD022)
 fix_heading_spacing() {
-    echo -e "${YELLOW}Fixing heading spacing (MD022)...${NC}"
+    echo -e "${YELLOW}Fixing heading spacing MD022...${NC}"
 
     find "$REPO_ROOT" -name "*.md" -type f \
         ! -path "*/node_modules/*" \
@@ -92,7 +92,7 @@ fix_heading_spacing() {
 
 # Function to fix blank lines around lists (MD032)
 fix_list_spacing() {
-    echo -e "${YELLOW}Fixing list spacing (MD032)...${NC}"
+    echo -e "${YELLOW}Fixing list spacing MD032...${NC}"
 
     find "$REPO_ROOT" -name "*.md" -type f \
         ! -path "*/node_modules/*" \
@@ -111,7 +111,7 @@ fix_list_spacing() {
 
 # Function to fix blank lines around fenced code blocks (MD031)
 fix_code_block_spacing() {
-    echo -e "${YELLOW}Fixing code block spacing (MD031)...${NC}"
+    echo -e "${YELLOW}Fixing code block spacing MD031...${NC}"
 
     find "$REPO_ROOT" -name "*.md" -type f \
         ! -path "*/node_modules/*" \
@@ -129,7 +129,7 @@ fix_code_block_spacing() {
 
 # Function to add language specifiers to code blocks (MD040)
 fix_code_block_languages() {
-    echo -e "${YELLOW}Fixing code block language specifiers (MD040)...${NC}"
+    echo -e "${YELLOW}Fixing code block language specifiers MD040...${NC}"
 
     find "$REPO_ROOT" -name "*.md" -type f \
         ! -path "*/node_modules/*" \
@@ -156,15 +156,15 @@ fix_code_block_languages() {
                 lang="javascript"
             fi
 
-            apply_fix "Add language specifier ($lang)" "$file" \
-                "sed -i '' 's/^```$/```$lang/' '$file'"
+            apply_fix "Add language specifier: $lang" "$file" \
+                "sed -i '' 's/^```$/```${lang}/' '$file'"
         fi
     done
 }
 
 # Function to ensure files end with newline (MD047)
 fix_file_endings() {
-    echo -e "${YELLOW}Fixing file endings (MD047)...${NC}"
+    echo -e "${YELLOW}Fixing file endings MD047...${NC}"
 
     find "$REPO_ROOT" -name "*.md" -type f \
         ! -path "*/node_modules/*" \
@@ -182,7 +182,7 @@ fix_file_endings() {
 
 # Function to fix emphasis used as headings (MD036)
 fix_emphasis_headings() {
-    echo -e "${YELLOW}Fixing emphasis used as headings (MD036)...${NC}"
+    echo -e "${YELLOW}Fixing emphasis used as headings MD036...${NC}"
 
     find "$REPO_ROOT" -name "*.md" -type f \
         ! -path "*/node_modules/*" \
@@ -201,7 +201,7 @@ fix_emphasis_headings() {
 
 # Function to fix table spacing (MD058)
 fix_table_spacing() {
-    echo -e "${YELLOW}Fixing table spacing (MD058)...${NC}"
+    echo -e "${YELLOW}Fixing table spacing MD058...${NC}"
 
     find "$REPO_ROOT" -name "*.md" -type f \
         ! -path "*/node_modules/*" \
@@ -259,14 +259,14 @@ main() {
             echo "Usage: $0 [all|trailing-spaces|headings|lists|code-blocks|file-endings|emphasis|tables]"
             echo
             echo "Available fix modes:"
-            echo "  all             - Apply all automatic fixes (default)"
-            echo "  trailing-spaces - Remove trailing whitespace (MD009)"
-            echo "  headings        - Fix heading spacing (MD022)"
-            echo "  lists           - Fix list spacing (MD032)"
-            echo "  code-blocks     - Fix code block issues (MD031, MD040)"
-            echo "  file-endings    - Ensure files end with newline (MD047)"
-            echo "  emphasis        - Convert emphasis to headings (MD036)"
-            echo "  tables          - Fix table spacing (MD058)"
+            echo "  all             - Apply all automatic fixes default"
+            echo "  trailing-spaces - Remove trailing whitespace MD009"
+            echo "  headings        - Fix heading spacing MD022"
+            echo "  lists           - Fix list spacing MD032"
+            echo "  code-blocks     - Fix code block issues MD031, MD040"
+            echo "  file-endings    - Ensure files end with newline MD047"
+            echo "  emphasis        - Convert emphasis to headings MD036"
+            echo "  tables          - Fix table spacing MD058"
             exit 1
             ;;
     esac
