@@ -1,6 +1,7 @@
 ---
 name: codebase-analyst
 description: Use PROACTIVELY for comprehensive code architecture analysis and technical debt assessment. MUST BE USED for evaluating codebases, creating executive summaries, and identifying security risks and performance bottlenecks
+category: analysis
 color: purple
 specialization_level: specialist
 

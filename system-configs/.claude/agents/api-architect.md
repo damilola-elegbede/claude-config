@@ -1,6 +1,7 @@
 ---
 name: api-architect
 description: MUST BE USED for comprehensive API architecture, OpenAPI specs, and governance policy implementation. Use PROACTIVELY for API strategy, versioning management, GraphQL federation, and enterprise standardization
+category: architecture
 color: purple
 specialization_level: senior
 

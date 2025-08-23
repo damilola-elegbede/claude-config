@@ -1,6 +1,7 @@
 ---
 name: business-analyst
 description: Requirements analysis, stakeholder communication, and process mapping expert
+category: analysis
 color: purple
 specialization_level: specialist
 

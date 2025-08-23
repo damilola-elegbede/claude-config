@@ -125,6 +125,9 @@
     // Auto-generated documentation with complex formatting
     "docs/analysis/**",
     "docs/api/**",
+    // Auto-generated agent and documentation reports
+    "docs/agent-standardization-report.md",
+    "docs/documentation-update-report.md",
     // Symlinked directories (avoid duplicates)
     ".claude/**",
     // Imported output style templates (external formatting standards)

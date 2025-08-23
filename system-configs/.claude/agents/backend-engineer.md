@@ -1,6 +1,7 @@
 ---
 name: backend-engineer
 description: MUST BE USED for server-side architecture, microservices, distributed systems, and database engineering. Use PROACTIVELY for high-performance optimization (>10k RPS), event-driven architecture, and complex backend infrastructure
+category: development
 color: blue
 specialization_level: senior
 

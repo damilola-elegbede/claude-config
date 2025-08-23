@@ -1,6 +1,7 @@
 ---
 name: data-engineer
 description: Expert data engineer specializing in data pipelines, ETL/ELT systems, and data warehouse architecture
+category: analysis
 color: blue
 specialization_level: senior
 

@@ -11,6 +11,7 @@ Generated: 2025-08-22T22:34:30.311701
 ## Final Agent List
 
 ### Development (6 agents)
+
 - **backend-engineer** (blue, senior)
 - **data-engineer** (blue, senior)
 - **frontend-engineer** (blue, senior)

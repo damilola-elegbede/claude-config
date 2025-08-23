@@ -1,6 +1,7 @@
 ---
 name: debugger
 description: "MUST BE USED for investigating complex intermittent bugs, race conditions, and production-only failures. Use PROACTIVELY for distributed system failures, timing-dependent bugs, and concurrency issues requiring forensic analysis"
+category: operations
 color: green
 specialization_level: specialist
 

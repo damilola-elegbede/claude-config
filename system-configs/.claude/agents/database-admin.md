@@ -1,6 +1,7 @@
 ---
 name: database-admin
 description: Use PROACTIVELY for database optimization, security hardening, and performance tuning. MUST BE USED for query optimization, index management, high-availability configuration, and disaster recovery planning
+category: infrastructure
 color: white
 specialization_level: specialist
 

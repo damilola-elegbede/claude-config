@@ -114,7 +114,7 @@ echo "Checking agent system integrity..."
 # Check for critical agent categories
 CRITICAL_AGENTS=(
     "backend-engineer"
-    "frontend-architect"
+    "frontend-engineer"
     "test-engineer"
     "security-auditor"
     "code-reviewer"

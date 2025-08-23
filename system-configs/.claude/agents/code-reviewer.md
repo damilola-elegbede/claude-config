@@ -1,6 +1,7 @@
 ---
 name: code-reviewer
 description: MUST BE USED for pre-commit reviews, vulnerability detection, and production readiness assessment. Use PROACTIVELY after code changes for quality review, security checks, best practices validation, and comprehensive code analysis
+category: quality
 color: green
 specialization_level: senior
 

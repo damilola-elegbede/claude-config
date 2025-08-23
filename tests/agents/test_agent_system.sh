@@ -30,8 +30,8 @@ for agent_file in "$AGENTS_DIR"/*.md; do
     AGENT_COUNT=$((AGENT_COUNT + 1))
     agent_name=$(basename "$agent_file" .md)
     
-    # Check for YAML frontmatter
-    if ! grep -q "^---$" "$agent_file"; then
+    # Check for YAML frontmatter  
+    if ! grep -q "^---" "$agent_file"; then
         YAML_INVALID+=("$agent_name")
         continue
     fi

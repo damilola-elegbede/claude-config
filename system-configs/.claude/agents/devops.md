@@ -1,6 +1,7 @@
 ---
 name: devops
 description: MUST BE USED for complex CI/CD pipeline orchestration, enterprise Kubernetes clusters, and Infrastructure as Code at scale. Use PROACTIVELY for deployment bottlenecks, reliability issues, and multi-cloud Terraform deployments
+category: infrastructure
 color: yellow
 specialization_level: senior
 
