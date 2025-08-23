@@ -133,7 +133,7 @@ pip install --upgrade-strategy eager
 ```bash
 # Staged process: backup → security patches → minor updates → test
 # → rollback if needed
-```text
+```
 
 ### /deps clean (Unused Removal)
 
