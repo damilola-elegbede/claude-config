@@ -18,10 +18,10 @@ Code CLI.
 ### Key Components
 
 - **System Configurations**: Core Claude settings in `system-configs/` directory
-- **Agent Ecosystem**: 41 specialized agents in `system-configs/.claude/agents/`
-- **Commands**: 18 essential commands in `system-configs/.claude/commands/`
+- **Agent Ecosystem**: 26 specialized agents in `system-configs/.claude/agents/`
+- **Commands**: 20 essential commands in `system-configs/.claude/commands/`
 - **Documentation**: 26 essential documentation files in `docs/`
-- **Scripts**: 17 utility scripts for validation and maintenance
+- **Scripts**: 9 utility scripts for validation and maintenance
 
 ## Development Workflows
 
@@ -54,13 +54,14 @@ Code CLI.
 - Commands require behavioral testing
 - Documentation must be comprehensive
 - Security boundaries must be enforced
+- **NEVER use --no-verify** for git operations (bypassing checks leads to CI failures)
 
 ## Repository-Specific Commands
 
 ### Configuration Management
 
 - `/sync` - **Primary Command**: Synchronizes system configurations from this repository to `~/.claude/`
-- `/agent-audit` - Validates all 41 agent configurations with parallel execution
+- `/agent-audit` - Validates all 26 agent configurations with parallel execution
 - `/context` - Analyzes repository structure and purpose
 
 ### Development & Testing
@@ -81,8 +82,8 @@ Code CLI.
 
 - **system-configs/**: Contains the source-of-truth configurations
   - `CLAUDE.md`: Main configuration file
-  - `.claude/agents/`: 41 agent definitions in Markdown format
-  - `.claude/commands/`: 18 command definitions
+  - `.claude/agents/`: 26 agent definitions in Markdown format
+  - `.claude/commands/`: 20 command definitions
   - `settings.json`: Audio notification hooks and preferences
 
 ### Agent Categories
