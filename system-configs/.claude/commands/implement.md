@@ -13,6 +13,7 @@ Reads a markdown specification file and automatically implements the described f
 ## Behavior
 
 When invoked, I will:
+
 1. **Read the specification file** completely, including all referenced files for context
 2. **Analyze the specification** to identify tasks, requirements, and dependencies
 3. **Create an execution plan** with parallel and sequential task ordering
@@ -25,18 +26,21 @@ When invoked, I will:
 ### Specification Analysis
 
 **Phase 1: Document Parsing**
+
 - Read the entire markdown specification file
 - Extract all file references and load them for context
 - Identify code blocks, examples, and requirements
 - Parse task lists, acceptance criteria, and dependencies
 
 **Phase 2: Task Extraction**
+
 - Identify explicit tasks (numbered lists, checkboxes)
 - Infer implicit tasks from requirements
 - Categorize tasks by domain (backend, frontend, testing, etc.)
 - Determine task dependencies and ordering
 
 **Phase 3: Agent Mapping**
+
 - Map tasks to appropriate specialized agents
 - Identify opportunities for parallel execution
 - Create agent deployment strategy
@@ -237,12 +241,14 @@ Specific implementation notes
 ### Parallel Deployment Strategies
 
 **Maximum Parallelization:**
+
 - Deploy all independent tasks simultaneously
 - Use resource pooling for agent management
 - Monitor progress across all parallel agents
 - Coordinate outputs at convergence points
 
 **Intelligent Batching:**
+
 - Group related tasks for domain-specific agents
 - Balance load across available agents
 - Optimize for minimal total execution time
@@ -251,12 +257,14 @@ Specific implementation notes
 ### Coordination Mechanisms
 
 **Progress Tracking:**
+
 - Real-time status updates from each agent
 - Dependency resolution monitoring
 - Integration point synchronization
 - Failure detection and recovery
 
 **Output Integration:**
+
 - Collect outputs from parallel agents
 - Resolve conflicts when multiple agents modify same files
 - Maintain consistency across implementation
@@ -413,3 +421,4 @@ Specific implementation notes
 - Provides detailed progress tracking for long-running implementations
 - Validates implementation against original specification
 - Supports incremental implementation for complex projects
+
