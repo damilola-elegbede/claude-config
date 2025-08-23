@@ -24,7 +24,7 @@ and ALWAYS post "@coderabbitai resolve" as the first line when reporting results
 
 ```bash
 # Multiple search strategies to find ALL CodeRabbit comments
-# Strategy 1: PR review comments  
+# Strategy 1: PR review comments
 gh api "repos/:owner/:repo/pulls/$PR/comments" \
   --jq '.[] | select(.user.login == "coderabbitai[bot]")'
 
@@ -68,23 +68,22 @@ resolve_cr() {
 
   # Aggressive search across multiple endpoints - MUST find comments
   echo "🔍 Aggressively searching for CodeRabbit comments in PR #$pr..."
-  
+
   # Strategy 1: PR review comments
   comments1=$(gh api "repos/:owner/:repo/pulls/$pr/comments" \
     --jq '.[] | select(.user.login == "coderabbitai[bot]") | .body' 2>/dev/null || echo "")
-  
+
   # Strategy 2: Issue comments
   comments2=$(gh api "repos/:owner/:repo/issues/$pr/comments" \
     --jq '.[] | select(.user.login == "coderabbitai[bot]") | .body' 2>/dev/null || echo "")
-  
+
   # Strategy 3: Review comments
   comments3=$(gh api "repos/:owner/:repo/pulls/$pr/reviews" \
     --jq '.[] | select(.user.login == "coderabbitai[bot]") | .body' 2>/dev/null || echo "")
-  
+
   # Strategy 4: All comments via pr view
   comments4=$(gh pr view $pr --json comments,reviews 2>/dev/null | \
     jq -r '.comments[],.reviews[] | select(.author.login == "coderabbitai[bot]") | .body' 2>/dev/null || echo "")
-  
   # Combine all comment sources
   comments=$(printf "%s\n%s\n%s\n%s\n" "$comments1" "$comments2" "$comments3" "$comments4" | grep -v '^$' | sort -u)
 
@@ -142,7 +141,7 @@ resolve_cr() {
 
 ✅ **Issues Resolved:**
 - **Security**: $security issues addressed
-- **Performance**: $performance issues optimized  
+- **Performance**: $performance issues optimized
 - **Tests**: $tests issues covered
 - **Quality**: $quality issues improved
 
@@ -177,7 +176,7 @@ Claude: 🔍 Aggressively searching for CodeRabbit comments...
 
 - **Aggressive Search**: Uses multiple strategies to find ALL CodeRabbit comments
 - **Non-negotiable Finding**: MUST find comments - no "not found" excuses
-- **Always Notify**: ALWAYS posts "@coderabbitai resolve" as first line  
+- **Always Notify**: ALWAYS posts "@coderabbitai resolve" as first line
 - **Pattern Matching**: Categorizes issues by security, performance, testing, quality
 - **Single Commit**: All fixes in one commit with clear categorization
 - **Automatic Resolution**: CodeRabbit marks comments as resolved via @mention
