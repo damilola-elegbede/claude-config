@@ -13,7 +13,7 @@ to generate structured reports with "Prompts for AI Agents" sections.
 /review <file|directory>   # Review specific target
 /review --fix             # Auto-fix safe issues + commit
 /review --security        # Security-focused analysis
-```
+```bash
 
 ## Behavior
 
@@ -38,7 +38,7 @@ Go: golangci-lint, gosec
 Security: Semgrep, Gitleaks, OSV-Scanner
 Infrastructure: Hadolint, Checkov
 Documentation: markdownlint, ShellCheck
-```
+```bash
 
 ### Execution Strategy
 
@@ -163,7 +163,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
     echo "ℹ️ No auto-fixable issues found"
   fi
 }
-```
+```bash
 
 ## Report Format
 
@@ -211,7 +211,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 1. Fix SQL injection (Critical - blocks merge)
 2. Remove hardcoded secret (Critical - security risk)
 3. Optimize N+1 queries (High - performance impact)
-```
+```bash
 
 ## Examples
 
@@ -231,7 +231,7 @@ Claude: 🤖 CodeRabbit-style AI review...
 # 🤖 AI Code Review Report
 ## Summary: 2 Critical, 1 High issue found
 ## Prompts for AI Agents ready for automated remediation
-```
+```bash
 
 ### Auto-Fix Mode
 
@@ -242,7 +242,7 @@ Claude: 🔧 Auto-fixing safe issues...
 ✅ Prettier: Applied formatting to 12 files
 ✅ Auto-fixes committed
 ⚠️ Manual fixes needed: 2 security issues (see report)
-```
+```bash
 
 ### Security Focus
 
@@ -254,7 +254,7 @@ Claude: 🔒 Security-focused analysis...
   ✅ Bandit: Python security analysis...
 🚨 Found: 1 SQL injection, 1 hardcoded secret
 📝 Security report with remediation prompts generated
-```
+```bash
 
 ## Notes
 

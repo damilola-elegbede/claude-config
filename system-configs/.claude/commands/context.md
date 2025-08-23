@@ -13,7 +13,7 @@ comprehensive project understanding. Three modes: lite (quick), full
 /context --lite              # Quick essential context only
 /context -l                  # Quick essential context only (short form)
 /context <component>         # Focused component analysis
-```
+```bash
 
 ## Behavior
 
@@ -43,7 +43,7 @@ Output Format:
   - Active PR information
   - Project purpose summary
   - Key development instructions
-```
+```bash
 
 **Perfect for**:
 
@@ -84,7 +84,7 @@ Output Format:
   - Key dependencies and purposes
   - Recent development activity
   - Getting started instructions
-```
+```bash
 
 **Perfect for**:
 
@@ -115,7 +115,7 @@ Output Format:
   - Refactoring opportunities
   - Risk analysis
   - Executive summary
-```
+```bash
 
 ## Execution Strategies
 
@@ -138,7 +138,7 @@ read_essential_files() {
   # PR status
   gh pr status 2>/dev/null || echo "No active PR"
 }
-```
+```bash
 
 ### Full Mode Execution
 
@@ -156,7 +156,7 @@ analyze_repository() {
     # Analyze directly without agent overhead
   fi
 }
-```
+```bash
 
 ### Focused Mode Agent Deployment
 
@@ -185,7 +185,7 @@ Component Analysis Patterns:
   "security":
     agent: codebase-analyst
     focus: Vulnerability assessment, security patterns
-```
+```bash
 
 ## Output Examples
 
@@ -212,7 +212,7 @@ Modern React task management app with real-time collaboration features
 - Run tests before committing (npm test)
 - TypeScript strict mode required
 - Follow atomic commit practices
-```
+```bash
 
 ### Full Mode Output
 
@@ -253,7 +253,7 @@ Modern React task management app with real-time collaboration features
 2. `cp .env.example .env` - Configure environment
 3. `npm run dev` - Start development server
 4. Open http://localhost:3000
-```
+```bash
 
 ### Focused Mode Output
 
@@ -281,7 +281,7 @@ Modern React task management app with real-time collaboration features
 2. Add comprehensive password reset workflow
 3. Consider implementing OAuth providers for enhanced UX
 4. Add audit logging for authentication events
-```
+```bash
 
 ## Performance & Optimization
 
@@ -307,7 +307,7 @@ else
   echo "Performing fresh analysis..."
   # Run analysis and cache results
 fi
-```
+```bash
 
 ## Execution Verification
 
@@ -331,7 +331,7 @@ Claude: 📖 Reading essential files...
 🌿 Branch: fix/payment-gateway (2 modified files)
 📋 No active PR
 🎯 Node.js/Express API for ecommerce platform
-```
+```bash
 
 ### New Repository Exploration
 
@@ -342,7 +342,7 @@ Claude: 🔍 Analyzing repository structure...
 ✅ Technology stack identified
 📝 Generating comprehensive context report...
 [Full analysis output]
-```
+```bash
 
 ### Component Deep Dive
 
@@ -352,7 +352,7 @@ Claude: 🎯 Deploying codebase-analyst for payment processing analysis...
 🔍 Analyzing payment flows, security patterns, and integration points...
 📊 Found 3 payment providers, identified 2 security improvements...
 [Focused analysis output]
-```
+```bash
 
 ## Notes
 

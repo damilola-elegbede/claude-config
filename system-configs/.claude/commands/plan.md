@@ -14,7 +14,16 @@ while staying in plan mode.
 /plan --simple <task_description>    # Simple mode (single PR)
 /plan -f <file_path>                 # Read from file
 /plan --file <file_path>             # Read from file
-```
+```text
+
+## Behavior
+
+When invoked, I enter plan mode and systematically analyze requirements,
+asking for clarification on any ambiguities. I generate a Product Requirements
+Document (PRD) preview showing phases, PRs, and task breakdown. Only after user
+approval do I create implementation files in `.tmp/<feature-name>/` with
+detailed
+agent assignments and technical specifications.
 
 ## Command Execution Flow
 
@@ -87,7 +96,8 @@ Example ambiguities:
 
 ### Granularity Framework
 
-Each PR contains **3-5 granular tasks** (1-8 hours each) following this hierarchy:
+Each PR contains **3-5 granular tasks** (1-8 hours each) following this
+hierarchy:
 
 - **Phase 1**: Infrastructure (schema, APIs, configs)
 - **Phase 2**: Implementation (logic, endpoints, components)
@@ -101,14 +111,16 @@ Frontend: Design → Component → State → Styling → Tests
 Infrastructure: Config → Build → Deploy → Monitor → Rollback
 Database: Schema → Migration → Rollback → Validation → Performance
 API: Contract → Implementation → Security → Testing → Docs
-```
+```bash
 
 ## Dependency Analysis Framework
 
 ### Dependency Types
 
-- **Hard Dependencies**: Schema → Code, API → Frontend, Infrastructure → Deployment
-- **Soft Dependencies**: Frontend/Backend (shared API), Testing/Implementation (parallel)
+- **Hard Dependencies**: Schema → Code, API → Frontend,
+  Infrastructure → Deployment
+- **Soft Dependencies**: Frontend/Backend (shared API),
+  Testing/Implementation (parallel)
 - **Independent**: Separate services, components, infrastructure, test suites
 
 ### Execution Rules
@@ -117,7 +129,7 @@ API: Contract → Implementation → Security → Testing → Docs
 Sequential: Foundation → Implementation → Integration
 Parallel: Independent components, Frontend+Backend (post-API), Testing+Implementation
 Coordination: API contracts, schema approval, integration checkpoints
-```
+```bash
 
 ## Agent Assignment Rules
 
@@ -132,7 +144,7 @@ Quality: code-reviewer, security-auditor, performance-specialist,
   test-engineer, accessibility-auditor
 Technology: React/Vue→frontend-architect, Node/Python→backend-engineer,
   K8s→kubernetes-admin, Auth→security-auditor
-```
+```bash
 
 ### Priority Rules
 
@@ -154,7 +166,7 @@ Technology: React/Vue→frontend-architect, Node/Python→backend-engineer,
 Phase_1: Schema, API contracts, infrastructure (Independent within phase)
 Phase_2: Backend/Frontend services (Concurrent), migrations (Depends on schema)
 Phase_3: E2E testing (Depends on implementation), docs (Concurrent with testing)
-```
+```bash
 
 ## Agent Patterns
 
@@ -198,7 +210,7 @@ Stay in plan mode until user responds:
 
 ## Success Criteria
 - All PRD requirements satisfied per specifications
-```
+```bash
 
 ### Task ID Format: `Task_X_Y_ZZ` (Phase_PR_Task)
 
@@ -222,7 +234,7 @@ Claude: ✅ Created in .tmp/authentication/:
 - phase_1_pr_1_database.md (3 tasks)
 - phase_1_pr_2_services.md (4 tasks)
 [... 7 more PR files]
-```
+```bash
 
 ## PRD Integration Standards
 
@@ -245,6 +257,19 @@ Complex requirements span phases:
 
 - **REQ-AUTH-001**: Phase 1 (schema) → Phase 2 (logic) → Phase 3 (integration)
 - **Cross-phase validation** ensures complete requirement coverage
+
+## Execution Verification
+
+Deploy execution-evaluator to verify:
+
+- ✅ **Requirements analyzed** - All ambiguities clarified before planning
+- ✅ **PRD generated** - Complete Product Requirements Document created
+- ✅ **Tasks broken down** - Granular tasks with proper agent assignments
+- ✅ **Dependencies mapped** - Clear task sequencing and coordination
+- ✅ **Files created** - All phase files generated in .tmp/<feature-name>/
+- ✅ **Agent assignments** - Specialized agents properly matched to tasks
+- ✅ **PRD compliance** - All requirements traceable through task breakdown
+- ✅ **Phase organization** - Clear dependencies and parallel execution plans
 
 ## Notes
 

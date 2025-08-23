@@ -13,7 +13,7 @@ in parallel for efficient analysis and updates.
 /docs --audit            # Documentation gap analysis only
 /docs --clean            # Clean temporary docs and organize
 /docs <scope>            # Focused documentation update
-```
+```bash
 
 ## Behavior
 
@@ -37,7 +37,7 @@ Parallel Tasks:
   - Analyze code-to-docs synchronization gaps
   - Assess documentation quality and clarity
   - Map API endpoints requiring documentation
-```
+```bash
 
 ### Phase 2: Documentation Generation (Parallel)
 
@@ -58,7 +58,7 @@ Agent Coordination:
     - Extract inline documentation from code
     - Document component interfaces and patterns
     - Create technical reference materials
-```
+```bash
 
 ### Phase 3: Cleanup & Organization (Sequential)
 
@@ -77,7 +77,7 @@ File Management:
     - .tmp/analysis/ - Analysis reports
     - .tmp/reports/ - Status and progress reports
     - .tmp/drafts/ - Draft documents and notes
-```
+```bash
 
 ## Documentation Targets
 
@@ -99,7 +99,7 @@ API Documentation:
 Architecture Docs:
   purpose: System design and technical decisions
   updates: Component diagrams, data flow, integration patterns
-```
+```bash
 
 ### Gap Detection Patterns
 
@@ -121,7 +121,7 @@ Quality Issues:
   - Incomplete code examples
   - Missing troubleshooting sections
   - Poor organization and navigation
-```
+```bash
 
 ## Cleanup Targets
 
@@ -141,7 +141,7 @@ draft-*.md
 temp-*.md
 notes-*.md
 scratch-*.md
-```
+```bash
 
 ### Organization Rules
 
@@ -152,7 +152,7 @@ mv *-report.md .tmp/reports/
 mv *-status.md .tmp/reports/
 mv draft-*.md .tmp/drafts/
 mv notes-*.md .tmp/drafts/
-```
+```bash
 
 ## Execution Strategy
 
@@ -173,7 +173,7 @@ Wave 3 (Cleanup - 1 minute):
   - Direct execution: File organization and cleanup
   - Directory structure creation
   - Temporary file archival
-```
+```bash
 
 ### Focused Scope Examples
 
@@ -182,7 +182,7 @@ Wave 3 (Cleanup - 1 minute):
 /docs readme        # README.md refresh only
 /docs architecture  # System design docs only
 /docs setup         # Installation and setup docs
-```
+```bash
 
 ## Quality Gates
 
@@ -206,7 +206,7 @@ Clarity:
   - Consistent formatting and style
   - Appropriate detail level for audience
   - Good use of examples and illustrations
-```
+```bash
 
 ## Examples
 
@@ -224,7 +224,7 @@ Claude: 🚀 Deploying parallel documentation agents...
 🧹 Organizing 8 temporary files to .tmp/
 
 ✅ Documentation suite updated and synchronized
-```
+```bash
 
 ### Documentation Audit Only
 
@@ -239,7 +239,7 @@ Claude: 🔍 Running documentation gap analysis...
 - README.md installation steps outdated
 - Architecture diagrams need updates
 - 3 configuration options undocumented
-```
+```bash
 
 ### Cleanup and Organization
 
@@ -250,7 +250,7 @@ Claude: 🧹 Cleaning and organizing documentation files...
 📄 Moving 6 analysis reports to .tmp/reports/
 📝 Archiving 4 draft documents to .tmp/drafts/
 ✅ Workspace cleaned and organized
-```
+```bash
 
 ## Execution Verification
 

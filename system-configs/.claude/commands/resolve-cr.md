@@ -10,7 +10,7 @@ Finds and resolves CodeRabbit review comments from PR. Extracts actionable sugge
 /resolve-cr              # Current branch's PR
 /resolve-cr <pr-number>  # Specific PR
 /resolve-cr --dry-run    # Preview without fixing
-```
+```bash
 
 ## Behavior
 
@@ -39,7 +39,7 @@ gh api "repos/:owner/:repo/pulls/$PR/reviews" \
 # Strategy 4: Recent comments across all sources
 gh pr view $PR --json comments,reviews \
   --jq '.comments[],.reviews[] | select(.author.login == "coderabbitai[bot]")'
-```
+```bash
 
 ### Extract Suggestions
 
@@ -48,7 +48,7 @@ gh pr view $PR --json comments,reviews \
 grep -A 10 "## Prompts for AI Agents" | \
   grep -E "^[-*]" | \
   sed 's/^[-*] //'
-```
+```bash
 
 ### Fix Pattern Matching
 
@@ -57,7 +57,7 @@ Security: ["XSS", "SQL injection", "vulnerability"]
 Performance: ["slow", "N+1", "optimization"]
 Quality: ["refactor", "complexity", "duplicate"]
 Testing: ["test", "coverage", "assertion"]
-```
+```bash
 
 ## Implementation
 
@@ -147,7 +147,7 @@ resolve_cr() {
 
 All CodeRabbit suggestions have been implemented and pushed."
 }
-```
+```bash
 
 ## Examples
 
@@ -170,7 +170,7 @@ Claude: 🔍 Aggressively searching for CodeRabbit comments...
 - Testing: Missing edge case coverage
 - Quality: Complex function needs refactoring
 💡 Run without --dry-run to apply fixes and notify CodeRabbit
-```
+```bash
 
 ## Notes
 

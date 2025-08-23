@@ -12,7 +12,7 @@ Tests locally before pushing fixes.
 /fix-ci                  # Fix latest failure
 /fix-ci <run-id>         # Fix specific run
 /fix-ci --learn          # Update fix patterns from history
-```
+```bash
 
 ## Behavior
 
@@ -28,7 +28,7 @@ Dependencies: {confidence: 92%, test: "npm test", fix: "npm install"}
 Test Failures: {confidence: 85%, test: "npm test", fix: "update tests"}
 Type Errors: {confidence: 78%, test: "npm run typecheck", fix: "fix types"}
 Build Issues: {confidence: 70%, test: "npm run build", fix: "rebuild"}
-```
+```bash
 
 ## Pattern Matching & Fixes
 
@@ -86,7 +86,7 @@ apply_fix() {
 
   echo "$pattern,$confidence,$fix_cmd,$test_cmd"
 }
-```
+```bash
 
 ## History Tracking
 
@@ -117,7 +117,7 @@ get_confidence() {
     END { if(total==0) print 50; else print int(success/total*100) }
   ' .tmp/fix-ci/history.log
 }
-```
+```bash
 
 ## Main Execution Flow
 
@@ -196,7 +196,7 @@ Automated fix applied by /fix-ci"
     echo "📊 Recorded outcome: CI passed = $all_passed"
   fi
 }
-```
+```bash
 
 ## Examples
 
@@ -219,7 +219,7 @@ Claude: 📊 Confidence scores from .tmp/fix-ci/:
 - Lint/Format: 98% (47/48 successful)
 - Dependencies: 92% (23/25 successful)
 - Test Failures: 85% (17/20 successful)
-```
+```bash
 
 ## Key Features
 

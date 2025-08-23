@@ -12,7 +12,7 @@ production-only failures.
 /debug <issue_description>      # Investigate specific bug
 /debug --repro <steps>          # Focus on reproduction
 /debug --performance            # Performance-specific debugging
-```
+```bash
 
 ## Behavior
 
@@ -50,7 +50,7 @@ Performance Degradation:
   symptoms: ["getting slower", "timeouts", "resource exhaustion"]
   agents: [debugger, performance-specialist, performance-predictor]
   approach: Profiling, bottleneck analysis, load testing
-```
+```bash
 
 ## Concrete Investigation Patterns
 
@@ -78,7 +78,7 @@ investigate_memory_leak() {
     echo "console.log(process.memoryUsage())" >> memory_check.js
   fi
 }
-```
+```bash
 
 **Real Example Output:**
 
@@ -101,7 +101,7 @@ investigate_memory_leak() {
 - Set 24h TTL on session cache entries
 
 ✅ Verification: Memory stable after 2h testing
-```
+```bash
 
 ### Race Condition Analysis
 
@@ -126,7 +126,7 @@ analyze_race_condition() {
     echo "import threading; print(threading.active_count())" >> thread_check.py
   fi
 }
-```
+```bash
 
 **Real Example Output:**
 
@@ -149,7 +149,7 @@ analyze_race_condition() {
 - Implemented distributed lock for payment flow
 
 ✅ Verification: No duplicates in 1000 concurrent test transactions
-```
+```bash
 
 ### Production-Only Bug Analysis
 
@@ -173,7 +173,7 @@ compare_environments() {
   cat /proc/meminfo | grep MemTotal
   ulimit -a
 }
-```
+```bash
 
 **Real Example Output:**
 
@@ -196,7 +196,7 @@ compare_environments() {
 - Added query timeout with proper error handling
 
 ✅ Verification: Response time dropped from 8s to 120ms
-```
+```bash
 
 ### Performance Degradation Analysis
 
@@ -226,7 +226,7 @@ const performance_debug = {
     console.log('EXPLAIN ANALYZE SELECT ...');
   }
 };
-```
+```bash
 
 **Real Example Output:**
 
@@ -249,56 +249,19 @@ const performance_debug = {
 - Added Redis caching for user preferences
 
 ✅ Verification: Dashboard loads in 1.8s (faster than before)
-```
+```bash
 
 ## Multi-Agent Coordination
 
-### Complex Bug Investigation Team
+### Agent Teams by Issue Type
 
 ```yaml
-Primary Investigation:
-  debugger: "Lead investigator, coordinates analysis"
+Memory: debugger + code-archaeologist
+Performance: debugger + performance-specialist
+Production: debugger + production-reliability-engineer
+Security: debugger + security-auditor
+```text
 
-Supporting Specialists:
-  performance-specialist: "When performance-related symptoms detected"
-  backend-engineer: "For server-side logic issues"
-  frontend-architect: "For UI/UX related problems"
-  database-admin: "For data integrity or query issues"
-  security-auditor: "When security implications suspected"
-
-Advanced Analysis:
-  code-archaeologist: "For legacy code interactions"
-  production-reliability-engineer: "For production environment issues"
-  monitoring-specialist: "For observability and metrics analysis"
-```
-
-### Investigation Workflow
-
-```bash
-# Multi-agent debugging coordination
-coordinate_debugging() {
-  local issue_type="$1"
-
-  case "$issue_type" in
-    "memory")
-      echo "Deploying debugger + code-archaeologist for memory analysis..."
-      # Primary: debugger analyzes heap dumps
-      # Secondary: code-archaeologist reviews allocation patterns
-      ;;
-    "performance")
-      echo "Deploying debugger + performance-specialist + monitoring-specialist..."
-      # Primary: debugger identifies bottlenecks
-      # Secondary: performance-specialist optimizes
-      # Tertiary: monitoring-specialist sets up alerting
-      ;;
-    "production")
-      echo "Deploying debugger + production-reliability-engineer..."
-      # Primary: debugger analyzes failure patterns
-      # Secondary: production-reliability-engineer fixes infrastructure
-      ;;
-  esac
-}
-```
 
 ## Debugging Toolchain
 
@@ -332,24 +295,15 @@ debug_go() {
   dlv attach $PID
   go tool pprof http://localhost:6060/debug/pprof/profile
 }
-```
+```bash
 
 ### Database Query Analysis
 
 ```sql
 -- PostgreSQL debugging
-EXPLAIN ANALYZE VERBOSE
-SELECT u.id, u.email, COUNT(o.id) as order_count
-FROM users u
-LEFT JOIN orders o ON u.id = o.user_id
-WHERE u.created_at > '2024-01-01'
-GROUP BY u.id, u.email
-ORDER BY order_count DESC;
-
--- Enable query logging
-SET log_statement = 'all';
-SET log_min_duration_statement = 1000; -- Log slow queries
-```
+EXPLAIN ANALYZE SELECT * FROM slow_table;
+SET log_min_duration_statement = 1000;
+```text
 
 ## Reproduction Strategies
 
@@ -378,7 +332,7 @@ reproduce_intermittent() {
 
   echo "Success rate: $((success_count * 100 / attempts))%"
 }
-```
+```bash
 
 ### Environment Simulation
 
@@ -394,7 +348,7 @@ simulate_production() {
   # High load simulation
   ab -n 10000 -c 100 http://localhost:8080/api/endpoint
 }
-```
+```bash
 
 ## Verification & Follow-up
 
@@ -409,38 +363,26 @@ Deploy execution-evaluator to verify:
 
 ## Examples
 
-### Memory Leak Investigation
+```bash
+User: /debug Memory leak causing crashes
+Claude: 🔍 Memory analysis: Event listeners not cleaned up
+🔧 Fix: Proper cleanup in useEffect
+✅ Result: Memory stable
+```text
 
 ```bash
-User: /debug Application memory keeps growing, crashes after 6 hours
-Claude: 🔍 Deploying debugger + code-archaeologist for memory leak analysis...
-📊 Collecting heap dumps and allocation patterns...
-🎯 Found: Event listeners not being removed in component cleanup
-🔧 Fix: Added proper cleanup in useEffect dependencies
-✅ Verified: Memory stable after 12h test run
-```
-
-### Race Condition
+User: /debug Duplicate payment charges
+Claude: 🧵 Race condition: Non-atomic payment flow
+🔧 Fix: Database transactions + idempotency
+✅ Result: Zero duplicates in load test
+```text
 
 ```bash
-User: /debug Users sometimes see duplicate charges in payment system
-Claude: 🧵 Deploying debugger + backend-engineer for concurrency analysis...
-📊 Analyzing payment flow under load...
-🎯 Found: Payment validation + charge not atomic, race condition possible
-🔧 Fix: Wrapped in database transaction + added idempotency keys
-✅ Verified: No duplicates in 1000 concurrent payment test
-```
-
-### Production Mystery
-
-```bash
-User: /debug API timeouts only in production, works fine locally
-Claude: 🏭 Deploying debugger + production-reliability-engineer...
-📊 Comparing environments and analyzing production metrics...
-🎯 Found: Missing database index causes table scan at production scale
-🔧 Fix: Added composite index on high-traffic query columns
-✅ Verified: Response time improved from 8s to 120ms
-```
+User: /debug Production API timeouts
+Claude: 🏭 Scale issue: Missing database index
+🔧 Fix: Added composite index
+✅ Result: 8s → 120ms response time
+```text
 
 ## Notes
 
