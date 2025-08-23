@@ -420,7 +420,6 @@ record_metrics() {
   "memory_usage_mb": $(ps -o pid,rss,comm -p $$ | tail -1 | awk '{print $2/1024}')
 }
 EOF
-)
 
     echo "$metrics" >> "$PERF_LOG"
 }
@@ -523,11 +522,6 @@ case "${1:-help}" in
         echo "  benchmark"
         ;;
 esac
-EOF
-
-    chmod +x "$REPO_ROOT/scripts/platform/perf-monitor.sh"
-    log_success "Performance monitoring setup complete"
-}
 
 # Cross-platform optimizations
 apply_platform_optimizations() {

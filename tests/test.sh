@@ -92,6 +92,26 @@ echo "Running Quality Tests..."
 echo "------------------------"
 run_test "Markdown Quality Gates" "markdown/test_markdown_quality.sh"
 
+# Run agent system tests
+echo "Running Agent System Tests..."
+echo "------------------------------"
+run_test "Agent System Validation" "agents/test_agent_system.sh"
+
+# Run sync functionality tests
+echo "Running Sync Tests..."
+echo "--------------------"
+run_test "Sync Functionality" "sync/test_sync_functionality.sh"
+
+# Run script health tests
+echo "Running Script Health Tests..."
+echo "------------------------------"
+run_test "Script Validation" "scripts/test_script_health.sh"
+
+# Run comprehensive system health test
+echo "Running System Health Tests..."
+echo "------------------------------"
+run_test "System Health" "comprehensive/test_system_health.sh"
+
 # Run integration tests
 echo "Running Integration Tests..."
 echo "----------------------------"

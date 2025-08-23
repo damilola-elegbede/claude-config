@@ -10,17 +10,17 @@ failures - always finds a way forward.
 ## Usage
 
 ```bash
-/ship-it                    # Full workflow (default)
-/ship-it --basic            # Basic workflow
-/ship-it --quick            # Quick workflow
+/ship-it                    # Basic workflow (default)
+/ship-it -f, --full        # Full workflow
+/ship-it -l, --lite        # Lite/quick workflow
 ```
 
 ## Workflows
 
 ```yaml
-Full (Default): /review → /test → /commit → /push → /pr (if no PR exists)
-Basic: /review --quick → /commit → /push
-Quick: /commit → /push
+Basic (Default): /review --quick → /commit → /push
+Full (-f, --full): /review → /test → /commit → /push → /pr (if no PR exists)
+Lite (-l, --lite): /commit → /push
 ```
 
 ## Behavior
@@ -147,7 +147,7 @@ Workflow Timeout: 30 minutes maximum for complete ship-it workflow
 ### Full Workflow with Auto-Remediation
 
 ```bash
-User: /ship-it
+User: /ship-it --full
 Claude: 🚀 Starting ship-it workflow: full
 
 Step 1/5: /review
@@ -185,10 +185,10 @@ Step 5/5: /pr
 🎉 Ship-it workflow completed with auto-remediation!
 ```
 
-### Basic Workflow with Issue Resolution
+### Basic Workflow with Issue Resolution (Default)
 
 ```bash
-User: /ship-it --basic
+User: /ship-it
 Claude: 🚀 Starting ship-it workflow: basic
 
 Step 1/3: /review --quick
@@ -215,7 +215,7 @@ Step 3/3: /push
 ### Advanced Problem Resolution
 
 ```bash
-User: /ship-it
+User: /ship-it --full
 Claude: 🚀 Starting ship-it workflow: full
 
 Step 1/5: /review
@@ -301,7 +301,7 @@ Deploy execution-evaluator to verify:
 - **Progressive Problem Solving**: Systematic approach to issue resolution
 - **Multi-Domain Expertise**: Routes issues to appropriate specialist agents
 - **Resilient Execution**: Handles all common failure modes automatically
-- **Three Workflows**: Full (comprehensive), basic (essential), quick (minimal)
+- **Three Workflows**: Basic (default, essential), Full (comprehensive with -f/--full), Lite (minimal with -l/--lite)
 - **Context Awareness**: Commands run with complete repository understanding
 - **Quality Gates**: Each step includes comprehensive validation
 - **Audit Trail**: Complete history of issues found and fixes applied

@@ -1,10 +1,39 @@
 ---
 name: project-orchestrator
 description: Use PROACTIVELY for multi-agent strategy planning. MUST BE USED for parallel execution analysis, resource optimization, workflow coordination, and team efficiency recommendations
-tools: Read, Write, Grep, Glob, LS
-model: opus
-color: yellow
 category: operations
+color: orange
+specialization_level: senior
+
+domain_expertise:
+  - multi_agent_coordination
+  - project_planning
+  - execution_optimization
+
+tools:
+  allowed:
+    read: "Accessing relevant information"
+    write: "Creating documentation and reports"
+    # NO Task tool - Claude handles all orchestration
+  forbidden:
+    task: "Orchestration restricted to Claude (no direct Task tool access)"
+    deploy: "Production deployment restricted to infrastructure agents"
+
+coordination_protocols:
+  handoff_to:
+    test-engineer: "Quality validation"
+  parallel_compatible:
+    - test-engineer
+    - code-reviewer
+  escalation_path:
+    principal-architect: "Complex decisions beyond current scope"
+
+knowledge_base:
+  - Documentation best practices and patterns
+
+examples:
+  - scenario: "Typical project orchestrator task"
+    approach: "Systematic approach using documentation expertise"
 ---
 
 SYSTEM BOUNDARY: While the Task tool is visible in your function registry, it is RESERVED EXCLUSIVELY for Claude.

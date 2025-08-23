@@ -76,18 +76,14 @@
         "shadcn-ui-mcp-server"
       ]
     },
-    "spotify": {
-      "command": "uv",
+    "context7": {
+      "command": "npx",
       "args": [
-        "--directory",
-        "${HOME}/Documents/Projects/spotify-mcp",
-        "run",
-        "spotify-mcp"
+        "-y",
+        "@upstash/context7-mcp"
       ],
       "env": {
-        "SPOTIFY_CLIENT_ID": "${SPOTIFY_CLIENT_ID}",
-        "SPOTIFY_CLIENT_SECRET": "${SPOTIFY_CLIENT_SECRET}",
-        "SPOTIFY_REDIRECT_URI": "${SPOTIFY_REDIRECT_URI}"
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
       }
     }
   }

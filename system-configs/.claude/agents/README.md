@@ -2,6 +2,8 @@
 
 ## Quick Reference - Top 10 Most-Used Agents
 
+category: analysis
+
 | Agent | Purpose | When to Use | Command |
 |-------|---------|-------------|----------|
 | **backend-engineer** | Server-side systems, APIs, databases | Any backend development task | N/A |

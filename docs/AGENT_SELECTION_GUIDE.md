@@ -6,8 +6,8 @@
 
 | Task Complexity | Domain | Agent Choice | Key Indicators | Consolidation Notes |
 |---|---|---|---|---|
-| **Staff Level** | Backend | `backend-engineer` | Multi-service architecture, complex state management, performance < 2.5s | Consolidated from backend-staff |
-| **Staff Level** | Frontend | `frontend-architect` | Real-time features, complex UI, Core Web Vitals optimization | Consolidated from frontend-staff |
+| **Staff Level** | Backend | `backend-engineer` | Multi-service architecture, complex state management, performance < 2.5s | Consolidated from backend-engineer |
+| **Staff Level** | Frontend | `frontend-architect` | Real-time features, complex UI, Core Web Vitals optimization | Consolidated from frontend-engineer |
 | **Senior Level** | General | `fullstack-lead` | Single-service features, well-defined APIs, standard patterns | Legacy fullstack capabilities |
 | **Specialist** | Mobile Development | `mobile-platform-engineer` | Native/cross-platform apps, iOS/Android patterns | Unified mobile platform development |
 | **Specialist** | Web Design | `ui-designer` | Design systems, visual hierarchy, web/desktop interfaces | Non-mobile interface design |
