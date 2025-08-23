@@ -32,6 +32,7 @@ issue resolution** - when commands report problems, I deploy appropriate agents
 to fix them and retry until success.
 
 **Core Principles:**
+
 - **Auto-Remediation**: Commands don't fail - they deploy agents to fix issues
 - **Progressive Problem Solving**: Identify → Deploy Specialists → Apply Fixes → Retry → Continue
 - **Resilient Execution**: Handles all failure modes through agent deployment
