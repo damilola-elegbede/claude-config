@@ -75,7 +75,8 @@ describe('CircuitBreaker', () => {
 
   describe('Basic Execution', () => {
     it('should execute successful operations', async () => {
-      const mockOperation = jest.fn().mockResolvedValue('success');
+      const mockOperation = jest.fn() as jest.MockedFunction<() => Promise<string>>;
+      mockOperation.mockResolvedValue('success');
 
       const result = await circuitBreaker.execute(mockOperation);
 
@@ -89,7 +90,8 @@ describe('CircuitBreaker', () => {
 
     it('should handle failed operations', async () => {
       const mockError = new Error('Operation failed');
-      const mockOperation = jest.fn().mockRejectedValue(mockError);
+      const mockOperation = jest.fn() as jest.MockedFunction<() => Promise<string>>;
+      mockOperation.mockRejectedValue(mockError);
 
       const result = await circuitBreaker.execute(mockOperation);
 
@@ -429,7 +431,8 @@ describe('CircuitBreaker', () => {
     });
 
     it('should handle operations that return undefined', async () => {
-      const operation = jest.fn().mockResolvedValue(undefined);
+      const operation = jest.fn() as jest.MockedFunction<() => Promise<undefined>>;
+      operation.mockResolvedValue(undefined);
 
       const result = await circuitBreaker.execute(operation);
 
@@ -439,7 +442,8 @@ describe('CircuitBreaker', () => {
     });
 
     it('should handle very fast operations', async () => {
-      const operation = jest.fn().mockResolvedValue('instant');
+      const operation = jest.fn() as jest.MockedFunction<() => Promise<string>>;
+      operation.mockResolvedValue('instant');
 
       const result = await circuitBreaker.execute(operation);
 
@@ -454,7 +458,8 @@ describe('CircuitBreaker', () => {
         nested: { deeply: { value: 'test' } }
       };
 
-      const operation = jest.fn().mockResolvedValue(complexResult);
+      const operation = jest.fn() as jest.MockedFunction<() => Promise<typeof complexResult>>;
+      operation.mockResolvedValue(complexResult);
 
       const result = await circuitBreaker.execute(operation);
 

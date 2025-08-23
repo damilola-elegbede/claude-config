@@ -4,6 +4,7 @@
  * Provides unified access to all MCP infrastructure components with integration examples
  */
 
+import { EventEmitter } from 'events';
 import { MCPDiscoveryService } from './discovery';
 import { MCPServerRegistry } from './registry';
 import { ToolRouter } from './tool-router';
@@ -51,6 +52,7 @@ export interface MCPInfrastructureConfig {
   cache?: {
     maxEntries?: number;
     maxSize?: number;
+    defaultTtl?: number;
     enableRedis?: boolean;
   };
 
@@ -62,7 +64,7 @@ export interface MCPInfrastructureConfig {
  * Integrated MCP Infrastructure class
  * Orchestrates all components and provides unified interface
  */
-export class MCPInfrastructure {
+export class MCPInfrastructure extends EventEmitter {
   public readonly discovery: MCPDiscoveryService;
   public readonly registry: MCPServerRegistry;
   public readonly router: ToolRouter;
@@ -73,6 +75,8 @@ export class MCPInfrastructure {
   private isStarted = false;
 
   constructor(config: MCPInfrastructureConfig = {}) {
+    super();
+    
     // Initialize cache first (others may depend on it)
     this.cache = new CacheManager(config.cache);
 

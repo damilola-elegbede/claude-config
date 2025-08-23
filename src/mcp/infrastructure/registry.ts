@@ -665,6 +665,13 @@ export class MCPServerRegistry extends EventEmitter {
   }
 
   /**
+   * Get all servers
+   */
+  getServers(): MCPServerInfo[] {
+    return Array.from(this.servers.values()).map(entry => ({ ...entry.server }));
+  }
+
+  /**
    * Get server metrics by ID
    */
   getServerMetrics(serverId: string): ServerMetrics | null {

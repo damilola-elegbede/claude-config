@@ -28,6 +28,7 @@ to generate structured reports with "Prompts for AI Agents" sections.
 ## Tool Integration
 
 ### Core Tools (Auto-detected)
+
 ```yaml
 JavaScript/TypeScript: ESLint, Prettier
 Python: Ruff, Pylint, Bandit
