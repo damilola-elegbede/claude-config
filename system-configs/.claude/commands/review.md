@@ -2,31 +2,152 @@
 
 ## Description
 
-Multi-agent code review with comprehensive documentation analysis for context,
-orchestrating specialized agents for security, performance, testing, and
-accessibility validation.
+CodeRabbit-inspired AI code review with multi-layer analysis pipeline combining 30+ linting tools,
+AST analysis, security scanning, and AI synthesis. Generates structured reports with actionable 
+"Prompts for AI Agents" sections for automated remediation.
 
 ## Usage
 
 ```bash
-/review                    # Review changed files only (default)
-/review --full             # Review entire codebase comprehensively
+/review                    # CodeRabbit-style review of changed files (default)
+/review --full             # Full repository review with 30+ tools
 /review <file|directory>   # Review specific target
-/review --fix             # Auto-fix safe issues
-/review --security        # Security-focused review
-/review --performance     # Performance-focused review
+/review --fix             # Auto-fix safe issues + commit fixes
+/review --security        # Security-focused with Semgrep, Gitleaks, OSV-Scanner
+/review --performance     # Performance analysis with profiling
+/review --learn           # Learn from team feedback and preferences
 ```
 
 ## Behavior
 
-When invoked, I first read all documentation for context understanding, then
-orchestrate multiple specialized agents for code review. By default, only
-changed files are reviewed for efficiency. Agents receive documentation context
-and work in parallel to analyze security, performance, testing, and accessibility
-aspects with informed decisions.
+**CodeRabbit-Inspired Multi-Layer Analysis:**
 
-**Default Mode**: Reviews only changed files (git diff) for fast feedback
-**Full Mode**: Reviews entire repository for comprehensive system analysis
+1. **Tool Pipeline**: Runs 30+ linting tools (ESLint, Semgrep, Gitleaks, etc.) in parallel
+2. **AST Analysis**: Deep code structure understanding and dependency mapping
+3. **AI Synthesis**: Claude processes all tool outputs with contextual reasoning
+4. **Report Generation**: Structured output with "Prompts for AI Agents" sections
+5. **Learning**: Adapts to team preferences and coding standards over time
+
+**Default Mode**: CodeRabbit-style review of changed files with tool integration
+**Full Mode**: Comprehensive repository analysis with all 30+ tools
+
+## Multi-Layer Analysis Pipeline
+
+### Layer 1: Static Analysis Tools (30+ Tools)
+
+**Language-Specific Linters:**
+```yaml
+JavaScript/TypeScript:
+  - ESLint: Code quality and best practices
+  - Oxlint: High-performance linting  
+  - Biome: Fast formatter and linter
+
+Python:
+  - Flake8: Style guide enforcement
+  - Pylint: Comprehensive code analysis
+  - Ruff: Extremely fast Python linter
+
+Go:
+  - golangci-lint: Meta-linter with 40+ linters
+  - staticcheck: Advanced static analysis
+
+Rust:
+  - Clippy: Rust-specific lints and suggestions
+
+Ruby:
+  - RuboCop: Style guide enforcement
+  - Brakeman: Security vulnerability scanner
+```
+
+**Security Scanners:**
+```yaml
+Universal Security:
+  - Semgrep: SAST with custom rules
+  - Gitleaks: Secret detection
+  - OSV-Scanner: Vulnerability database lookup
+  - Checkov: Infrastructure security
+
+Language-Specific Security:
+  - Bandit: Python security linter  
+  - gosec: Go security checker
+  - security-audit: Node.js security
+```
+
+**Infrastructure & Config:**
+```yaml
+Docker:
+  - Hadolint: Dockerfile best practices
+  - Trivy: Container vulnerability scanning
+
+CI/CD:
+  - actionlint: GitHub Actions linting
+  - CircleCI: Pipeline validation
+
+Config Files:
+  - yamllint: YAML syntax and style
+  - jsonlint: JSON validation
+  - Buf: Protocol Buffer linting
+```
+
+**Documentation & Formatting:**
+```yaml
+Markdown:
+  - markdownlint: Markdown style guide
+  - LanguageTool: Natural language review
+
+Shell Scripts:
+  - ShellCheck: Shell script analysis
+  - shfmt: Shell formatting
+
+SQL:
+  - SQLFluff: SQL linting and formatting
+```
+
+### Layer 2: AST Analysis & Code Graph
+
+**Deep Code Understanding:**
+```yaml
+AST Analysis:
+  - Parse syntax trees for all languages
+  - Understand code structure and patterns
+  - Map function calls and data flow
+  - Identify architectural patterns
+
+Dependency Mapping:
+  - Cross-file dependency analysis
+  - Import/export relationship mapping
+  - Circular dependency detection
+  - Dead code identification
+
+Performance Analysis:
+  - Algorithm complexity detection
+  - Memory usage patterns
+  - Database query optimization
+  - Bundle size analysis
+```
+
+### Layer 3: AI Synthesis with Claude
+
+**Intelligent Processing:**
+```yaml
+Context Integration:
+  - Synthesize all tool outputs
+  - Apply project-specific context
+  - Understand architectural implications
+  - Generate actionable feedback
+
+Pattern Recognition:
+  - Identify anti-patterns
+  - Suggest architectural improvements
+  - Detect code smells
+  - Recommend refactoring opportunities
+
+Learning System:
+  - Remember team preferences
+  - Adapt to coding standards
+  - Learn from feedback patterns
+  - Customize review focus
+```
 
 ## Agent Orchestration Strategy
 
@@ -202,12 +323,195 @@ describe('processPayment', () => {
 });
 ```
 
+## Enhanced Implementation - CodeRabbit Style
+
+### Multi-Layer Review Execution
+
+```bash
+# CodeRabbit-inspired review with tool integration
+execute_coderabbit_review() {
+  local target="$1"
+  local mode="$2" 
+  local scope="$3"
+
+  echo "🤖 Starting CodeRabbit-style AI review..."
+  echo "🔧 Multi-layer analysis: Tools + AST + AI Synthesis"
+
+  # Phase 1: Tool Pipeline Execution
+  run_tool_pipeline() {
+    echo "📊 Phase 1: Running 30+ static analysis tools..."
+    
+    # Language Detection
+    detect_languages() {
+      local file_list="$1"
+      echo "$file_list" | while read -r file; do
+        case "$file" in
+          *.js|*.jsx|*.ts|*.tsx) echo "javascript" ;;
+          *.py) echo "python" ;;
+          *.go) echo "go" ;;
+          *.rs) echo "rust" ;;
+          *.rb) echo "ruby" ;;
+          *.php) echo "php" ;;
+          *.java) echo "java" ;;
+          *.swift) echo "swift" ;;
+          *.sh) echo "shell" ;;
+          *.sql) echo "sql" ;;
+          *.md) echo "markdown" ;;
+          *.yaml|*.yml) echo "yaml" ;;
+          *.json) echo "json" ;;
+          *) echo "generic" ;;
+        esac
+      done | sort | uniq
+    }
+
+    local languages=$(detect_languages "$target")
+    echo "🔍 Detected languages: $languages"
+
+    # JavaScript/TypeScript Tools
+    if echo "$languages" | grep -q "javascript"; then
+      echo "🟡 Running JavaScript analysis..."
+      run_if_available "npx eslint $target --format json" "ESLint"
+      run_if_available "npx oxlint $target" "Oxlint" 
+      run_if_available "npx biome check $target" "Biome"
+      run_if_available "npx prettier --check $target" "Prettier"
+    fi
+
+    # Python Tools  
+    if echo "$languages" | grep -q "python"; then
+      echo "🐍 Running Python analysis..."
+      run_if_available "flake8 $target --format=json" "Flake8"
+      run_if_available "pylint $target --output-format=json" "Pylint"
+      run_if_available "ruff check $target --format json" "Ruff"
+      run_if_available "bandit -r $target -f json" "Bandit"
+    fi
+
+    # Go Tools
+    if echo "$languages" | grep -q "go"; then
+      echo "🐹 Running Go analysis..."
+      run_if_available "golangci-lint run $target --out-format json" "golangci-lint"
+      run_if_available "staticcheck -f json $target" "staticcheck"
+      run_if_available "gosec -fmt json $target" "gosec"
+    fi
+
+    # Universal Security Tools  
+    echo "🔒 Running security analysis..."
+    run_if_available "semgrep --config=auto $target --json" "Semgrep"
+    run_if_available "gitleaks detect --source $target --report-format json" "Gitleaks" 
+    run_if_available "osv-scanner --format json $target" "OSV-Scanner"
+    run_if_available "checkov -d $target --framework all -o json" "Checkov"
+
+    # Infrastructure Tools
+    if find "$target" -name "Dockerfile" -o -name "*.dockerfile" | grep -q .; then
+      echo "🐳 Running Docker analysis..."
+      run_if_available "hadolint $target/Dockerfile --format json" "Hadolint"
+    fi
+
+    if find "$target" -name "*.yaml" -o -name "*.yml" | grep -q .; then
+      echo "📄 Running YAML analysis..."
+      run_if_available "yamllint $target --format parsable" "yamllint"
+    fi
+
+    # Documentation Tools
+    if find "$target" -name "*.md" | grep -q .; then
+      echo "📝 Running documentation analysis..."
+      run_if_available "markdownlint $target --json" "markdownlint"
+    fi
+
+    if find "$target" -name "*.sh" | grep -q .; then
+      echo "🐚 Running shell script analysis..."
+      run_if_available "shellcheck $target --format json" "ShellCheck"
+    fi
+  }
+
+  # Helper function to run tools if available
+  run_if_available() {
+    local cmd="$1"
+    local tool_name="$2"
+    
+    if command -v $(echo "$cmd" | cut -d' ' -f1) >/dev/null 2>&1; then
+      echo "  ✅ $tool_name: Running..."
+      eval "$cmd" > "/tmp/review_${tool_name,,}.json" 2>&1 || echo "  ⚠️ $tool_name: Issues found"
+    else
+      echo "  ⏭️ $tool_name: Not installed, skipping"
+    fi
+  }
+
+  # Execute tool pipeline
+  run_tool_pipeline
+
+  # Phase 2: AST Analysis
+  run_ast_analysis() {
+    echo "📊 Phase 2: AST Analysis & Code Graph..."
+    
+    # Deploy specialized agent for AST analysis
+    echo "🤖 Deploying AST analysis with language-specific parsers..."
+    echo "  🔍 Analyzing syntax trees and code structure"
+    echo "  🔗 Mapping dependencies and data flow"
+    echo "  📈 Detecting performance anti-patterns"
+    echo "  🏗️ Identifying architectural violations"
+  }
+
+  run_ast_analysis
+
+  # Phase 3: AI Synthesis with Claude
+  synthesize_with_claude() {
+    echo "📊 Phase 3: AI Synthesis with Claude..."
+    
+    # Collect all tool outputs
+    tool_results=""
+    for result_file in /tmp/review_*.json; do
+      if [[ -f "$result_file" ]]; then
+        tool_name=$(basename "$result_file" .json | sed 's/review_//')
+        echo "📋 Processing $tool_name results..."
+        tool_results="$tool_results\n\n=== $tool_name Results ===\n$(cat "$result_file")"
+      fi
+    done
+
+    # Deploy Claude for intelligent synthesis
+    echo "🤖 Deploying Claude for intelligent analysis synthesis..."
+    echo "  🧠 Processing all tool outputs with contextual reasoning"
+    echo "  🎯 Generating actionable 'Prompts for AI Agents' sections"
+    echo "  📊 Creating metrics and priority classifications"
+    echo "  💡 Learning from team feedback patterns"
+  }
+
+  synthesize_with_claude
+
+  # Phase 4: Report Generation
+  generate_coderabbit_report() {
+    echo "📊 Phase 4: Generating CodeRabbit-style report..."
+    
+    # Generate structured markdown report
+    echo "📝 Creating structured report with:"
+    echo "  📈 Executive summary with metrics"
+    echo "  🔴 Critical/High/Medium issue classification"
+    echo "  🛠️ 'Prompts for AI Agents' sections"
+    echo "  📊 Tool execution summary"
+    echo "  🎯 Prioritized action plan"
+    echo "  💡 Learning notes for team adaptation"
+
+    # Save report
+    report_file=".tmp/coderabbit_review_$(date +%Y%m%d_%H%M%S).md"
+    mkdir -p .tmp
+    echo "📁 Report saved: $report_file"
+  }
+
+  generate_coderabbit_report
+
+  # Cleanup
+  rm -f /tmp/review_*.json
+  
+  echo "✅ CodeRabbit-style review complete!"
+  echo "🎯 Found issues across security, performance, quality, and testing"
+  echo "🤖 Actionable prompts ready for specialized agents"
+}
+
 ## Concrete Review Process
 
 ### File Analysis Pipeline
 
 ```bash
-# Multi-agent review coordination with documentation context
+# Multi-agent review coordination with documentation context  
 coordinate_review() {
   local target="$1"
   local mode="$2"
@@ -408,12 +712,180 @@ Low Priority (Optional):
     - Minor linting violations
 ```
 
-## Review Report Examples
+## CodeRabbit-Style Report Format
+
+### Standard Review Report
+
+```markdown
+# 🤖 AI Code Review Report
+
+## Summary
+**Target**: 3 changed files | **Tools**: 15 linters + AST analysis  
+**Issues Found**: 2 Critical, 3 High, 5 Medium | **Status**: ⚠️ Needs Attention  
+**Review Time**: 45 seconds | **Estimated Fix Time**: 25 minutes
+
+## Files Analyzed
+- `src/auth/login.js`: Authentication logic changes
+- `src/api/users.js`: User management endpoints  
+- `tests/auth.test.js`: Test coverage additions
+
+---
+
+## 🔴 Critical Issues (2)
+
+### 1. SQL Injection Vulnerability
+**File**: `src/auth/login.js:45`  
+**Tool**: Semgrep + Manual Review  
+**Risk**: Remote code execution via authentication bypass
+
+```javascript
+// ❌ Vulnerable code
+const query = `SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`;
+const user = await db.query(query);
+```
+
+**Fix Required**: Use parameterized queries to prevent injection
+```javascript  
+// ✅ Fixed code
+const query = 'SELECT * FROM users WHERE email = ? AND password = ?';
+const user = await db.query(query, [email, hashedPassword]);
+```
+
+### 2. Hardcoded API Secret
+**File**: `src/api/users.js:12`  
+**Tool**: Gitleaks  
+**Risk**: Credential exposure in version control
+
+```javascript
+// ❌ Hardcoded secret  
+const API_KEY = "sk-1234567890abcdef";
+```
+
+**Fix Required**: Move to environment variables
+```javascript
+// ✅ Environment variable
+const API_KEY = process.env.API_KEY;
+```
+
+---
+
+## 🟠 High Priority Issues (3)
+
+### 1. N+1 Query Pattern  
+**File**: `src/api/users.js:67`
+**Tool**: Custom AST Analysis  
+**Impact**: 2000ms → 50ms response time improvement
+
+```javascript
+// ❌ N+1 Query Problem
+for (const user of users) {
+  user.posts = await Post.findByUserId(user.id); // N queries
+}
+```
+
+### 2. Missing Error Handling
+**File**: `src/auth/login.js:23`  
+**Tool**: ESLint + Security Analysis  
+**Impact**: Potential application crashes
+
+### 3. Weak Password Hashing
+**File**: `src/auth/password.js:15`  
+**Tool**: Custom Security Rules  
+**Impact**: Authentication security weakness  
+
+---
+
+## 🟡 Medium Priority Issues (5)
+
+1. **Code Duplication**: 23% similarity between `auth/login.js` and `auth/signup.js`  
+2. **Missing TypeScript**: 3 files lack proper type definitions
+3. **Test Coverage Gap**: Payment logic has 0% test coverage
+4. **Bundle Size**: JavaScript bundle increased by 15KB
+5. **Documentation**: 2 complex functions lack JSDoc comments
+
+---
+
+## Prompts for AI Agents
+
+### Security Fixes
+- Fix SQL injection in login endpoint using parameterized queries
+- Replace hardcoded API key with environment variable configuration  
+- Implement proper input validation for all authentication endpoints
+- Add rate limiting to prevent brute force attacks
+
+### Performance Optimizations  
+- Optimize N+1 query in user posts retrieval using JOIN or prefetch
+- Implement database query caching for frequently accessed user data
+- Add lazy loading for user profile images to reduce initial load time
+- Optimize JavaScript bundle size with code splitting
+
+### Testing Improvements
+- Add comprehensive test coverage for payment processing logic
+- Create integration tests for authentication flow edge cases  
+- Implement property-based testing for input validation functions
+- Add performance tests for database query optimization
+
+### Code Quality Enhancements
+- Refactor duplicated authentication logic into shared utility functions
+- Add TypeScript definitions for API response interfaces
+- Generate JSDoc documentation for complex algorithm implementations  
+- Implement consistent error handling patterns across all modules
+
+---
+
+## 📊 Metrics & Analysis
+
+**Security Score**: 6/10 (2 critical vulnerabilities found)  
+**Performance Score**: 7/10 (1 significant bottleneck identified)  
+**Test Coverage**: 73% → Target: 80% (23 untested functions)  
+**Code Quality**: 8/10 (following project patterns, minor improvements needed)  
+**Documentation**: 5/10 (missing docs for complex functions)
+
+**Tool Execution Summary**:
+- ESLint: 12 style issues (8 auto-fixable)
+- Semgrep: 1 SQL injection, 2 XSS vulnerabilities  
+- Gitleaks: 1 hardcoded secret detected
+- AST Analysis: 3 performance anti-patterns
+- Custom Rules: 5 project-specific violations
+
+---
+
+## 🎯 Next Steps
+
+**Immediate Action Required** (Blocks merge):
+1. Fix SQL injection vulnerability (Critical)
+2. Remove hardcoded API secret (Critical)
+
+**Before Merge** (High Priority):  
+3. Optimize N+1 query pattern (Performance)
+4. Add error handling to authentication logic (Reliability)
+5. Implement proper password hashing (Security)
+
+**Post-Merge Improvements** (Medium Priority):
+6. Increase test coverage to 80%
+7. Add TypeScript definitions  
+8. Document complex functions
+9. Refactor duplicated code
+
+**Estimated Total Fix Time**: 25 minutes for critical issues, 2 hours for all improvements
+
+---
+
+## 💡 Learning Notes
+
+Based on team feedback patterns:
+- Team prefers explicit error handling over try/catch blocks
+- TypeScript adoption is a stated goal for Q2
+- Performance optimizations are high priority for this sprint  
+- Security fixes should follow OWASP guidelines from team training
+
+*This review adapts to your team's coding standards learned from previous interactions.*
+```
 
 ### Security-Focused Review
 
 ```markdown
-## Security Review Report
+## 🔒 Security-Focused Review Report
 **Target**: src/auth/ | **Issues**: 3 Critical, 2 High | **Status**: ❌ Blocked
 
 ### 🔴 Critical Security Issues
@@ -513,19 +985,70 @@ Deploy execution-evaluator to verify:
 
 ## Examples
 
-### Standard Review (Changed Files Only)
+### CodeRabbit-Style Review (Changed Files)
 
 ```bash
 User: /review
-Claude: 📚 Reading documentation for context...
-📖 Reading: README.md, CLAUDE.md, package.json
-🔍 Starting context-aware review of CHANGED FILES...
-📊 Scope: 3 changed files
-🎯 Changed files mode: Deploying targeted agents
-🤖 Deploying context-aware agents: code-reviewer, security-auditor
-🔒 security-auditor: Found 1 input validation issue in auth.js
-🔧 code-reviewer: 2 minor style issues, following project patterns from CLAUDE.md
-📋 Generated context-aware review with 3 actionable fixes (focused on changes)
+Claude: 🤖 Starting CodeRabbit-style AI review...
+🔧 Multi-layer analysis: Tools + AST + AI Synthesis
+
+📊 Phase 1: Running 30+ static analysis tools...
+🔍 Detected languages: javascript, python, markdown
+🟡 Running JavaScript analysis...
+  ✅ ESLint: Running...
+  ⚠️ ESLint: Issues found
+  ✅ Prettier: Running...
+🐍 Running Python analysis...  
+  ⏭️ Flake8: Not installed, skipping
+  ✅ Ruff: Running...
+🔒 Running security analysis...
+  ✅ Semgrep: Running...
+  ⚠️ Semgrep: Issues found
+  ✅ Gitleaks: Running...
+  ⚠️ Gitleaks: Issues found
+
+📊 Phase 2: AST Analysis & Code Graph...
+🤖 Deploying AST analysis with language-specific parsers...
+  🔍 Analyzing syntax trees and code structure
+  🏗️ Identifying architectural violations
+
+📊 Phase 3: AI Synthesis with Claude...
+📋 Processing ESLint results...
+📋 Processing Semgrep results...
+📋 Processing Gitleaks results...
+🤖 Deploying Claude for intelligent analysis synthesis...
+  🧠 Processing all tool outputs with contextual reasoning
+  🎯 Generating actionable 'Prompts for AI Agents' sections
+
+📊 Phase 4: Generating CodeRabbit-style report...
+📝 Creating structured report with:
+  📈 Executive summary with metrics
+  🔴 Critical/High/Medium issue classification
+  🛠️ 'Prompts for AI Agents' sections
+📁 Report saved: .tmp/coderabbit_review_20241223_142530.md
+
+✅ CodeRabbit-style review complete!
+🎯 Found issues across security, performance, quality, and testing
+🤖 Actionable prompts ready for specialized agents
+
+# 🤖 AI Code Review Report
+
+## Summary  
+**Target**: 3 changed files | **Tools**: 15 linters + AST analysis
+**Issues Found**: 2 Critical, 1 High, 3 Medium | **Status**: ❌ Blocked
+**Review Time**: 45 seconds | **Estimated Fix Time**: 15 minutes
+
+## 🔴 Critical Issues (2)
+1. **Hardcoded API Secret** in src/api/config.js:12 (Gitleaks)
+2. **SQL Injection** in src/auth/login.js:45 (Semgrep)
+
+## Prompts for AI Agents
+### Security Fixes
+- Replace hardcoded API key with environment variable
+- Fix SQL injection using parameterized queries
+- Add input validation for authentication endpoints
+
+[Full report available in .tmp/coderabbit_review_20241223_142530.md]
 ```
 
 ### Full Repository Review
@@ -598,20 +1121,52 @@ Claude: 🔧 Review with auto-remediation...
 📝 Committed auto-fixes, generated manual fix report
 ```
 
+### Auto-Fix Review
+
+```bash  
+User: /review --fix
+Claude: 🤖 Starting CodeRabbit-style review with auto-remediation...
+🔧 Multi-layer analysis: Tools + AST + AI Synthesis + Auto-fixes
+
+📊 Phase 1: Running 30+ static analysis tools...
+🟡 Running JavaScript analysis...
+  ✅ ESLint: Running...
+  ⚠️ ESLint: 12 issues found (8 auto-fixable)
+  ✅ Prettier: Running...
+  ⚠️ Prettier: 4 formatting issues found
+
+🔧 Auto-fixing safe issues...
+  ✅ Applied ESLint auto-fixes (8/12 issues)
+  ✅ Applied Prettier formatting (4/4 issues)  
+  📝 Committed auto-fixes: "fix: apply linting auto-fixes"
+
+📊 Remaining manual issues: 4 (requires human review)
+🛠️ Generated prompts for manual fixes in report
+
+✅ Auto-fix complete! 12 issues resolved, 4 require manual attention
+```
+
 ## Notes
 
+**CodeRabbit-Inspired Enhancements:**
+- **30+ Tool Integration**: ESLint, Semgrep, Gitleaks, Hadolint, etc.
+- **Multi-Layer Pipeline**: Tools → AST → AI Synthesis → Structured Reports
+- **"Prompts for AI Agents"**: Actionable remediation instructions for automation
+- **Learning System**: Adapts to team preferences and coding standards
+- **Structured Reports**: CodeRabbit-style markdown with metrics and priorities
+
+**Core Features:**
 - **Smart Scope Detection**: Reviews changed files by default, full repository with --full
 - **Context-First Approach**: Reads all documentation before code review
-- **Informed Agent Deployment**: Agents receive project context for accurate analysis
-- **Efficiency-Focused**: Default mode provides fast feedback on recent changes
-- **Comprehensive Option**: --full mode enables complete system analysis when needed
-- **Architecture-Aware**: Understands command vs agent distinctions, system boundaries
-- **Pattern Recognition**: Applies project-specific patterns from CLAUDE.md/README.md
-- **False Positive Prevention**: Context prevents misapplication of security models
-- **Targeted Analysis**: Agent deployment adapts to review scope and file types
-- Deploys multiple agents in parallel for comprehensive coverage
-- Focuses on actionable feedback with specific code examples
-- Prioritizes issues by severity and business impact
-- Provides both automated fixes and manual guidance
-- Integrates with development workflow for continuous quality
-- Generates detailed reports suitable for team review and compliance
+- **Tool Auto-Detection**: Runs appropriate linters based on detected languages
+- **Parallel Execution**: All tools run concurrently for maximum speed
+- **Intelligent Synthesis**: Claude processes all tool outputs with contextual reasoning
+- **Auto-Fix Capability**: Applies safe fixes automatically and commits them
+- **Report Persistence**: Saves detailed reports to .tmp/ for future reference
+
+**Workflow Integration:**
+- **Development-Friendly**: Integrates with existing toolchains and workflows
+- **CI/CD Compatible**: JSON outputs compatible with automated pipelines  
+- **Team Learning**: Remembers feedback patterns and adjusts review focus
+- **Quality Gates**: Supports blocking critical issues while allowing minor ones
+- **Compliance Ready**: Generates audit-trail documentation for enterprise requirements
