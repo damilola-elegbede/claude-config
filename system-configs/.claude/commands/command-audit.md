@@ -2,23 +2,17 @@
 
 ## Description
 
-Validates command structure, content quality, and markdown parsing compliance.
-Generates focused audit report with actionable fixes. Repository-specific
-command excluded from sync.
+Validates command structure, content quality, and markdown parsing compliance across all commands in system-configs/.claude/commands/. Generates comprehensive audit report with actionable remediation guidance.
 
 ## Usage
 
 ```bash
-/command-audit                 # Audit all commands
-/command-audit --fix          # Auto-fix safe issues
-/command-audit <command-name> # Audit specific command
+/command-audit
 ```
 
 ## Behavior
 
-When invoked, I will systematically validate command files for structure compliance,
-content quality, and markdown parsing requirements. The audit generates actionable
-reports highlighting issues with specific fixes.
+Systematically validates all command files using available tools (Grep, Read, LS) to check structure compliance, markdown formatting, and content quality. Provides detailed audit report similar to /agent-audit with specific issues and remediation commands.
 
 ## Validation Framework
 
