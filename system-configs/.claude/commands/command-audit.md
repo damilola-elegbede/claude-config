@@ -2,7 +2,8 @@
 
 ## Description
 
-Validates command structure, content quality, and markdown parsing compliance across all commands in system-configs/.claude/commands/. Generates comprehensive audit report with actionable remediation guidance.
+Validates command structure, content quality, and markdown parsing compliance across all commands in
+system-configs/.claude/commands/. Generates comprehensive audit report with actionable remediation guidance.
 
 ## Usage
 
@@ -12,7 +13,9 @@ Validates command structure, content quality, and markdown parsing compliance ac
 
 ## Behavior
 
-Systematically validates all command files using available tools (Grep, Read, LS) to check structure compliance, markdown formatting, and content quality. Provides detailed audit report similar to /agent-audit with specific issues and remediation commands.
+Systematically validates all command files using available tools (Grep, Read, LS) to check structure
+compliance, markdown formatting, and content quality. Provides detailed audit report similar to
+/agent-audit with specific issues and remediation commands.
 
 ## Validation Framework
 
