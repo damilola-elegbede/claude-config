@@ -4,7 +4,7 @@
 
 This is a **Claude Code CLI Configuration Management Repository** - a clean, organized system for managing Claude
 configurations, specialized agents, and custom commands. After a major cleanup that removed 85+ bloat files, this
-repository now contains essential configurations for running 41 specialized agents and 18 commands with the Claude
+repository now contains essential configurations for running 26 specialized agents and 20 commands with the Claude
 Code CLI.
 
 ## Repository-Specific Instructions
