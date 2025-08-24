@@ -15,6 +15,10 @@ TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FIXTURES_DIR="${TEST_DIR}/fixtures"
 MOCK_BIN="${TEST_DIR}/mock-bin"
 
+# Make paths available to subshells and mock binaries
+export TEST_DIR
+export FIXTURES_DIR
+
 # Create mock directories
 mkdir -p "${FIXTURES_DIR}" "${MOCK_BIN}"
 
@@ -196,9 +200,9 @@ test_push_and_comment() {
         source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
         # Mock git commands
         git() {
-            case "$1" in
+            case "$*" in
                 "diff --quiet") return 1 ;;  # Has changes
-                "add .") echo "Added files"; return 0 ;;
+                add*) echo "Added files"; return 0 ;;
                 commit*) echo "Committed changes"; return 0 ;;
                 push*) echo "Pushed to remote"; return 0 ;;
                 "rev-parse --abbrev-ref HEAD") echo "test-branch" ;;
@@ -239,9 +243,9 @@ test_split_comments() {
         source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
         # Mock git commands
         git() {
-            case "$1" in
+            case "$*" in
                 "diff --quiet") return 1 ;;  # Has changes
-                "add .") return 0 ;;
+                add*) return 0 ;;
                 commit*) echo "Mock commit"; return 0 ;;
                 push*) echo "Mock push"; return 0 ;;
                 "rev-parse --abbrev-ref HEAD") echo "test-branch" ;;
