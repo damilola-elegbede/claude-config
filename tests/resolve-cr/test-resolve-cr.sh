@@ -135,12 +135,15 @@ test_happy_path() {
         source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
         # Mock git commands
         git() {
-            case "$1" in
-                "diff") return 1 ;;  # Has changes
-                "add") return 0 ;;
-                "commit") echo "Mock commit"; return 0 ;;
-                "push") echo "Mock push"; return 0 ;;
-                "rev-parse") echo "test-branch" ;;
+            case "$*" in
+                "diff --quiet") return 1 ;;  # simulate pending changes
+                "diff HEAD~1 --stat") echo " 1 file changed, 3 insertions(+)" ; return 0 ;;
+                add*) return 0 ;;
+                commit*) echo "Mock commit"; return 0 ;;
+                push*) echo "Mock push"; return 0 ;;
+                "rev-parse --abbrev-ref HEAD") echo "test-branch" ;;
+                "log -1 --pretty=format:- Commit: %h - %s") echo "- Commit: abc1234 - fix: resolve CodeRabbit suggestions" ;;
+                "rev-list --count HEAD") echo "5" ;;
                 *) echo "Mock git: $*"; return 0 ;;
             esac
         }
@@ -194,12 +197,14 @@ test_push_and_comment() {
         # Mock git commands
         git() {
             case "$1" in
-                "diff") return 1 ;;  # Has changes
-                "add") echo "Added files"; return 0 ;;
-                "commit") echo "Committed changes"; return 0 ;;
-                "push") echo "Pushed to remote"; return 0 ;;
-                "rev-parse") echo "test-branch" ;;
-                "log") echo "abc1234 - fix: resolve CodeRabbit suggestions" ;;
+                "diff --quiet") return 1 ;;  # Has changes
+                "add .") echo "Added files"; return 0 ;;
+                commit*) echo "Committed changes"; return 0 ;;
+                push*) echo "Pushed to remote"; return 0 ;;
+                "rev-parse --abbrev-ref HEAD") echo "test-branch" ;;
+                "log -1 --pretty=format:- Commit: %h - %s") echo "- Commit: abc1234 - fix: resolve CodeRabbit suggestions" ;;
+                "diff HEAD~1 --stat") echo " 2 files changed, 10 insertions(+)" ;;
+                "rev-list --count HEAD") echo "5" ;;
                 *) echo "Mock git: $*"; return 0 ;;
             esac
         }
@@ -208,7 +213,7 @@ test_push_and_comment() {
     ' 2>&1)
     
     # Check that push happens before comments
-    push_line=$(echo "$output" | grep -n "Pushed to remote" | cut -d: -f1)
+    push_line=$(echo "$output" | grep -n "Changes pushed successfully" | cut -d: -f1)
     resolve_line=$(echo "$output" | grep -n "Resolution trigger posted" | cut -d: -f1)
     
     if [[ ! -z "$push_line" ]] && [[ ! -z "$resolve_line" ]]; then
@@ -235,12 +240,14 @@ test_split_comments() {
         # Mock git commands
         git() {
             case "$1" in
-                "diff") return 1 ;;  # Has changes
-                "add") return 0 ;;
-                "commit") echo "Mock commit"; return 0 ;;
-                "push") echo "Mock push"; return 0 ;;
-                "rev-parse") echo "test-branch" ;;
-                "log") echo "abc1234 - fix: resolve CodeRabbit suggestions" ;;
+                "diff --quiet") return 1 ;;  # Has changes
+                "add .") return 0 ;;
+                commit*) echo "Mock commit"; return 0 ;;
+                push*) echo "Mock push"; return 0 ;;
+                "rev-parse --abbrev-ref HEAD") echo "test-branch" ;;
+                "log -1 --pretty=format:- Commit: %h - %s") echo "- Commit: abc1234 - fix: resolve CodeRabbit suggestions" ;;
+                "diff HEAD~1 --stat") echo " 2 files changed, 10 insertions(+)" ;;
+                "rev-list --count HEAD") echo "5" ;;
                 *) echo "Mock git: $*"; return 0 ;;
             esac
         }
@@ -248,9 +255,9 @@ test_split_comments() {
         resolve_cr 62 2>&1
     ' 2>&1)
     
-    # Check for two separate comment posts
-    resolve_count=$(echo "$output" | grep -c "@coderabbitai resolve")
-    summary_count=$(echo "$output" | grep -c "Resolution Summary")
+    # Check for two separate comment posts via status lines
+    resolve_count=$(echo "$output" | grep -c "Resolution trigger posted")
+    summary_count=$(echo "$output" | grep -c "Detailed summary posted")
     
     if [[ $resolve_count -ge 1 ]] && [[ $summary_count -ge 1 ]]; then
         return 0
