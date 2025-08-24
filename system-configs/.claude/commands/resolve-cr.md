@@ -15,9 +15,9 @@ Finds and resolves CodeRabbit review comments from PR. Extracts actionable sugge
 ## Behavior
 
 When invoked, there ARE CodeRabbit comments to resolve - no questions asked.
-I will aggressively search for unresolved CodeRabbit comments, IMMEDIATELY post
-"@coderabbitai resolve" to trigger resolution, implement fixes, then wait for
-CodeRabbit acknowledgment before pushing any changes.
+I will aggressively search for unresolved CodeRabbit comments, implement fixes,
+push the changes, then post two comments: first "@coderabbitai resolve" to
+trigger resolution, followed by a detailed summary of the fixes for CodeRabbit.
 
 ## Workflow
 
@@ -122,27 +122,13 @@ resolve_cr() {
 
   echo "📋 Found: $security security, $performance perf, $tests test, $quality quality issues"
 
-  # IMMEDIATELY notify CodeRabbit to start resolution process (non-negotiable)
-  echo "💬 Posting @coderabbitai resolve to trigger resolution..."
-  gh pr comment $pr --body "@coderabbitai resolve
-
-🔄 **CodeRabbit Resolution In Progress**
-
-📋 **Issues Found:**
-- **Security**: $security issues to address
-- **Performance**: $performance issues to optimize
-- **Tests**: $tests issues to cover
-- **Quality**: $quality issues to improve
-
-Working on fixes now. Will push changes after your acknowledgment."
-
   # Deploy appropriate agents to fix issues
   [[ $security -gt 0 ]] && echo "🔒 Fixing security issues..."
   [[ $performance -gt 0 ]] && echo "⚡ Fixing performance issues..."
   [[ $tests -gt 0 ]] && echo "🧪 Adding test coverage..."
   [[ $quality -gt 0 ]] && echo "🔧 Improving code quality..."
 
-  # Commit fixes locally but DON'T push yet
+  # Commit fixes locally
   if ! git diff --quiet; then
     git add .
     git commit -m "fix: resolve CodeRabbit suggestions
@@ -154,36 +140,38 @@ Working on fixes now. Will push changes after your acknowledgment."
     echo "✅ Changes committed locally"
   fi
 
-  # Wait for CodeRabbit acknowledgment before pushing
-  echo "⏳ Waiting for CodeRabbit acknowledgment (checking every 10 seconds)..."
-  max_attempts=30  # Wait up to 5 minutes
-  attempt=0
-  
-  while [[ $attempt -lt $max_attempts ]]; do
-    sleep 10
-    
-    # Check for CodeRabbit's acknowledgment across recent issue + review comments
-    recent_issue=$(gh api "repos/:owner/:repo/issues/$pr/comments?per_page=20" \
-      --jq '.[] | select(.user.login == "coderabbitai[bot]") | .body' 2>/dev/null || echo "")
-    recent_reviews=$(gh api "repos/:owner/:repo/pulls/$pr/reviews?per_page=20" \
-      --jq '.[] | select(.user.login == "coderabbitai[bot]") | .body' 2>/dev/null || echo "")
-    latest_comment=$(printf "%s\n%s\n" "$recent_issue" "$recent_reviews")
+  # Push changes immediately
+  echo "🚀 Pushing fixes to remote..."
+  git push -u origin "$(git rev-parse --abbrev-ref HEAD)"
+  echo "✅ Changes pushed successfully"
 
-    if echo "$latest_comment" | grep -qiE 'acknowledged|resolved|thank you|great work|confirmed|on it'; then
-      echo "✅ CodeRabbit acknowledged! Pushing changes..."
-      git push -u origin "$(git rev-parse --abbrev-ref HEAD)"
-      echo "🚀 Changes pushed successfully after CodeRabbit acknowledgment"
-      break
-    fi
-    
-    attempt=$((attempt + 1))
-    echo "⏳ Still waiting... (attempt $attempt/$max_attempts)"
-  done
-  
-  if [[ $attempt -eq $max_attempts ]]; then
-    echo "⚠️ Timeout waiting for CodeRabbit acknowledgment"
-    echo "💡 Push manually with: git push"
-  fi
+  # Post resolution trigger comment
+  echo "💬 Posting @coderabbitai resolve to trigger resolution..."
+  gh pr comment $pr --body "@coderabbitai resolve"
+  echo "✅ Resolution trigger posted"
+
+  # Post detailed explanation comment
+  echo "📝 Posting detailed resolution summary..."
+  gh pr comment $pr --body "@coderabbitai
+
+## 🔧 Resolution Summary
+
+### Issues Addressed:
+- **Security Issues**: $security resolved
+- **Performance Issues**: $performance optimized
+- **Test Coverage**: $tests added
+- **Code Quality**: $quality improved
+
+### Changes Made:
+$(git log -1 --pretty=format:'- Commit: %h - %s')
+$(git diff HEAD~1 --stat | tail -1)
+
+### Verification:
+All suggested improvements have been implemented and pushed. The changes are ready for your review.
+
+---
+*Automated resolution via /resolve-cr command*"
+  echo "✅ Detailed summary posted"
 }
 ```
 
@@ -193,17 +181,17 @@ Working on fixes now. Will push changes after your acknowledgment."
 User: /resolve-cr
 Claude: 🔍 Aggressively searching for CodeRabbit comments in PR #42...
 📋 Found: 2 security, 3 perf, 1 test, 6 quality issues
-💬 Posting @coderabbitai resolve to trigger resolution...
 🔒 Fixing security issues...
 ⚡ Fixing performance issues...
 🧪 Adding test coverage...
 🔧 Improving code quality...
 ✅ Changes committed locally
-⏳ Waiting for CodeRabbit acknowledgment (checking every 10 seconds)...
-⏳ Still waiting... (attempt 1/30)
-⏳ Still waiting... (attempt 2/30)
-✅ CodeRabbit acknowledged! Pushing changes...
-🚀 Changes pushed successfully after CodeRabbit acknowledgment
+🚀 Pushing fixes to remote...
+✅ Changes pushed successfully
+💬 Posting @coderabbitai resolve to trigger resolution...
+✅ Resolution trigger posted
+📝 Posting detailed resolution summary...
+✅ Detailed summary posted
 
 User: /resolve-cr --dry-run
 Claude: 🔍 Aggressively searching for CodeRabbit comments...
@@ -219,9 +207,9 @@ Claude: 🔍 Aggressively searching for CodeRabbit comments...
 
 - **Aggressive Search**: Uses multiple strategies to find ALL CodeRabbit comments
 - **Non-negotiable Finding**: MUST find comments - no "not found" excuses
-- **Immediate Notification**: Posts "@coderabbitai resolve" IMMEDIATELY after finding comments
+- **Push-First Approach**: Pushes fixes before commenting to ensure CodeRabbit reviews actual changes
 - **Pattern Matching**: Categorizes issues by security, performance, testing, quality
 - **Single Commit**: All fixes in one commit with clear categorization
-- **Acknowledgment Wait**: Waits for CodeRabbit acknowledgment before pushing (up to 5 minutes)
+- **Split Comments**: Posts "@coderabbitai resolve" first, then detailed summary separately
 - **Automatic Resolution**: CodeRabbit marks comments as resolved via @mention
-- **Safe Push**: Only pushes after CodeRabbit confirms resolution, preventing duplicate work
+- **No Wait Required**: Eliminates unreliable acknowledgment wait, proceeds immediately

@@ -15,6 +15,10 @@ TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FIXTURES_DIR="${TEST_DIR}/fixtures"
 MOCK_BIN="${TEST_DIR}/mock-bin"
 
+# Make paths available to subshells and mock binaries
+export TEST_DIR
+export FIXTURES_DIR
+
 # Create mock directories
 mkdir -p "${FIXTURES_DIR}" "${MOCK_BIN}"
 
@@ -125,7 +129,7 @@ EOF
 EOF
 }
 
-# Test 1: Happy path - finds comments and gets acknowledgment
+# Test 1: Happy path - finds comments and pushes fixes
 test_happy_path() {
     export MOCK_SCENARIO="happy"
     export PATH="${MOCK_BIN}:$PATH"
@@ -133,13 +137,34 @@ test_happy_path() {
     # Source the resolve-cr implementation (simplified for testing)
     output=$(bash -c '
         source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
-        resolve_cr 62 2>&1 | head -20
+        # Mock git commands
+        git() {
+            case "$*" in
+                "diff --quiet") return 1 ;;  # simulate pending changes
+                "diff HEAD~1 --stat") echo " 1 file changed, 3 insertions(+)" ; return 0 ;;
+                add*) return 0 ;;
+                commit*) echo "Mock commit"; return 0 ;;
+                push*) echo "Mock push"; return 0 ;;
+                "rev-parse --abbrev-ref HEAD") echo "test-branch" ;;
+                "log -1 --pretty=format:- Commit: %h - %s") echo "- Commit: abc1234 - fix: resolve CodeRabbit suggestions" ;;
+                "rev-list --count HEAD") echo "5" ;;
+                *) echo "Mock git: $*"; return 0 ;;
+            esac
+        }
+        export -f git
+        resolve_cr 62 2>&1 | head -25
     ' 2>&1)
     
-    # Check for expected output patterns
+    # Check for expected output patterns in order
     if echo "$output" | grep -q "Aggressively searching for CodeRabbit comments"; then
         if echo "$output" | grep -q "Found:.*security.*perf.*test.*quality"; then
-            return 0
+            if echo "$output" | grep -q "Changes pushed successfully"; then
+                if echo "$output" | grep -q "Resolution trigger posted"; then
+                    if echo "$output" | grep -q "Detailed summary posted"; then
+                        return 0
+                    fi
+                fi
+            fi
         fi
     fi
     
@@ -166,46 +191,24 @@ test_no_comments() {
     return 1
 }
 
-# Test 3: Timeout path - no acknowledgment received
-test_timeout() {
+# Test 3: Push and comment workflow
+test_push_and_comment() {
     export MOCK_SCENARIO="happy"
-    export PATH="${MOCK_BIN}:$PATH"
-    export MAX_ATTEMPTS=2  # Override for faster testing
-    
-    output=$(bash -c '
-        source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
-        # Mock sleep to speed up test
-        sleep() { echo "Mock sleep $1"; }
-        export -f sleep
-        resolve_cr 62 2>&1
-    ' 2>&1)
-    
-    # Check for timeout message
-    if echo "$output" | grep -q "Timeout waiting for CodeRabbit acknowledgment"; then
-        if echo "$output" | grep -q "Push manually with: git push"; then
-            return 0
-        fi
-    fi
-    
-    echo "Output: $output"
-    return 1
-}
-
-# Test 4: Acknowledgment received
-test_acknowledgment() {
-    export MOCK_SCENARIO="acknowledged"
     export PATH="${MOCK_BIN}:$PATH"
     
     output=$(bash -c '
         source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
         # Mock git commands
         git() {
-            case "$1" in
-                "diff") return 1 ;;  # Has changes
-                "add") return 0 ;;
-                "commit") echo "Mock commit"; return 0 ;;
-                "push") echo "Mock push"; return 0 ;;
-                "rev-parse") echo "test-branch" ;;
+            case "$*" in
+                "diff --quiet") return 1 ;;  # Has changes
+                add*) echo "Added files"; return 0 ;;
+                commit*) echo "Committed changes"; return 0 ;;
+                push*) echo "Pushed to remote"; return 0 ;;
+                "rev-parse --abbrev-ref HEAD") echo "test-branch" ;;
+                "log -1 --pretty=format:- Commit: %h - %s") echo "- Commit: abc1234 - fix: resolve CodeRabbit suggestions" ;;
+                "diff HEAD~1 --stat") echo " 2 files changed, 10 insertions(+)" ;;
+                "rev-list --count HEAD") echo "5" ;;
                 *) echo "Mock git: $*"; return 0 ;;
             esac
         }
@@ -213,14 +216,59 @@ test_acknowledgment() {
         resolve_cr 62 2>&1
     ' 2>&1)
     
-    # Check for acknowledgment and push
-    if echo "$output" | grep -q "CodeRabbit acknowledged"; then
-        if echo "$output" | grep -q "Changes pushed successfully"; then
+    # Check that push happens before comments
+    push_line=$(echo "$output" | grep -n "Changes pushed successfully" | cut -d: -f1)
+    resolve_line=$(echo "$output" | grep -n "Resolution trigger posted" | cut -d: -f1)
+    
+    if [[ ! -z "$push_line" ]] && [[ ! -z "$resolve_line" ]]; then
+        if [[ $push_line -lt $resolve_line ]]; then
             return 0
         fi
     fi
     
     echo "Output: $output"
+    echo "Push line: $push_line, Resolve line: $resolve_line"
+    return 1
+}
+
+# Test 4: Split comment posting
+test_split_comments() {
+    export MOCK_SCENARIO="happy"
+    export PATH="${MOCK_BIN}:$PATH"
+    
+    # Track gh pr comment calls
+    comment_count=0
+    
+    output=$(bash -c '
+        source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
+        # Mock git commands
+        git() {
+            case "$*" in
+                "diff --quiet") return 1 ;;  # Has changes
+                add*) return 0 ;;
+                commit*) echo "Mock commit"; return 0 ;;
+                push*) echo "Mock push"; return 0 ;;
+                "rev-parse --abbrev-ref HEAD") echo "test-branch" ;;
+                "log -1 --pretty=format:- Commit: %h - %s") echo "- Commit: abc1234 - fix: resolve CodeRabbit suggestions" ;;
+                "diff HEAD~1 --stat") echo " 2 files changed, 10 insertions(+)" ;;
+                "rev-list --count HEAD") echo "5" ;;
+                *) echo "Mock git: $*"; return 0 ;;
+            esac
+        }
+        export -f git
+        resolve_cr 62 2>&1
+    ' 2>&1)
+    
+    # Check for two separate comment posts via status lines
+    resolve_count=$(echo "$output" | grep -c "Resolution trigger posted")
+    summary_count=$(echo "$output" | grep -c "Detailed summary posted")
+    
+    if [[ $resolve_count -ge 1 ]] && [[ $summary_count -ge 1 ]]; then
+        return 0
+    fi
+    
+    echo "Output: $output"
+    echo "Resolve comments: $resolve_count, Summary comments: $summary_count"
     return 1
 }
 
@@ -244,10 +292,10 @@ main() {
     create_testable_resolve_cr
     
     # Run tests
-    run_test "Happy path - finds comments and processes" test_happy_path
+    run_test "Happy path - finds comments and pushes fixes" test_happy_path
     run_test "Error path - no comments found" test_no_comments
-    run_test "Timeout path - no acknowledgment" test_timeout
-    run_test "Acknowledgment received - successful push" test_acknowledgment
+    run_test "Push and comment workflow - push before comments" test_push_and_comment
+    run_test "Split comments - resolve trigger and detailed summary" test_split_comments
     
     # Summary
     echo
