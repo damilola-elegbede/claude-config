@@ -10,9 +10,47 @@ Finds and resolves CodeRabbit review comments from PR. Extracts actionable sugge
 /resolve-cr              # Current branch's PR
 /resolve-cr <pr-number>  # Specific PR
 /resolve-cr --dry-run    # Preview without fixing
-```
+```bash
 
 ## Behavior
+## Agent Orchestration
+
+### Parallel CodeRabbit Resolution
+
+Deploy agents for efficient comment resolution:
+
+```yaml
+tech-writer:
+  role: Format resolution summaries and documentation updates
+  input: Fixed issues, resolution context
+  output: Clear fix descriptions, comment responses
+
+project-orchestrator:
+  role: Coordinate resolution workflow and prioritization
+  input: Comment severity, fix complexity, team coordination
+  output: Resolution strategy, workflow optimization
+
+code-reviewer:
+  role: Validate fixes meet CodeRabbit standards
+  input: CR comments, proposed fixes
+  output: Fix validation, quality assurance
+
+test-engineer:
+  role: Ensure fixes don't break tests
+  input: Changed code, test suites
+  output: Test results, regression checks
+```
+
+### Parallel Fix Strategy
+
+```yaml
+Comment Parallelization:
+  - Group independent comments
+  - Fix multiple issues simultaneously
+  - Different agents for different comment types
+  - Batch validation after fixes
+```bash
+
 
 When invoked, there ARE CodeRabbit comments to resolve - no questions asked.
 I will aggressively search for unresolved CodeRabbit comments, implement fixes,
@@ -49,7 +87,7 @@ gh pr view $PR --json comments,reviews \
 grep -A 10 "## Prompts for AI Agents" | \
   grep -E "^[-*]" | \
   sed 's/^[-*] //'
-```
+```bash
 
 ### Fix Pattern Matching
 
@@ -173,7 +211,7 @@ All suggested improvements have been implemented and pushed. The changes are rea
 *Automated resolution via /resolve-cr command*"
   echo "✅ Detailed summary posted"
 }
-```
+```bash
 
 ## Examples
 
@@ -202,6 +240,19 @@ Claude: 🔍 Aggressively searching for CodeRabbit comments...
 - Quality: Complex function needs refactoring
 💡 Run without --dry-run to apply fixes and notify CodeRabbit
 ```
+
+## Execution Verification
+
+Deploy execution-evaluator to verify:
+
+- ✅ **Comments found** - All CodeRabbit comments discovered using multiple search strategies
+- ✅ **Issues categorized** - Problems classified by type (security, performance, testing, quality)
+- ✅ **Fixes implemented** - All actionable suggestions properly addressed in code
+- ✅ **Code quality maintained** - Fixes don't introduce new issues or regressions
+- ✅ **Changes committed** - All fixes committed with clear categorization message
+- ✅ **Remote updated** - Changes successfully pushed to remote repository
+- ✅ **Resolution triggered** - "@coderabbitai resolve" comment posted successfully
+- ✅ **Summary provided** - Detailed resolution summary posted for team visibility
 
 ## Notes
 

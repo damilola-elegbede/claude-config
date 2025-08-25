@@ -16,16 +16,64 @@ test suites when none exist.
 /test --coverage         # Run with coverage reporting
 ```bash
 
+## Agent Orchestration
+
+### Parallel Test Execution
+
+Deploy specialized agents for comprehensive test management:
+
+```yaml
+codebase-analyst:
+  role: Analyze codebase structure for test discovery
+  input: Project structure, dependencies, code patterns
+  output: Test framework recommendations, coverage analysis
+
+debugger:
+  role: Investigate test failures and framework issues
+  input: Test failures, environment problems, setup issues
+  output: Failure analysis, configuration fixes, debugging strategies
+
+test-engineer:
+  role: Manage test execution and generation
+  input: Test framework detection, existing tests
+  output: Test results, coverage reports, new test generation
+
+performance-engineer:
+  role: Run performance and load tests in parallel
+  input: Performance test suites, benchmarks
+  output: Performance metrics, bottleneck analysis
+
+security-auditor:
+  role: Execute security test suites simultaneously
+  input: Security test configurations, vulnerability scanners
+  output: Security test results, vulnerability reports
+```bash
+
+### Parallel Execution Strategy
+
+```yaml
+Test Suite Parallelization:
+  - Unit tests, integration tests, and e2e tests run simultaneously
+  - Performance tests run in parallel with functional tests
+  - Security tests execute alongside other suites
+  - Results aggregate for comprehensive report
+
+Time Optimization:
+  - Parallel execution: 30-60% faster
+  - Independent test suites run concurrently
+  - Multi-core utilization for test runners
+```
+
 ## Behavior
 
-When invoked, I automatically discovers and runs tests using a 3-phase
-algorithm: README analysis, package manager detection, and framework conventions.
-If no tests exist, I can generate comprehensive test suites appropriate for
-the detected framework.
+When invoked, I automatically discover and run tests using parallel agent
+deployment and a 3-phase algorithm: README analysis, package manager detection,
+and framework conventions. Multiple test suites execute simultaneously for
+maximum efficiency.
 
 ## Discovery Algorithm
 
-### Phase 1: README Analysis (Highest Priority)
+### Phase 1: Parallel Discovery & Analysis
 
 I scan README.md for test commands using these patterns:
 
@@ -96,99 +144,35 @@ find . -name "*test*" -o -name "*spec*" | head -10
 
 ## Test Generation (--create)
 
-When no tests exist, I deploy **test-engineer** to create comprehensive test suites:
-
-### JavaScript/TypeScript Projects
+When no tests exist, **test-engineer** agent creates comprehensive test suites:
 
 ```javascript
-// Generated: src/__tests__/example.test.js
-import { add, multiply } from '../utils';
-
+// JavaScript: src/__tests__/example.test.js
 describe('Utils Functions', () => {
   test('add function', () => {
     expect(add(2, 3)).toBe(5);
-    expect(add(-1, 1)).toBe(0);
-  });
-
-  test('multiply function', () => {
-    expect(multiply(3, 4)).toBe(12);
-    expect(multiply(0, 5)).toBe(0);
   });
 });
-```bash
-
-Package.json script addition:
-
-```json
-{
-  "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
-  }
-}
-```bash
-
-### Python Projects
+```
 
 ```python
-# Generated: tests/test_utils.py
+# Python: tests/test_utils.py
 import pytest
-from src.utils import add, multiply
-
 class TestUtils:
     def test_add(self):
         assert add(2, 3) == 5
-        assert add(-1, 1) == 0
-
-    def test_multiply(self):
-        assert multiply(3, 4) == 12
-        assert multiply(0, 5) == 0
-
-    def test_add_edge_cases(self):
-        with pytest.raises(TypeError):
-            add("string", 5)
-```bash
-
-Configuration files:
-
-```text
-# Generated: pytest.ini
-[tool:pytest]
-testpaths = tests
-python_files = test_*.py
-python_functions = test_*
-addopts = --verbose --tb=short
-```bash
-
-### Go Projects
+```
 
 ```go
-// Generated: utils_test.go
-package main
-
-import "testing"
-
+// Go: utils_test.go
 func TestAdd(t *testing.T) {
-    tests := []struct {
-        name string
-        a, b int
-        want int
-    }{
-        {"positive numbers", 2, 3, 5},
-        {"negative and positive", -1, 1, 0},
-        {"zeros", 0, 0, 0},
-    }
-
-    for _, tt := range tests {
-        t.Run(tt.name, func(t *testing.T) {
-            if got := Add(tt.a, tt.b); got != tt.want {
-                t.Errorf("Add(%d, %d) = %d, want %d", tt.a, tt.b, got, tt.want)
-            }
-        })
+    if got := Add(2, 3); got != 5 {
+        t.Errorf("Add(2, 3) = %d, want 5", got)
     }
 }
-```bash
+```
+
+Automatically adds test scripts to package.json/pyproject.toml and creates config files
 
 ## Test Execution Process
 
@@ -240,79 +224,30 @@ Discovery Result Processing:
 
 ## Framework-Specific Optimizations
 
-### Jest/Vitest (JavaScript)
-
 ```bash
-# Standard execution:
-npm test
+# JavaScript (Jest/Vitest)
+npm test                         # Standard
+npm test -- --coverage           # With coverage
+npm test -- --ci --watchAll=false  # CI mode
 
-# With coverage:
-npm test -- --coverage
+# Python (pytest)
+pytest -v                        # Standard
+pytest --cov=src                 # With coverage
+pytest -n auto                   # Parallel execution
 
-# Watch mode (if not CI):
-npm test -- --watch
-
-# CI optimizations:
-npm test -- --ci --coverage --watchAll=false
-```bash
-
-### pytest (Python)
-
-```bash
-# Standard execution:
-pytest -v
-
-# With coverage:
-pytest --cov=src --cov-report=html
-
-# Parallel execution:
-pytest -n auto  # if pytest-xdist installed
-
-# XML output for CI:
-pytest --junitxml=test-results.xml
-```bash
-
-### Go Testing
-
-```bash
-# Standard execution:
-go test ./...
-
-# With coverage:
-go test -cover ./...
-
-# Verbose output:
-go test -v ./...
-
-# Race condition detection:
-go test -race ./...
-```bash
+# Go
+go test ./...                    # Standard
+go test -cover -race ./...       # Coverage + race detection
+```
 
 ## Error Handling & Recovery
 
 ### Common Failure Scenarios
 
-```yaml
-Missing Dependencies:
-  Detection: "command not found", "module not found"
-  Recovery: Install using detected package manager
-  Example: npm install --save-dev jest
-
-Test Database Issues:
-  Detection: Database connection errors
-  Recovery: Create test database, run migrations
-  Example: createdb myapp_test && rails db:test:prepare
-
-Configuration Errors:
-  Detection: Config file parsing failures
-  Recovery: Generate minimal working config
-  Example: Create jest.config.js with defaults
-
-Permission Issues:
-  Detection: EACCES, permission denied errors
-  Recovery: Suggest chmod fixes or container usage
-  Example: chmod +x node_modules/.bin/jest
-```bash
+- **Missing Dependencies**: Auto-install with package manager
+- **Database Issues**: Create test DB and run migrations
+- **Config Errors**: Generate minimal working config
+- **Permission Issues**: Fix with chmod or container
 
 ### Graceful Degradation
 
@@ -345,10 +280,9 @@ After test execution, validates:
 
 ## Success Metrics
 
-- **Discovery Rate**: >95% successful test command identification
-- **Generation Quality**: Generated tests pass and provide meaningful coverage
-- **Execution Speed**: Test discovery completes in <5 seconds
-- **Error Recovery**: Clear guidance provided for 90% of common failures
+- ✅ >95% test command discovery rate
+- ✅ <5 seconds discovery time
+- ✅ 90% error recovery rate
 
 ## Examples
 

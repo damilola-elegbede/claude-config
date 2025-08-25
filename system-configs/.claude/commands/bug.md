@@ -12,7 +12,7 @@ Extracts context automatically and creates professional bug reports with proper 
 /bug --priority <level>          # Set priority (low, medium, high, critical)
 /bug --labels <label1,label2>    # Add specific labels
 /bug --assign <username>         # Auto-assign to user
-```
+```bash
 
 ## Behavior
 
@@ -27,6 +27,24 @@ tracking and reference.
 - Escapes special characters in markdown content
 - Validates label names against GitHub's allowed format
 - Truncates titles to 256 characters if needed
+
+## Agent Orchestration
+
+### Parallel Bug Processing
+
+Deploy specialized agents for comprehensive bug reporting:
+
+```yaml
+tech-writer:
+  role: Format issue descriptions and documentation
+  input: Bug context, error details, reproduction steps
+  output: Professional bug report with clear formatting
+
+project-orchestrator:
+  role: Coordinate bug workflow and prioritization
+  input: Bug severity, component analysis, team assignments
+  output: Workflow coordination, team notifications, priority setting
+```
 
 ## Context & Classification
 
@@ -100,7 +118,7 @@ User: "API timeouts after recent changes"
 → If GITHUB_TOKEN missing: "Error: GitHub authentication failed. Set GITHUB_TOKEN environment variable"
 → If network issue: "Retrying... (attempt 2/3)" then creates issue or fails with clear message
 → If rate limited: "Error: GitHub API rate limit exceeded. Try again in 47 minutes"
-```
+```bash
 
 ## Requirements & Validation
 
@@ -126,6 +144,18 @@ User: "API timeouts after recent changes"
 - Invalid token → Returns "Error: GitHub authentication failed. Set GITHUB_TOKEN environment variable"
 - Rate limiting → Returns "Error: GitHub API rate limit exceeded. Try again in X minutes"
 - Permission denied → Returns "Error: Insufficient permissions to create issues in this repository"
+
+## Execution Verification
+
+Deploy execution-evaluator to verify:
+
+- ✅ **Issue created** - GitHub issue successfully created with valid issue number
+- ✅ **Context extracted** - Repository context and conversation history analyzed
+- ✅ **Labels applied** - Appropriate labels assigned based on content analysis
+- ✅ **Format validated** - Professional issue format with proper markdown
+- ✅ **Return value** - Issue number returned for tracking and reference
+- ✅ **Authentication verified** - GitHub MCP server authentication successful
+- ✅ **Repository access** - Proper permissions confirmed for issue creation
 
 ## Integration Notes
 

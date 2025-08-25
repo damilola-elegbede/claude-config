@@ -227,8 +227,10 @@ def main():
     print("=" * 60)
     print(f"Updated {updated_count} documentation files")
 
-    # Create final report
-    report_path = base_dir / 'docs' / 'documentation-update-report.md'
+    # Create final report in .tmp directory
+    reports_dir = base_dir / '.tmp' / 'reports'
+    reports_dir.mkdir(parents=True, exist_ok=True)
+    report_path = reports_dir / 'documentation-update-report.md'
     report_content = create_final_report()
 
     # Add list of updated files

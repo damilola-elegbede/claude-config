@@ -26,30 +26,36 @@ provide targeted fixes.
 ### Issue Classification & Agent Deployment
 
 ```yaml
-Intermittent Issues:
-  symptoms: ["works sometimes", "random failures", "can't reproduce"]
-  agents: [debugger, performance-specialist]
-  approach: Statistical analysis, environmental factor testing
+codebase-analyst:
+  role: Analyze code structure and identify bug patterns
+  input: Source code, error traces, system architecture
+  output: Code pattern analysis, potential root causes
 
-Race Conditions:
-  symptoms: ["deadlock", "data corruption", "concurrent access errors"]
-  agents: [debugger, backend-engineer]
-  approach: Thread analysis, lock inspection, timing manipulation
+test-engineer:
+  role: Design reproduction tests and validation strategies
+  input: Bug description, reproduction steps, test scenarios
+  output: Test cases, reproduction reliability, validation plans
 
-Memory Issues:
-  symptoms: ["memory leak", "crashes", "growing heap", "OOM errors"]
-  agents: [debugger, code-archaeologist]
-  approach: Heap analysis, reference tracking, allocation patterns
+debugger:
+  role: Primary investigation and forensic analysis
+  input: Error logs, system state, reproduction data
+  output: Root cause analysis, fix recommendations
 
-Production-Only:
-  symptoms: ["works locally", "staging ok", "prod fails"]
-  agents: [debugger, production-reliability-engineer, monitoring-specialist]
-  approach: Environment comparison, scale simulation
+Issue Classification:
+  Intermittent Issues:
+    symptoms: ["works sometimes", "random failures", "can't reproduce"]
+    agents: [debugger, codebase-analyst, test-engineer]
+    approach: Statistical analysis, environmental factor testing
 
-Performance Degradation:
-  symptoms: ["getting slower", "timeouts", "resource exhaustion"]
-  agents: [debugger, performance-specialist, performance-predictor]
-  approach: Profiling, bottleneck analysis, load testing
+  Race Conditions:
+    symptoms: ["deadlock", "data corruption", "concurrent access errors"]
+    agents: [debugger, codebase-analyst]
+    approach: Thread analysis, lock inspection, timing manipulation
+
+  Memory Issues:
+    symptoms: ["memory leak", "crashes", "growing heap", "OOM errors"]
+    agents: [debugger, codebase-analyst, test-engineer]
+    approach: Heap analysis, reference tracking, allocation patterns
 ```bash
 
 ## Concrete Investigation Patterns

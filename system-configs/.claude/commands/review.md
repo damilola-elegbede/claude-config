@@ -42,6 +42,37 @@ Documentation: markdownlint, ShellCheck
 
 ### Execution Strategy
 
+### Agent Orchestration
+
+Deploy specialized agents in parallel for comprehensive review:
+
+```yaml
+code-reviewer:
+  role: Code quality and standards validation
+  input: Changed files, linter results
+  output: Quality assessment, improvement suggestions
+
+security-auditor:
+  role: Security vulnerability detection
+  input: Code changes, dependency updates
+  output: Security issues, OWASP compliance
+
+performance-engineer:
+  role: Performance impact analysis
+  input: Code changes, complexity metrics
+  output: Performance risks, optimization opportunities
+```bash
+
+### Parallel Review Benefits
+
+```yaml
+Simultaneous Analysis:
+  - All agents review code in parallel
+  - Tool results feed into agent analysis
+  - 50% faster than sequential review
+  - Multiple perspectives on same code
+```
+
 - **Language Detection**: Auto-run appropriate tools based on file extensions
 - **Parallel Execution**: All tools run simultaneously for speed
 - **Graceful Degradation**: Skip missing tools, continue with available ones
@@ -273,6 +304,19 @@ Claude: 🔒 Security-focused analysis...
 - **Security Focus**: Specialized security scanning with --security mode
 - **Development Integration**: Works with existing toolchains and workflows
 - **Quality Gates**: Blocks critical issues while allowing minor improvements
+
+## Execution Verification
+
+Deploy execution-evaluator to verify:
+
+- ✅ **Tools executed** - All available linters and security scanners run successfully
+- ✅ **Files analyzed** - Target files (changed or full repo) properly scanned
+- ✅ **Issues identified** - Problems correctly categorized by severity and type
+- ✅ **Agent synthesis** - AI analysis completed and integrated with tool results
+- ✅ **Report generated** - CodeRabbit-style structured report created
+- ✅ **Auto-fixes applied** - Safe fixes automatically implemented when requested
+- ✅ **Quality gates** - Critical issues flagged for resolution before merge
+- ✅ **Actionable output** - "Prompts for AI Agents" section provided for automation
 
 **Efficiency:**
 

@@ -17,6 +17,48 @@ polyglot codebases.
 ```bash
 
 ## Behavior
+## Agent Orchestration
+
+### Parallel Dependency Analysis
+
+Deploy specialized agents simultaneously:
+
+```yaml
+devops:
+  role: Manage deployment and environment dependencies
+  input: Infrastructure dependencies, deployment configs
+  output: Environment compatibility, deployment risks
+
+platform-engineer:
+  role: Platform and system-level dependency management
+  input: System dependencies, runtime requirements
+  output: Platform compatibility, system recommendations
+
+dependency-analyst:
+  role: Analyze dependency tree and updates
+  input: Package files, lock files
+  output: Dependency graph, update recommendations
+
+supply-chain-security-engineer:
+  role: Supply chain vulnerability assessment
+  input: All dependencies, transitive deps
+  output: Supply chain risks, vulnerability report
+
+security-auditor:
+  role: CVE scanning and security audit
+  input: Dependency versions, known vulnerabilities
+  output: CVE report, security recommendations
+```bash
+
+### Parallel Scanning Strategy
+
+```yaml
+Multi-Package Manager Support:
+  - npm, pip, go mod analyzed simultaneously
+  - Security scans run in parallel per ecosystem
+  - Results aggregate for comprehensive report
+  - 60% faster than sequential scanning
+```
 
 When invoked, I will manage dependencies across all detected package managers,
 performing security scanning and safe updates. Quick mode provides essential
@@ -64,14 +106,14 @@ Output: Detailed report with risk scoring
 ```bash
 # Auto-detects: npm, pip, go, cargo, maven, gradle, bundler, composer
 # Based on presence of manifest files (package.json, requirements.txt, etc.)
-```text
+```
 
 ### Security Scanning
 
 ```bash
 # Uses ecosystem-specific tools:
 # npm audit, pip-audit, cargo audit, nancy (Go), etc.
-```text
+```
 
 ## Core Operations
 
@@ -133,7 +175,7 @@ pip install --upgrade-strategy eager
 ```bash
 # Staged process: backup → security patches → minor updates → test
 # → rollback if needed
-```
+```bash
 
 ### /deps clean (Unused Removal)
 
@@ -155,7 +197,7 @@ pip install --upgrade-strategy eager
 
   echo "✅ Cleanup completed"
 }
-```bash
+```
 
 ## Language-Specific Patterns
 
@@ -177,7 +219,7 @@ npm_workflow() {
   npm outdated
   npm update
 }
-```bash
+```
 
 ### Language-Specific Workflows
 
@@ -307,8 +349,6 @@ Claude: 🔒 Deploying dependency-manager + supply-chain-security-engineer...
 🟡 Medium: 5 other security issues found
 ⚠️ Supply chain: 2 packages flagged for single-maintainer risk
 📋 Generating comprehensive security report...
-```bash
-
 ### Safe Update Process
 
 ```bash

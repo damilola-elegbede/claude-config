@@ -17,15 +17,59 @@ Focuses on what actually changed rather than hypothetical features.
 - `--draft`: Create as draft PR
 - `--template`: Use comprehensive PR template (default: simple)
 
+## Agent Orchestration
+
+### Parallel Analysis Phase
+
+Deploy specialized agents simultaneously for comprehensive PR creation:
+
+```yaml
+tech-writer:
+  role: Generate clear PR descriptions and summaries
+  input: Git diff, commit messages, branch context
+  output: Well-structured PR description with proper formatting
+
+code-reviewer:
+  role: Analyze changes for PR review preparation
+  input: Changed files, diff statistics
+  output: Change categorization, impact assessment, review notes
+
+security-auditor:
+  role: Review changes for security implications
+  input: Code diff, dependency changes, API modifications
+  output: Security assessment, vulnerability check, sensitive data scan
+```bash
+
+### Parallel Execution Benefits
+
+```yaml
+Time Optimization:
+  - All agents analyze simultaneously
+  - PR description generated while tests analyzed
+  - Total time: 3-5 seconds (vs 10-15 sequential)
+
+Quality Enhancement:
+  - tech-writer ensures clear communication
+  - code-reviewer provides review guidance
+  - test-engineer validates quality metrics
+```
+
 ## Behavior
 
 When you invoke `/pr`, I will:
 
-1. **Validate branch status** - Ensure changes are committed and pushed
-2. **Generate diff summary** - Extract actual changes from git diff
-3. **Include test results** - Add pass/fail status if /test was run
-4. **Create pull request** - Submit via GitHub API
-5. **Return PR URL** - Provide link for review
+1. **Parallel Validation & Analysis**:
+   - Validate branch status (committed and pushed)
+   - Deploy agents simultaneously for analysis
+   - Generate comprehensive PR content
+
+2. **Agent-Generated Content**:
+   - tech-writer: Creates PR description
+   - code-reviewer: Provides change summary
+   - test-engineer: Includes test results
+
+3. **Create Pull Request** - Submit via GitHub API with agent-generated content
+4. **Return PR URL** - Provide link for review
 
 ## PR Description Format
 
@@ -68,6 +112,18 @@ sections for testing, documentation, breaking changes, etc.
 /pr --template
 # Uses comprehensive template format
 ```bash
+
+## Execution Verification
+
+Deploy execution-evaluator to verify:
+
+- ✅ **Branch validated** - Current branch committed and pushed successfully
+- ✅ **Changes analyzed** - Git diff and commit messages processed by agents
+- ✅ **PR description generated** - Clear, comprehensive description created
+- ✅ **Test results included** - Test status and coverage information added
+- ✅ **Security review completed** - Code changes reviewed for security implications
+- ✅ **PR created successfully** - Pull request submitted via GitHub API
+- ✅ **URL returned** - Valid PR URL provided for review and tracking
 
 ## Notes
 

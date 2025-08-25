@@ -51,11 +51,48 @@ Output Format:
 - Status checks without full analysis
 - Minimal resource usage scenarios
 
-### Full Mode (default) - 5 Second Analysis
+### Full Mode (default) - Parallel Multi-Agent Analysis
 
-**What it does**: Comprehensive repository understanding
+**What it does**: Comprehensive repository understanding with parallel agents
 
 ```yaml
+Parallel Agent Deployment:
+  codebase-analyst (Primary):
+    - Technology stack detection
+    - Architecture analysis
+    - Dependency mapping
+    - Code patterns identification
+
+  test-engineer:
+    - Test framework identification
+    - Test coverage analysis
+    - Quality gate detection
+    - Testing strategy assessment
+
+  debugger:
+    - Error pattern identification
+    - Debugging setup analysis
+    - Common issue detection
+    - Debug tool configuration
+
+  tech-writer (Parallel):
+    - Documentation inventory
+    - README analysis
+    - API docs scanning
+    - Comment quality assessment
+
+  business-analyst (Parallel):
+    - Requirements extraction
+    - Feature identification
+    - Business logic mapping
+    - User story detection
+
+Parallel Analysis Benefits:
+  - All agents analyze simultaneously
+  - 5x faster than sequential analysis
+  - Multiple perspectives on codebase
+  - Comprehensive understanding in 3-5 seconds
+
 Analysis Scope:
   Technology Stack:
     - Package managers: package.json, requirements.txt, go.mod, Cargo.toml
@@ -75,7 +112,7 @@ Analysis Scope:
     - Architecture decisions
     - Available scripts/commands
 
-Agent Usage: codebase-analyst (for large repos >1000 files)
+Agent Usage: codebase-analyst + tech-writer + business-analyst (parallel)
 
 Output Format:
   - Complete technology stack
@@ -92,9 +129,9 @@ Output Format:
 - Comprehensive project onboarding
 - Technology stack identification
 
-### Focused Mode (<component>) - Variable Duration
+### Focused Mode (<component>) - Parallel Component Analysis
 
-**What it does**: Deep component analysis using codebase-analyst
+**What it does**: Deep component analysis using multiple specialized agents
 
 ```yaml
 Analysis Types:

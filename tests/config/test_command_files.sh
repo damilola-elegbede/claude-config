@@ -66,6 +66,69 @@ test_command_specifics() {
         "/context command should have output format"
 }
 
+# Test agent specification requirements
+test_agent_specifications() {
+    local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
+    
+    # Commands that must specify agents
+    local agent_required_commands=("implement" "docs" "debug" "ship-it" "review" 
+                                  "test" "context" "fix-ci" "deps" "plan" 
+                                  "commit" "branch" "pr" "push" "sync")
+    
+    for cmd in "${agent_required_commands[@]}"; do
+        local cmd_file="$commands_dir/${cmd}.md"
+        if [ -f "$cmd_file" ]; then
+            # Check for agent mentions (at least one of the common agents)
+            if ! grep -qE "backend-engineer|frontend-architect|test-engineer|security-auditor|tech-writer|code-reviewer|codebase-analyst|devops|platform-engineer|project-orchestrator|debugger|performance-engineer" "$cmd_file"; then
+                echo "Warning: ${cmd}.md should specify appropriate agents"
+            fi
+        fi
+    done
+    
+    # Security-critical commands must have security-auditor
+    local security_commands=("commit" "push" "sync" "deps")
+    for cmd in "${security_commands[@]}"; do
+        local cmd_file="$commands_dir/${cmd}.md"
+        if [ -f "$cmd_file" ]; then
+            if ! grep -q "security-auditor" "$cmd_file"; then
+                echo "Warning: ${cmd}.md (security-critical) should include security-auditor"
+            fi
+        fi
+    done
+}
+
+# Test parallelization patterns
+test_parallelization_patterns() {
+    local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
+    
+    # Commands that should leverage parallelization
+    local parallel_commands=("implement" "docs" "ship-it" "review" "context" 
+                            "agent-audit" "command-audit" "fix-ci" "test")
+    
+    for cmd in "${parallel_commands[@]}"; do
+        local cmd_file="$commands_dir/${cmd}.md"
+        if [ -f "$cmd_file" ]; then
+            # Check for parallel execution patterns
+            if ! grep -qiE "parallel|simultaneous|concurrent|Phase.*Parallel|Parallel Wave" "$cmd_file"; then
+                echo "Warning: ${cmd}.md should leverage parallel execution patterns"
+            fi
+        fi
+    done
+    
+    # Check for sequential anti-patterns in commands that should parallelize
+    for cmd in "${parallel_commands[@]}"; do
+        local cmd_file="$commands_dir/${cmd}.md"
+        if [ -f "$cmd_file" ]; then
+            if grep -qE "Sequential Phase|sequential execution|one at a time" "$cmd_file"; then
+                # Check if it also has parallel patterns (mixed approach is OK)
+                if ! grep -qiE "parallel|simultaneous|concurrent" "$cmd_file"; then
+                    echo "Warning: ${cmd}.md uses sequential-only patterns, consider parallelization"
+                fi
+            fi
+        fi
+    done
+}
+
 # Test no missing documentation
 test_documentation_completeness() {
     local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
@@ -94,6 +157,8 @@ echo "Testing command file validation..."
 test_all_commands_exist || exit 1
 test_command_structure || exit 1
 test_command_specifics || exit 1
+test_agent_specifications || exit 1
+test_parallelization_patterns || exit 1
 test_documentation_completeness || exit 1
 
 echo "All command file validation tests passed!"

@@ -13,7 +13,7 @@ failures - always finds a way forward.
 /ship-it                    # Basic workflow (default)
 /ship-it -f, --full        # Full workflow
 /ship-it -l, --lite        # Lite/quick workflow
-```
+```bash
 
 ## Workflows
 
@@ -49,9 +49,30 @@ Step 2 - Deploy Specialist: Route to appropriate agent based on error type
 Step 3 - Apply Fixes: Let agent implement solutions automatically
 Step 4 - Verify Resolution: Re-run original command to confirm success
 Step 5 - Continue Workflow: Move to next step once resolved
-```
+```bash
 
 ### Agent Routing Logic
+
+### Parallel Workflow Orchestration
+
+Deploy project-orchestrator for workflow optimization:
+
+```yaml
+project-orchestrator:
+  role: Identify parallelization opportunities
+  input: Workflow dependencies, command requirements
+  output: Parallel execution plan
+
+incident-commander:
+  role: Handle critical failures and recovery
+  input: Failure patterns, system state
+  output: Recovery strategy, remediation steps
+
+Parallel Execution:
+  - Independent commands run simultaneously
+  - docs + review can run in parallel
+  - Multiple fix agents deploy concurrently
+```
 
 ```yaml
 Security Issues: security-auditor (always, non-negotiable)
@@ -64,7 +85,7 @@ Documentation: tech-writer + accessibility-auditor
 Dependencies: dependency-analyst + supply-chain-security-engineer
 Linting: code-reviewer + auto-remediation
 Markdown: tech-writer + code-reviewer
-```
+```bash
 
 ## Issue Resolution by Command
 
@@ -89,7 +110,7 @@ Documentation missing: Deploy tech-writer → generate docs → retry /review
 Linting failures: Deploy code-reviewer → auto-fix → commit fixes → retry /review
 Markdown violations: Deploy tech-writer → fix formatting → retry /review
 Structure issues: Deploy code-reviewer → fix structure → retry /review
-```
+```bash
 
 ### /test Issues → Auto-Fix and Retry
 
@@ -109,7 +130,7 @@ Pre-commit hooks fail: Apply hook fixes → commit remediation → retry /commit
 Large files detected: Use .gitignore rules → stage properly → retry /commit
 Temp file cleanup: Execute cleanup → retry /commit
 No changes to commit: Skip gracefully, continue workflow
-```
+```bash
 
 ### /push Issues → Auto-Fix and Retry
 
@@ -130,7 +151,7 @@ Description incomplete: Deploy tech-writer → enhance description → retry /pr
 Branch conflicts: Deploy git-workflow-specialist → resolve → retry /pr
 CI checks failing: Wait for checks → deploy specialists if needed
 No PR needed: Skip gracefully if PR already exists
-```
+```bash
 
 ## Retry Patterns
 
@@ -150,7 +171,7 @@ Network/Transient Issues: Up to 3 retries with exponential backoff
 Agent-Mediated Fixes: Up to 2 fix-and-retry cycles per command
 Total Command Attempts: Maximum 5 attempts per command before escalation
 Workflow Timeout: 30 minutes maximum for complete ship-it workflow
-```
+```bash
 
 ## Examples
 
@@ -242,7 +263,7 @@ Step 5/5: /push
 ✅ Push completed successfully
 
 🎉 Basic workflow completed with auto-remediation!
-```
+```bash
 
 ### Advanced Problem Resolution
 
@@ -301,7 +322,7 @@ Domain Routing:
   Testing → test-engineer + execution-evaluator
   Infrastructure → devops + platform-engineer
   Documentation → tech-writer + accessibility-auditor
-```
+```bash
 
 ### Workflow State Management
 

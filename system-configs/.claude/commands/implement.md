@@ -10,7 +10,7 @@ then deploys appropriate specialized agents to complete the implementation.
 
 ```bash
 /implement <spec-file.md> [options]
-```
+```bash
 
 ## Behavior
 
@@ -67,7 +67,7 @@ Documentation: tech-writer, api-architect (for API docs)
 Security: security-auditor, regulatory-compliance-specialist
 Infrastructure: devops, platform-engineer, cloud-architect
 Analysis: codebase-analyst, debugger, performance-specialist
-```
+```bash
 
 ## Examples
 
@@ -155,7 +155,7 @@ Analysis: codebase-analyst, debugger, performance-specialist
 #
 # ✅ Authentication system implemented successfully!
 # 📊 15 tasks completed in 3 parallel waves + integration
-```
+```bash
 
 ### Specification with Dependencies
 
@@ -197,35 +197,17 @@ Analysis: codebase-analyst, debugger, performance-specialist
 ```markdown
 # Feature Name
 
-## Overview
-Brief description of what needs to be implemented
-
-## Requirements
-- Functional requirements
-- Non-functional requirements
-- Constraints and considerations
-
 ## Tasks
-1. [ ] Task one description
-2. [ ] Task two description (depends on: task 1)
-3. [ ] Task three description (parallel with: task 2)
+1. [ ] Task description (independent)
+2. [ ] Task description (depends on: 1)
+3. [ ] Task description (parallel with: 2)
 
 ## Acceptance Criteria
-- [ ] Criteria one
-- [ ] Criteria two
+- [ ] Specific, testable criteria
 
 ## Referenced Files
-- `src/config.js` - Current configuration
-- `docs/api.md` - API documentation to update
-
-## Examples
-```code
-Example code or usage
-```​
-
-## Technical Details
-Specific implementation notes
-```
+- Relevant files with context
+```bash
 
 ### Task Dependency Notation
 
@@ -281,7 +263,7 @@ Specific implementation notes
 
 # Only implements tasks not marked as complete
 # Useful for resuming partial implementations
-```
+```bash
 
 ### Dry Run Mode
 
@@ -298,7 +280,7 @@ Specific implementation notes
 /implement spec.md --prefer-agents "backend-engineer,test-engineer"
 
 # Prefers specified agents when multiple options available
-```
+```bash
 
 ### Maximum Parallelization
 
@@ -317,7 +299,7 @@ Specific implementation notes
 ❌ Invalid specification format
 💡 Ensure markdown follows specification guidelines
 💡 Check for proper task formatting and dependencies
-```
+```bash
 
 ### Agent Failures
 
@@ -332,7 +314,7 @@ Specific implementation notes
 ```bash
 ❌ Circular dependency detected: Task 2 → Task 3 → Task 2
 💡 Review task dependencies and remove cycles
-```
+```bash
 
 ## Integration Points
 
@@ -352,68 +334,39 @@ Specific implementation notes
 
 ## Best Practices
 
-### Specification Writing
+- Write clear, testable requirements with explicit dependencies
+- Break down into modular, atomic tasks for parallel execution
+- Define acceptance criteria and reference relevant code
+- Use dry-run mode to review execution plan before starting
 
-- **Clear Requirements**: Unambiguous, testable requirements
-- **Explicit Dependencies**: Clearly mark task dependencies
-- **Modular Tasks**: Break down into independent, atomic tasks
-- **Acceptance Criteria**: Define success conditions
-- **Context Files**: Reference relevant existing code
+## Performance
 
-### Implementation Strategy
-
-- **Start with Analysis**: Let the command analyze before executing
-- **Review Plan**: Check execution plan in dry-run mode first
-- **Monitor Progress**: Watch parallel execution progress
-- **Verify Results**: Validate against acceptance criteria
-
-## Performance Characteristics
-
-### Execution Times
-
-- **Specification Analysis**: 5-15 seconds
-- **Plan Generation**: 10-30 seconds
-- **Per-Agent Task**: 30 seconds - 5 minutes
-- **Total Time**: Reduced 40-60% through parallelization
-
-### Resource Usage
-
-- **Parallel Agents**: 2-10 simultaneous (configurable)
-- **Memory**: ~100MB per active agent
-- **CPU**: Scales with parallel execution
-- **I/O**: Managed to prevent conflicts
+- **Analysis & Planning**: 15-45 seconds
+- **Execution**: 40-60% faster with parallelization
+- **Resource Usage**: 2-10 parallel agents, ~100MB each
 
 ## Configuration
 
-### Settings
-
 ```json
 {
-  "implement": {
-    "max-parallel-agents": 5,
-    "auto-retry-failures": true,
-    "verify-against-spec": true,
-    "integration-strategy": "conservative",
-    "progress-reporting": "detailed"
-  }
+  "max-parallel-agents": 5,
+  "auto-retry-failures": true,
+  "verify-against-spec": true
 }
 ```
 
-## Verification
+## Execution Verification
 
-### Completion Validation
+Deploy execution-evaluator to verify:
 
-- **Task Completion**: All tasks marked complete
-- **Acceptance Criteria**: All criteria satisfied
-- **Integration Tests**: Automated testing passes
-- **Specification Compliance**: Implementation matches spec
-
-### Quality Assurance
-
-- **Code Review**: Automatic review of implementation
-- **Test Coverage**: Ensure adequate test coverage
-- **Documentation**: Verify documentation completeness
-- **Security**: Run security audits on implementation
+- ✅ **Specification analyzed** - Implementation specification fully understood and parsed
+- ✅ **Agent deployment** - Appropriate specialists selected and deployed in parallel
+- ✅ **Task completion** - All specified tasks marked complete with acceptance criteria met
+- ✅ **Code quality** - Implementation passes code review and quality standards
+- ✅ **Test coverage** - Comprehensive testing completed and passing
+- ✅ **Security validation** - Security audits completed without critical issues
+- ✅ **Integration success** - All components integrated and functioning together
+- ✅ **Specification compliance** - Final implementation matches original requirements
 
 ## Notes
 

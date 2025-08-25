@@ -64,9 +64,60 @@ refactor/auth-module
 chore/dependency-updates
 ```bash
 
+## Agent Orchestration
+
+### Parallel Analysis Phase
+
+Deploy multiple agents simultaneously for intelligent branch creation:
+
+```yaml
+tech-writer:
+  role: Generate clear, conventional branch names and documentation
+  input: Work type, ticket numbers, description
+  output: Properly formatted branch name, branch documentation
+
+code-reviewer:
+  role: Validate branch strategy and naming conventions
+  input: Branch name proposal, git history, team standards
+  output: Naming validation, convention compliance check
+
+security-auditor:
+  role: Review for sensitive information in branch names
+  input: Branch name, context analysis
+  output: Security clearance, sensitive data warnings
+```bash
+
+### Agent Coordination
+
+```yaml
+Parallel Execution:
+  - All three agents analyze simultaneously
+  - Results converge for branch name generation
+  - 3-5 second total execution time
+
+Integration:
+  - code-reviewer validates branch type and naming (feature/fix/docs)
+  - security-auditor checks for sensitive information
+  - tech-writer creates the final branch name and documentation
+```
+
 ## Execution Process
 
-### Phase 1: Repository Preparation
+### Phase 1: Parallel Context Analysis (Agents)
+
+```bash
+# Deploy agents simultaneously
+parallel_analysis() {
+  # project-orchestrator: Determine work type and strategy
+  # business-analyst: Extract requirements and tickets
+  # tech-writer: Prepare naming conventions
+}
+
+# Aggregate results from all agents
+branch_strategy=$(combine_agent_outputs)
+```bash
+
+### Phase 2: Repository Preparation
 
 ```bash
 # Switch to main and update
@@ -77,7 +128,7 @@ git pull origin main
 git status --porcelain
 ```bash
 
-### Phase 2: Context Analysis & Naming
+### Phase 3: Intelligent Naming (Agent-Driven)
 
 ```bash
 # Context priority (highest to lowest):
@@ -86,17 +137,18 @@ git status --porcelain
 3. Recent conversation messages
 4. Fallback to timestamp-based name
 
-# Apply conventional prefixes based on keywords:
+# Apply conventional prefixes based on agent analysis:
 analyze_context() {
-  if grep -qi "bug\|error\|fix\|issue" context; then
+  # project-orchestrator determines prefix
+  if [[ $work_type == "bug" ]]; then
     prefix="fix"
-  elif grep -qi "feature\|add\|implement\|create" context; then
+  elif [[ $work_type == "feature" ]]; then
     prefix="feature"
-  elif grep -qi "doc\|readme\|guide" context; then
+  elif [[ $work_type == "documentation" ]]; then
     prefix="docs"
-  elif grep -qi "performance\|slow\|optimize" context; then
+  elif [[ $work_type == "performance" ]]; then
     prefix="perf"
-  elif grep -qi "refactor\|cleanup\|reorganize" context; then
+  elif [[ $work_type == "refactoring" ]]; then
     prefix="refactor"
   else
     prefix="feature"  # Default
