@@ -73,7 +73,6 @@ Simultaneous Analysis:
   - Multiple perspectives on same code
 ```
 
-
 - **Language Detection**: Auto-run appropriate tools based on file extensions
 - **Parallel Execution**: All tools run simultaneously for speed
 - **Graceful Degradation**: Skip missing tools, continue with available ones

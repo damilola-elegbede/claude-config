@@ -89,7 +89,7 @@ When you use `/commit`, I will:
      🤖 Generated with [Claude Code](https://claude.ai/code)
 
      Co-Authored-By: Claude <noreply@anthropic.com>
-```bash
+     ```
 
 5. **Verify success** by checking git status after commit
 
@@ -164,7 +164,8 @@ Use these patterns to prevent cleanup of specific temp files:
 
 ## Streamlined Commit Process
 
-The /commit command focuses on staging changes and creating clean commits. Code review and quality gates are handled by the /review command in the ship-it workflow.
+The /commit command focuses on staging changes and creating clean commits. Code review and quality gates are
+handled by the /review command in the ship-it workflow.
 
 ## Prerequisites
 

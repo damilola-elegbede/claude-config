@@ -60,7 +60,6 @@ Multi-Package Manager Support:
   - 60% faster than sequential scanning
 ```
 
-
 When invoked, I will manage dependencies across all detected package managers,
 performing security scanning and safe updates. Quick mode provides essential
 health checks in 30 seconds, while audit mode performs comprehensive analysis

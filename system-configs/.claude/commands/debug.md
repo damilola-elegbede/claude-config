@@ -46,12 +46,12 @@ Issue Classification:
     symptoms: ["works sometimes", "random failures", "can't reproduce"]
     agents: [debugger, codebase-analyst, test-engineer]
     approach: Statistical analysis, environmental factor testing
-  
+
   Race Conditions:
     symptoms: ["deadlock", "data corruption", "concurrent access errors"]
     agents: [debugger, codebase-analyst]
     approach: Thread analysis, lock inspection, timing manipulation
-  
+
   Memory Issues:
     symptoms: ["memory leak", "crashes", "growing heap", "OOM errors"]
     agents: [debugger, codebase-analyst, test-engineer]

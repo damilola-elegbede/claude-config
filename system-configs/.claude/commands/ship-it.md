@@ -74,7 +74,6 @@ Parallel Execution:
   - Multiple fix agents deploy concurrently
 ```
 
-
 ```yaml
 Security Issues: security-auditor (always, non-negotiable)
 Performance Issues: performance-specialist + monitoring-specialist

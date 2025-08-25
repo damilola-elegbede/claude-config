@@ -79,4 +79,21 @@ scripts/test-phase*.sh
 scripts/*migration*.py
 scripts/*update*.py
 temp-scripts/
+
+# Generated reports and analysis files
 docs/stdlib-validation-report.md
+**/documentation-audit-report.md
+**/repository-structure-analysis.md
+**/*_SUMMARY.md
+**/*_COMPLETE.md
+**/*_OUTPUT.md
+**/*_report.md
+**/*_analysis.md
+**/*_audit.md
+docs/analysis/
+docs/api/*_GENERATION_*.md
+
+# All temporary report files should go in .tmp/
+PERFORMANCE_*.md
+*_OPTIMIZATION_*.md
+USAGE_EXAMPLES.md

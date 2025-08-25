@@ -46,7 +46,6 @@ Optimization Streams:
   - Best approach selected from parallel results
 ```
 
-
 When invoked, I will apply the SCOPE framework to optimize prompts for maximum
 clarity and effectiveness. I remove unnecessary words, clarify objectives, and
 structure prompts to achieve better results with fewer tokens.
