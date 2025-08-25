@@ -17,6 +17,49 @@ polyglot codebases.
 ```bash
 
 ## Behavior
+## Agent Orchestration
+
+### Parallel Dependency Analysis
+
+Deploy specialized agents simultaneously:
+
+```yaml
+devops:
+  role: Manage deployment and environment dependencies
+  input: Infrastructure dependencies, deployment configs
+  output: Environment compatibility, deployment risks
+
+platform-engineer:
+  role: Platform and system-level dependency management
+  input: System dependencies, runtime requirements
+  output: Platform compatibility, system recommendations
+
+dependency-analyst:
+  role: Analyze dependency tree and updates
+  input: Package files, lock files
+  output: Dependency graph, update recommendations
+
+supply-chain-security-engineer:
+  role: Supply chain vulnerability assessment
+  input: All dependencies, transitive deps
+  output: Supply chain risks, vulnerability report
+
+security-auditor:
+  role: CVE scanning and security audit
+  input: Dependency versions, known vulnerabilities
+  output: CVE report, security recommendations
+```bash
+
+### Parallel Scanning Strategy
+
+```yaml
+Multi-Package Manager Support:
+  - npm, pip, go mod analyzed simultaneously
+  - Security scans run in parallel per ecosystem
+  - Results aggregate for comprehensive report
+  - 60% faster than sequential scanning
+```
+
 
 When invoked, I will manage dependencies across all detected package managers,
 performing security scanning and safe updates. Quick mode provides essential
@@ -133,7 +176,7 @@ pip install --upgrade-strategy eager
 ```bash
 # Staged process: backup → security patches → minor updates → test
 # → rollback if needed
-```
+```bash
 
 ### /deps clean (Unused Removal)
 

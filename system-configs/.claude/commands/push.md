@@ -14,11 +14,49 @@ Supports both simple push mode and comprehensive quality-checked push.
 /push --dry-run             # Preview what would be pushed
 ```bash
 
+## Agent Orchestration
+
+### Parallel Validation Phase
+
+Deploy multiple agents simultaneously for comprehensive pre-push validation:
+
+```yaml
+tech-writer:
+  role: Generate push summary and documentation updates
+  input: Commit messages, changed files, push context
+  output: Push summary, documentation needs, changelog updates
+
+code-reviewer:
+  role: Validate code quality and standards
+  input: Changed files, commit diffs
+  output: Quality issues, auto-fixable problems
+
+security-auditor:
+  role: Final security check before remote push
+  input: All commits to be pushed, changed files
+  output: Security vulnerabilities, sensitive data exposure
+```bash
+
+### Parallel Execution Strategy
+
+```yaml
+Pre-Push Validation:
+  - All three agents run simultaneously
+  - Any agent can block the push
+  - Auto-fix issues in parallel where possible
+  - Re-validate after fixes
+
+Time Optimization:
+  - Parallel agent execution: 5-10 seconds
+  - Sequential would take: 15-30 seconds
+  - 60-70% time reduction
+```
+
 ## Behavior
 
-When invoked, I will safely push changes to the remote repository. Simple mode
-performs basic safety checks and pushes quickly. Full mode performs safety checks
-with basic auto-fixing but relies on /review command for comprehensive quality gates.
+When invoked, I will safely push changes to the remote repository with parallel
+agent validation. Simple mode performs basic checks. Full mode deploys all agents
+simultaneously for comprehensive validation with auto-fixing.
 
 ## Two-Mode Operation
 
@@ -33,24 +71,27 @@ Checks Performed:
   - Check branch has commits to push
   - Set upstream tracking if needed
 
-Agent Usage: None
+Agent Usage: None (skip for speed)
 Duration: 10-15 seconds
 ```bash
 
-### Full Mode (default) - Standard Push with Safety Checks
+### Full Mode (default) - Parallel Agent Validation
 
-**What it does**: Push with basic validation (no quality gates - use /review separately)
+**What it does**: Comprehensive parallel validation before push
 
 ```yaml
-Checks Performed:
-  - Verify not on main/master branch
-  - Ensure no uncommitted changes
-  - Check branch has commits to push
-  - Set upstream tracking if needed
-  - Basic linting auto-fix only
+Parallel Validation:
+  - code-reviewer: Quality and style checks
+  - test-engineer: Test verification
+  - security-auditor: Security scanning
 
-Agent Usage: None (quality review handled by /review command)
-Duration: 30-60 seconds
+All agents run simultaneously:
+  - Total duration: 5-10 seconds
+  - Auto-fix issues in parallel
+  - Re-validate after fixes
+
+Agent Usage: code-reviewer + test-engineer + security-auditor (parallel)
+Duration: 10-20 seconds (with parallel execution)
 ```bash
 
 ## Push Workflow

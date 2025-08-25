@@ -11,19 +11,56 @@ and co-authorship attribution.
 /commit
 ```yaml
 
+## Agent Orchestration
+
+### Parallel Validation Phase
+
+Deploy specialized agents simultaneously for comprehensive commit preparation:
+
+```yaml
+code-reviewer:
+  role: Analyze code changes for quality and completeness
+  input: git diff output, staged and unstaged changes
+  output: Change summary, quality assessment, improvement suggestions
+
+tech-writer:
+  role: Generate conventional commit messages
+  input: Change analysis, repository commit style
+  output: Properly formatted commit message with clear description
+
+security-auditor:
+  role: Scan for sensitive data and security issues
+  input: All changed files, new additions
+  output: Security clearance or blocking issues
+```bash
+
+### Agent Coordination
+
+```yaml
+Parallel Execution:
+  - All three agents analyze changes simultaneously
+  - Security-auditor has veto power on commits
+  - Results merge for final commit decision
+
+Critical Path:
+  - If security-auditor finds issues → block commit
+  - If code-reviewer finds critical issues → suggest fixes first
+  - If all clear → proceed with tech-writer's message
+```
+
 ## Behavior
 
 When you use `/commit`, I will:
 
-1. **Check repository status** by running:
+1. **Parallel Status Check** (All simultaneously):
    - `git status` to see untracked files
    - `git diff` to see staged and unstaged changes
    - `git log` to match repository's commit style
 
-2. **Analyze changes** to:
-   - Summarize the nature of changes
-   - Check for sensitive information
-   - Draft a concise commit message
+2. **Deploy Agents for Parallel Analysis**:
+   - code-reviewer: Analyze change quality
+   - tech-writer: Draft commit message
+   - security-auditor: Check for sensitive data
 
 3. **Clean up and stage appropriate files**:
    - **Clean up temporary files** before staging:

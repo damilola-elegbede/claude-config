@@ -15,6 +15,39 @@ Tests locally before pushing fixes.
 ```bash
 
 ## Behavior
+## Agent Orchestration
+
+### Parallel CI Failure Analysis
+
+Deploy multiple agents for comprehensive CI fixing:
+
+```yaml
+devops:
+  role: Analyze pipeline and infrastructure issues
+  input: CI logs, workflow files, environment config
+  output: Pipeline fixes, configuration corrections
+
+test-engineer:
+  role: Fix test failures and flakiness
+  input: Test results, failure patterns
+  output: Test fixes, stability improvements
+
+platform-engineer:
+  role: Resolve environment and dependency issues
+  input: Build logs, environment variables
+  output: Environment fixes, dependency resolutions
+```bash
+
+### Parallel Fix Strategy
+
+```yaml
+CI Job Parallelization:
+  - Analyze all failed jobs simultaneously
+  - Different agents handle different failure types
+  - Fixes applied in parallel where possible
+  - Re-run validation in parallel
+```
+
 
 Analyzes GitHub Actions failures, applies targeted fixes, tests locally for
 validation, and only pushes when 95% confident that 100% of CI issues are
@@ -220,6 +253,18 @@ Claude: 📊 Confidence scores from .tmp/fix-ci/:
 - Dependencies: 92% (23/25 successful)
 - Test Failures: 85% (17/20 successful)
 ```bash
+
+## Execution Verification
+
+Deploy execution-evaluator to verify:
+
+- ✅ **CI issues identified** - All CI failures correctly analyzed and categorized
+- ✅ **Pattern confidence** - Confidence score calculated from historical success data
+- ✅ **Local testing passed** - All fixes validated locally before pushing
+- ✅ **Fixes applied** - Appropriate fixes implemented based on failure patterns
+- ✅ **CI success achieved** - All CI checks pass after fix implementation
+- ✅ **Historical learning** - Outcomes recorded for future confidence scoring
+- ✅ **Threshold compliance** - Only proceeded when confidence >= 95%
 
 ## Key Features
 

@@ -14,6 +14,38 @@ Optimizes prompts using the SCOPE framework. Removes fluff, clarifies objectives
 ```bash
 
 ## Behavior
+## Agent Orchestration
+
+### Parallel Prompt Optimization
+
+Deploy specialized agents for comprehensive optimization:
+
+```yaml
+tech-writer:
+  role: Clarity and conciseness optimization
+  input: Original prompt, context
+  output: Clearer, more concise version
+
+business-analyst:
+  role: Objective extraction and refinement
+  input: Prompt content, implied goals
+  output: Clear objectives, success criteria
+
+ux-researcher:
+  role: User intent analysis
+  input: Prompt context, user patterns
+  output: Intent clarification, user needs
+```bash
+
+### Parallel Analysis Benefits
+
+```yaml
+Optimization Streams:
+  - Clarity, brevity, effectiveness analyzed simultaneously
+  - Multiple optimization strategies tested in parallel
+  - Best approach selected from parallel results
+```
+
 
 When invoked, I will apply the SCOPE framework to optimize prompts for maximum
 clarity and effectiveness. I remove unnecessary words, clarify objectives, and
@@ -92,6 +124,18 @@ Output: Ranked complaints with frequency
 User: approve
 Claude: ✅ Prompt optimized!
 ```bash
+
+## Execution Verification
+
+Deploy execution-evaluator to verify:
+
+- ✅ **Input analyzed** - Original prompt or file content processed and understood
+- ✅ **Structure optimized** - Clear input/output format specification added
+- ✅ **Clarity achieved** - Complex language simplified for maximum understanding
+- ✅ **Ambiguity removed** - Vague terms replaced with specific instructions
+- ✅ **User approval** - Interactive refinement completed to satisfaction
+- ✅ **Final format** - Optimized prompt delivered in clear, actionable format
+- ✅ **Objective clarity** - Core intent preserved while improving specificity
 
 ## Notes
 

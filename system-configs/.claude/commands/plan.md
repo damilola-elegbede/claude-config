@@ -22,8 +22,39 @@ When invoked, I enter plan mode and systematically analyze requirements,
 asking for clarification on any ambiguities. I generate a Product Requirements
 Document (PRD) preview showing phases, PRs, and task breakdown. Only after user
 approval do I create implementation files in `.tmp/<feature-name>/` with
-detailed
-agent assignments and technical specifications.
+detailed agent assignments and technical specifications.
+
+## Agent Orchestration
+
+### Parallel Planning Phase
+
+Deploy specialized agents for comprehensive planning:
+
+```yaml
+product-strategist:
+  role: Feature prioritization and roadmap planning
+  input: Requirements, constraints, goals
+  output: Feature priorities, release strategy
+
+tech-writer:
+  role: Document requirements and implementation plans
+  input: Technical specifications, user stories
+  output: PRD documentation, task descriptions
+
+project-orchestrator:
+  role: Coordinate implementation phases and agent assignments
+  input: Task breakdown, dependencies, resources
+  output: Execution strategy, parallel task organization
+```bash
+
+### Parallel Planning Benefits
+
+```yaml
+Simultaneous Analysis:
+  - Business and technical planning in parallel
+  - Requirements refined while architecture designed
+  - 40% faster PRD generation
+```
 
 ## Command Execution Flow
 

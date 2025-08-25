@@ -29,6 +29,8 @@ quality. Provides detailed audit report similar to
 4. **Length**: Commands under 400 lines
 5. **Execution Verification**: All commands must include
    execution-evaluator validation
+6. **Agent Specification**: Commands must specify appropriate specialized agents
+7. **Parallelization**: Commands must leverage parallel execution where possible
 
 ### Category Standards
 
@@ -38,30 +40,64 @@ git_workflow:
   requirements:
     - Git safety features documented
     - Branch protection mechanisms
+  required_agents:
+    - tech-writer (commit messages, PR descriptions)
+    - code-reviewer (change validation)
+    - security-auditor (sensitive data checks)
+  parallelization:
+    - Parallel validation checks before operations
 
 repository_analysis:
   commands: [context, test, debug]
   requirements:
     - Framework detection capabilities
     - Universal project compatibility
+  required_agents:
+    - codebase-analyst (repository analysis)
+    - test-engineer (test generation/execution)
+    - debugger (issue investigation)
+  parallelization:
+    - Multiple analysts for different domains
+    - Parallel test suite execution
 
 system_management:
   commands: [sync, deps, fix-ci]
   requirements:
     - Environment validation
     - Backup procedures
+  required_agents:
+    - platform-engineer (environment setup)
+    - devops (CI/CD issues)
+    - security-auditor (dependency vulnerabilities)
+  parallelization:
+    - Parallel file validation
+    - Simultaneous package manager scanning
 
 quality_assurance:
   commands: [review, agent-audit, command-audit]
   requirements:
     - Comprehensive validation
     - Detailed reporting
+  required_agents:
+    - code-reviewer (quality checks)
+    - security-auditor (security validation)
+    - performance-engineer (performance analysis)
+  parallelization:
+    - Parallel tool execution
+    - Multiple reviewer agents simultaneously
 
 development_support:
-  commands: [plan, resolve-cr, prompt]
+  commands: [plan, resolve-cr, prompt, implement, docs, ship-it]
   requirements:
     - Workflow integration
     - User guidance
+  required_agents:
+    - product-strategist (planning)
+    - tech-writer (documentation)
+    - project-orchestrator (workflow coordination)
+  parallelization:
+    - Parallel phase execution
+    - Multiple agents per workflow phase
 ```bash
 
 ## Execution Process
@@ -78,7 +114,42 @@ for cmd in system-configs/.claude/commands/*.md; do
 done
 ```bash
 
-### Phase 2: Execution Verification Check
+### Phase 2: Agent Specification Validation
+
+```bash
+# Check for appropriate agent specifications
+grep -l "backend-engineer\|frontend-architect\|test-engineer\|security-auditor" \
+  system-configs/.claude/commands/*.md
+
+# Validate agent usage patterns
+for cmd in system-configs/.claude/commands/*.md; do
+  # Check: Agent names match category requirements
+  # Verify: Security-critical operations include security-auditor
+  # Ensure: Complex tasks specify multiple specialists
+done
+
+# Identify missing agent specifications
+commands_without_agents=$(grep -L "agent.*:" system-configs/.claude/commands/*.md)
+```bash
+
+### Phase 3: Parallelization Validation
+
+```bash
+# Check for parallel execution patterns
+grep -l "parallel\|Parallel\|simultaneous\|concurrent" \
+  system-configs/.claude/commands/*.md
+
+# Validate parallel phase definitions
+grep -l "Phase.*Parallel\|Parallel Wave\|Parallel Execution" \
+  system-configs/.claude/commands/*.md
+
+# Check for sequential-only anti-patterns
+grep -l "Sequential Phase\|sequential execution\|one at a time" \
+  system-configs/.claude/commands/*.md | \
+  xargs -I {} echo "Review {} for parallelization opportunities"
+```bash
+
+### Phase 4: Execution Verification Check
 
 ```bash
 # Check for execution-evaluator deployment statements
@@ -93,7 +164,7 @@ grep -l "## Execution Verification\|### Execution Verification" \
 grep -c "✅.*" system-configs/.claude/commands/*.md
 ```bash
 
-### Phase 3: Markdown Compliance Check
+### Phase 5: Markdown Compliance Check
 
 ```bash
 # Scan for code blocks without language tags
@@ -103,7 +174,7 @@ grep -n '```$' **/*.md
 grep -c '```\(bash\|yaml\|text\|json\|javascript\|python\)' **/*.md
 ```bash
 
-### Phase 4: Length & Complexity Analysis
+### Phase 6: Length & Complexity Analysis
 
 ```yaml
 Thresholds:
@@ -159,6 +230,16 @@ Content Issues: 2
   - Vague descriptions
   - Missing examples
 
+Agent Specification Issues: 12
+  - Missing agent specifications
+  - Inappropriate agent selection
+  - No security-auditor for sensitive operations
+
+Parallelization Issues: 8
+  - Sequential execution where parallel possible
+  - Missing parallel phase definitions
+  - No concurrent agent deployment
+
 Execution Verification Issues: 5
   - Missing execution-evaluator deployment
   - No verification section
@@ -175,11 +256,14 @@ Length Issues: 4
 
 ### Command Status Matrix
 
-| Command | Lines | Structure | Content | Execution | Markdown | Status |
-|---------|-------|-----------|---------|-----------|----------|--------|
-| plan | 230 | ✅ | ✅ | ❌ | ✅ | ⚠️ Missing execution-evaluator |
-| test | 384 | ✅ | ✅ | ✅ | ❌ | ⚠️ Markdown issues |
-| resolve-cr | 401 | ✅ | ✅ | ❌ | ✅ | ⚠️ Missing execution + over length |
+| Command | Lines | Structure | Content | Agents | Parallel | Execution | Markdown | Status |
+|---------|-------|-----------|---------|--------|----------|-----------|----------|--------|
+| plan | 230 | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | ⚠️ Missing agents + parallelization |
+| test | 384 | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ | ⚠️ Missing agents + parallel execution |
+| commit | 185 | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | ⚠️ Missing agents + validation |
+| branch | 201 | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ | ⚠️ Missing agent assistance |
+| implement | 350 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ Good parallel + agents |
+| docs | 290 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ Good parallel structure |
 
 ### Auto-Remediation Applied
 
@@ -197,21 +281,10 @@ Length Issues: 4
 ### Manual Actions Required
 
 ```bash
-# Length reduction needed:
-# /resolve-cr: 401 → <400 lines (trim examples, consolidate sections)
-# /prompt: 401 → <400 lines (reduce verbose documentation)
-
-# Execution verification needed:
-# /plan: Add execution-evaluator deployment section
-# /resolve-cr: Add execution-evaluator verification section
-# /review: Add execution-evaluator success criteria
-
-# Structure improvements:
-# /deps: Clarify agent coordination patterns
-
-# Content enhancements:
-# /fix-ci: Add concrete implementation examples
-# /context: Clarify lite vs full mode differences
+# Priority optimizations:
+# - Reduce oversized commands to <400 lines
+# - Enhance content with concrete examples where needed
+# - Verify all commands have proper execution validation
 ```bash
 
 ## Repository-Specific Commands
@@ -228,6 +301,8 @@ Validation ensures these commands are properly excluded in sync.md.
 
 ✅ **Structure**: All commands have required sections in correct order
 ✅ **Content**: Clear descriptions with practical examples
+✅ **Agent Specification**: All commands specify appropriate specialized agents
+✅ **Parallelization**: Commands leverage parallel execution where possible
 ✅ **Execution Verification**: All commands include execution-evaluator deployment
 ✅ **Markdown**: 100% code blocks have language tags
 ✅ **Length**: Commands under 400 lines or complexity justified
@@ -260,37 +335,13 @@ Validation ensures these commands are properly excluded in sync.md.
 # Detailed analysis with specific recommendations
 ```text
 
-## Ecosystem Health Grade
-
-### Overall Command Ecosystem: B+ (83/100)
-
-**Grade Breakdown:**
-```yaml
-Structure Compliance: A- (89%) - 17/18 commands have all required sections
-Content Quality: B+ (85%) - Clear descriptions, good examples, minor gaps
-Markdown Standards: C (72%) - 185 untagged code blocks across all commands
-Length Management: B (83%) - 2/18 commands over 400 lines, most well-sized
-Category Standards: A (90%) - Strong adherence to command category requirements
-Repository Integration: A+ (100%) - Perfect sync exclusion handling
-```text
-
-**Key Strengths:**
-- Excellent structural consistency across command ecosystem
-- Strong category-specific standards compliance
-- Perfect repository-specific handling
-- Comprehensive usage examples and behavioral descriptions
-
-**Priority Improvements:**
-1. **Markdown Standardization** (Immediate): Fix 185 untagged code blocks
-2. **Length Optimization** (Week 1): Reduce debug.md and deps.md under 400 lines
-3. **Structure Completion** (Week 1): Add missing Behavior section to plan.md
-
-**Ecosystem Maturity:** Advanced (18 commands, 6 categories, comprehensive coverage)
-
 ## Success Criteria
 
 ✅ **Structure**: All commands have required sections in correct order
 ✅ **Content**: Clear descriptions with practical examples
+✅ **Agent Specification**: All commands specify appropriate specialized agents
+✅ **Parallelization**: Commands leverage parallel execution where possible
+✅ **Execution Verification**: All commands include execution-evaluator deployment
 ✅ **Markdown**: 100% code blocks have language tags
 ✅ **Length**: Commands under 400 lines or complexity justified
 ✅ **Categories**: Commands meet category-specific standards
@@ -303,6 +354,9 @@ Deploy execution-evaluator to verify:
 - ✅ **Commands scanned** - All command files analyzed for compliance
 - ✅ **Structure validated** - Required sections present in correct order
 - ✅ **Content assessed** - Clear descriptions and practical examples
+- ✅ **Agent specifications checked** - Appropriate agents specified for each command
+- ✅ **Parallelization validated** - Parallel execution patterns where applicable
+- ✅ **Execution verification confirmed** - Execution-evaluator deployment present
 - ✅ **Markdown verified** - Code blocks properly tagged with languages
 - ✅ **Length checked** - Commands under 400 lines or complexity justified
 - ✅ **Categories confirmed** - Commands meet category-specific standards

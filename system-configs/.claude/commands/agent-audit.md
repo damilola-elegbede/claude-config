@@ -13,6 +13,32 @@ it does not make any changes automatically.**
 ```bash
 
 ## Behavior
+## Parallel Validation Strategy
+
+### Category-Based Parallelization
+
+```yaml
+security-auditor:
+  role: Validate security boundaries and anti-patterns
+  input: Agent definitions, tool assignments, access controls
+  output: Security compliance report, boundary violations
+
+performance-engineer:
+  role: Optimize validation execution and parallel processing
+  input: Validation workflows, category structure
+  output: Performance metrics, parallel execution strategy
+
+code-reviewer:
+  role: Multiple instances validating agent definitions
+  input: Agent markdown files, template compliance
+  output: Quality assessment, formatting issues
+
+debugger:
+  role: Investigate validation failures and edge cases
+  input: Failed validations, error patterns
+  output: Root cause analysis, fix recommendations
+```bash
+
 
 This command performs thorough validation of all agents across multiple dimensions, executed in parallel by
 category for maximum efficiency.
