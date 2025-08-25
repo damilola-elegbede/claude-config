@@ -106,14 +106,14 @@ Output: Detailed report with risk scoring
 ```bash
 # Auto-detects: npm, pip, go, cargo, maven, gradle, bundler, composer
 # Based on presence of manifest files (package.json, requirements.txt, etc.)
-```text
+```
 
 ### Security Scanning
 
 ```bash
 # Uses ecosystem-specific tools:
 # npm audit, pip-audit, cargo audit, nancy (Go), etc.
-```text
+```
 
 ## Core Operations
 
@@ -197,7 +197,7 @@ pip install --upgrade-strategy eager
 
   echo "✅ Cleanup completed"
 }
-```bash
+```
 
 ## Language-Specific Patterns
 
@@ -219,7 +219,7 @@ npm_workflow() {
   npm outdated
   npm update
 }
-```bash
+```
 
 ### Language-Specific Workflows
 
@@ -349,8 +349,6 @@ Claude: 🔒 Deploying dependency-manager + supply-chain-security-engineer...
 🟡 Medium: 5 other security issues found
 ⚠️ Supply chain: 2 packages flagged for single-maintainer risk
 📋 Generating comprehensive security report...
-```bash
-
 ### Safe Update Process
 
 ```bash

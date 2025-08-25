@@ -1,7 +1,12 @@
 # Installation Guide
 
 Complete setup and installation instructions for the Claude Configuration Repository - a Smart Agent Orchestration
-Framework featuring 41 specialized agents and 18 essential commands.
+Framework featuring dozens of specialized agents and essential commands.
+
+**Current Configuration:**
+
+- **Agents**: 28 specialized agents (verify count with system-configs/.claude/agents/)
+- **Commands**: 20 essential commands (verify count with system-configs/.claude/commands/)
 
 ## Prerequisites
 
@@ -55,7 +60,7 @@ The fastest way to deploy the complete orchestration framework:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/damilola/claude-config.git
+git clone https://github.com/damilola-elegbede/claude-config.git
 cd claude-config
 
 # 2. Deploy complete framework with validation
@@ -77,7 +82,7 @@ For users who prefer manual control:
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/damilola/claude-config.git
+git clone https://github.com/damilola-elegbede/claude-config.git
 cd claude-config
 
 # 2. Create ~/.claude directory if it doesn't exist
@@ -369,7 +374,7 @@ vim system-configs/.claude/agents/my-specialist.md
 
 ```bash
 # Set up for contributions
-git remote add upstream https://github.com/damilola/claude-config.git
+git remote add upstream https://github.com/damilola-elegbede/claude-config.git
 git checkout -b feature/my-enhancement
 
 # Make changes and test
@@ -385,16 +390,16 @@ git checkout -b feature/my-enhancement
 
 ### Getting Help
 
-- **Documentation**: [docs/DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md)
-- **Agent Guide**: [system-configs/.claude/agents/README.md](../system-configs/.claude/agents/README.md)
-- **Troubleshooting**: [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
-- **Issues**: [GitHub Issues](https://github.com/damilola/claude-config/issues)
+- **Documentation**: [DOCUMENTATION_INDEX.md](./DOCUMENTATION_INDEX.md)
+- **Agent Guide**: [../system-configs/.claude/agents/README.md](../system-configs/.claude/agents/README.md)
+- **Troubleshooting**: [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
+- **Issues**: [GitHub Issues](https://github.com/damilola-elegbede/claude-config/issues)
 
 ### Community Resources
 
-- [Contributing Guide](CONTRIBUTING.md)
-- [Usage Examples](USAGE_EXAMPLES.md)
-- [Architecture Overview](ARCHITECTURE.md)
+- [Contributing Guide](./CONTRIBUTING.md)
+- [Usage Examples](./USAGE_EXAMPLES.md)
+- [Architecture Overview](./ARCHITECTURE.md)
 
 ---
 
