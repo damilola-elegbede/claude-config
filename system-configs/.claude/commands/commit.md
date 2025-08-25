@@ -5,6 +5,10 @@
 Creates a git commit following Claude's standards with proper formatting
 and co-authorship attribution.
 
+**CRITICAL**: This command NEVER uses `--no-verify`. Quality gates exist to protect code
+integrity and must always be respected. If pre-commit hooks fail, the issues must be fixed,
+not bypassed.
+
 ## Usage
 
 ```bash
@@ -92,6 +96,36 @@ Performance Metrics:
   - Sequential: 15-20 seconds for large commits
   - Parallel: 3-5 seconds (75% faster)
   - More thorough analysis with multiple instances
+```
+
+## Quality Gate Enforcement
+
+### Never Bypass Hooks
+
+```yaml
+Prohibited Practices:
+  - NEVER use: git commit --no-verify
+  - NEVER bypass: pre-commit hooks  
+  - NEVER skip: quality validation
+  
+Required Approach:
+  - Fix issues identified by hooks
+  - Run validation tools
+  - Ensure all checks pass
+  - Only commit clean code
+
+If Hooks Fail:
+  1. Read the error message carefully
+  2. Fix the identified issues (lint, tests, security)
+  3. Re-run validation
+  4. Try commit again
+  5. Never resort to --no-verify
+
+Rationale:
+  - Pre-commit hooks prevent broken code from entering history
+  - Quality gates catch issues before they reach CI/CD
+  - Bypassing hooks creates technical debt
+  - Team productivity depends on clean commits
 ```
 
 ## Behavior
