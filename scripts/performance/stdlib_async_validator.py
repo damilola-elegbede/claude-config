@@ -458,8 +458,10 @@ Generated: {time.strftime('%Y-%m-%d %H:%M:%S')}
 - ✅ Maintainable and reliable
 """
     
-    # Save report
-    report_path = project_root / 'docs' / 'stdlib-validation-report.md'
+    # Save report to .tmp directory
+    reports_dir = project_root / '.tmp' / 'reports'
+    reports_dir.mkdir(parents=True, exist_ok=True)
+    report_path = reports_dir / 'stdlib-validation-report.md'
     async with async_open(report_path, 'w') as f:
         await f.write(report_content)
     

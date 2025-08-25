@@ -371,8 +371,10 @@ def main():
     print(f"Final agent count: {len(final_agents)}")
     print(f"Deprecated agents: {len(list(deprecated_dir.glob('*.md')))}")
 
-    # Create detailed report
-    report_path = Path('/Users/damilola/Documents/Projects/claude-config/docs/agent-standardization-report.md')
+    # Create detailed report in .tmp directory
+    reports_dir = Path('/Users/damilola/Documents/Projects/claude-config/.tmp/reports')
+    reports_dir.mkdir(parents=True, exist_ok=True)
+    report_path = reports_dir / 'agent-standardization-report.md'
     with open(report_path, 'w') as f:
         f.write(f"# Agent Standardization Report\n\n")
         f.write(f"Generated: {datetime.now().isoformat()}\n\n")

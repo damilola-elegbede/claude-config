@@ -178,7 +178,9 @@ def legacy_main():
         print(f"\n❌ {invalid_count} agents have validation issues")
 
         # Save detailed report
-        report_path = project_root / 'docs' / 'yaml-validation-report.md'
+        reports_dir = project_root / '.tmp' / 'reports'
+        reports_dir.mkdir(parents=True, exist_ok=True)
+        report_path = reports_dir / 'yaml-validation-report.md'
         with open(report_path, 'w') as f:
             f.write("# Agent YAML Validation Report (Legacy)\n\n")
             f.write(f"Total agents validated: {len(validation_results)}\n\n")

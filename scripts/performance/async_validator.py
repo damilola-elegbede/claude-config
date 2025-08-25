@@ -529,8 +529,10 @@ Generated: {time.strftime('%Y-%m-%d %H:%M:%S')}
 - ✅ All security features preserved
 """
     
-    # Save report
-    report_path = project_root / 'docs' / 'performance-validation-report.md'
+    # Save report to .tmp directory
+    reports_dir = project_root / '.tmp' / 'reports'
+    reports_dir.mkdir(parents=True, exist_ok=True)
+    report_path = reports_dir / 'performance-validation-report.md'
     async with aiofiles.open(report_path, 'w') as f:
         await f.write(report_content)
     

@@ -486,13 +486,15 @@ python scripts/performance_monitor.py
 {json.dumps(self.integration_log, indent=2)}
 '''
         
-        perf_doc_path = self.project_root / 'docs' / 'PERFORMANCE_OPTIMIZATIONS.md'
+        reports_dir = self.project_root / '.tmp' / 'reports'
+        reports_dir.mkdir(parents=True, exist_ok=True)
+        perf_doc_path = reports_dir / 'PERFORMANCE_OPTIMIZATIONS.md'
         with open(perf_doc_path, 'w') as f:
             f.write(perf_docs)
         
         self.integration_log.append({
             'action': 'update_docs',
-            'file': 'docs/PERFORMANCE_OPTIMIZATIONS.md',
+            'file': '.tmp/reports/PERFORMANCE_OPTIMIZATIONS.md',
             'success': True
         })
     
@@ -636,7 +638,9 @@ Performance optimization integration completed successfully. The system now prov
 The optimized system is ready for high-performance agent processing.
 '''
         
-        report_path = self.project_root / 'docs' / 'performance-integration-report.md'
+        reports_dir = self.project_root / '.tmp' / 'reports'
+        reports_dir.mkdir(parents=True, exist_ok=True)
+        report_path = reports_dir / 'performance-integration-report.md'
         with open(report_path, 'w') as f:
             f.write(report_content)
         

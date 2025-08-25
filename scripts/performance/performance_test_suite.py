@@ -490,7 +490,9 @@ The optimized system provides a solid foundation for scaling the Claude configur
 """
         
         # Save report
-        report_path = Path(__file__).parent.parent.parent / 'docs' / 'performance-test-report.md'
+        reports_dir = Path(__file__).parent.parent.parent / '.tmp' / 'reports'
+        reports_dir.mkdir(parents=True, exist_ok=True)
+        report_path = reports_dir / 'performance-test-report.md'
         with open(report_path, 'w') as f:
             f.write(report_content)
         

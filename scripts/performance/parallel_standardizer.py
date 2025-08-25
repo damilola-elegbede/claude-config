@@ -782,8 +782,10 @@ Generated: {datetime.now().isoformat()}
 - ✅ Performance optimizations maintain security posture
 """
     
-    # Save report
-    report_path = project_root / 'docs' / 'performance-standardization-report.md'
+    # Save report to .tmp directory
+    reports_dir = project_root / '.tmp' / 'reports'
+    reports_dir.mkdir(parents=True, exist_ok=True)
+    report_path = reports_dir / 'performance-standardization-report.md'
     async with aiofiles.open(report_path, 'w') as f:
         await f.write(report_content)
     

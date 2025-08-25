@@ -732,7 +732,9 @@ Generated: {time.strftime('%Y-%m-%d %H:%M:%S')}
 - **Parallel opportunity identification**: Cross-functional execution patterns
 """
     
-    markdown_path = project_root / 'docs' / 'performance-capability-analysis.md'
+    reports_dir = project_root / '.tmp' / 'reports'
+    reports_dir.mkdir(parents=True, exist_ok=True)
+    markdown_path = reports_dir / 'performance-capability-analysis.md'
     async with aiofiles.open(markdown_path, 'w') as f:
         await f.write(markdown_content)
     
