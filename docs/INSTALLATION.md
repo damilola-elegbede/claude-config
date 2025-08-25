@@ -1,6 +1,7 @@
 # Installation Guide
 
-Complete setup and installation instructions for the Claude Configuration Repository - a Smart Agent Orchestration Framework featuring 41 specialized agents and 18 essential commands.
+Complete setup and installation instructions for the Claude Configuration Repository - a Smart Agent Orchestration
+Framework featuring 41 specialized agents and 18 essential commands.
 
 ## Prerequisites
 
@@ -14,16 +15,19 @@ Complete setup and installation instructions for the Claude Configuration Reposi
 ### Claude Code CLI Installation
 
 #### Option 1: NPM Installation (Recommended)
+
 ```bash
 npm install -g @anthropic/claude-code
 ```
 
 #### Option 2: Homebrew (macOS)
+
 ```bash
 brew install claude-code
 ```
 
 #### Option 3: Binary Download
+
 ```bash
 # Check latest releases at:
 # https://github.com/anthropics/claude-code/releases
@@ -33,6 +37,7 @@ sudo mv claude-code /usr/local/bin/
 ```
 
 ### Verification
+
 ```bash
 # Verify Claude Code CLI installation
 claude-code --version
@@ -161,6 +166,7 @@ source ~/.bashrc
 ## Verification Checklist
 
 ### Core Installation
+
 - [ ] Claude Code CLI responds to `claude-code --version`
 - [ ] Repository cloned successfully to `~/claude-config`
 - [ ] Main configuration at `~/CLAUDE.md`
@@ -168,6 +174,7 @@ source ~/.bashrc
 - [ ] Command directory at `~/.claude/commands/` with 18+ files
 
 ### Agent Orchestration Framework
+
 - [ ] `/agent-audit` runs without errors
 - [ ] `/command-audit` validates all commands
 - [ ] `/context` provides repository analysis
@@ -175,6 +182,7 @@ source ~/.bashrc
 - [ ] `/review` deploys multiple agents
 
 ### Optional Features
+
 - [ ] Audio notifications work (`/sync` plays completion sound)
 - [ ] Git hooks configured (if applicable)
 - [ ] Update workflow established
@@ -390,4 +398,5 @@ git checkout -b feature/my-enhancement
 
 ---
 
-**Installation Complete!** You now have access to 41 specialized agents and 18 essential commands through the Claude Code CLI orchestration framework.
+**Installation Complete!** You now have access to 41 specialized agents and 18 essential commands through the
+Claude Code CLI orchestration framework.
