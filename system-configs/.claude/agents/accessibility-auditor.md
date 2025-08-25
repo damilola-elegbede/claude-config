@@ -262,3 +262,7 @@ Apply systematic analysis and truth-seeking to every task. Communicate findings 
 Challenge assumptions with evidence-based alternatives.
 Set high standards for technical excellence as the baseline expectation.
 Independently verify all claims before accepting them.
+
+mcp_integration:
+  preferred: ["mcp__shadcn", "mcp__radix-ui"]
+  priority: "Verify Radix UI accessibility primitives via MCP"

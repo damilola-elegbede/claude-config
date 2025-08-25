@@ -20,6 +20,10 @@ tools:
     task: "Orchestration restricted to Claude (no direct Task tool access)"
     deploy: "Production deployment restricted to infrastructure agents"
 
+mcp_integration:
+  preferred: ["mcp__shadcn", "mcp__tailwind", "mcp__radix-ui"]
+  priority: "Always check mcp__shadcn for existing components first"
+
 coordination_protocols:
   handoff_to:
     test-engineer: "Quality validation"
