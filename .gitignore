@@ -28,6 +28,9 @@ Thumbs.db
 *.tmp
 .temp/
 
+# Performance cache directory
+.cache/
+
 # Test artifacts
 test-results.log
 test-output.log
