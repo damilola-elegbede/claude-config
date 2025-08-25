@@ -54,7 +54,18 @@ Code CLI.
 - Commands require behavioral testing
 - Documentation must be comprehensive
 - Security boundaries must be enforced
-- **NEVER use --no-verify** for git operations (bypassing checks leads to CI failures)
+
+#### Git Quality Standards
+- **NEVER use `--no-verify`** for commits or pushes under any circumstances
+- **Pre-commit hooks** must pass before any commit (markdown quality, basic tests, security checks)
+- **Pre-push hooks** must pass before pushing (full test suite, YAML validation, comprehensive quality gates)
+- **CI/CD pipeline** enforces zero-tolerance quality standards matching local hooks
+
+#### If Quality Gates Fail
+1. **Fix the issues** - use tools like `./scripts/validate-markdown-quality.sh fix`
+2. **Re-run validation** - verify fixes with `./tests/test.sh`
+3. **Never bypass** - quality gates protect code integrity and team productivity
+4. **Emergency exceptions** require explicit documentation and immediate follow-up
 
 ## Repository-Specific Commands
 
