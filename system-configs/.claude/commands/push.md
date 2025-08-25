@@ -5,6 +5,10 @@
 Safely pushes changes to remote repository using git push with optional quality gates.
 Supports both simple push mode and comprehensive quality-checked push.
 
+**CRITICAL**: This command NEVER uses `--no-verify`. Pre-push hooks are the last line of
+defense before code reaches the remote repository. If pre-push hooks fail, the issues must
+be fixed immediately, never bypassed.
+
 ## Usage
 
 ```bash
@@ -50,6 +54,42 @@ Time Optimization:
   - Parallel agent execution: 5-10 seconds
   - Sequential would take: 15-30 seconds
   - 60-70% time reduction
+```
+
+## Quality Gate Enforcement
+
+### Never Bypass Pre-Push Hooks
+
+```yaml
+Prohibited Practices:
+  - NEVER use: git push --no-verify
+  - NEVER bypass: pre-push hooks
+  - NEVER skip: CI/CD validation
+  - NEVER force push: without team coordination
+  
+Required Approach:
+  - Fix all issues identified by pre-push hooks
+  - Ensure tests pass locally
+  - Validate markdown and code quality
+  - Only push clean, validated code
+
+If Pre-Push Hooks Fail:
+  1. Read the detailed error output
+  2. Fix ALL identified issues:
+     - Test failures → fix tests
+     - Lint errors → run lint:fix
+     - Security issues → address vulnerabilities
+     - Quality violations → clean up code
+  3. Commit the fixes
+  4. Try push again
+  5. NEVER use --no-verify as a shortcut
+
+Rationale:
+  - Pre-push hooks prevent CI/CD failures
+  - They save team time by catching issues early
+  - Bypassing hooks breaks team agreements
+  - Clean pushes maintain repository integrity
+  - CI/CD costs money - don't waste it on preventable failures
 ```
 
 ## Behavior

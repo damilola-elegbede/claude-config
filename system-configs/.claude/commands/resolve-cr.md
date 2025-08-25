@@ -15,40 +15,91 @@ Finds and resolves CodeRabbit review comments from PR. Extracts actionable sugge
 ## Behavior
 ## Agent Orchestration
 
-### Parallel CodeRabbit Resolution
+### Parallel CodeRabbit Resolution - Multiple Instances
 
-Deploy agents for efficient comment resolution:
+Deploy multiple agent instances for massive parallelization:
 
 ```yaml
-tech-writer:
-  role: Format resolution summaries and documentation updates
-  input: Fixed issues, resolution context
-  output: Clear fix descriptions, comment responses
+# PARALLEL WAVE 1: Comment Analysis (All agents simultaneously)
+codebase-analyst:
+  role: Analyze all CodeRabbit comments and categorize by file/type
+  input: All CR comments, codebase structure
+  output: Comment groupings, dependency analysis
+  parallel_with: [project-orchestrator, tech-writer]
 
 project-orchestrator:
-  role: Coordinate resolution workflow and prioritization
-  input: Comment severity, fix complexity, team coordination
-  output: Resolution strategy, workflow optimization
+  role: Create parallel execution plan for comment resolution
+  input: Comment severity, dependencies, fix complexity
+  output: Parallel resolution strategy, task allocation
+  parallel_with: [codebase-analyst, tech-writer]
 
-code-reviewer:
-  role: Validate fixes meet CodeRabbit standards
-  input: CR comments, proposed fixes
-  output: Fix validation, quality assurance
+tech-writer:
+  role: Prepare response templates and documentation updates
+  input: Comment types, resolution patterns
+  output: Response templates, documentation drafts
+  parallel_with: [codebase-analyst, project-orchestrator]
 
-test-engineer:
-  role: Ensure fixes don't break tests
-  input: Changed code, test suites
-  output: Test results, regression checks
+# PARALLEL WAVE 2: Simultaneous Fix Implementation
+code-reviewer (instance pool):
+  deployment: 3-5 instances based on comment count
+  distribution:
+    - instance_1: Security-related comments
+    - instance_2: Performance suggestions
+    - instance_3: Code quality improvements
+    - instance_4: Testing recommendations
+    - instance_5: Documentation updates
+  execution: All instances work simultaneously on different files
+
+test-engineer (parallel instances):
+  deployment: 2-3 instances for different test suites
+  distribution:
+    - instance_1: Unit test validation
+    - instance_2: Integration test validation
+    - instance_3: E2E test validation
+  execution: Parallel test execution after fixes
+
+# PARALLEL WAVE 3: Validation & Integration
+security-auditor:
+  role: Validate security-related fixes
+  parallel_with: [performance-engineer, accessibility-auditor]
+
+performance-engineer:
+  role: Verify performance improvements
+  parallel_with: [security-auditor, accessibility-auditor]
+
+accessibility-auditor:
+  role: Check accessibility compliance
+  parallel_with: [security-auditor, performance-engineer]
 ```
 
 ### Parallel Fix Strategy
 
 ```yaml
-Comment Parallelization:
-  - Group independent comments
-  - Fix multiple issues simultaneously
-  - Different agents for different comment types
-  - Batch validation after fixes
+Comment Parallelization Strategy:
+  Phase 1 - Analysis (2-3 seconds):
+    - All comments analyzed simultaneously
+    - Comments grouped by independence
+    - Dependency graph created
+
+  Phase 2 - Parallel Resolution (60-80% faster):
+    Independent Comments:
+      - Deploy N code-reviewer instances (N = number of independent groups)
+      - Each instance handles different file or concern type
+      - All work simultaneously
+
+    Dependent Comments:
+      - Resolve in dependency order
+      - But parallelize within each dependency level
+
+  Phase 3 - Batch Validation:
+    - All test types run in parallel
+    - Security, performance, accessibility checks simultaneous
+    - Results aggregated for final report
+
+Optimization Metrics:
+  - Sequential: 5-10 minutes for 20 comments
+  - Parallel: 1-2 minutes for 20 comments (5x faster)
+  - Instance scaling: Up to 10 parallel agents for large PRs
 ```bash
 
 

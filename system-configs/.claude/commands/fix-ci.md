@@ -17,35 +17,89 @@ Tests locally before pushing fixes.
 ## Behavior
 ## Agent Orchestration
 
-### Parallel CI Failure Analysis
+### Parallel CI Failure Analysis - Multi-Instance Deployment
 
-Deploy multiple agents for comprehensive CI fixing:
+Deploy multiple agent instances for comprehensive parallel CI fixing:
 
 ```yaml
-devops:
-  role: Analyze pipeline and infrastructure issues
-  input: CI logs, workflow files, environment config
+# PARALLEL WAVE 1: Simultaneous Failure Analysis
+devops (instance pool):
+  deployment: 2-3 instances based on number of failed jobs
+  distribution:
+    - instance_1: Pipeline/workflow configuration issues
+    - instance_2: Infrastructure and environment problems
+    - instance_3: Deployment and integration failures
+  parallel_with: [test-engineer instances, platform-engineer instances]
   output: Pipeline fixes, configuration corrections
 
-test-engineer:
-  role: Fix test failures and flakiness
-  input: Test results, failure patterns
+test-engineer (instance pool):
+  deployment: 3-4 instances for different test types
+  distribution:
+    - instance_1: Unit test failures
+    - instance_2: Integration test failures
+    - instance_3: E2E test failures
+    - instance_4: Flaky test identification
+  parallel_with: [devops instances, platform-engineer instances]
   output: Test fixes, stability improvements
 
-platform-engineer:
-  role: Resolve environment and dependency issues
-  input: Build logs, environment variables
+platform-engineer (instance pool):
+  deployment: 2-3 instances for different aspects
+  distribution:
+    - instance_1: Dependency resolution issues
+    - instance_2: Build environment problems
+    - instance_3: Resource constraints and timeouts
+  parallel_with: [devops instances, test-engineer instances]
   output: Environment fixes, dependency resolutions
+
+code-reviewer:
+  role: Analyze code changes that triggered CI failures
+  parallel_with: [all other agents]
+  output: Code quality issues, syntax problems
+
+security-auditor:
+  role: Check for security-related CI failures
+  parallel_with: [all other agents]
+  output: Security violations, compliance issues
 ```bash
 
 ### Parallel Fix Strategy
 
 ```yaml
-CI Job Parallelization:
-  - Analyze all failed jobs simultaneously
-  - Different agents handle different failure types
-  - Fixes applied in parallel where possible
-  - Re-run validation in parallel
+CI Job Parallelization Strategy:
+  Phase 1 - Parallel Diagnosis (10-15 seconds):
+    - All failed CI jobs analyzed simultaneously
+    - Deploy N agents where N = number of failure types
+    - Each agent instance handles specific failure domain
+    - Cross-reference findings for related issues
+
+  Phase 2 - Parallel Fix Implementation:
+    Lint/Format Failures:
+      - Multiple code-reviewer instances fix different files
+      - Parallel execution: npm run lint:fix on file groups
+
+    Test Failures:
+      - test-engineer instance 1: Fix unit tests
+      - test-engineer instance 2: Fix integration tests
+      - test-engineer instance 3: Fix E2E tests
+      - All work simultaneously
+
+    Build Failures:
+      - platform-engineer instance 1: Fix dependencies
+      - platform-engineer instance 2: Fix environment config
+      - devops: Fix pipeline configuration
+      - Parallel resolution of independent issues
+
+  Phase 3 - Parallel Validation:
+    - Run all CI checks locally in parallel
+    - Different test suites on different threads
+    - Aggregate results for confidence scoring
+    - Only push when ALL parallel checks pass
+
+Performance Metrics:
+  - Sequential analysis: 3-5 minutes
+  - Parallel analysis: 30-60 seconds (5x faster)
+  - Fix confidence: Higher with parallel validation
+  - Success rate: 95%+ with comprehensive parallel checking
 ```
 
 Analyzes GitHub Actions failures, applies targeted fixes, tests locally for

@@ -3,8 +3,8 @@
 ## Description
 
 Comprehensive documentation management system that identifies gaps, updates existing docs,
-and maintains current documentation aligned with codebase reality. Deploys multiple agents
-in parallel for efficient analysis and updates.
+and maintains current documentation aligned with codebase reality. Deploys multiple agent
+instances in parallel for 3-4x faster documentation generation across all document types.
 
 ## Usage
 
@@ -17,47 +17,69 @@ in parallel for efficient analysis and updates.
 
 ## Behavior
 
-When invoked, I will orchestrate parallel agents to comprehensively update all repository
-documentation including CLAUDE.md, README.md, API docs, and technical specifications.
-Identifies gaps, updates outdated content, and organizes temporary documentation files.
+When invoked, I will deploy multiple tech-writer instances (4-6) to simultaneously update
+different documentation types. Each instance handles specific documents (README, API docs,
+CLAUDE.md, architecture docs) in parallel, achieving 3-4x faster documentation generation
+than sequential processing.
 
 ## Core Workflow
 
-### Phase 1: Analysis & Gap Identification (Parallel)
+### Phase 1: Multi-Instance Analysis & Gap Identification
 
 ```yaml
-Agent Deployment:
-  codebase-analyst: Repository structure and component analysis
-  tech-writer: Documentation inventory and gap identification
-  api-analyst: API documentation requirements assessment
+# PARALLEL WAVE: Multi-Instance Documentation Analysis (20-30 seconds)
+codebase-analyst (instance pool):
+  deployment: 2-3 instances for rapid analysis
+  distribution:
+    - instance_1: Frontend components and UI documentation needs
+    - instance_2: Backend services and API documentation gaps
+    - instance_3: Infrastructure and deployment documentation
+  parallel_with: [tech-writer instances]
+  output: Comprehensive gap analysis from multiple perspectives
 
-Parallel Tasks:
-  - Scan existing documentation completeness
-  - Identify undocumented features and components
-  - Analyze code-to-docs synchronization gaps
-  - Assess documentation quality and clarity
-  - Map API endpoints requiring documentation
+tech-writer (initial assessment instance):
+  role: Documentation inventory and quality assessment
+  parallel_with: [codebase-analyst instances]
+  output: Documentation gaps and update priorities
+
+api-architect:
+  role: API documentation requirements and OpenAPI specs
+  parallel_with: [codebase-analyst instances, tech-writer]
+  output: API documentation needs assessment
 ```bash
 
-### Phase 2: Documentation Generation (Parallel)
+### Phase 2: Multi-Instance Documentation Generation
 
 ```yaml
-Agent Coordination:
-  tech-writer:
-    - Update CLAUDE.md with current project reality
-    - Refresh README.md with accurate setup/usage
-    - Generate missing API documentation
-    - Update architecture and design docs
+# PARALLEL WAVE: Multi-Instance Document Creation (1-2 minutes total)
+tech-writer (instance pool):
+  deployment: 4-6 instances based on documentation scope
+  calculation: min(6, number_of_doc_types)
+  distribution:
+    - instance_1: README.md updates (installation, usage, examples)
+    - instance_2: CLAUDE.md updates (project instructions, workflows)
+    - instance_3: API documentation (endpoints, schemas, examples)
+    - instance_4: Architecture docs (design, components, patterns)
+    - instance_5: User guides and tutorials
+    - instance_6: Inline code documentation extraction
+  parallel_execution: All document types updated simultaneously
+  role: Generate/update specific documentation domains
+  output: Multiple documents updated in parallel
 
-  api-architect:
-    - Create/update OpenAPI specifications
-    - Document endpoint contracts and schemas
-    - Generate API usage examples
+api-architect (specialized instance):
+  parallel_with: [tech-writer instance_3]
+  role: OpenAPI specifications and API contracts
+  output: Complete API documentation suite
 
-  codebase-analyst:
-    - Extract inline documentation from code
-    - Document component interfaces and patterns
-    - Create technical reference materials
+codebase-analyst (documentation extractor):
+  parallel_with: [tech-writer instances]
+  role: Extract and organize code documentation
+  output: Technical reference materials
+
+# Performance Impact:
+#   Sequential: 5-7 minutes for all documentation
+#   Multi-instance parallel: 1-2 minutes (3-4x faster)
+#   Document isolation: No conflicts between instances
 ```bash
 
 ### Phase 3: Cleanup & Organization (Sequential)
@@ -156,23 +178,31 @@ mv notes-*.md .tmp/drafts/
 
 ## Execution Strategy
 
-### Parallel Agent Orchestration
+### Multi-Instance Parallel Orchestration
 
 ```yaml
-Wave 1 (Analysis - 2 minutes):
-  - codebase-analyst: Repository scan and component mapping
-  - tech-writer: Documentation audit and gap analysis
-  - api-analyst: API endpoint documentation assessment
+Wave 1 (Multi-Instance Analysis - 20-30 seconds):
+  - codebase-analyst instances: 2-3 parallel repository scanners
+  - tech-writer: Documentation gap assessment
+  - api-architect: API documentation requirements
 
-Wave 2 (Generation - 5 minutes):
-  - tech-writer: Core documentation updates (README, CLAUDE.md)
-  - api-architect: API documentation generation
-  - codebase-analyst: Technical reference creation
+Wave 2 (Multi-Instance Generation - 1-2 minutes):
+  - tech-writer instances: 4-6 parallel document generators
+    * Instance allocation based on document count/complexity
+    * Each instance handles 1-2 document types maximum
+    * Real-time progress tracking from all instances
+  - api-architect: OpenAPI spec generation
+  - codebase-analyst: Code documentation extraction
 
-Wave 3 (Cleanup - 1 minute):
-  - Direct execution: File organization and cleanup
-  - Directory structure creation
-  - Temporary file archival
+Wave 3 (Cleanup - 15 seconds):
+  - Direct execution: File organization from all instances
+  - Result aggregation: Merge outputs from all instances
+  - Consistency check: Verify no conflicts between documents
+
+Total Time Optimization:
+  - Sequential approach: 8-10 minutes
+  - Multi-instance parallel: 2-3 minutes (3-4x faster)
+  - Resource utilization: Full parallel processing
 ```bash
 
 ### Focused Scope Examples
@@ -210,20 +240,27 @@ Clarity:
 
 ## Examples
 
-### Complete Documentation Overhaul
+### Complete Documentation Overhaul with Multi-Instance
 
 ```bash
 User: /docs
-Claude: 🚀 Deploying parallel documentation agents...
-📊 codebase-analyst: Scanning repository structure...
-✍️ tech-writer: Auditing documentation gaps...
-🔌 api-analyst: Analyzing API endpoints...
+Claude: 🚀 Deploying 6 tech-writer instances for parallel generation...
+📊 Instance Pool Status:
+  - tech-writer[1]: Updating README.md...
+  - tech-writer[2]: Refreshing CLAUDE.md...
+  - tech-writer[3]: Generating API documentation...
+  - tech-writer[4]: Creating architecture docs...
+  - tech-writer[5]: Writing user guides...
+  - tech-writer[6]: Extracting code documentation...
 
-📝 Found 12 documentation gaps, 3 outdated sections
-🔄 Updating CLAUDE.md, README.md, and API docs...
-🧹 Organizing 8 temporary files to .tmp/
+⚡ Parallel Processing:
+  - 12 documentation gaps identified
+  - 6 documents updating simultaneously
+  - Real-time progress: [████████░░] 80%
 
-✅ Documentation suite updated and synchronized
+✅ All instances completed in 1m 47s (was 5-7 minutes)
+🧹 Organizing outputs and temporary files...
+📚 Documentation suite fully synchronized
 ```bash
 
 ### Documentation Audit Only
@@ -264,7 +301,10 @@ Deploy execution-evaluator to verify:
 
 ## Notes
 
-- Coordinates 3+ agents in parallel for efficiency
+- **Multi-Instance Deployment**: 4-6 tech-writer instances work simultaneously
+- **Dynamic Scaling**: Instance count adjusts based on documentation scope
+- **Work Distribution**: Each instance handles 1-2 document types maximum
+- **Performance Target**: 2-3 minutes for full documentation update (3-4x faster)
 - Automatically detects project type and documentation needs
 - Preserves existing documentation structure while improving content
 - Organizes temporary files to maintain clean workspace

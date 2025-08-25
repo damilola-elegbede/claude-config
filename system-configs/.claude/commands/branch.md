@@ -66,39 +66,68 @@ chore/dependency-updates
 
 ## Agent Orchestration
 
-### Parallel Analysis Phase
+### Parallel Analysis Phase - Multi-Agent Deployment
 
 Deploy multiple agents simultaneously for intelligent branch creation:
 
 ```yaml
+# PARALLEL WAVE: All agents work simultaneously (2-3 seconds total)
 tech-writer:
   role: Generate clear, conventional branch names and documentation
   input: Work type, ticket numbers, description
   output: Properly formatted branch name, branch documentation
+  parallel_with: [code-reviewer, security-auditor, codebase-analyst, project-orchestrator]
 
 code-reviewer:
   role: Validate branch strategy and naming conventions
   input: Branch name proposal, git history, team standards
   output: Naming validation, convention compliance check
+  parallel_with: [tech-writer, security-auditor, codebase-analyst, project-orchestrator]
 
 security-auditor:
   role: Review for sensitive information in branch names
   input: Branch name, context analysis
   output: Security clearance, sensitive data warnings
+  parallel_with: [tech-writer, code-reviewer, codebase-analyst, project-orchestrator]
+
+codebase-analyst:
+  role: Analyze existing branches and patterns
+  input: Current branch structure, naming patterns in use
+  output: Consistency recommendations, conflict detection
+  parallel_with: [tech-writer, code-reviewer, security-auditor, project-orchestrator]
+
+project-orchestrator:
+  role: Determine work type and project context
+  input: Conversation history, file content, project structure
+  output: Work classification, priority assessment
+  parallel_with: [tech-writer, code-reviewer, security-auditor, codebase-analyst]
 ```bash
 
 ### Agent Coordination
 
 ```yaml
-Parallel Execution:
-  - All three agents analyze simultaneously
-  - Results converge for branch name generation
-  - 3-5 second total execution time
+Parallel Execution Strategy:
+  Phase 1 - Context Analysis (All agents simultaneously):
+    - project-orchestrator: Classifies work type and priority
+    - codebase-analyst: Examines existing branch patterns
+    - tech-writer: Drafts multiple branch name options
+    - code-reviewer: Prepares convention validation
+    - security-auditor: Scans for sensitive data patterns
 
-Integration:
-  - code-reviewer validates branch type and naming (feature/fix/docs)
-  - security-auditor checks for sensitive information
-  - tech-writer creates the final branch name and documentation
+  Phase 2 - Convergence (Instant):
+    - All agent outputs combined
+    - Best branch name selected based on consensus
+    - Any conflicts resolved by priority rules
+
+  Execution Time:
+    - Sequential: 8-10 seconds
+    - Parallel: 2-3 seconds (70% faster)
+
+  Benefits:
+    - More comprehensive analysis
+    - Better naming consistency
+    - Reduced chance of conflicts
+    - Security validation built-in
 ```
 
 ## Execution Process

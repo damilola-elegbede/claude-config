@@ -42,35 +42,102 @@ Documentation: markdownlint, ShellCheck
 
 ### Execution Strategy
 
-### Agent Orchestration
+### Agent Orchestration - Multi-Instance Parallel Deployment
 
-Deploy specialized agents in parallel for comprehensive review:
+Deploy specialized agents and multiple instances for comprehensive parallel review:
 
 ```yaml
-code-reviewer:
-  role: Code quality and standards validation
-  input: Changed files, linter results
-  output: Quality assessment, improvement suggestions
+# PARALLEL WAVE 1: Simultaneous Multi-Domain Analysis
+code-reviewer (instance pool):
+  deployment: 3-5 instances based on codebase size
+  distribution:
+    - instance_1: Frontend code quality and standards
+    - instance_2: Backend code patterns and architecture
+    - instance_3: Test coverage and quality
+    - instance_4: Configuration and infrastructure
+    - instance_5: Documentation and comments
+  input: Partitioned files, linter results per domain
+  parallel_with: [security-auditor instances, performance-engineer instances, other agents]
+  output: Parallel quality assessments across all domains
 
-security-auditor:
-  role: Security vulnerability detection
-  input: Code changes, dependency updates
-  output: Security issues, OWASP compliance
+security-auditor (instance pool):
+  deployment: 2-3 instances for thorough security analysis
+  distribution:
+    - instance_1: Authentication/authorization vulnerabilities
+    - instance_2: Data validation and injection attacks
+    - instance_3: Dependency vulnerabilities and secrets
+  input: Code changes, dependency manifests, API endpoints
+  parallel_with: [code-reviewer instances, performance-engineer instances, other agents]
+  output: Comprehensive security assessment from multiple angles
 
-performance-engineer:
-  role: Performance impact analysis
-  input: Code changes, complexity metrics
-  output: Performance risks, optimization opportunities
+performance-engineer (instance pool):
+  deployment: 2-3 instances for different performance aspects
+  distribution:
+    - instance_1: Algorithm complexity and big-O analysis
+    - instance_2: Database query optimization
+    - instance_3: Memory usage and resource consumption
+  input: Code changes, profiling data, metrics
+  parallel_with: [code-reviewer instances, security-auditor instances, other agents]
+  output: Multi-dimensional performance analysis
+
+test-engineer:
+  role: Test coverage and quality validation
+  input: Test files, coverage reports
+  parallel_with: [all other agent instances]
+  output: Test adequacy assessment, missing coverage areas
+
+accessibility-auditor:
+  role: Accessibility compliance checking
+  input: UI components, markup changes
+  parallel_with: [all other agent instances]
+  output: WCAG compliance issues, accessibility improvements
+
+tech-writer:
+  role: Documentation quality and completeness
+  input: Code comments, README files, API docs
+  parallel_with: [all other agent instances]
+  output: Documentation gaps, clarity improvements
 ```bash
 
-### Parallel Review Benefits
+### Parallel Review Strategy
 
 ```yaml
-Simultaneous Analysis:
-  - All agents review code in parallel
-  - Tool results feed into agent analysis
-  - 50% faster than sequential review
-  - Multiple perspectives on same code
+Execution Optimization:
+  Phase 1 - Tool Execution (Parallel):
+    - All linters run simultaneously
+    - Security scanners execute in parallel
+    - Performance profilers run concurrently
+    - Results collected in real-time
+
+  Phase 2 - Agent Analysis (Massive Parallelization):
+    Simultaneous Analysis (All agents + instances):
+      - 5 code-reviewer instances analyze different domains
+      - 3 security-auditor instances check various vulnerabilities
+      - 3 performance-engineer instances profile different aspects
+      - test-engineer validates coverage
+      - accessibility-auditor checks compliance
+      - tech-writer reviews documentation
+
+    Total: Up to 15 agent instances working simultaneously
+
+  Phase 3 - Result Synthesis:
+    - All agent outputs merged intelligently
+    - Duplicate findings deduplicated
+    - Issues prioritized by severity
+    - Comprehensive report generated
+
+Performance Metrics:
+  - Sequential review: 5-10 minutes for large codebase
+  - Parallel review: 30-60 seconds (10x faster)
+  - Coverage: 100% of code analyzed from multiple perspectives
+  - Quality: 3x more issues detected due to specialized instances
+
+Benefits:
+  - Massive parallelization across domains
+  - No single agent bottleneck
+  - Comprehensive coverage in minimal time
+  - Multiple perspectives on same code simultaneously
+  - Real-time aggregation of findings
 ```
 
 - **Language Detection**: Auto-run appropriate tools based on file extensions
