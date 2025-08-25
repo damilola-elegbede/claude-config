@@ -308,6 +308,7 @@ Multiple test-engineer instances are deployed for:
 - **Failure investigation**: Debugger aggregates failures from all instances
 
 **Instance Allocation Strategy**:
+
 ```yaml
 Small project (<100 tests): 2 instances (unit + integration)
 Medium project (100-500 tests): 3 instances (unit + integration + e2e)
