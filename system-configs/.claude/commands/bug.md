@@ -9,7 +9,7 @@ Extracts context automatically and creates professional bug reports with proper 
 
 ```bash
 /bug <description>               # File bug with description
-/bug --priority <level>          # Set priority (low, medium, high, critical)  
+/bug --priority <level>          # Set priority (low, medium, high, critical)
 /bug --labels <label1,label2>    # Add specific labels
 /bug --assign <username>         # Auto-assign to user
 ```
@@ -33,7 +33,7 @@ tracking and reference.
 **Auto-Classification Keywords:**
 
 - `security`: "injection", "XSS", "authentication", "breach" → security label + high priority
-- `performance`: "slow", "timeout", "memory", "CPU" → performance label  
+- `performance`: "slow", "timeout", "memory", "CPU" → performance label
 - `ui/ux`: "layout", "responsive", "design" → ui/ux label
 - `documentation`: "readme", "docs", "guide" → documentation label
 - Default: bug label
@@ -120,7 +120,7 @@ User: "API timeouts after recent changes"
 **Error Handling:**
 
 - Missing GitHub CLI → Installation guidance
-- Authentication issues → Login prompts with token setup instructions  
+- Authentication issues → Login prompts with token setup instructions
 - Non-GitHub repos → Clear error messages with repo initialization help
 - Network failures → Automatic retry with exponential backoff (3 attempts)
 - Invalid token → Returns "Error: GitHub authentication failed. Set GITHUB_TOKEN environment variable"

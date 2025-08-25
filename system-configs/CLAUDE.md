@@ -44,6 +44,40 @@ fallback to built-in tools.
   `mcp__github_list_issues`
 - Documentation: `mcp__context7` for current library docs and API references
 
+## Git Best Practices
+
+**CRITICAL**: Quality gates exist for a reason - never bypass them.
+
+### Prohibited Actions
+
+- **NEVER use `--no-verify`** for commits or pushes under any circumstances
+- **NEVER bypass pre-commit hooks** - they prevent CI failures
+- **NEVER bypass pre-push hooks** - they ensure code quality before CI
+
+### Quality Gate Philosophy
+
+- **Pre-commit hooks**: Fast validation (markdown, tests, security checks)
+- **Pre-push hooks**: Comprehensive validation (full test suite, YAML validation, quality gates)
+- **CI/CD pipeline**: Final validation with zero-tolerance quality standards
+
+### If Hooks Fail
+
+1. **Fix the issues** identified by the hooks
+2. **Use provided tools**: `./scripts/validate-markdown-quality.sh fix`
+3. **Run validation**: Verify fixes with `./tests/test.sh`
+4. **Never bypass**: Quality gates protect the entire team
+
+### Emergency Exception Protocol
+
+In true emergencies where bypassing is absolutely necessary:
+
+1. **Document the reason** in commit message
+2. **Create immediate follow-up issue** to address the bypassed checks
+3. **Fix issues in next commit** within same PR
+4. **Get explicit approval** from repository maintainer
+
+**Remember**: Every `--no-verify` usage creates technical debt and potential CI failures.
+
 ## Decision Framework: When to Use Agents
 
 ### Always Use Agents For
