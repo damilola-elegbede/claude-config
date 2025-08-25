@@ -23,39 +23,78 @@ provide targeted fixes.
 
 ## Investigation Framework
 
-### Issue Classification & Agent Deployment
+### Parallel Agent Deployment Strategy
+
+Deploy multiple specialized agents simultaneously for comprehensive forensic analysis:
 
 ```yaml
+# PARALLEL WAVE 1: Initial Investigation (All agents deploy simultaneously)
+debugger:
+  role: Primary investigation and forensic analysis
+  input: Error logs, system state, reproduction data
+  output: Root cause analysis, fix recommendations
+  parallel_with: [codebase-analyst, test-engineer, performance-engineer]
+
 codebase-analyst:
   role: Analyze code structure and identify bug patterns
   input: Source code, error traces, system architecture
   output: Code pattern analysis, potential root causes
+  parallel_with: [debugger, test-engineer, performance-engineer]
 
 test-engineer:
   role: Design reproduction tests and validation strategies
   input: Bug description, reproduction steps, test scenarios
   output: Test cases, reproduction reliability, validation plans
+  parallel_with: [debugger, codebase-analyst, performance-engineer]
 
-debugger:
-  role: Primary investigation and forensic analysis
-  input: Error logs, system state, reproduction data
-  output: Root cause analysis, fix recommendations
+performance-engineer:
+  role: Profile performance bottlenecks and resource usage
+  input: Performance metrics, resource logs, timing data
+  output: Performance analysis, optimization opportunities
+  parallel_with: [debugger, codebase-analyst, test-engineer]
 
+# PARALLEL WAVE 2: Specialized Analysis (Based on issue type)
 Issue Classification:
   Intermittent Issues:
     symptoms: ["works sometimes", "random failures", "can't reproduce"]
-    agents: [debugger, codebase-analyst, test-engineer]
-    approach: Statistical analysis, environmental factor testing
+    parallel_agents:
+      - debugger: Statistical failure analysis
+      - codebase-analyst: Pattern detection across codebase
+      - test-engineer: Reproduction strategy design
+      - monitoring-specialist: Environment factor analysis
+    execution: All 4 agents work simultaneously
+    approach: Parallel statistical analysis, environmental testing
 
   Race Conditions:
     symptoms: ["deadlock", "data corruption", "concurrent access errors"]
-    agents: [debugger, codebase-analyst]
-    approach: Thread analysis, lock inspection, timing manipulation
+    parallel_agents:
+      - debugger (instance 1): Thread dump analysis
+      - debugger (instance 2): Lock contention investigation
+      - codebase-analyst: Concurrent code pattern analysis
+      - performance-engineer: Timing and synchronization profiling
+    execution: Multiple debugger instances + specialists in parallel
+    approach: Concurrent thread analysis, lock inspection, timing manipulation
 
   Memory Issues:
     symptoms: ["memory leak", "crashes", "growing heap", "OOM errors"]
-    agents: [debugger, codebase-analyst, test-engineer]
-    approach: Heap analysis, reference tracking, allocation patterns
+    parallel_agents:
+      - debugger: Heap dump forensics
+      - codebase-analyst: Reference chain analysis
+      - test-engineer: Memory test scenarios
+      - performance-engineer: Allocation profiling
+    execution: All 4 agents analyze different aspects simultaneously
+    approach: Parallel heap analysis, reference tracking, allocation patterns
+
+  Performance Degradation:
+    symptoms: ["slow response", "high CPU", "timeout", "lag"]
+    parallel_agents:
+      - performance-engineer (instance 1): CPU profiling
+      - performance-engineer (instance 2): Memory profiling
+      - performance-engineer (instance 3): I/O analysis
+      - debugger: Bottleneck investigation
+      - codebase-analyst: Algorithm complexity analysis
+    execution: 3 performance-engineer instances + 2 specialists
+    approach: Comprehensive parallel profiling across all resources
 ```bash
 
 ## Concrete Investigation Patterns
@@ -259,13 +298,48 @@ const performance_debug = {
 
 ## Multi-Agent Coordination
 
-### Agent Teams by Issue Type
+### Parallel Agent Teams by Issue Type
 
 ```yaml
-Memory: debugger + code-archaeologist
-Performance: debugger + performance-specialist
-Production: debugger + production-reliability-engineer
-Security: debugger + security-auditor
+Memory Issues:
+  parallel_deployment:
+    - debugger: Heap dump analysis
+    - codebase-analyst: Reference tracking
+    - test-engineer: Memory test scenarios
+    - performance-engineer: Allocation patterns
+  execution_time: 60% faster than sequential
+
+Performance Issues:
+  parallel_deployment:
+    - performance-engineer (instance 1): CPU profiling
+    - performance-engineer (instance 2): Memory profiling
+    - performance-engineer (instance 3): Database query analysis
+    - debugger: Bottleneck identification
+    - codebase-analyst: Algorithm complexity review
+  execution_time: 70% faster with 3 parallel instances
+
+Production Issues:
+  parallel_deployment:
+    - debugger: Production log analysis
+    - production-reliability-engineer: Infrastructure investigation
+    - monitoring-specialist: Metrics correlation
+    - platform-engineer: Environment comparison
+  execution_time: All agents work simultaneously
+
+Security Issues:
+  parallel_deployment:
+    - security-auditor (instance 1): Vulnerability scanning
+    - security-auditor (instance 2): Authentication/authorization review
+    - debugger: Exploit investigation
+    - codebase-analyst: Security pattern analysis
+  execution_time: Multiple security-auditor instances for comprehensive coverage
+
+Complex Multi-Domain Issues:
+  parallel_deployment:
+    wave_1: [debugger, codebase-analyst, test-engineer, performance-engineer]
+    wave_2: [security-auditor, monitoring-specialist, platform-engineer]
+    wave_3: Integration and correlation of all findings
+  execution_time: 80% faster than sequential investigation
 ```text
 
 
