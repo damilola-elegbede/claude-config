@@ -180,7 +180,7 @@ always `specialist[1-2]` with lead coordination
 **Scope**: Single file direct, 2-5 files consider `specialist[1]`, 5+ files deploy
 `specialist[2-3]`, Cross-system `multiple-specialist-pools[1-3]`
 
-## Non-Negotiable Rules (ALWAYS)
+## Non-Negotiable Rules
 
 1. **Authentication/Authorization code** → `security-auditor[1-2]` (no exceptions)
 2. **Database migrations** → `database-admin[1] + backend-engineer[1]`
@@ -308,7 +308,7 @@ pool execution, graceful failure handling with pool size adjustment
 ❌ **Anti-patterns**: Generic search vs `log-analyst[1-2]`, sequential independent
 pools, silent pool failures, manual dependency management, over-sized pools for simple tasks
 
-## Examples with Pool Sizing
+## Examples
 
 **README typo**: Handle directly
 **Authentication system**: Parallel → `backend-engineer[2] + frontend-architect[1] +
