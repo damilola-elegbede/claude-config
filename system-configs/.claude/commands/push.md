@@ -66,7 +66,7 @@ Prohibited Practices:
   - NEVER bypass: pre-push hooks
   - NEVER skip: CI/CD validation
   - NEVER force push: without team coordination
-  
+
 Required Approach:
   - Fix all issues identified by pre-push hooks
   - Ensure tests pass locally
