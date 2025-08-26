@@ -2,13 +2,13 @@
 
 ## Overview
 
-The Claude Agent Ecosystem provides 42 specialized AI agents for software development tasks. This production
+The Claude Agent Ecosystem provides 28 specialized AI agents for software development tasks. This production
 architecture achieves 95% selection accuracy while maintaining 100% functional coverage, enabling efficient parallel
 execution and domain-specific expertise across all software development lifecycle phases.
 
 **Key Features:**
 
-- **42 specialized agents** covering all development domains
+- **28 specialized agents** covering all development domains
 - **95% selection accuracy** with clear agent boundaries
 - **8 distinct categories** with standardized color coding
 - **Optimized coordination patterns** for parallel execution

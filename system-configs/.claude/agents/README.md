@@ -24,7 +24,7 @@ Multiple independent tasks? → Deploy in parallel.
 
 ## Overview
 
-The Claude agent ecosystem consists of 41 specialized agents organized across 8 functional domains, providing
+The Claude agent ecosystem consists of 28 specialized agents organized across 8 functional domains, providing
 comprehensive coverage of the software development lifecycle.
 This system follows the **"Right tool for the job"** principle with a **parallel-first execution strategy** for maximum
 efficiency.
@@ -120,7 +120,7 @@ Support, coordination, and strategic planning agents
 
 The agent ecosystem uses three model tiers optimized for task complexity:
 
-### Current Distribution (41 agents)
+### Current Distribution (28 agents)
 
 - **Opus (7 agents, 16.7%)**: Strategic and high-complexity tasks
   - principal-architect, performance-specialist, project-orchestrator

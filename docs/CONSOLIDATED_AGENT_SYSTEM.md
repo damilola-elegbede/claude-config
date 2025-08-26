@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-The agent ecosystem has been optimized to a focused set of 41 specialized agents, each with
+The agent ecosystem has been optimized to a focused set of 28 specialized agents, each with
 clear domain expertise and defined boundaries. This configuration eliminates redundancy
 while maintaining comprehensive coverage across all technical domains.
 
@@ -216,7 +216,7 @@ codebase_understanding:
 - **Selection Accuracy**: >95% correct agent selection
 - **No Overlap**: Clear boundaries between agent responsibilities
 - **Complete Coverage**: All technical domains addressed
-- **Optimal Size**: 41 agents provide comprehensive coverage without redundancy
+- **Optimal Size**: 28 agents provide comprehensive coverage without redundancy
 
 ### Performance Optimization
 

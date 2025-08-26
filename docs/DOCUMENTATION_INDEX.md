@@ -10,7 +10,7 @@
 
 ### 🏠 Project Overview
 
-- **[README.md](../README.md)** - Configuration management system with 41 agents
+- **[README.md](../README.md)** - Configuration management system with 28 agents
   and 18 commands
 
 - **[CLAUDE.md](../CLAUDE.md)** - Repository-specific configuration instructions

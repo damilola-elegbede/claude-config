@@ -102,7 +102,7 @@ category: development
 ### 4.1 Locate Agent File
 
 ```bash
-cd /Users/damilola/Documents/Projects/claude-config/.claude/agents/
+cd ~/Documents/Projects/claude-config/.claude/agents/
 ls -la *.md | grep -v AGENT_
 ```yaml
 

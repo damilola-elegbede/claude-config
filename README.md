@@ -18,7 +18,7 @@
 ## 🎯 Overview
 
 This repository delivers a **sophisticated Smart Agent Orchestration Framework** for Claude Code CLI, featuring
-**41 specialized agents** with **multi-instance parallelization** delivering **4-6x performance improvements**.
+**28 specialized agents** with **multi-instance parallelization** delivering **4-6x performance improvements**.
 The system includes **18 essential commands** with advanced instance pooling architecture that enables
 multiple agents of the same type to work simultaneously. Built from the ground up after a comprehensive cleanup
 that removed 85+ bloat files, this system provides intelligent task delegation, massive parallel execution,
@@ -26,7 +26,7 @@ continuous improvement capabilities, and automatic command verification for enha
 
 ## 🧠 Smart Agent Orchestration Framework
 
-This repository implements a **production-ready orchestration framework** that intelligently manages 41 specialized
+This repository implements a **production-ready orchestration framework** that intelligently manages 28 specialized
 agents with sophisticated task delegation and parallel execution capabilities.
 
 ### 🌟 Framework Core Principles
@@ -58,7 +58,7 @@ agents with sophisticated task delegation and parallel execution capabilities.
 
 ### Key Framework Benefits
 
-- **🎭 41 Specialized Agents**: Complete coverage across 8 functional domains
+- **🎭 28 Specialized Agents**: Complete coverage across 8 functional domains
 - **⚡ Parallel Execution Engine**: Maximize concurrent operations for faster delivery
 - **🧠 Intelligent Task Delegation**: Automatic specialist selection based on task requirements
 - **🔄 One-Command Synchronization**: Deploy entire framework with `/sync`
@@ -312,7 +312,7 @@ See [ShellCheck Validation Documentation](docs/SHELLCHECK_VALIDATION.md) for com
 ```bash
 /agent-audit
 # Deploys 8 parallel agent-auditor instances across all categories
-# Comprehensive validation of 41 agent configurations
+# Comprehensive validation of 28 agent configurations
 # Performance metrics and capability gap analysis
 # Continuous improvement recommendations with quality feedback loops
 # Production-ready health monitoring for the entire orchestration framework
@@ -362,9 +362,9 @@ Note: Previously named `/resolve-rabbit`.
 # Prevents accidental force pushes
 ```
 
-## 🎭 Agent Ecosystem: 41 Specialists
+## 🎭 Agent Ecosystem: 28 Specialists
 
-The Smart Agent Orchestration Framework includes **41 specialized agents** organized across 8 functional domains,
+The Smart Agent Orchestration Framework includes **28 specialized agents** organized across 8 functional domains,
 with sophisticated parallel execution and multi-instance capabilities:
 
 ### 📊 Agent Categories Overview
@@ -526,7 +526,7 @@ Performance Tracking: Real-time capability assessment and gap analysis
 
 - **Production-Ready Orchestration**: Sophisticated task delegation with performance feedback loops
 - **Parallel-First Architecture**: Concurrent agent deployment optimized for maximum efficiency
-- **41 Specialized Agents**: Complete coverage across 8 functional domains with continuous expansion
+- **28 Specialized Agents**: Complete coverage across 8 functional domains with continuous expansion
 - **Intelligent Task Routing**: Automatic specialist selection based on task complexity and requirements
 - **Performance Monitoring**: Real-time execution metrics with continuous improvement algorithms
 - **Multi-Instance Coordination**: Scalable agent deployment with intelligent load balancing
@@ -552,7 +552,7 @@ claude-config/
 ├── system-configs/             # Source configurations
 │   ├── CLAUDE.md              # Core configuration file
 │   ├── .claude/               # Claude Code configuration
-│   │   ├── agents/            # 41 agent definitions + 5 docs
+│   │   ├── agents/            # 28 agent definitions + 5 docs
 │   │   │   ├── README.md      # Agent ecosystem guide
 │   │   │   └── *.md           # Individual agent specs
 │   │   └── commands/          # 18 command definitions
@@ -588,7 +588,7 @@ cd claude-config
 # One-command framework deployment
 /sync
 
-# Experience intelligent orchestration: 41 agents and 18 commands available
+# Experience intelligent orchestration: 28 agents and 18 commands available
 # Multi-agent repository analysis with performance optimization
 /context
 
