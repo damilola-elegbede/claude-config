@@ -105,9 +105,9 @@ Performance Metrics:
 ```yaml
 Prohibited Practices:
   - NEVER use: git commit --no-verify
-  - NEVER bypass: pre-commit hooks  
+  - NEVER bypass: pre-commit hooks
   - NEVER skip: quality validation
-  
+
 Required Approach:
   - Fix issues identified by hooks
   - Run validation tools

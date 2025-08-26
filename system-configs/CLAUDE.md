@@ -14,7 +14,8 @@ directory and coordination patterns.
 
 ### Pool-Based Architecture
 
-Specialized agents exist as **pools of workers**, not singletons. Each agent type operates as a scalable pool that can deploy multiple instances to work in parallel on different aspects of the same domain.
+Specialized agents exist as **pools of workers**, not singletons. Each agent type operates as a scalable pool
+that can deploy multiple instances to work in parallel on different aspects of the same domain.
 
 **Pool Notation**: `agent-type[n]` where `n` indicates pool size:
 
@@ -24,34 +25,17 @@ Specialized agents exist as **pools of workers**, not singletons. Each agent typ
 
 ### Dynamic Pool Sizing
 
-Pool size is determined by task complexity, scope, and component count:
+Pool size determined by task complexity:
 
-**Sizing Strategy**:
-
-- **[1]**: Single component, straightforward implementation
-- **[2]**: Multiple components or layers requiring coordination
-- **[3+]**: Complex features with multiple subsystems or high parallelization potential
-
-### Work Distribution Strategies
-
-**Component-Based Distribution**: Each agent handles a distinct component
-
-- Example: `backend-engineer[3]` → Agent 1: API layer, Agent 2: Database layer, Agent 3: Auth service
-
-**Layer-Based Distribution**: Agents work on different architectural layers
-
-- Example: `frontend-engineer[2]` → Agent 1: UI components, Agent 2: State management
-
-**Feature-Based Distribution**: Agents handle different feature aspects
-
-- Example: `security-auditor[2]` → Agent 1: Input validation, Agent 2: Authentication flow
+- **[1]**: Single component tasks
+- **[2]**: Multiple components needing coordination
+- **[3+]**: Complex features with high parallelization potential
 
 ### Pool Coordination Patterns
 
-**Claude as Sole Coordinator**: All coordination flows through Claude - agents never coordinate directly with each other
-**Work Assignment**: Claude assigns specific components/files to each agent in the pool
-**File Conflict Prevention**: Claude ensures no two agents work on the same file
-**Cross-Pool Communication**: All communication between pools flows through Claude
+**Claude as Sole Coordinator**: All coordination flows through Claude - agents never coordinate directly
+**Work Assignment**: Claude assigns specific components/files to each agent
+**File Conflict Prevention**: Claude ensures no two agents work on same file
 
 ## MCP Server Priority
 
@@ -141,26 +125,9 @@ initial triage, emergency fixes
 
 ### Pool Sizing Decision Matrix
 
-**Single Agent [1]**:
-
-- Simple, well-defined tasks
-- Single component or file changes
-- Standard implementations with clear patterns
-- Time estimate: < 30 minutes
-
-**Medium Pool [2-3]**:
-
-- Multiple related components
-- Cross-layer coordination required
-- Moderate complexity with some unknowns
-- Time estimate: 30 minutes - 2 hours
-
-**Large Pool [3+]**:
-
-- Complex multi-system features
-- High parallelization potential
-- Multiple independent work streams
-- Time estimate: > 2 hours
+**[1]**: Simple tasks, single components (< 30min)
+**[2-3]**: Multiple components, moderate complexity (30min-2hrs)
+**[3+]**: Complex multi-system features (> 2hrs)
 
 ## Parallel Execution Strategy
 
@@ -205,43 +172,9 @@ incidents), `regulatory-compliance-specialist[1]`
 
 ## Pool Coordination Rules
 
-### Same-Type Agent Work Division
-
-**File-Level Conflict Prevention**:
-
-- Claude assigns distinct files/components to each agent in a pool
-- Claude coordinates all shared resources and dependencies
-- No two agents from same pool edit the same file simultaneously
-
-**Component Assignment Strategy**:
-
-```
-backend-engineer[3] task distribution (Claude assigns):
-- Agent 1: API endpoints
-- Agent 2: Database layer + migrations
-- Agent 3: Business logic + services
-```
-
-**Claude's Coordination Responsibilities**:
-
-- All architecture decisions flow through Claude
-- Claude manages integration points between agents
-- Claude resolves any conflicts between pool members
-- Claude handles final code review and consolidation
-
-### Cross-Pool Synchronization Points
-
-**Design Phase**: Claude coordinates architecture decisions across all pools before implementation
-**Integration Points**: Claude defines handoff protocols between different agent types
-**Testing Checkpoints**: Claude coordinates testing between `test-engineer` pools and feature pools
-**Documentation Gates**: Claude synchronizes `tech-writer` pools with all implementation pools
-
-### Pool Communication Protocols
-
-**No Direct Agent Communication**: Agents never communicate directly with each other
-**Claude-Mediated Only**: All coordination flows through Claude
-**Status Updates**: Agents report status only to Claude, who maintains overall visibility
-**Decision Authority**: Claude has final authority on all architectural and implementation decisions
+**File Conflict Prevention**: Claude assigns distinct files to each agent in pool
+**Claude Coordination**: All decisions and integration flow through Claude only
+**No Agent Communication**: Agents never communicate directly with each other
 
 ## Core Responsibilities
 
@@ -255,7 +188,8 @@ backend-engineer[3] task distribution (Claude assigns):
 
 ## Key Principle: "Right pool size for the job"
 
-Handle simple tasks directly. Deploy appropriately-sized specialist pools for expertise. Use parallel pool execution for maximum speed and coverage.
+Handle simple tasks directly. Deploy appropriately-sized specialist pools for expertise.
+Use parallel pool execution for maximum speed and coverage.
 
 ## Pool Allocation Guidelines
 
@@ -309,6 +243,8 @@ pool execution, graceful failure handling with pool size adjustment
 pools, silent pool failures, manual dependency management, over-sized pools for simple tasks
 
 ## Examples
+
+### Practical Examples
 
 **README typo**: Handle directly
 **Authentication system**: Parallel → `backend-engineer[2] + frontend-architect[1] +
