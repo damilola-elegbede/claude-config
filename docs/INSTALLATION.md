@@ -403,5 +403,5 @@ git checkout -b feature/my-enhancement
 
 ---
 
-**Installation Complete!** You now have access to 41 specialized agents and 18 essential commands through the
+**Installation Complete!** You now have access to 28 specialized agents and 18 essential commands through the
 Claude Code CLI orchestration framework.

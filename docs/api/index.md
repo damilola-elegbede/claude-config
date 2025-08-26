@@ -32,7 +32,7 @@ High-level command APIs that provide workflow automation and developer experienc
 
 ### 🤖 Agent Ecosystem APIs
 
-APIs for managing and orchestrating the 41 specialized agents in the Claude ecosystem.
+APIs for managing and orchestrating the 28 specialized agents in the Claude ecosystem.
 
 | API | Description | Specification |
 |-----|-------------|---------------|

@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-The agent ecosystem has been optimized to a focused set of 41 specialized agents, each with
+The agent ecosystem has been optimized to a focused set of 28 specialized agents, each with
 clear domain expertise and defined boundaries. This configuration eliminates redundancy
 while maintaining comprehensive coverage across all technical domains.
 

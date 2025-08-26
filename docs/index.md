@@ -3,12 +3,12 @@
 ## Overview
 
 This documentation provides comprehensive information about the consolidated
-Claude configuration system with 41 specialized agents, optimized workflows,
+Claude configuration system with 28 specialized agents, optimized workflows,
 and enhanced development processes.
 
 **System Highlights:**
 
-- **41 specialized agents** with clear functional boundaries
+- **28 specialized agents** with clear functional boundaries
 - **95% agent selection accuracy** with standardized naming
 - **Clear boundaries** and standardized naming conventions
 - **Enhanced parallel execution** patterns and coordination
