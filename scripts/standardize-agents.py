@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Standardize all agents according to the consolidated 26-agent system.
-This script ensures proper YAML front-matter and handles consolidation.
+Standardize all agents according to the AGENT_TEMPLATE.md format.
+This script ensures proper YAML front-matter matching the concise 46-line template.
 
 CRITICAL: This script enforces the orchestration anti-pattern rule:
 NO AGENT MAY HAVE ACCESS TO THE Task TOOL. Only Claude can orchestrate agents.
-All agent-to-agent coordination MUST go through Claude as the orchestration engine.
+All agents follow the standardized template in docs/agents/AGENT_TEMPLATE.md
 """
 
 import os
@@ -14,385 +14,485 @@ import shutil
 from pathlib import Path
 from datetime import datetime
 
-# Define the final 26 agents with their categories and colors
-FINAL_AGENTS = {
-    # 🔵 Development & Implementation (6 agents)
-    'backend-engineer': {'color': 'blue', 'category': 'development', 'level': 'senior'},
-    'frontend-engineer': {'color': 'blue', 'category': 'development', 'level': 'senior'},
-    'fullstack-lead': {'color': 'blue', 'category': 'development', 'level': 'senior'},
-    'mobile-engineer': {'color': 'blue', 'category': 'development', 'level': 'senior'},
-    'data-engineer': {'color': 'blue', 'category': 'development', 'level': 'senior'},
-    'ml-engineer': {'color': 'blue', 'category': 'development', 'level': 'senior'},
-
-    # 🟢 Quality & Testing (5 agents)
-    'test-engineer': {'color': 'green', 'category': 'quality', 'level': 'senior'},
-    'code-reviewer': {'color': 'green', 'category': 'quality', 'level': 'senior'},
-    'debugger': {'color': 'green', 'category': 'quality', 'level': 'specialist'},
-    'security-auditor': {'color': 'green', 'category': 'quality', 'level': 'specialist'},
-    'performance-engineer': {'color': 'green', 'category': 'quality', 'level': 'specialist'},
-
-    # 🟣 Architecture (2 agents)
-    'principal-architect': {'color': 'purple', 'category': 'architecture', 'level': 'principal'},
-    'api-architect': {'color': 'purple', 'category': 'architecture', 'level': 'senior'},
-
-    # 🩷 Design (2 agents)
-    'ui-designer': {'color': 'pink', 'category': 'design', 'level': 'specialist'},
-    'mobile-ui': {'color': 'pink', 'category': 'design', 'level': 'specialist'},
-
-    # 🟣 Analysis & Research (3 agents)
-    'codebase-analyst': {'color': 'purple', 'category': 'analysis', 'level': 'specialist'},
-    'researcher': {'color': 'purple', 'category': 'analysis', 'level': 'specialist'},
-    'business-analyst': {'color': 'purple', 'category': 'analysis', 'level': 'specialist'},
-
-    # 🟡 Infrastructure & Operations (3 agents)
-    'devops': {'color': 'yellow', 'category': 'infrastructure', 'level': 'senior'},
-    'platform-engineer': {'color': 'yellow', 'category': 'infrastructure', 'level': 'senior'},
-    'cloud-architect': {'color': 'yellow', 'category': 'infrastructure', 'level': 'senior'},
-
-    # 🟠 Documentation & Support (3 agents)
-    'tech-writer': {'color': 'orange', 'category': 'documentation', 'level': 'specialist'},
-    'project-orchestrator': {'color': 'orange', 'category': 'documentation', 'level': 'senior'},
-    'product-strategist': {'color': 'orange', 'category': 'documentation', 'level': 'senior'},
-
-    # ⚪ Specialized Support (2 agents)
-    'accessibility-auditor': {'color': 'white', 'category': 'specialized', 'level': 'specialist'},
-    'database-admin': {'color': 'white', 'category': 'specialized', 'level': 'specialist'},
-}
-
-# Agents to be removed or consolidated
-DEPRECATED_AGENTS = {
-    'qa-tester': 'test-engineer',  # Merge into test-engineer
-    'doc-updater': 'tech-writer',  # Merge into tech-writer
-    'reliability-engineer': 'platform-engineer',  # Merge into platform-engineer
-    'senior-dev': None,  # Remove - not in final 26
-    'fullstack-dev': 'fullstack-lead',  # Rename to fullstack-lead
-    'db-admin': 'database-admin',  # Rename to database-admin
-    'test-data-manager': None,  # Remove - not in final 26
-    'agent-architect': None,  # Remove - not in final 26
-    'agent-auditor': None,  # Remove - not in final 26
-    'arch-reviewer': None,  # Remove - not in final 26
-    'tech-lead': None,  # Remove - not in final 26
-}
-
-def extract_content_sections(file_path):
-    """Extract YAML and markdown content from file."""
-    with open(file_path, 'r') as f:
-        content = f.read()
-
-    match = re.match(r'^---\n(.*?)\n---\n(.*)', content, re.DOTALL)
-    if match:
-        return match.group(1), match.group(2)
-    return '', content
-
-def create_standardized_yaml(agent_name, agent_info, existing_yaml=''):
-    """Create standardized YAML front-matter."""
-
-    # Parse some basic info from existing YAML if available
-    description = ''
-    domain_expertise = []
-
-    if existing_yaml:
-        desc_match = re.search(r'description:\s*(.+)', existing_yaml)
-        if desc_match:
-            description = desc_match.group(1).strip()
-
-    if not description:
-        descriptions = {
-            'backend-engineer': 'Expert backend engineer specializing in server-side architecture, APIs, databases, and distributed systems',
-            'frontend-engineer': 'Expert frontend engineer specializing in user interfaces, client-side applications, and performance optimization',
-            'fullstack-lead': 'Senior full-stack developer handling end-to-end development with auto-escalation for complex requirements',
-            'mobile-engineer': 'Expert mobile engineer for native and cross-platform mobile application development',
-            'data-engineer': 'Expert data engineer specializing in data pipelines, ETL/ELT systems, and data warehouse architecture',
-            'ml-engineer': 'Expert ML engineer for machine learning systems, model deployment, and MLOps',
-            'test-engineer': 'Comprehensive testing strategy, test implementation, and quality assurance expert',
-            'code-reviewer': 'Pre-commit code quality review, style compliance, and PR readiness specialist',
-            'debugger': 'Complex bug investigation and systematic root cause analysis expert',
-            'security-auditor': 'Security vulnerability assessment and compliance review specialist',
-            'performance-engineer': 'Performance optimization, load testing, and benchmarking expert',
-            'principal-architect': 'System architecture design, technical roadmaps, and implementation planning leader',
-            'api-architect': 'API design, governance, implementation, and lifecycle management expert',
-            'ui-designer': 'Visual design, UX optimization, and design systems specialist for web/desktop',
-            'mobile-ui': 'Mobile UI/UX design specialist for iOS/Android design patterns',
-            'codebase-analyst': 'Internal code analysis, architecture assessment, and technical reporting expert',
-            'researcher': 'External research, technology evaluation, and industry analysis specialist',
-            'business-analyst': 'Requirements analysis, stakeholder communication, and process mapping expert',
-            'devops': 'Deployment automation, CI/CD pipelines, and application deployment coordinator',
-            'platform-engineer': 'Production reliability, monitoring, and SRE practices specialist',
-            'cloud-architect': 'Cloud deployment and infrastructure design expert',
-            'tech-writer': 'Technical documentation, API docs, and knowledge management specialist',
-            'project-orchestrator': 'Multi-agent coordination and parallel execution planning expert',
-            'product-strategist': 'Strategic product guidance and feature prioritization specialist',
-            'accessibility-auditor': 'Accessibility testing and WCAG compliance specialist',
-            'database-admin': 'Database security, optimization, and administration expert'
-        }
-        description = descriptions.get(agent_name, f'Expert {agent_name} agent')
-
-    # Define domain expertise based on agent type
-    domain_map = {
-        'backend-engineer': ['server_architecture', 'api_development', 'database_design', 'distributed_systems'],
-        'frontend-engineer': ['ui_development', 'client_applications', 'performance_optimization', 'user_experience'],
-        'fullstack-lead': ['full_stack_development', 'system_integration', 'technical_leadership'],
-        'mobile-engineer': ['mobile_development', 'native_apps', 'cross_platform', 'app_deployment'],
-        'data-engineer': ['data_pipelines', 'etl_systems', 'data_warehousing', 'big_data'],
-        'ml-engineer': ['machine_learning', 'model_deployment', 'mlops', 'ai_systems'],
-        'test-engineer': ['test_strategy', 'test_automation', 'quality_assurance', 'test_coverage'],
-        'code-reviewer': ['code_quality', 'style_compliance', 'pr_review', 'best_practices'],
-        'debugger': ['bug_investigation', 'root_cause_analysis', 'system_debugging'],
-        'security-auditor': ['security_assessment', 'vulnerability_testing', 'compliance_review'],
-        'performance-engineer': ['performance_optimization', 'load_testing', 'benchmarking'],
-        'principal-architect': ['system_architecture', 'technical_strategy', 'architectural_decisions'],
-        'api-architect': ['api_design', 'api_governance', 'api_lifecycle', 'contract_design'],
-        'ui-designer': ['visual_design', 'ux_design', 'design_systems', 'web_desktop_ui'],
-        'mobile-ui': ['mobile_ux', 'ios_design', 'android_design', 'mobile_patterns'],
-        'codebase-analyst': ['code_analysis', 'architecture_assessment', 'technical_reporting'],
-        'researcher': ['technology_research', 'industry_analysis', 'best_practices_research'],
-        'business-analyst': ['requirements_analysis', 'stakeholder_management', 'process_mapping'],
-        'devops': ['deployment_automation', 'cicd_pipelines', 'infrastructure_automation'],
-        'platform-engineer': ['site_reliability', 'monitoring_observability', 'production_operations'],
-        'cloud-architect': ['cloud_infrastructure', 'cloud_deployment', 'infrastructure_design'],
-        'tech-writer': ['technical_documentation', 'api_documentation', 'knowledge_management'],
-        'project-orchestrator': ['multi_agent_coordination', 'project_planning', 'execution_optimization'],
-        'product-strategist': ['product_strategy', 'feature_prioritization', 'product_planning'],
-        'accessibility-auditor': ['accessibility_testing', 'wcag_compliance', 'inclusive_design'],
-        'database-admin': ['database_administration', 'database_security', 'database_optimization']
+# Define the 28 production agents with their metadata
+PRODUCTION_AGENTS = {
+    # Development & Implementation
+    'backend-engineer': {
+        'description': 'MUST BE USED for server-side architecture, microservices, distributed systems, and database engineering. Use PROACTIVELY for high-performance optimization (>10k RPS), event-driven architecture, and complex backend infrastructure.',
+        'tools': 'Read, Write, Edit, Bash, Grep, Glob',
+        'model': 'sonnet',
+        'category': 'development',
+        'color': 'blue'
+    },
+    'frontend-engineer': {
+        'description': 'Expert frontend engineer specializing in user interfaces, client-side applications, and performance optimization. Implements modern React/Vue/Angular applications with focus on user experience.',
+        'tools': 'Read, Write, Edit, Bash, Grep, Glob',
+        'model': 'sonnet',
+        'category': 'development',
+        'color': 'blue'
+    },
+    'fullstack-lead': {
+        'description': 'Senior full-stack developer handling end-to-end development with auto-escalation for complex requirements. Coordinates frontend and backend implementation with technical leadership.',
+        'tools': 'Read, Write, Edit, Bash, Grep, Glob',
+        'model': 'sonnet',
+        'category': 'development',
+        'color': 'blue'
+    },
+    'mobile-engineer': {
+        'description': 'Expert mobile engineer for native and cross-platform mobile application development. Specializes in iOS, Android, React Native, and Flutter applications.',
+        'tools': 'Read, Write, Edit, Bash, Grep',
+        'model': 'sonnet',
+        'category': 'development',
+        'color': 'blue'
+    },
+    'data-engineer': {
+        'description': 'Expert data engineer specializing in data pipelines, ETL/ELT systems, and data warehouse architecture. Handles big data processing, streaming, and analytics infrastructure.',
+        'tools': 'Read, Write, Edit, Bash, Grep',
+        'model': 'sonnet',
+        'category': 'development',
+        'color': 'blue'
+    },
+    'ml-engineer': {
+        'description': 'MUST BE USED for enterprise ML model deployment and advanced MLOps pipelines. Use PROACTIVELY for complex model serving architectures, feature store design, and distributed training infrastructure.',
+        'tools': 'Read, Write, Edit, Bash, Grep',
+        'model': 'opus',
+        'category': 'development',
+        'color': 'blue'
+    },
+    
+    # Quality & Testing
+    'test-engineer': {
+        'description': 'MUST BE USED for comprehensive test strategy design and intelligent test implementation across frameworks. Use PROACTIVELY for untested code paths, CI/CD pipeline changes, and quality gate failures.',
+        'tools': 'Read, Write, Edit, Bash, Grep',
+        'model': 'sonnet',
+        'category': 'quality',
+        'color': 'green'
+    },
+    'code-reviewer': {
+        'description': 'MUST BE USED for pre-commit reviews, vulnerability detection, and production readiness assessment. Use PROACTIVELY after code changes for quality review, security checks, best practices validation, and comprehensive code analysis.',
+        'tools': 'Read, Grep, Bash',
+        'model': 'sonnet',
+        'category': 'quality',
+        'color': 'green'
+    },
+    'debugger': {
+        'description': 'MUST BE USED for investigating complex intermittent bugs, race conditions, and production-only failures. Use PROACTIVELY for distributed system failures, timing-dependent bugs, and concurrency issues requiring forensic analysis.',
+        'tools': 'Read, Grep, Bash, Glob',
+        'model': 'sonnet',
+        'category': 'infrastructure',
+        'color': 'orange'
+    },
+    'security-auditor': {
+        'description': 'MUST BE USED for OWASP Top 10 checks, threat modeling, and vulnerability detection. Use PROACTIVELY for security audits, vulnerability assessments, compliance reviews, and threat detection.',
+        'tools': 'Read, Grep, Bash, Edit',
+        'model': 'opus',
+        'category': 'security',
+        'color': 'red'
+    },
+    'performance-engineer': {
+        'description': 'Performance optimization, load testing, and benchmarking expert. Optimizes systems for speed, scalability, and resource efficiency.',
+        'tools': 'Read, Grep, Bash, Edit',
+        'model': 'sonnet',
+        'category': 'quality',
+        'color': 'green'
+    },
+    
+    # Architecture
+    'principal-architect': {
+        'description': 'Use PROACTIVELY for system-wide architecture design and comprehensive technical roadmaps. MUST BE USED for complex architectural decisions, enterprise-scale implementation planning, and technical strategy development.',
+        'tools': 'Read, Write',
+        'model': 'opus',
+        'category': 'architecture',
+        'color': 'purple'
+    },
+    'api-architect': {
+        'description': 'MUST BE USED for comprehensive API architecture, OpenAPI specs, and governance policy implementation. Use PROACTIVELY for API strategy, versioning management, GraphQL federation, and enterprise standardization.',
+        'tools': 'Read, Write, Edit, Grep, Glob',
+        'model': 'sonnet',
+        'category': 'architecture',
+        'color': 'purple'
+    },
+    'frontend-architect': {
+        'description': 'MUST BE USED for architecting complex frontend systems >100k DAU and micro-frontend orchestration. Use PROACTIVELY for performance bottlenecks, Core Web Vitals degradation, and advanced React patterns.',
+        'tools': 'Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash',
+        'model': 'opus',
+        'category': 'architecture',
+        'color': 'purple'
+    },
+    
+    # Design
+    'ui-designer': {
+        'description': 'MUST BE USED for comprehensive UI/UX design optimization and advanced design system architecture. Use PROACTIVELY for design inconsistencies, accessibility violations, and user experience friction points.',
+        'tools': 'Read, Write, Edit',
+        'model': 'sonnet',
+        'category': 'design',
+        'color': 'pink'
+    },
+    'mobile-ui': {
+        'description': 'Mobile UI/UX design specialist for iOS/Android design patterns. Creates native mobile experiences following platform guidelines.',
+        'tools': 'Read, Write',
+        'model': 'sonnet',
+        'category': 'design',
+        'color': 'pink'
+    },
+    'ux-researcher': {
+        'description': 'MUST BE USED for comprehensive user research strategy and advanced usability testing methodologies. Use PROACTIVELY for user experience friction, conversion optimization opportunities, and user feedback patterns.',
+        'tools': 'Read, Write, Edit, Grep, Glob, LS, WebFetch',
+        'model': 'sonnet',
+        'category': 'design',
+        'color': 'pink'
+    },
+    
+    # Analysis & Research
+    'codebase-analyst': {
+        'description': 'Use PROACTIVELY for comprehensive code architecture analysis and technical debt assessment. MUST BE USED for evaluating codebases, creating executive summaries, and identifying security risks and performance bottlenecks.',
+        'tools': 'Read, Grep, Glob, Bash',
+        'model': 'sonnet',
+        'category': 'analysis',
+        'color': 'yellow'
+    },
+    'researcher': {
+        'description': 'External research, technology evaluation, and industry analysis specialist. Provides comprehensive research insights and best practices.',
+        'tools': 'Read, Grep, WebSearch, WebFetch',
+        'model': 'sonnet',
+        'category': 'analysis',
+        'color': 'yellow'
+    },
+    'business-analyst': {
+        'description': 'Requirements analysis, stakeholder communication, and process mapping expert. Specializes in translating business needs into technical specifications.',
+        'tools': 'Read, Write, Grep',
+        'model': 'sonnet',
+        'category': 'analysis',
+        'color': 'yellow'
+    },
+    'product-strategist': {
+        'description': 'Strategic product guidance and feature prioritization specialist. Aligns technical development with business objectives.',
+        'tools': 'Read, Write',
+        'model': 'sonnet',
+        'category': 'coordination',
+        'color': 'cyan'
+    },
+    
+    # Infrastructure & Operations
+    'devops': {
+        'description': 'MUST BE USED for complex CI/CD pipeline orchestration, enterprise Kubernetes clusters, and Infrastructure as Code at scale. Use PROACTIVELY for deployment bottlenecks, reliability issues, and multi-cloud Terraform deployments.',
+        'tools': 'Read, Write, Bash',
+        'model': 'sonnet',
+        'category': 'infrastructure',
+        'color': 'orange'
+    },
+    'platform-engineer': {
+        'description': 'Use PROACTIVELY for platform engineering and developer experience optimization. MUST BE USED for building comprehensive platforms that empower development teams, implementing developer portals, and standardized workflows.',
+        'tools': 'Read, Write, Edit, Bash, Grep',
+        'model': 'sonnet',
+        'category': 'infrastructure',
+        'color': 'orange'
+    },
+    'cloud-architect': {
+        'description': 'MUST BE USED for comprehensive cloud architecture design, enterprise migration strategies, and multi-cloud implementations. Use PROACTIVELY for AWS/Azure/GCP deployments, IaC development, and cloud-native pattern implementation.',
+        'tools': 'Read, Write, Edit, Bash, Grep, Glob',
+        'model': 'opus',
+        'category': 'infrastructure',
+        'color': 'orange'
+    },
+    'database-admin': {
+        'description': 'Use PROACTIVELY for database optimization, security hardening, and performance tuning. MUST BE USED for query optimization, index management, high-availability configuration, and disaster recovery planning.',
+        'tools': 'Read, Write, Edit, Bash, Grep',
+        'model': 'sonnet',
+        'category': 'infrastructure',
+        'color': 'orange'
+    },
+    
+    # Documentation & Coordination
+    'tech-writer': {
+        'description': 'Use PROACTIVELY for documentation, READMEs, API docs, and work summaries. MUST BE USED after completing multi-step tasks (3+ operations) or multi-file changes (5+ files).',
+        'tools': 'Read, Write',
+        'model': 'sonnet',
+        'category': 'coordination',
+        'color': 'cyan'
+    },
+    'project-orchestrator': {
+        'description': 'Use PROACTIVELY for multi-agent strategy planning. MUST BE USED for parallel execution analysis, resource optimization, workflow coordination, and team efficiency recommendations.',
+        'tools': 'Read, Write',
+        'model': 'opus',
+        'category': 'coordination',
+        'color': 'cyan'
+    },
+    'accessibility-auditor': {
+        'description': 'MUST BE USED for WCAG compliance audits and accessibility violations remediation. Use PROACTIVELY for inclusive design validation, screen reader testing, keyboard navigation, and color contrast issues.',
+        'tools': 'Read, Write, Edit, Grep, Glob',
+        'model': 'sonnet',
+        'category': 'quality',
+        'color': 'green'
     }
+}
 
-    domain_expertise = domain_map.get(agent_name, ['general_expertise'])
+def validate_agent_format(file_path):
+    """Validate if an agent file follows the AGENT_TEMPLATE.md format."""
+    try:
+        # Use UTF-8 encoding for resilient validation (per CodeRabbit suggestion)
+        with open(file_path, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+    except UnicodeDecodeError as e:
+        return False, f"File encoding error: {e}"
+    except Exception as e:
+        return False, f"Failed to read file: {e}"
+    
+    if len(lines) < 40 or len(lines) > 60:
+        return False, f"File has {len(lines)} lines (expected ~46)"
+    
+    # Check for required YAML fields
+    yaml_content = []
+    in_yaml = False
+    for line in lines:
+        if line.strip() == '---':
+            if not in_yaml:
+                in_yaml = True
+            else:
+                break
+        elif in_yaml:
+            yaml_content.append(line)
+    
+    yaml_text = ''.join(yaml_content)
+    
+    # Require color in front-matter validation (per CodeRabbit suggestion)
+    required_fields = ['name:', 'description:', 'tools:', 'model:', 'category:', 'color:']
+    
+    for field in required_fields:
+        if field not in yaml_text:
+            return False, f"Missing required YAML field: {field}"
+    
+    # Check for deprecated fields
+    deprecated_fields = ['specialization_level:', 'domain_expertise:', 'coordination_protocols:', 'knowledge_base:', 'escalation_path:']
+    for field in deprecated_fields:
+        if field in yaml_text:
+            return False, f"Contains deprecated field: {field}"
+    
+    # Check for required sections
+    content = ''.join(lines)
+    required_sections = ['## Identity', '## Core Capabilities', '## When to Engage', '## When NOT to Engage', '## Coordination', '## SYSTEM BOUNDARY']
+    
+    for section in required_sections:
+        if section not in content:
+            return False, f"Missing required section: {section}"
+    
+    # Add orchestration boundary text validation (per CodeRabbit suggestion)
+    boundary_patterns = [
+        'Only Claude has orchestration authority',
+        'This agent cannot invoke other agents or create Task calls',
+        'NO Task tool access allowed'
+    ]
+    
+    boundary_found = any(pattern in content for pattern in boundary_patterns)
+    if not boundary_found:
+        return False, "Missing SYSTEM BOUNDARY protection statement with orchestration boundary text"
+    
+    return True, "Valid format"
 
-    yaml_content = f"""---
+def create_agent_from_template(agent_name, agent_info):
+    """Create an agent file following the AGENT_TEMPLATE.md format."""
+    
+    # Determine the title case name
+    title_name = agent_name.replace('-', ' ').title()
+    
+    # Create the content based on template
+    content = f"""---
 name: {agent_name}
-description: {description}
+description: {agent_info['description']}
+tools: {agent_info['tools']}
+model: {agent_info['model']}
+category: {agent_info['category']}
 color: {agent_info['color']}
-specialization_level: {agent_info['level']}
+---
 
-domain_expertise:"""
-
-    for expertise in domain_expertise:
-        yaml_content += f"\n  - {expertise}"
-
-    # Tools section
-    yaml_content += "\n\ntools:"
-    yaml_content += "\n  allowed:"
-
-    # Define allowed tools based on agent category
-    if agent_info['category'] == 'development':
-        yaml_content += "\n    read: \"Analyzing existing code and documentation\""
-        yaml_content += "\n    write: \"Implementing features and creating code\""
-        yaml_content += "\n    bash: \"Running development commands and scripts\""
-        yaml_content += "\n    # NO Task tool - Claude handles all orchestration"
-    elif agent_info['category'] in ['quality', 'analysis']:
-        yaml_content += "\n    read: \"Analyzing code and documentation\""
-        yaml_content += "\n    grep: \"Searching for patterns and issues\""
-        yaml_content += "\n    bash: \"Running analysis and test commands\""
-        yaml_content += "\n    # NO Task tool - Claude handles all orchestration"
-    elif agent_info['category'] == 'architecture':
-        yaml_content += "\n    read: \"Reviewing existing architecture and code\""
-        yaml_content += "\n    write: \"Creating architectural documentation and specs\""
-        yaml_content += "\n    # NO Task tool - Claude handles all orchestration"
-    elif agent_info['category'] == 'infrastructure':
-        yaml_content += "\n    read: \"Analyzing infrastructure and configurations\""
-        yaml_content += "\n    write: \"Creating infrastructure code and configs\""
-        yaml_content += "\n    bash: \"Running infrastructure commands\""
-        yaml_content += "\n    # NO Task tool - Claude handles all orchestration"
-    else:
-        yaml_content += "\n    read: \"Accessing relevant information\""
-        yaml_content += "\n    write: \"Creating documentation and reports\""
-        yaml_content += "\n    # NO Task tool - Claude handles all orchestration"
-
-    yaml_content += "\n  forbidden:"
-    yaml_content += "\n    task: \"Orchestration restricted to Claude (no direct Task tool access)\""
-    if agent_info['category'] != 'infrastructure':
-        yaml_content += "\n    deploy: \"Production deployment restricted to infrastructure agents\""
-
-    # Coordination protocols
-    yaml_content += "\n\ncoordination_protocols:"
-    yaml_content += "\n  handoff_to:"
-
-    # Define handoffs based on agent type
-    handoff_map = {
-        'backend-engineer': {'frontend-engineer': 'API integration specifications', 'test-engineer': 'Test requirements'},
-        'frontend-engineer': {'backend-engineer': 'API requirements', 'ui-designer': 'Design implementation'},
-        'fullstack-lead': {'principal-architect': 'Complex architectural decisions', 'test-engineer': 'Quality validation'},
-        'test-engineer': {'code-reviewer': 'Quality gate approval', 'debugger': 'Complex test failures'},
-        'principal-architect': {'api-architect': 'API design requirements', 'cloud-architect': 'Infrastructure needs'},
-        'devops': {'platform-engineer': 'Production monitoring setup', 'security-auditor': 'Security validation'}
-    }
-
-    handoffs = handoff_map.get(agent_name, {'test-engineer': 'Quality validation'})
-    for target, reason in handoffs.items():
-        yaml_content += f"\n    {target}: \"{reason}\""
-
-    yaml_content += "\n  parallel_compatible:"
-
-    # Define parallel compatible agents
-    parallel_map = {
-        'backend-engineer': ['frontend-engineer', 'test-engineer', 'devops'],
-        'frontend-engineer': ['backend-engineer', 'ui-designer', 'test-engineer'],
-        'test-engineer': ['code-reviewer', 'security-auditor', 'performance-engineer'],
-        'principal-architect': ['api-architect', 'cloud-architect', 'product-strategist']
-    }
-
-    parallel_agents = parallel_map.get(agent_name, ['test-engineer', 'code-reviewer'])
-    for agent in parallel_agents:
-        yaml_content += f"\n    - {agent}"
-
-    yaml_content += "\n  escalation_path:"
-
-    # Define escalation paths
-    escalation_map = {
-        'backend-engineer': 'principal-architect',
-        'frontend-engineer': 'principal-architect',
-        'fullstack-lead': 'principal-architect',
-        'test-engineer': 'project-orchestrator',
-        'code-reviewer': 'tech-lead',
-        'api-architect': 'principal-architect'
-    }
-
-    escalation = escalation_map.get(agent_name, 'principal-architect')
-    yaml_content += f"\n    {escalation}: \"Complex decisions beyond current scope\""
-
-    # Knowledge base and examples
-    yaml_content += "\n\nknowledge_base:"
-    yaml_content += f"\n  - {agent_info['category'].title()} best practices and patterns"
-    yaml_content += "\n\nexamples:"
-    yaml_content += f"\n  - scenario: \"Typical {agent_name.replace('-', ' ')} task\""
-    yaml_content += f"\n    approach: \"Systematic approach using {agent_info['category']} expertise\""
-
-    yaml_content += "\n---"
-
-    return yaml_content
-
-def process_agent(agent_name, agents_dir, deprecated_dir):
-    """Process a single agent file."""
-    file_path = agents_dir / f"{agent_name}.md"
-
-    # Check if this is a deprecated agent
-    if agent_name in DEPRECATED_AGENTS:
-        target = DEPRECATED_AGENTS[agent_name]
-        if target is None:
-            # Move to deprecated
-            print(f"Deprecating: {agent_name}")
-            if file_path.exists():
-                shutil.move(str(file_path), str(deprecated_dir / f"{agent_name}.md"))
-        else:
-            # This agent is being merged/renamed
-            print(f"Consolidating: {agent_name} -> {target}")
-            if file_path.exists():
-                # Save content for potential merge
-                shutil.copy(str(file_path), str(deprecated_dir / f"{agent_name}.md"))
-                os.remove(file_path)
-        return
-
-    # Check if this is a final agent
-    if agent_name not in FINAL_AGENTS:
-        print(f"Unknown agent: {agent_name} (moving to deprecated)")
-        if file_path.exists():
-            shutil.move(str(file_path), str(deprecated_dir / f"{agent_name}.md"))
-        return
-
-    # Process final agent
-    agent_info = FINAL_AGENTS[agent_name]
-
-    if file_path.exists():
-        # Update existing file
-        yaml_section, markdown_content = extract_content_sections(file_path)
-        new_yaml = create_standardized_yaml(agent_name, agent_info, yaml_section)
-
-        with open(file_path, 'w') as f:
-            f.write(new_yaml)
-            f.write('\n')
-            f.write(markdown_content)
-
-        print(f"Updated: {agent_name}")
-    else:
-        # Create new file for agents that don't exist yet
-        print(f"Creating: {agent_name}")
-        new_yaml = create_standardized_yaml(agent_name, agent_info)
-
-        # Basic template content
-        markdown_content = f"""
-# {agent_name.replace('-', ' ').title()}
+# {title_name}
 
 ## Identity
-You are an expert {agent_name.replace('-', ' ')} specializing in {agent_info['category']} tasks.
+
+Expert {agent_name.replace('-', ' ')} specializing in {get_specialization(agent_name, agent_info['category'])}. {get_value_proposition(agent_name, agent_info['category'])}
 
 ## Core Capabilities
-- Primary expertise in {agent_info['category']} domain
-- Collaborative approach with other agents
-- Focus on quality and best practices
+
+{get_core_capabilities(agent_name, agent_info['category'])}
 
 ## When to Engage
-- When {agent_info['category']} expertise is required
-- For tasks requiring {agent_name.replace('-', ' ')} skills
+
+{get_engagement_triggers(agent_name, agent_info['category'])}
+
+## When NOT to Engage
+
+{get_disengagement_conditions(agent_name, agent_info['category'])}
 
 ## Coordination
-- Works well with parallel agents for efficient execution
-- Clear handoff protocols with downstream agents
-- Escalates complex decisions appropriately
-"""
 
-        with open(file_path, 'w') as f:
-            f.write(new_yaml)
-            f.write('\n')
-            f.write(markdown_content)
+{get_coordination_info(agent_name, agent_info['category'])}
+
+## SYSTEM BOUNDARY
+
+This agent cannot invoke other agents or create Task calls. Only Claude has orchestration authority."""
+    
+    return content
+
+def get_specialization(agent_name, category):
+    """Get specialization text for an agent."""
+    specializations = {
+        'backend-engineer': 'distributed systems, microservices architecture, and high-performance server implementations',
+        'frontend-engineer': 'modern UI frameworks, client-side performance, and responsive design',
+        'test-engineer': 'test strategy design, automation frameworks, and quality assurance',
+        'security-auditor': 'vulnerability assessment, threat modeling, and security compliance',
+        'api-architect': 'API design patterns, versioning strategies, and contract-first development',
+        'codebase-analyst': 'code architecture analysis, technical debt assessment, and performance bottlenecks'
+    }
+    return specializations.get(agent_name, f'{category} domain expertise')
+
+def get_value_proposition(agent_name, category):
+    """Get value proposition for an agent."""
+    propositions = {
+        'backend-engineer': 'Combines strategic architectural thinking with production-grade implementation skills for 100k+ RPS systems.',
+        'frontend-engineer': 'Delivers pixel-perfect, performant user interfaces with exceptional user experience.',
+        'security-auditor': 'Ensures comprehensive security coverage through systematic vulnerability assessment and threat modeling.',
+        'test-engineer': 'Guarantees quality through intelligent test design and comprehensive coverage strategies.'
+    }
+    return propositions.get(agent_name, f'Provides expert {category} capabilities with focus on quality and efficiency.')
+
+def get_core_capabilities(agent_name, category):
+    """Get core capabilities list for an agent."""
+    capabilities = {
+        'backend-engineer': """- Distributed systems design with consensus algorithms and CAP theorem application
+- Microservices architecture with proper service boundaries and communication patterns
+- Performance optimization for sub-100ms latency and 100k+ RPS handling
+- Database engineering including sharding, replication, and query optimization
+- Event-driven architecture with message queues and streaming platforms""",
+        
+        'frontend-engineer': """- Modern framework expertise (React, Vue, Angular) with advanced patterns
+- Performance optimization including bundle size, lazy loading, and rendering
+- Responsive design and cross-browser compatibility
+- State management and data flow architecture
+- Accessibility and internationalization implementation""",
+        
+        'security-auditor': """- OWASP Top 10 vulnerability assessment and remediation
+- Security code review and threat modeling
+- Authentication and authorization system validation
+- Cryptography implementation review
+- Compliance verification (SOC2, PCI-DSS, GDPR)"""
+    }
+    
+    return capabilities.get(agent_name, f"""- Core {category} expertise
+- Best practices implementation
+- Quality assurance and validation
+- Performance optimization
+- Documentation and knowledge transfer""")
+
+def get_engagement_triggers(agent_name, category):
+    """Get engagement triggers for an agent."""
+    triggers = {
+        'backend-engineer': """- Server-side code modifications or new API endpoints
+- Database schema changes or query optimization needs
+- Performance issues exceeding 100ms latency thresholds
+- Microservices architecture design or modifications""",
+        
+        'security-auditor': """- Authentication or authorization code changes
+- Handling sensitive data or PII
+- Security vulnerability reports or incidents
+- Compliance audit requirements""",
+        
+        'test-engineer': """- New feature implementation requiring test coverage
+- CI/CD pipeline failures or quality gate violations
+- Test framework selection or migration
+- Coverage gaps identified in codebase"""
+    }
+    
+    return triggers.get(agent_name, f"""- {category.title()} expertise required
+- Complex technical challenges in domain
+- Quality or performance concerns
+- User request for specialized assistance""")
+
+def get_disengagement_conditions(agent_name, category):
+    """Get disengagement conditions for an agent."""
+    conditions = {
+        'backend-engineer': """- Pure frontend or UI-only changes
+- Documentation updates without code changes""",
+        
+        'frontend-engineer': """- Backend-only API changes without UI impact
+- Database or infrastructure modifications""",
+        
+        'security-auditor': """- Non-security code refactoring
+- Pure performance optimization without security implications"""
+    }
+    
+    return conditions.get(agent_name, f"""- Tasks outside {category} domain
+- Simple tasks better handled directly by Claude""")
+
+def get_coordination_info(agent_name, category):
+    """Get coordination information for an agent."""
+    coordination = {
+        'backend-engineer': """Works in parallel with frontend-engineer for full-stack features.
+Escalates to principal-architect for system-wide architectural decisions.""",
+        
+        'frontend-engineer': """Works in parallel with backend-engineer for API integration.
+Escalates to frontend-architect for complex architectural patterns.""",
+        
+        'security-auditor': """Works in parallel with code-reviewer for comprehensive review.
+Escalates to Claude when security fixes require architectural changes."""
+    }
+    
+    return coordination.get(agent_name, f"""Works in parallel with related {category} agents.
+Escalates to Claude when blocked or requiring cross-domain coordination.""")
 
 def main():
     """Main execution function."""
-    agents_dir = Path('/Users/damilola/Documents/Projects/claude-config/.claude/agents')
-    deprecated_dir = Path('/Users/damilola/Documents/Projects/claude-config/.claude/deprecated/agents')
-
-    # Create deprecated directory
-    deprecated_dir.mkdir(parents=True, exist_ok=True)
-
-    print("=== Agent Standardization Process ===\n")
-
-    # Get all existing agent files
-    existing_agents = [f.stem for f in agents_dir.glob('*.md') if f.name != 'README.md']
-
+    agents_dir = Path('system-configs/.claude/agents')
+    
+    print("=== Agent Standardization to AGENT_TEMPLATE.md Format ===\n")
+    print(f"Target: 28 production agents following 46-line template\n")
+    
+    # Get existing agent files (excluding template and README)
+    existing_agents = [f.stem for f in agents_dir.glob('*.md') 
+                      if f.name not in ['AGENT_TEMPLATE.md', 'README.md']]
+    
     print(f"Found {len(existing_agents)} existing agent files")
-    print(f"Target: {len(FINAL_AGENTS)} final agents\n")
-
-    # Process existing agents
+    
+    # Validate existing agents
+    validation_results = []
     for agent_name in sorted(existing_agents):
-        process_agent(agent_name, agents_dir, deprecated_dir)
-
-    # Create any missing final agents
-    print("\n=== Creating Missing Agents ===\n")
-    for agent_name in sorted(FINAL_AGENTS.keys()):
-        if agent_name not in existing_agents:
-            process_agent(agent_name, agents_dir, deprecated_dir)
-
-    # Generate summary report
-    print("\n=== Summary Report ===\n")
-
-    final_agents = list(agents_dir.glob('*.md'))
-    final_agents = [f for f in final_agents if f.name != 'README.md']
-
-    print(f"Final agent count: {len(final_agents)}")
-    print(f"Deprecated agents: {len(list(deprecated_dir.glob('*.md')))}")
-
-    # Create detailed report in .tmp directory
-    reports_dir = Path('/Users/damilola/Documents/Projects/claude-config/.tmp/reports')
-    reports_dir.mkdir(parents=True, exist_ok=True)
-    report_path = reports_dir / 'agent-standardization-report.md'
-    with open(report_path, 'w') as f:
-        f.write(f"# Agent Standardization Report\n\n")
+        file_path = agents_dir / f"{agent_name}.md"
+        valid, message = validate_agent_format(file_path)
+        validation_results.append((agent_name, valid, message))
+        
+        if valid:
+            print(f"✅ {agent_name}: Valid format")
+        else:
+            print(f"⚠️  {agent_name}: {message}")
+    
+    # Count valid agents
+    valid_count = sum(1 for _, valid, _ in validation_results if valid)
+    
+    print(f"\n=== Summary ===")
+    print(f"Valid agents: {valid_count}/{len(existing_agents)}")
+    print(f"Target agents: 28")
+    
+    if valid_count == 28:
+        print("\n✅ All agents follow the AGENT_TEMPLATE.md format!")
+    else:
+        print(f"\n⚠️  {28 - valid_count} agents need updating to match template")
+    
+    # Generate report using UTF-8 encoding
+    report_path = Path('.tmp/reports/agent-validation-report.md')
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    with open(report_path, 'w', encoding='utf-8') as f:
+        f.write(f"# Agent Validation Report\n\n")
         f.write(f"Generated: {datetime.now().isoformat()}\n\n")
         f.write(f"## Summary\n\n")
-        f.write(f"- Final agents: {len(final_agents)}\n")
-        f.write(f"- Deprecated: {len(list(deprecated_dir.glob('*.md')))}\n")
-        f.write(f"- Target: {len(FINAL_AGENTS)}\n\n")
-
-        f.write("## Final Agent List\n\n")
-        for category in ['development', 'quality', 'architecture', 'analysis', 'infrastructure', 'documentation', 'specialized']:
-            agents_in_cat = [name for name, info in FINAL_AGENTS.items() if info['category'] == category]
-            if agents_in_cat:
-                f.write(f"### {category.title()} ({len(agents_in_cat)} agents)\n")
-                for agent in sorted(agents_in_cat):
-                    info = FINAL_AGENTS[agent]
-                    f.write(f"- **{agent}** ({info['color']}, {info['level']})\n")
-                f.write("\n")
-
+        f.write(f"- Total agents: {len(existing_agents)}\n")
+        f.write(f"- Valid format: {valid_count}\n")
+        f.write(f"- Need updating: {len(existing_agents) - valid_count}\n\n")
+        
+        f.write("## Validation Results\n\n")
+        for agent_name, valid, message in sorted(validation_results):
+            status = "✅" if valid else "❌"
+            f.write(f"- {status} **{agent_name}**: {message}\n")
+    
     print(f"\nReport saved to: {report_path}")
 
 if __name__ == '__main__':

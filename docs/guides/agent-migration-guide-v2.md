@@ -291,7 +291,7 @@ done
 
 - AGENT_TEMPLATE.md - Current template with all requirements
 - AGENT_CATEGORIES.md - Official category definitions
-- YAML_REQUIREMENTS.md - Detailed YAML specifications
+- development/YAML_REQUIREMENTS.md - Detailed YAML specifications
 
 ### Validation Tools
 

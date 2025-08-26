@@ -14,7 +14,7 @@ NC=${NC:-'\033[0m'}
 # Create test environment
 setup_test_env() {
     mkdir -p "$TEST_DIR"
-    cd "$TEST_DIR"
+    cd "$TEST_DIR" || exit 1
 }
 
 # Clean up test environment

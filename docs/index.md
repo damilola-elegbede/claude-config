@@ -20,7 +20,7 @@ and enhanced development processes.
 - [Agent Ecosystem Overview](../agents/README.md) - Complete guide to all 41
   specialized agents
 
-- [Agent Selection Guide](AGENT_SELECTION_GUIDE.md) - How to choose the right
+- [Agent Selection Guide](development/AGENT_SELECTION_GUIDE.md) - How to choose the right
   agent in the consolidated system
 
 - [Agent Migration Guide](AGENT_MIGRATION_GUIDE.md) - Transition guide for the
@@ -34,18 +34,18 @@ and enhanced development processes.
 - [Agent Ecosystem SPEC](specs/agent-ecosystem-spec.md) - Technical
   specification for the agent system
 
-- [Audio Hook Configuration](AUDIO_HOOK_README.md) - Audio notification setup
-- [Tool Access Guide](TOOL_ACCESS_GUIDE.md) - Tool permissions by agent type
+- [Audio Hook Configuration](setup/AUDIO_HOOK_README.md) - Audio notification setup
+- [Tool Access Guide](development/TOOL_ACCESS_GUIDE.md) - Tool permissions by agent type
 
 ### Guides and Best Practices
 
-- [Parallel Execution Guide](PARALLEL_EXECUTION_GUIDE.md) - Maximizing agent
+- [Parallel Execution Guide](performance/PARALLEL_EXECUTION_GUIDE.md) - Maximizing agent
   parallelization
 
-- [Security Access Patterns](SECURITY_ACCESS_PATTERNS.md) - Security best
+- [Security Access Patterns](development/SECURITY_ACCESS_PATTERNS.md) - Security best
   practices
 
-- [YAML Requirements](YAML_REQUIREMENTS.md) - Configuration file standards
+- [YAML Requirements](development/YAML_REQUIREMENTS.md) - Configuration file standards
 
 ## Command Reference
 

@@ -20,8 +20,12 @@ while staying in plan mode.
 
 When invoked, I enter plan mode and systematically analyze requirements,
 asking for clarification on any ambiguities. I generate a Product Requirements
-Document (PRD) preview showing phases, PRs, and task breakdown. Only after user
-approval do I create implementation files in `.tmp/<feature-name>/` with
+Document (PRD) preview showing phases, PRs, and task breakdown.
+
+**CRITICAL**: ALL modes (default, -s, -f) MUST wait for explicit user approval
+before creating any implementation files. No mode should assume approval or
+auto-proceed to file creation. Only after receiving explicit "yes", "approve",
+"proceed", or 👍 do I create implementation files in `.tmp/<feature-name>/` with
 detailed agent assignments and technical specifications.
 
 ## Agent Orchestration
@@ -60,9 +64,11 @@ Simultaneous Analysis:
 
 1. Enter plan mode
 2. Analyze requirements, ask clarification if needed
-3. Generate PRD preview
-4. Wait for approval (yes/no/modify)
-5. Create files in `.tmp/<feature-name>/` only after approval
+3. Generate PRD preview with "Ready to proceed? (yes/no/modify)" prompt
+4. **MANDATORY**: Wait for explicit user approval - NEVER assume or skip this step
+5. Create files in `.tmp/<feature-name>/` ONLY after receiving approval
+6. If user says "modify" - stay in plan mode and adjust the plan
+7. If user says "no/cancel" - exit without creating files
 
 ## Plan Preview Format
 
@@ -208,11 +214,21 @@ Phase_3: E2E testing (Depends on implementation), docs (Concurrent with testing)
 
 ## Approval Workflow
 
-Stay in plan mode until user responds:
+**MANDATORY FOR ALL MODES**: Stay in plan mode until user explicitly responds.
+Never assume approval based on input method or command flags.
 
-- **Approve**: yes, approve, proceed, 👍 → Exit plan mode, write files
-- **Modify**: modify, update, change → Stay in plan mode, adjust
-- **Cancel**: no, cancel, abort, stop → Exit without writing
+### User Response Options:
+
+- **Approve**: yes, approve, proceed, 👍, ok, go → Exit plan mode, write files
+- **Modify**: modify, update, change, adjust → Stay in plan mode, adjust plan
+- **Cancel**: no, cancel, abort, stop, exit → Exit without writing any files
+
+### Implementation Requirements:
+
+- Display clear approval prompt: "Ready to proceed? (yes/no/modify)"
+- Wait for user input before any file operations
+- Default mode, -s mode, and -f mode ALL follow same approval process
+- No auto-proceeding regardless of how requirements were provided
 
 ## Task Template Structure
 
@@ -260,11 +276,25 @@ Key Requirements: Bcrypt, RS256, <500ms response
 Ready to proceed? (yes/no/modify)
 
 User: yes
-Claude: ✅ Created in .tmp/authentication/:
+Claude: ✅ Approved! Creating implementation files in .tmp/authentication/:
 - prd.md
 - phase_1_pr_1_database.md (3 tasks)
 - phase_1_pr_2_services.md (4 tasks)
 [... 7 more PR files]
+
+User: /plan -f requirements.txt
+Claude: 📋 Entering plan mode...
+Reading requirements from file...
+
+## PRD Preview: [Feature from File]
+
+[Generated plan preview]
+
+Ready to proceed? (yes/no/modify)
+
+User: modify
+Claude: What would you like me to adjust in the plan?
+[Stays in plan mode awaiting modifications]
 ```bash
 
 ## PRD Integration Standards

@@ -10,9 +10,10 @@ it does not make any changes automatically.**
 
 ```bash
 /agent-audit
-```bash
+```
 
 ## Behavior
+
 ## Parallel Validation Strategy - Multi-Instance Deployment
 
 ### Category-Based Parallelization with Instance Pools
@@ -23,14 +24,14 @@ code-reviewer (instance pool):
   deployment: 8 instances (one per category)
   calculation: min(8, number_of_categories)
   distribution:
-    - instance_1: development category agents (5-10 agents)
-    - instance_2: infrastructure category agents (5-10 agents)
-    - instance_3: quality category agents (5-10 agents)
-    - instance_4: security category agents (5-10 agents)
-    - instance_5: analysis category agents (5-10 agents)
-    - instance_6: architecture category agents (5-10 agents)
-    - instance_7: design category agents (5-10 agents)
-    - instance_8: operations category agents (5-10 agents)
+    - instance_1: development category agents (3-5 agents)
+    - instance_2: infrastructure category agents (3-5 agents)
+    - instance_3: quality category agents (3-5 agents)
+    - instance_4: security category agents (1-2 agents)
+    - instance_5: analysis category agents (3-4 agents)
+    - instance_6: architecture category agents (3-4 agents)
+    - instance_7: design category agents (3-4 agents)
+    - instance_8: operations/documentation agents (3-4 agents)
   parallel_with: [security-auditor instances, performance-engineer]
   role: Validate agent definitions, YAML compliance, template adherence
   output: Per-category validation reports generated simultaneously
@@ -59,8 +60,7 @@ debugger:
 #   Sequential: 3-5 minutes for all agents
 #   Parallel with instances: 30-45 seconds (5-6x faster)
 #   Instance scaling: Automatic based on category count
-```bash
-
+```
 
 This command performs thorough validation of all agents across multiple dimensions, executed in parallel by
 category for maximum efficiency.
@@ -72,12 +72,14 @@ design principles.
 
 ## Validation Scope
 
-### 1. Category Validation
+### 1. Category Validation (Per AGENT_CATEGORIES.md)
 
-- **Maximum Categories**: Ensure ≤ 8 categories exist
-- **Category Assignment**: Verify each agent is in the correct category based on its role
-- **Color Consistency**: Validate color assignments match category standards
-- **Category Balance**: Report on distribution (not enforced, informational only)
+- **Exactly 8 Categories**: Validate against docs/agents/AGENT_CATEGORIES.md
+- **Category Assignment**: Verify each agent matches AGENT_CATEGORIES.md assignments
+- **Color Consistency**: Validate colors match AGENT_CATEGORIES.md specifications
+  - Development (blue), Quality (green), Security (red), Architecture (purple)
+  - Design (pink), Analysis (yellow), Infrastructure (orange), Coordination (cyan)
+- **Category Balance**: Report distribution (max 7 agents per category recommended)
 
 ### 2. Template Compliance
 
@@ -144,16 +146,34 @@ design principles.
 
 ### Phase 0: YAML Validation (Critical - Run First)
 
-Before any other validation, ensure all agent files have parseable YAML:
+Before any other validation, ensure all agent files conform to AGENT_TEMPLATE.md and AGENT_CATEGORIES.md:
 
 ```yaml
 yaml_validation:
-  - Parse YAML front matter for each agent file
-  - Identify agents with parsing failures
-  - Report specific line numbers and error types
-  - Skip further validation for unparseable agents
-  - Generate fix commands for common YAML issues
-```bash
+  templates:
+    - docs/agents/AGENT_TEMPLATE.md  # Format specification
+    - docs/agents/AGENT_CATEGORIES.md # Category definitions
+
+  category_validation:
+    valid_categories: [development, quality, security, architecture, design, analysis, infrastructure, coordination]
+    category_colors:
+      development: blue
+      quality: green
+      security: red
+      architecture: purple
+      design: pink
+      analysis: yellow
+      infrastructure: orange
+      coordination: cyan
+
+  field_validation:
+    required: [name, description, tools, model, category, color]
+    prohibited: [specialization_level, domain_expertise, coordination_protocols]
+
+  format_validation:
+    expected_lines: ~46 (range: 40-60)
+    required_sections: [Identity, Core Capabilities, When to Engage, When NOT to Engage, Coordination, SYSTEM BOUNDARY]
+```
 
 ### Phase 1: Multi-Instance Parallel Category Audits
 
@@ -196,7 +216,7 @@ multi_instance_execution:
 #   - Sequential category validation: 20-30 seconds per category
 #   - Parallel multi-instance: All categories in 30-45 seconds total
 #   - Result: 5-6x faster validation with better resource utilization
-```bash
+```
 
 ### Phase 2: Cross-Category Analysis
 
@@ -234,7 +254,7 @@ After audit completion, **execution-evaluator** is deployed to verify:
 
 ```text
 Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
-```bash
+```
 
 ### Category Health Matrix
 
@@ -312,7 +332,7 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 - Updated agent-name: Set tier to 1
 - Fixed agent-name: Removed Task tool access
 - Updated agent-name: Added SYSTEM BOUNDARY warning
-```bash
+```
 
 ### Manual Remediation Required
 
@@ -358,20 +378,21 @@ sed -i '' 's/category: wrong/category: correct/' agent.md
 sed -i '' 's/model: opus/model: sonnet/' agent-name.md  # Save 40% cost
 # Upgrade under-provisioned agents:
 sed -i '' 's/model: haiku/model: sonnet/' agent-name.md  # Better capability
-```bash
+```
 
 ## Success Criteria
 
-✅ **YAML Parseability**: 100% of agent files have valid, parseable YAML front matter
-✅ **Category Compliance**: ≤ 8 categories with proper color mapping
-✅ **Template Adherence**: 100% AGENT_TEMPLATE.md compliance
+✅ **Agent Count**: Exactly 28 production agents
+✅ **YAML Parseability**: 100% of agent files have valid YAML per AGENT_TEMPLATE.md
+✅ **Template Adherence**: All 28 agents follow 46-line AGENT_TEMPLATE.md format
+✅ **Required Fields**: name, description, tools, model, category, color present
+✅ **No Deprecated Fields**: No specialization_level, domain_expertise, coordination_protocols, etc.
+✅ **File Length**: All agents ~46 lines (40-60 range acceptable)
+✅ **Required Sections**: Identity, Core Capabilities, When to Engage, When NOT to Engage, Coordination, SYSTEM BOUNDARY
 ✅ **Tool Validation**: No Task tool access, appropriate permissions
-✅ **Anti-Pattern Free**: No orchestration or self-reference
-✅ **Description Quality**: Clear "MUST BE USED" and "use PROACTIVELY" triggers
-✅ **Markdown Parsing Standards**: Consistent code fencing, language tags, and example quality
-✅ **Tier 1 Only**: All agents at tier 1 level
-✅ **Model Appropriateness**: Each agent uses optimal model for its complexity
-✅ **Documentation Sync**: All docs reflect current state
+✅ **Anti-Pattern Free**: "Only Claude has orchestration authority" statement present
+✅ **Description Quality**: Includes trigger phrases (MUST BE USED, Use PROACTIVELY, Expert, Specializes)
+✅ **Model Appropriateness**: opus for complex reasoning, sonnet for standard, haiku for rapid tasks
 
 ## Implementation Notes
 

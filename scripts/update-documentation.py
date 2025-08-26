@@ -41,10 +41,10 @@ DEPRECATED_AGENTS = [
 # Documentation files to update
 DOC_FILES = [
     'agents/README.md',
-    'docs/CONSOLIDATED_AGENT_SYSTEM.md',
+    'docs/architecture/CONSOLIDATED_AGENT_SYSTEM.md',
     'docs/specs/agent-ecosystem-spec.md',
-    'docs/AGENT_SELECTION_GUIDE.md',
-    'docs/PARALLEL_EXECUTION_GUIDE.md',
+    'docs/development/AGENT_SELECTION_GUIDE.md',
+    'docs/performance/PARALLEL_EXECUTION_GUIDE.md',
     'docs/AGENT_MIGRATION_GUIDE.md',
     'CLAUDE.md',
     '.claude/CLAUDE.md',

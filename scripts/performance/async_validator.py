@@ -18,7 +18,6 @@ Maintains all security features:
 """
 
 import asyncio
-import aiofiles
 import hashlib
 import json
 import re
@@ -66,7 +65,7 @@ class PerformanceCache:
         """Load cache from disk if available."""
         if self.cache_file.exists():
             try:
-                with open(self.cache_file, 'r') as f:
+                with open(self.cache_file, 'r', encoding='utf-8') as f:
                     data = json.load(f)
                     for key, entry_data in data.items():
                         result_data = entry_data['result']
@@ -95,7 +94,7 @@ class PerformanceCache:
                     'file_mtime': entry.file_mtime
                 }
             
-            with open(self.cache_file, 'w') as f:
+            with open(self.cache_file, 'w', encoding='utf-8') as f:
                 json.dump(cache_data, f, indent=2)
             logger.info(f"Saved cache with {len(self.cache)} entries")
         except Exception as e:
@@ -168,18 +167,34 @@ class PerformanceCache:
 class AsyncAgentValidator:
     """High-performance async agent validation system."""
     
-    # Required fields based on actual agent schema
-    REQUIRED_FIELDS = ['name', 'description', 'color', 'tools']
+    # Class-level constants enforcing model/category via documented schema
+    # Required fields based on AGENT_TEMPLATE.md format
+    REQUIRED_FIELDS = ['name', 'description', 'tools', 'model', 'category', 'color']
     
-    # Valid values for specific fields
-    VALID_COLORS = ['blue', 'green', 'red', 'purple', 'yellow', 'orange', 'white', 'brown', 'cyan', 'pink']
+    # Valid values enforced via class constants (per CodeRabbit suggestion)
+    VALID_COLORS = ['blue', 'green', 'red', 'purple', 'yellow', 'orange', 'cyan', 'pink']
+    
+    # Categories from AGENT_CATEGORIES.md only - no "operations" category
+    VALID_CATEGORIES = [
+        'development', 'quality', 'security', 'architecture', 
+        'design', 'analysis', 'infrastructure', 'coordination'
+    ]
+    
+    VALID_MODELS = ['opus', 'sonnet', 'haiku']
+    
+    # Valid tools - prohibit Task tool for orchestration boundary protection
+    PROHIBITED_TOOLS = ['Task']
+    VALID_TOOLS = [
+        'Read', 'Write', 'Edit', 'MultiEdit', 'Bash', 'Grep', 'Glob', 
+        'LS', 'WebSearch', 'WebFetch'
+    ]
     
     # Non-agent documentation files to skip
     NON_AGENT_FILES = {
         'README.md', 'AGENT_CATEGORIES.md', 'AGENT_TEMPLATE.md',
-        'AUDIT_VERIFICATION_PROTOCOL.md', 'AGENT_SELECTION_GUIDE.md',
-        'ENHANCEMENT_SUMMARY.md', 'PARALLEL_EXECUTION_GUIDE.md',
-        'SECURITY_ACCESS_PATTERNS.md', 'TOOL_ACCESS_GUIDE.md',
+        'AUDIT_VERIFICATION_PROTOCOL.md', 'development/AGENT_SELECTION_GUIDE.md',
+        'ENHANCEMENT_SUMMARY.md', 'performance/PARALLEL_EXECUTION_GUIDE.md',
+        'development/SECURITY_ACCESS_PATTERNS.md', 'development/TOOL_ACCESS_GUIDE.md',
         'TOOL_ACCESS_STANDARDIZATION_SUMMARY.md'
     }
     
@@ -195,8 +210,9 @@ class AsyncAgentValidator:
             'name_field': re.compile(r'^name:\s*(.+)$', re.MULTILINE),
             'description_field': re.compile(r'^description:\s*(.+)$', re.MULTILINE),
             'color_field': re.compile(r'^color:\s*(.+)$', re.MULTILINE),
-            'domain_expertise': re.compile(r'domain_expertise:\s*$', re.MULTILINE),
-            'domain_items': re.compile(r'domain_expertise:.*?\n\s+-', re.DOTALL)
+            'model_field': re.compile(r'^model:\s*(.+)$', re.MULTILINE),
+            'category_field': re.compile(r'^category:\s*(.+)$', re.MULTILINE),
+            'tools_field': re.compile(r'^tools:\s*(.+)$', re.MULTILINE)
         }
     
     async def validate_file_async(self, file_path: Path) -> ValidationResult:
@@ -209,10 +225,10 @@ class AsyncAgentValidator:
             logger.debug(f"Cache hit for {file_path.name}")
             return cached_result
         
-        # Read file asynchronously
+        # Read file with proper UTF-8 encoding
         try:
-            async with aiofiles.open(file_path, 'r') as f:
-                content = await f.read()
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
         except Exception as e:
             result = ValidationResult(
                 agent_name=file_path.stem,
@@ -261,14 +277,15 @@ class AsyncAgentValidator:
         
         yaml_section = yaml_match.group(1)
         
-        # Concurrent validation of different aspects
+        # Concurrent validation of different aspects per AGENT_TEMPLATE.md
         validation_tasks = [
             self._validate_required_fields(yaml_section),
             self._validate_field_values(yaml_section),
             self._validate_name_consistency(agent_name, yaml_section),
-            self._validate_description_length(yaml_section),
-            self._validate_domain_expertise(yaml_section),
-            self._validate_security_boundaries(content)
+            self._validate_description_format(yaml_section),
+            self._validate_tools_format(yaml_section),
+            self._validate_deprecated_fields(yaml_section),
+            self._validate_template_sections(content)
         ]
         
         # Run validations concurrently
@@ -307,61 +324,152 @@ class AsyncAgentValidator:
         return issues
     
     async def _validate_field_values(self, yaml_section: str) -> List[str]:
-        """Validate specific field values."""
+        """Validate specific field values using class-level constants."""
         issues = []
         
-        # Validate color field
+        # Validate color field using class constant
         color_match = self.validation_rules['color_field'].search(yaml_section)
         if color_match:
             color_value = color_match.group(1).strip()
             if color_value and color_value not in self.VALID_COLORS:
                 issues.append(f"Invalid color '{color_value}'. Must be one of: {', '.join(self.VALID_COLORS)}")
+        else:
+            issues.append("Color field is required in front-matter")
+        
+        # Validate model field using class constant
+        model_match = self.validation_rules['model_field'].search(yaml_section)
+        if model_match:
+            model_value = model_match.group(1).strip()
+            if model_value and model_value not in self.VALID_MODELS:
+                issues.append(f"Invalid model '{model_value}'. Must be one of: {', '.join(self.VALID_MODELS)}")
+        
+        # Validate category field using class constant (no "operations" category)
+        category_match = self.validation_rules['category_field'].search(yaml_section)
+        if category_match:
+            category_value = category_match.group(1).strip()
+            if category_value and category_value not in self.VALID_CATEGORIES:
+                issues.append(f"Invalid category '{category_value}'. Must be one of: {', '.join(self.VALID_CATEGORIES)}")
         
         return issues
     
     async def _validate_name_consistency(self, agent_name: str, yaml_section: str) -> List[str]:
-        """Validate name field matches filename."""
+        """Validate name field matches filename with comprehensive checks."""
         issues = []
         
         name_match = self.validation_rules['name_field'].search(yaml_section)
         if name_match:
             yaml_name = name_match.group(1).strip()
-            if yaml_name != agent_name:
-                issues.append(f"Name mismatch: YAML says '{yaml_name}' but filename is '{agent_name}.md'")
+            
+            # Remove quotes if present
+            yaml_name_clean = yaml_name.strip('"\'')
+            
+            # Exact match required
+            if yaml_name_clean != agent_name:
+                issues.append(f"Name mismatch: YAML name field '{yaml_name_clean}' must exactly match filename '{agent_name}'")
+            
+            # Check for common issues
+            if yaml_name_clean.lower() == agent_name.lower() and yaml_name_clean != agent_name:
+                issues.append(f"Name case mismatch: YAML has '{yaml_name_clean}' but filename is '{agent_name}' (case-sensitive)")
+            
+            # Check for whitespace issues
+            if yaml_name != yaml_name.strip():
+                issues.append("Name field has leading/trailing whitespace")
+        else:
+            issues.append("Name field not found in YAML front-matter")
         
         return issues
     
-    async def _validate_description_length(self, yaml_section: str) -> List[str]:
-        """Validate description length."""
+    async def _validate_description_format(self, yaml_section: str) -> List[str]:
+        """Validate description format and reject multiline YAML block indicators."""
         issues = []
+        
+        # Check for YAML block indicators first (these make descriptions multiline)
+        if re.search(r'^description:\s*[|>]', yaml_section, re.MULTILINE):
+            issues.append("Description uses YAML block indicators (| or >) which creates multiline format. Should be single line.")
+            return issues
         
         desc_match = self.validation_rules['description_field'].search(yaml_section)
         if desc_match:
             description = desc_match.group(1).strip()
-            if len(description) > 250:
-                issues.append(f"Description too long ({len(description)} chars). Should be under 250.")
+            if len(description) > 300:
+                issues.append(f"Description too long ({len(description)} chars). Should be under 300.")
+            # Check for multiline descriptions (should be single line)
+            if '\n' in description:
+                issues.append("Description should be single line, not multiline")
+            # Check for proper trigger phrases on same line as description key
+            if not any(phrase in description for phrase in ['MUST BE USED', 'Use PROACTIVELY', 'Expert', 'Specializes']):
+                issues.append("Description missing trigger phrase (MUST BE USED, Use PROACTIVELY, Expert, Specializes) on same line as description key")
         
         return issues
     
-    async def _validate_domain_expertise(self, yaml_section: str) -> List[str]:
-        """Validate domain expertise list."""
+    async def _validate_tools_format(self, yaml_section: str) -> List[str]:
+        """Validate tools format and prohibit Task tool."""
         issues = []
         
-        if self.validation_rules['domain_expertise'].search(yaml_section):
-            if not self.validation_rules['domain_items'].search(yaml_section):
-                issues.append("domain_expertise list is empty")
+        tools_match = self.validation_rules['tools_field'].search(yaml_section)
+        if tools_match:
+            tools_value = tools_match.group(1).strip()
+            
+            # Check for YAML list format (should be comma-separated string)
+            if tools_value.startswith('-') or '\n-' in tools_value:
+                issues.append("Tools should be comma-separated string, not YAML list format")
+                return issues
+            
+            # Parse comma-separated tools
+            tools = [tool.strip() for tool in tools_value.split(',') if tool.strip()]
+            
+            # Prohibit Task tool for orchestration boundary protection
+            if any(tool in self.PROHIBITED_TOOLS for tool in tools):
+                prohibited_found = [tool for tool in tools if tool in self.PROHIBITED_TOOLS]
+                issues.append(f"Prohibited tools found: {', '.join(prohibited_found)}. Only Claude can orchestrate agents.")
+            
+            # Validate tool names
+            invalid_tools = [tool for tool in tools if tool not in self.VALID_TOOLS]
+            if invalid_tools:
+                issues.append(f"Invalid tools: {', '.join(invalid_tools)}. Valid tools: {', '.join(self.VALID_TOOLS)}")
         
         return issues
     
-    async def _validate_security_boundaries(self, content: str) -> List[str]:
-        """Validate SYSTEM BOUNDARY protection."""
+    async def _validate_deprecated_fields(self, yaml_section: str) -> List[str]:
+        """Check for deprecated fields not in AGENT_TEMPLATE.md format."""
         issues = []
         
-        if 'SYSTEM BOUNDARY' not in content:
-            issues.append("Missing SYSTEM BOUNDARY protection")
+        deprecated_fields = ['specialization_level:', 'domain_expertise:', 'coordination_protocols:', 
+                            'knowledge_base:', 'escalation_path:']
+        for field in deprecated_fields:
+            if field in yaml_section:
+                issues.append(f"Contains deprecated field: {field} (not in AGENT_TEMPLATE.md format)")
         
-        if 'Task' in content and 'forbidden' not in content.lower():
-            issues.append("Potential Task tool access without proper restrictions")
+        return issues
+    
+    async def _validate_template_sections(self, content: str) -> List[str]:
+        """Validate required sections and orchestration boundary text."""
+        issues = []
+        
+        # Check for required sections
+        required_sections = ['## Identity', '## Core Capabilities', '## When to Engage', 
+                           '## When NOT to Engage', '## Coordination', '## SYSTEM BOUNDARY']
+        for section in required_sections:
+            if section not in content:
+                issues.append(f"Missing required section: {section}")
+        
+        # Check for SYSTEM BOUNDARY protection - validate orchestration boundary text
+        boundary_patterns = [
+            'Only Claude has orchestration authority',
+            'This agent cannot invoke other agents or create Task calls',
+            'NO Task tool access allowed'
+        ]
+        
+        boundary_found = any(pattern in content for pattern in boundary_patterns)
+        if not boundary_found:
+            issues.append("Missing SYSTEM BOUNDARY protection statement with orchestration boundary text")
+        
+        # Check file length (should be ~46 lines)
+        line_count = len(content.splitlines())
+        if line_count < 40:
+            issues.append(f"File too short ({line_count} lines, expected ~46 per AGENT_TEMPLATE.md)")
+        elif line_count > 60:
+            issues.append(f"File too long ({line_count} lines, expected ~46 per AGENT_TEMPLATE.md)")
         
         return issues
     
@@ -533,8 +641,8 @@ Generated: {time.strftime('%Y-%m-%d %H:%M:%S')}
     reports_dir = project_root / '.tmp' / 'reports'
     reports_dir.mkdir(parents=True, exist_ok=True)
     report_path = reports_dir / 'performance-validation-report.md'
-    async with aiofiles.open(report_path, 'w') as f:
-        await f.write(report_content)
+    with open(report_path, 'w', encoding='utf-8') as f:
+        f.write(report_content)
     
     print(f"\n📊 Performance report saved to: {report_path}")
     

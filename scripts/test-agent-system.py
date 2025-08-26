@@ -9,18 +9,19 @@ import re
 from pathlib import Path
 from collections import defaultdict
 
-# Expected final state - Updated based on actual agent ecosystem
-EXPECTED_AGENTS = 40  # After consolidation and removals
+# Expected final state - Updated based on actual agent ecosystem (AGENT_TEMPLATE.md format)
+EXPECTED_AGENTS = 28  # Production agents following 46-line template
 EXPECTED_CATEGORIES = {
-    'blue': 9,    # Development & Implementation
-    'green': 9,   # Quality & Testing
-    'red': 4,     # Security
-    'purple': 4,  # Design
-    'yellow': 6,  # Analysis & Research
-    'orange': 8,  # Infrastructure & Operations
-    'white': 0,   # No white agents currently
-    'brown': 0,   # No brown agents currently
-    'cyan': 0,    # No cyan agents currently
+    'blue': 7,    # Development (7 agents)
+    'green': 4,   # Quality (4 agents)
+    'red': 1,     # Security (1 agent)
+    'purple': 3,  # Architecture (3 agents)
+    'pink': 3,    # Design (3 agents)
+    'yellow': 3,  # Analysis (3 agents)
+    'orange': 4,  # Infrastructure (4 agents)
+    'cyan': 3,    # Coordination (3 agents)
+    'white': 0,   # Not used (poor visibility)
+    'brown': 0,   # Not used
 }
 
 DEPRECATED_AGENTS = [
@@ -50,9 +51,10 @@ COMMAND_AGENT_MAP = {
 }
 
 def test_agent_count():
-    """Test that we have exactly 26 agents."""
-    agents_dir = Path('/Users/damilola/Documents/Projects/claude-config/.claude/agents')
-    agent_files = [f for f in agents_dir.glob('*.md') if f.name != 'README.md']
+    """Test that we have exactly 28 agents following AGENT_TEMPLATE.md format."""
+    agents_dir = Path('/Users/damilola/Documents/Projects/claude-config/system-configs/.claude/agents')
+    agent_files = [f for f in agents_dir.glob('*.md') 
+                   if f.name not in ['README.md', 'AGENT_TEMPLATE.md', 'AGENT_CATEGORIES.md']]
 
     passed = len(agent_files) == EXPECTED_AGENTS
     print(f"{'✅' if passed else '❌'} Agent count: {len(agent_files)} (expected {EXPECTED_AGENTS})")
@@ -61,8 +63,9 @@ def test_agent_count():
 
 def test_no_deprecated_agents():
     """Test that no deprecated agents exist."""
-    agents_dir = Path('/Users/damilola/Documents/Projects/claude-config/.claude/agents')
-    existing_agents = [f.stem for f in agents_dir.glob('*.md') if f.name != 'README.md']
+    agents_dir = Path('/Users/damilola/Documents/Projects/claude-config/system-configs/.claude/agents')
+    existing_agents = [f.stem for f in agents_dir.glob('*.md') 
+                      if f.name not in ['README.md', 'AGENT_TEMPLATE.md']]
 
     found_deprecated = [agent for agent in DEPRECATED_AGENTS if agent in existing_agents]
 
@@ -75,11 +78,11 @@ def test_no_deprecated_agents():
 
 def test_agent_categories():
     """Test agent color distribution matches expected categories."""
-    agents_dir = Path('/Users/damilola/Documents/Projects/claude-config/.claude/agents')
+    agents_dir = Path('/Users/damilola/Documents/Projects/claude-config/system-configs/.claude/agents')
     color_counts = defaultdict(int)
 
     for agent_file in agents_dir.glob('*.md'):
-        if agent_file.name == 'README.md':
+        if agent_file.name in ['README.md', 'AGENT_TEMPLATE.md']:
             continue
 
         with open(agent_file, 'r') as f:

@@ -19,12 +19,14 @@ import re
 import sys
 from pathlib import Path
 
-# Required fields in YAML front-matter based on actual agent schema
+# Required fields in YAML front-matter based on AGENT_TEMPLATE.md
 REQUIRED_FIELDS = [
     'name',
     'description',
-    'color',
-    'tools'
+    'tools',
+    'model',  # opus/sonnet/haiku
+    'category',  # development/infrastructure/architecture/etc
+    'color'
 ]
 
 # Valid values for specific fields
@@ -33,9 +35,9 @@ VALID_COLORS = ['blue', 'green', 'red', 'purple', 'yellow', 'orange', 'white', '
 # Non-agent documentation files to skip
 NON_AGENT_FILES = [
     'README.md', 'AGENT_CATEGORIES.md', 'AGENT_TEMPLATE.md',
-    'AUDIT_VERIFICATION_PROTOCOL.md', 'AGENT_SELECTION_GUIDE.md',
-    'ENHANCEMENT_SUMMARY.md', 'PARALLEL_EXECUTION_GUIDE.md',
-    'SECURITY_ACCESS_PATTERNS.md', 'TOOL_ACCESS_GUIDE.md',
+    'AUDIT_VERIFICATION_PROTOCOL.md', 'development/AGENT_SELECTION_GUIDE.md',
+    'ENHANCEMENT_SUMMARY.md', 'performance/PARALLEL_EXECUTION_GUIDE.md',
+    'development/SECURITY_ACCESS_PATTERNS.md', 'development/TOOL_ACCESS_GUIDE.md',
     'TOOL_ACCESS_STANDARDIZATION_SUMMARY.md'
 ]
 
@@ -77,7 +79,12 @@ def parse_yaml_structure(yaml_text):
                     if value and value not in VALID_COLORS:
                         issues.append(f"Invalid color '{value}'. Must be one of: {', '.join(VALID_COLORS)}")
 
-                # Remove specialization_level check as it's not required
+                # Check for valid model values
+                if field == 'model':
+                    value = line.split(':', 1)[1].strip()
+                    valid_models = ['opus', 'sonnet', 'haiku']
+                    if value and value not in valid_models:
+                        issues.append(f"Invalid model '{value}'. Must be one of: {', '.join(valid_models)}")
 
         # Tools can be a simple list or have subfields - both are valid
 
@@ -89,13 +96,18 @@ def parse_yaml_structure(yaml_text):
     return fields_found, issues
 
 def validate_agent_file(file_path):
-    """Validate a single agent file."""
+    """Validate a single agent file against AGENT_TEMPLATE.md format."""
     agent_name = Path(file_path).stem
     issues = []
 
     # Skip non-agent files
     if Path(file_path).name in NON_AGENT_FILES:
         return agent_name, []
+    
+    # Read full file content
+    with open(file_path, 'r') as f:
+        full_content = f.read()
+        line_count = len(full_content.splitlines())
 
     # Extract YAML section
     yaml_section = extract_yaml_section(file_path)
@@ -114,17 +126,39 @@ def validate_agent_file(file_path):
         if yaml_name != agent_name:
             issues.append(f"Name mismatch: YAML says '{yaml_name}' but filename is '{agent_name}.md'")
 
-    # Check description length - increased limit to 250 for complex agents
+    # Check description format and length
     desc_match = re.search(r'^description:\s*(.+)$', yaml_section, re.MULTILINE)
     if desc_match:
         description = desc_match.group(1).strip()
-        if len(description) > 250:
-            issues.append(f"Description too long ({len(description)} chars). Should be under 250.")
+        if len(description) > 300:
+            issues.append(f"Description too long ({len(description)} chars). Should be under 300.")
+        # Check for proper trigger phrases as per AGENT_TEMPLATE.md
+        if not any(phrase in description for phrase in ['MUST BE USED', 'Use PROACTIVELY', 'Expert', 'Specializes']):
+            issues.append("Description should include trigger phrase (MUST BE USED, Use PROACTIVELY, Expert, Specializes)")
 
-    # Check for empty lists
-    if re.search(r'domain_expertise:\s*$', yaml_section, re.MULTILINE):
-        if not re.search(r'domain_expertise:.*?\n\s+-', yaml_section, re.DOTALL):
-            issues.append("domain_expertise list is empty")
+    # Check for deprecated fields that should not exist in new format
+    deprecated_fields = ['specialization_level:', 'domain_expertise:', 'coordination_protocols:', 
+                        'knowledge_base:', 'escalation_path:']
+    for field in deprecated_fields:
+        if field in yaml_section:
+            issues.append(f"Contains deprecated field: {field} (not in AGENT_TEMPLATE.md format)")
+    
+    # Check file length (should be ~46 lines as per AGENT_TEMPLATE.md)
+    if line_count < 40:
+        issues.append(f"File too short ({line_count} lines, expected ~46 per AGENT_TEMPLATE.md)")
+    elif line_count > 60:
+        issues.append(f"File too long ({line_count} lines, expected ~46 per AGENT_TEMPLATE.md)")
+    
+    # Check for required markdown sections as per AGENT_TEMPLATE.md
+    required_sections = ['## Identity', '## Core Capabilities', '## When to Engage', 
+                        '## When NOT to Engage', '## Coordination', '## SYSTEM BOUNDARY']
+    for section in required_sections:
+        if section not in full_content:
+            issues.append(f"Missing required section: {section}")
+    
+    # Check for SYSTEM BOUNDARY protection
+    if 'Only Claude has orchestration authority' not in full_content:
+        issues.append("Missing SYSTEM BOUNDARY protection statement")
 
     return agent_name, issues
 

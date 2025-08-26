@@ -9,7 +9,8 @@ echo "🔍 Validating YAML front-matter in agent files..."
 # Function to validate YAML front-matter
 validate_yaml_frontmatter() {
     local file="$1"
-    local temp_file=$(mktemp)
+    local temp_file
+    temp_file=$(mktemp)
 
     # Extract YAML front-matter (between --- markers)
     sed -n '/^---$/,/^---$/p' "$file" | sed '1d;$d' > "$temp_file"

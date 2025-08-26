@@ -131,6 +131,10 @@
     // Symlinked directories (avoid duplicates)
     ".claude/**",
     // Imported output style templates (external formatting standards)
-    "system-configs/.claude/output-styles/**"
+    "system-configs/.claude/output-styles/**",
+    // Core documentation with flexible formatting requirements
+    "README.md",
+    "SECURITY.md",
+    "CODE_OF_CONDUCT.md"
   ]
 }

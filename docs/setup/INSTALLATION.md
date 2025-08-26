@@ -359,7 +359,7 @@ git log --oneline -10
 
 ```bash
 # Use agent template
-cp system-configs/.claude/agents/AGENT_TEMPLATE.md system-configs/.claude/agents/my-specialist.md
+cp docs/agents/AGENT_TEMPLATE.md system-configs/.claude/agents/my-specialist.md
 
 # Edit agent definition
 vim system-configs/.claude/agents/my-specialist.md
@@ -390,8 +390,8 @@ git checkout -b feature/my-enhancement
 
 ### Getting Help
 
-- **Documentation**: [DOCUMENTATION_INDEX.md](./DOCUMENTATION_INDEX.md)
-- **Agent Guide**: [../system-configs/.claude/agents/README.md](../system-configs/.claude/agents/README.md)
+- **Documentation**: [../DOCUMENTATION_INDEX.md](./../DOCUMENTATION_INDEX.md)
+- **Agent Guide**: [../../agents/README.md](../../agents/README.md)
 - **Troubleshooting**: [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
 - **Issues**: [GitHub Issues](https://github.com/damilola-elegbede/claude-config/issues)
 

@@ -20,9 +20,32 @@ jobs:
       with:
         node-version: '18'
         cache: 'npm'
+        registry-url: 'https://registry.npmjs.org'
 
-    - name: Install dependencies
-      run: npm ci
+    - name: Configure npm for retry handling
+      run: |
+        npm config set registry https://registry.npmjs.org/
+        npm config set fetch-retry-mintimeout 20000
+        npm config set fetch-retry-maxtimeout 120000
+        npm config set fetch-retry-factor 2
+        npm config set fetch-retries 5
+        npm config set fetch-timeout 300000
+
+    - name: Install dependencies with retry logic
+      run: |
+        for attempt in {1..5}; do
+          echo "Attempt $attempt to install dependencies..."
+          if npm ci --prefer-offline --no-audit --progress=false; then
+            echo "Dependencies installed successfully on attempt $attempt"
+            break
+          elif [ $attempt -eq 5 ]; then
+            echo "All attempts failed. Exiting with error."
+            exit 1
+          else
+            echo "Attempt $attempt failed. Retrying in $((attempt * 10)) seconds..."
+            sleep $((attempt * 10))
+          fi
+        done
 
     - name: Get changed files
       id: changed-files
