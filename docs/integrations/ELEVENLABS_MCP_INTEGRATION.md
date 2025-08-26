@@ -50,9 +50,57 @@ platform through Model Context Protocol servers. This allows agents to:
 - Active internet connection for voice generation
 - Audio playback capabilities on target system
 
-### Installation Steps
+### Centralized Configuration (Recommended)
 
-#### Method 1: npx Installation (Recommended for Claude Desktop)
+The ElevenLabs MCP server is now configured through the centralized `.mcp.json` file and deployed
+via the `/sync` command. This approach provides consistent configuration management across all
+MCP servers.
+
+#### Setup Steps
+
+1. **Set Environment Variables**:
+
+   ```bash
+   export ELEVENLABS_API_KEY="your_api_key_here"
+   export ELEVENLABS_DEFAULT_VOICE="Rachel"  # Optional
+   ```
+
+2. **Deploy Configuration**:
+
+   ```bash
+   # Use the /sync command to deploy the centralized MCP configuration
+   /sync
+   ```
+
+   This will automatically configure the ElevenLabs MCP server using the settings from
+   `system-configs/.mcp.json`.
+
+3. **Verify Connection**:
+
+   ```bash
+   claude mcp list
+   # Should show: elevenlabs - Connected
+
+   claude mcp test elevenlabs
+   # Should return: "ElevenLabs MCP Server - Ready"
+   ```
+
+#### How It Works
+
+- The centralized `.mcp.json` file is located in `system-configs/.mcp.json`
+- The `/sync` command copies this configuration to `~/.claude/.mcp.json`
+- Claude Code CLI automatically loads MCP servers from this centralized configuration
+- All MCP servers (ElevenLabs, Context7, GitHub, etc.) are managed consistently
+
+### Legacy Configuration (Manual Settings)
+
+**⚠️ DEPRECATED**: The following approach using `~/.claude/settings.json` is legacy and should
+only be used if the centralized configuration is not available.
+
+<details>
+<summary>Click to expand legacy configuration instructions</summary>
+
+#### Method 1: npx Installation (Legacy)
 
 1. **Ensure Node.js is installed**:
 
@@ -86,7 +134,7 @@ platform through Model Context Protocol servers. This allows agents to:
    }
    ```
 
-#### Method 2: Manual Installation (Alternative)
+#### Method 2: Manual Installation (Legacy)
 
 1. **Install the package globally**:
 
@@ -110,15 +158,7 @@ platform through Model Context Protocol servers. This allows agents to:
    }
    ```
 
-3. **Verify Connection**:
-
-   ```bash
-   claude mcp list
-   # Should show: elevenlabs - Connected
-
-   claude mcp test elevenlabs
-   # Should return: "ElevenLabs MCP Server - Ready"
-   ```
+</details>
 
 ### API Key Setup
 
@@ -312,6 +352,74 @@ coding_steps = [
 tutorial_audio = create_interactive_tutorial(coding_steps)
 ```
 
+## Agent Usage Examples
+
+### Parallel Pattern Usage Examples
+
+**content-creator**:
+- Prompt: "Generate marketing podcast intro with energetic tone"
+- MCP Call: `mcp__elevenlabs_generate_speech(text="Welcome to TechTalk!", voice="Josh", stability=0.4)`
+
+**technical-writer**:
+- Prompt: "Create audio version of API documentation section"
+- MCP Call: `mcp__elevenlabs_generate_speech(text=api_docs, voice="Daniel", model="eleven_multilingual_v2")`
+
+**accessibility-auditor**:
+- Prompt: "Generate screen reader compatible audio for image alt-text"
+- MCP Call: `mcp__elevenlabs_generate_speech(text=alt_text, voice="Rachel", stability=0.8)`
+
+**ux-researcher**:
+- Prompt: "Create voice prototype for user testing session"
+- MCP Call: `mcp__elevenlabs_generate_speech(text=prototype_script, voice="Sarah", similarity_boost=0.7)`
+
+### Sequential Pattern Usage Examples
+
+**frontend-engineer** → **test-engineer**:
+- Frontend Prompt: "Implement TTS button component with ElevenLabs integration"
+- Frontend MCP: `mcp__elevenlabs_generate_speech(text=user_input, voice="Adam", model="eleven_monolingual_v1")`
+- Test Prompt: "Validate audio output quality and error handling"
+- Test MCP: `mcp__elevenlabs_validate_audio(audio_file, quality_threshold=0.9)`
+
+**mobile-developer** → **localization-specialist**:
+- Mobile Prompt: "Add voice synthesis to iOS app settings"
+- Mobile MCP: `mcp__elevenlabs_generate_speech(text=settings_text, voice="Bella", format="mp3")`
+- Localization Prompt: "Adapt voice selection for Spanish market"
+- Localization MCP: `mcp__elevenlabs_generate_speech(text=spanish_text, voice="Domi", model="eleven_multilingual_v2")`
+
+### Iterative Pattern Usage Examples
+
+**content-creator** (iterations):
+- Iteration 1: "Create initial podcast intro with professional tone"
+- MCP Call: `mcp__elevenlabs_generate_speech(text=intro_v1, voice="Daniel", stability=0.6)`
+- Iteration 2: "Make it more conversational and engaging"
+- MCP Call: `mcp__elevenlabs_generate_speech(text=intro_v2, voice="Daniel", stability=0.4)`
+- Iteration 3: "Add emphasis on key brand benefits"
+- MCP Call: `mcp__elevenlabs_generate_speech(text=intro_final, voice="Daniel", similarity_boost=0.9)`
+
+**technical-writer** (refinement):
+- Round 1: "Generate tutorial narration for beginners"
+- MCP Call: `mcp__elevenlabs_generate_speech(text=tutorial_basic, voice="Rachel", stability=0.7)`
+- Round 2: "Adjust pacing for complex concepts"
+- MCP Call: `mcp__elevenlabs_generate_speech(text=tutorial_paced, voice="Rachel", add_pauses=true)`
+- Round 3: "Optimize for accessibility compliance"
+- MCP Call: `mcp__elevenlabs_generate_speech(text=tutorial_accessible, voice="Rachel", clarity_boost=true)`
+
+**accessibility-auditor** (compliance validation):
+- Check 1: "Validate audio meets WCAG 2.1 AA standards"
+- MCP Call: `mcp__elevenlabs_validate_accessibility(audio_file, standard="WCAG_2.1_AA")`
+- Check 2: "Test with different playback speeds"
+- MCP Call: `mcp__elevenlabs_generate_speech(text=content, voice="Rachel", speed_variants=[0.8, 1.0, 1.2])`
+- Check 3: "Ensure compatibility with screen readers"
+- MCP Call: `mcp__elevenlabs_test_screen_reader_compatibility(audio_file, reader_types=["NVDA", "JAWS"])`
+
+**ux-researcher** (user testing iterations):
+- Test 1: "Create voice interface prototype for user study"
+- MCP Call: `mcp__elevenlabs_generate_speech(text=ui_prompts, voice="Sarah", emotional_range="neutral")`
+- Test 2: "Adjust voice personality based on user feedback"
+- MCP Call: `mcp__elevenlabs_generate_speech(text=ui_prompts, voice="Sarah", personality="friendly")`
+- Test 3: "Optimize for different user demographics"
+- MCP Call: `mcp__elevenlabs_generate_speech(text=ui_prompts, voice_variants=["Sarah", "Josh", "Bella"])`
+
 ## Integration Workflow
 
 ### Typical Development Flow
@@ -470,7 +578,7 @@ def generate_with_retry(text, max_retries=3):
 
 - Restart MCP server process
 - Verify Python/Node.js version compatibility
-- Check Claude settings.json syntax and configuration
+- Check MCP configuration syntax in `.mcp.json`
 - Review server logs for detailed error messages
 
 ```bash

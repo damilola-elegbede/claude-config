@@ -59,7 +59,9 @@ fi
 echo "Test 5: Script runs with test API key"
 export ELEVENLABS_API_KEY="test_key_for_validation_$(date +%s)"
 # Since we don't want to test actual API calls, we just check it doesn't crash immediately
-if timeout 5s "$VALIDATION_SCRIPT" > /dev/null 2>&1 || [[ $? -eq 124 ]] || [[ $? -eq 1 ]]; then
+timeout 5s "$VALIDATION_SCRIPT" > /dev/null 2>&1
+exit_code=$?
+if [[ $exit_code -eq 0 ]] || [[ $exit_code -eq 124 ]] || [[ $exit_code -eq 1 ]]; then
     echo "✓ PASS: Script runs with API key (may fail on MCP test, which is expected)"
 else
     echo "✗ FAIL: Script crashes with API key"

@@ -166,9 +166,9 @@ docs/
 | Quality | 3 | Quality assurance and validation |
 | Architecture | 2 | System architecture and design |
 | Agents | 3 | Agent templates and categories |
-| API | 4+ | API documentation and references |
+| API | 5 | API documentation and references |
 | Guides | 7 | Various guides and tutorials |
-| Integrations | 2 | External system integrations |
+| Integrations | 3 | External system integrations |
 | Platform | 1 | Platform engineering |
 | Specs | 1 | Technical specifications |
 

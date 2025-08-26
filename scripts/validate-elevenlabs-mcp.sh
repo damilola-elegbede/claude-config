@@ -103,16 +103,26 @@ validate_config_structure() {
         fi
     done
     
-    # Check command is npx
+    # Check command is npx or uvx
     local command=$(python3 -c "import json; data=json.load(open('$config')); print(data['mcpServers']['elevenlabs']['command'])" 2>/dev/null)
-    if [[ "$command" != "npx" ]]; then
-        log_error "Configuration: Command should be 'npx', found '$command'"
+    if [[ "$command" != "npx" && "$command" != "uvx" ]]; then
+        log_error "Configuration: Command should be 'npx' or 'uvx', found '$command'"
         return 1
     fi
     
-    # Check args contains elevenlabs-streaming-mcp-server
-    if ! python3 -c "import json; data=json.load(open('$config')); assert 'elevenlabs-streaming-mcp-server' in data['mcpServers']['elevenlabs']['args']" 2>/dev/null; then
-        log_error "Configuration: Args should contain 'elevenlabs-streaming-mcp-server'"
+    # Check args contains either elevenlabs-streaming-mcp-server or elevenlabs-mcp
+    local args_check=$(python3 -c "
+import json
+data = json.load(open('$config'))
+args = data['mcpServers']['elevenlabs']['args']
+args_str = ' '.join(args) if isinstance(args, list) else str(args)
+has_streaming = 'elevenlabs-streaming-mcp-server' in args_str
+has_mcp = 'elevenlabs-mcp' in args_str
+print('true' if has_streaming or has_mcp else 'false')
+" 2>/dev/null)
+    
+    if [[ "$args_check" != "true" ]]; then
+        log_error "Configuration: Args should contain either 'elevenlabs-streaming-mcp-server' or 'elevenlabs-mcp'"
         return 1
     fi
     
@@ -130,14 +140,27 @@ validate_config_structure() {
 test_mcp_startup() {
     log_info "Testing MCP server startup (dry run)..."
     
-    # For npx packages, we just need to verify npx is available
+    # Check which command is configured
+    local configured_command=$(python3 -c "import json; data=json.load(open('$CONFIG_FILE')); print(data['mcpServers']['elevenlabs']['command'])" 2>/dev/null)
+    
+    # For npx packages, we just need to verify the configured command is available
     # The package will be downloaded automatically when Claude Desktop starts
-    if command_exists npx; then
-        log_success "MCP server: npx available, package will be downloaded on first use"
-        log_info "Note: elevenlabs-streaming-mcp-server will be installed automatically by Claude Desktop"
+    if command_exists "$configured_command"; then
+        log_success "MCP server: $configured_command available, package will be downloaded on first use"
+        
+        if [[ "$configured_command" == "npx" ]]; then
+            log_info "Note: ElevenLabs MCP package will be installed automatically by Claude Desktop"
+        elif [[ "$configured_command" == "uvx" ]]; then
+            log_info "Note: ElevenLabs MCP package will be managed by uvx (Python-based tool runner)"
+        fi
         return 0
     else
-        log_error "MCP server: npx not available, required for running the server"
+        log_error "MCP server: $configured_command not available, required for running the server"
+        if [[ "$configured_command" == "npx" ]]; then
+            log_info "Install with: brew install node"
+        elif [[ "$configured_command" == "uvx" ]]; then
+            log_info "Install with: pip install uv"
+        fi
         return 1
     fi
 }
@@ -156,8 +179,10 @@ main() {
         log_error "Python 3 not found in PATH"
     fi
     
-    # 2. Check npx availability
-    log_info "Checking npx availability..."
+    # 2. Check package manager availability (npx/uvx)
+    log_info "Checking package manager availability..."
+    
+    # Check npx
     if command_exists npx; then
         local npx_path=$(which npx)
         log_success "npx available at: $npx_path"
@@ -166,8 +191,26 @@ main() {
         local node_version=$(node --version 2>/dev/null || echo "unknown")
         log_success "Node.js version: $node_version"
     else
-        log_error "npx not found in PATH"
+        log_warning "npx not found in PATH"
         log_info "Install with: brew install node"
+    fi
+    
+    # Check uvx
+    if command_exists uvx; then
+        local uvx_path=$(which uvx)
+        log_success "uvx available at: $uvx_path"
+        
+        # Check uv version
+        local uv_version=$(uv --version 2>/dev/null || echo "unknown")
+        log_success "uv version: $uv_version"
+    else
+        log_warning "uvx not found in PATH"
+        log_info "Install with: pip install uv"
+    fi
+    
+    # At least one package manager should be available
+    if ! command_exists npx && ! command_exists uvx; then
+        log_error "Neither npx nor uvx found - at least one is required"
     fi
     
     # 3. Check ELEVENLABS_API_KEY environment variable
@@ -241,10 +284,11 @@ main() {
         echo -e "${RED}✗ ElevenLabs MCP validation failed with $failed_checks error(s)${NC}"
         echo
         echo "Common fixes:"
-        echo "1. Install Node.js: brew install node"
+        echo "1. Install package manager: brew install node (for npx) or pip install uv (for uvx)"
         echo "2. Set API key: export ELEVENLABS_API_KEY=your_api_key_here"
         echo "3. Verify configuration files are present and valid JSON"
-        echo "4. Run script again after addressing issues"
+        echo "4. Ensure command is 'npx' or 'uvx' and args contain ElevenLabs MCP package name"
+        echo "5. Run script again after addressing issues"
         exit 1
     fi
 }
