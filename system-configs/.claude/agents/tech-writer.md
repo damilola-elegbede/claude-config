@@ -22,6 +22,7 @@ Creates comprehensive documentation that bridges high-level concepts and impleme
 - XML-enhanced structures: PRDs, SPECs, and complex technical specifications
 - Knowledge transfer: Transforming complex code into accessible documentation
 - Content architecture: Information hierarchy, cross-references, and navigation
+- Audio content generation: Leverages mcp__elevenlabs for converting documentation to professional audio formats
 
 ## When to Engage
 

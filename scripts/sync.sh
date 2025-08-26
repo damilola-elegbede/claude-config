@@ -75,6 +75,12 @@ sync_files() {
             print_success "Synced settings.json"
         fi
         
+        # Sync .mcp.json from repo root
+        if [ -f "$REPO_DIR/.mcp.json" ]; then
+            cp "$REPO_DIR/.mcp.json" "$HOME/"
+            print_success "Synced .mcp.json to home directory"
+        fi
+        
         # Sync other configuration files (excluding output-styles)
         find "$SOURCE_DIR/.claude" -maxdepth 1 -type f -name "*.sh" -exec cp {} "$TARGET_DIR/" \; 2>/dev/null || true
     fi
@@ -85,7 +91,7 @@ validate_sync() {
     echo "Validating sync..."
     
     # Check critical files
-    if [ -f "$TARGET_DIR/CLAUDE.md" ] && [ -f "$TARGET_DIR/settings.json" ]; then
+    if [ -f "$TARGET_DIR/CLAUDE.md" ] && [ -f "$TARGET_DIR/settings.json" ] && [ -f "$HOME/.mcp.json" ]; then
         print_success "Critical files synced successfully"
     else
         print_error "Some critical files missing"

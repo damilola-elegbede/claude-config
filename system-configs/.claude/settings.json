@@ -49,42 +49,5 @@
         ]
       }
     ]
-  },
-  "mcpServers": {
-    "filesystem": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "$HOME/Documents"
-      ]
-    },
-    "github": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-github"
-      ],
-      "env": {
-        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
-      }
-    },
-    "shadcn-ui": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "shadcn-ui-mcp-server"
-      ]
-    },
-    "context7": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@upstash/context7-mcp"
-      ],
-      "env": {
-        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
-      }
-    }
   }
 }
