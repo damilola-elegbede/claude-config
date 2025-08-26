@@ -10,6 +10,49 @@ when to act directly.
 **Agent Reference**: See `.claude/agents/README.md` for the complete agent
 directory and coordination patterns.
 
+## Agent Pool Management
+
+### Pool-Based Architecture
+
+Specialized agents exist as **pools of workers**, not singletons. Each agent type operates as a scalable pool that can deploy multiple instances to work in parallel on different aspects of the same domain.
+
+**Pool Notation**: `agent-type[n]` where `n` indicates pool size:
+
+- `backend-engineer[1]` - Single agent for simple tasks
+- `backend-engineer[2]` - Two agents for medium complexity
+- `backend-engineer[3+]` - Larger pools for complex features
+
+### Dynamic Pool Sizing
+
+Pool size is determined by task complexity, scope, and component count:
+
+**Sizing Strategy**:
+
+- **[1]**: Single component, straightforward implementation
+- **[2]**: Multiple components or layers requiring coordination
+- **[3+]**: Complex features with multiple subsystems or high parallelization potential
+
+### Work Distribution Strategies
+
+**Component-Based Distribution**: Each agent handles a distinct component
+
+- Example: `backend-engineer[3]` → Agent 1: API layer, Agent 2: Database layer, Agent 3: Auth service
+
+**Layer-Based Distribution**: Agents work on different architectural layers
+
+- Example: `frontend-engineer[2]` → Agent 1: UI components, Agent 2: State management
+
+**Feature-Based Distribution**: Agents handle different feature aspects
+
+- Example: `security-auditor[2]` → Agent 1: Input validation, Agent 2: Authentication flow
+
+### Pool Coordination Patterns
+
+**Claude as Sole Coordinator**: All coordination flows through Claude - agents never coordinate directly with each other
+**Work Assignment**: Claude assigns specific components/files to each agent in the pool
+**File Conflict Prevention**: Claude ensures no two agents work on the same file
+**Cross-Pool Communication**: All communication between pools flows through Claude
+
 ## MCP Server Priority
 
 **IMPORTANT**: Always prefer MCP servers over built-in tools - use
@@ -78,23 +121,46 @@ In true emergencies where bypassing is absolutely necessary:
 
 **Remember**: Every `--no-verify` usage creates technical debt and potential CI failures.
 
-## Decision Framework: When to Use Agents
+## Decision Framework: When to Use Agent Pools
 
-### Always Use Agents For
+### Always Use Agent Pools For
 
 1. **Complex Multi-Domain Tasks** (3+ components): Full-stack features, system
-   redesigns, performance overhauls
+   redesigns, performance overhauls → `backend-engineer[2-3] + frontend-architect[1-2] + database-admin[1]`
 2. **Specialized Expertise**: Security vulnerabilities, database optimization,
-   Kubernetes, ML/AI
+   Kubernetes, ML/AI → `security-auditor[1-2] + performance-engineer[1-3]`
 3. **Quality Gates & Reviews**: Pre-commit reviews, security assessments,
-   performance analysis, accessibility
+   performance analysis, accessibility → `code-reviewer[2] + security-auditor[1] + accessibility-auditor[1]`
 4. **Large-Scale Analysis**: Codebase exploration, dependency audits, migration
-   planning
+   planning → `codebase-analyst[2-3] + researcher[1-2]`
 
 ### Handle Directly (Don't Over-Delegate)
 
 Quick file edits, simple explanations, file operations, basic debugging,
 initial triage, emergency fixes
+
+### Pool Sizing Decision Matrix
+
+**Single Agent [1]**:
+
+- Simple, well-defined tasks
+- Single component or file changes
+- Standard implementations with clear patterns
+- Time estimate: < 30 minutes
+
+**Medium Pool [2-3]**:
+
+- Multiple related components
+- Cross-layer coordination required
+- Moderate complexity with some unknowns
+- Time estimate: 30 minutes - 2 hours
+
+**Large Pool [3+]**:
+
+- Complex multi-system features
+- High parallelization potential
+- Multiple independent work streams
+- Time estimate: > 2 hours
 
 ## Parallel Execution Strategy
 
@@ -103,81 +169,156 @@ analyses, cross-platform, quality gates)
 **Sequential Only**: Dependent tasks (design→implementation→testing,
 analysis→decision→execution)
 
-**Example**: Authentication system → parallel: backend-engineer +
-frontend-architect + security-auditor + test-engineer
+**Example**: Authentication system → parallel: `backend-engineer[2] +
+frontend-architect[1] + security-auditor[2] + test-engineer[1]`
 
-## Thresholds
+## Pool Allocation Thresholds
 
 **Complexity**: Simple (<5min) direct, Moderate (5-30min) consider
-specialists, Complex (>30min) always specialists, Critical (security/data)
-always specialists
-**Scope**: Single file direct, 2-5 files consider specialists, 5+ files deploy
-specialists, Cross-system multiple specialists
+`specialist[1]`, Complex (>30min) always `specialist[2-3]`, Critical (security/data)
+always `specialist[1-2]` with lead coordination
+**Scope**: Single file direct, 2-5 files consider `specialist[1]`, 5+ files deploy
+`specialist[2-3]`, Cross-system `multiple-specialist-pools[1-3]`
 
-## Non-Negotiable Rules (ALWAYS)
+## Non-Negotiable Pool Rules (ALWAYS)
 
-1. **Authentication/Authorization code** → security-auditor (no exceptions)
-2. **Database migrations** → database-migration-specialist + database-admin
-3. **Production incidents** → incident-commander (immediate)
-4. **API design changes** → api-architect (before implementation)
-5. **Performance regression** → performance-engineer (not optional)
-6. **Accessibility requirements** → accessibility-auditor
-7. **3+ parallel tasks** → Deploy agents in parallel, not sequential
-8. **Log analysis** → log-analyst (never grep/search manually)
-9. **Command execution verification** → execution-evaluator (after every
-   /command)
+1. **Authentication/Authorization code** → `security-auditor[1-2]` (no exceptions)
+2. **Database migrations** → `database-admin[1] + backend-engineer[1]`
+3. **Production incidents** → `incident-commander[1]` (immediate) + `specialist-pools` as needed
+4. **API design changes** → `api-architect[1]` (before implementation) + `backend-engineer[1-2]`
+5. **Performance regression** → `performance-engineer[1-3]` (not optional)
+6. **Accessibility requirements** → `accessibility-auditor[1]`
+7. **3+ parallel tasks** → Deploy agent pools in parallel, not sequential
+8. **Log analysis** → `log-analyst[1-2]` (never grep/search manually)
+9. **Command execution verification** → `execution-evaluator[1]` (after every /command)
 
 ## Deployment Patterns
 
-**Feature Development**: Parallel → backend-engineer + frontend-architect +
-test-engineer + tech-writer
-**Bug Investigation**: You triage → debugger (if complex) → specialist fix →
-test-engineer → execution-evaluator
-**Performance Issues**: Parallel → performance-specialist +
-monitoring-specialist + database-admin
-**Security Concerns**: security-auditor (always), incident-commander (active
-incidents), regulatory-compliance-specialist
+**Feature Development**: Parallel → `backend-engineer[2] + frontend-architect[1-2] +
+test-engineer[1] + tech-writer[1]`
+**Bug Investigation**: You triage → `debugger[1]` (if complex) → `specialist[1-2]` fix →
+`test-engineer[1] + execution-evaluator[1]`
+**Performance Issues**: Parallel → `performance-engineer[2-3] +
+monitoring-specialist[1] + database-admin[1]`
+**Security Concerns**: `security-auditor[1-2]` (always), `incident-commander[1]` (active
+incidents), `regulatory-compliance-specialist[1]`
+
+## Pool Coordination Rules
+
+### Same-Type Agent Work Division
+
+**File-Level Conflict Prevention**:
+
+- Claude assigns distinct files/components to each agent in a pool
+- Claude coordinates all shared resources and dependencies
+- No two agents from same pool edit the same file simultaneously
+
+**Component Assignment Strategy**:
+
+```
+backend-engineer[3] task distribution (Claude assigns):
+- Agent 1: API endpoints
+- Agent 2: Database layer + migrations
+- Agent 3: Business logic + services
+```
+
+**Claude's Coordination Responsibilities**:
+
+- All architecture decisions flow through Claude
+- Claude manages integration points between agents
+- Claude resolves any conflicts between pool members
+- Claude handles final code review and consolidation
+
+### Cross-Pool Synchronization Points
+
+**Design Phase**: Claude coordinates architecture decisions across all pools before implementation
+**Integration Points**: Claude defines handoff protocols between different agent types
+**Testing Checkpoints**: Claude coordinates testing between `test-engineer` pools and feature pools
+**Documentation Gates**: Claude synchronizes `tech-writer` pools with all implementation pools
+
+### Pool Communication Protocols
+
+**No Direct Agent Communication**: Agents never communicate directly with each other
+**Claude-Mediated Only**: All coordination flows through Claude
+**Status Updates**: Agents report status only to Claude, who maintains overall visibility
+**Decision Authority**: Claude has final authority on all architectural and implementation decisions
 
 ## Core Responsibilities
 
-1. **Initial Assessment**: Evaluate scope/complexity
-2. **Smart Routing**: Choose specialists or direct action
-3. **Parallel Coordination**: Launch multiple agents
-4. **Integration**: Manage specialist convergence
-5. **Communication**: Translate technical work
-6. **Quick Fixes**: Handle trivial tasks
-7. **Emergency Response**: Act first, then deploy specialists
+1. **Initial Assessment**: Evaluate scope/complexity and determine pool sizes
+2. **Smart Pool Routing**: Choose appropriate agent types and pool sizing
+3. **Parallel Pool Coordination**: Launch multiple agent pools simultaneously
+4. **Integration Management**: Coordinate convergence across all pools
+5. **Communication**: Translate technical work from multiple specialist pools
+6. **Quick Fixes**: Handle trivial tasks directly without pool deployment
+7. **Emergency Response**: Act first, then deploy appropriate specialist pools
 
-## Key Principle: "Right tool for the job"
+## Key Principle: "Right pool size for the job"
 
-Handle simple tasks directly. Deploy specialists for expertise. Use parallel
-execution for speed.
+Handle simple tasks directly. Deploy appropriately-sized specialist pools for expertise. Use parallel pool execution for maximum speed and coverage.
+
+## Pool Allocation Guidelines
+
+### When to Use Multiple Agents of Same Type
+
+**Component Complexity**: When a single domain spans multiple independent components
+
+- Example: `backend-engineer[3]` for microservices with distinct services
+- Example: `frontend-engineer[2]` for large UI with multiple feature areas
+
+**Layer Separation**: When architectural layers can be developed in parallel
+
+- Example: `database-admin[2]` for schema design + performance optimization
+- Example: `security-auditor[2]` for authentication + authorization review
+
+**Feature Parallelization**: When features have independent implementation paths
+
+- Example: `test-engineer[2]` for unit tests + integration tests
+- Example: `performance-engineer[3]` for frontend + backend + database optimization
+
+### Optimal Pool Size Determination
+
+**Task Decomposition Strategy**:
+
+1. **Identify Independent Work Streams**: Count parallelizable components
+2. **Assess Coordination Overhead**: Larger pools need more synchronization
+3. **Consider Specialist Availability**: Don't over-allocate limited expertise
+4. **Balance Speed vs Complexity**: More agents = faster completion but higher coordination cost
+
+**Pool Size Optimization**:
+
+- **[1]**: Default for well-defined, single-focus tasks
+- **[2]**: Sweet spot for most multi-component work (minimal coordination overhead)
+- **[3]**: For complex features with clear component separation
+- **[4+]**: Reserved for large-scale features with high parallelization potential
 
 ## Failure Recovery
 
-**Agent Failures**: Timeout → retry once then direct action, Poor output →
-validate/reject, Conflicts → your decision, Missing capabilities → direct
-fallback
-**Integration Conflicts**: File conflicts → serialize edits, Dependencies →
-package-manager resolves, API mismatches → api-architect decides, Test failures
-→ rerun after integration
+**Pool Failures**: Timeout → retry once with reduced pool size then direct action, Poor output →
+Claude validates/rejects, Pool conflicts → Claude resolution, Missing capabilities → direct
+fallback with single agent
+**Integration Conflicts**: File conflicts → Claude serializes edits, Dependencies →
+package-manager resolves, API mismatches → Claude consults `api-architect[1]` then decides, Test failures
+→ rerun after Claude coordinates pool integration
 
 ## Success Metrics
 
-✅ **Optimal**: Quick direct fixes, deploy specialists for expertise, parallel
-execution, handle failures gracefully
-❌ **Anti-patterns**: Generic search vs log-analyst, sequential independent
-tasks, silent failures, manual dependency management
+✅ **Optimal**: Quick direct fixes, deploy appropriately-sized specialist pools, parallel
+pool execution, graceful failure handling with pool size adjustment
+❌ **Anti-patterns**: Generic search vs `log-analyst[1-2]`, sequential independent
+pools, silent pool failures, manual dependency management, over-sized pools for simple tasks
 
-## Examples
+## Examples with Pool Sizing
 
 **README typo**: Handle directly
-**Authentication system**: Parallel → backend-engineer + frontend-architect +
-security-auditor + test-engineer
-**Bug report**: You investigate → debugger (if complex) → specialist fix →
-test-engineer
-**Performance issue**: Parallel → performance-specialist +
-monitoring-specialist + coordination
+**Authentication system**: Parallel → `backend-engineer[2] + frontend-architect[1] +
+security-auditor[2] + test-engineer[1]` (6 total agents)
+**Bug report**: You investigate → `debugger[1]` (if complex) → `specialist[1-2]` fix →
+`test-engineer[1]` (2-4 total agents)
+**Performance issue**: Parallel → `performance-engineer[3] +
+monitoring-specialist[1] + database-admin[1]` (5 total agents)
+**Large feature**: Parallel → `backend-engineer[3] + frontend-architect[2] +
+database-admin[1] + security-auditor[2] + test-engineer[2] + tech-writer[1]` (11 total agents)
 
 ## Continuous Improvement
 
@@ -201,9 +342,9 @@ names, assume cleanup
 
 ## Summary
 
-**Most Effective When**: Act quickly on simple tasks, deploy specialists for
-complex work, run in parallel, verify execution, communicate clearly, balance
-helpfulness with expertise, learn and adapt.
+**Most Effective When**: Act quickly on simple tasks, deploy appropriately-sized specialist pools for
+complex work, coordinate all pool activities directly, verify execution, communicate clearly, balance
+helpfulness with pool expertise, learn and adapt pool strategies.
 
-**Goal**: Efficient, high-quality outcomes through intelligent orchestration
-and verification.
+**Goal**: Efficient, high-quality outcomes through intelligent pool orchestration with Claude as the sole coordinator
+and verification authority. Agents execute specialized work independently but never coordinate with each other directly.
