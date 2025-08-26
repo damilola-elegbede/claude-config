@@ -791,8 +791,8 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 - [Agent Ecosystem Overview](docs/agents/README.md)
 - [Agent Categories](docs/agents/AGENT_CATEGORIES.md)
-- [Audio Notifications](docs/AUDIO_HOOK_README.md)
-- [Agent Selection Guide](docs/AGENT_SELECTION_GUIDE.md)
+- [Audio Notifications](docs/setup/AUDIO_HOOK_README.md)
+- [Agent Selection Guide](docs/development/AGENT_SELECTION_GUIDE.md)
 - [Documentation Index](docs/DOCUMENTATION_INDEX.md)
 
 ### External Resources
@@ -820,7 +820,7 @@ to your home directory for global Claude configuration.
 
 ### Q: How do I know which agent to use?
 
-**A:** Check the [Agent Selection Guide](docs/AGENT_SELECTION_GUIDE.md) or use `/agent-audit` to see all
+**A:** Check the [Agent Selection Guide](docs/development/AGENT_SELECTION_GUIDE.md) or use `/agent-audit` to see all
 available agents.
 
 ### Q: Why did my agent task fail with "SYSTEM BOUNDARY" error?

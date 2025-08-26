@@ -390,8 +390,8 @@ git checkout -b feature/my-enhancement
 
 ### Getting Help
 
-- **Documentation**: [DOCUMENTATION_INDEX.md](./DOCUMENTATION_INDEX.md)
-- **Agent Guide**: [../docs/agents/README.md](../docs/agents/README.md)
+- **Documentation**: [../DOCUMENTATION_INDEX.md](./../DOCUMENTATION_INDEX.md)
+- **Agent Guide**: [../../agents/README.md](../../agents/README.md)
 - **Troubleshooting**: [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
 - **Issues**: [GitHub Issues](https://github.com/damilola-elegbede/claude-config/issues)
 

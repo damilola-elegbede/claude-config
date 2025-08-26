@@ -24,6 +24,7 @@ prediction accuracy.
       ```text
       Identifies CPU, memory, I/O, and network bottlenecks 15-30 minutes
       before occurrence
+
 ```javascript
 
     </function>

@@ -19,7 +19,7 @@ to generate structured reports with "Prompts for AI Agents" sections.
 
 **Multi-Layer Analysis:**
 
-1. **Pre-Commit Checklist**: Automatically runs CodeRabbit checklist (see `docs/CODERABBIT_PRECOMMIT_CHECKLIST.md`)
+1. **Pre-Commit Checklist**: Automatically runs CodeRabbit checklist (see `docs/quality/CODERABBIT_PRECOMMIT_CHECKLIST.md`)
 2. **Tool Pipeline**: Runs available linters (ESLint, Semgrep, Gitleaks, etc.) in parallel
 3. **AI Synthesis**: Processes tool outputs with contextual reasoning
 4. **Structured Report**: CodeRabbit-style output with "Prompts for AI Agents"
@@ -280,9 +280,9 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 }
 
 # CodeRabbit Pre-Commit Self-Review Checklist
-# See docs/CODERABBIT_PRECOMMIT_CHECKLIST.md for full details
+# See docs/quality/CODERABBIT_PRECOMMIT_CHECKLIST.md for full details
 run_coderabbit_checklist() {
-  echo "📋 Running Pre-Commit Checklist (docs/CODERABBIT_PRECOMMIT_CHECKLIST.md)"
+  echo "📋 Running Pre-Commit Checklist (docs/quality/CODERABBIT_PRECOMMIT_CHECKLIST.md)"
   echo "======================================================================="
 
   local issues_found=0
@@ -502,7 +502,7 @@ run_coderabbit_checklist() {
 ```bash
 User: /review
 Claude: 🤖 CodeRabbit-style AI review...
-📋 Running Pre-Commit Checklist (docs/CODERABBIT_PRECOMMIT_CHECKLIST.md)
+📋 Running Pre-Commit Checklist (docs/quality/CODERABBIT_PRECOMMIT_CHECKLIST.md)
   ✅ Documentation consistency verified
   ✅ YAML quality validated
   ✅ Agent compliance checked (28 agents)
@@ -556,7 +556,7 @@ Claude: 🔒 Security-focused analysis...
 - **"Prompts for AI Agents"**: Actionable remediation instructions for automation
 - **Auto-Fix Capability**: Applies safe fixes and commits them automatically
 
-**Checklist Coverage** (see `docs/CODERABBIT_PRECOMMIT_CHECKLIST.md`):
+**Checklist Coverage** (see `docs/quality/CODERABBIT_PRECOMMIT_CHECKLIST.md`):
 
 - Documentation consistency and cross-references
 - YAML/configuration quality and compliance

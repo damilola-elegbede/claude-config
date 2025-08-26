@@ -241,9 +241,9 @@ class ParallelCapabilityScanner:
     # Non-agent files to skip
     SKIP_FILES = {
         'README.md', 'AGENT_CATEGORIES.md', 'AGENT_TEMPLATE.md',
-        'AUDIT_VERIFICATION_PROTOCOL.md', 'AGENT_SELECTION_GUIDE.md',
-        'ENHANCEMENT_SUMMARY.md', 'PARALLEL_EXECUTION_GUIDE.md',
-        'SECURITY_ACCESS_PATTERNS.md', 'TOOL_ACCESS_GUIDE.md',
+        'AUDIT_VERIFICATION_PROTOCOL.md', 'development/AGENT_SELECTION_GUIDE.md',
+        'ENHANCEMENT_SUMMARY.md', 'performance/PARALLEL_EXECUTION_GUIDE.md',
+        'development/SECURITY_ACCESS_PATTERNS.md', 'development/TOOL_ACCESS_GUIDE.md',
         'TOOL_ACCESS_STANDARDIZATION_SUMMARY.md'
     }
     
