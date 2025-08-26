@@ -15,7 +15,7 @@ name: agent-name  # lowercase-hyphenated
 description: MUST BE USED for [specific trigger]. Specializes in [core capability].
 tools: Read, Write, Edit, Grep, Glob, Bash  # Only include what's needed
 model: sonnet  # opus/sonnet/haiku - see guide above
-category: development  # development/infrastructure/architecture/quality/security/operations
+category: development  # See docs/agents/AGENT_CATEGORIES.md for the canonical list
 ---
 
 # [Agent Name]

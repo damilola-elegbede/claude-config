@@ -107,7 +107,7 @@ Required order:
 3. tools
 4. model
 5. category
-6. color (optional but recommended)
+6. color (required)
 
 ### 4. Validation
 

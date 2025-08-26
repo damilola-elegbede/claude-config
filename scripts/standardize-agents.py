@@ -79,8 +79,8 @@ PRODUCTION_AGENTS = {
         'description': 'MUST BE USED for investigating complex intermittent bugs, race conditions, and production-only failures. Use PROACTIVELY for distributed system failures, timing-dependent bugs, and concurrency issues requiring forensic analysis.',
         'tools': 'Read, Grep, Bash, Glob',
         'model': 'sonnet',
-        'category': 'quality',
-        'color': 'green'
+        'category': 'infrastructure',
+        'color': 'orange'
     },
     'security-auditor': {
         'description': 'MUST BE USED for OWASP Top 10 checks, threat modeling, and vulnerability detection. Use PROACTIVELY for security audits, vulnerability assessments, compliance reviews, and threat detection.',
@@ -169,8 +169,8 @@ PRODUCTION_AGENTS = {
         'description': 'Strategic product guidance and feature prioritization specialist. Aligns technical development with business objectives.',
         'tools': 'Read, Write',
         'model': 'sonnet',
-        'category': 'analysis',
-        'color': 'yellow'
+        'category': 'coordination',
+        'color': 'cyan'
     },
     
     # Infrastructure & Operations
@@ -207,16 +207,16 @@ PRODUCTION_AGENTS = {
     'tech-writer': {
         'description': 'Use PROACTIVELY for documentation, READMEs, API docs, and work summaries. MUST BE USED after completing multi-step tasks (3+ operations) or multi-file changes (5+ files).',
         'tools': 'Read, Write',
-        'model': 'haiku',
-        'category': 'documentation',
-        'color': 'white'
+        'model': 'sonnet',
+        'category': 'coordination',
+        'color': 'cyan'
     },
     'project-orchestrator': {
         'description': 'Use PROACTIVELY for multi-agent strategy planning. MUST BE USED for parallel execution analysis, resource optimization, workflow coordination, and team efficiency recommendations.',
         'tools': 'Read, Write',
-        'model': 'sonnet',
+        'model': 'opus',
         'category': 'coordination',
-        'color': 'white'
+        'color': 'cyan'
     },
     'accessibility-auditor': {
         'description': 'MUST BE USED for WCAG compliance audits and accessibility violations remediation. Use PROACTIVELY for inclusive design validation, screen reader testing, keyboard navigation, and color contrast issues.',

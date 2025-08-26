@@ -173,6 +173,9 @@ class AsyncAgentValidator:
     
     # Valid values for specific fields
     VALID_COLORS = ['blue', 'green', 'red', 'purple', 'yellow', 'orange', 'white', 'brown', 'cyan', 'pink']
+    VALID_CATEGORIES = ['development', 'infrastructure', 'architecture', 'quality', 'security', 
+                       'design', 'analysis', 'documentation', 'coordination']
+    VALID_MODELS = ['opus', 'sonnet', 'haiku']
     
     # Non-agent documentation files to skip
     NON_AGENT_FILES = {
@@ -322,18 +325,15 @@ class AsyncAgentValidator:
         model_match = self.validation_rules['model_field'].search(yaml_section)
         if model_match:
             model_value = model_match.group(1).strip()
-            valid_models = ['opus', 'sonnet', 'haiku']
-            if model_value and model_value not in valid_models:
-                issues.append(f"Invalid model '{model_value}'. Must be one of: {', '.join(valid_models)}")
+            if model_value and model_value not in self.VALID_MODELS:
+                issues.append(f"Invalid model '{model_value}'. Must be one of: {', '.join(self.VALID_MODELS)}")
         
         # Validate category field
         category_match = self.validation_rules['category_field'].search(yaml_section)
         if category_match:
             category_value = category_match.group(1).strip()
-            valid_categories = ['development', 'infrastructure', 'architecture', 'quality', 'security', 
-                              'operations', 'design', 'analysis', 'documentation', 'coordination']
-            if category_value and category_value not in valid_categories:
-                issues.append(f"Invalid category '{category_value}'. Must be one of: {', '.join(valid_categories)}")
+            if category_value and category_value not in self.VALID_CATEGORIES:
+                issues.append(f"Invalid category '{category_value}'. Must be one of: {', '.join(self.VALID_CATEGORIES)}")
         
         return issues
     
@@ -358,6 +358,9 @@ class AsyncAgentValidator:
             description = desc_match.group(1).strip()
             if len(description) > 300:
                 issues.append(f"Description too long ({len(description)} chars). Should be under 300.")
+            # Check for multiline descriptions (should be single line)
+            if '\n' in description or '|' in description:
+                issues.append("Description should be single line, not multiline")
             # Check for proper trigger phrases
             if not any(phrase in description for phrase in ['MUST BE USED', 'Use PROACTIVELY', 'Expert', 'Specializes']):
                 issues.append("Description missing trigger phrase (MUST BE USED, Use PROACTIVELY, Expert, Specializes)")

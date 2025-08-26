@@ -12,7 +12,7 @@ Get up and running with the Claude Code CLI Smart Agent Orchestration Framework 
 
 ```bash
 # 1. Clone the configuration repository
-git clone https://github.com/damilola/claude-config.git
+git clone https://github.com/damilola-elegbede/claude-config.git
 cd claude-config
 
 # 2. Launch Claude Code CLI
