@@ -63,11 +63,11 @@ Never queue sequential work.
 
 ## MCP Server Priority
 
-**Always prefer MCP servers** (5-10x faster):
+**Always prefer MCP servers** when available:
 
-- `mcp__filesystem` for file operations
-- `mcp__github` for GitHub operations
-- `mcp__context7` for documentation
+- `mcp__filesystem` for file operations (more efficient than individual reads)
+- `mcp__github` for GitHub operations (better integration than CLI)
+- `mcp__context7` for documentation (current library docs)
 
 ## Non-Negotiable Patterns
 
@@ -129,6 +129,17 @@ Use `.tmp/` for ephemeral work:
 - Single agent doing multiple files
 - You writing code directly
 - Waiting for one agent before starting another
+
+## Failure Recovery
+
+**When agents fail or tasks hit obstacles**:
+
+1. **Try hard** - Deploy additional specialists, try alternative approaches
+2. **No shortcuts** - Don't skip steps or accept partial solutions
+3. **Exhaust options** - Use different agents, break down differently, retry with variations
+4. **Report if stuck** - Only after genuine attempts, clearly explain the blocker to the user
+
+**Never**: Give up quickly, accept "good enough", or skip quality steps
 
 ## Remember
 
