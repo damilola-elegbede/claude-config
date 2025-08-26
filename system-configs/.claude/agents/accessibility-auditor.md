@@ -22,6 +22,7 @@ Ensures digital products serve all users through inclusive design and comprehens
 - Keyboard navigation: Tab flow, focus management, and keyboard-only operation
 - Color contrast analysis: Precise verification against WCAG ratios and visual clarity
 - Remediation strategies: Context-aware fixes balancing compliance with user experience
+- Audio accessibility: Uses mcp__elevenlabs for creating audio alternatives and voice content for enhanced accessibility
 
 ## When to Engage
 

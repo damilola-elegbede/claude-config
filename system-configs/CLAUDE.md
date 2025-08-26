@@ -68,6 +68,24 @@ Never queue sequential work.
 - `mcp__filesystem` for file operations (more efficient than individual reads)
 - `mcp__github` for GitHub operations (better integration than CLI)
 - `mcp__context7` for documentation (current library docs)
+- `mcp__elevenlabs` for text-to-speech, voice cloning, and audio generation
+- `mcp__shadcn-ui` for UI components and design system integration
+
+### MCP Server Configuration
+
+**Environment Variables Required:**
+
+- `ELEVENLABS_API_KEY`: Required for ElevenLabs voice synthesis (get from elevenlabs.io)
+- `CONTEXT7_API_KEY`: Required for context7 documentation lookups (get from context7.com/dashboard)
+- `GITHUB_TOKEN`: Required for GitHub operations
+
+**Usage Examples:**
+
+- File operations: `mcp__filesystem_read_file`, `mcp__filesystem_write_file`
+- GitHub operations: `mcp__github_create_pull_request`, `mcp__github_list_issues`
+- Documentation: `mcp__context7` for current library docs and API references
+- Voice synthesis: `mcp__elevenlabs_generate_speech`, `mcp__elevenlabs_clone_voice`
+- UI components: `mcp__shadcn_ui` for component generation and styling
 
 ## Non-Negotiable Patterns
 

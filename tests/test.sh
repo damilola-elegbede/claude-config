@@ -112,6 +112,11 @@ echo "Running System Health Tests..."
 echo "------------------------------"
 run_test "System Health" "comprehensive/test_system_health.sh"
 
+# Run MCP tests
+echo "Running MCP Tests..."
+echo "------------------"
+run_test "ElevenLabs MCP Integration" "mcp/test_elevenlabs_integration.sh"
+
 # Run integration tests
 echo "Running Integration Tests..."
 echo "----------------------------"

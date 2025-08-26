@@ -141,6 +141,7 @@ docs/
 
 ### External Integrations (`integrations/`)
 
+- **[ElevenLabs MCP Integration](integrations/ELEVENLABS_MCP_INTEGRATION.md)** - ElevenLabs AI voice synthesis integration
 - **[ShadCN MCP Integration](integrations/SHADCN_MCP_INTEGRATION.md)** - ShadCN and MCP integration guide
 
 ---
@@ -165,9 +166,9 @@ docs/
 | Quality | 3 | Quality assurance and validation |
 | Architecture | 2 | System architecture and design |
 | Agents | 3 | Agent templates and categories |
-| API | 4+ | API documentation and references |
+| API | 5 | API documentation and references |
 | Guides | 7 | Various guides and tutorials |
-| Integrations | 1 | External system integrations |
+| Integrations | 3 | External system integrations |
 | Platform | 1 | Platform engineering |
 | Specs | 1 | Technical specifications |
 
