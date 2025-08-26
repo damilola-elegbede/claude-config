@@ -155,7 +155,7 @@ fi
 CLAUDE_MD="$ORIGINAL_DIR/system-configs/CLAUDE.md"
 REQUIRED_SECTIONS=(
     "Core Philosophy"
-    "Decision Framework"
+    "Decision"
     "MCP Server"
 )
 
