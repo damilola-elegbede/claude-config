@@ -22,7 +22,7 @@ be fixed immediately, never bypassed.
 
 ### Parallel Validation Phase
 
-Deploy multiple agents simultaneously for comprehensive pre-push validation:
+**Launch all these concurrently:** Multiple agents for comprehensive pre-push validation:
 
 ```yaml
 tech-writer:
@@ -44,14 +44,14 @@ security-auditor:
 ### Parallel Execution Strategy
 
 ```yaml
-Pre-Push Validation:
-  - All three agents run simultaneously
+Execute in parallel (not sequentially):
+  - All three agents run simultaneously in a single response
   - Any agent can block the push
   - Auto-fix issues in parallel where possible
   - Re-validate after fixes
 
 Time Optimization:
-  - Parallel agent execution: 5-10 seconds
+  - Launch all these concurrently: 5-10 seconds
   - Sequential would take: 15-30 seconds
   - 60-70% time reduction
 ```

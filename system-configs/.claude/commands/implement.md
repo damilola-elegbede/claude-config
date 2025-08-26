@@ -19,7 +19,7 @@ When invoked, I will:
 1. **Read the specification file** completely, including all referenced files for context
 2. **Analyze the specification** to identify tasks, requirements, and dependencies
 3. **Create an execution plan** with parallel and sequential task ordering
-4. **Deploy specialized agents** simultaneously when tasks are independent
+4. **Launch all these concurrently:** Specialized agents when tasks are independent
 5. **Coordinate agent outputs** and integrate results into cohesive implementation
 6. **Verify completion** against the original specification requirements
 
@@ -51,9 +51,9 @@ When invoked, I will:
 ### Parallel Execution Patterns
 
 ```yaml
-Independent Tasks: Deploy multiple agents simultaneously
-Sequential Tasks: Execute in dependency order
-Integration Points: Coordinate agent outputs at convergence points
+Independent Tasks: Launch all these concurrently - multiple agents simultaneously
+Sequential Tasks: Execute in parallel (not sequentially) where dependencies allow
+Integration Points: Run simultaneously in a single response at convergence points
 Verification: Validate implementation against specification
 ```
 
@@ -226,9 +226,9 @@ Analysis: codebase-analyst, debugger, performance-specialist
 
 **Maximum Parallelization:**
 
-- Deploy all independent tasks simultaneously
-- Use resource pooling for agent management
-- Monitor progress across all parallel agents
+- **Launch all these concurrently:** Deploy all independent tasks simultaneously
+- **Execute in parallel (not sequentially):** Use resource pooling for agent management
+- **Run simultaneously in a single response:** Monitor progress across all parallel agents
 - Coordinate outputs at convergence points
 
 **Intelligent Batching:**

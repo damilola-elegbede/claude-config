@@ -68,7 +68,7 @@ chore/dependency-updates
 
 ### Parallel Analysis Phase - Multi-Agent Deployment
 
-Deploy multiple agents simultaneously for intelligent branch creation:
+**Launch all these concurrently:** Multiple agents for intelligent branch creation:
 
 ```yaml
 # PARALLEL WAVE: All agents work simultaneously (2-3 seconds total)
@@ -135,7 +135,7 @@ Parallel Execution Strategy:
 ### Phase 1: Parallel Context Analysis (Agents)
 
 ```bash
-# Deploy agents simultaneously
+# Execute in parallel (not sequentially)
 parallel_analysis() {
   # project-orchestrator: Determine work type and strategy
   # business-analyst: Extract requirements and tickets

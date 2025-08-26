@@ -18,7 +18,7 @@ Optimizes prompts using the SCOPE framework. Removes fluff, clarifies objectives
 
 ### Parallel Prompt Optimization
 
-Deploy specialized agents for comprehensive optimization:
+**Launch all these concurrently:** Specialized agents for comprehensive optimization:
 
 ```yaml
 tech-writer:
@@ -40,9 +40,9 @@ ux-researcher:
 ### Parallel Analysis Benefits
 
 ```yaml
-Optimization Streams:
-  - Clarity, brevity, effectiveness analyzed simultaneously
-  - Multiple optimization strategies tested in parallel
+Run simultaneously in a single response:
+  - Clarity, brevity, effectiveness analyzed concurrently
+  - Execute in parallel (not sequentially): Multiple optimization strategies
   - Best approach selected from parallel results
 ```
 

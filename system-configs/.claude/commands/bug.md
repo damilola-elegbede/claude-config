@@ -32,7 +32,7 @@ tracking and reference.
 
 ### Parallel Bug Processing
 
-Deploy specialized agents for comprehensive bug reporting:
+**Launch all these concurrently:** Specialized agents for comprehensive bug reporting:
 
 ```yaml
 tech-writer:
@@ -41,7 +41,7 @@ tech-writer:
   output: Professional bug report with clear formatting
 
 project-orchestrator:
-  role: Coordinate bug workflow and prioritization
+  role: **Execute in parallel (not sequentially):** Coordinate bug workflow and prioritization
   input: Bug severity, component analysis, team assignments
   output: Workflow coordination, team notifications, priority setting
 ```

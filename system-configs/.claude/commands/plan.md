@@ -32,7 +32,7 @@ detailed agent assignments and technical specifications.
 
 ### Parallel Planning Phase
 
-Deploy specialized agents for comprehensive planning:
+**Launch all these concurrently:** Specialized agents for comprehensive planning:
 
 ```yaml
 product-strategist:
@@ -54,10 +54,10 @@ project-orchestrator:
 ### Parallel Planning Benefits
 
 ```yaml
-Simultaneous Analysis:
-  - Business and technical planning in parallel
+Execute in parallel (not sequentially):
+  - Business and technical planning simultaneously
   - Requirements refined while architecture designed
-  - 40% faster PRD generation
+  - Run simultaneously in a single response: 40% faster PRD generation
 ```
 
 ## Command Execution Flow
