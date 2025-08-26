@@ -147,7 +147,7 @@ class ParallelAgentStandardizer:
         # Quality & Testing (5 agents)
         'test-engineer': {'color': 'green', 'category': 'quality', 'level': 'senior'},
         'code-reviewer': {'color': 'green', 'category': 'quality', 'level': 'senior'},
-        'debugger': {'color': 'green', 'category': 'quality', 'level': 'specialist'},
+        'debugger': {'color': 'orange', 'category': 'infrastructure', 'level': 'specialist'},
         'security-auditor': {'color': 'green', 'category': 'quality', 'level': 'specialist'},
         'performance-engineer': {'color': 'green', 'category': 'quality', 'level': 'specialist'},
         

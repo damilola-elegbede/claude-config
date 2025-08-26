@@ -108,7 +108,7 @@ In each agent's YAML front-matter:
 ---
 name: agent-name
 description: Agent description...
-tools: Read, Write, Edit, Grep, Glob, Bash  # Only include what's needed
+tools: Read, Write, Edit, Grep, Glob, Bash
 model: sonnet
 category: development  # Must be one of the 8 categories
 color: blue           # Must match category's color

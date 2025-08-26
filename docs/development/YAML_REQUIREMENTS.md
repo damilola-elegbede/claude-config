@@ -103,11 +103,11 @@ After YAML front-matter, agents must have these sections (~46 lines total):
 
 Required order:
 
-1. name
-2. description
-3. tools
-4. model
-5. category
+1. name (required)
+2. description (required)
+3. tools (required)
+4. model (required)
+5. category (required)
 6. color (required)
 
 ### 4. Validation

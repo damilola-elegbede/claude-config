@@ -327,7 +327,7 @@ class AsyncAgentValidator:
         """Validate specific field values using class-level constants."""
         issues = []
         
-        # Validate color field (required per CodeRabbit suggestion)
+        # Validate color field using class constant
         color_match = self.validation_rules['color_field'].search(yaml_section)
         if color_match:
             color_value = color_match.group(1).strip()
@@ -336,14 +336,14 @@ class AsyncAgentValidator:
         else:
             issues.append("Color field is required in front-matter")
         
-        # Validate model field
+        # Validate model field using class constant
         model_match = self.validation_rules['model_field'].search(yaml_section)
         if model_match:
             model_value = model_match.group(1).strip()
             if model_value and model_value not in self.VALID_MODELS:
                 issues.append(f"Invalid model '{model_value}'. Must be one of: {', '.join(self.VALID_MODELS)}")
         
-        # Validate category field - no "operations" category allowed
+        # Validate category field using class constant (no "operations" category)
         category_match = self.validation_rules['category_field'].search(yaml_section)
         if category_match:
             category_value = category_match.group(1).strip()
@@ -396,9 +396,9 @@ class AsyncAgentValidator:
             # Check for multiline descriptions (should be single line)
             if '\n' in description:
                 issues.append("Description should be single line, not multiline")
-            # Check for proper trigger phrases
+            # Check for proper trigger phrases on same line as description key
             if not any(phrase in description for phrase in ['MUST BE USED', 'Use PROACTIVELY', 'Expert', 'Specializes']):
-                issues.append("Description missing trigger phrase (MUST BE USED, Use PROACTIVELY, Expert, Specializes)")
+                issues.append("Description missing trigger phrase (MUST BE USED, Use PROACTIVELY, Expert, Specializes) on same line as description key")
         
         return issues
     
