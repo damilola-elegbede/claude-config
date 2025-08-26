@@ -1,6 +1,6 @@
 ---
 name: data-engineer
-description: Expert data engineer specializing in data pipelines, ETL/ELT systems, and data warehouse architecture. Handles big data processing, streaming, and analytics infrastructure.
+description: Expert data engineer specializing in data pipelines and ETL/ELT systems. MUST BE USED for big data processing and analytics infrastructure.
 tools: Read, Write, Edit, Bash, Grep
 model: sonnet
 category: development

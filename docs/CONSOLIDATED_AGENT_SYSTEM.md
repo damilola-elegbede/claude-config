@@ -36,7 +36,7 @@ while maintaining comprehensive coverage across all technical domains.
 ### 🩷 Design (2 agents)
 
 - **ui-designer**: Visual design, UX optimization, design systems (web/desktop)
-- **mobile-ui-designer**: Mobile UI/UX design, iOS/Android design patterns
+- **mobile-ui**: Mobile UI/UX design, iOS/Android design patterns
 
 ### 🟢 Quality (4 agents)
 
@@ -93,7 +93,7 @@ Container strategy → docker-specialist
 System architecture → system-architect
 API design → api-architect
 Web UI/UX → ui-designer
-Mobile UI/UX → mobile-ui-designer
+Mobile UI/UX → mobile-ui
 ```yaml
 
 ### For Quality & Security

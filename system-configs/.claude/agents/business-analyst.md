@@ -1,6 +1,6 @@
 ---
 name: business-analyst
-description: Requirements analysis, stakeholder communication, and process mapping expert. Specializes in translating business needs into technical specifications.
+description: Expert business analyst specializing in requirements gathering and stakeholder alignment. MUST BE USED for translating business needs into technical specifications.
 tools: Read, Write, Grep
 model: sonnet
 category: analysis

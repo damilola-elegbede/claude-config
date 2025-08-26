@@ -1,6 +1,6 @@
 ---
 name: researcher
-description: External research, technology evaluation, and industry analysis specialist. Provides comprehensive research insights and best practices.
+description: Expert researcher specializing in technology evaluation and industry analysis. MUST BE USED for comprehensive research insights and best practices.
 tools: Read, Grep, WebSearch, WebFetch
 model: sonnet
 category: analysis

@@ -1,6 +1,6 @@
 ---
 name: frontend-engineer
-description: Expert frontend engineer specializing in user interfaces, client-side applications, and performance optimization. Implements modern React/Vue/Angular applications with focus on user experience.
+description: Expert frontend engineer specializing in user interfaces and client-side applications. MUST BE USED for React/Vue/Angular implementations with performance focus.
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: sonnet
 category: development

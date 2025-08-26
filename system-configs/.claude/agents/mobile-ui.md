@@ -1,6 +1,6 @@
 ---
 name: mobile-ui
-description: Mobile UI/UX design specialist for iOS/Android design patterns. Creates native mobile experiences following platform guidelines.
+description: Expert mobile UI/UX specialist for iOS/Android design patterns. MUST BE USED for native mobile experiences following platform guidelines.
 tools: Read, Write
 model: sonnet
 category: design

@@ -1,6 +1,6 @@
 ---
 name: fullstack-lead
-description: Senior full-stack developer handling end-to-end development with auto-escalation for complex requirements. Coordinates frontend and backend implementation with technical leadership.
+description: Expert full-stack developer specializing in end-to-end development. MUST BE USED for coordinating frontend and backend implementation with technical leadership.
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: sonnet
 category: development

@@ -18,7 +18,6 @@ Maintains all security features:
 """
 
 import asyncio
-import aiofiles
 import hashlib
 import json
 import re
@@ -66,7 +65,7 @@ class PerformanceCache:
         """Load cache from disk if available."""
         if self.cache_file.exists():
             try:
-                with open(self.cache_file, 'r') as f:
+                with open(self.cache_file, 'r', encoding='utf-8') as f:
                     data = json.load(f)
                     for key, entry_data in data.items():
                         result_data = entry_data['result']
@@ -95,7 +94,7 @@ class PerformanceCache:
                     'file_mtime': entry.file_mtime
                 }
             
-            with open(self.cache_file, 'w') as f:
+            with open(self.cache_file, 'w', encoding='utf-8') as f:
                 json.dump(cache_data, f, indent=2)
             logger.info(f"Saved cache with {len(self.cache)} entries")
         except Exception as e:
@@ -213,10 +212,10 @@ class AsyncAgentValidator:
             logger.debug(f"Cache hit for {file_path.name}")
             return cached_result
         
-        # Read file asynchronously
+        # Read file with proper UTF-8 encoding
         try:
-            async with aiofiles.open(file_path, 'r') as f:
-                content = await f.read()
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
         except Exception as e:
             result = ValidationResult(
                 agent_name=file_path.stem,
@@ -338,14 +337,29 @@ class AsyncAgentValidator:
         return issues
     
     async def _validate_name_consistency(self, agent_name: str, yaml_section: str) -> List[str]:
-        """Validate name field matches filename."""
+        """Validate name field matches filename with comprehensive checks."""
         issues = []
         
         name_match = self.validation_rules['name_field'].search(yaml_section)
         if name_match:
             yaml_name = name_match.group(1).strip()
-            if yaml_name != agent_name:
-                issues.append(f"Name mismatch: YAML says '{yaml_name}' but filename is '{agent_name}.md'")
+            
+            # Remove quotes if present
+            yaml_name_clean = yaml_name.strip('"\'')
+            
+            # Exact match required
+            if yaml_name_clean != agent_name:
+                issues.append(f"Name mismatch: YAML name field '{yaml_name_clean}' must exactly match filename '{agent_name}'")
+            
+            # Check for common issues
+            if yaml_name_clean.lower() == agent_name.lower() and yaml_name_clean != agent_name:
+                issues.append(f"Name case mismatch: YAML has '{yaml_name_clean}' but filename is '{agent_name}' (case-sensitive)")
+            
+            # Check for whitespace issues
+            if yaml_name != yaml_name.strip():
+                issues.append("Name field has leading/trailing whitespace")
+        else:
+            issues.append("Name field not found in YAML front-matter")
         
         return issues
     
@@ -353,13 +367,18 @@ class AsyncAgentValidator:
         """Validate description format per AGENT_TEMPLATE.md."""
         issues = []
         
+        # Check for YAML block indicators first (these make descriptions multiline)
+        if re.search(r'^description:\s*[|>]', yaml_section, re.MULTILINE):
+            issues.append("Description uses YAML block indicators (| or >) which creates multiline format. Should be single line.")
+            return issues
+        
         desc_match = self.validation_rules['description_field'].search(yaml_section)
         if desc_match:
             description = desc_match.group(1).strip()
             if len(description) > 300:
                 issues.append(f"Description too long ({len(description)} chars). Should be under 300.")
             # Check for multiline descriptions (should be single line)
-            if '\n' in description or '|' in description:
+            if '\n' in description:
                 issues.append("Description should be single line, not multiline")
             # Check for proper trigger phrases
             if not any(phrase in description for phrase in ['MUST BE USED', 'Use PROACTIVELY', 'Expert', 'Specializes']):
@@ -571,8 +590,8 @@ Generated: {time.strftime('%Y-%m-%d %H:%M:%S')}
     reports_dir = project_root / '.tmp' / 'reports'
     reports_dir.mkdir(parents=True, exist_ok=True)
     report_path = reports_dir / 'performance-validation-report.md'
-    async with aiofiles.open(report_path, 'w') as f:
-        await f.write(report_content)
+    with open(report_path, 'w', encoding='utf-8') as f:
+        f.write(report_content)
     
     print(f"\n📊 Performance report saved to: {report_path}")
     

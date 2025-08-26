@@ -1,6 +1,6 @@
 ---
 name: product-strategist
-description: Strategic product guidance and feature prioritization specialist. Aligns technical development with business objectives.
+description: Expert product strategist specializing in product guidance and prioritization. MUST BE USED for aligning technical development with business objectives.
 tools: Read, Write
 model: sonnet
 category: coordination
