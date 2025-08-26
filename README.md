@@ -2,8 +2,8 @@
 
 <div align="center">
 
-![CI](https://github.com/damilola/claude-config/workflows/CI/badge.svg)
-![PR Checks](https://github.com/damilola/claude-config/workflows/PR%20Checks/badge.svg)
+![CI](https://github.com/damilola-elegbede/claude-config/workflows/CI/badge.svg)
+![PR Checks](https://github.com/damilola-elegbede/claude-config/workflows/PR%20Checks/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <!-- markdownlint-disable-next-line MD036 -->
@@ -95,7 +95,7 @@ brew install claude-code
 
 ```bash
 # Clone the repository
-git clone https://github.com/damilola/claude-config.git
+git clone https://github.com/damilola-elegbede/claude-config.git
 cd claude-config
 
 # Quick setup using the sync command
@@ -584,7 +584,7 @@ graph TB
 
 ```bash
 # Deploy the complete Smart Agent Orchestration Framework
-git clone https://github.com/damilola/claude-config.git
+git clone https://github.com/damilola-elegbede/claude-config.git
 cd claude-config
 
 # One-command framework deployment
@@ -641,7 +641,7 @@ cp docs/agents/AGENT_TEMPLATE.md system-configs/.claude/agents/my-specialist.md
 
 ```bash
 # Clone the orchestration framework repository
-git clone https://github.com/damilola/claude-config.git
+git clone https://github.com/damilola-elegbede/claude-config.git
 cd claude-config
 
 # Deploy complete framework with one command
@@ -656,7 +656,7 @@ claude-code
 
 ```bash
 # Clone repository
-git clone https://github.com/damilola/claude-config.git
+git clone https://github.com/damilola-elegbede/claude-config.git
 cd claude-config
 
 # Copy core configuration
@@ -867,9 +867,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <!-- markdownlint-disable-next-line MD036 -->
 **Experience the future of intelligent development workflows**
 
-[Report Bug](https://github.com/damilola/claude-config/issues) •
-[Request Feature](https://github.com/damilola/claude-config/issues) •
-[Documentation](https://github.com/damilola/claude-config/wiki) •
+[Report Bug](https://github.com/damilola-elegbede/claude-config/issues) •
+[Request Feature](https://github.com/damilola-elegbede/claude-config/issues) •
+[Documentation](https://github.com/damilola-elegbede/claude-config/wiki) •
 [Framework Guide](docs/agents/README.md)
 
 </div>

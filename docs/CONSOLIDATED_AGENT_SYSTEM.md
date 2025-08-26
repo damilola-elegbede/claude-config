@@ -71,7 +71,7 @@ Data processing → data-platform-engineer
 Database design → database-engineer
 Mobile applications → mobile-platform-engineer
 ML/AI systems → ml-engineer
-```yaml
+```
 
 ### For Infrastructure & Operations
 
@@ -85,7 +85,7 @@ System monitoring → monitoring-expert
 Incident response → incident-commander
 Platform services → platform-engineer
 Container strategy → docker-specialist
-```yaml
+```
 
 ### For Architecture & Design
 
@@ -94,7 +94,7 @@ System architecture → system-architect
 API design → api-architect
 Web UI/UX → ui-designer
 Mobile UI/UX → mobile-ui
-```yaml
+```
 
 ### For Quality & Security
 
@@ -105,7 +105,7 @@ Performance optimization → performance-specialist
 Accessibility compliance → accessibility-auditor
 Security assessment → security-auditor
 Supply chain security → supply-chain-security-engineer
-```yaml
+```
 
 ### For Analysis & Documentation
 
@@ -115,7 +115,7 @@ Technical documentation → tech-writer
 Production issues → production-reliability-engineer
 Database evolution → database-evolution-specialist
 Complex debugging → debugger
-```yaml
+```
 
 ## Category Distribution
 
@@ -141,7 +141,7 @@ pre_deployment:
   - security-auditor: vulnerability assessment
   - test-engineer: test coverage validation
   - performance-specialist: performance validation
-```yaml
+```
 
 ### Development Streams (Parallel)
 
@@ -151,7 +151,7 @@ feature_development:
   - mobile-platform-engineer: mobile app updates
   - test-engineer: test automation
   - tech-writer: documentation updates
-```yaml
+```
 
 ### Infrastructure Pipeline (Sequential)
 
@@ -161,7 +161,7 @@ deployment_pipeline:
   2. devops: CI/CD implementation
   3. kubernetes-admin: container orchestration
   4. monitoring-expert: observability setup
-```yaml
+```
 
 ### Analysis Pipeline (Sequential)
 
@@ -170,7 +170,7 @@ codebase_understanding:
   1. codebase-analyst: architecture analysis
   2. system-architect: improvement recommendations
   3. tech-writer: documentation updates
-```yaml
+```
 
 ## Agent Capabilities Matrix
 

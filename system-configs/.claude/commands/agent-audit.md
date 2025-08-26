@@ -10,9 +10,10 @@ it does not make any changes automatically.**
 
 ```bash
 /agent-audit
-```bash
+```
 
 ## Behavior
+
 ## Parallel Validation Strategy - Multi-Instance Deployment
 
 ### Category-Based Parallelization with Instance Pools
@@ -59,8 +60,7 @@ debugger:
 #   Sequential: 3-5 minutes for all agents
 #   Parallel with instances: 30-45 seconds (5-6x faster)
 #   Instance scaling: Automatic based on category count
-```bash
-
+```
 
 This command performs thorough validation of all agents across multiple dimensions, executed in parallel by
 category for maximum efficiency.
@@ -173,7 +173,7 @@ yaml_validation:
   format_validation:
     expected_lines: ~46 (range: 40-60)
     required_sections: [Identity, Core Capabilities, When to Engage, When NOT to Engage, Coordination, SYSTEM BOUNDARY]
-```bash
+```
 
 ### Phase 1: Multi-Instance Parallel Category Audits
 
@@ -216,7 +216,7 @@ multi_instance_execution:
 #   - Sequential category validation: 20-30 seconds per category
 #   - Parallel multi-instance: All categories in 30-45 seconds total
 #   - Result: 5-6x faster validation with better resource utilization
-```bash
+```
 
 ### Phase 2: Cross-Category Analysis
 
@@ -254,7 +254,7 @@ After audit completion, **execution-evaluator** is deployed to verify:
 
 ```text
 Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
-```bash
+```
 
 ### Category Health Matrix
 
@@ -332,7 +332,7 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 - Updated agent-name: Set tier to 1
 - Fixed agent-name: Removed Task tool access
 - Updated agent-name: Added SYSTEM BOUNDARY warning
-```bash
+```
 
 ### Manual Remediation Required
 
@@ -378,7 +378,7 @@ sed -i '' 's/category: wrong/category: correct/' agent.md
 sed -i '' 's/model: opus/model: sonnet/' agent-name.md  # Save 40% cost
 # Upgrade under-provisioned agents:
 sed -i '' 's/model: haiku/model: sonnet/' agent-name.md  # Better capability
-```bash
+```
 
 ## Success Criteria
 

@@ -14,7 +14,7 @@ test suites when none exist.
 /test --create           # Generate test suite if missing
 /test --framework <name> # Use specific framework (jest, pytest, etc.)
 /test --coverage         # Run with coverage reporting
-```bash
+```
 
 ## Agent Orchestration - Multi-Instance Test Runners
 
@@ -69,7 +69,7 @@ debugger:
 #   Sequential: 2-3 minutes for all test suites
 #   Parallel with instances: 30-40 seconds (4-5x faster)
 #   Test isolation: Each instance runs independently
-```bash
+```
 
 ### Multi-Instance Execution Strategy
 
@@ -126,7 +126,7 @@ grep -i "test\|testing\|run.*test" README.md
 - pytest
 - go test ./...
 - cargo test
-```bash
+```
 
 ### Phase 2: Package Manager Detection
 
@@ -161,7 +161,7 @@ Java:
 .NET:
   files: [*.csproj, *.sln]
   command: dotnet test
-```bash
+```
 
 ### Phase 3: Framework Convention Detection
 
@@ -178,7 +178,7 @@ find . -name "*test*" -o -name "*spec*" | head -10
 - **/test_*.py     # pytest
 - **/*.spec.js     # Jasmine/Mocha
 - **/tests/**      # General test directory
-```bash
+```
 
 ## Test Generation (--create)
 
@@ -237,7 +237,7 @@ Discovery Result Processing:
     - Trigger test generation workflow
     - Create basic test suite using test-engineer
     - Run generated tests to verify setup
-```bash
+```
 
 ### Output Enhancement
 
@@ -258,7 +258,7 @@ Discovery Result Processing:
   Tests:  4 passed, 4 total
   Time:   3.3s
   Coverage: 85.2% (lines), 78.9% (branches)
-```bash
+```
 
 ## Framework-Specific Optimizations
 
@@ -343,7 +343,7 @@ Claude: 🔍 Discovering tests...
 
 ✅ All tests passed (4/4)
 📊 Coverage: 87.3% lines, 82.1% branches
-```bash
+```
 
 ### Python Project (No Tests)
 
@@ -356,7 +356,7 @@ Claude: 🔍 Discovering tests...
 🧪 Running: pytest -v
 
 ✅ All tests passed (6/6)
-```bash
+```
 
 ### Go Project with Custom Command
 
@@ -368,7 +368,7 @@ Claude: 🔍 Discovering tests...
 
 ✅ All tests passed
 📊 Coverage: 78.9% of statements
-```bash
+```
 
 ## Notes
 

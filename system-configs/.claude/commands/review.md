@@ -8,20 +8,30 @@ to generate structured reports with "Prompts for AI Agents" sections.
 ## Usage
 
 ```bash
-/review                    # Review changed files with tool integration
-/review --full             # Full repository review
-/review <file|directory>   # Review specific target
+/review                    # Review changed files + run pre-commit checklist
+/review --full             # Full repository review + checklist
+/review <file|directory>   # Review specific target + checklist
 /review --fix             # Auto-fix safe issues + commit
-/review --security        # Security-focused analysis
-```bash
+/review --security        # Security-focused analysis + checklist
+```
 
 ## Behavior
 
 **Multi-Layer Analysis:**
 
-1. **Tool Pipeline**: Runs available linters (ESLint, Semgrep, Gitleaks, etc.) in parallel
-2. **AI Synthesis**: Processes tool outputs with contextual reasoning
-3. **Structured Report**: CodeRabbit-style output with "Prompts for AI Agents"
+1. **Pre-Commit Checklist**: Automatically runs CodeRabbit checklist (see `docs/CODERABBIT_PRECOMMIT_CHECKLIST.md`)
+2. **Tool Pipeline**: Runs available linters (ESLint, Semgrep, Gitleaks, etc.) in parallel
+3. **AI Synthesis**: Processes tool outputs with contextual reasoning
+4. **Structured Report**: CodeRabbit-style output with "Prompts for AI Agents"
+
+**Every invocation** of `/review` automatically runs the comprehensive pre-commit checklist first, covering:
+
+- Documentation consistency and cross-references
+- YAML/configuration quality and compliance
+- Code quality standards and best practices
+- Agent system compliance (28 agents, boundaries)
+- Testing verification and validation
+- Structural patterns and conventions
 
 **Default**: Reviews changed files only for fast feedback
 
@@ -155,6 +165,13 @@ run_coderabbit_review() {
 
   echo "🤖 CodeRabbit-style AI review..."
 
+  # Always run pre-commit checklist first
+  echo "📋 Running CodeRabbit pre-commit checklist..."
+  if ! run_coderabbit_checklist; then
+    echo "⚠️ Checklist identified issues - continuing with review..."
+  fi
+  echo ""
+
   # Create secure temporary directory
   local temp_dir
   temp_dir=$(mktemp -d -t "claude_review.XXXXXXXXXX") || {
@@ -261,6 +278,173 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
     echo "ℹ️ No auto-fixable issues found"
   fi
 }
+
+# CodeRabbit Pre-Commit Self-Review Checklist
+# See docs/CODERABBIT_PRECOMMIT_CHECKLIST.md for full details
+run_coderabbit_checklist() {
+  echo "📋 Running Pre-Commit Checklist (docs/CODERABBIT_PRECOMMIT_CHECKLIST.md)"
+  echo "======================================================================="
+
+  local issues_found=0
+
+  # Documentation & Consistency
+  echo -e "\n📚 Documentation & Consistency"
+  echo "-------------------------------"
+
+  # Check for moved file path updates
+  echo -n "• Path consistency after file moves: "
+  if grep -r "\.claude/agents/" README.md CONTRIBUTING.md docs/ 2>/dev/null | grep -v "system-configs/.claude/agents/" >/dev/null 2>&1; then
+    echo "❌ Found old paths - need updating"
+    ((issues_found++))
+  else
+    echo "✅ Paths consistent"
+  fi
+
+  # Check version/count consistency
+  echo -n "• Agent count consistency (should be 28): "
+  local count_issues=$(grep -r "42.agent\|29.agent\|30.agent" docs/ README.md 2>/dev/null | wc -l)
+  if [ "$count_issues" -gt 0 ]; then
+    echo "❌ Found inconsistent agent counts"
+    ((issues_found++))
+  else
+    echo "✅ Agent counts consistent"
+  fi
+
+  # Check for template compliance
+  echo -n "• New files follow template structure: "
+  local template_issues=0
+  for file in system-configs/.claude/agents/*.md; do
+    if [ -f "$file" ] && ! grep -q "SYSTEM BOUNDARY" "$file" 2>/dev/null; then
+      ((template_issues++))
+    fi
+  done
+  if [ $template_issues -gt 0 ]; then
+    echo "❌ $template_issues files missing template compliance"
+    ((issues_found++))
+  else
+    echo "✅ All files follow template"
+  fi
+
+  # YAML/Configuration Quality
+  echo -e "\n⚙️ YAML/Configuration Quality"
+  echo "-----------------------------"
+
+  echo -n "• Required YAML fields present: "
+  if python3 scripts/validate-agent-yaml.py >/dev/null 2>&1; then
+    echo "✅ All agents have required fields"
+  else
+    echo "❌ YAML validation failed"
+    ((issues_found++))
+  fi
+
+  echo -n "• Description trigger phrases: "
+  local missing_triggers=$(grep -L "MUST BE USED\|Use PROACTIVELY\|Expert\|Specializes" system-configs/.claude/agents/*.md 2>/dev/null | wc -l)
+  if [ "$missing_triggers" -gt 0 ]; then
+    echo "❌ $missing_triggers agents missing trigger phrases"
+    ((issues_found++))
+  else
+    echo "✅ All descriptions have trigger phrases"
+  fi
+
+  echo -n "• No deprecated YAML fields: "
+  local deprecated_fields=$(grep -r "specialization_level\|domain_expertise\|coordination_protocols" system-configs/.claude/agents/ 2>/dev/null | wc -l)
+  if [ "$deprecated_fields" -gt 0 ]; then
+    echo "❌ Found deprecated fields"
+    ((issues_found++))
+  else
+    echo "✅ No deprecated fields found"
+  fi
+
+  # Code Quality Standards
+  echo -e "\n🔧 Code Quality Standards"
+  echo "------------------------"
+
+  echo -n "• UTF-8 encoding in Python scripts: "
+  local encoding_issues=$(grep -L "encoding.*utf-8\|encoding.*UTF-8" scripts/**/*.py 2>/dev/null | wc -l)
+  if [ "$encoding_issues" -gt 0 ]; then
+    echo "❌ $encoding_issues Python files missing UTF-8 encoding"
+    ((issues_found++))
+  else
+    echo "✅ UTF-8 encoding specified"
+  fi
+
+  echo -n "• Constants moved to class-level: "
+  if grep -r "valid_models.*=.*\[" scripts/ 2>/dev/null | grep -v "self\." >/dev/null 2>&1; then
+    echo "❌ Found inline constants that should be class-level"
+    ((issues_found++))
+  else
+    echo "✅ Constants properly organized"
+  fi
+
+  # Agent System Compliance
+  echo -e "\n🤖 Agent System Compliance"
+  echo "--------------------------"
+
+  echo -n "• Agent count accuracy (28 agents): "
+  local actual_count=$(find system-configs/.claude/agents/ -name "*.md" -type f | wc -l)
+  if [ "$actual_count" -eq 28 ]; then
+    echo "✅ Correct agent count (28)"
+  else
+    echo "❌ Agent count mismatch: found $actual_count, expected 28"
+    ((issues_found++))
+  fi
+
+  echo -n "• System boundary statements: "
+  local missing_boundary=$(grep -L "NO Task tool access\|Only Claude has orchestration" system-configs/.claude/agents/*.md 2>/dev/null | wc -l)
+  if [ "$missing_boundary" -gt 0 ]; then
+    echo "❌ $missing_boundary agents missing boundary statements"
+    ((issues_found++))
+  else
+    echo "✅ All agents have boundary protection"
+  fi
+
+  # Testing & Verification
+  echo -e "\n🧪 Testing & Verification"
+  echo "------------------------"
+
+  echo -n "• System health tests pass: "
+  if ./tests/comprehensive/test_system_health.sh >/dev/null 2>&1; then
+    echo "✅ All system tests pass"
+  else
+    echo "❌ System health tests failed"
+    ((issues_found++))
+  fi
+
+  echo -n "• Agent YAML validation passes: "
+  if python3 scripts/validate-agent-yaml.py >/dev/null 2>&1; then
+    echo "✅ Agent YAML validation passes"
+  else
+    echo "❌ Agent YAML validation failed"
+    ((issues_found++))
+  fi
+
+  echo -n "• Markdown quality gates pass: "
+  if ./scripts/validate-markdown-quality.sh validate >/dev/null 2>&1; then
+    echo "✅ Markdown quality passes"
+  else
+    echo "❌ Markdown quality issues found"
+    ((issues_found++))
+  fi
+
+  # Summary
+  echo -e "\n📊 Checklist Summary"
+  echo "==================="
+  echo "Issues found: $issues_found"
+
+  if [ $issues_found -eq 0 ]; then
+    echo "🎉 All checks passed! Ready for commit."
+    return 0
+  else
+    echo "⚠️ $issues_found issues need attention before commit."
+    echo ""
+    echo "🔧 Quick fix commands:"
+    echo "  ./scripts/validate-markdown-quality.sh fix"
+    echo "  python3 scripts/validate-agent-yaml.py"
+    echo "  python3 scripts/standardize-agents.py"
+    echo "  ./tests/comprehensive/test_system_health.sh"
+    return 1
+  fi
+}
 ```bash
 
 ## Report Format
@@ -318,6 +502,13 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 ```bash
 User: /review
 Claude: 🤖 CodeRabbit-style AI review...
+📋 Running Pre-Commit Checklist (docs/CODERABBIT_PRECOMMIT_CHECKLIST.md)
+  ✅ Documentation consistency verified
+  ✅ YAML quality validated
+  ✅ Agent compliance checked (28 agents)
+  ✅ Testing verification passed
+
+Running tool pipeline...
   ✅ ESLint: Running...
   ⚠️ ESLint: Issues found
   ✅ Semgrep: Running...
@@ -352,23 +543,34 @@ Claude: 🔒 Security-focused analysis...
   ✅ Bandit: Python security analysis...
 🚨 Found: 1 SQL injection, 1 hardcoded secret
 📝 Security report with remediation prompts generated
-```bash
+```
 
 ## Notes
 
 **CodeRabbit-Inspired Features:**
 
+- **Integrated Pre-Commit Checklist**: Automatically runs comprehensive validation on every invocation
 - **Tool Integration**: Auto-detects and runs appropriate linters/security scanners
 - **AI Synthesis**: Processes all tool outputs with intelligent reasoning
 - **Structured Reports**: Markdown format with issue classification and metrics
 - **"Prompts for AI Agents"**: Actionable remediation instructions for automation
 - **Auto-Fix Capability**: Applies safe fixes and commits them automatically
 
+**Checklist Coverage** (see `docs/CODERABBIT_PRECOMMIT_CHECKLIST.md`):
+
+- Documentation consistency and cross-references
+- YAML/configuration quality and compliance
+- Code quality standards and best practices
+- Agent system compliance (28 agents, boundaries)
+- Testing verification and validation
+- Structural patterns and conventions
+
 **Core Capabilities:**
 
 - **Fast Feedback**: Default mode reviews only changed files
 - **Comprehensive Analysis**: --full mode for complete repository review
 - **Security Focus**: Specialized security scanning with --security mode
+- **Pre-Commit Validation**: --checklist mode runs systematic quality checks
 - **Development Integration**: Works with existing toolchains and workflows
 - **Quality Gates**: Blocks critical issues while allowing minor improvements
 

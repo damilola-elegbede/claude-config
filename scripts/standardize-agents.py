@@ -229,8 +229,14 @@ PRODUCTION_AGENTS = {
 
 def validate_agent_format(file_path):
     """Validate if an agent file follows the AGENT_TEMPLATE.md format."""
-    with open(file_path, 'r') as f:
-        lines = f.readlines()
+    try:
+        # Use UTF-8 encoding for resilient validation (per CodeRabbit suggestion)
+        with open(file_path, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+    except UnicodeDecodeError as e:
+        return False, f"File encoding error: {e}"
+    except Exception as e:
+        return False, f"Failed to read file: {e}"
     
     if len(lines) < 40 or len(lines) > 60:
         return False, f"File has {len(lines)} lines (expected ~46)"
@@ -248,7 +254,9 @@ def validate_agent_format(file_path):
             yaml_content.append(line)
     
     yaml_text = ''.join(yaml_content)
-    required_fields = ['name:', 'description:', 'tools:', 'model:', 'category:']
+    
+    # Require color in front-matter validation (per CodeRabbit suggestion)
+    required_fields = ['name:', 'description:', 'tools:', 'model:', 'category:', 'color:']
     
     for field in required_fields:
         if field not in yaml_text:
@@ -268,6 +276,17 @@ def validate_agent_format(file_path):
         if section not in content:
             return False, f"Missing required section: {section}"
     
+    # Add orchestration boundary text validation (per CodeRabbit suggestion)
+    boundary_patterns = [
+        'Only Claude has orchestration authority',
+        'This agent cannot invoke other agents or create Task calls',
+        'NO Task tool access allowed'
+    ]
+    
+    boundary_found = any(pattern in content for pattern in boundary_patterns)
+    if not boundary_found:
+        return False, "Missing SYSTEM BOUNDARY protection statement with orchestration boundary text"
+    
     return True, "Valid format"
 
 def create_agent_from_template(agent_name, agent_info):
@@ -283,7 +302,6 @@ description: {agent_info['description']}
 tools: {agent_info['tools']}
 model: {agent_info['model']}
 category: {agent_info['category']}
-
 color: {agent_info['color']}
 ---
 
@@ -458,11 +476,11 @@ def main():
     else:
         print(f"\n⚠️  {28 - valid_count} agents need updating to match template")
     
-    # Generate report
+    # Generate report using UTF-8 encoding
     report_path = Path('.tmp/reports/agent-validation-report.md')
     report_path.parent.mkdir(parents=True, exist_ok=True)
     
-    with open(report_path, 'w') as f:
+    with open(report_path, 'w', encoding='utf-8') as f:
         f.write(f"# Agent Validation Report\n\n")
         f.write(f"Generated: {datetime.now().isoformat()}\n\n")
         f.write(f"## Summary\n\n")

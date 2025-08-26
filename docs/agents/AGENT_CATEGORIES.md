@@ -10,7 +10,7 @@ expertise domain.
 
 ### 1. **Development** (blue) - 7 agents
 
-**Purpose**: Core programming, implementation, and application building  
+**Purpose**: Core programming, implementation, and application building
 **Agents**:
 
 - backend-engineer
@@ -23,7 +23,7 @@ expertise domain.
 
 ### 2. **Quality** (green) - 4 agents
 
-**Purpose**: Testing, code review, validation, and quality assurance  
+**Purpose**: Testing, code review, validation, and quality assurance
 **Agents**:
 
 - test-engineer
@@ -33,14 +33,14 @@ expertise domain.
 
 ### 3. **Security** (red) - 1 agent
 
-**Purpose**: Security assessment, vulnerability detection, and compliance  
+**Purpose**: Security assessment, vulnerability detection, and compliance
 **Agents**:
 
 - security-auditor
 
 ### 4. **Architecture** (purple) - 3 agents
 
-**Purpose**: System design, technical planning, and architectural decisions  
+**Purpose**: System design, technical planning, and architectural decisions
 **Agents**:
 
 - principal-architect
@@ -49,7 +49,7 @@ expertise domain.
 
 ### 5. **Design** (pink) - 3 agents
 
-**Purpose**: User experience, interface design, and user research  
+**Purpose**: User experience, interface design, and user research
 **Agents**:
 
 - ui-designer
@@ -58,7 +58,7 @@ expertise domain.
 
 ### 6. **Analysis** (yellow) - 3 agents
 
-**Purpose**: Research, codebase analysis, and requirements gathering  
+**Purpose**: Research, codebase analysis, and requirements gathering
 **Agents**:
 
 - codebase-analyst
@@ -67,7 +67,7 @@ expertise domain.
 
 ### 7. **Infrastructure** (orange) - 4 agents
 
-**Purpose**: Operations, deployment, platform engineering, and database management  
+**Purpose**: Operations, deployment, platform engineering, and database management
 **Agents**:
 
 - devops
@@ -77,7 +77,7 @@ expertise domain.
 
 ### 8. **Coordination** (cyan) - 3 agents
 
-**Purpose**: Strategy, documentation, and project orchestration  
+**Purpose**: Strategy, documentation, and project orchestration
 **Agents**:
 
 - product-strategist

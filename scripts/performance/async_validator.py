@@ -167,14 +167,27 @@ class PerformanceCache:
 class AsyncAgentValidator:
     """High-performance async agent validation system."""
     
+    # Class-level constants enforcing model/category via documented schema
     # Required fields based on AGENT_TEMPLATE.md format
     REQUIRED_FIELDS = ['name', 'description', 'tools', 'model', 'category', 'color']
     
-    # Valid values for specific fields
-    VALID_COLORS = ['blue', 'green', 'red', 'purple', 'yellow', 'orange', 'white', 'brown', 'cyan', 'pink']
-    VALID_CATEGORIES = ['development', 'infrastructure', 'architecture', 'quality', 'security', 
-                       'design', 'analysis', 'documentation', 'coordination']
+    # Valid values enforced via class constants (per CodeRabbit suggestion)
+    VALID_COLORS = ['blue', 'green', 'red', 'purple', 'yellow', 'orange', 'cyan', 'pink']
+    
+    # Categories from AGENT_CATEGORIES.md only - no "operations" category
+    VALID_CATEGORIES = [
+        'development', 'quality', 'security', 'architecture', 
+        'design', 'analysis', 'infrastructure', 'coordination'
+    ]
+    
     VALID_MODELS = ['opus', 'sonnet', 'haiku']
+    
+    # Valid tools - prohibit Task tool for orchestration boundary protection
+    PROHIBITED_TOOLS = ['Task']
+    VALID_TOOLS = [
+        'Read', 'Write', 'Edit', 'MultiEdit', 'Bash', 'Grep', 'Glob', 
+        'LS', 'WebSearch', 'WebFetch'
+    ]
     
     # Non-agent documentation files to skip
     NON_AGENT_FILES = {
@@ -270,6 +283,7 @@ class AsyncAgentValidator:
             self._validate_field_values(yaml_section),
             self._validate_name_consistency(agent_name, yaml_section),
             self._validate_description_format(yaml_section),
+            self._validate_tools_format(yaml_section),
             self._validate_deprecated_fields(yaml_section),
             self._validate_template_sections(content)
         ]
@@ -310,15 +324,17 @@ class AsyncAgentValidator:
         return issues
     
     async def _validate_field_values(self, yaml_section: str) -> List[str]:
-        """Validate specific field values."""
+        """Validate specific field values using class-level constants."""
         issues = []
         
-        # Validate color field
+        # Validate color field (required per CodeRabbit suggestion)
         color_match = self.validation_rules['color_field'].search(yaml_section)
         if color_match:
             color_value = color_match.group(1).strip()
             if color_value and color_value not in self.VALID_COLORS:
                 issues.append(f"Invalid color '{color_value}'. Must be one of: {', '.join(self.VALID_COLORS)}")
+        else:
+            issues.append("Color field is required in front-matter")
         
         # Validate model field
         model_match = self.validation_rules['model_field'].search(yaml_section)
@@ -327,7 +343,7 @@ class AsyncAgentValidator:
             if model_value and model_value not in self.VALID_MODELS:
                 issues.append(f"Invalid model '{model_value}'. Must be one of: {', '.join(self.VALID_MODELS)}")
         
-        # Validate category field
+        # Validate category field - no "operations" category allowed
         category_match = self.validation_rules['category_field'].search(yaml_section)
         if category_match:
             category_value = category_match.group(1).strip()
@@ -364,7 +380,7 @@ class AsyncAgentValidator:
         return issues
     
     async def _validate_description_format(self, yaml_section: str) -> List[str]:
-        """Validate description format per AGENT_TEMPLATE.md."""
+        """Validate description format and reject multiline YAML block indicators."""
         issues = []
         
         # Check for YAML block indicators first (these make descriptions multiline)
@@ -386,6 +402,34 @@ class AsyncAgentValidator:
         
         return issues
     
+    async def _validate_tools_format(self, yaml_section: str) -> List[str]:
+        """Validate tools format and prohibit Task tool."""
+        issues = []
+        
+        tools_match = self.validation_rules['tools_field'].search(yaml_section)
+        if tools_match:
+            tools_value = tools_match.group(1).strip()
+            
+            # Check for YAML list format (should be comma-separated string)
+            if tools_value.startswith('-') or '\n-' in tools_value:
+                issues.append("Tools should be comma-separated string, not YAML list format")
+                return issues
+            
+            # Parse comma-separated tools
+            tools = [tool.strip() for tool in tools_value.split(',') if tool.strip()]
+            
+            # Prohibit Task tool for orchestration boundary protection
+            if any(tool in self.PROHIBITED_TOOLS for tool in tools):
+                prohibited_found = [tool for tool in tools if tool in self.PROHIBITED_TOOLS]
+                issues.append(f"Prohibited tools found: {', '.join(prohibited_found)}. Only Claude can orchestrate agents.")
+            
+            # Validate tool names
+            invalid_tools = [tool for tool in tools if tool not in self.VALID_TOOLS]
+            if invalid_tools:
+                issues.append(f"Invalid tools: {', '.join(invalid_tools)}. Valid tools: {', '.join(self.VALID_TOOLS)}")
+        
+        return issues
+    
     async def _validate_deprecated_fields(self, yaml_section: str) -> List[str]:
         """Check for deprecated fields not in AGENT_TEMPLATE.md format."""
         issues = []
@@ -399,7 +443,7 @@ class AsyncAgentValidator:
         return issues
     
     async def _validate_template_sections(self, content: str) -> List[str]:
-        """Validate required sections per AGENT_TEMPLATE.md."""
+        """Validate required sections and orchestration boundary text."""
         issues = []
         
         # Check for required sections
@@ -409,9 +453,16 @@ class AsyncAgentValidator:
             if section not in content:
                 issues.append(f"Missing required section: {section}")
         
-        # Check for SYSTEM BOUNDARY protection
-        if 'Only Claude has orchestration authority' not in content:
-            issues.append("Missing SYSTEM BOUNDARY protection statement")
+        # Check for SYSTEM BOUNDARY protection - validate orchestration boundary text
+        boundary_patterns = [
+            'Only Claude has orchestration authority',
+            'This agent cannot invoke other agents or create Task calls',
+            'NO Task tool access allowed'
+        ]
+        
+        boundary_found = any(pattern in content for pattern in boundary_patterns)
+        if not boundary_found:
+            issues.append("Missing SYSTEM BOUNDARY protection statement with orchestration boundary text")
         
         # Check file length (should be ~46 lines)
         line_count = len(content.splitlines())

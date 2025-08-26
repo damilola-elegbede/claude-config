@@ -10,7 +10,7 @@ Generates comprehensive audit report with actionable remediation guidance.
 
 ```bash
 /command-audit
-```bash
+```
 
 ## Behavior
 
@@ -28,10 +28,10 @@ quality. Provides detailed audit report similar to
 3. **Markdown**: Code blocks with language tags
 4. **Length**: Commands under 400 lines
 5. **Agent References**: Must reference valid agents from 28 production agents
-5. **Execution Verification**: All commands must include
+6. **Execution Verification**: All commands must include
    execution-evaluator validation
-6. **Agent Specification**: Commands must specify appropriate specialized agents
-7. **Parallelization**: Commands must leverage parallel execution where possible
+7. **Agent Specification**: Commands must specify appropriate specialized agents
+8. **Parallelization**: Commands must leverage parallel execution where possible
 
 ### Category Standards
 
@@ -99,7 +99,7 @@ development_support:
   parallelization:
     - Parallel phase execution
     - Multiple agents per workflow phase
-```bash
+```
 
 ## Execution Process
 
@@ -113,7 +113,7 @@ for cmd in system-configs/.claude/commands/*.md; do
   # Verify: Usage examples with proper syntax
   # Ensure: execution-evaluator verification section exists
 done
-```bash
+```
 
 ### Phase 2: Agent Specification Validation (28 Production Agents)
 
@@ -142,7 +142,7 @@ grep -o "[a-z-]*-agent\|[a-z-]*-engineer\|[a-z-]*-architect" system-configs/.cla
       echo "Invalid agent reference: $agent"
     fi
   done
-```bash
+```
 
 ### Phase 3: Parallelization Validation
 
@@ -159,7 +159,7 @@ grep -l "Phase.*Parallel\|Parallel Wave\|Parallel Execution" \
 grep -l "Sequential Phase\|sequential execution\|one at a time" \
   system-configs/.claude/commands/*.md | \
   xargs -I {} echo "Review {} for parallelization opportunities"
-```bash
+```
 
 ### Phase 4: Execution Verification Check
 
@@ -174,7 +174,7 @@ grep -l "## Execution Verification\|### Execution Verification" \
 
 # Check for success criteria checkmarks
 grep -c "✅.*" system-configs/.claude/commands/*.md
-```bash
+```
 
 ### Phase 5: Markdown Compliance Check
 
@@ -184,7 +184,7 @@ grep -n '```$' **/*.md
 
 # Validate common language tags present
 grep -c '```\(bash\|yaml\|text\|json\|javascript\|python\)' **/*.md
-```bash
+```
 
 ### Phase 6: Length & Complexity Analysis
 
@@ -198,7 +198,7 @@ Assessment:
   - Count total lines per command
   - Identify commands exceeding thresholds
   - Suggest refactoring opportunities
-```bash
+```
 
 ## Auto-Fix Capabilities (--fix)
 
@@ -212,7 +212,7 @@ sed -i 's/```\n#/```bash\n#/g' commands/*.md  # For commented bash
 # Standardize section headers
 sed -i 's/^# Usage$/## Usage/g' commands/*.md
 sed -i 's/^# Description$/## Description/g' commands/*.md
-```bash
+```
 
 ### Manual Fix Guidance
 
@@ -229,7 +229,7 @@ Commands requiring human review:
 
 ```text
 Commands: 16 | Compliance: 87% | Issues: 8 | Auto-fixed: 12
-```bash
+```
 
 ### Issues by Category
 
@@ -264,7 +264,7 @@ Markdown Issues: 7
 Length Issues: 4
   - Commands over 400 lines
   - Complexity not justified
-```bash
+```
 
 ### Command Status Matrix
 
@@ -288,7 +288,7 @@ Length Issues: 4
 # Standardized section headers (8 commands):
 - Fixed ## Usage formatting
 - Corrected ## Description positioning
-```bash
+```
 
 ### Manual Actions Required
 
@@ -297,7 +297,7 @@ Length Issues: 4
 # - Reduce oversized commands to <400 lines
 # - Enhance content with concrete examples where needed
 # - Verify all commands have proper execution validation
-```bash
+```
 
 ## Repository-Specific Commands
 
@@ -309,18 +309,6 @@ Commands excluded from sync process:
 
 Validation ensures these commands are properly excluded in sync.md.
 
-## Success Criteria
-
-✅ **Structure**: All commands have required sections in correct order
-✅ **Content**: Clear descriptions with practical examples
-✅ **Agent Specification**: All commands specify appropriate specialized agents
-✅ **Parallelization**: Commands leverage parallel execution where possible
-✅ **Execution Verification**: All commands include execution-evaluator deployment
-✅ **Markdown**: 100% code blocks have language tags
-✅ **Length**: Commands under 400 lines or complexity justified
-✅ **Categories**: Commands meet category-specific standards
-✅ **Repository-Specific**: Proper sync exclusions maintained
-
 ## Examples
 
 ### Basic Audit
@@ -329,7 +317,7 @@ Validation ensures these commands are properly excluded in sync.md.
 /command-audit
 # Validates all 16 commands across all criteria
 # Generates comprehensive compliance report
-```bash
+```
 
 ### Auto-Fix Run
 
@@ -337,7 +325,7 @@ Validation ensures these commands are properly excluded in sync.md.
 /command-audit --fix
 # Applies safe automatic fixes for common issues
 # Reports what was fixed and what needs manual attention
-```bash
+```
 
 ### Specific Command
 
@@ -345,7 +333,7 @@ Validation ensures these commands are properly excluded in sync.md.
 /command-audit plan
 # Focused audit of /plan command only
 # Detailed analysis with specific recommendations
-```text
+```
 
 ## Success Criteria
 

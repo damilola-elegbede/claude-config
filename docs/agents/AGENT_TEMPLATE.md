@@ -1,12 +1,12 @@
 ---
 # AGENT TEMPLATE - PRODUCTION READY
-# 
+#
 # This template matches the pattern used by 28+ production agents
 # Target length: 30-50 lines (not 180+)
-# 
+#
 # Model selection:
 # - opus: Complex reasoning, system architecture, strategic analysis
-# - sonnet: Standard development, balanced performance (DEFAULT)  
+# - sonnet: Standard development, balanced performance (DEFAULT)
 # - haiku: Rapid validation, simple operations, high-speed tasks
 #
 # Fill in ALL placeholders. Delete these comments before use.

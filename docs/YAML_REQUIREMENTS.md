@@ -24,7 +24,7 @@ Example:
 name: agent-name
 description: Agent description
 ---
-```yaml
+```
 
 ### 2. Required Fields (Per AGENT_TEMPLATE.md)
 
@@ -47,16 +47,17 @@ Every agent file MUST include these fields:
   - Valid values: `opus` (complex reasoning), `sonnet` (standard), `haiku` (rapid)
 
 - **category**: Agent category
-  - Valid values: `development`, `infrastructure`, `architecture`, `quality`, `security`, `design`, `analysis`, `documentation`, `coordination`
+  - Valid values: `development`, `infrastructure`, `architecture`, `quality`, `security`,
+    `design`, `analysis`, `documentation`, `coordination`
 
 - **color**: Visual identifier
-  - Valid values: `blue`, `green`, `red`, `purple`, `yellow`, `orange`, `pink`, `white`
+  - Valid values: `blue`, `green`, `red`, `purple`, `yellow`, `orange`, `pink`, `cyan`
 
 ### 3. Prohibited Fields (Deprecated)
 
 These fields must NOT be used (not in AGENT_TEMPLATE.md format):
 
-- **specialization_level**: No longer used
+- **specialization_level**: No longer use
 - **domain_expertise**: Removed in favor of concise format
 - **coordination_protocols**: Handled in markdown sections
 - **knowledge_base**: Not part of template
@@ -82,7 +83,7 @@ After YAML front-matter, agents must have these sections (~46 lines total):
 
   ```yaml
   description: Use this agent for backend development tasks requiring FAANG-level expertise
-```text
+  ```
 
 - **AVOID**: Multiline descriptions with pipe operator
 
@@ -90,7 +91,7 @@ After YAML front-matter, agents must have these sections (~46 lines total):
   description: |
     Use this agent for backend development...
     Multiple lines make parsing complex...
-```yaml
+  ```
 
 ### 2. File Length Requirement
 
@@ -119,13 +120,13 @@ Required order:
 
 # Validate specific file
 ./scripts/validate_yaml.sh agent-name.md
-```yaml
+```
 
 #### Running Unit Tests
 
 ```bash
 ./test_yaml_validation.sh
-```yaml
+```
 
 #### Pre-commit Hook Setup
 
@@ -137,7 +138,7 @@ cp pre-commit-yaml-validation.sh .git/hooks/pre-commit
 
 # Or symlink it
 ln -s ../../.claude/agents/pre-commit-yaml-validation.sh .git/hooks/pre-commit
-```yaml
+```
 
 ## Example Agent (AGENT_TEMPLATE.md Format)
 
@@ -213,7 +214,7 @@ Use `AGENT_TEMPLATE.md` as a starting point for new agent files:
 ```bash
 cp AGENT_TEMPLATE.md new-agent.md
 # Edit the file to customize for your agent
-```yaml
+```
 
 ## CI/CD Integration
 
@@ -234,7 +235,7 @@ jobs:
       - name: Validate YAML front-matter
         run: |
           ./scripts/validate_yaml.sh
-```yaml
+```
 
 ## Maintenance
 
