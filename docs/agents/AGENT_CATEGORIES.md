@@ -56,7 +56,7 @@ expertise domain.
 - mobile-ui
 - ux-researcher
 
-### 6. **Analysis** (yellow) - 3 agents
+### 6. **Analysis** (yellow) - 4 agents
 
 **Purpose**: Research, codebase analysis, and requirements gathering
 **Agents**:
@@ -64,6 +64,7 @@ expertise domain.
 - codebase-analyst
 - researcher
 - business-analyst
+- general-purpose
 
 ### 7. **Infrastructure** (orange) - 4 agents
 
@@ -75,13 +76,12 @@ expertise domain.
 - database-admin
 - debugger
 
-### 8. **Coordination** (cyan) - 3 agents
+### 8. **Coordination** (cyan) - 2 agents
 
 **Purpose**: Strategy, documentation, and project orchestration
 **Agents**:
 
 - product-strategist
-- project-orchestrator
 - tech-writer
 
 ## Color Assignment Rules
@@ -131,8 +131,8 @@ color: blue           # Must match category's color
 | Security | red | 1 | Security & Compliance |
 | Architecture | purple | 3 | System Design |
 | Design | pink | 3 | UI/UX |
-| Analysis | yellow | 3 | Research & Investigation |
+| Analysis | yellow | 4 | Research & Investigation |
 | Infrastructure | orange | 4 | Operations & Platform |
-| Coordination | cyan | 3 | Strategy & Documentation |
+| Coordination | cyan | 2 | Strategy & Documentation |
 
 **Total**: 28 agents across 8 categories
