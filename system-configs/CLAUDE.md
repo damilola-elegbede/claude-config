@@ -180,7 +180,7 @@ always `specialist[1-2]` with lead coordination
 **Scope**: Single file direct, 2-5 files consider `specialist[1]`, 5+ files deploy
 `specialist[2-3]`, Cross-system `multiple-specialist-pools[1-3]`
 
-## Non-Negotiable Pool Rules (ALWAYS)
+## Non-Negotiable Rules (ALWAYS)
 
 1. **Authentication/Authorization code** → `security-auditor[1-2]` (no exceptions)
 2. **Database migrations** → `database-admin[1] + backend-engineer[1]`
