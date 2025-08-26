@@ -2,8 +2,8 @@
 
 ## Description
 
-Universal test runner that automatically discovers, runs, and generates tests
-for any repository and creates a base level test suite when none exist. Uses a 3-phase discovery algorithm: README analysis,
+Universal test runner that discovers and runs tests automatically for any repository,
+and creates a base level test suite when none exist. Uses a 3-phase discovery algorithm: README analysis,
 package manager detection, and framework conventions. Creates comprehensive
 test suites when none exist.
 

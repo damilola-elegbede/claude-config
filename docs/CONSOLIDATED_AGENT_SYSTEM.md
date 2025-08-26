@@ -6,7 +6,7 @@ The agent ecosystem has been optimized to a focused set of 28 specialized agents
 clear domain expertise and defined boundaries. This configuration eliminates redundancy
 while maintaining comprehensive coverage across all technical domains.
 
-## Current Agent Portfolio (41 Agents)
+## Current Agent Portfolio (28 Agents)
 
 ### 🔵 Development (5 agents)
 

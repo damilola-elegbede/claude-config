@@ -71,8 +71,13 @@ test_claude_md_consistency() {
     assert_file_exists "$system_claude" \
         "System CLAUDE.md should exist in system-configs/"
 
-    assert_file_contains "$system_claude" "Non-Negotiable Rules" \
-        "System CLAUDE.md should define non-negotiable orchestration rules"
+    # Check for non-negotiable rules/patterns (either naming is acceptable)
+    if grep -q -E "Non-Negotiable (Rules|Patterns)" "$system_claude"; then
+        echo "✓ System CLAUDE.md defines non-negotiable orchestration rules"
+    else
+        echo "❌ System CLAUDE.md should define non-negotiable orchestration rules"
+        return 1
+    fi
 
     return 0
 }

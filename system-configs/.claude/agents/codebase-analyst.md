@@ -5,7 +5,7 @@ tools: Read, Grep, Glob, Bash
 model: sonnet
 category: analysis
 
-color: orange
+color: yellow
 ---
 
 # Codebase Analyst

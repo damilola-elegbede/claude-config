@@ -27,6 +27,7 @@ quality. Provides detailed audit report similar to
 2. **Content**: Clear descriptions, practical examples
 3. **Markdown**: Code blocks with language tags
 4. **Length**: Commands under 400 lines
+5. **Agent References**: Must reference valid agents from 28 production agents
 5. **Execution Verification**: All commands must include
    execution-evaluator validation
 6. **Agent Specification**: Commands must specify appropriate specialized agents
@@ -114,22 +115,33 @@ for cmd in system-configs/.claude/commands/*.md; do
 done
 ```bash
 
-### Phase 2: Agent Specification Validation
+### Phase 2: Agent Specification Validation (28 Production Agents)
 
 ```bash
-# Check for appropriate agent specifications
-grep -l "backend-engineer\|frontend-architect\|test-engineer\|security-auditor" \
-  system-configs/.claude/commands/*.md
+# Validate against 28 production agents following AGENT_TEMPLATE.md format
+VALID_AGENTS=("backend-engineer" "frontend-engineer" "fullstack-lead" "mobile-engineer"
+              "data-engineer" "ml-engineer" "test-engineer" "code-reviewer"
+              "debugger" "security-auditor" "performance-engineer" "principal-architect"
+              "api-architect" "frontend-architect" "ui-designer" "mobile-ui"
+              "ux-researcher" "codebase-analyst" "researcher" "business-analyst"
+              "product-strategist" "devops" "platform-engineer" "cloud-architect"
+              "database-admin" "tech-writer" "project-orchestrator" "accessibility-auditor")
 
 # Validate agent usage patterns
 for cmd in system-configs/.claude/commands/*.md; do
-  # Check: Agent names match category requirements
+  # Check: Agent names match 28 production agents
   # Verify: Security-critical operations include security-auditor
   # Ensure: Complex tasks specify multiple specialists
+  # Validate: No references to deprecated agents
 done
 
-# Identify missing agent specifications
-commands_without_agents=$(grep -L "agent.*:" system-configs/.claude/commands/*.md)
+# Identify invalid agent references
+grep -o "[a-z-]*-agent\|[a-z-]*-engineer\|[a-z-]*-architect" system-configs/.claude/commands/*.md | \
+  while read agent; do
+    if [[ ! " ${VALID_AGENTS[@]} " =~ " ${agent} " ]]; then
+      echo "Invalid agent reference: $agent"
+    fi
+  done
 ```bash
 
 ### Phase 3: Parallelization Validation

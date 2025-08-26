@@ -19,7 +19,7 @@
 
 This repository delivers a **sophisticated Smart Agent Orchestration Framework** for Claude Code CLI, featuring
 **28 specialized agents** with **multi-instance parallelization** delivering **4-6x performance improvements**.
-The system includes **18 essential commands** with advanced instance pooling architecture that enables
+The system includes **20 essential commands** with advanced instance pooling architecture that enables
 multiple agents of the same type to work simultaneously. Built from the ground up after a comprehensive cleanup
 that removed 85+ bloat files, this system provides intelligent task delegation, massive parallel execution,
 continuous improvement capabilities, and automatic command verification for enhanced development workflows.
@@ -64,7 +64,7 @@ agents with sophisticated task delegation and parallel execution capabilities.
 - **🔄 One-Command Synchronization**: Deploy entire framework with `/sync`
 - **🛡️ Quality Enforcement**: YAML validation, SYSTEM BOUNDARY protection, and compliance checking
 - **📚 Comprehensive Documentation**: 26 essential documentation files with usage patterns
-- **🔧 18 Essential Commands**: Carefully curated for maximum operational utility
+- **🔧 20 Essential Commands**: Carefully curated for maximum operational utility
 - **🎯 Production-Ready**: Battle-tested configurations with quality gates and security boundaries
 
 ## ⚡ Performance Improvements
@@ -145,7 +145,7 @@ cp -r system-configs/.claude ~/.claude
 - **Automatic Validation**: YAML compliance and security boundary checking
 - **Backup Management**: Automatic backups with rollback capabilities
 
-### 🛠️ Core Commands (18 Essential Tools)
+### 🛠️ Core Commands (20 Essential Tools)
 
 #### ⭐⭐⭐⭐⭐ Five-Star Commands (12) - Orchestration Excellence
 
@@ -166,12 +166,14 @@ cp -r system-configs/.claude ~/.claude
 - **`/fix-ci`** - **Pattern Recognition**: DevOps agent with automated failure analysis and remediation
 - **`/docs`** - **Documentation Orchestration**: Tech-writer agent with comprehensive documentation management
 
-#### ⭐⭐⭐⭐ Four-Star Commands (4) - Enhanced Operations
+#### ⭐⭐⭐⭐ Four-Star Commands (6) - Enhanced Operations
 
 - **`/commit`** - **Smart Git Operations**: Git-workflow agent with semantic commit generation and quality gates
 - **`/push`** - **Safe Repository Operations**: Comprehensive pre-push validation with rollback capabilities
 - **`/sync`** - **Framework Deployment**: Complete orchestration framework synchronization with validation
 - **`/branch`** - **Context-Aware Branching**: Intelligent naming conventions based on repository analysis
+- **`/deploy`** - **Production Deployment**: DevOps agent with comprehensive deployment orchestration
+- **`/monitor`** - **System Monitoring**: Real-time monitoring with intelligent alerting and diagnostics
 
 #### ⭐⭐⭐ Three-Star Commands (2) - Utility & Development Support
 
@@ -189,11 +191,11 @@ cp -r system-configs/.claude ~/.claude
 
 ### Orchestration Framework Command Portfolio
 
-- **Total Commands**: 18 essential orchestration commands (refined from 40+ candidates)
-- **5-Star Commands**: 12 (67%) - Production-ready with sophisticated agent coordination
-- **4-Star Commands**: 4 (22%) - Enhanced operations with multi-agent capabilities
-- **3-Star Commands**: 2 (11%) - Utility and development support
-- **Average Rating**: 4.7/5.0 - Industry-leading orchestration quality
+- **Total Commands**: 20 essential orchestration commands (refined from 40+ candidates)
+- **5-Star Commands**: 12 (60%) - Production-ready with sophisticated agent coordination
+- **4-Star Commands**: 6 (30%) - Enhanced operations with multi-agent capabilities
+- **3-Star Commands**: 2 (10%) - Utility and development support
+- **Average Rating**: 4.5/5.0 - Industry-leading orchestration quality
 - **Design Philosophy**: Intelligent specialist delegation with parallel-first execution
 - **Performance Focus**: Continuous improvement through execution metrics and feedback loops
 - **Verification Layer**: Automatic execution-evaluator deployment after every command
@@ -322,7 +324,7 @@ See [ShellCheck Validation Documentation](docs/SHELLCHECK_VALIDATION.md) for com
 
 ```bash
 /command-audit
-# Comprehensive validation of all 18 command files
+# Comprehensive validation of all 20 command files
 # Structure compliance, content quality, and markdown parsing standards
 # Length analysis with complexity thresholds and refactoring recommendations
 # Repository-specific command detection and sync exclusion validation
@@ -555,7 +557,7 @@ claude-config/
 │   │   ├── agents/            # 28 agent definitions + 5 docs
 │   │   │   ├── README.md      # Agent ecosystem guide
 │   │   │   └── *.md           # Individual agent specs
-│   │   └── commands/          # 18 command definitions
+│   │   └── commands/          # 20 command definitions
 │   └── settings.json          # Audio hooks and preferences
 ├── docs/                      # 26 documentation files
 ├── scripts/                   # 17 utility and validation scripts
@@ -570,8 +572,8 @@ graph TB
     B --> C{Validation}
     C --> D[Backup Existing]
     D --> E[Deploy to ~/.claude/]
-    E --> F[41 Agents Available]
-    E --> G[18 Commands Available]
+    E --> F[28 Agents Available]
+    E --> G[20 Commands Available]
     F --> H[Enhanced Claude CLI]
     G --> H
 ```
@@ -588,7 +590,7 @@ cd claude-config
 # One-command framework deployment
 /sync
 
-# Experience intelligent orchestration: 28 agents and 18 commands available
+# Experience intelligent orchestration: 28 agents and 20 commands available
 # Multi-agent repository analysis with performance optimization
 /context
 
@@ -869,3 +871,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 [Request Feature](https://github.com/damilola/claude-config/issues) •
 [Documentation](https://github.com/damilola/claude-config/wiki) •
 [Framework Guide](system-configs/.claude/agents/README.md)
+
+</div>

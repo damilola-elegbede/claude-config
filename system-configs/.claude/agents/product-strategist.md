@@ -3,7 +3,7 @@ name: product-strategist
 description: Strategic product guidance and feature prioritization specialist. Aligns technical development with business objectives.
 tools: Read, Write
 model: sonnet
-category: strategy
+category: coordination
 
 color: cyan
 ---

@@ -16,7 +16,7 @@
 ## Executive Summary
 
 The Claude Agent Ecosystem is a sophisticated multi-agent orchestration system designed to decompose complex tasks
-into parallel workstreams. At its core, Claude serves as the sole orchestration engine coordinating 29 specialized
+into parallel workstreams. At its core, Claude serves as the sole orchestration engine coordinating 28 specialized
 AI agents across 8 distinct categories. This architecture enables massive parallelization, clear separation of
 concerns, and robust security boundaries while maintaining a single point of execution control.
 
@@ -115,7 +115,7 @@ graph LR
 
 ### Category Structure
 
-The ecosystem organizes 29 specialized agents into 8 functional categories, each with distinct responsibilities
+The ecosystem organizes 28 specialized agents into 8 functional categories, each with distinct responsibilities
 and color coding for visual identification:
 
 ```mermaid

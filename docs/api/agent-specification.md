@@ -5,7 +5,7 @@
 The Agent Specification format defines how AI agents are configured in the Claude
 Code ecosystem. Each agent is defined in a Markdown file with YAML frontmatter
 that specifies its metadata, capabilities, and tool permissions. This
-specification supports the current ecosystem of 29 specialized agents across 8
+specification supports the current ecosystem of 28 specialized agents across 8
 categories.
 
 ## File Format

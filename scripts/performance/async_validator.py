@@ -168,8 +168,8 @@ class PerformanceCache:
 class AsyncAgentValidator:
     """High-performance async agent validation system."""
     
-    # Required fields based on actual agent schema
-    REQUIRED_FIELDS = ['name', 'description', 'color', 'tools']
+    # Required fields based on AGENT_TEMPLATE.md format
+    REQUIRED_FIELDS = ['name', 'description', 'tools', 'model', 'category', 'color']
     
     # Valid values for specific fields
     VALID_COLORS = ['blue', 'green', 'red', 'purple', 'yellow', 'orange', 'white', 'brown', 'cyan', 'pink']
@@ -195,8 +195,9 @@ class AsyncAgentValidator:
             'name_field': re.compile(r'^name:\s*(.+)$', re.MULTILINE),
             'description_field': re.compile(r'^description:\s*(.+)$', re.MULTILINE),
             'color_field': re.compile(r'^color:\s*(.+)$', re.MULTILINE),
-            'domain_expertise': re.compile(r'domain_expertise:\s*$', re.MULTILINE),
-            'domain_items': re.compile(r'domain_expertise:.*?\n\s+-', re.DOTALL)
+            'model_field': re.compile(r'^model:\s*(.+)$', re.MULTILINE),
+            'category_field': re.compile(r'^category:\s*(.+)$', re.MULTILINE),
+            'tools_field': re.compile(r'^tools:\s*(.+)$', re.MULTILINE)
         }
     
     async def validate_file_async(self, file_path: Path) -> ValidationResult:
@@ -261,14 +262,14 @@ class AsyncAgentValidator:
         
         yaml_section = yaml_match.group(1)
         
-        # Concurrent validation of different aspects
+        # Concurrent validation of different aspects per AGENT_TEMPLATE.md
         validation_tasks = [
             self._validate_required_fields(yaml_section),
             self._validate_field_values(yaml_section),
             self._validate_name_consistency(agent_name, yaml_section),
-            self._validate_description_length(yaml_section),
-            self._validate_domain_expertise(yaml_section),
-            self._validate_security_boundaries(content)
+            self._validate_description_format(yaml_section),
+            self._validate_deprecated_fields(yaml_section),
+            self._validate_template_sections(content)
         ]
         
         # Run validations concurrently
@@ -317,6 +318,23 @@ class AsyncAgentValidator:
             if color_value and color_value not in self.VALID_COLORS:
                 issues.append(f"Invalid color '{color_value}'. Must be one of: {', '.join(self.VALID_COLORS)}")
         
+        # Validate model field
+        model_match = self.validation_rules['model_field'].search(yaml_section)
+        if model_match:
+            model_value = model_match.group(1).strip()
+            valid_models = ['opus', 'sonnet', 'haiku']
+            if model_value and model_value not in valid_models:
+                issues.append(f"Invalid model '{model_value}'. Must be one of: {', '.join(valid_models)}")
+        
+        # Validate category field
+        category_match = self.validation_rules['category_field'].search(yaml_section)
+        if category_match:
+            category_value = category_match.group(1).strip()
+            valid_categories = ['development', 'infrastructure', 'architecture', 'quality', 'security', 
+                              'operations', 'design', 'analysis', 'documentation', 'coordination']
+            if category_value and category_value not in valid_categories:
+                issues.append(f"Invalid category '{category_value}'. Must be one of: {', '.join(valid_categories)}")
+        
         return issues
     
     async def _validate_name_consistency(self, agent_name: str, yaml_section: str) -> List[str]:
@@ -331,37 +349,54 @@ class AsyncAgentValidator:
         
         return issues
     
-    async def _validate_description_length(self, yaml_section: str) -> List[str]:
-        """Validate description length."""
+    async def _validate_description_format(self, yaml_section: str) -> List[str]:
+        """Validate description format per AGENT_TEMPLATE.md."""
         issues = []
         
         desc_match = self.validation_rules['description_field'].search(yaml_section)
         if desc_match:
             description = desc_match.group(1).strip()
-            if len(description) > 250:
-                issues.append(f"Description too long ({len(description)} chars). Should be under 250.")
+            if len(description) > 300:
+                issues.append(f"Description too long ({len(description)} chars). Should be under 300.")
+            # Check for proper trigger phrases
+            if not any(phrase in description for phrase in ['MUST BE USED', 'Use PROACTIVELY', 'Expert', 'Specializes']):
+                issues.append("Description missing trigger phrase (MUST BE USED, Use PROACTIVELY, Expert, Specializes)")
         
         return issues
     
-    async def _validate_domain_expertise(self, yaml_section: str) -> List[str]:
-        """Validate domain expertise list."""
+    async def _validate_deprecated_fields(self, yaml_section: str) -> List[str]:
+        """Check for deprecated fields not in AGENT_TEMPLATE.md format."""
         issues = []
         
-        if self.validation_rules['domain_expertise'].search(yaml_section):
-            if not self.validation_rules['domain_items'].search(yaml_section):
-                issues.append("domain_expertise list is empty")
+        deprecated_fields = ['specialization_level:', 'domain_expertise:', 'coordination_protocols:', 
+                            'knowledge_base:', 'escalation_path:']
+        for field in deprecated_fields:
+            if field in yaml_section:
+                issues.append(f"Contains deprecated field: {field} (not in AGENT_TEMPLATE.md format)")
         
         return issues
     
-    async def _validate_security_boundaries(self, content: str) -> List[str]:
-        """Validate SYSTEM BOUNDARY protection."""
+    async def _validate_template_sections(self, content: str) -> List[str]:
+        """Validate required sections per AGENT_TEMPLATE.md."""
         issues = []
         
-        if 'SYSTEM BOUNDARY' not in content:
-            issues.append("Missing SYSTEM BOUNDARY protection")
+        # Check for required sections
+        required_sections = ['## Identity', '## Core Capabilities', '## When to Engage', 
+                           '## When NOT to Engage', '## Coordination', '## SYSTEM BOUNDARY']
+        for section in required_sections:
+            if section not in content:
+                issues.append(f"Missing required section: {section}")
         
-        if 'Task' in content and 'forbidden' not in content.lower():
-            issues.append("Potential Task tool access without proper restrictions")
+        # Check for SYSTEM BOUNDARY protection
+        if 'Only Claude has orchestration authority' not in content:
+            issues.append("Missing SYSTEM BOUNDARY protection statement")
+        
+        # Check file length (should be ~46 lines)
+        line_count = len(content.splitlines())
+        if line_count < 40:
+            issues.append(f"File too short ({line_count} lines, expected ~46 per AGENT_TEMPLATE.md)")
+        elif line_count > 60:
+            issues.append(f"File too long ({line_count} lines, expected ~46 per AGENT_TEMPLATE.md)")
         
         return issues
     

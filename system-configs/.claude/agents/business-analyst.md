@@ -5,7 +5,7 @@ tools: Read, Write, Grep
 model: sonnet
 category: analysis
 
-color: orange
+color: yellow
 ---
 
 # Business Analyst

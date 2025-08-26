@@ -26,7 +26,7 @@ description: Agent description
 ---
 ```yaml
 
-### 2. Required Fields
+### 2. Required Fields (Per AGENT_TEMPLATE.md)
 
 Every agent file MUST include these fields:
 
@@ -34,48 +34,45 @@ Every agent file MUST include these fields:
   - Format: `[a-z]+(-[a-z]+)*`
   - Examples: `backend-engineer`, `test-engineer`, `principal-architect`
 
-- **description**: Clear, concise description of the agent's purpose
-  - Should be a single line (not multiline with `|`)
-  - Maximum recommended length: 500 characters
-  - Should clearly state what the agent does and when to use it
+- **description**: Clear trigger-based description
+  - Must include trigger phrase: "MUST BE USED", "Use PROACTIVELY", "Expert", or "Specializes"
+  - Maximum length: 300 characters
+  - Single line format (no multiline with `|`)
 
-### 3. Recommended Fields
+- **tools**: Comma-separated list of allowed tools
+  - Examples: `Read, Write, Edit, Bash, Grep, Glob`
+  - No Task tool (reserved for Claude only)
 
-These fields should be included for complete agent configuration:
+- **model**: AI model selection
+  - Valid values: `opus` (complex reasoning), `sonnet` (standard), `haiku` (rapid)
 
-- **color**: Visual identifier for the agent
-  - Valid values: red, orange, yellow, green, blue, purple, cyan, etc.
+- **category**: Agent category
+  - Valid values: `development`, `infrastructure`, `architecture`, `quality`, `security`, `design`, `analysis`, `documentation`, `coordination`
 
-- **specialization_level**: Agent's expertise level
-  - Valid values: `junior`, `specialist`, `senior`, `principal`
+- **color**: Visual identifier
+  - Valid values: `blue`, `green`, `red`, `purple`, `yellow`, `orange`, `pink`, `white`
 
-- **domain_expertise**: Array of expertise areas
+### 3. Prohibited Fields (Deprecated)
 
-  ```yaml
-  domain_expertise:
-    - primary_skill
-    - secondary_skill
-    - tertiary_skill
-```text
+These fields must NOT be used (not in AGENT_TEMPLATE.md format):
 
-- **tools**: Tool access configuration
+- **specialization_level**: No longer used
+- **domain_expertise**: Removed in favor of concise format
+- **coordination_protocols**: Handled in markdown sections
+- **knowledge_base**: Not part of template
+- **escalation_path**: Covered in Coordination section
+- **tools as object**: Use simple comma-separated string instead
 
-  ```yaml
-  tools:
-    allowed: [Read, Write, Grep]
-    forbidden: [Delete]
-    rationale: "Explanation of tool permissions"
-```yaml
+### 4. Required Markdown Sections
 
-### 4. Optional Fields
+After YAML front-matter, agents must have these sections (~46 lines total):
 
-These fields can be included as needed:
-
-- **parallel_compatible**: List of agents that can work in parallel
-- **escalation_to**: Agents to escalate complex issues to
-- **escalation_from**: Agents that escalate to this agent
-- **coordination_protocols**: Detailed coordination patterns
-- **knowledge_base**: Additional reference information
+1. **## Identity**: 2-3 lines describing expertise
+2. **## Core Capabilities**: 5 bullet points maximum
+3. **## When to Engage**: Specific triggers
+4. **## When NOT to Engage**: Clear boundaries
+5. **## Coordination**: Parallel work and escalation
+6. **## SYSTEM BOUNDARY**: Must include "Only Claude has orchestration authority"
 
 ## Best Practices
 
@@ -95,23 +92,22 @@ These fields can be included as needed:
     Multiple lines make parsing complex...
 ```yaml
 
-### 2. Examples in Description
+### 2. File Length Requirement
 
-- **AVOID**: Embedding examples in the description field
-- **CONSIDER**: Creating a separate examples section after the front-matter
+- **Target**: ~46 lines total
+- **Range**: 40-60 lines acceptable
+- **Format**: Concise, focused content
 
-### 3. Field Ordering
+### 3. Field Ordering (Per AGENT_TEMPLATE.md)
 
-Recommended order for consistency:
+Required order:
 
 1. name
 2. description
-3. color
-4. specialization_level
-5. domain_expertise
-6. tools
-7. coordination fields
-8. other optional fields
+3. tools
+4. model
+5. category
+6. color (optional but recommended)
 
 ### 4. Validation
 
@@ -143,11 +139,61 @@ cp pre-commit-yaml-validation.sh .git/hooks/pre-commit
 ln -s ../../.claude/agents/pre-commit-yaml-validation.sh .git/hooks/pre-commit
 ```yaml
 
+## Example Agent (AGENT_TEMPLATE.md Format)
+
+```yaml
+---
+name: backend-engineer
+description: MUST BE USED for server-side architecture, microservices, distributed systems, and database engineering. Use PROACTIVELY for high-performance optimization (>10k RPS).
+tools: Read, Write, Edit, Bash, Grep, Glob
+model: sonnet
+category: development
+
+color: blue
+---
+
+# Backend Engineer
+
+## Identity
+
+Expert backend engineer specializing in distributed systems, microservices architecture, and high-performance server implementations.
+Combines strategic architectural thinking with production-grade implementation skills for 100k+ RPS systems.
+
+## Core Capabilities
+
+- Distributed systems design with consensus algorithms and CAP theorem application
+- Microservices architecture with proper service boundaries
+- Performance optimization for sub-100ms latency
+- Database engineering including sharding and replication
+- Event-driven architecture with message queues
+
+## When to Engage
+
+- Server-side code modifications or new API endpoints
+- Database schema changes or query optimization
+- Performance issues exceeding latency thresholds
+- Microservices architecture design
+
+## When NOT to Engage
+
+- Pure frontend or UI-only changes
+- Documentation updates without code changes
+
+## Coordination
+
+Works in parallel with frontend-engineer for full-stack features.
+Escalates to principal-architect for system-wide architectural decisions.
+
+## SYSTEM BOUNDARY
+
+This agent cannot invoke other agents or create Task calls. Only Claude has orchestration authority.
+```
+
 ## Common Issues and Solutions
 
 ### Issue 1: Very Long Descriptions
 
-**Problem**: Descriptions over 500 characters are hard to maintain
+**Problem**: Descriptions over 300 characters are too long
 **Solution**: Keep descriptions concise, move details to documentation section
 
 ### Issue 2: Complex Nested YAML

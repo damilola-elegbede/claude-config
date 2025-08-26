@@ -5,7 +5,7 @@ tools: Read, Grep, WebSearch, WebFetch
 model: sonnet
 category: analysis
 
-color: orange
+color: yellow
 ---
 
 # Researcher

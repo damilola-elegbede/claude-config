@@ -3,9 +3,9 @@ name: tech-writer
 description: Use PROACTIVELY for documentation, READMEs, API docs, and work summaries. MUST BE USED after completing multi-step tasks (3+ operations) or multi-file changes (5+ files).
 tools: Read, Write
 model: sonnet
-category: documentation
+category: coordination
 
-color: white
+color: cyan
 ---
 
 # Tech Writer

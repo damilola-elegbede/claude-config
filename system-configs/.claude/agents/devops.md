@@ -5,7 +5,7 @@ tools: Read, Write, Bash
 model: sonnet
 category: infrastructure
 
-color: yellow
+color: orange
 ---
 
 # DevOps

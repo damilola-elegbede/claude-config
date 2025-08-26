@@ -3,9 +3,9 @@ name: project-orchestrator
 description: Use PROACTIVELY for multi-agent strategy planning. MUST BE USED for parallel execution analysis, resource optimization, workflow coordination, and team efficiency recommendations.
 tools: Read, Write
 model: opus
-category: operations
+category: coordination
 
-color: orange
+color: cyan
 ---
 
 # Project Orchestrator

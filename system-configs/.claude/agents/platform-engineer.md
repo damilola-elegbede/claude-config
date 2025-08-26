@@ -5,7 +5,7 @@ tools: Read, Write, Edit, Bash, Grep
 model: sonnet
 category: infrastructure
 
-color: yellow
+color: orange
 ---
 
 # Platform Engineer
