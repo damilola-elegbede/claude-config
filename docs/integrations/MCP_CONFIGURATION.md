@@ -60,19 +60,33 @@ organization and maintainability.
 - **Package**: `elevenlabs-streaming-mcp-server`
 - **Environment**: Requires `ELEVENLABS_API_KEY`
 
+### 6. Notion API
+
+- **Purpose**: Notion workspace integration
+- **Package**: `@notionhq/notion-mcp-server`
+- **Environment**: Requires `NOTION_API_KEY`
+
 ## Deployment
 
-The `.mcp.json` file is automatically deployed when running `/sync`:
+The `.mcp.json` file is automatically deployed and configured when running `/sync`:
 
 ```bash
 # From claude-config repository
 /sync
 
 # Deploys:
-# - .mcp.json → ~/.mcp.json
+# - .mcp.json → ~/.mcp.json (for Claude Desktop)
+# - MCP servers → Claude CLI user scope (via claude mcp add)
 # - settings.json → ~/.claude/settings.json (without MCP config)
 # - Other configurations → ~/.claude/
 ```
+
+The `/sync` command automatically:
+
+1. Copies `.mcp.json` to home directory for Claude Desktop
+2. Runs `claude mcp list` to check existing servers
+3. Adds any missing servers using `claude mcp add --scope user`
+4. Validates all MCP servers are connected
 
 ## Adding New MCP Servers
 
@@ -101,6 +115,7 @@ Required environment variables should be set in your shell configuration:
 export GITHUB_TOKEN="your-github-token"
 export CONTEXT7_API_KEY="your-context7-key"
 export ELEVENLABS_API_KEY="your-elevenlabs-key"
+export NOTION_API_KEY="your-notion-api-key"
 ```
 
 ## Migration from settings.json

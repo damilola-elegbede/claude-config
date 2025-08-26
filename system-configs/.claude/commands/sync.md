@@ -64,6 +64,11 @@ Files Synced:
   - settings.json         → ~/.claude/settings.json
   - statusline.sh         → ~/.claude/statusline.sh
 
+MCP Servers Synced:
+  - From: .mcp.json
+  - To: Claude CLI user scope
+  - Method: claude mcp add --scope user
+
 Excluded:
   - README.md files
   - AGENT_TEMPLATE.md
@@ -110,7 +115,41 @@ rsync -av \
 chmod +x ~/.claude/statusline.sh 2>/dev/null || true
 ```bash
 
-### Phase 3: Validation
+### Phase 3: MCP Server Sync
+
+```bash
+# Check current MCP servers
+current_servers=$(claude mcp list | grep ":" | cut -d: -f1)
+
+# Read .mcp.json and sync missing servers
+if [[ -f ".mcp.json" ]]; then
+  echo "🔄 Syncing MCP servers..."
+
+  # Parse .mcp.json and add missing servers
+  for server in $(jq -r '.mcpServers | keys[]' .mcp.json); do
+    if ! echo "$current_servers" | grep -q "^$server$"; then
+      # Extract server configuration
+      command=$(jq -r ".mcpServers.$server.command" .mcp.json)
+      args=$(jq -r ".mcpServers.$server.args[]?" .mcp.json 2>/dev/null)
+
+      # Build claude mcp add command
+      if [[ "$command" == "npx" ]]; then
+        claude mcp add "$server" npx -- $args --scope user
+        echo "✅ Added MCP server: $server"
+      else
+        claude mcp add "$server" "$command" $args --scope user
+        echo "✅ Added MCP server: $server"
+      fi
+    else
+      echo "✓ MCP server already configured: $server"
+    fi
+  done
+else
+  echo "⚠️  No .mcp.json found - skipping MCP server sync"
+fi
+```bash
+
+### Phase 4: Validation
 
 ```bash
 # Validate JSON files
@@ -125,6 +164,9 @@ for file in agents commands output-styles settings.json statusline.sh; do
     echo "⚠️  Missing: ~/.claude/$file"
   fi
 done
+
+# Verify MCP servers are connected
+claude mcp list
 ```bash
 
 ## Examples
@@ -140,7 +182,24 @@ Claude: 🔄 Syncing Claude configurations...
 ✅ Commands synced (15 files)
 ✅ Output styles synced (8 files)
 ✅ Settings and statusline synced
-🎯 All configurations deployed successfully
+
+🔄 Syncing MCP servers from .mcp.json...
+✓ MCP server already configured: github
+✓ MCP server already configured: context7
+✓ MCP server already configured: filesystem
+✓ MCP server already configured: elevenlabs
+✅ Added MCP server: notionApi
+✅ Added MCP server: shadcn-ui
+
+📡 MCP Server Status:
+github: ✓ Connected
+context7: ✓ Connected
+filesystem: ✓ Connected
+elevenlabs: ✓ Connected
+notionApi: ✓ Connected
+shadcn-ui: ✓ Connected
+
+🎯 All configurations and MCP servers deployed successfully
 ```bash
 
 ### Dry Run
@@ -175,6 +234,8 @@ Deploy execution-evaluator to verify:
 - ✅ **Agents deployed** - All agent definitions properly synchronized
 - ✅ **Commands available** - All custom commands deployed and accessible
 - ✅ **Settings applied** - settings.json and statusline.sh configured correctly
+- ✅ **MCP servers synced** - All servers from .mcp.json added to user scope
+- ✅ **MCP connectivity** - All MCP servers connected and responding
 - ✅ **Validation passed** - JSON syntax and file integrity verified
 - ✅ **Backup created** - Previous configuration safely backed up (if requested)
 
