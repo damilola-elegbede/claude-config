@@ -27,7 +27,7 @@ Code CLI.
 
 ### Configuration Management
 
-1. **Adding New Agents**: Use the template in `system-configs/.claude/agents/AGENT_TEMPLATE.md`
+1. **Adding New Agents**: Use the template in `docs/agents/AGENT_TEMPLATE.md`
 2. **Follow YAML Schema**: Ensure all agents have valid front-matter
 3. **Include SYSTEM BOUNDARY**: Protection against unauthorized invocation
 4. **Run Validation**: Execute `./scripts/validate-agent-yaml.py`

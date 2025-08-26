@@ -619,7 +619,7 @@ git pull origin main && /sync  # Framework updates
 
 ```bash
 # Intelligent agent development with orchestration support
-cp system-configs/.claude/agents/AGENT_TEMPLATE.md system-configs/.claude/agents/my-specialist.md
+cp docs/agents/AGENT_TEMPLATE.md system-configs/.claude/agents/my-specialist.md
 
 # Framework validation and deployment
 ./scripts/validate-agent-yaml.py  # Quality gates
@@ -770,7 +770,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ### Adding New Agents
 
-1. Use the agent template: `system-configs/.claude/agents/AGENT_TEMPLATE.md`
+1. Use the agent template: `docs/agents/AGENT_TEMPLATE.md`
 2. Follow naming conventions (descriptive, lowercase, hyphenated)
 3. Include valid YAML front-matter with all required fields
 4. Include SYSTEM BOUNDARY protection in your agent
@@ -789,8 +789,8 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ### Core Documentation
 
-- [Agent Ecosystem Overview](system-configs/.claude/agents/README.md)
-- [Agent Categories](system-configs/.claude/agents/AGENT_CATEGORIES.md)
+- [Agent Ecosystem Overview](docs/agents/README.md)
+- [Agent Categories](docs/agents/AGENT_CATEGORIES.md)
 - [Audio Notifications](docs/AUDIO_HOOK_README.md)
 - [Agent Selection Guide](docs/AGENT_SELECTION_GUIDE.md)
 - [Documentation Index](docs/DOCUMENTATION_INDEX.md)
@@ -834,7 +834,7 @@ agent coordination.
 
 ### Q: How can I contribute a new agent?
 
-**A:** Use the template in `system-configs/.claude/agents/AGENT_TEMPLATE.md`, ensure valid YAML front-matter and
+**A:** Use the template in `docs/agents/AGENT_TEMPLATE.md`, ensure valid YAML front-matter and
 SYSTEM BOUNDARY protection, then submit a PR.
 
 ## 🔒 Security & Framework Protection
@@ -870,6 +870,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 [Report Bug](https://github.com/damilola/claude-config/issues) •
 [Request Feature](https://github.com/damilola/claude-config/issues) •
 [Documentation](https://github.com/damilola/claude-config/wiki) •
-[Framework Guide](system-configs/.claude/agents/README.md)
+[Framework Guide](docs/agents/README.md)
 
 </div>

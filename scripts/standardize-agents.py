@@ -5,7 +5,7 @@ This script ensures proper YAML front-matter matching the concise 46-line templa
 
 CRITICAL: This script enforces the orchestration anti-pattern rule:
 NO AGENT MAY HAVE ACCESS TO THE Task TOOL. Only Claude can orchestrate agents.
-All agents follow the standardized template in system-configs/.claude/agents/AGENT_TEMPLATE.md
+All agents follow the standardized template in docs/agents/AGENT_TEMPLATE.md
 """
 
 import os

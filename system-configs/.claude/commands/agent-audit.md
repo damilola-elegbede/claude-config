@@ -74,7 +74,7 @@ design principles.
 
 ### 1. Category Validation (Per AGENT_CATEGORIES.md)
 
-- **Exactly 8 Categories**: Validate against system-configs/.claude/agents/AGENT_CATEGORIES.md
+- **Exactly 8 Categories**: Validate against docs/agents/AGENT_CATEGORIES.md
 - **Category Assignment**: Verify each agent matches AGENT_CATEGORIES.md assignments
 - **Color Consistency**: Validate colors match AGENT_CATEGORIES.md specifications
   - Development (blue), Quality (green), Security (red), Architecture (purple)
@@ -151,8 +151,8 @@ Before any other validation, ensure all agent files conform to AGENT_TEMPLATE.md
 ```yaml
 yaml_validation:
   templates:
-    - system-configs/.claude/agents/AGENT_TEMPLATE.md  # Format specification
-    - system-configs/.claude/agents/AGENT_CATEGORIES.md # Category definitions
+    - docs/agents/AGENT_TEMPLATE.md  # Format specification
+    - docs/agents/AGENT_CATEGORIES.md # Category definitions
 
   category_validation:
     valid_categories: [development, quality, security, architecture, design, analysis, infrastructure, coordination]

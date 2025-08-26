@@ -14,13 +14,13 @@ Welcome! This guide helps you contribute effectively to the Claude Code CLI conf
 
 ### Agent Development
 
-When creating agents, use the template in `system-configs/.claude/agents/AGENT_TEMPLATE.md`:
+When creating agents, use the template in `docs/agents/AGENT_TEMPLATE.md`:
 
 - Include valid YAML front-matter
 - Add SYSTEM BOUNDARY protection
 - Define clear capabilities
 - Run validation (mandatory): `./scripts/validate-agent-yaml.py`
-- Keep the agents reference up to date: `system-configs/.claude/agents/README.md`
+- Keep the agents reference up to date: `docs/agents/README.md`
 
 ### Command Development
 

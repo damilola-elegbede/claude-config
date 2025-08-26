@@ -117,9 +117,9 @@ All agents are documented in the `system-configs/.claude/agents/` directory:
 
 ### 📑 Templates & Standards
 
-- **[Agent Template](../system-configs/.claude/agents/AGENT_TEMPLATE.md)** - Template for new agents
-- **[Agent Categories](../system-configs/.claude/agents/AGENT_CATEGORIES.md)** - Category definitions
-- **[Agent README](../system-configs/.claude/agents/README.md)** - Complete agent ecosystem guide
+- **[Agent Template](../docs/agents/AGENT_TEMPLATE.md)** - Template for new agents
+- **[Agent Categories](../docs/agents/AGENT_CATEGORIES.md)** - Category definitions
+- **[Agent README](../docs/agents/README.md)** - Complete agent ecosystem guide
 - **[Audit Verification Protocol](../system-configs/.claude/agents/AUDIT_VERIFICATION_PROTOCOL.md)** - Audit
   procedures
 
