@@ -136,7 +136,7 @@ User: /sync
 Claude: 🔄 Syncing Claude configurations...
 📁 Source: system-configs/.claude/ (50 files)
 📁 Destination: ~/.claude/
-✅ Agents synced (41 files)
+✅ Agents synced (28 files)
 ✅ Commands synced (15 files)
 ✅ Output styles synced (8 files)
 ✅ Settings and statusline synced
@@ -149,7 +149,7 @@ Claude: 🔄 Syncing Claude configurations...
 User: /sync --dry-run
 Claude: 📖 Preview mode - no changes will be made
 Would sync:
-- 41 agent files to ~/.claude/agents/
+- 28 agent files to ~/.claude/agents/
 - 18 command files to ~/.claude/commands/
 - 8 output style files to ~/.claude/output-styles/
 - settings.json to ~/.claude/settings.json

@@ -120,7 +120,7 @@ Support, coordination, and strategic planning agents
 
 The agent ecosystem uses three model tiers optimized for task complexity:
 
-### Current Distribution (41 agents)
+### Current Distribution (28 agents)
 
 - **Opus (7 agents, 16.7%)**: Strategic and high-complexity tasks
   - principal-architect, performance-specialist, project-orchestrator

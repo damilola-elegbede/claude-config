@@ -110,7 +110,7 @@ Used in `/deps` for scanning dependencies:
 calculation: min(max_instances, ceil(work_items / items_per_instance))
 
 Examples:
-  - 40 agents, 8 max instances → 8 instances (5 agents each)
+  - 28 agents, 8 max instances → 8 instances (3-4 agents each)
   - 15 files, 5 max instances → 3 instances (5 files each)
   - 3 tests, 5 max instances → 1 instance (below threshold)
 ```

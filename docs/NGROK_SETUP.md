@@ -179,7 +179,7 @@ Or use a simple cron job:
 crontab -e
 
 # Add this line
-@reboot /Users/damilola/start-mcp-dashboard.sh
+@reboot ~/start-mcp-dashboard.sh
 ```yaml
 
 ## Summary

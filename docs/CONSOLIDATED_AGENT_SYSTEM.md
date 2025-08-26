@@ -216,7 +216,7 @@ codebase_understanding:
 - **Selection Accuracy**: >95% correct agent selection
 - **No Overlap**: Clear boundaries between agent responsibilities
 - **Complete Coverage**: All technical domains addressed
-- **Optimal Size**: 41 agents provide comprehensive coverage without redundancy
+- **Optimal Size**: 28 agents provide comprehensive coverage without redundancy
 
 ### Performance Optimization
 
