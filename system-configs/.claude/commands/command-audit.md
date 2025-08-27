@@ -279,7 +279,7 @@ Length Issues: 4
 
 ### Auto-Remediation Applied
 
-```bash
+```text
 # Fixed missing language tags (12 commands):
 - Added 'bash' tags to shell command blocks
 - Added 'yaml' tags to configuration examples
@@ -292,7 +292,7 @@ Length Issues: 4
 
 ### Manual Actions Required
 
-```bash
+```text
 # Priority optimizations:
 # - Reduce oversized commands to <400 lines
 # - Enhance content with concrete examples where needed

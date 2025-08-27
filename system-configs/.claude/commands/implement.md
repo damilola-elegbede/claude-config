@@ -10,7 +10,7 @@ then deploys appropriate specialized agents to complete the implementation.
 
 ```bash
 /implement <spec-file.md> [options]
-```bash
+```
 
 ## Behavior
 
@@ -62,18 +62,18 @@ Verification: Validate implementation against specification
 ```yaml
 Backend Tasks: backend-engineer, database-admin, api-architect
 Frontend Tasks: frontend-architect, mobile-ui, ui-designer
-Testing Tasks: test-engineer, qa-tester, performance-engineer
+Testing Tasks: test-engineer, test-engineer, performance-engineer
 Documentation: tech-writer, api-architect (for API docs)
-Security: security-auditor, regulatory-compliance-specialist
+Security: security-auditor, security-auditor
 Infrastructure: devops, platform-engineer, cloud-architect
 Analysis: codebase-analyst, debugger, performance-specialist
-```bash
+```
 
 ## Examples
 
 ### Basic Implementation
 
-```bash
+```text
 /implement feature-spec.md
 
 # Expected output:
@@ -92,7 +92,7 @@ Analysis: codebase-analyst, debugger, performance-specialist
 #   - Integration of components
 #
 # Parallel Wave 2:
-#   - qa-tester: Integration testing
+#   - test-engineer: Integration testing
 #   - tech-writer: Documentation
 #
 # 🚀 Deploying 3 agents in parallel...
@@ -108,7 +108,7 @@ Analysis: codebase-analyst, debugger, performance-specialist
 
 ### Complex Multi-Agent Implementation
 
-```bash
+```text
 /implement authentication-system.md
 
 # Specification contains:
@@ -148,18 +148,18 @@ Analysis: codebase-analyst, debugger, performance-specialist
 # Parallel Wave 3 (Finalization):
 #   - performance-engineer: Optimize auth flow
 #   - tech-writer: API documentation
-#   - qa-tester: End-to-end testing
+#   - test-engineer: End-to-end testing
 #
 # 🚀 Executing implementation plan...
 # [Progress indicators for each wave]
 #
 # ✅ Authentication system implemented successfully!
 # 📊 15 tasks completed in 3 parallel waves + integration
-```bash
+```
 
 ### Specification with Dependencies
 
-```bash
+```text
 /implement data-pipeline.md
 
 # Specification defines:
@@ -207,7 +207,7 @@ Analysis: codebase-analyst, debugger, performance-specialist
 
 ## Referenced Files
 - Relevant files with context
-```bash
+```
 
 ### Task Dependency Notation
 
@@ -263,7 +263,7 @@ Analysis: codebase-analyst, debugger, performance-specialist
 
 # Only implements tasks not marked as complete
 # Useful for resuming partial implementations
-```bash
+```
 
 ### Dry Run Mode
 
@@ -280,7 +280,7 @@ Analysis: codebase-analyst, debugger, performance-specialist
 /implement spec.md --prefer-agents "backend-engineer,test-engineer"
 
 # Prefers specified agents when multiple options available
-```bash
+```
 
 ### Maximum Parallelization
 
@@ -295,15 +295,15 @@ Analysis: codebase-analyst, debugger, performance-specialist
 
 ### Specification Issues
 
-```bash
+```text
 ❌ Invalid specification format
 💡 Ensure markdown follows specification guidelines
 💡 Check for proper task formatting and dependencies
-```bash
+```
 
 ### Agent Failures
 
-```bash
+```text
 ⚠️ backend-engineer failed on task 3
 🔄 Retrying with alternative approach...
 ✅ Retry successful with modified strategy
@@ -311,10 +311,10 @@ Analysis: codebase-analyst, debugger, performance-specialist
 
 ### Dependency Conflicts
 
-```bash
+```text
 ❌ Circular dependency detected: Task 2 → Task 3 → Task 2
 💡 Review task dependencies and remove cycles
-```bash
+```
 
 ## Integration Points
 

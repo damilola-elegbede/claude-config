@@ -8,14 +8,13 @@ expertise domain.
 
 ## The 8 Official Categories
 
-### 1. **Development** (blue) - 7 agents
+### 1. **Development** (blue) - 6 agents
 
 **Purpose**: Core programming, implementation, and application building
 **Agents**:
 
 - backend-engineer
 - frontend-engineer
-- frontend-architect
 - fullstack-lead
 - mobile-engineer
 - data-engineer
@@ -38,7 +37,7 @@ expertise domain.
 
 - security-auditor
 
-### 4. **Architecture** (purple) - 3 agents
+### 4. **Architecture** (purple) - 4 agents
 
 **Purpose**: System design, technical planning, and architectural decisions
 **Agents**:
@@ -46,6 +45,7 @@ expertise domain.
 - principal-architect
 - api-architect
 - cloud-architect
+- frontend-architect
 
 ### 5. **Design** (pink) - 3 agents
 
@@ -56,7 +56,7 @@ expertise domain.
 - mobile-ui
 - ux-researcher
 
-### 6. **Analysis** (yellow) - 4 agents
+### 6. **Analysis** (yellow) - 3 agents
 
 **Purpose**: Research, codebase analysis, and requirements gathering
 **Agents**:
@@ -64,7 +64,6 @@ expertise domain.
 - codebase-analyst
 - researcher
 - business-analyst
-- general-purpose
 
 ### 7. **Infrastructure** (orange) - 4 agents
 
@@ -76,13 +75,14 @@ expertise domain.
 - database-admin
 - debugger
 
-### 8. **Coordination** (cyan) - 2 agents
+### 8. **Coordination** (cyan) - 3 agents
 
-**Purpose**: Strategy, documentation, and project orchestration
+**Purpose**: Strategy, documentation, and project coordination
 **Agents**:
 
 - product-strategist
 - tech-writer
+- project-orchestrator
 
 ## Color Assignment Rules
 
@@ -126,13 +126,13 @@ color: blue           # Must match category's color
 
 | Category | Color | Count | Primary Focus |
 |----------|-------|-------|---------------|
-| Development | blue | 7 | Coding & Implementation |
+| Development | blue | 6 | Coding & Implementation |
 | Quality | green | 4 | Testing & Validation |
 | Security | red | 1 | Security & Compliance |
-| Architecture | purple | 3 | System Design |
+| Architecture | purple | 4 | System Design |
 | Design | pink | 3 | UI/UX |
-| Analysis | yellow | 4 | Research & Investigation |
+| Analysis | yellow | 3 | Research & Investigation |
 | Infrastructure | orange | 4 | Operations & Platform |
-| Coordination | cyan | 2 | Strategy & Documentation |
+| Coordination | cyan | 3 | Strategy & Documentation |
 
 **Total**: 28 agents across 8 categories

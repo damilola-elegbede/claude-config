@@ -14,9 +14,10 @@ polyglot codebases.
 /deps update                 # Safe dependency updates
 /deps clean                  # Remove unused dependencies
 /deps --quick               # Fast check without deep analysis
-```bash
+```
 
 ## Behavior
+
 ## Agent Orchestration - Multi-Instance Package Manager Scanning
 
 ### Parallel Dependency Analysis with Instance Pools
@@ -25,7 +26,7 @@ Deploy multiple instances for simultaneous package manager scanning:
 
 ```yaml
 # PARALLEL WAVE: Multi-Instance Dependency Scanning (20-30 seconds)
-dependency-analyst (instance pool):
+security-auditor (instance pool):
   deployment: One instance per package manager detected
   calculation: min(5, number_of_package_managers)
   distribution:
@@ -38,19 +39,19 @@ dependency-analyst (instance pool):
   role: Analyze dependencies per ecosystem
   output: Per-ecosystem dependency reports in parallel
 
-supply-chain-security-engineer (instance pool):
+security-auditor (instance pool):
   deployment: 2-3 instances for comprehensive security scanning
   distribution:
     - instance_1: Frontend dependencies supply chain risks
     - instance_2: Backend dependencies vulnerability assessment
     - instance_3: Infrastructure/DevOps dependency security
-  parallel_with: [dependency-analyst instances]
+  parallel_with: [security-auditor instances]
   role: Deep supply chain vulnerability assessment
   output: Multi-angle security analysis
 
 security-auditor:
   role: CVE scanning coordination and aggregation
-  input: Results from all dependency-analyst instances
+  input: Results from all security-auditor instances
   output: Consolidated CVE report, security recommendations
 
 devops:
@@ -67,24 +68,24 @@ platform-engineer:
 #   Sequential: 2 minutes for all package managers
 #   Multi-instance parallel: 20-30 seconds (4-6x faster)
 #   Ecosystem isolation: No interference between scanners
-```bash
+```
 
 ### Multi-Instance Scanning Strategy
 
 ```yaml
-Multi-Package Manager Support with Instance Pools:
+Multi-Package Manager Support:
   instance_deployment:
     - Auto-detect all package managers in repository
-    - Deploy one dependency-analyst instance per ecosystem
+    - Deploy one security-auditor instance per ecosystem
     - Each instance runs ecosystem-specific tools
     - Maximum 5 concurrent instances
 
   parallel_tools_per_instance:
-    - npm instance: npm audit, npm outdated, depcheck
-    - pip instance: pip-audit, pip list --outdated, pipdeptree
-    - go instance: nancy sleuth, go list -u, go mod graph
-    - cargo instance: cargo audit, cargo outdated, cargo tree
-    - maven instance: dependency:analyze, versions:display
+    - npm: npm audit, npm outdated, depcheck
+    - pip: pip-audit, pip list --outdated, pipdeptree
+    - go: nancy sleuth, go list -u, go mod graph
+    - cargo: cargo audit, cargo outdated, cargo tree
+    - maven: dependency:analyze, versions:display
 
   result_aggregation:
     - Real-time streaming from all instances
@@ -93,15 +94,15 @@ Multi-Package Manager Support with Instance Pools:
     - Consolidated risk assessment
 
 Time Optimization:
-  - Sequential scanning: 2+ minutes typical
+  - Sequential: 2+ minutes
   - Multi-instance parallel: 20-30 seconds (4-6x faster)
   - Full CPU utilization: Each instance on separate core
 ```
 
-When invoked, I deploy multiple dependency-analyst instances (one per package
+When invoked, I deploy multiple security-auditor instances (one per package
 manager) to scan all ecosystems simultaneously. Quick mode provides essential
 health checks in 10-15 seconds using parallel scanning, while audit mode deploys
-additional supply-chain-security-engineer instances for comprehensive analysis
+additional security-auditor instances for comprehensive analysis
 in 20-30 seconds (4-6x faster than sequential).
 
 ## Two-Mode Operation
@@ -118,9 +119,8 @@ Analysis Scope:
   - Flag unused dependencies
 
 Agent Usage: None (direct tooling)
-
 Output: Summary with actionable items only
-```bash
+```
 
 ### Deep Mode (audit) - Multi-Instance Analysis (20-30 seconds)
 
@@ -134,8 +134,8 @@ Analysis Scope:
   - Dependency tree analysis (concurrent for all package managers)
 
 Agent Usage:
-  - dependency-analyst instances (one per package manager)
-  - supply-chain-security-engineer instances (2-3 for security)
+  - security-auditor instances (one per package manager)
+  - security-auditor instances (2-3 for security)
   - Parallel aggregation and reporting
 
 Output: Detailed report with risk scoring from all instances
@@ -143,22 +143,16 @@ Output: Detailed report with risk scoring from all instances
 Performance:
   - Sequential: 2+ minutes
   - Multi-instance: 20-30 seconds (4-6x faster)
-```bash
+```
 
 ## Package Manager Support
 
-### Auto-Detection
+### Auto-Detection & Security Scanning
 
-```bash
+```text
 # Auto-detects: npm, pip, go, cargo, maven, gradle, bundler, composer
 # Based on presence of manifest files (package.json, requirements.txt, etc.)
-```
-
-### Security Scanning
-
-```bash
-# Uses ecosystem-specific tools:
-# npm audit, pip-audit, cargo audit, nancy (Go), etc.
+# Uses ecosystem-specific tools: npm audit, pip-audit, cargo audit, nancy (Go)
 ```
 
 ## Core Operations
@@ -180,7 +174,7 @@ npm audit fix
 pip install --upgrade-strategy eager
 
 ⏱️ Completed in 28 seconds
-```bash
+```
 
 ### /deps audit (Deep Mode)
 
@@ -214,66 +208,46 @@ pip install --upgrade-strategy eager
 4. Remove 3 unused dependencies to reduce attack surface
 
 ⏱️ Completed in 1m 47s
-```bash
+```
 
 ### /deps update (Safe Updates)
 
-```bash
-# Staged process: backup → security patches → minor updates → test
-# → rollback if needed
-```bash
+```text
+# Staged process: backup → security patches → minor updates → test → rollback if needed
+```
 
 ### /deps clean (Unused Removal)
 
-```bash
+```text
 # Uses depcheck (npm), pip-check (python), cargo machete (rust)
 # Safely removes unused dependencies after verification
-```text
-  fi
-
-  # Python unused packages
-  if command -v unimport >/dev/null; then
-    unimport --check --diff requirements.txt
-  fi
-
-  # Go module cleanup
-  if [ -f "go.mod" ]; then
-    go mod tidy
-  fi
-
-  echo "✅ Cleanup completed"
-}
 ```
 
 ## Language-Specific Patterns
 
-### Node.js/npm
+### Node.js/npm Workflow
 
 ```bash
-# Complete npm audit and fix workflow
 npm_workflow() {
-  # Quick vulnerability check
+  # Quick vulnerability check and automated fixes
   npm audit --audit-level high
-
-  # Automated fixes for non-breaking changes
   npm audit fix
 
   # Manual review for breaking changes
   npm audit fix --force --dry-run
 
   # Update outdated packages
-  npm outdated
-  npm update
+  npm outdated && npm update
 }
 ```
 
-### Language-Specific Workflows
+### Other Ecosystems
 
-```bash
+```text
 # Python: pip-audit, pip upgrade, pip-autoremove
 # Go: nancy sleuth, go get -u, go mod tidy
 # Rust: cargo audit, cargo update
-```text
+```
 
 ## Agent Coordination
 
@@ -288,18 +262,18 @@ Direct Tooling:
 Speed: 30 seconds average
 Accuracy: High for known CVEs
 Coverage: Basic security + outdated packages
-```bash
+```
 
 ### Deep Mode (Multi-Instance Deployment)
 
 ```yaml
 Multi-Instance Agent Deployment:
-  dependency-analyst (instance pool):
+  security-auditor (instance pool):
     instances: "One per package manager (npm, pip, go, cargo, maven)"
     role: "Parallel ecosystem-specific dependency analysis"
     tools: "Ecosystem-specific scanners and audit tools"
 
-  supply-chain-security-engineer (instance pool):
+  security-auditor (instance pool):
     instances: "2-3 for comprehensive coverage"
     distribution:
       - instance_1: "Frontend supply chain risks"
@@ -308,7 +282,7 @@ Multi-Instance Agent Deployment:
     tools: "CVE databases, package reputation analysis"
 
 Parallel Coordination:
-  - All dependency-analyst instances scan simultaneously
+  - All security-auditor instances scan simultaneously
   - Security instances provide multi-angle threat assessment
   - Results stream in real-time from all instances
   - Aggregated report generated from parallel outputs
@@ -317,7 +291,7 @@ Instance Scaling:
   - Small project (1-2 ecosystems): 2-3 total instances
   - Medium project (3-4 ecosystems): 4-5 total instances
   - Large polyglot (5+ ecosystems): 6-8 total instances
-```bash
+```
 
 ## Risk Assessment Matrix
 
@@ -325,51 +299,38 @@ Instance Scaling:
 
 ```yaml
 Critical (CVSS 9.0-10.0):
-  - Remote code execution
-  - Privilege escalation
-  - Data exfiltration
+  - Remote code execution, privilege escalation, data exfiltration
   Action: Immediate update required
 
 High (CVSS 7.0-8.9):
-  - Authentication bypass
-  - SQL injection
-  - XSS vulnerabilities
+  - Authentication bypass, SQL injection, XSS vulnerabilities
   Action: Update within 48 hours
 
 Medium (CVSS 4.0-6.9):
-  - Information disclosure
-  - DoS potential
-  - Input validation issues
+  - Information disclosure, DoS potential, input validation issues
   Action: Schedule update within 1 week
 
 Low (CVSS 0.1-3.9):
-  - Minor information leaks
-  - Edge case vulnerabilities
+  - Minor information leaks, edge case vulnerabilities
   Action: Update during next maintenance
-```bash
+```
 
 ### Supply Chain Risk Factors
 
 ```yaml
 High Risk Indicators:
-  - Single maintainer packages
-  - Recent maintainer changes
-  - Unusual download patterns
-  - Missing or incomplete metadata
+  - Single maintainer packages, recent maintainer changes
+  - Unusual download patterns, missing metadata
   - Packages with embedded malware history
 
 Medium Risk Indicators:
-  - Infrequent updates (>1 year)
-  - Small user base (<1000 downloads/week)
-  - Typosquatting potential
-  - Complex dependency chains
+  - Infrequent updates (>1 year), small user base (<1000 downloads/week)
+  - Typosquatting potential, complex dependency chains
 
 Low Risk Indicators:
-  - Well-established packages
-  - Active maintenance
-  - Large user base
-  - Corporate sponsorship
-```bash
+  - Well-established packages, active maintenance
+  - Large user base, corporate sponsorship
+```
 
 ## Execution Verification
 
@@ -386,7 +347,7 @@ Deploy execution-evaluator to verify:
 
 ### Quick Dependency Check
 
-```bash
+```text
 User: /deps
 Claude: 🔍 Scanning dependencies across 3 package managers...
 ⚠️ Found 2 critical vulnerabilities in npm packages
@@ -394,17 +355,17 @@ Claude: 🔍 Scanning dependencies across 3 package managers...
 🗑️ 3 unused dependencies detected
 💡 Run 'npm audit fix' for immediate security fixes
 ⏱️ Scan completed in 31 seconds
-```bash
+```
 
 ### Security-Focused Audit with Multi-Instance
 
-```bash
+```text
 User: /deps audit
 Claude: 🔒 Deploying multi-instance dependency scanners...
 📊 Instance Pool Status:
-  - dependency-analyst[1]: Scanning npm (127 packages)...
-  - dependency-analyst[2]: Scanning pip (85 packages)...
-  - dependency-analyst[3]: Scanning go modules (35 packages)...
+  - security-auditor[1]: Scanning npm (127 packages)...
+  - security-auditor[2]: Scanning pip (85 packages)...
+  - security-auditor[3]: Scanning go modules (35 packages)...
   - supply-chain[1]: Analyzing frontend supply chain...
   - supply-chain[2]: Assessing backend vulnerabilities...
 
@@ -414,9 +375,11 @@ Claude: 🔒 Deploying multi-instance dependency scanners...
 ⚠️ Supply chain: 2 packages with maintainer risks
 📋 Aggregating reports from all instances...
 ✅ Complete audit finished 4.5x faster than sequential
+```
+
 ### Safe Update Process
 
-```bash
+```text
 User: /deps update
 Claude: 🔄 Starting safe dependency update process...
 💾 Backing up current dependency state...
@@ -435,5 +398,3 @@ Claude: 🔄 Starting safe dependency update process...
 - Automatically detects all package managers in polyglot repos
 - Prioritizes security fixes over feature updates
 - Always backs up state before making changes
-- Integrates with CI/CD pipelines for automated scanning
-- Supports both individual and batch dependency operations

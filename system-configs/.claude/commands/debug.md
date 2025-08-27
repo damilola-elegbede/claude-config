@@ -12,7 +12,7 @@ production-only failures.
 /debug <issue_description>      # Investigate specific bug
 /debug --repro <steps>          # Focus on reproduction
 /debug --performance            # Performance-specific debugging
-```bash
+```
 
 ## Behavior
 
@@ -57,45 +57,24 @@ performance-engineer:
 Issue Classification:
   Intermittent Issues:
     symptoms: ["works sometimes", "random failures", "can't reproduce"]
-    parallel_agents:
-      - debugger: Statistical failure analysis
-      - codebase-analyst: Pattern detection across codebase
-      - test-engineer: Reproduction strategy design
-      - monitoring-specialist: Environment factor analysis
-    execution: All 4 agents work simultaneously
-    approach: Parallel statistical analysis, environmental testing
+    parallel_agents: [debugger, codebase-analyst, test-engineer, monitoring-specialist]
+    approach: Statistical analysis, environmental testing
 
   Race Conditions:
     symptoms: ["deadlock", "data corruption", "concurrent access errors"]
-    parallel_agents:
-      - debugger (instance 1): Thread dump analysis
-      - debugger (instance 2): Lock contention investigation
-      - codebase-analyst: Concurrent code pattern analysis
-      - performance-engineer: Timing and synchronization profiling
-    execution: Multiple debugger instances + specialists in parallel
+    parallel_agents: [debugger (2 instances), codebase-analyst, performance-engineer]
     approach: Concurrent thread analysis, lock inspection, timing manipulation
 
   Memory Issues:
     symptoms: ["memory leak", "crashes", "growing heap", "OOM errors"]
-    parallel_agents:
-      - debugger: Heap dump forensics
-      - codebase-analyst: Reference chain analysis
-      - test-engineer: Memory test scenarios
-      - performance-engineer: Allocation profiling
-    execution: All 4 agents analyze different aspects simultaneously
+    parallel_agents: [debugger, codebase-analyst, test-engineer, performance-engineer]
     approach: Parallel heap analysis, reference tracking, allocation patterns
 
   Performance Degradation:
     symptoms: ["slow response", "high CPU", "timeout", "lag"]
-    parallel_agents:
-      - performance-engineer (instance 1): CPU profiling
-      - performance-engineer (instance 2): Memory profiling
-      - performance-engineer (instance 3): I/O analysis
-      - debugger: Bottleneck investigation
-      - codebase-analyst: Algorithm complexity analysis
-    execution: 3 performance-engineer instances + 2 specialists
+    parallel_agents: [performance-engineer (3 instances), debugger, codebase-analyst]
     approach: Comprehensive parallel profiling across all resources
-```bash
+```
 
 ## Concrete Investigation Patterns
 
@@ -106,47 +85,23 @@ Issue Classification:
 investigate_memory_leak() {
   echo "🔍 Analyzing memory patterns..."
 
-  # Heap dump collection
-  if command -v jcmd >/dev/null; then
-    jcmd $PID GC.run_finalization
-    jcmd $PID VM.gc
-    jcmd $PID GC.dump_heap heap_before.hprof
-  fi
-
-  # Python memory profiling
-  if python --version 2>/dev/null | grep -q "Python"; then
-    echo "import tracemalloc; tracemalloc.start()" >> memory_trace.py
-  fi
-
-  # Node.js heap snapshots
-  if node --version 2>/dev/null; then
-    echo "console.log(process.memoryUsage())" >> memory_check.js
-  fi
+  # Multi-language memory profiling
+  [[ -n "$JAVA_PID" ]] && jcmd $JAVA_PID GC.dump_heap heap.hprof
+  [[ -x "$(command -v python)" ]] && echo "import tracemalloc; tracemalloc.start()" >> memory_trace.py
+  [[ -x "$(command -v node)" ]] && echo "console.log(process.memoryUsage())" >> memory_check.js
 }
-```bash
+```
 
-**Real Example Output:**
+**Example Output:**
 
 ```text
 🔍 Memory Leak Investigation: User Session Cache
 
-📊 Evidence Collected:
-- Heap growing 50MB/hour consistently
-- No GC pressure, allocations not being freed
-- Correlates with user login frequency
-
-🎯 Root Cause Found:
-- Session objects stored in WeakMap but never cleaned
-- Event listeners maintaining references
-- No TTL on session cache
-
-🔧 Fix Applied:
-- Added session cleanup timer (5min intervals)
-- Implemented proper event listener removal
-- Set 24h TTL on session cache entries
-
+📊 Evidence: Heap growing 50MB/hour, no GC pressure, correlates with logins
+🎯 Root Cause: Session objects in WeakMap never cleaned, event listeners maintaining references
+🔧 Fix: Added cleanup timer, proper listener removal, 24h TTL
 ✅ Verification: Memory stable after 2h testing
-```bash
+```
 
 ### Race Condition Analysis
 
@@ -155,46 +110,23 @@ investigate_memory_leak() {
 analyze_race_condition() {
   echo "🧵 Analyzing concurrent access patterns..."
 
-  # Thread dump analysis (Java)
-  if command -v jstack >/dev/null; then
-    jstack $PID > thread_dump.txt
-    grep -A5 -B5 "BLOCKED\|WAITING" thread_dump.txt
-  fi
-
-  # Go race detector
-  if go version 2>/dev/null; then
-    echo "Run with: go run -race main.go"
-  fi
-
-  # Python thread analysis
-  if python --version 2>/dev/null; then
-    echo "import threading; print(threading.active_count())" >> thread_check.py
-  fi
+  # Multi-language thread analysis
+  [[ -x "$(command -v jstack)" ]] && jstack $PID | grep -A3 -B3 "BLOCKED\|WAITING"
+  [[ -x "$(command -v go)" ]] && echo "Run with: go run -race main.go"
+  python -c "import threading; print(f'Active threads: {threading.active_count()}')" 2>/dev/null || true
 }
-```bash
+```
 
-**Real Example Output:**
+**Example Output:**
 
 ```text
 🧵 Race Condition Investigation: Payment Processing
 
-📊 Evidence Collected:
-- Duplicate charges appearing ~0.1% of transactions
-- Only under high load (>100 req/sec)
-- Database shows conflicting timestamps
-
-🎯 Root Cause Found:
-- Payment validation and charge creation not atomic
-- Two requests can pass validation simultaneously
-- No idempotency key enforcement
-
-🔧 Fix Applied:
-- Wrapped validation + charge in database transaction
-- Added unique constraint on idempotency_key
-- Implemented distributed lock for payment flow
-
+📊 Evidence: Duplicate charges ~0.1% under high load, conflicting DB timestamps
+🎯 Root Cause: Non-atomic validation+charge, no idempotency key enforcement
+🔧 Fix: DB transactions, unique constraint, distributed lock
 ✅ Verification: No duplicates in 1000 concurrent test transactions
-```bash
+```
 
 ### Production-Only Bug Analysis
 
@@ -203,98 +135,47 @@ analyze_race_condition() {
 compare_environments() {
   echo "🔍 Comparing dev vs production environments..."
 
-  # Configuration diff
-  diff dev.env prod.env || echo "Environment variables differ"
-
-  # Dependency versions
-  if [ -f package.json ]; then
-    npm list --production > prod_deps.txt
-    npm list > dev_deps.txt
-    diff dev_deps.txt prod_deps.txt
-  fi
-
-  # Resource constraints
-  echo "Production resource limits:"
-  cat /proc/meminfo | grep MemTotal
-  ulimit -a
+  diff -u dev.env prod.env 2>/dev/null || echo "Environment variables differ"
+  [[ -f package.json ]] && { npm list --production > prod_deps.txt; diff dev_deps.txt prod_deps.txt; }
+  echo "Memory: $(grep MemTotal /proc/meminfo 2>/dev/null || echo 'N/A')"
 }
-```bash
+```
 
-**Real Example Output:**
+**Example Output:**
 
 ```text
 🏭 Production-Only Investigation: API Timeout Errors
 
-📊 Evidence Collected:
-- API works perfectly in dev/staging
-- 504 timeouts only in production
-- Affects 30% of requests to /users/search
-
-🎯 Root Cause Found:
-- Production database has 10M users vs 1K in staging
-- Query missing index on frequently searched columns
-- Query optimizer choosing table scan at scale
-
-🔧 Fix Applied:
-- Added composite index on (email, status, created_at)
-- Optimized query to use covering index
-- Added query timeout with proper error handling
-
-✅ Verification: Response time dropped from 8s to 120ms
-```bash
+📊 Evidence: Works in dev/staging, 504 timeouts in prod, affects 30% of /users/search
+🎯 Root Cause: 10M users vs 1K in staging, missing index, table scan at scale
+🔧 Fix: Composite index (email, status, created_at), query optimization
+✅ Verification: Response time 8s → 120ms
+```
 
 ### Performance Degradation Analysis
 
 ```javascript
 // Performance profiling patterns
 const performance_debug = {
-  // CPU profiling
-  profile_cpu: () => {
-    console.profile('cpu-analysis');
-    // Run suspect code
-    console.profileEnd('cpu-analysis');
-  },
-
-  // Memory allocation tracking
-  track_allocations: () => {
+  profile_cpu: () => { console.profile('cpu-analysis'); /* code */ console.profileEnd('cpu-analysis'); },
+  track_memory: () => {
     const used = process.memoryUsage();
-    console.log('Memory usage:', {
-      rss: Math.round(used.rss / 1024 / 1024 * 100) / 100 + ' MB',
-      heapTotal: Math.round(used.heapTotal / 1024 / 1024 * 100) / 100 + ' MB',
-      heapUsed: Math.round(used.heapUsed / 1024 / 1024 * 100) / 100 + ' MB'
-    });
+    console.log('Memory:', Object.keys(used).map(k => `${k}: ${Math.round(used[k]/1024/1024)}MB`));
   },
-
-  // Database query analysis
-  analyze_queries: () => {
-    // Enable query logging
-    console.log('EXPLAIN ANALYZE SELECT ...');
-  }
+  analyze_queries: () => console.log('EXPLAIN ANALYZE SELECT ...')
 };
-```bash
+```
 
-**Real Example Output:**
+**Example Output:**
 
 ```text
 ⚡ Performance Investigation: Dashboard Loading Slowly
 
-📊 Evidence Collected:
-- Dashboard load time increased from 2s to 15s
-- Started 3 days ago after user growth
-- CPU usage normal, database shows slow queries
-
-🎯 Root Cause Found:
-- N+1 query problem in user dashboard
-- Each dashboard widget making separate DB call
-- 50+ queries for single dashboard load
-
-🔧 Fix Applied:
-- Implemented GraphQL DataLoader pattern
-- Batched widget data queries into single call
-- Added Redis caching for user preferences
-
-✅ Verification: Dashboard loads in 1.8s (faster than before)
-```bash
+📊 Evidence: Load time 2s → 15s after user growth, CPU normal, slow DB queries
+🎯 Root Cause: N+1 query problem, 50+ queries per dashboard load
+🔧 Fix: GraphQL DataLoader, batched queries, Redis caching
+✅ Verification: Dashboard loads in 1.8s (faster than baseline)
+```
 
 ## Multi-Agent Coordination
 
@@ -302,46 +183,27 @@ const performance_debug = {
 
 ```yaml
 Memory Issues:
-  parallel_deployment:
-    - debugger: Heap dump analysis
-    - codebase-analyst: Reference tracking
-    - test-engineer: Memory test scenarios
-    - performance-engineer: Allocation patterns
+  agents: [debugger, codebase-analyst, test-engineer, performance-engineer]
   execution_time: 60% faster than sequential
 
 Performance Issues:
-  parallel_deployment:
-    - performance-engineer (instance 1): CPU profiling
-    - performance-engineer (instance 2): Memory profiling
-    - performance-engineer (instance 3): Database query analysis
-    - debugger: Bottleneck identification
-    - codebase-analyst: Algorithm complexity review
-  execution_time: 70% faster with 3 parallel instances
+  agents: [performance-engineer (3 instances), debugger, codebase-analyst]
+  execution_time: 70% faster with parallel instances
 
 Production Issues:
-  parallel_deployment:
-    - debugger: Production log analysis
-    - production-reliability-engineer: Infrastructure investigation
-    - monitoring-specialist: Metrics correlation
-    - platform-engineer: Environment comparison
+  agents: [debugger, platform-engineer, monitoring-specialist, platform-engineer]
   execution_time: All agents work simultaneously
 
 Security Issues:
-  parallel_deployment:
-    - security-auditor (instance 1): Vulnerability scanning
-    - security-auditor (instance 2): Authentication/authorization review
-    - debugger: Exploit investigation
-    - codebase-analyst: Security pattern analysis
-  execution_time: Multiple security-auditor instances for comprehensive coverage
+  agents: [security-auditor (2 instances), debugger, codebase-analyst]
+  execution_time: Multiple instances for comprehensive coverage
 
-Complex Multi-Domain Issues:
-  parallel_deployment:
-    wave_1: [debugger, codebase-analyst, test-engineer, performance-engineer]
-    wave_2: [security-auditor, monitoring-specialist, platform-engineer]
-    wave_3: Integration and correlation of all findings
+Complex Multi-Domain:
+  wave_1: [debugger, codebase-analyst, test-engineer, performance-engineer]
+  wave_2: [security-auditor, monitoring-specialist, platform-engineer]
+  wave_3: Integration and correlation of findings
   execution_time: 80% faster than sequential investigation
-```text
-
+```
 
 ## Debugging Toolchain
 
@@ -349,33 +211,17 @@ Complex Multi-Domain Issues:
 
 ```bash
 # Java debugging
-debug_java() {
-  jstack $PID > thread_dump.txt
-  jmap -dump:live,format=b,file=heap.hprof $PID
-  jstat -gc $PID 5s
-}
+debug_java() { jstack $PID > threads.txt; jmap -dump:live,format=b,file=heap.hprof $PID; }
 
 # Node.js debugging
-debug_nodejs() {
-  node --inspect-brk=9229 app.js
-  # Chrome DevTools: chrome://inspect
-  kill -USR1 $PID  # Enable debugger
-}
+debug_nodejs() { node --inspect-brk=9229 app.js; kill -USR1 $PID; }
 
 # Python debugging
-debug_python() {
-  py-spy top --pid $PID
-  python -m cProfile -o profile.stats script.py
-  python -c "import pdb; pdb.set_trace()"
-}
+debug_python() { py-spy top --pid $PID; python -m cProfile script.py; }
 
 # Go debugging
-debug_go() {
-  go run -race main.go
-  dlv attach $PID
-  go tool pprof http://localhost:6060/debug/pprof/profile
-}
-```bash
+debug_go() { go run -race main.go; dlv attach $PID; }
+```
 
 ### Database Query Analysis
 
@@ -383,7 +229,7 @@ debug_go() {
 -- PostgreSQL debugging
 EXPLAIN ANALYZE SELECT * FROM slow_table;
 SET log_min_duration_statement = 1000;
-```text
+```
 
 ## Reproduction Strategies
 
@@ -392,43 +238,34 @@ SET log_min_duration_statement = 1000;
 ```bash
 # Automated reproduction attempts
 reproduce_intermittent() {
-  local attempts=100
-  local success_count=0
+  local attempts=100 success_count=0
 
   for i in $(seq 1 $attempts); do
     echo "Attempt $i/$attempts"
-
     if run_test_scenario; then
-      success_count=$((success_count + 1))
+      ((success_count++))
     else
       echo "Failure reproduced on attempt $i"
-      capture_failure_state
-      break
+      capture_failure_state && break
     fi
-
-    # Vary conditions
     sleep $((RANDOM % 5))
   done
 
   echo "Success rate: $((success_count * 100 / attempts))%"
 }
-```bash
+```
 
 ### Environment Simulation
 
 ```bash
 # Production environment simulation
 simulate_production() {
-  # Resource constraints
+  # Resource constraints + network latency + load
   docker run --memory=512m --cpus=0.5 myapp
-
-  # Network latency
   tc qdisc add dev eth0 root netem delay 100ms
-
-  # High load simulation
   ab -n 10000 -c 100 http://localhost:8080/api/endpoint
 }
-```bash
+```
 
 ## Verification & Follow-up
 
@@ -443,26 +280,26 @@ Deploy execution-evaluator to verify:
 
 ## Examples
 
-```bash
+```text
 User: /debug Memory leak causing crashes
 Claude: 🔍 Memory analysis: Event listeners not cleaned up
 🔧 Fix: Proper cleanup in useEffect
 ✅ Result: Memory stable
-```text
+```
 
-```bash
+```text
 User: /debug Duplicate payment charges
 Claude: 🧵 Race condition: Non-atomic payment flow
 🔧 Fix: Database transactions + idempotency
 ✅ Result: Zero duplicates in load test
-```text
+```
 
-```bash
+```text
 User: /debug Production API timeouts
 Claude: 🏭 Scale issue: Missing database index
 🔧 Fix: Added composite index
 ✅ Result: 8s → 120ms response time
-```text
+```
 
 ## Notes
 

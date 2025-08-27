@@ -1,316 +1,293 @@
-# /branch Command
+---
+name: "branch"
+category: "git"
+capabilities: ["branch-creation", "git-operations"]
+tools: ["Write", "Read"]
+description: "Context-aware branch creation with pattern matching for ticket systems and smart naming conventions"
+---
 
-## Description
+# Context-Aware Branch Creation
 
-Creates intelligent git branches from conversation context, explicit input, or
-file content. Always starts from updated main branch with conventional naming
-patterns.
+Smart git branch management with ticket system integration and intelligent naming.
 
 ## Usage
 
 ```bash
-/branch [description]        # Create branch from description
-/branch --file <path>        # Create branch from file context
-/branch -f <path>            # Create branch from file context (short form)
-/branch                      # Create branch from conversation context
-```bash
+/branch <feature-description>  # Creates feature/feature-description
+/branch fix-<issue>            # Creates fix/fix-issue
+/branch <TICKET-123>           # Creates feature/TICKET-123
+/branch                        # Interactive mode with suggestions
+```
 
 ## Behavior
 
-When invoked, I will create an intelligently named git branch based on the
-context provided. I analyze conversation history, file content, or explicit
-descriptions to generate conventional branch names that follow best practices.
-The branch always starts from an updated main branch.
+### Intelligent Branch Naming
 
-## Smart Branch Creation
+**Pattern Recognition**:
 
-### Automatic Context Analysis
+- Ticket patterns: `JIRA-123`, `GH-456`, `TICKET-789` → `feature/JIRA-123`
+- Fix patterns: `fix-auth-bug` → `fix/auth-bug`
+- Feature patterns: `user-dashboard` → `feature/user-dashboard`
+- Hotfix patterns: `hotfix-critical-issue` → `hotfix/critical-issue`
 
-```yaml
-Conversation Context:
-  - Scans recent messages for features, bugs, tasks
-  - Extracts ticket numbers (JIRA-123, GH-456, #789)
-  - Identifies work type from keywords
+### Smart Context Analysis
 
-File Context (--file or -f):
-  - Bug reports → fix/ prefix
-  - Feature specs → feature/ prefix
-  - Documentation → docs/ prefix
-  - Performance → perf/ prefix
-  - Refactoring → refactor/ prefix
-
-Explicit Description:
-  - Uses provided text directly
-  - Applies conventional prefixes automatically
-```bash
-
-### Branch Naming Conventions
-
-```bash
-# Feature development
-feature/user-authentication
-feature/JIRA-123-payment-gateway
-feature/oauth-integration
-
-# Bug fixes
-fix/login-timeout-issue
-fix/GH-456-memory-leak
-fix/csrf-validation
-
-# Other work types
-docs/api-documentation
-perf/database-optimization
-refactor/auth-module
-chore/dependency-updates
-```bash
-
-## Agent Orchestration
-
-### Parallel Analysis Phase - Multi-Agent Deployment
-
-**Launch all these concurrently:** Multiple agents for intelligent branch creation:
+**Git State Assessment**:
 
 ```yaml
-# PARALLEL WAVE: All agents work simultaneously (2-3 seconds total)
-tech-writer:
-  role: Generate clear, conventional branch names and documentation
-  input: Work type, ticket numbers, description
-  output: Properly formatted branch name, branch documentation
-  parallel_with: [code-reviewer, security-auditor, codebase-analyst, project-orchestrator]
+Pre-Creation Checks:
+  - Ensure working on main/master branch
+  - Stash uncommitted changes if present
+  - Pull latest changes from remote
+  - Validate branch name availability
 
-code-reviewer:
-  role: Validate branch strategy and naming conventions
-  input: Branch name proposal, git history, team standards
-  output: Naming validation, convention compliance check
-  parallel_with: [tech-writer, security-auditor, codebase-analyst, project-orchestrator]
-
-security-auditor:
-  role: Review for sensitive information in branch names
-  input: Branch name, context analysis
-  output: Security clearance, sensitive data warnings
-  parallel_with: [tech-writer, code-reviewer, codebase-analyst, project-orchestrator]
-
-codebase-analyst:
-  role: Analyze existing branches and patterns
-  input: Current branch structure, naming patterns in use
-  output: Consistency recommendations, conflict detection
-  parallel_with: [tech-writer, code-reviewer, security-auditor, project-orchestrator]
-
-project-orchestrator:
-  role: Determine work type and project context
-  input: Conversation history, file content, project structure
-  output: Work classification, priority assessment
-  parallel_with: [tech-writer, code-reviewer, security-auditor, codebase-analyst]
-```bash
-
-### Agent Coordination
-
-```yaml
-Parallel Execution Strategy:
-  Phase 1 - Context Analysis (All agents simultaneously):
-    - project-orchestrator: Classifies work type and priority
-    - codebase-analyst: Examines existing branch patterns
-    - tech-writer: Drafts multiple branch name options
-    - code-reviewer: Prepares convention validation
-    - security-auditor: Scans for sensitive data patterns
-
-  Phase 2 - Convergence (Instant):
-    - All agent outputs combined
-    - Best branch name selected based on consensus
-    - Any conflicts resolved by priority rules
-
-  Execution Time:
-    - Sequential: 8-10 seconds
-    - Parallel: 2-3 seconds (70% faster)
-
-  Benefits:
-    - More comprehensive analysis
-    - Better naming consistency
-    - Reduced chance of conflicts
-    - Security validation built-in
+Context Gathering:
+  - Recent commit messages analysis
+  - Current PR/issue context
+  - Team branching conventions
+  - Project-specific patterns
 ```
 
-## Execution Process
+### Automated Cleanup & Setup
 
-### Phase 1: Parallel Context Analysis (Agents)
+**Branch Preparation**:
 
-```bash
-# Execute in parallel (not sequentially)
-parallel_analysis() {
-  # project-orchestrator: Determine work type and strategy
-  # business-analyst: Extract requirements and tickets
-  # tech-writer: Prepare naming conventions
-}
+```yaml
+Setup Process:
+  1. Switch to main branch
+  2. Pull latest changes
+  3. Create and switch to new branch
+  4. Verify branch creation success
 
-# Aggregate results from all agents
-branch_strategy=$(combine_agent_outputs)
-```bash
-
-### Phase 2: Repository Preparation
-
-```bash
-# Switch to main and update
-git checkout main
-git pull origin main
-
-# Verify clean state
-git status --porcelain
-```bash
-
-### Phase 3: Intelligent Naming (Agent-Driven)
-
-```bash
-# Context priority (highest to lowest):
-1. File content (if --file provided)
-2. Explicit description argument
-3. Recent conversation messages
-4. Fallback to timestamp-based name
-
-# Apply conventional prefixes based on agent analysis:
-analyze_context() {
-  # project-orchestrator determines prefix
-  if [[ $work_type == "bug" ]]; then
-    prefix="fix"
-  elif [[ $work_type == "feature" ]]; then
-    prefix="feature"
-  elif [[ $work_type == "documentation" ]]; then
-    prefix="docs"
-  elif [[ $work_type == "performance" ]]; then
-    prefix="perf"
-  elif [[ $work_type == "refactoring" ]]; then
-    prefix="refactor"
-  else
-    prefix="feature"  # Default
-  fi
-}
-```bash
-
-### Phase 3: Branch Creation & Verification
-
-```bash
-# Create and switch to new branch
-git checkout -b "$branch_name"
-
-# Set upstream tracking if remote exists
-git push -u origin "$branch_name" 2>/dev/null || true
-
-# Verify success
-git branch --show-current
-git log --oneline -3
-```bash
-
-## Context Extraction Examples
-
-### From Conversation
-
-```text
-User: "Need to fix the login timeout issue that's affecting mobile users"
-Branch: fix/login-timeout-issue
-
-User: "Let's implement OAuth authentication for third-party logins"
-Branch: feature/oauth-authentication
-
-User: "Working on JIRA-456 to add payment processing"
-Branch: feature/JIRA-456-payment-processing
-```bash
-
-### From File Content
-
-```text
-File: bug-report.md containing "SQL injection vulnerability in user search"
-Branch: fix/sql-injection-user-search
-
-File: feature-spec.md containing "Real-time notifications system"
-Branch: feature/realtime-notifications
-
-File: performance.md containing "Database query optimization"
-Branch: perf/database-query-optimization
-```bash
+Naming Conflicts:
+  - Auto-append timestamp if branch exists
+  - Suggest alternative names
+  - Preserve user intent in naming
+```
 
 ## Advanced Features
 
-### Ticket Number Detection
+### Ticket System Integration
 
-```bash
-# Regex patterns for common ticket formats:
-JIRA-\d+     # JIRA-123
-GH-\d+       # GH-456
-#\d+         # #789
-[A-Z]+-\d+   # ABC-123
+**Supported Systems**:
 
-# Automatic inclusion in branch names:
-"Fix JIRA-123 user auth" → feature/JIRA-123-user-auth
-"Resolve GH-456" → fix/GH-456
-"Implement #789 notifications" → feature/789-notifications
-```bash
+- **JIRA**: `PROJ-123` → `feature/PROJ-123`
+- **GitHub Issues**: `#456` → `feature/gh-456`
+- **Linear**: `LIN-789` → `feature/LIN-789`
+- **Azure DevOps**: `ADO-012` → `feature/ADO-012`
 
-### Conflict Resolution
+### Smart Suggestions
 
-```bash
-# Handle existing branch names
-check_branch_exists() {
-  if git branch --list "$branch_name" | grep -q "$branch_name"; then
-    echo "Branch exists, appending suffix..."
-    branch_name="${branch_name}-$(date +%m%d)"
-  fi
-}
+**Interactive Mode Features**:
 
-# Handle uncommitted changes
-handle_uncommitted_changes() {
-  if ! git diff --quiet || ! git diff --cached --quiet; then
-    echo "Uncommitted changes detected. Stashing..."
-    git stash push -m "Auto-stash before branch creation"
-    echo "Use 'git stash pop' to restore changes"
-  fi
-}
-```bash
+```yaml
+Context-Aware Suggestions:
+  - Based on recent commit messages
+  - Extracted from current working files
+  - Derived from open PR titles
+  - Generated from project patterns
 
-## Execution Verification
+Suggestion Categories:
+  - Feature branches for new work
+  - Fix branches for bug reports
+  - Hotfix branches for critical issues
+  - Experimental branches for POCs
+```
 
-Deploy execution-evaluator to verify:
+### Team Convention Detection
 
-- ✅ **Main branch updated** - Latest changes pulled successfully
-- ✅ **Branch created** - New branch exists with correct name
-- ✅ **Switched successfully** - Currently on new branch
-- ✅ **Proper naming** - Follows conventions with appropriate prefix
-- ✅ **Clean state** - No uncommitted changes lost
-- ✅ **Tracking setup** - Upstream configured if applicable
+**Automatic Pattern Learning**:
+
+```yaml
+Convention Analysis:
+  - Analyze existing branch names
+  - Detect team naming patterns
+  - Learn project-specific conventions
+  - Adapt suggestions accordingly
+
+Pattern Examples:
+  - feature/user-story-123
+  - bugfix/issue-456
+  - enhancement/performance-optimization
+  - docs/update-readme
+```
 
 ## Examples
 
-### Basic Usage
+### Basic Feature Branch
 
-```bash
-User: /branch user authentication system
-Claude: 🔄 Updating main branch...
-✅ Switched to main, pulled latest changes
-🌿 Creating branch: feature/user-authentication-system
-✅ Created and switched to feature/user-authentication-system
-📊 3 commits ahead of origin/main
-```bash
+```text
+User: /branch user authentication
+Claude: 🌿 Creating feature branch...
+✅ Switched to main branch
+✅ Pulled latest changes (2 new commits)
+✅ Created and switched to: feature/user-authentication
+📍 Ready for development on feature/user-authentication
+```
 
-### File-Based Context
+### Ticket-Based Branch
 
-```bash
-User: /branch --file bug-report.md
-Claude: 📖 Reading bug-report.md...
-🔍 Detected: Bug report about memory leak
-🔄 Updating main branch...
-🌿 Creating branch: fix/memory-leak
-✅ Created and switched to fix/memory-leak
-```bash
+```text
+User: /branch JIRA-1234
+Claude: 🎫 Detected ticket pattern...
+✅ Analyzing JIRA-1234 context
+✅ Created branch: feature/JIRA-1234
+📋 Branch linked to: User Authentication Implementation
+```
 
-### Conversation Context
+### Interactive Mode
 
-```bash
-User: Need to optimize the database queries, they're really slow
+```text
 User: /branch
-Claude: 🔍 Analyzing conversation context...
-💡 Detected: Performance optimization work
-🔄 Updating main branch...
-🌿 Creating branch: perf/database-queries
-✅ Created and switched to perf/database-queries
-```bash
+Claude: 🤔 What would you like to work on?
+
+Recent context suggests:
+1. feature/payment-integration (from recent commits)
+2. fix/login-redirect-bug (from open issues)
+3. feature/dashboard-redesign (from PR discussions)
+
+Or describe your feature: ___
+```
+
+### Conflict Resolution
+
+```text
+User: /branch user-auth
+Claude: ⚠️ Branch 'feature/user-auth' already exists
+
+Suggestions:
+1. feature/user-auth-v2
+2. feature/user-auth-improvements
+3. feature/user-auth-refactor
+
+Choose option or provide new name: ___
+```
+
+## Integration Features
+
+### Git Hook Integration
+
+```yaml
+Pre-commit Integration:
+  - Validates branch naming conventions
+  - Ensures branch is up-to-date
+  - Checks for proper ticket references
+
+Post-checkout Integration:
+  - Sets up branch-specific configurations
+  - Initializes development environment
+  - Creates initial commit templates
+```
+
+### IDE Integration
+
+```yaml
+Development Environment:
+  - VS Code workspace updates
+  - IDE-specific branch configurations
+  - Automatic file template setup
+  - Context-aware snippet activation
+```
+
+## Workflow Integration
+
+### CI/CD Preparation
+
+**Automatic Setup**:
+
+```yaml
+Branch Configuration:
+  - Sets appropriate upstream tracking
+  - Configures branch protection if needed
+  - Prepares for CI/CD integration
+  - Sets up deployment previews
+```
+
+### Documentation Sync
+
+**Context Documentation**:
+
+```yaml
+Branch Documentation:
+  - Creates branch purpose documentation
+  - Links to related tickets/issues
+  - Maintains branch lifecycle history
+  - Tracks development progress
+```
+
+## Error Handling
+
+### Common Issues
+
+**Git State Problems**:
+
+```yaml
+Uncommitted Changes:
+  Action: Automatic stashing with descriptive message
+  Recovery: Provides stash pop instructions
+
+Merge Conflicts:
+  Action: Resolves simple conflicts automatically
+  Escalation: Guides user through manual resolution
+
+Network Issues:
+  Action: Retries with exponential backoff
+  Fallback: Creates local branch, defers remote operations
+```
+
+### Recovery Scenarios
+
+**Branch Creation Failures**:
+
+```yaml
+Name Conflicts:
+  - Generate alternative names
+  - Preserve user intent
+  - Provide selection options
+
+Permission Issues:
+  - Check repository permissions
+  - Suggest alternative approaches
+  - Escalate to repository admin if needed
+```
+
+## Performance Optimization
+
+### Execution Speed
+
+**Optimization Strategies**:
+
+```yaml
+Git Operations:
+  - Parallel fetch and branch operations
+  - Cached git status checking
+  - Optimized remote communication
+  - Background preparation tasks
+
+Context Analysis:
+  - Cached pattern recognition
+  - Pre-computed suggestions
+  - Efficient git log analysis
+  - Optimized file system operations
+```
+
+### Resource Management
+
+**Efficient Processing**:
+
+```yaml
+Memory Usage:
+  - Streaming git log analysis
+  - Efficient pattern matching
+  - Cached convention detection
+  - Minimal working set retention
+
+Network Efficiency:
+  - Batched remote operations
+  - Compressed data transfer
+  - Connection reuse
+  - Background sync operations
+```
 
 ## Notes
 

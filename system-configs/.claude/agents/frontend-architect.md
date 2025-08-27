@@ -3,9 +3,9 @@ name: frontend-architect
 description: MUST BE USED for architecting complex frontend systems >100k DAU and micro-frontend orchestration. Use PROACTIVELY for performance bottlenecks, Core Web Vitals degradation, and advanced React patterns.
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash
 model: sonnet
-category: development
+category: architecture
 
-color: blue
+color: purple
 ---
 
 # Frontend Architect

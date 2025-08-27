@@ -16,7 +16,7 @@ be fixed immediately, never bypassed.
 /push --simple               # Quick push without quality checks
 /push --force                # Force push (use carefully)
 /push --dry-run             # Preview what would be pushed
-```bash
+```
 
 ## Agent Orchestration
 
@@ -39,7 +39,7 @@ security-auditor:
   role: Final security check before remote push
   input: All commits to be pushed, changed files
   output: Security vulnerabilities, sensitive data exposure
-```bash
+```
 
 ### Parallel Execution Strategy
 
@@ -113,7 +113,7 @@ Checks Performed:
 
 Agent Usage: None (skip for speed)
 Duration: 10-15 seconds
-```bash
+```
 
 ### Full Mode (default) - Parallel Agent Validation
 
@@ -132,7 +132,7 @@ All agents run simultaneously:
 
 Agent Usage: code-reviewer + test-engineer + security-auditor (parallel)
 Duration: 10-20 seconds (with parallel execution)
-```bash
+```
 
 ## Push Workflow
 
@@ -163,7 +163,7 @@ validate_push_safety() {
 
   echo "📊 Ready to push $ahead_count commits"
 }
-```bash
+```
 
 ### Phase 2: Basic Auto-Fixes (Full Mode Only)
 
@@ -180,7 +180,7 @@ run_basic_fixes() {
 
   return 0
 }
-```bash
+```
 
 ### Phase 3: Linting Auto-Fix Implementation
 
@@ -249,7 +249,7 @@ Auto-generated before push to maintain quality standards."
 
   return 0
 }
-```bash
+```
 
 ## Push Strategy
 
@@ -265,7 +265,7 @@ Benefits:
   - Fast execution (10-15 seconds)
   - No overhead
   - Perfect for hot fixes and reviewed code
-```bash
+```
 
 ### Full Mode (Basic Auto-Fix)
 
@@ -280,7 +280,7 @@ Benefits:
   - Quick formatting fixes
   - Safe push with basic validation
   - Relies on separate /review for quality
-```bash
+```
 
 ## Basic Push Report
 
@@ -302,13 +302,13 @@ When auto-fixes are applied, a simple report is generated:
 ## Recommendation
 ✅ **Ready to push** - Basic formatting applied
 💡 **Note**: Run /review for comprehensive quality analysis
-```bash
+```
 
 ## Examples
 
 ### Simple Push
 
-```bash
+```text
 User: /push --simple
 Claude: 🚀 Simple push mode...
 ✅ Not on main branch (feature/auth-improvements)
@@ -316,11 +316,11 @@ Claude: 🚀 Simple push mode...
 📊 3 commits ready to push
 🔗 Setting upstream tracking...
 ✅ Pushed to origin/feature/auth-improvements
-```bash
+```
 
 ### Standard Push
 
-```bash
+```text
 User: /push
 Claude: 🚀 Standard push with basic validation...
 ✅ Not on main branch (feature/auth-improvements)
@@ -330,18 +330,18 @@ Claude: 🚀 Standard push with basic validation...
 📝 Committed auto-fixes
 🚀 Pushing 4 commits to origin/feature/auth-improvements
 💡 Tip: Run /review for comprehensive quality analysis
-```bash
+```
 
 ### Push with Manual Review Needed
 
-```bash
+```text
 User: /push
 Claude: 🚀 Standard push with basic validation...
 ✅ Basic checks passed
 🔍 Auto-fixing... ⚠️ Some linting issues require manual attention
 💡 Run /review for comprehensive quality analysis
 🚀 Pushing 3 commits to origin/feature/auth-improvements
-```bash
+```
 
 ## Execution Verification
 

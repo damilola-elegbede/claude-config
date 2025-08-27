@@ -10,9 +10,10 @@ Finds and resolves CodeRabbit review comments from PR. Extracts actionable sugge
 /resolve-cr              # Current branch's PR
 /resolve-cr <pr-number>  # Specific PR
 /resolve-cr --dry-run    # Preview without fixing
-```bash
+```
 
 ## Behavior
+
 ## Agent Orchestration
 
 ### Parallel CodeRabbit Resolution - Multiple Instances
@@ -100,8 +101,7 @@ Optimization Metrics:
   - Sequential: 5-10 minutes for 20 comments
   - Parallel: 1-2 minutes for 20 comments (5x faster)
   - Instance scaling: Up to 10 parallel agents for large PRs
-```bash
-
+```
 
 When invoked, there ARE CodeRabbit comments to resolve - no questions asked.
 I will aggressively search for unresolved CodeRabbit comments, implement fixes,
@@ -138,7 +138,7 @@ gh pr view $PR --json comments,reviews \
 grep -A 10 "## Prompts for AI Agents" | \
   grep -E "^[-*]" | \
   sed 's/^[-*] //'
-```bash
+```
 
 ### Fix Pattern Matching
 
@@ -262,11 +262,11 @@ All suggested improvements have been implemented and pushed. The changes are rea
 *Automated resolution via /resolve-cr command*"
   echo "✅ Detailed summary posted"
 }
-```bash
+```
 
 ## Examples
 
-```bash
+```text
 User: /resolve-cr
 Claude: 🔍 Aggressively searching for CodeRabbit comments in PR #42...
 📋 Found: 2 security, 3 perf, 1 test, 6 quality issues

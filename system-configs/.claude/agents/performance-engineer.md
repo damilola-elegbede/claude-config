@@ -1,6 +1,6 @@
 ---
 name: performance-engineer
-description: Expert performance engineer specializing in optimization and load testing. MUST BE USED for systems speed, scalability, and resource efficiency.
+description: MUST BE USED for performance optimization and load testing. Use PROACTIVELY for systems speed, scalability, and resource efficiency bottlenecks. Expert performance engineer specializing in optimization.
 tools: Read, Grep, Bash, Edit
 model: sonnet
 category: quality

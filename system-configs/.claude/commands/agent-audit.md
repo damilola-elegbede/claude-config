@@ -331,7 +331,7 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 
 ### Auto-Remediation Log
 
-```bash
+```text
 # Fixes applied automatically:
 - Updated agent-name: Set tier to 1
 - Fixed agent-name: Removed Task tool access

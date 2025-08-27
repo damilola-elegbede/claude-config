@@ -13,7 +13,7 @@ comprehensive project understanding. Three modes: lite (quick), full
 /context --lite              # Quick essential context only
 /context -l                  # Quick essential context only (short form)
 /context <component>         # Focused component analysis
-```bash
+```
 
 ## Behavior
 
@@ -43,13 +43,9 @@ Output Format:
   - Active PR information
   - Project purpose summary
   - Key development instructions
-```bash
+```
 
-**Perfect for**:
-
-- Quick orientation when switching tasks
-- Status checks without full analysis
-- Minimal resource usage scenarios
+**Perfect for**: Quick orientation, status checks, minimal resource usage scenarios
 
 ### Full Mode (default) - Parallel Multi-Agent Analysis
 
@@ -62,18 +58,6 @@ Parallel Agent Deployment:
     - Architecture analysis
     - Dependency mapping
     - Code patterns identification
-
-  test-engineer:
-    - Test framework identification
-    - Test coverage analysis
-    - Quality gate detection
-    - Testing strategy assessment
-
-  debugger:
-    - Error pattern identification
-    - Debugging setup analysis
-    - Common issue detection
-    - Debug tool configuration
 
   tech-writer (Parallel):
     - Documentation inventory
@@ -112,8 +96,6 @@ Analysis Scope:
     - Architecture decisions
     - Available scripts/commands
 
-Agent Usage: codebase-analyst + tech-writer + business-analyst (parallel)
-
 Output Format:
   - Complete technology stack
   - Directory structure with explanations
@@ -121,13 +103,9 @@ Output Format:
   - Key dependencies and purposes
   - Recent development activity
   - Getting started instructions
-```bash
+```
 
-**Perfect for**:
-
-- New repository exploration
-- Comprehensive project onboarding
-- Technology stack identification
+**Perfect for**: New repository exploration, comprehensive project onboarding, technology stack identification
 
 ### Focused Mode (<component>) - Multi-Instance Component Analysis
 
@@ -170,100 +148,44 @@ Performance Impact:
   - Sequential: 1-2 minutes for deep analysis
   - Multi-instance: 15-20 seconds (4-6x faster)
   - Comprehensive coverage: Multiple perspectives in parallel
-```bash
+```
 
 ## Execution Strategies
 
-### Lite Mode Execution
-
-```bash
-# Essential file reading (no agents)
-read_essential_files() {
-  # Project instructions
-  cat CLAUDE.md 2>/dev/null || echo "No CLAUDE.md found"
-
-  # Project overview
-  head -50 README.md 2>/dev/null || echo "No README.md found"
-
-  # Git context
-  git status --porcelain
-  git log --oneline -5
-  git branch --show-current
-
-  # PR status
-  gh pr status 2>/dev/null || echo "No active PR"
-}
-```bash
-
-### Full Mode Execution
-
-```bash
-# Repository analysis with optional agent support
-analyze_repository() {
-  # Count files to determine strategy
-  file_count=$(find . -type f -name "*.py" -o -name "*.js" -o -name "*.ts" -o -name "*.go" -o -name "*.rs" -o -name "*.java" | wc -l)
-
-  if [ "$file_count" -gt 1000 ]; then
-    echo "Large repository detected. Deploying codebase-analyst..."
-    # Deploy agent for comprehensive analysis
-  else
-    echo "Medium repository. Direct analysis..."
-    # Analyze directly without agent overhead
-  fi
-}
-```bash
-
-### Focused Mode Multi-Instance Deployment
+### Multi-Instance Deployment Patterns
 
 ```yaml
 Component Analysis with Instance Pools:
   "authentication" / "auth":
     agents: codebase-analyst (3 instances) + security-auditor
-    instance_distribution:
-      - instance_1: Authentication flow analysis
-      - instance_2: Session management patterns
-      - instance_3: Security vulnerability assessment
-      - security-auditor: Compliance and best practices
+    focus: Authentication flow, session management, security assessment
 
   "database" / "data":
     agents: codebase-analyst (4 instances)
-    instance_distribution:
-      - instance_1: Schema design analysis
-      - instance_2: Query pattern optimization
-      - instance_3: Index and performance analysis
-      - instance_4: Data integrity and constraints
+    focus: Schema design, query patterns, performance, data integrity
 
   "api" / "endpoints":
     agents: codebase-analyst (3 instances) + api-architect
-    instance_distribution:
-      - instance_1: Endpoint structure analysis
-      - instance_2: Request/response patterns
-      - instance_3: Integration point mapping
-      - api-architect: API design and standards
+    focus: Endpoint structure, request/response patterns, integration points
 
   "frontend" / "ui":
     agents: codebase-analyst (4 instances)
-    instance_distribution:
-      - instance_1: Component architecture
-      - instance_2: State management patterns
-      - instance_3: Performance optimization
-      - instance_4: UI/UX consistency
+    focus: Component architecture, state management, performance, UI consistency
 
   "performance":
     agents: codebase-analyst (3 instances) + performance-engineer
-    instance_distribution:
-      - instance_1: Code-level bottlenecks
-      - instance_2: Database query performance
-      - instance_3: Frontend rendering analysis
-      - performance-engineer: System-wide optimization
+    focus: Code bottlenecks, database performance, frontend optimization
 
   "security":
     agents: codebase-analyst (2 instances) + security-auditor
-    instance_distribution:
-      - instance_1: Code vulnerability patterns
-      - instance_2: Dependency security analysis
-      - security-auditor: Comprehensive security audit
-```bash
+    focus: Vulnerability patterns, dependency security, comprehensive audit
+```
+
+### Repository Size Strategy
+
+- **Small repos** (<100 files): Direct analysis without agent overhead
+- **Medium repos** (100-1000 files): Selective agent deployment
+- **Large repos** (>1000 files): Full parallel agent deployment
 
 ## Output Examples
 
@@ -290,7 +212,7 @@ Modern React task management app with real-time collaboration features
 - Run tests before committing (npm test)
 - TypeScript strict mode required
 - Follow atomic commit practices
-```bash
+```
 
 ### Full Mode Output
 
@@ -331,7 +253,7 @@ Modern React task management app with real-time collaboration features
 2. `cp .env.example .env` - Configure environment
 3. `npm run dev` - Start development server
 4. Open http://localhost:3000
-```bash
+```
 
 ### Focused Mode Output
 
@@ -359,7 +281,7 @@ Modern React task management app with real-time collaboration features
 2. Add comprehensive password reset workflow
 3. Consider implementing OAuth providers for enhanced UX
 4. Add audit logging for authentication events
-```bash
+```
 
 ## Performance & Optimization
 
@@ -373,19 +295,8 @@ Modern React task management app with real-time collaboration features
 
 ### Caching Strategy
 
-```bash
-# Cache results for repeated analysis
-cache_key="context_$(git rev-parse HEAD)_$(date +%Y%m%d)"
-cache_file=".cache/$cache_key.json"
-
-if [ -f "$cache_file" ] && [ $(($(date +%s) - $(stat -c %Y "$cache_file"))) -lt 3600 ]; then
-  echo "Using cached analysis..."
-  cat "$cache_file"
-else
-  echo "Performing fresh analysis..."
-  # Run analysis and cache results
-fi
-```bash
+Results cached for 1 hour based on git HEAD + date. Prevents repeated analysis of unchanged code
+and improves performance for frequent context checks.
 
 ## Execution Verification
 
@@ -398,33 +309,33 @@ Deploy execution-evaluator to verify:
 - ✅ **Output format consistent** - Report follows expected structure
 - ✅ **Timely completion** - Analysis completed within performance targets
 
-## Examples
+## Usage Examples
 
 ### Quick Status Check
 
-```bash
+```text
 User: /context --lite
 Claude: 📖 Reading essential files...
 ## Quick Context: ecommerce-api
 🌿 Branch: fix/payment-gateway (2 modified files)
 📋 No active PR
 🎯 Node.js/Express API for ecommerce platform
-```bash
+```
 
 ### New Repository Exploration
 
-```bash
+```text
 User: /context
 Claude: 🔍 Analyzing repository structure...
 📊 Detected: Python/Django project (127 files)
 ✅ Technology stack identified
 📝 Generating comprehensive context report...
 [Full analysis output]
-```bash
+```
 
 ### Component Deep Dive with Multi-Instance
 
-```bash
+```text
 User: /context payment processing
 Claude: 🎯 Deploying multi-instance analyzers for payment processing...
 📊 Instance Pool Status:
@@ -442,7 +353,7 @@ Claude: 🎯 Deploying multi-instance analyzers for payment processing...
 
 [Comprehensive multi-perspective analysis output]
 ✅ Analysis 4.8x faster with parallel instances
-```bash
+```
 
 ## Notes
 

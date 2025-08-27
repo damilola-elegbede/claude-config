@@ -12,9 +12,10 @@ Tests locally before pushing fixes.
 /fix-ci                  # Fix latest failure
 /fix-ci <run-id>         # Fix specific run
 /fix-ci --learn          # Update fix patterns from history
-```bash
+```
 
 ## Behavior
+
 ## Agent Orchestration
 
 ### Parallel CI Failure Analysis - Multi-Instance Deployment
@@ -60,7 +61,7 @@ security-auditor:
   role: Check for security-related CI failures
   parallel_with: [all other agents]
   output: Security violations, compliance issues
-```bash
+```
 
 ### Parallel Fix Strategy
 
@@ -114,7 +115,7 @@ Dependencies: {confidence: 92%, test: "npm test", fix: "npm install"}
 Test Failures: {confidence: 85%, test: "npm test", fix: "update tests"}
 Type Errors: {confidence: 78%, test: "npm run typecheck", fix: "fix types"}
 Build Issues: {confidence: 70%, test: "npm run build", fix: "rebuild"}
-```bash
+```
 
 ## Pattern Matching & Fixes
 
@@ -172,7 +173,7 @@ apply_fix() {
 
   echo "$pattern,$confidence,$fix_cmd,$test_cmd"
 }
-```bash
+```
 
 ## History Tracking
 
@@ -203,7 +204,7 @@ get_confidence() {
     END { if(total==0) print 50; else print int(success/total*100) }
   ' .tmp/fix-ci/history.log
 }
-```bash
+```
 
 ## Main Execution Flow
 
@@ -282,11 +283,11 @@ Automated fix applied by /fix-ci"
     echo "📊 Recorded outcome: CI passed = $all_passed"
   fi
 }
-```bash
+```
 
 ## Examples
 
-```bash
+```text
 User: /fix-ci
 Claude: 🔍 Pattern confidence: 96%
 🔧 Applying fix (96% confidence)...
@@ -305,7 +306,7 @@ Claude: 📊 Confidence scores from .tmp/fix-ci/:
 - Lint/Format: 98% (47/48 successful)
 - Dependencies: 92% (23/25 successful)
 - Test Failures: 85% (17/20 successful)
-```bash
+```
 
 ## Execution Verification
 
