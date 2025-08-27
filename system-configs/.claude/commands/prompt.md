@@ -15,41 +15,15 @@ Optimizes prompts using the SCOPE framework. Removes fluff, clarifies objectives
 
 ## Behavior
 
-## Agent Orchestration
-
-### Parallel Prompt Optimization
-
-**Launch all these concurrently:** Specialized agents for comprehensive optimization:
-
-```yaml
-tech-writer:
-  role: Clarity and conciseness optimization
-  input: Original prompt, context
-  output: Clearer, more concise version
-
-business-analyst:
-  role: Objective extraction and refinement
-  input: Prompt content, implied goals
-  output: Clear objectives, success criteria
-
-ux-researcher:
-  role: User intent analysis
-  input: Prompt context, user patterns
-  output: Intent clarification, user needs
-```
-
-### Parallel Analysis Benefits
-
-```yaml
-Run simultaneously in a single response:
-  - Clarity, brevity, effectiveness analyzed concurrently
-  - Execute in parallel (not sequentially): Multiple optimization strategies
-  - Best approach selected from parallel results
-```
+**SYSTEM BOUNDARY**: This command ONLY optimizes prompts and returns the optimized text.
+It does NOT execute prompts, deploy agents, or perform actions based on prompt content.
 
 When invoked, I will apply the SCOPE framework to optimize prompts for maximum
 clarity and effectiveness. I remove unnecessary words, clarify objectives, and
 structure prompts to achieve better results with fewer tokens.
+
+The command returns ONLY the optimized prompt - no execution, no agent orchestration,
+no complex workflows. Simple input → optimized output.
 
 ## SCOPE Framework
 
@@ -68,11 +42,28 @@ E - Examples: Input/output (if ambiguous)
 3. Every word must be essential
 4. Structure with bullets or numbered lists
 
-## Interactive Mode
+## Output Format
 
-1. Present optimized version
-2. Options: `approve`, `revise`, `shorter`, `cancel`
-3. Iterate until approved
+```text
+OPTIMIZED PROMPT:
+[Clean optimized text following SCOPE framework]
+
+IMPROVEMENTS:
+- Reduced from X to Y words (Z% reduction)
+- Applied SCOPE structure
+- Removed fluff/politeness
+- Clarified objective
+```
+
+### Interactive Mode (Optional)
+
+For `/prompt` without arguments, I will:
+
+1. Request input text
+2. Apply SCOPE optimization
+3. Return optimized version immediately
+4. Optional single refinement if requested
+   - To request: reply once with `refine: <what to change>` (same thread, one turn)
 
 File input: Supports .md, .txt, .yaml, .json
 
@@ -100,46 +91,59 @@ Requirements:
 
 ## Examples
 
-```text
+### Basic Usage
+
+```bash
 User: /prompt analyze customer feedback to find complaints
 Claude:
-╔═══════════════════════════════════╗
-║ OPTIMIZED PROMPT                  ║
-╚═══════════════════════════════════╝
+OPTIMIZED PROMPT:
 Analyze customer feedback for top complaints.
-Input: [Specify format]
-Output: Ranked list with counts
 
-Refine? (approve/revise/shorter)
+Requirements:
+- Input: [Specify format]
+- Output: Ranked list with counts
 
-User: revise - input is CSV with date, rating, comment
-Claude:
-╔═══════════════════════════════════╗
-║ OPTIMIZED PROMPT v2               ║
-╚═══════════════════════════════════╝
-Analyze CSV for top complaints.
-Input: CSV (date, rating, comment)
-Output: Ranked complaints with frequency
-
-User: approve
-Claude: ✅ Prompt optimized!
+IMPROVEMENTS:
+- Reduced from 8 to 6 words (25% reduction)
+- Added clear input/output specification
+- Structured requirements format
 ```
 
-## Execution Verification
+### File Input
 
-Deploy execution-evaluator to verify:
+```bash
+User: /prompt --file verbose_prompt.txt
+Claude:
+OPTIMIZED PROMPT:
+Write Python email validation function.
 
-- ✅ **Input analyzed** - Original prompt or file content processed and understood
-- ✅ **Structure optimized** - Clear input/output format specification added
-- ✅ **Clarity achieved** - Complex language simplified for maximum understanding
-- ✅ **Ambiguity removed** - Vague terms replaced with specific instructions
-- ✅ **User approval** - Interactive refinement completed to satisfaction
-- ✅ **Final format** - Optimized prompt delivered in clear, actionable format
-- ✅ **Objective clarity** - Core intent preserved while improving specificity
+Requirements:
+- Return boolean
+- Handle edge cases
+- RFC 5322 compliant
+
+IMPROVEMENTS:
+- Reduced from 52 to 15 words (71% reduction)
+- Applied SCOPE structure (Objective + Constraints)
+- Removed politeness language
+- Clarified requirements
+```
+
+## Success Criteria
+
+The command succeeds when it delivers:
+
+- ✅ **Input processed** - Original prompt or file content analyzed
+- ✅ **SCOPE applied** - Structure, constraints, objectives clarified
+- ✅ **Clean output** - Optimized prompt in copy-ready format
+- ✅ **Improvement metrics** - Word reduction and changes documented
+- ✅ **No execution** - Command returns optimized text only, no actions taken
+- ✅ **Immediate usability** - Output ready for copy/paste to other tools
 
 ## Notes
 
-- Focus on objective clarity above all else
-- Interactive refinement until approved
-- File input extracts core intent from verbose text
-- Goal: Maximum clarity with minimum words
+- **Primary Goal**: Return optimized prompt text immediately
+- **No Agent Orchestration**: Direct optimization by Claude using SCOPE framework
+- **No Complex Workflows**: Simple input → output transformation
+- **Copy-Ready Output**: Formatted for immediate use in other tools
+- **Single Purpose**: Text optimization only, no execution or side effects
