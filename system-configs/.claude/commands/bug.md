@@ -12,7 +12,7 @@ Extracts context automatically and creates professional bug reports with proper 
 /bug --priority <level>          # Set priority (low, medium, high, critical)
 /bug --labels <label1,label2>    # Add specific labels
 /bug --assign <username>         # Auto-assign to user
-```bash
+```
 
 ## Behavior
 
@@ -32,18 +32,26 @@ tracking and reference.
 
 ### Parallel Bug Processing
 
-Deploy specialized agents for comprehensive bug reporting:
+**Launch all these concurrently:** Specialized agents for comprehensive bug reporting:
 
 ```yaml
 tech-writer:
   role: Format issue descriptions and documentation
   input: Bug context, error details, reproduction steps
   output: Professional bug report with clear formatting
+  parallel_with: [security-auditor, project-orchestrator]
+
+security-auditor:
+  role: Scan issue content for sensitive information before GitHub submission
+  input: Bug description, stack traces, environment details, reproduction steps
+  output: Security clearance or redaction recommendations
+  parallel_with: [tech-writer, project-orchestrator]
 
 project-orchestrator:
-  role: Coordinate bug workflow and prioritization
+  role: **Execute in parallel (not sequentially):** Coordinate bug workflow and prioritization
   input: Bug severity, component analysis, team assignments
   output: Workflow coordination, team notifications, priority setting
+  parallel_with: [tech-writer, security-auditor]
 ```
 
 ## Context & Classification
@@ -118,7 +126,7 @@ User: "API timeouts after recent changes"
 → If GITHUB_TOKEN missing: "Error: GitHub authentication failed. Set GITHUB_TOKEN environment variable"
 → If network issue: "Retrying... (attempt 2/3)" then creates issue or fails with clear message
 → If rate limited: "Error: GitHub API rate limit exceeded. Try again in 47 minutes"
-```bash
+```
 
 ## Requirements & Validation
 

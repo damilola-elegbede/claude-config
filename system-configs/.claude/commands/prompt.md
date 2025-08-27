@@ -11,14 +11,15 @@ Optimizes prompts using the SCOPE framework. Removes fluff, clarifies objectives
 /prompt --file <path>    # Optimize from file
 /prompt -f <path>        # Optimize from file (short form)
 /prompt                  # Interactive mode
-```bash
+```
 
 ## Behavior
+
 ## Agent Orchestration
 
 ### Parallel Prompt Optimization
 
-Deploy specialized agents for comprehensive optimization:
+**Launch all these concurrently:** Specialized agents for comprehensive optimization:
 
 ```yaml
 tech-writer:
@@ -35,14 +36,14 @@ ux-researcher:
   role: User intent analysis
   input: Prompt context, user patterns
   output: Intent clarification, user needs
-```bash
+```
 
 ### Parallel Analysis Benefits
 
 ```yaml
-Optimization Streams:
-  - Clarity, brevity, effectiveness analyzed simultaneously
-  - Multiple optimization strategies tested in parallel
+Run simultaneously in a single response:
+  - Clarity, brevity, effectiveness analyzed concurrently
+  - Execute in parallel (not sequentially): Multiple optimization strategies
   - Best approach selected from parallel results
 ```
 
@@ -58,7 +59,7 @@ C - Constraints: Requirements, limitations
 O - Objective: Single clear goal (REQUIRED)
 P - Persona: Role needed (optional)
 E - Examples: Input/output (if ambiguous)
-```bash
+```
 
 ### Rules
 
@@ -83,7 +84,7 @@ File input: Supports .md, .txt, .yaml, .json
 I need you to please help me write a Python function that can validate
 email addresses and return true if they're valid or false if they're not.
 It should handle various edge cases and be robust.
-```bash
+```
 
 **Optimized (15 words):**
 
@@ -93,13 +94,13 @@ Requirements:
 - Return boolean
 - Handle edge cases
 - RFC 5322 compliant
-```bash
+```
 
 **Result**: 71% shorter, 100% clearer
 
 ## Examples
 
-```bash
+```text
 User: /prompt analyze customer feedback to find complaints
 Claude:
 ╔═══════════════════════════════════╗
@@ -122,7 +123,7 @@ Output: Ranked complaints with frequency
 
 User: approve
 Claude: ✅ Prompt optimized!
-```bash
+```
 
 ## Execution Verification
 

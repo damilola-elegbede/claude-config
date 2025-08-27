@@ -13,7 +13,7 @@ not bypassed.
 
 ```bash
 /commit
-```yaml
+```
 
 ## Agent Orchestration
 
@@ -59,7 +59,7 @@ codebase-analyst:
   input: Changed files, dependency graph
   parallel_with: [all other agents]
   output: Impact assessment, related files that might need updates
-```bash
+```
 
 ### Agent Coordination
 
@@ -251,6 +251,19 @@ handled by the /review command in the ship-it workflow.
 
 - Git must be initialized in the repository
 - Changes must exist (staged or unstaged)
+
+## Execution Verification
+
+Deploy execution-evaluator to verify:
+
+- ✅ **Commit created** - Git commit successfully created with valid hash
+- ✅ **Message format** - Conventional commit format with proper structure
+- ✅ **Co-authorship** - Claude attribution included in commit message
+- ✅ **Files staged** - All intended files were committed to repository
+- ✅ **Cleanup executed** - Temporary files removed before staging
+- ✅ **Hooks respected** - Pre-commit hooks executed (no --no-verify used)
+- ✅ **Clean state** - Repository in clean state after commit
+- ✅ **Agent coordination** - Multi-agent validation completed successfully
 
 ## Notes
 

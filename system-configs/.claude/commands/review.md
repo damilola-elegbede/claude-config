@@ -48,9 +48,7 @@ Go: golangci-lint, gosec
 Security: Semgrep, Gitleaks, OSV-Scanner
 Infrastructure: Hadolint, Checkov
 Documentation: markdownlint, ShellCheck
-```bash
-
-### Execution Strategy
+```
 
 ### Agent Orchestration - Multi-Instance Parallel Deployment
 
@@ -107,7 +105,7 @@ tech-writer:
   input: Code comments, README files, API docs
   parallel_with: [all other agent instances]
   output: Documentation gaps, clarity improvements
-```bash
+```
 
 ### Parallel Review Strategy
 
@@ -150,6 +148,8 @@ Benefits:
   - Real-time aggregation of findings
 ```
 
+### Execution Strategy
+
 - **Language Detection**: Auto-run appropriate tools based on file extensions
 - **Parallel Execution**: All tools run simultaneously for speed
 - **Graceful Degradation**: Skip missing tools, continue with available ones
@@ -157,8 +157,10 @@ Benefits:
 
 ## Implementation
 
+### Core Review Function
+
 ```bash
-# CodeRabbit-style review execution - SECURITY HARDENED
+# CodeRabbit-style review execution with security hardening
 run_coderabbit_review() {
   local target="${1:-$(git diff --name-only main...HEAD 2>/dev/null || echo '.')}"
   local mode="$2"
@@ -167,77 +169,14 @@ run_coderabbit_review() {
 
   # Always run pre-commit checklist first
   echo "📋 Running CodeRabbit pre-commit checklist..."
-  if ! run_coderabbit_checklist; then
-    echo "⚠️ Checklist identified issues - continuing with review..."
-  fi
+  run_coderabbit_checklist
   echo ""
 
-  # Create secure temporary directory
-  local temp_dir
-  temp_dir=$(mktemp -d -t "claude_review.XXXXXXXXXX") || {
-    echo "🚨 Error: Cannot create secure temporary directory" >&2
-    return 1
-  }
-
-  # Ensure cleanup on exit
+  # Create secure temporary directory with cleanup trap
+  local temp_dir=$(mktemp -d -t "claude_review.XXXXXXXXXX")
   trap 'rm -rf "$temp_dir"' EXIT INT TERM
 
-  # Detect languages and run tools
-  detect_and_run_tools() {
-    local files="$1"
-
-    # JavaScript/TypeScript
-    if echo "$files" | grep -q '\.\(js\|jsx\|ts\|tsx\)$'; then
-      run_tool_secure "eslint" "$files" "--format" "json"
-      run_tool_secure "prettier" "$files" "--check"
-    fi
-
-    # Python
-    if echo "$files" | grep -q '\.py$'; then
-      run_tool_secure "ruff" "$files" "check" "--format" "json"
-      run_tool_secure "bandit" "$files" "-r" "-f" "json"
-    fi
-
-    # Go
-    if echo "$files" | grep -q '\.go$'; then
-      run_tool_secure "golangci-lint" "$files" "run" "--out-format" "json"
-    fi
-
-    # Universal security tools
-    run_tool_secure "semgrep" "$files" "--config=auto" "--json"
-    run_tool_secure "gitleaks" "$files" "detect" "--source" "--report-format" "json"
-
-    # Documentation
-    if echo "$files" | grep -q '\.md$'; then
-      run_tool_secure "markdownlint" "$files" "--json"
-    fi
-  }
-
-  # SECURE tool execution - NO EVAL
-  run_tool_secure() {
-    local tool_cmd="$1"
-    local target_files="$2"
-    shift 2
-    local -a args=("$@")
-
-    local tool_path
-    tool_path=$(command -v "$tool_cmd" 2>/dev/null) || {
-      echo "  ⏭️ $tool_cmd: Not available, skipping"
-      return 0
-    }
-
-    local output_file="$temp_dir/${tool_cmd}_results.json"
-    echo "  ✅ $tool_cmd: Running securely..."
-
-    # Execute with timeout and controlled arguments
-    if timeout 60 "$tool_path" "${args[@]}" "$target_files" > "$output_file" 2>/dev/null; then
-      echo "  ✅ $tool_cmd: Completed"
-    else
-      echo "  ⚠️ $tool_cmd: Issues found"
-    fi
-  }
-
-  # Run tool pipeline
+  # Language detection and tool execution
   detect_and_run_tools "$target"
 
   # AI synthesis and report generation
@@ -245,19 +184,42 @@ run_coderabbit_review() {
   echo "📝 Generating CodeRabbit-style report..."
 }
 
-# Auto-fix mode - SECURE
+# Secure tool execution without eval
+run_tool_secure() {
+  local tool_cmd="$1" target_files="$2"
+  shift 2; local -a args=("$@")
+
+  local tool_path=$(command -v "$tool_cmd" 2>/dev/null) || {
+    echo "  ⏭️ $tool_cmd: Not available, skipping"; return 0
+  }
+
+  local output_file="$temp_dir/${tool_cmd}_results.json"
+  echo "  ✅ $tool_cmd: Running securely..."
+
+  # Execute with timeout and controlled arguments
+  if timeout 60 "$tool_path" "${args[@]}" "$target_files" > "$output_file" 2>/dev/null; then
+    echo "  ✅ $tool_cmd: Completed"
+  else
+    echo "  ⚠️ $tool_cmd: Issues found"
+  fi
+}
+```
+
+### Auto-Fix Implementation
+
+```bash
+# Auto-fix mode with security controls
 run_autofix() {
   echo "🔧 Auto-fixing safe issues..."
-  safe_autofix() {
-    local tool_cmd="$1"
-    shift
-    local -a args=("$@")
 
-    local tool_path
-    tool_path=$(command -v "$tool_cmd" 2>/dev/null) || return 0
+  # Safe tool execution function
+  safe_autofix() {
+    local tool_cmd="$1"; shift; local -a args=("$@")
+    local tool_path=$(command -v "$tool_cmd" 2>/dev/null) || return 0
 
     echo "  🔧 Running $tool_cmd..."
-    timeout 120 "$tool_path" "${args[@]}" 2>/dev/null || echo "  ⚠️ $tool_cmd: completed with warnings"
+    timeout 120 "$tool_path" "${args[@]}" 2>/dev/null ||
+      echo "  ⚠️ $tool_cmd: completed with warnings"
   }
 
   # Apply auto-fixes securely
@@ -265,7 +227,7 @@ run_autofix() {
   safe_autofix "npx" "prettier" "--write" "."
   safe_autofix "ruff" "check" "--fix" "."
 
-  # Commit fixes if any changes made
+  # Commit fixes if changes made
   if ! git diff --quiet; then
     git add .
     git commit -m "fix: apply automated linting fixes
@@ -278,178 +240,23 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
     echo "ℹ️ No auto-fixable issues found"
   fi
 }
+```
 
-# CodeRabbit Pre-Commit Self-Review Checklist
-# See docs/quality/CODERABBIT_PRECOMMIT_CHECKLIST.md for full details
-run_coderabbit_checklist() {
-  echo "📋 Running Pre-Commit Checklist (docs/quality/CODERABBIT_PRECOMMIT_CHECKLIST.md)"
-  echo "======================================================================="
+### Pre-Commit Checklist Summary
 
-  local issues_found=0
+The comprehensive checklist validates:
 
-  # Documentation & Consistency
-  echo -e "\n📚 Documentation & Consistency"
-  echo "-------------------------------"
+- **Documentation**: Path consistency, agent counts, template compliance
+- **YAML Quality**: Required fields, trigger phrases, no deprecated fields
+- **Code Standards**: UTF-8 encoding, proper constant organization
+- **Agent System**: Correct count (28), boundary statements
+- **Testing**: System health, YAML validation, markdown quality
 
-  # Check for moved file path updates
-  echo -n "• Path consistency after file moves: "
-  if grep -r "\.claude/agents/" README.md CONTRIBUTING.md docs/ 2>/dev/null | grep -v "system-configs/.claude/agents/" >/dev/null 2>&1; then
-    echo "❌ Found old paths - need updating"
-    ((issues_found++))
-  else
-    echo "✅ Paths consistent"
-  fi
-
-  # Check version/count consistency
-  echo -n "• Agent count consistency (should be 28): "
-  local count_issues=$(grep -r "42.agent\|29.agent\|30.agent" docs/ README.md 2>/dev/null | wc -l)
-  if [ "$count_issues" -gt 0 ]; then
-    echo "❌ Found inconsistent agent counts"
-    ((issues_found++))
-  else
-    echo "✅ Agent counts consistent"
-  fi
-
-  # Check for template compliance
-  echo -n "• New files follow template structure: "
-  local template_issues=0
-  for file in system-configs/.claude/agents/*.md; do
-    if [ -f "$file" ] && ! grep -q "SYSTEM BOUNDARY" "$file" 2>/dev/null; then
-      ((template_issues++))
-    fi
-  done
-  if [ $template_issues -gt 0 ]; then
-    echo "❌ $template_issues files missing template compliance"
-    ((issues_found++))
-  else
-    echo "✅ All files follow template"
-  fi
-
-  # YAML/Configuration Quality
-  echo -e "\n⚙️ YAML/Configuration Quality"
-  echo "-----------------------------"
-
-  echo -n "• Required YAML fields present: "
-  if python3 scripts/validate-agent-yaml.py >/dev/null 2>&1; then
-    echo "✅ All agents have required fields"
-  else
-    echo "❌ YAML validation failed"
-    ((issues_found++))
-  fi
-
-  echo -n "• Description trigger phrases: "
-  local missing_triggers=$(grep -L "MUST BE USED\|Use PROACTIVELY\|Expert\|Specializes" system-configs/.claude/agents/*.md 2>/dev/null | wc -l)
-  if [ "$missing_triggers" -gt 0 ]; then
-    echo "❌ $missing_triggers agents missing trigger phrases"
-    ((issues_found++))
-  else
-    echo "✅ All descriptions have trigger phrases"
-  fi
-
-  echo -n "• No deprecated YAML fields: "
-  local deprecated_fields=$(grep -r "specialization_level\|domain_expertise\|coordination_protocols" system-configs/.claude/agents/ 2>/dev/null | wc -l)
-  if [ "$deprecated_fields" -gt 0 ]; then
-    echo "❌ Found deprecated fields"
-    ((issues_found++))
-  else
-    echo "✅ No deprecated fields found"
-  fi
-
-  # Code Quality Standards
-  echo -e "\n🔧 Code Quality Standards"
-  echo "------------------------"
-
-  echo -n "• UTF-8 encoding in Python scripts: "
-  local encoding_issues=$(grep -L "encoding.*utf-8\|encoding.*UTF-8" scripts/**/*.py 2>/dev/null | wc -l)
-  if [ "$encoding_issues" -gt 0 ]; then
-    echo "❌ $encoding_issues Python files missing UTF-8 encoding"
-    ((issues_found++))
-  else
-    echo "✅ UTF-8 encoding specified"
-  fi
-
-  echo -n "• Constants moved to class-level: "
-  if grep -r "valid_models.*=.*\[" scripts/ 2>/dev/null | grep -v "self\." >/dev/null 2>&1; then
-    echo "❌ Found inline constants that should be class-level"
-    ((issues_found++))
-  else
-    echo "✅ Constants properly organized"
-  fi
-
-  # Agent System Compliance
-  echo -e "\n🤖 Agent System Compliance"
-  echo "--------------------------"
-
-  echo -n "• Agent count accuracy (28 agents): "
-  local actual_count=$(find system-configs/.claude/agents/ -name "*.md" -type f | wc -l)
-  if [ "$actual_count" -eq 28 ]; then
-    echo "✅ Correct agent count (28)"
-  else
-    echo "❌ Agent count mismatch: found $actual_count, expected 28"
-    ((issues_found++))
-  fi
-
-  echo -n "• System boundary statements: "
-  local missing_boundary=$(grep -L "NO Task tool access\|Only Claude has orchestration" system-configs/.claude/agents/*.md 2>/dev/null | wc -l)
-  if [ "$missing_boundary" -gt 0 ]; then
-    echo "❌ $missing_boundary agents missing boundary statements"
-    ((issues_found++))
-  else
-    echo "✅ All agents have boundary protection"
-  fi
-
-  # Testing & Verification
-  echo -e "\n🧪 Testing & Verification"
-  echo "------------------------"
-
-  echo -n "• System health tests pass: "
-  if ./tests/comprehensive/test_system_health.sh >/dev/null 2>&1; then
-    echo "✅ All system tests pass"
-  else
-    echo "❌ System health tests failed"
-    ((issues_found++))
-  fi
-
-  echo -n "• Agent YAML validation passes: "
-  if python3 scripts/validate-agent-yaml.py >/dev/null 2>&1; then
-    echo "✅ Agent YAML validation passes"
-  else
-    echo "❌ Agent YAML validation failed"
-    ((issues_found++))
-  fi
-
-  echo -n "• Markdown quality gates pass: "
-  if ./scripts/validate-markdown-quality.sh validate >/dev/null 2>&1; then
-    echo "✅ Markdown quality passes"
-  else
-    echo "❌ Markdown quality issues found"
-    ((issues_found++))
-  fi
-
-  # Summary
-  echo -e "\n📊 Checklist Summary"
-  echo "==================="
-  echo "Issues found: $issues_found"
-
-  if [ $issues_found -eq 0 ]; then
-    echo "🎉 All checks passed! Ready for commit."
-    return 0
-  else
-    echo "⚠️ $issues_found issues need attention before commit."
-    echo ""
-    echo "🔧 Quick fix commands:"
-    echo "  ./scripts/validate-markdown-quality.sh fix"
-    echo "  python3 scripts/validate-agent-yaml.py"
-    echo "  python3 scripts/standardize-agents.py"
-    echo "  ./tests/comprehensive/test_system_health.sh"
-    return 1
-  fi
-}
-```bash
+See `docs/quality/CODERABBIT_PRECOMMIT_CHECKLIST.md` for complete implementation details.
 
 ## Report Format
 
-### CodeRabbit-Style Output
+### CodeRabbit-Style Output Structure
 
 ```text
 # 🤖 AI Code Review Report
@@ -473,76 +280,44 @@ run_coderabbit_checklist() {
 ### Security Fixes
 - Fix SQL injection in login endpoint using parameterized queries
 - Replace hardcoded API key with environment variable configuration
-- Add input validation for all authentication endpoints
 
 ### Performance Optimizations
 - Optimize N+1 query pattern in user data retrieval
 - Implement caching for frequently accessed user data
 
-### Testing Improvements
-- Add test coverage for payment processing logic
-- Create integration tests for authentication flow
-
 ## 📊 Tool Summary
 - ESLint: 5 style issues (3 auto-fixable)
 - Semgrep: 1 SQL injection vulnerability
 - Gitleaks: 1 hardcoded secret detected
-- Custom Analysis: 1 performance issue
 
 ## 🎯 Next Steps
 1. Fix SQL injection (Critical - blocks merge)
 2. Remove hardcoded secret (Critical - security risk)
 3. Optimize N+1 queries (High - performance impact)
-```bash
+```
 
 ## Examples
 
 ### Standard Review
 
-```bash
+```text
 User: /review
 Claude: 🤖 CodeRabbit-style AI review...
-📋 Running Pre-Commit Checklist (docs/quality/CODERABBIT_PRECOMMIT_CHECKLIST.md)
-  ✅ Documentation consistency verified
-  ✅ YAML quality validated
-  ✅ Agent compliance checked (28 agents)
-  ✅ Testing verification passed
-
-Running tool pipeline...
-  ✅ ESLint: Running...
-  ⚠️ ESLint: Issues found
-  ✅ Semgrep: Running...
-  ⚠️ Semgrep: Issues found
-  ⏭️ Ruff: Not available, skipping
+📋 Running Pre-Commit Checklist...
+  ✅ All checks passed
 🧠 AI synthesis: Processing tool outputs...
-📝 Generating CodeRabbit-style report...
-
-# 🤖 AI Code Review Report
-## Summary: 2 Critical, 1 High issue found
-## Prompts for AI Agents ready for automated remediation
-```bash
+📝 Report: 2 Critical, 1 High issue found with remediation prompts
+```
 
 ### Auto-Fix Mode
 
-```bash
+```text
 User: /review --fix
 Claude: 🔧 Auto-fixing safe issues...
 ✅ ESLint: Fixed 8 style issues
 ✅ Prettier: Applied formatting to 12 files
 ✅ Auto-fixes committed
 ⚠️ Manual fixes needed: 2 security issues (see report)
-```bash
-
-### Security Focus
-
-```bash
-User: /review --security
-Claude: 🔒 Security-focused analysis...
-  ✅ Semgrep: Running security rules...
-  ✅ Gitleaks: Scanning for secrets...
-  ✅ Bandit: Python security analysis...
-🚨 Found: 1 SQL injection, 1 hardcoded secret
-📝 Security report with remediation prompts generated
 ```
 
 ## Notes
@@ -570,7 +345,7 @@ Claude: 🔒 Security-focused analysis...
 - **Fast Feedback**: Default mode reviews only changed files
 - **Comprehensive Analysis**: --full mode for complete repository review
 - **Security Focus**: Specialized security scanning with --security mode
-- **Pre-Commit Validation**: --checklist mode runs systematic quality checks
+- **Pre-Commit Validation**: Systematic quality checks before commits
 - **Development Integration**: Works with existing toolchains and workflows
 - **Quality Gates**: Blocks critical issues while allowing minor improvements
 

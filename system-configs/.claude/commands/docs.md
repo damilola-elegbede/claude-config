@@ -13,7 +13,7 @@ instances in parallel for 3-4x faster documentation generation across all docume
 /docs --audit            # Documentation gap analysis only
 /docs --clean            # Clean temporary docs and organize
 /docs <scope>            # Focused documentation update
-```bash
+```
 
 ## Behavior
 
@@ -46,7 +46,7 @@ api-architect:
   role: API documentation requirements and OpenAPI specs
   parallel_with: [codebase-analyst instances, tech-writer]
   output: API documentation needs assessment
-```bash
+```
 
 ### Phase 2: Multi-Instance Documentation Generation
 
@@ -80,7 +80,7 @@ codebase-analyst (documentation extractor):
 #   Sequential: 5-7 minutes for all documentation
 #   Multi-instance parallel: 1-2 minutes (3-4x faster)
 #   Document isolation: No conflicts between instances
-```bash
+```
 
 ### Phase 3: Cleanup & Organization (Sequential)
 
@@ -99,7 +99,7 @@ File Management:
     - .tmp/analysis/ - Analysis reports
     - .tmp/reports/ - Status and progress reports
     - .tmp/drafts/ - Draft documents and notes
-```bash
+```
 
 ## Documentation Targets
 
@@ -121,7 +121,7 @@ API Documentation:
 Architecture Docs:
   purpose: System design and technical decisions
   updates: Component diagrams, data flow, integration patterns
-```bash
+```
 
 ### Gap Detection Patterns
 
@@ -143,13 +143,13 @@ Quality Issues:
   - Incomplete code examples
   - Missing troubleshooting sections
   - Poor organization and navigation
-```bash
+```
 
 ## Cleanup Targets
 
 ### Temporary Files to Organize
 
-```bash
+```text
 # Analysis and report files
 *-analysis.md
 *-report.md
@@ -163,7 +163,7 @@ draft-*.md
 temp-*.md
 notes-*.md
 scratch-*.md
-```bash
+```
 
 ### Organization Rules
 
@@ -174,7 +174,7 @@ mv *-report.md .tmp/reports/
 mv *-status.md .tmp/reports/
 mv draft-*.md .tmp/drafts/
 mv notes-*.md .tmp/drafts/
-```bash
+```
 
 ## Execution Strategy
 
@@ -203,7 +203,7 @@ Total Time Optimization:
   - Sequential approach: 8-10 minutes
   - Multi-instance parallel: 2-3 minutes (3-4x faster)
   - Resource utilization: Full parallel processing
-```bash
+```
 
 ### Focused Scope Examples
 
@@ -212,7 +212,7 @@ Total Time Optimization:
 /docs readme        # README.md refresh only
 /docs architecture  # System design docs only
 /docs setup         # Installation and setup docs
-```bash
+```
 
 ## Quality Gates
 
@@ -236,13 +236,13 @@ Clarity:
   - Consistent formatting and style
   - Appropriate detail level for audience
   - Good use of examples and illustrations
-```bash
+```
 
 ## Examples
 
 ### Complete Documentation Overhaul with Multi-Instance
 
-```bash
+```text
 User: /docs
 Claude: 🚀 Deploying 6 tech-writer instances for parallel generation...
 📊 Instance Pool Status:
@@ -261,11 +261,11 @@ Claude: 🚀 Deploying 6 tech-writer instances for parallel generation...
 ✅ All instances completed in 1m 47s (was 5-7 minutes)
 🧹 Organizing outputs and temporary files...
 📚 Documentation suite fully synchronized
-```bash
+```
 
 ### Documentation Audit Only
 
-```bash
+```text
 User: /docs --audit
 Claude: 🔍 Running documentation gap analysis...
 📊 codebase-analyst: Mapping undocumented components...
@@ -276,18 +276,18 @@ Claude: 🔍 Running documentation gap analysis...
 - README.md installation steps outdated
 - Architecture diagrams need updates
 - 3 configuration options undocumented
-```bash
+```
 
 ### Cleanup and Organization
 
-```bash
+```text
 User: /docs --clean
 Claude: 🧹 Cleaning and organizing documentation files...
 📁 Creating .tmp/ directory structure...
 📄 Moving 6 analysis reports to .tmp/reports/
 📝 Archiving 4 draft documents to .tmp/drafts/
 ✅ Workspace cleaned and organized
-```bash
+```
 
 ## Execution Verification
 

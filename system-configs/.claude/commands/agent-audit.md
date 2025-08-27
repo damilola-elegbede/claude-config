@@ -175,9 +175,9 @@ yaml_validation:
     required_sections: [Identity, Core Capabilities, When to Engage, When NOT to Engage, Coordination, SYSTEM BOUNDARY]
 ```
 
-### Phase 1: Multi-Instance Parallel Category Audits
+### PARALLEL WAVE 1: Multi-Instance Category Audits
 
-Deploy multiple agent instances to validate all categories simultaneously:
+**Launch all these concurrently:** Multiple agent instances to validate all categories simultaneously:
 
 ```yaml
 multi_instance_execution:
@@ -218,14 +218,18 @@ multi_instance_execution:
 #   - Result: 5-6x faster validation with better resource utilization
 ```
 
-### Phase 2: Cross-Category Analysis
+### PARALLEL WAVE 2: Cross-Category Analysis
+
+**Execute in parallel (not sequentially):**
 
 - Category count validation
 - Color assignment consistency
 - Coverage gap identification
 - Redundancy detection
 
-### Phase 3: Remediation
+### PARALLEL WAVE 3: Remediation
+
+**Run simultaneously in a single response:**
 
 - Auto-fix where possible (formatting, tier updates)
 - Generate specific fix commands for manual issues
@@ -327,7 +331,7 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 
 ### Auto-Remediation Log
 
-```bash
+```text
 # Fixes applied automatically:
 - Updated agent-name: Set tier to 1
 - Fixed agent-name: Removed Task tool access

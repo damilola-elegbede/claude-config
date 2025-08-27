@@ -12,9 +12,10 @@ Deploys agents, commands, output-styles, and settings with validation and backup
 /sync --dry-run          # Preview changes without syncing
 /sync --backup           # Create backup before syncing
 /sync --force            # Overwrite existing files without prompting
-```bash
+```
 
 ## Behavior
+
 ## Agent Orchestration
 
 ### Parallel Validation Phase
@@ -36,7 +37,7 @@ platform-engineer:
   role: Environment compatibility check
   input: Target environment, config requirements
   output: Compatibility report, setup requirements
-```bash
+```
 
 ### Parallel Execution Benefits
 
@@ -75,7 +76,7 @@ Excluded:
   - AGENT_CATEGORIES.md
   - AUDIT_VERIFICATION_PROTOCOL.md
   - *.tmp, *.backup files
-```bash
+```
 
 ## Sync Process
 
@@ -96,7 +97,7 @@ if [[ "$backup" == "true" ]]; then
   timestamp=$(date +%Y%m%d_%H%M%S)
   cp -r ~/.claude ~/.claude.backup.$timestamp
 fi
-```bash
+```
 
 ### Phase 2: Sync Files
 
@@ -113,7 +114,7 @@ rsync -av \
 
 # Set executable permissions for statusline.sh
 chmod +x ~/.claude/statusline.sh 2>/dev/null || true
-```bash
+```
 
 ### Phase 3: MCP Server Sync
 
@@ -147,7 +148,7 @@ if [[ -f ".mcp.json" ]]; then
 else
   echo "⚠️  No .mcp.json found - skipping MCP server sync"
 fi
-```bash
+```
 
 ### Phase 4: Validation
 
@@ -167,13 +168,13 @@ done
 
 # Verify MCP servers are connected
 claude mcp list
-```bash
+```
 
 ## Examples
 
 ### Basic Sync
 
-```bash
+```text
 User: /sync
 Claude: 🔄 Syncing Claude configurations...
 📁 Source: system-configs/.claude/ (50 files)
@@ -200,11 +201,11 @@ notionApi: ✓ Connected
 shadcn-ui: ✓ Connected
 
 🎯 All configurations and MCP servers deployed successfully
-```bash
+```
 
 ### Dry Run
 
-```bash
+```text
 User: /sync --dry-run
 Claude: 📖 Preview mode - no changes will be made
 Would sync:
@@ -213,16 +214,16 @@ Would sync:
 - 8 output style files to ~/.claude/output-styles/
 - settings.json to ~/.claude/settings.json
 - statusline.sh to ~/.claude/statusline.sh (executable)
-```bash
+```
 
 ### Backup and Sync
 
-```bash
+```text
 User: /sync --backup
 Claude: 💾 Creating backup: ~/.claude.backup.20240818_164500
 🔄 Syncing configurations...
 ✅ Backup created and sync completed
-```bash
+```
 
 ## Execution Verification
 

@@ -9,7 +9,7 @@ Focuses on what actually changed rather than hypothetical features.
 
 ```bash
 /pr [target_branch] [options]
-```bash
+```
 
 ## Arguments
 
@@ -67,7 +67,7 @@ performance-engineer:
   input: Code changes, algorithm modifications, database queries
   parallel_with: [all other agents]
   output: Performance impact assessment, optimization suggestions
-```bash
+```
 
 ### Parallel Execution Strategy
 
@@ -140,7 +140,7 @@ When you invoke `/pr`, I will:
 
 ## Related Issues
 Closes #123 (if applicable)
-```bash
+```
 
 ### Template Format (--template flag)
 
@@ -161,7 +161,7 @@ sections for testing, documentation, breaking changes, etc.
 
 /pr --template
 # Uses comprehensive template format
-```bash
+```
 
 ## Execution Verification
 

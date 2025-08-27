@@ -241,7 +241,7 @@ Discovery Result Processing:
 
 ### Output Enhancement
 
-```bash
+```text
 # Real-time test output with enhanced formatting:
 🧪 Running Tests: npm test
 
@@ -335,7 +335,7 @@ After test execution, validates:
 
 ### Node.js Project with Jest
 
-```bash
+```text
 User: /test
 Claude: 🔍 Discovering tests...
 ✅ Found in package.json: "test": "jest"
@@ -347,7 +347,7 @@ Claude: 🔍 Discovering tests...
 
 ### Python Project (No Tests)
 
-```bash
+```text
 User: /test
 Claude: 🔍 Discovering tests...
 ⚠️  No tests found. Deploying test-engineer to create test suite...
@@ -360,7 +360,7 @@ Claude: 🔍 Discovering tests...
 
 ### Go Project with Custom Command
 
-```bash
+```text
 User: /test
 Claude: 🔍 Discovering tests...
 ✅ Found in README.md: "make test"

@@ -14,7 +14,7 @@ while staying in plan mode.
 /plan --simple <task_description>    # Simple mode (single PR)
 /plan -f <file_path>                 # Read from file
 /plan --file <file_path>             # Read from file
-```text
+```
 
 ## Behavior
 
@@ -32,7 +32,7 @@ detailed agent assignments and technical specifications.
 
 ### Parallel Planning Phase
 
-Deploy specialized agents for comprehensive planning:
+**Launch all these concurrently:** Specialized agents for comprehensive planning:
 
 ```yaml
 product-strategist:
@@ -49,15 +49,15 @@ project-orchestrator:
   role: Coordinate implementation phases and agent assignments
   input: Task breakdown, dependencies, resources
   output: Execution strategy, parallel task organization
-```bash
+```
 
 ### Parallel Planning Benefits
 
 ```yaml
-Simultaneous Analysis:
-  - Business and technical planning in parallel
+Execute in parallel (not sequentially):
+  - Business and technical planning simultaneously
   - Requirements refined while architecture designed
-  - 40% faster PRD generation
+  - Run simultaneously in a single response: 40% faster PRD generation
 ```
 
 ## Command Execution Flow
@@ -148,7 +148,7 @@ Frontend: Design → Component → State → Styling → Tests
 Infrastructure: Config → Build → Deploy → Monitor → Rollback
 Database: Schema → Migration → Rollback → Validation → Performance
 API: Contract → Implementation → Security → Testing → Docs
-```bash
+```
 
 ## Dependency Analysis Framework
 
@@ -166,22 +166,22 @@ API: Contract → Implementation → Security → Testing → Docs
 Sequential: Foundation → Implementation → Integration
 Parallel: Independent components, Frontend+Backend (post-API), Testing+Implementation
 Coordination: API contracts, schema approval, integration checkpoints
-```bash
+```
 
 ## Agent Assignment Rules
 
 ### Assignment Matrix
 
 ```yaml
-Infrastructure: database-admin, database-evolution-specialist, api-architect,
-  devops, monitoring-specialist, security-auditor
-Implementation: backend-engineer, frontend-architect, mobile-platform-engineer,
+Infrastructure: database-admin, database-admin, api-architect,
+  devops, performance-engineer, security-auditor
+Implementation: backend-engineer, frontend-architect, mobile-engineer,
   ui-designer
 Quality: code-reviewer, security-auditor, performance-specialist,
   test-engineer, accessibility-auditor
 Technology: React/Vue→frontend-architect, Node/Python→backend-engineer,
-  K8s→kubernetes-admin, Auth→security-auditor
-```bash
+  K8s→cloud-architect, Auth→security-auditor
+```
 
 ### Priority Rules
 
@@ -203,13 +203,13 @@ Technology: React/Vue→frontend-architect, Node/Python→backend-engineer,
 Phase_1: Schema, API contracts, infrastructure (Independent within phase)
 Phase_2: Backend/Frontend services (Concurrent), migrations (Depends on schema)
 Phase_3: E2E testing (Depends on implementation), docs (Concurrent with testing)
-```bash
+```
 
 ## Agent Patterns
 
 - **Features**: backend-engineer + frontend-architect + test-engineer
 - **Bug fixes**: debugger → specialist → test-engineer
-- **Performance**: performance-specialist + monitoring-specialist
+- **Performance**: performance-specialist + performance-engineer
 - **Security**: security-auditor + code-reviewer
 
 ## Approval Workflow
@@ -217,13 +217,13 @@ Phase_3: E2E testing (Depends on implementation), docs (Concurrent with testing)
 **MANDATORY FOR ALL MODES**: Stay in plan mode until user explicitly responds.
 Never assume approval based on input method or command flags.
 
-### User Response Options:
+### User Response Options
 
 - **Approve**: yes, approve, proceed, 👍, ok, go → Exit plan mode, write files
 - **Modify**: modify, update, change, adjust → Stay in plan mode, adjust plan
 - **Cancel**: no, cancel, abort, stop, exit → Exit without writing any files
 
-### Implementation Requirements:
+### Implementation Requirements
 
 - Display clear approval prompt: "Ready to proceed? (yes/no/modify)"
 - Wait for user input before any file operations
@@ -257,13 +257,13 @@ Never assume approval based on input method or command flags.
 
 ## Success Criteria
 - All PRD requirements satisfied per specifications
-```bash
+```
 
 ### Task ID Format: `Task_X_Y_ZZ` (Phase_PR_Task)
 
 ## Example
 
-```bash
+```text
 User: /plan implement authentication
 Claude: 📋 Entering plan mode...
 
@@ -295,7 +295,7 @@ Ready to proceed? (yes/no/modify)
 User: modify
 Claude: What would you like me to adjust in the plan?
 [Stays in plan mode awaiting modifications]
-```bash
+```
 
 ## PRD Integration Standards
 
@@ -327,7 +327,7 @@ Deploy execution-evaluator to verify:
 - ✅ **PRD generated** - Complete Product Requirements Document created
 - ✅ **Tasks broken down** - Granular tasks with proper agent assignments
 - ✅ **Dependencies mapped** - Clear task sequencing and coordination
-- ✅ **Files created** - All phase files generated in .tmp/<feature-name>/
+- ✅ **Files created** - All phase files generated in .tmp/`feature-name`/
 - ✅ **Agent assignments** - Specialized agents properly matched to tasks
 - ✅ **PRD compliance** - All requirements traceable through task breakdown
 - ✅ **Phase organization** - Clear dependencies and parallel execution plans
