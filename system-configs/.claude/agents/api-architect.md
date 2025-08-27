@@ -78,7 +78,7 @@ paths:
 - **Indentation**: Strict 2-space indentation (no tabs)
 - **Key ordering**: Logical grouping (openapi, info, servers, paths, components)
 - **References**: Use `$ref` for schema reusability
-- **Descriptions**: Use `|` for multi-line, `-` for literal blocks
+- **Descriptions**: Use `|` for literal blocks, `>` for folded blocks
 - **Data types**: Explicit type definitions with constraints
 - **Examples**: Include realistic examples for all schemas
 - **Security**: Define security schemes properly
