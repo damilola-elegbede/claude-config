@@ -135,7 +135,7 @@ fi
 echo "Checking for common issues..."
 
 # Check for hardcoded paths that might break
-HARDCODED_HOME=$(grep -l "/Users/\|/home/" "$SCRIPTS_DIR"/*.{sh,py} 2>/dev/null | wc -l | tr -d ' ')
+HARDCODED_HOME=$(find "$SCRIPTS_DIR" \( -name "*.sh" -o -name "*.py" \) -exec grep -l "/Users/\|/home/" {} + 2>/dev/null | wc -l | tr -d ' ')
 if [ "$HARDCODED_HOME" -gt 0 ]; then
     echo -e "${YELLOW}⚠${NC} Found $HARDCODED_HOME scripts with potential hardcoded paths"
 else
@@ -143,7 +143,7 @@ else
 fi
 
 # Check for proper error handling in bash scripts
-SCRIPTS_WITH_SET_E=$(grep -l "set -e" "$SCRIPTS_DIR"/*.sh 2>/dev/null | wc -l | tr -d ' ')
+SCRIPTS_WITH_SET_E=$(find "$SCRIPTS_DIR" -name "*.sh" -exec grep -l "set -e" {} + 2>/dev/null | wc -l | tr -d ' ')
 TOTAL_BASH=${#BASH_SCRIPTS[@]}
 if [ "$SCRIPTS_WITH_SET_E" -lt "$TOTAL_BASH" ]; then
     echo -e "${YELLOW}⚠${NC} Only $SCRIPTS_WITH_SET_E/$TOTAL_BASH bash scripts use 'set -e' for error handling"
