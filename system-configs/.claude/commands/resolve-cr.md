@@ -104,9 +104,9 @@ Optimization Metrics:
 ```
 
 When invoked, there ARE CodeRabbit comments to resolve - no questions asked.
-I will aggressively search for unresolved CodeRabbit comments, implement fixes,
-push the changes, then post two comments: first "@coderabbitai resolve" to
-trigger resolution, followed by a detailed summary of the fixes for CodeRabbit.
+I will aggressively search for unresolved CodeRabbit comments, implement all fixes,
+push the changes once, then post individual "@coderabbitai resolve" comments for each
+specific CodeRabbit comment that was addressed.
 
 ## Workflow
 
@@ -164,42 +164,47 @@ resolve_cr() {
   # Aggressive search across multiple endpoints - MUST find comments
   echo "🔍 Aggressively searching for CodeRabbit comments in PR #$pr..."
 
-  # Strategy 1: PR review comments
+  # Strategy 1: PR review comments with IDs
   comments1=$(gh api "repos/:owner/:repo/pulls/$pr/comments" \
-    --jq '.[] | select(.user.login == "coderabbitai[bot]") | .body' 2>/dev/null || echo "")
+    --jq '.[] | select(.user.login == "coderabbitai[bot]") | {id: .id, body: .body}' 2>/dev/null || echo "")
 
-  # Strategy 2: Issue comments
+  # Strategy 2: Issue comments with IDs
   comments2=$(gh api "repos/:owner/:repo/issues/$pr/comments" \
-    --jq '.[] | select(.user.login == "coderabbitai[bot]") | .body' 2>/dev/null || echo "")
+    --jq '.[] | select(.user.login == "coderabbitai[bot]") | {id: .id, body: .body}' 2>/dev/null || echo "")
 
-  # Strategy 3: Review comments
+  # Strategy 3: Review comments with IDs
   comments3=$(gh api "repos/:owner/:repo/pulls/$pr/reviews" \
-    --jq '.[] | select(.user.login == "coderabbitai[bot]") | .body' 2>/dev/null || echo "")
+    --jq '.[] | select(.user.login == "coderabbitai[bot]") | {id: .id, body: .body}' 2>/dev/null || echo "")
 
-  # Strategy 4: All comments via pr view
+  # Strategy 4: All comments via pr view with IDs
   comments4=$(gh pr view $pr --json comments,reviews 2>/dev/null | \
-    jq -r '.comments[],.reviews[] | select(.author.login == "coderabbitai[bot]") | .body' 2>/dev/null || echo "")
-  # Combine all comment sources
-  comments=$(printf "%s\n%s\n%s\n%s\n" "$comments1" "$comments2" "$comments3" "$comments4" | grep -v '^$' | sort -u)
+    jq -r '.comments[],.reviews[] | select(.author.login == "coderabbitai[bot]") | {id: .id, body: .body}' 2>/dev/null || echo "")
+
+  # Combine all comment sources and store as JSON array
+  all_comments=$(printf "%s\n%s\n%s\n%s\n" "$comments1" "$comments2" "$comments3" "$comments4" | grep -v '^$' | jq -s 'unique_by(.id)')
 
   # If still no comments, search more aggressively
-  if [[ -z "$comments" ]]; then
+  if [[ "$all_comments" == "[]" || -z "$all_comments" ]]; then
     echo "🔎 Expanding search to all recent activity..."
     # Search last 50 comments regardless of user
-    all_comments=$(gh api "repos/:owner/:repo/issues/$pr/comments?per_page=50" \
-      --jq '.[] | select(.body | contains("coderabbitai") or contains("CodeRabbit") or contains("Prompts for AI Agents")) | .body' 2>/dev/null || echo "")
-    comments="$all_comments"
+    expanded_comments=$(gh api "repos/:owner/:repo/issues/$pr/comments?per_page=50" \
+      --jq '.[] | select(.body | contains("coderabbitai") or contains("CodeRabbit") or contains("Prompts for AI Agents")) | {id: .id, body: .body}' 2>/dev/null || echo "")
+    all_comments=$(echo "$expanded_comments" | jq -s '.')
   fi
 
   # Comments MUST be found - this is non-negotiable
-  if [[ -z "$comments" ]]; then
+  if [[ "$all_comments" == "[]" || -z "$all_comments" ]]; then
     echo "❌ CRITICAL: No CodeRabbit comments found despite aggressive search!"
     echo "💡 Manually check PR #$pr for CodeRabbit activity"
     return 1
   fi
 
-  # Extract suggestions from "Prompts for AI Agents"
-  suggestions=$(echo "$comments" | \
+  # Extract individual comment data for processing
+  comment_count=$(echo "$all_comments" | jq 'length')
+  echo "🔍 Found $comment_count CodeRabbit comments to process"
+
+  # Extract suggestions from "Prompts for AI Agents" for all comments
+  suggestions=$(echo "$all_comments" | jq -r '.[].body' | \
     grep -A 10 "## Prompts for AI Agents" | \
     grep -E "^[-*]")
 
@@ -211,13 +216,13 @@ resolve_cr() {
 
   echo "📋 Found: $security security, $performance perf, $tests test, $quality quality issues"
 
-  # Deploy appropriate agents to fix issues
+  # Deploy appropriate agents to fix all issues
   [[ $security -gt 0 ]] && echo "🔒 Fixing security issues..."
   [[ $performance -gt 0 ]] && echo "⚡ Fixing performance issues..."
   [[ $tests -gt 0 ]] && echo "🧪 Adding test coverage..."
   [[ $quality -gt 0 ]] && echo "🔧 Improving code quality..."
 
-  # Commit fixes locally
+  # Commit all fixes locally
   if ! git diff --quiet; then
     git add .
     git commit -m "fix: resolve CodeRabbit suggestions
@@ -229,15 +234,32 @@ resolve_cr() {
     echo "✅ Changes committed locally"
   fi
 
-  # Push changes immediately
-  echo "🚀 Pushing fixes to remote..."
+  # Push all changes once
+  echo "🚀 Pushing all fixes to remote..."
   git push -u origin "$(git rev-parse --abbrev-ref HEAD)"
   echo "✅ Changes pushed successfully"
 
-  # Post resolution trigger comment
-  echo "💬 Posting @coderabbitai resolve to trigger resolution..."
-  gh pr comment $pr --body "@coderabbitai resolve"
-  echo "✅ Resolution trigger posted"
+  # Post individual resolution trigger comments for each CodeRabbit comment
+  echo "💬 Posting individual @coderabbitai resolve for each comment..."
+  comment_counter=0
+  echo "$all_comments" | jq -c '.[]' | while read -r comment; do
+    comment_id=$(echo "$comment" | jq -r '.id')
+    comment_body=$(echo "$comment" | jq -r '.body')
+
+    # Extract the first suggestion from this specific comment for context
+    first_suggestion=$(echo "$comment_body" | grep -A 10 "## Prompts for AI Agents" | grep -E "^[-*]" | head -1 | sed 's/^[-*] //' || echo "General improvements")
+
+    # Post individual resolve comment with context
+    gh pr comment $pr --body "@coderabbitai resolve
+
+Resolved comment #$comment_id: $first_suggestion"
+
+    ((comment_counter++))
+    echo "✅ Posted resolve trigger $comment_counter/$comment_count for comment #$comment_id"
+
+    # Small delay to avoid rate limiting
+    sleep 1
+  done
 
   # Post detailed explanation comment
   echo "📝 Posting detailed resolution summary..."
@@ -269,27 +291,32 @@ All suggested improvements have been implemented and pushed. The changes are rea
 ```text
 User: /resolve-cr
 Claude: 🔍 Aggressively searching for CodeRabbit comments in PR #42...
+🔍 Found 4 CodeRabbit comments to process
 📋 Found: 2 security, 3 perf, 1 test, 6 quality issues
 🔒 Fixing security issues...
 ⚡ Fixing performance issues...
 🧪 Adding test coverage...
 🔧 Improving code quality...
 ✅ Changes committed locally
-🚀 Pushing fixes to remote...
+🚀 Pushing all fixes to remote...
 ✅ Changes pushed successfully
-💬 Posting @coderabbitai resolve to trigger resolution...
-✅ Resolution trigger posted
+💬 Posting individual @coderabbitai resolve for each comment...
+✅ Posted resolve trigger 1/4 for comment #123456
+✅ Posted resolve trigger 2/4 for comment #123457
+✅ Posted resolve trigger 3/4 for comment #123458
+✅ Posted resolve trigger 4/4 for comment #123459
 📝 Posting detailed resolution summary...
 ✅ Detailed summary posted
 
 User: /resolve-cr --dry-run
 Claude: 🔍 Aggressively searching for CodeRabbit comments...
+🔍 Found 4 CodeRabbit comments to process
 📋 Found 4 unresolved suggestions:
 - Security: XSS vulnerability in user input
 - Performance: N+1 query in user lookup
 - Testing: Missing edge case coverage
 - Quality: Complex function needs refactoring
-💡 Run without --dry-run to apply fixes and notify CodeRabbit
+💡 Run without --dry-run to apply fixes and notify CodeRabbit individually for each comment
 ```
 
 ## Execution Verification
@@ -302,7 +329,7 @@ Deploy execution-evaluator to verify:
 - ✅ **Code quality maintained** - Fixes don't introduce new issues or regressions
 - ✅ **Changes committed** - All fixes committed with clear categorization message
 - ✅ **Remote updated** - Changes successfully pushed to remote repository
-- ✅ **Resolution triggered** - "@coderabbitai resolve" comment posted successfully
+- ✅ **Resolution triggered** - Individual "@coderabbitai resolve" comments posted for each CodeRabbit comment
 - ✅ **Summary provided** - Detailed resolution summary posted for team visibility
 
 ## Notes
@@ -312,6 +339,9 @@ Deploy execution-evaluator to verify:
 - **Push-First Approach**: Pushes fixes before commenting to ensure CodeRabbit reviews actual changes
 - **Pattern Matching**: Categorizes issues by security, performance, testing, quality
 - **Single Commit**: All fixes in one commit with clear categorization
-- **Split Comments**: Posts "@coderabbitai resolve" first, then detailed summary separately
-- **Automatic Resolution**: CodeRabbit marks comments as resolved via @mention
+- **Individual Resolution**: Posts separate "@coderabbitai resolve" for each specific CodeRabbit comment
+  after all fixes are pushed
+- **Single Push Strategy**: Implements all fixes first, commits once, pushes once, then posts individual resolve messages
+- **Contextual Resolution**: Each resolve comment includes context about which specific suggestion was addressed
+- **Efficient Workflow**: CodeRabbit marks individual comments as resolved after seeing the complete fix
 - **No Wait Required**: Eliminates unreliable acknowledgment wait, proceeds immediately
