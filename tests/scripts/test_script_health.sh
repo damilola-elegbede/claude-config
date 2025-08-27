@@ -135,7 +135,7 @@ fi
 echo "Checking for common issues..."
 
 # Check for hardcoded paths that might break
-HARDCODED_HOME=$(find "$SCRIPTS_DIR" \( -name "*.sh" -o -name "*.py" \) -exec grep -l "/Users/\|/home/" {} + 2>/dev/null | wc -l | tr -d ' ')
+HARDCODED_HOME=$(find "$SCRIPTS_DIR" \( -name "*.sh" -o -name "*.py" \) -exec grep -El "/Users/|/home/" {} + 2>/dev/null | wc -l | tr -d ' ')
 if [ "$HARDCODED_HOME" -gt 0 ]; then
     echo -e "${YELLOW}⚠${NC} Found $HARDCODED_HOME scripts with potential hardcoded paths"
 else
