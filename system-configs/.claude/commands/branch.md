@@ -6,7 +6,9 @@ tools: ["Write", "Read"]
 description: "Context-aware branch creation with pattern matching for ticket systems and smart naming conventions"
 ---
 
-# Context-Aware Branch Creation
+# /branch Command
+
+## Description
 
 Smart git branch management with ticket system integration and intelligent naming.
 
