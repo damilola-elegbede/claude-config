@@ -63,6 +63,7 @@ For `/prompt` without arguments, I will:
 2. Apply SCOPE optimization
 3. Return optimized version immediately
 4. Optional single refinement if requested
+   - To request: reply once with `refine: <what to change>` (same thread, one turn)
 
 File input: Supports .md, .txt, .yaml, .json
 
