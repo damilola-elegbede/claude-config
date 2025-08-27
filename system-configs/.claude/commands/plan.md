@@ -177,7 +177,7 @@ Infrastructure: database-admin, database-admin, api-architect,
   devops, performance-engineer, security-auditor
 Implementation: backend-engineer, frontend-architect, mobile-engineer,
   ui-designer
-Quality: code-reviewer, security-auditor, performance-specialist,
+Quality: code-reviewer, security-auditor, performance-engineer,
   test-engineer, accessibility-auditor
 Technology: React/Vue→frontend-architect, Node/Python→backend-engineer,
   K8s→cloud-architect, Auth→security-auditor
@@ -208,8 +208,8 @@ Phase_3: E2E testing (Depends on implementation), docs (Concurrent with testing)
 ## Agent Patterns
 
 - **Features**: backend-engineer + frontend-architect + test-engineer
-- **Bug fixes**: debugger → specialist → test-engineer
-- **Performance**: performance-specialist + performance-engineer
+- **Bug fixes**: debugger → backend-engineer → test-engineer
+- **Performance**: performance-engineer + performance-engineer
 - **Security**: security-auditor + code-reviewer
 
 ## Approval Workflow
