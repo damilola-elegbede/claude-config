@@ -28,6 +28,7 @@ Creates scalable architectures and strategic plans for complex enterprise system
 ## Technical Documentation Standards
 
 ### Architecture Document Structure
+
 ```markdown
 # System Architecture Document
 
@@ -38,18 +39,22 @@ Brief overview of the architecture with key decisions and rationale.
 ## System Context
 
 ### Business Context
+
 - Business drivers and requirements
 - Key stakeholders and their concerns
 - Success metrics and KPIs
 
 ### Technical Context
+
 - Current state architecture
 - Technology constraints
 - Integration points
+```
 
 ## Architecture Overview
 
 ### High-Level Architecture
+
 ```mermaid
 graph TB
     subgraph "Frontend Layer"
@@ -81,6 +86,7 @@ graph TB
 ```
 
 ### Component Architecture
+
 - Service boundaries and responsibilities
 - Communication patterns (sync/async)
 - Data flow and ownership
@@ -88,6 +94,7 @@ graph TB
 ## Detailed Design
 
 ### Service Specifications
+
 | Service | Technology | Scaling | Dependencies |
 |---------|------------|---------|--------------|
 | Auth | Node.js | Horizontal | PostgreSQL, Redis |
@@ -95,6 +102,7 @@ graph TB
 | Analytics | Python | Vertical | S3, Snowflake |
 
 ### Data Architecture
+
 - Entity relationship diagrams
 - Data flow diagrams
 - Storage strategies
@@ -102,16 +110,19 @@ graph TB
 ## Non-Functional Requirements
 
 ### Performance
+
 - Response time: < 200ms p99
 - Throughput: 10,000 RPS
 - Availability: 99.99%
 
 ### Security
+
 - Authentication: OAuth 2.0 / OIDC
 - Encryption: TLS 1.3, AES-256
 - Compliance: SOC2, GDPR
 
 ### Scalability
+
 - Horizontal scaling patterns
 - Auto-scaling policies
 - Load balancing strategies
@@ -119,16 +130,19 @@ graph TB
 ## Implementation Roadmap
 
 ### Phase 1: Foundation (Q1)
+
 - [ ] Set up infrastructure
 - [ ] Implement core services
 - [ ] Basic monitoring
 
 ### Phase 2: Enhancement (Q2)
+
 - [ ] Add caching layer
 - [ ] Implement async processing
 - [ ] Advanced monitoring
 
 ### Phase 3: Optimization (Q3)
+
 - [ ] Performance tuning
 - [ ] Cost optimization
 - [ ] Disaster recovery
@@ -140,9 +154,9 @@ graph TB
 | Data breach | High | Medium | Encryption, access controls |
 | Service outage | High | Low | Multi-region deployment |
 | Cost overrun | Medium | Medium | Regular cost reviews |
-```
 
 ### Technical Roadmap Format
+
 ```yaml
 # Technical Roadmap Configuration
 roadmap:
@@ -223,17 +237,22 @@ roadmap:
 ```
 
 ### ADR (Architecture Decision Record) Format
+
 ```markdown
 # ADR-001: Microservices Architecture
 
 ## Status
+
 Accepted
 
 ## Context
+
 We need to scale our monolithic application to handle 10x growth while maintaining development velocity across multiple teams.
 
 ## Decision
+
 We will adopt a microservices architecture with the following principles:
+
 - Domain-driven design for service boundaries
 - API-first development approach
 - Event-driven communication for loose coupling
@@ -242,23 +261,27 @@ We will adopt a microservices architecture with the following principles:
 ## Consequences
 
 ### Positive
+
 - Independent scaling of services
 - Technology diversity per service
 - Faster deployment cycles
 - Better fault isolation
 
 ### Negative
+
 - Increased operational complexity
 - Network latency between services
 - Distributed transaction challenges
 - Higher initial setup cost
 
 ## Alternatives Considered
+
 1. **Modular Monolith**: Rejected due to scaling limitations
 2. **Serverless**: Rejected due to vendor lock-in concerns
 3. **Service-Oriented Architecture**: Rejected due to tight coupling
 
 ## References
+
 - [Martin Fowler on Microservices](https://martinfowler.com/microservices/)
 - [DDD by Eric Evans](https://www.domainlanguage.com/ddd/)
 ```
@@ -266,13 +289,15 @@ We will adopt a microservices architecture with the following principles:
 ## Diagram Standards
 
 ### Mermaid Diagrams
+
 - Use clear, descriptive labels
 - Group related components
 - Show data flow direction
 - Include legends when needed
 
 ### PlantUML Standards
-```plantuml
+
+```text
 @startuml
 !define RECTANGLE stereotype<<component>>
 !define DATABASE stereotype<<database>>
@@ -324,6 +349,7 @@ core --> redis
 ## Validation Process
 
 Before finalizing architecture documents:
+
 1. **Structure validation**: Check document organization
 2. **Diagram validation**: Verify clarity and accuracy
 3. **Markdown linting**: Ensure formatting compliance
@@ -348,6 +374,7 @@ Before finalizing architecture documents:
 ## Example Deliverables
 
 ### System Design Document
+
 - Executive summary with business context
 - Detailed architecture diagrams
 - Component specifications
@@ -356,6 +383,7 @@ Before finalizing architecture documents:
 - Implementation roadmap
 
 ### Technical Strategy Document
+
 - Current state analysis
 - Future state vision
 - Gap analysis

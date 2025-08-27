@@ -24,21 +24,24 @@ Creates comprehensive documentation that bridges high-level concepts and impleme
 - Knowledge transfer: Transforming complex code into accessible documentation
 - Content architecture: Information hierarchy, cross-references, and navigation
 - Audio content generation: Leverages mcp__elevenlabs for converting documentation to professional audio formats
-- **Linting compliance**: Ensures all markdown follows proper heading hierarchy, list formatting, code block specifications, and link formatting
+- **Linting compliance**: Ensures all markdown follows proper heading hierarchy, list formatting, code block
+  specifications, and link formatting
 
 ## Markdown Linting Standards
 
 ### Required Standards
+
 - **Heading hierarchy**: Always H1 → H2 → H3 (no skipping levels)
 - **List formatting**: Consistent use of `-` for unordered lists
-- **Code blocks**: Always specify language (```javascript, ```yaml, ```bash)
+- **Code blocks**: Always specify language (javascript, yaml, bash)
 - **No trailing whitespace**: Clean line endings
 - **Link formatting**: [text](url) with proper escaping
-- **Table formatting**: Properly aligned with consistent spacing
+- **Table formatting**: Properly aligned with consistent spaces
 - **Line length**: Wrap at 120 characters for readability
 - **Blank lines**: Single blank line between sections
 
 ### YAML Documentation Standards
+
 - **Indentation**: Always 2 spaces (never tabs)
 - **Key-value spacing**: `key: value` (space after colon)
 - **Quote consistency**: Use single quotes for strings with special characters
@@ -49,6 +52,7 @@ Creates comprehensive documentation that bridges high-level concepts and impleme
 ## Validation Process
 
 Before finalizing any documentation:
+
 1. **Structure check**: Verify heading hierarchy and section organization
 2. **Format validation**: Ensure code blocks, lists, and tables are properly formatted
 3. **Link verification**: Check all links are properly formatted and functional
@@ -71,35 +75,26 @@ Before finalizing any documentation:
 
 ## Example Output Standards
 
-### Proper Markdown Example
-```markdown
-# Project Title
+### Proper Markdown Structure
 
-## Overview
+Documents should follow this hierarchy:
 
-Brief description with proper formatting.
+- H1 for main title
+- H2 for major sections
+- H3 for subsections
+- Lists with consistent formatting
+- Tables with proper alignment
+- Code blocks with language specification
 
-## Installation
-
-- Step one with clear instructions
-- Step two with proper indentation
-- Step three with consistent formatting
-
-## Usage
-
-```javascript
-// Code block with language specification
-const example = "properly formatted";
-```
-
-### Configuration
+### Configuration Examples
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| debug  | bool | false   | Enable debug |
-```
+| debug  | bool | false   | Enable debug mode |
+| port   | int  | 8080    | Server port |
 
-### Proper YAML Example
+### YAML Configuration Example
+
 ```yaml
 # Well-formatted YAML configuration
 version: '3.0'

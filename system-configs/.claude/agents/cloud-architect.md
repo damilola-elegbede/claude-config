@@ -28,6 +28,7 @@ Designs scalable infrastructure across AWS, Azure, and GCP with cost optimizatio
 ## Infrastructure as Code Linting Standards
 
 ### Terraform Standards
+
 ```hcl
 # Well-formatted Terraform configuration
 terraform {
@@ -67,6 +68,7 @@ variable "instance_type" {
 ```
 
 ### CloudFormation YAML Standards
+
 ```yaml
 # AWS CloudFormation template with proper formatting
 AWSTemplateFormatVersion: '2010-09-09'
@@ -116,6 +118,7 @@ Outputs:
 ```
 
 ### Kubernetes Manifest Standards
+
 ```yaml
 # Well-formatted Kubernetes manifest
 apiVersion: apps/v1
@@ -166,6 +169,7 @@ spec:
 ```
 
 ### Docker Compose Standards
+
 ```yaml
 # Docker Compose with proper formatting
 version: '3.8'
@@ -209,6 +213,7 @@ networks:
 ## YAML/JSON Formatting Requirements
 
 ### General Standards
+
 - **Indentation**: 2 spaces for YAML, 4 spaces for HCL
 - **Quote usage**: Consistent quoting strategy
 - **Boolean values**: `true/false` for YAML, `true/false` for JSON
@@ -217,6 +222,7 @@ networks:
 - **Tag standards**: Environment, Project, ManagedBy, Owner
 
 ### Cloud-Specific Standards
+
 - **AWS**: Follow AWS CloudFormation best practices
 - **Azure**: Follow ARM template guidelines
 - **GCP**: Follow Deployment Manager standards
@@ -226,6 +232,7 @@ networks:
 ## Validation Process
 
 Before finalizing any IaC template:
+
 1. **Syntax validation**: Use native validators (terraform validate, cfn-lint)
 2. **Security scanning**: Check for exposed secrets or misconfigurations
 3. **Cost analysis**: Estimate resource costs
@@ -252,6 +259,8 @@ Before finalizing any IaC template:
 - Instance types: t3.large (dev), m5.xlarge (prod)
 
 ### Network Architecture
+```
+
 ```yaml
 VPC:
   CIDR: 10.0.0.0/16
@@ -264,6 +273,7 @@ VPC:
       - 10.0.11.0/24 (AZ-2)
 ```
 
+```markdown
 ## Cost Optimization Strategies
 - Reserved instances for baseline capacity
 - Spot instances for batch processing

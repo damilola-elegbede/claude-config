@@ -28,6 +28,7 @@ Combines architectural expertise with production-ready implementation for compre
 ## YAML/OpenAPI Linting Standards
 
 ### OpenAPI Specification Standards
+
 ```yaml
 # Required OpenAPI structure with proper formatting
 openapi: 3.0.3  # Version specification
@@ -73,6 +74,7 @@ paths:
 ```
 
 ### YAML Formatting Requirements
+
 - **Indentation**: Strict 2-space indentation (no tabs)
 - **Key ordering**: Logical grouping (openapi, info, servers, paths, components)
 - **References**: Use `$ref` for schema reusability
@@ -82,6 +84,7 @@ paths:
 - **Security**: Define security schemes properly
 
 ### API Documentation Standards
+
 - **Endpoint descriptions**: Clear purpose and behavior
 - **Parameter documentation**: Type, format, constraints, examples
 - **Response schemas**: Complete with all possible status codes
@@ -92,6 +95,7 @@ paths:
 ## Validation Process
 
 Before finalizing any API specification:
+
 1. **Schema validation**: Verify against OpenAPI 3.0+ schema
 2. **YAML linting**: Check indentation, syntax, and formatting
 3. **Completeness check**: Ensure all endpoints documented
@@ -101,7 +105,7 @@ Before finalizing any API specification:
 
 ## GraphQL Schema Standards
 
-```graphql
+```text
 # Well-formatted GraphQL schema
 type User {
   id: ID!
@@ -152,6 +156,7 @@ type Mutation {
 ## Example Deliverables
 
 ### Well-Linted OpenAPI Spec Features
+
 - Proper YAML indentation and formatting
 - Complete schema definitions with examples
 - Standardized error responses
@@ -160,6 +165,7 @@ type Mutation {
 - Rate limiting documentation
 
 ### API Governance Documentation
+
 ```markdown
 # API Design Guidelines
 
@@ -175,6 +181,7 @@ type Mutation {
 - URL versioning: `/v1/`, `/v2/`
 - Sunset headers: `Sunset: Sat, 31 Dec 2024 23:59:59 GMT`
 - Deprecation notices: Minimum 6 months
+```
 
 ## Response Standards
 

@@ -28,6 +28,7 @@ Combines advanced infrastructure automation with intelligent deployment orchestr
 ## CI/CD Pipeline Linting Standards
 
 ### GitHub Actions Standards
+
 ```yaml
 # Well-formatted GitHub Actions workflow
 name: CI/CD Pipeline
@@ -123,6 +124,7 @@ jobs:
 ```
 
 ### GitLab CI Standards
+
 ```yaml
 # Well-formatted GitLab CI pipeline
 stages:
@@ -189,7 +191,8 @@ deploy:staging:
 ```
 
 ### Jenkins Pipeline Standards
-```groovy
+
+```text
 // Jenkinsfile with proper formatting
 pipeline {
     agent {
@@ -287,6 +290,7 @@ spec:
 ```
 
 ### Helm Chart Standards
+
 ```yaml
 # values.yaml with proper formatting
 replicaCount: 3
@@ -355,6 +359,7 @@ affinity:
 ## YAML/Pipeline Formatting Requirements
 
 ### General Standards
+
 - **Indentation**: 2 spaces consistently (never tabs)
 - **Job naming**: Clear, descriptive names with proper casing
 - **Environment variables**: UPPER_SNAKE_CASE
@@ -363,6 +368,7 @@ affinity:
 - **Artifact handling**: Proper retention policies
 
 ### Platform-Specific Standards
+
 - **GitHub Actions**: Follow actions/toolkit conventions
 - **GitLab CI**: Use job templates and extends
 - **Jenkins**: Declarative pipeline syntax preferred
@@ -372,6 +378,7 @@ affinity:
 ## Validation Process
 
 Before finalizing any pipeline:
+
 1. **Syntax validation**: Use platform-specific validators
 2. **Security scanning**: Check for exposed secrets
 3. **Performance review**: Optimize parallelization
