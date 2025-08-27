@@ -18,7 +18,7 @@ failures - always finds a way forward.
 ## Workflows
 
 ```yaml
-Basic (Default): /docs --audit → /docs readme → /review --quick → /commit → /push
+Basic (Default): /docs --audit → /docs readme → /review --quick → /commit → /push → /pr (if no PR exists)
 Full (-f, --full): /docs --audit → /docs → /review → /test → /docs --clean → /commit → /push → /pr (if no PR exists)
 Lite (-l, --lite): /commit → /push
 ```
@@ -235,16 +235,16 @@ Step 8/8: /pr
 User: /ship-it
 Claude: 🚀 Starting ship-it workflow: basic
 
-Step 1/5: /docs --audit
+Step 1/6: /docs --audit
 🔍 Running documentation gap analysis...
 📋 Found: README setup instructions outdated
 
-Step 2/5: /docs readme
+Step 2/6: /docs readme
 📚 Updating README.md...
 🤖 Deploying: tech-writer
 ✅ README.md refreshed with current setup instructions
 
-Step 3/5: /review --quick
+Step 3/6: /review --quick
 🤖 Deploying: code-reviewer, security-auditor (quick mode)
 ❌ Found linting issues in 3 files
 
@@ -256,11 +256,17 @@ Step 3/5: /review --quick
 ⏳ Retrying /review --quick...
 ✅ Quick review passed!
 
-Step 4/5: /commit
+Step 4/6: /commit
 ✅ Changes already committed during auto-remediation
 
-Step 5/5: /push
+Step 5/6: /push
 ✅ Push completed successfully
+
+Step 6/6: /pr
+🔍 Checking if PR exists for current branch...
+📝 No existing PR found - creating new pull request
+🤖 Deploying: tech-writer for PR description generation
+✅ Pull request created successfully: #42
 
 🎉 Basic workflow completed with auto-remediation!
 ```

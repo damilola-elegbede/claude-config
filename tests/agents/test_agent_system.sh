@@ -109,7 +109,7 @@ fi
 
 # Test 7: Validate agent categories
 echo "Validating agent categories..."
-CATEGORIES=$(grep -h "^category:" "$AGENTS_DIR"/*.md 2>/dev/null | sed 's/category: *//' | sort -u)
+CATEGORIES=$(find "$AGENTS_DIR" -name "*.md" -exec grep -h "^category:" {} + 2>/dev/null | sed 's/category: *//' | sort -u)
 CATEGORY_COUNT=$(echo "$CATEGORIES" | wc -l | tr -d ' ')
 
 if [ "$CATEGORY_COUNT" -lt 3 ]; then
