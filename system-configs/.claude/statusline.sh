@@ -54,8 +54,9 @@ git_branch=$(git branch --show-current 2>/dev/null || echo "")
 
 # Get terminal identifier - prioritize session_id for terminal isolation
 if [[ -n "$session_id" ]]; then
-    # Use session_id when available (enables test isolation)
-    terminal_id="session_${session_id}"
+    # Use session_id when available (enables test isolation) — sanitize
+    safe_session_id="$(printf '%s' "$session_id" | tr '/\n' '_' | tr -cd 'A-Za-z0-9._-')"
+    terminal_id="session_${safe_session_id}"
 elif tty_path=$(tty 2>/dev/null); then
     # Use TTY path as primary identifier
     raw_id="$tty_path"
@@ -125,7 +126,11 @@ if [[ "$persistent_stars" == "true" ]]; then
     show_stars=true
 elif [[ ! -f "$terminal_version_file" ]]; then
     # New terminal - show stars and record version
-    printf '%s' "$tracking_version" > "$terminal_version_file" 2>/dev/null || true
+    tmp_file="$(mktemp "$terminal_versions_dir/.tmp.XXXXXX" 2>/dev/null || printf '%s' "$terminal_versions_dir/.tmp.$$")"
+    umask 077
+    printf '%s' "$tracking_version" > "$tmp_file" 2>/dev/null || true
+    chmod 600 "$tmp_file" 2>/dev/null || true
+    mv -f "$tmp_file" "$terminal_version_file" 2>/dev/null || true
     show_stars=true
 else
     # Read stored version
@@ -133,7 +138,11 @@ else
     
     if [[ "$stored_version" != "$tracking_version" ]]; then
         # Version changed - show stars and update file
-        printf '%s' "$tracking_version" > "$terminal_version_file" 2>/dev/null || true
+        tmp_file="$(mktemp "$terminal_versions_dir/.tmp.XXXXXX" 2>/dev/null || printf '%s' "$terminal_versions_dir/.tmp.$$")"
+        umask 077
+        printf '%s' "$tracking_version" > "$tmp_file" 2>/dev/null || true
+        chmod 600 "$tmp_file" 2>/dev/null || true
+        mv -f "$tmp_file" "$terminal_version_file" 2>/dev/null || true
         show_stars=true
     else
         # Same version - no stars
@@ -163,7 +172,14 @@ find -P "$version_dir" -name "session_version_*" -type f -delete 2>/dev/null || 
 if [[ -d "$terminal_versions_dir" ]]; then
     # Only delete old-style session files that have the pattern "session_DATE" but are older than 1 day
     # This preserves current session files while cleaning up old temporary files
-    find -P "$terminal_versions_dir" -name "session_*" -type f -mtime +1 -delete 2>/dev/null || true
+    # Exclude the current session file from deletion
+    if [[ -n "$terminal_version_file" && -f "$terminal_version_file" ]]; then
+        find -P "$terminal_versions_dir" -name "session_*" -type f \
+            ! -name "$(basename "$terminal_version_file")" \
+            -mtime +1 -delete 2>/dev/null || true
+    else
+        find -P "$terminal_versions_dir" -name "session_*" -type f -mtime +1 -delete 2>/dev/null || true
+    fi
 fi
 
 # Reset any previous formatting first
