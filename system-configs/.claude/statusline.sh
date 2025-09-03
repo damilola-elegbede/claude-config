@@ -99,18 +99,16 @@ terminal_version_file="$terminal_versions_dir/${terminal_id}"
 
 # Handle version tracking - create pseudo-version for unknown cases
 tracking_version="$version"
-persistent_stars=false
 
 if [[ "$version" == "unknown" ]]; then
-    # For unknown versions, show stars persistently throughout the session
-    # Create a pseudo-version based on git commit or date to enable star display
+    # For unknown versions, create a stable pseudo-version based on git commit
+    # This allows proper version comparison instead of always showing stars
     if git_commit=$(git rev-parse --short HEAD 2>/dev/null); then
-        tracking_version="session-${git_commit}"
+        tracking_version="unknown-${git_commit}"
     else
         # Fallback to date-based pseudo-version (changes daily)
-        tracking_version="session-$(date '+%Y%m%d')"
+        tracking_version="unknown-$(date '+%Y%m%d')"
     fi
-    persistent_stars=true
 fi
 
 version_display="$version"
@@ -121,10 +119,7 @@ mkdir -p -m 700 "$terminal_versions_dir" 2>/dev/null || true
 # Per-Terminal Version Tracking: Store only version, show stars based on logic
 show_stars=false
 
-if [[ "$persistent_stars" == "true" ]]; then
-    # Unknown versions always show stars
-    show_stars=true
-elif [[ ! -f "$terminal_version_file" ]]; then
+if [[ ! -f "$terminal_version_file" ]]; then
     # New terminal - show stars and record version
     tmp_file="$(mktemp "$terminal_versions_dir/.tmp.XXXXXX" 2>/dev/null || printf '%s' "$terminal_versions_dir/.tmp.$$")"
     umask 077

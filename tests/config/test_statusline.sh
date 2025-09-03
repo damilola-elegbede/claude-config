@@ -212,18 +212,17 @@ test_unknown_version_handling() {
     # Run with unknown version
     HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
     
-    # NEW BEHAVIOR: Unknown versions SHOULD show stars persistently
-    # When Claude Code doesn't pass proper version data, we create pseudo-versions
-    # and show stars to maintain consistent visual feedback throughout the session
+    # NEW BEHAVIOR: Unknown versions create stable pseudo-versions and follow normal tracking
+    # First run should show stars (new pseudo-version for this terminal)
     if [[ "$output" != *"✨"* ]]; then
-        echo "Unknown version should show stars: $output"
+        echo "Unknown version should show stars on first run: $output"
         return 1
     fi
     
-    # Second run should also show stars (persistent for unknown versions)
+    # Second run should NOT show stars (same pseudo-version as before)
     HOME="$TEST_HOME" output2=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
-    if [[ "$output2" != *"✨"* ]]; then
-        echo "Unknown version should show stars persistently: $output2"
+    if [[ "$output2" == *"✨"* ]]; then
+        echo "Unknown version should not show stars on second run (same git commit): $output2"
         return 1
     fi
     
