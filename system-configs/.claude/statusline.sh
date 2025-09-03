@@ -52,27 +52,43 @@ fi
 git_branch=$(git branch --show-current 2>/dev/null || echo "")
 [[ -n "$git_branch" ]] || git_branch="no-git"
 
-# Get terminal identifier - create a stable unique ID per terminal session
-if tty_path=$(tty 2>/dev/null); then
+# Get terminal identifier - prioritize session_id for terminal isolation
+if [[ -n "$session_id" ]]; then
+    # Use session_id when available (enables test isolation)
+    terminal_id="session_${session_id}"
+elif tty_path=$(tty 2>/dev/null); then
     # Use TTY path as primary identifier
     raw_id="$tty_path"
-    # Add process group ID for additional uniqueness when session_id is empty
-    if [[ -z "$session_id" ]] && pgid=$(ps -o pgid= -p $$ 2>/dev/null); then
+    # Add process group ID for additional uniqueness
+    if pgid=$(ps -o pgid= -p $$ 2>/dev/null); then
         raw_id="${raw_id}_pg${pgid// /}"
     fi
+    # Replace slashes/newlines and whitelist safe chars to prevent path traversal
+    terminal_id="$(printf '%s' "$raw_id" | tr '/\n' '_' | tr -cd 'A-Za-z0-9._-')"
 else
-    # Fallback: create unique ID from session_id + parent PID + current time for empty sessions
-    if [[ -n "$session_id" ]]; then
-        raw_id="session_${session_id}"
-    else
-        ppid=$(ps -o ppid= -p $$ 2>/dev/null | tr -d ' ' || echo "$$")
-        # Use parent PID + a hash of PWD to create stable per-terminal ID
-        pwd_hash=$(printf '%s' "$PWD" | cksum | cut -d' ' -f1 2>/dev/null || echo "0")
-        raw_id="terminal_${ppid}_${pwd_hash}"
+    # For non-TTY environments, create a stable ID based on terminal and working directory
+    # Both grandparent PID and pwd hash are required - no fallbacks
+    if ! pwd_hash=$(printf '%s' "$PWD" | cksum | cut -d' ' -f1 2>/dev/null); then
+        printf 'Error: Unable to generate PWD hash for statusline\n' >&2
+        exit 1
     fi
+    
+    # Get grandparent PID - required for terminal identification
+    if ! ppid=$(ps -o ppid= -p $$ 2>/dev/null | tr -d ' '); then
+        printf 'Error: Unable to get parent PID for statusline\n' >&2
+        exit 1
+    fi
+    
+    if ! gppid=$(ps -o ppid= -p $ppid 2>/dev/null | tr -d ' '); then
+        printf 'Error: Unable to get grandparent PID for statusline\n' >&2
+        exit 1
+    fi
+    
+    # Use grandparent PID (terminal emulator) for stability
+    raw_id="terminal_${gppid}_${pwd_hash}"
+    terminal_id="$(printf '%s' "$raw_id" | tr '/\n' '_' | tr -cd 'A-Za-z0-9._-')"
 fi
-# Replace slashes/newlines and whitelist safe chars to prevent path traversal
-terminal_id="$(printf '%s' "$raw_id" | tr '/\n' '_' | tr -cd 'A-Za-z0-9._-')"
+
 [[ -n "$terminal_id" ]] || terminal_id="fallback_$$"
 
 # Version tracking files
@@ -82,7 +98,10 @@ terminal_version_file="$terminal_versions_dir/${terminal_id}"
 
 # Handle version tracking - create pseudo-version for unknown cases
 tracking_version="$version"
+persistent_stars=false
+
 if [[ "$version" == "unknown" ]]; then
+    # For unknown versions, show stars persistently throughout the session
     # Create a pseudo-version based on git commit or date to enable star display
     if git_commit=$(git rev-parse --short HEAD 2>/dev/null); then
         tracking_version="session-${git_commit}"
@@ -90,6 +109,7 @@ if [[ "$version" == "unknown" ]]; then
         # Fallback to date-based pseudo-version (changes daily)
         tracking_version="session-$(date '+%Y%m%d')"
     fi
+    persistent_stars=true
 fi
 
 version_display="$version"
@@ -97,23 +117,28 @@ version_display="$version"
 # Create terminal versions directory if needed
 mkdir -p -m 700 "$terminal_versions_dir" 2>/dev/null || true
 
-# Read what version this terminal has seen
-terminal_last_version=""
-if [[ -f "$terminal_version_file" ]]; then
-    terminal_last_version=$(tr -cd '\11\12\15\40-\176' < "$terminal_version_file" 2>/dev/null || echo "")
-fi
-
-# Check if this terminal is seeing a new version (or first run)
+# Per-Terminal Version Tracking: Store only version, show stars based on logic
 show_stars=false
-if [[ "$tracking_version" != "$terminal_last_version" ]]; then
+
+if [[ "$persistent_stars" == "true" ]]; then
+    # Unknown versions always show stars
     show_stars=true
-    # Record that this terminal has now seen this version (atomic write)
-    tmp_file="${terminal_version_file}.tmp.$$"
-    printf '%s' "$tracking_version" > "$tmp_file" 2>/dev/null && mv -f "$tmp_file" "$terminal_version_file" 2>/dev/null || true
-elif [[ "$version" == "unknown" && "$tracking_version" == "$terminal_last_version" ]]; then
-    # For unknown versions with matching tracking version (same session/commit),
-    # always show stars to maintain persistent visual feedback
+elif [[ ! -f "$terminal_version_file" ]]; then
+    # New terminal - show stars and record version
+    printf '%s' "$tracking_version" > "$terminal_version_file" 2>/dev/null || true
     show_stars=true
+else
+    # Read stored version
+    stored_version=$(cat "$terminal_version_file" 2>/dev/null || echo "")
+    
+    if [[ "$stored_version" != "$tracking_version" ]]; then
+        # Version changed - show stars and update file
+        printf '%s' "$tracking_version" > "$terminal_version_file" 2>/dev/null || true
+        show_stars=true
+    else
+        # Same version - no stars
+        show_stars=false
+    fi
 fi
 
 # Set version display based on star status
@@ -133,6 +158,13 @@ fi
 # Clean up legacy files from old implementations
 rm -f "$version_dir/acknowledged_version" "$version_dir/notified_session" 2>/dev/null || true
 find -P "$version_dir" -name "session_version_*" -type f -delete 2>/dev/null || true
+# Clean up old temporary session files from previous implementations (but not current session files)
+# Only clean up files that match the old pattern from previous implementation
+if [[ -d "$terminal_versions_dir" ]]; then
+    # Only delete old-style session files that have the pattern "session_DATE" but are older than 1 day
+    # This preserves current session files while cleaning up old temporary files
+    find -P "$terminal_versions_dir" -name "session_*" -type f -mtime +1 -delete 2>/dev/null || true
+fi
 
 # Reset any previous formatting first
 printf '\033[0m'
