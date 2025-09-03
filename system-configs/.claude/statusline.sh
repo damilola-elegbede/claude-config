@@ -110,9 +110,9 @@ if [[ "$tracking_version" != "$terminal_last_version" ]]; then
     # Record that this terminal has now seen this version (atomic write)
     tmp_file="${terminal_version_file}.tmp.$$"
     printf '%s' "$tracking_version" > "$tmp_file" 2>/dev/null && mv -f "$tmp_file" "$terminal_version_file" 2>/dev/null || true
-elif [[ "$version" == "unknown" && "$terminal_last_version" =~ ^session- ]]; then
-    # For unknown versions, always show stars if we've seen any pseudo-version
-    # This ensures persistent stars throughout the terminal session for unknown versions
+elif [[ "$version" == "unknown" && "$tracking_version" == "$terminal_last_version" ]]; then
+    # For unknown versions with matching tracking version (same session/commit),
+    # always show stars to maintain persistent visual feedback
     show_stars=true
 fi
 
