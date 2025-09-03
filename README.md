@@ -350,7 +350,7 @@ pwd  # Should show .../claude-config
 # Check audio configuration
 cat ~/.claude/settings.json | grep -A 10 "hooks"
 
-# Test audio playbook
+# Test audio playback
 afplay /System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r
 ```
 
