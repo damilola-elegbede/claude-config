@@ -86,6 +86,8 @@ echo "Running Configuration Tests..."
 echo "------------------------------"
 run_test "CLAUDE.md Validation" "config/test_claude_md.sh"
 run_test "Command Files Validation" "config/test_command_files.sh"
+run_test "Statusline Functionality" "config/test_statusline.sh"
+run_test "Statusline Edge Cases" "config/test_statusline_edge_cases.sh"
 
 # Run quality tests
 echo "Running Quality Tests..."
