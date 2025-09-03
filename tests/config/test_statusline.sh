@@ -134,33 +134,38 @@ test_new_version_tracking() {
 # Test per-terminal tracking isolation
 test_terminal_isolation() {
     local statusline_path="../../system-configs/.claude/statusline.sh"
-    local input1='{"model":{"display_name":"Claude"},"version":"3.0.0","session_id":"terminal1","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
-    local input2='{"model":{"display_name":"Claude"},"version":"3.0.0","session_id":"terminal2","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
     
-    # Terminal 1 sees version first time
-    HOME="$TEST_HOME" output1=$(echo "$input1" | bash "$statusline_path" 2>/dev/null)
+    # NOTE: After removing session_id support, terminals are identified by gppid+pwd.
+    # In test environment, we can't easily simulate different terminals since gppid is the same.
+    # We test basic version tracking behavior instead.
+    
+    local input='{"model":{"display_name":"Claude"},"version":"3.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
+    
+    # First run should show stars (new terminal)
+    HOME="$TEST_HOME" output1=$(echo "$input" | bash "$statusline_path" 2>/dev/null)
     
     if [[ "$output1" != *"3.0.0 ✨"* ]]; then
-        echo "Terminal 1 should show stars for new version: $output1"
+        echo "First run should show stars for new terminal: $output1"
         return 1
     fi
     
-    # Terminal 2 should also see stars (different session)
-    HOME="$TEST_HOME" output2=$(echo "$input2" | bash "$statusline_path" 2>/dev/null)
+    # Second run with same version should NOT show stars
+    HOME="$TEST_HOME" output2=$(echo "$input" | bash "$statusline_path" 2>/dev/null)
     
-    if [[ "$output2" != *"3.0.0 ✨"* ]]; then
-        echo "Terminal 2 should show stars for new version: $output2"
+    if [[ "$output2" == *"3.0.0 ✨"* ]]; then
+        echo "Second run with same version should not show stars: $output2"
         return 1
     fi
     
-    # Terminal 1 second time should not show stars
-    HOME="$TEST_HOME" output1_2nd=$(echo "$input1" | bash "$statusline_path" 2>/dev/null)
+    # Different version should show stars
+    local input_new='{"model":{"display_name":"Claude"},"version":"3.1.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
+    HOME="$TEST_HOME" output3=$(echo "$input_new" | bash "$statusline_path" 2>/dev/null)
     
-    if [[ "$output1_2nd" == *"3.0.0 ✨"* ]]; then
-        echo "Terminal 1 second run should not show stars: $output1_2nd"
+    if [[ "$output3" != *"3.1.0 ✨"* ]]; then
+        echo "New version should show stars: $output3"
         return 1
     fi
     
@@ -209,20 +214,16 @@ test_unknown_version_handling() {
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
     
-    # Run with unknown version
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    # Run with unknown version (capture stderr)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>&1)
     
-    # NEW BEHAVIOR: Unknown versions create stable pseudo-versions and follow normal tracking
-    # First run should show stars (new pseudo-version for this terminal)
-    if [[ "$output" != *"✨"* ]]; then
-        echo "Unknown version should show stars on first run: $output"
-        return 1
-    fi
-    
-    # Second run should NOT show stars (same pseudo-version as before)
-    HOME="$TEST_HOME" output2=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
-    if [[ "$output2" == *"✨"* ]]; then
-        echo "Unknown version should not show stars on second run (same git commit): $output2"
+    # NEW BEHAVIOR: Unknown versions should print error and exit
+    # The script should exit with error code when version is unknown
+    if echo "$output" | grep -q "ERROR: Claude Code is not reporting version properly"; then
+        # Expected behavior - unknown version triggers error
+        return 0
+    else
+        echo "Unknown version should print error message, got: $output"
         return 1
     fi
     
