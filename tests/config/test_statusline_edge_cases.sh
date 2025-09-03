@@ -157,16 +157,9 @@ test_corrupted_version_file() {
         return 1
     fi
     
-    # Check that a terminal version file was created with semantic version
-    version_files=("$TEST_HOME/.claude/terminal_versions/terminal_"*)
-    if [[ -f "${version_files[0]}" ]]; then
-        version_content=$(cat "${version_files[0]}" 2>/dev/null || echo "")
-        if [[ "$version_content" != "2.0.0" ]]; then
-            echo "Version file not updated correctly after corruption: $version_content"
-            return 1
-        fi
-    else
-        echo "No terminal version file created"
+    # Verify a terminal_* file now contains exactly 2.0.0
+    if ! grep -rlq -- '^2\.0\.0$' "$TEST_HOME/.claude/terminal_versions"; then
+        echo "No terminal version file updated with 2.0.0"
         return 1
     fi
     
