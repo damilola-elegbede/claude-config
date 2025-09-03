@@ -248,8 +248,8 @@ test_malformed_json() {
     
     # Should contain statusline structure (bullet points) at minimum
     # This works in both local and CI environments regardless of git state
-    if [[ "$output_clean" != *"•"* ]]; then
-        echo "Should contain statusline structure even with malformed JSON: $output_clean"
+    if [[ "$output_clean" != *"no-git"* && "$output_clean" != *"•  "* && "$output_clean" != *"• "* ]]; then
+        echo "Should include git segment (branch or no-git): $output_clean"
         return 1
     fi
     

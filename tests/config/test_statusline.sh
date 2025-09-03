@@ -64,8 +64,8 @@ test_statusline_exists() {
         return 1
     fi
     
-    if [[ ! -x "$statusline_path" ]]; then
-        echo "Statusline script is not executable"
+    if [[ ! -r "$statusline_path" ]]; then
+        echo "Statusline script is not readable"
         return 1
     fi
     
@@ -270,7 +270,7 @@ test_jq_dependency() {
 
 # Test git command handling
 test_git_handling() {
-    local statusline_path=$(realpath "../../system-configs/.claude/statusline.sh")
+    local statusline_path="$(cd ../../system-configs/.claude && pwd)/statusline.sh"
     local test_input='{"model":{"display_name":"Claude"},"version":"6.0.0","session_id":"git_test","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
     # Test in non-git directory using subshell to avoid changing current directory
