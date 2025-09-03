@@ -3,16 +3,28 @@
 ## Overview
 
 MCP servers provide Claude with access to external tools and services through a standardized
-protocol. The configuration has been separated from the main `settings.json` to provide better
-organization and maintainability.
+protocol. This documentation covers the correct configuration process for Claude Desktop and
+the repository's role in managing MCP configurations.
 
-## Configuration Location
+## Configuration Locations
 
-**File**: `~/.mcp.json` (in your home directory)
+### Claude Desktop Configuration
 
-**Source**: Repository root `/.mcp.json`
+**Primary Config File**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+
+This is the actual configuration file that Claude Desktop reads. All MCP servers must be
+configured here to work with Claude Desktop.
+
+### Repository Source Configuration
+
+**Source File**: `/.mcp.json` (in repository root)
+
+This file serves as the source of truth for MCP server configurations and is merged into
+Claude Desktop's configuration during deployment.
 
 ## Configuration Structure
+
+### Claude Desktop Format
 
 ```json
 {
@@ -27,6 +39,11 @@ organization and maintainability.
   }
 }
 ```
+
+### Repository Source Format
+
+The `.mcp.json` in the repository uses the same structure as Claude Desktop's configuration,
+containing only the `mcpServers` section that gets merged into the full config.
 
 ## Available MCP Servers
 
@@ -66,45 +83,50 @@ organization and maintainability.
 - **Package**: `@notionhq/notion-mcp-server`
 - **Environment**: Requires `NOTION_API_KEY`
 
-## Deployment
+## Deployment Process
 
-The `.mcp.json` file is automatically deployed and configured when running `/sync`:
+The `/sync` command now properly handles MCP server configuration deployment:
 
 ```bash
 # From claude-config repository
 /sync
 
-# Deploys:
-# - .mcp.json → ~/.mcp.json (for Claude Desktop)
-# - MCP servers → Claude CLI user scope (via claude mcp add)
-# - settings.json → ~/.claude/settings.json (without MCP config)
-# - Other configurations → ~/.claude/
+# Process:
+# 1. Reads repository .mcp.json
+# 2. Merges MCP servers into Claude Desktop config
+# 3. Creates backup of existing Claude Desktop config
+# 4. Updates ~/Library/Application Support/Claude/claude_desktop_config.json
+# 5. Validates configuration syntax
 ```
 
-The `/sync` command automatically:
+### Deployment Steps
 
-1. Copies `.mcp.json` to home directory for Claude Desktop
-2. Runs `claude mcp list` to check existing servers
-3. Adds any missing servers using `claude mcp add --scope user`
-4. Validates all MCP servers are connected
+1. **Backup Creation**: Existing Claude Desktop config is backed up
+2. **Configuration Merge**: Repository MCP servers are merged with existing config
+3. **File Update**: Claude Desktop config file is updated with merged configuration
+4. **Validation**: JSON syntax and structure are validated
+5. **Restart Prompt**: User is reminded to restart Claude Desktop
 
 ## Adding New MCP Servers
 
-1. Edit `.mcp.json` in the repository root
-2. Add your server configuration:
+1. Edit `.mcp.json` in the repository root:
 
    ```json
-   "your-server": {
-     "command": "npx",
-     "args": ["-y", "your-mcp-package"],
-     "env": {
-       "YOUR_API_KEY": "${YOUR_API_KEY}"
+   {
+     "mcpServers": {
+       "your-server": {
+         "command": "npx",
+         "args": ["-y", "your-mcp-package"],
+         "env": {
+           "YOUR_API_KEY": "${YOUR_API_KEY}"
+         }
+       }
      }
    }
    ```
 
-3. Run `/sync` to deploy
-4. Restart Claude Desktop
+2. Run `/sync` to deploy the configuration
+3. Restart Claude Desktop for changes to take effect
 
 ## Environment Variables
 
@@ -118,39 +140,125 @@ export ELEVENLABS_API_KEY="your-elevenlabs-key"
 export NOTION_API_KEY="your-notion-api-key"
 ```
 
-## Migration from settings.json
+## Backup and Restore
 
-Previously, MCP servers were configured in `settings.json`. They have been moved to `.mcp.json` for:
+### Automatic Backups
 
-- Better separation of concerns
-- Easier MCP server management
-- Cleaner settings structure
-- Simplified sharing of MCP configurations
+The `/sync` command automatically creates timestamped backups:
+
+```bash
+~/Library/Application Support/Claude/claude_desktop_config.json.backup.YYYYMMDD_HHMMSS
+```
+
+### Manual Backup
+
+```bash
+# Create manual backup
+cp "~/Library/Application Support/Claude/claude_desktop_config.json" \
+   "~/Library/Application Support/Claude/claude_desktop_config.json.manual.backup"
+```
+
+### Restore from Backup
+
+```bash
+# Restore from backup
+cp "~/Library/Application Support/Claude/claude_desktop_config.json.backup.YYYYMMDD_HHMMSS" \
+   "~/Library/Application Support/Claude/claude_desktop_config.json"
+```
+
+## Migration from Legacy Configuration
+
+### Previous Incorrect Assumptions
+
+Earlier versions of this documentation incorrectly referenced `~/.mcp.json` as the primary
+configuration location. This file is **NOT** used by Claude Desktop.
+
+### Current State
+
+- **Claude Desktop** reads only from `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Repository `.mcp.json`** serves as the source that gets merged into Claude Desktop config
+- **No standalone MCP config** file is used by Claude Desktop
 
 ## Troubleshooting
 
 ### MCP Servers Not Loading
 
-1. Verify `.mcp.json` exists in home directory
-2. Check JSON syntax: `cat ~/.mcp.json | jq`
-3. Ensure environment variables are set
-4. Restart Claude Desktop
+1. **Check Config Location**:
+
+   ```bash
+   ls -la "~/Library/Application Support/Claude/claude_desktop_config.json"
+   ```
+
+2. **Validate JSON Syntax**:
+
+   ```bash
+   cat "~/Library/Application Support/Claude/claude_desktop_config.json" | jq
+   ```
+
+3. **Verify Environment Variables**:
+
+   ```bash
+   echo $GITHUB_TOKEN
+   echo $CONTEXT7_API_KEY
+   echo $ELEVENLABS_API_KEY
+   ```
+
+4. **Restart Claude Desktop**: Required after configuration changes
+
+### Configuration File Not Found
+
+If Claude Desktop config file doesn't exist:
+
+```bash
+# Create the directory if it doesn't exist
+mkdir -p "~/Library/Application Support/Claude"
+
+# Create minimal config file
+echo '{"mcpServers": {}}' > "~/Library/Application Support/Claude/claude_desktop_config.json"
+
+# Run sync to populate with MCP servers
+/sync
+```
 
 ### Package Installation Issues
 
 - npx packages are downloaded on first use
 - Ensure Node.js is installed: `brew install node`
 - Check network connectivity
-- Try manual test: `npx -y package-name --help`
+- Test manually: `npx -y package-name --help`
 
-## Benefits of Separate Configuration
+### Permission Issues
 
-1. **Modularity**: MCP servers separate from other settings
-2. **Portability**: Easy to share MCP configurations
-3. **Version Control**: Track MCP changes independently
-4. **Clarity**: Clear distinction between app settings and external integrations
-5. **Flexibility**: Can symlink or manage `.mcp.json` separately
+```bash
+# Fix permissions if needed
+chmod 644 "~/Library/Application Support/Claude/claude_desktop_config.json"
+```
+
+## Configuration Validation
+
+### Syntax Check
+
+```bash
+# Validate JSON syntax
+jq . "~/Library/Application Support/Claude/claude_desktop_config.json"
+```
+
+### MCP Server Test
+
+```bash
+# Test individual MCP servers
+npx -y @modelcontextprotocol/server-filesystem --help
+npx -y @modelcontextprotocol/server-github --help
+```
+
+## Benefits of Current Architecture
+
+1. **Accurate Location**: Uses the actual Claude Desktop configuration file
+2. **Centralized Management**: Repository serves as source of truth
+3. **Safe Deployment**: Automatic backups prevent configuration loss
+4. **Merge Strategy**: Preserves existing Claude Desktop settings
+5. **Version Control**: Track MCP changes in repository
 
 ---
 
-**Last Updated**: Configuration moved from settings.json to .mcp.json for better organization
+**Important**: Always restart Claude Desktop after configuration changes for MCP servers to become available.

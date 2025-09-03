@@ -8,7 +8,7 @@
 [![Version](https://img.shields.io/badge/Version-2.0-blue.svg)](https://github.com/damilola-elegbede/claude-config/releases)
 [![Agents](https://img.shields.io/badge/Agents-28-green.svg)](#-agent-ecosystem-28-specialists)
 [![Commands](https://img.shields.io/badge/Commands-20-orange.svg)](#-commands)
-[![Docs](https://img.shields.io/badge/Documentation-37_files-purple.svg)](docs/DOCUMENTATION_INDEX.md)
+[![Docs](https://img.shields.io/badge/Documentation-39_files-purple.svg)](docs/DOCUMENTATION_INDEX.md)
 
 <!-- markdownlint-disable-next-line MD036 -->
 *Production-ready Smart Agent Orchestration Framework for Claude Code CLI*
@@ -56,7 +56,7 @@ The framework includes an **intelligent statusline** that provides real-time dev
 ### Status Information Display
 - **Claude Model**: Current model version (e.g., "claude-sonnet-4")
 - **Git Branch**: Active branch name with repository context
-- **Working Directory**: Current project path for quick reference  
+- **Working Directory**: Current project path for quick reference
 - **Output Style**: Current formatting preference (markdown/plain)
 - **Version Tracking**: Per-terminal version counter with visual indicators
 
@@ -286,7 +286,7 @@ claude-config/
 │   │   │   └── *.md           # Individual agent specs
 │   │   └── commands/          # 20 command definitions
 │   └── settings.json          # Audio hooks and preferences
-├── docs/                      # 37 documentation files (organized)
+├── docs/                      # 39 documentation files (organized)
 │   ├── setup/                 # Installation guides
 │   ├── development/           # Development requirements
 │   ├── performance/           # Performance optimization
@@ -371,7 +371,7 @@ The documentation is organized into clear categories for better navigation:
 
 ### Quick Links
 
-- **[Documentation Index](docs/DOCUMENTATION_INDEX.md)** - Complete documentation overview (37 files)
+- **[Documentation Index](docs/DOCUMENTATION_INDEX.md)** - Complete documentation overview (39 files)
 - **[Agent Categories](docs/agents/AGENT_CATEGORIES.md)** - 8 categories covering 28 agents
 - **[Agent Selection Guide](docs/development/AGENT_SELECTION_GUIDE.md)** - How to choose the right specialist
 - **[Performance Guide](docs/performance/PERFORMANCE.md)** - Performance optimization best practices
@@ -472,7 +472,7 @@ See our [Security Policy](SECURITY.md) for complete details on reporting vulnera
 
 - **Agent Coverage**: 28 specialists across 8 functional domains (100% coverage)
 - **Command Quality**: 20 essential commands with 4.5/5.0 average rating
-- **Documentation Coverage**: 37 comprehensive documentation files
+- **Documentation Coverage**: 39 comprehensive documentation files
 - **Test Coverage**: Comprehensive validation across all components
 - **Security Compliance**: 100% SYSTEM BOUNDARY protection across all agents
 

@@ -67,8 +67,8 @@ Files Synced:
 
 MCP Servers Synced:
   - From: .mcp.json
-  - To: Claude CLI user scope
-  - Method: claude mcp add --scope user
+  - To: Claude Desktop config (~/Library/Application Support/Claude/claude_desktop_config.json)
+  - Method: JSON merge with backup
 
 Excluded:
   - README.md files
@@ -119,32 +119,65 @@ chmod +x ~/.claude/statusline.sh 2>/dev/null || true
 ### Phase 3: MCP Server Sync
 
 ```bash
-# Check current MCP servers
-current_servers=$(claude mcp list | grep ":" | cut -d: -f1)
+# Claude Desktop config path
+CLAUDE_CONFIG_PATH="$HOME/Library/Application Support/Claude/claude_desktop_config.json"
 
-# Read .mcp.json and sync missing servers
+# Sync MCP servers to Claude Desktop
 if [[ -f ".mcp.json" ]]; then
-  echo "🔄 Syncing MCP servers..."
+  echo "🔄 Syncing MCP servers to Claude Desktop..."
 
-  # Parse .mcp.json and add missing servers
-  for server in $(jq -r '.mcpServers | keys[]' .mcp.json); do
-    if ! echo "$current_servers" | grep -q "^$server$"; then
-      # Extract server configuration
-      command=$(jq -r ".mcpServers.$server.command" .mcp.json)
-      args=$(jq -r ".mcpServers.$server.args[]?" .mcp.json 2>/dev/null)
+  # Create backup of existing config
+  if [[ -f "$CLAUDE_CONFIG_PATH" ]]; then
+    timestamp=$(date +%Y%m%d_%H%M%S)
+    backup_path="${CLAUDE_CONFIG_PATH}.backup.$timestamp"
+    cp "$CLAUDE_CONFIG_PATH" "$backup_path"
+    echo "💾 Backup created: $backup_path"
+  fi
 
-      # Build claude mcp add command
-      if [[ "$command" == "npx" ]]; then
-        claude mcp add "$server" npx -- $args --scope user
-        echo "✅ Added MCP server: $server"
-      else
-        claude mcp add "$server" "$command" $args --scope user
-        echo "✅ Added MCP server: $server"
-      fi
-    else
-      echo "✓ MCP server already configured: $server"
+  # Create Claude config directory if it doesn't exist
+  mkdir -p "$(dirname "$CLAUDE_CONFIG_PATH")"
+
+  # Read current config or create empty structure
+  if [[ -f "$CLAUDE_CONFIG_PATH" ]]; then
+    current_config=$(cat "$CLAUDE_CONFIG_PATH")
+  else
+    current_config='{"mcpServers": {}}'
+  fi
+
+  # Validate current config JSON
+  if ! echo "$current_config" | jq empty 2>/dev/null; then
+    echo "⚠️  Invalid JSON in existing config, creating fresh config"
+    current_config='{"mcpServers": {}}'
+  fi
+
+  # Read .mcp.json servers
+  mcp_servers=$(jq '.mcpServers' .mcp.json)
+
+  # Merge MCP servers into current config, preserving other settings
+  merged_config=$(echo "$current_config" | jq --argjson servers "$mcp_servers" '
+    .mcpServers = $servers
+  ')
+
+  # Validate merged config
+  if echo "$merged_config" | jq empty 2>/dev/null; then
+    # Write updated config
+    echo "$merged_config" > "$CLAUDE_CONFIG_PATH"
+    echo "✅ Claude Desktop MCP configuration updated"
+
+    # Show what was configured
+    echo "📡 MCP Servers configured:"
+    echo "$merged_config" | jq -r '.mcpServers | keys[]' | while read server; do
+      echo "  ✓ $server"
+    done
+  else
+    echo "❌ Failed to merge MCP configuration - JSON validation failed"
+    # Restore backup if it exists
+    if [[ -f "$backup_path" ]]; then
+      cp "$backup_path" "$CLAUDE_CONFIG_PATH"
+      echo "🔄 Restored from backup"
     fi
-  done
+    return 1
+  fi
 else
   echo "⚠️  No .mcp.json found - skipping MCP server sync"
 fi
@@ -166,8 +199,19 @@ for file in agents commands output-styles settings.json statusline.sh; do
   fi
 done
 
-# Verify MCP servers are connected
-claude mcp list
+# Verify Claude Desktop MCP config
+if [[ -f "$CLAUDE_CONFIG_PATH" ]]; then
+  if jq empty "$CLAUDE_CONFIG_PATH" 2>/dev/null; then
+    echo "✅ Claude Desktop config is valid JSON"
+    mcp_count=$(jq '.mcpServers | length' "$CLAUDE_CONFIG_PATH")
+    echo "📡 MCP servers configured: $mcp_count"
+  else
+    echo "❌ Claude Desktop config has invalid JSON"
+    return 1
+  fi
+else
+  echo "⚠️  Claude Desktop config not found"
+fi
 ```
 
 ## Examples
@@ -184,21 +228,17 @@ Claude: 🔄 Syncing Claude configurations...
 ✅ Output styles synced (8 files)
 ✅ Settings and statusline synced
 
-🔄 Syncing MCP servers from .mcp.json...
-✓ MCP server already configured: github
-✓ MCP server already configured: context7
-✓ MCP server already configured: filesystem
-✓ MCP server already configured: elevenlabs
-✅ Added MCP server: notionApi
-✅ Added MCP server: shadcn-ui
+🔄 Syncing MCP servers to Claude Desktop...
+💾 Backup created: ~/Library/Application Support/Claude/claude_desktop_config.json.backup.20240818_164500
+✅ Claude Desktop MCP configuration updated
 
-📡 MCP Server Status:
-github: ✓ Connected
-context7: ✓ Connected
-filesystem: ✓ Connected
-elevenlabs: ✓ Connected
-notionApi: ✓ Connected
-shadcn-ui: ✓ Connected
+📡 MCP Servers configured:
+  ✓ filesystem
+  ✓ github
+  ✓ shadcn-ui
+  ✓ context7
+  ✓ elevenlabs
+  ✓ notionApi
 
 🎯 All configurations and MCP servers deployed successfully
 ```
@@ -235,8 +275,8 @@ Deploy execution-evaluator to verify:
 - ✅ **Agents deployed** - All agent definitions properly synchronized
 - ✅ **Commands available** - All custom commands deployed and accessible
 - ✅ **Settings applied** - settings.json and statusline.sh configured correctly
-- ✅ **MCP servers synced** - All servers from .mcp.json added to user scope
-- ✅ **MCP connectivity** - All MCP servers connected and responding
+- ✅ **MCP servers synced** - All servers from .mcp.json merged into Claude Desktop config
+- ✅ **MCP config validated** - Claude Desktop configuration JSON syntax verified
 - ✅ **Validation passed** - JSON syntax and file integrity verified
 - ✅ **Backup created** - Previous configuration safely backed up (if requested)
 
