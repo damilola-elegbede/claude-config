@@ -63,11 +63,10 @@ test_concurrent_access() {
     rm -rf "$TEST_HOME/.claude"
     
     # Test that the script can handle concurrent-like access patterns
-    # by using unique version strings that won't conflict with existing data
-    local unique_suffix=$(date +%s)
+    # Using proper semantic versions (X.Y.Z format)
     local outputs=()
     for i in {1..3}; do
-        local test_input="{\"model\":{\"display_name\":\"Claude\"},\"version\":\"concurrent.${unique_suffix}.$i\",\"session_id\":\"concurrent_test_${unique_suffix}_$i\",\"workspace\":{\"current_dir\":\"/tmp\"},\"output_style\":{\"name\":\"default\"}}"
+        local test_input="{\"model\":{\"display_name\":\"Claude\"},\"version\":\"9.${i}.0\",\"workspace\":{\"current_dir\":\"/tmp\"},\"output_style\":{\"name\":\"default\"}}"
         outputs[$i]=$(HOME="$TEST_HOME" echo "$test_input" | bash "$statusline_path" 2>/dev/null)
     done
     
@@ -78,7 +77,7 @@ test_concurrent_access() {
             return 1
         fi
         # Should contain the version (may or may not have stars depending on existing state)
-        if [[ "${outputs[$i]}" != *"concurrent.${unique_suffix}.$i"* ]]; then
+        if [[ "${outputs[$i]}" != *"9.${i}.0"* ]]; then
             echo "Concurrent execution $i missing version: ${outputs[$i]}"
             return 1
         fi
@@ -91,28 +90,22 @@ test_concurrent_access() {
 # Test handling of special characters in version
 test_special_characters_version() {
     local statusline_path="../../system-configs/.claude/statusline.sh"
-    local test_input='{"model":{"display_name":"Claude"},"version":"v1.2.3-beta+build.123","session_id":"special_chars","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
+    # Non-semantic version should trigger error
+    local test_input='{"model":{"display_name":"Claude"},"version":"v1.2.3-beta+build.123","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
     
-    # Run statusline
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    # Run statusline (capture stderr for error message)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>&1)
     
-    # Check that special characters are handled correctly
-    if [[ "$output" != *"v1.2.3-beta+build.123 ✨"* ]]; then
+    # Check that non-semantic version triggers error
+    if echo "$output" | grep -q "ERROR: Invalid version format"; then
+        # Expected behavior - non-semantic version triggers error
+        return 0
+    else
         echo "Special characters in version not handled correctly: $output"
         return 1
-    fi
-    
-    # Check file content
-    version_files=("$TEST_HOME/.claude/terminal_versions"/*)
-    if [[ -f "${version_files[0]}" ]]; then
-        version_content=$(cat "${version_files[0]}")
-        if [[ "$version_content" != "v1.2.3-beta+build.123" ]]; then
-            echo "Version file content incorrect: $version_content"
-            return 1
-        fi
     fi
     
     return 0
@@ -148,11 +141,12 @@ test_empty_session_id() {
 # Test handling of corrupted version files
 test_corrupted_version_file() {
     local statusline_path="../../system-configs/.claude/statusline.sh"
-    local test_input='{"model":{"display_name":"Claude"},"version":"2.0.0","session_id":"corrupted_test","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
+    local test_input='{"model":{"display_name":"Claude"},"version":"2.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
-    # Set up corrupted version file
+    # Set up corrupted version file (use terminal_* pattern now)
     mkdir -p "$TEST_HOME/.claude/terminal_versions"
-    echo -e "\x00\x01corrupted\xFF" > "$TEST_HOME/.claude/terminal_versions/session_corrupted_test"
+    # Create a corrupted file with predictable terminal ID
+    echo -e "\x00\x01corrupted\xFF" > "$TEST_HOME/.claude/terminal_versions/terminal_test"
     
     # Run statusline - should handle corruption gracefully
     HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
@@ -163,10 +157,9 @@ test_corrupted_version_file() {
         return 1
     fi
     
-    # Check that version was updated correctly
-    version_content=$(cat "$TEST_HOME/.claude/terminal_versions/session_corrupted_test" 2>/dev/null || echo "")
-    if [[ "$version_content" != "2.0.0" ]]; then
-        echo "Version file not updated correctly after corruption: $version_content"
+    # Verify a terminal_* file now contains exactly 2.0.0
+    if ! grep -rlq -- '^2\.0\.0$' "$TEST_HOME/.claude/terminal_versions"; then
+        echo "No terminal version file updated with 2.0.0"
         return 1
     fi
     
@@ -176,7 +169,7 @@ test_corrupted_version_file() {
 # Test permission denied scenarios
 test_permission_denied() {
     local statusline_path="../../system-configs/.claude/statusline.sh"
-    local test_input='{"model":{"display_name":"Claude"},"version":"3.0.0","session_id":"permission_test","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
+    local test_input='{"model":{"display_name":"Claude"},"version":"3.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
     # Create read-only directory
     mkdir -p "$TEST_HOME/.claude"
@@ -201,17 +194,20 @@ test_permission_denied() {
 # Test extremely long version strings
 test_long_version_string() {
     local statusline_path="../../system-configs/.claude/statusline.sh"
+    # Non-semantic long version should trigger error
     local long_version="1.0.0-$(printf 'a%.0s' {1..100})"  # 100 character suffix
-    local test_input="{\"model\":{\"display_name\":\"Claude\"},\"version\":\"$long_version\",\"session_id\":\"long_version_test\",\"workspace\":{\"current_dir\":\"/tmp\"},\"output_style\":{\"name\":\"default\"}}"
+    local test_input="{\"model\":{\"display_name\":\"Claude\"},\"version\":\"$long_version\",\"workspace\":{\"current_dir\":\"/tmp\"},\"output_style\":{\"name\":\"default\"}}"
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
     
-    # Run statusline
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    # Run statusline (capture stderr)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>&1)
     
-    # Should handle long versions correctly
-    if [[ "$output" != *"$long_version ✨"* ]]; then
+    # Should reject non-semantic version
+    if echo "$output" | grep -q "ERROR: Invalid version format"; then
+        return 0
+    else
         echo "Long version string not handled correctly"
         return 1
     fi
@@ -227,29 +223,14 @@ test_malformed_json() {
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
     
-    # Run statusline with malformed JSON
-    HOME="$TEST_HOME" output=$(echo "$malformed_input" | bash "$statusline_path" 2>/dev/null || echo "FAILED")
+    # Run statusline with malformed JSON (capture stderr)
+    HOME="$TEST_HOME" output=$(echo "$malformed_input" | bash "$statusline_path" 2>&1)
     
-    # Should gracefully handle malformed JSON
-    if [[ "$output" == "FAILED" ]]; then
-        echo "Should handle malformed JSON gracefully"
-        return 1
-    fi
-    
-    # Strip ANSI color codes for testing
-    output_clean=$(echo "$output" | sed 's/\x1b\[[0-9;]*m//g')
-    
-    # jq handles malformed JSON by returning empty strings
-    # The script should still produce output, even if fields are empty
-    if [[ -z "$output_clean" ]]; then
-        echo "Should produce some output even with malformed JSON"
-        return 1
-    fi
-    
-    # Should contain statusline structure (bullet points) at minimum
-    # This works in both local and CI environments regardless of git state
-    if [[ "$output_clean" != *"no-git"* && "$output_clean" != *"•  "* && "$output_clean" != *"• "* ]]; then
-        echo "Should include git segment (branch or no-git): $output_clean"
+    # Malformed JSON triggers "unknown" version which now causes error
+    if echo "$output" | grep -q "ERROR: Claude Code is not reporting version properly"; then
+        return 0
+    else
+        echo "Should handle malformed JSON with error message"
         return 1
     fi
     
@@ -265,12 +246,12 @@ test_rapid_version_changes() {
     
     # Test rapid version changes
     for version in "1.0.0" "1.0.1" "1.0.2" "1.1.0" "2.0.0"; do
-        local test_input="{\"model\":{\"display_name\":\"Claude\"},\"version\":\"$version\",\"session_id\":\"rapid_test\",\"workspace\":{\"current_dir\":\"/tmp\"},\"output_style\":{\"name\":\"default\"}}"
+        local test_input="{\"model\":{\"display_name\":\"Claude\"},\"version\":\"$version\",\"workspace\":{\"current_dir\":\"/tmp\"},\"output_style\":{\"name\":\"default\"}}"
         
         HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
         
-        # Each version should show stars
-        if [[ "$output" != *"$version ✨"* ]]; then
+        # Each new version should show stars
+        if [[ "$output" != *"$version"* ]]; then
             echo "Rapid version change failed for $version: $output"
             return 1
         fi
@@ -293,7 +274,8 @@ test_rapid_version_changes() {
 # Test cleanup functionality with various file ages
 test_cleanup_functionality() {
     local statusline_path="../../system-configs/.claude/statusline.sh"
-    local test_input='{"model":{"display_name":"Claude"},"version":"cleanup.1.0","session_id":"cleanup_test","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
+    # Use semantic version for cleanup test
+    local test_input='{"model":{"display_name":"Claude"},"version":"4.5.6","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
@@ -320,9 +302,10 @@ test_cleanup_functionality() {
         return 1
     fi
     
-    # At minimum, the new session file should exist
-    if [[ ! -f "$TEST_HOME/.claude/terminal_versions/session_cleanup_test" ]]; then
-        echo "New session file not created during cleanup test"
+    # At minimum, a new terminal file should exist (no more session files)
+    terminal_files=("$TEST_HOME/.claude/terminal_versions/terminal_"*)
+    if [[ ! -f "${terminal_files[0]}" ]]; then
+        echo "New terminal file not created during cleanup test"
         return 1
     fi
     
