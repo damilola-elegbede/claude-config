@@ -212,14 +212,18 @@ test_unknown_version_handling() {
     # Run with unknown version
     HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
     
-    # Should not show stars for unknown version
-    if [[ "$output" == *"unknown ✨"* ]]; then
-        echo "Unknown version should not show stars: $output"
+    # NEW BEHAVIOR: Unknown versions SHOULD show stars persistently
+    # When Claude Code doesn't pass proper version data, we create pseudo-versions
+    # and show stars to maintain consistent visual feedback throughout the session
+    if [[ "$output" != *"✨"* ]]; then
+        echo "Unknown version should show stars: $output"
         return 1
     fi
     
-    if [[ "$output" != *"unknown"* ]]; then
-        echo "Output should still show unknown version: $output"
+    # Second run should also show stars (persistent for unknown versions)
+    HOME="$TEST_HOME" output2=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    if [[ "$output2" != *"✨"* ]]; then
+        echo "Unknown version should show stars persistently: $output2"
         return 1
     fi
     
