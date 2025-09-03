@@ -56,7 +56,7 @@ The framework includes an **intelligent statusline** that provides real-time dev
 ### Status Information Display
 - **Claude Model**: Current model version (e.g., "claude-sonnet-4")
 - **Git Branch**: Active branch name with repository context
-- **Working Directory**: Current project path for quick reference  
+- **Working Directory**: Current project path for quick reference
 - **Output Style**: Current formatting preference (markdown/plain)
 - **Version Tracking**: Per-terminal version counter with visual indicators
 
