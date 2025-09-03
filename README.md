@@ -49,6 +49,33 @@ Built from the ground up after a comprehensive cleanup that removed 85+ bloat fi
 - **Zero-Tolerance Standards**: Comprehensive quality validation pipeline
 - **Security-First Design**: Principle of least privilege with role-based access control
 
+## 🎯 Statusline Feature
+
+The framework includes an **intelligent statusline** that provides real-time development context in your terminal. The statusline displays essential information at the bottom of your terminal session:
+
+### Status Information Display
+- **Claude Model**: Current model version (e.g., "claude-sonnet-4")
+- **Git Branch**: Active branch name with repository context
+- **Working Directory**: Current project path for quick reference  
+- **Output Style**: Current formatting preference (markdown/plain)
+- **Version Tracking**: Per-terminal version counter with visual indicators
+
+### Per-Terminal Version Tracking ✨
+The statusline implements **intelligent per-terminal version tracking** using a ✨ star-based system:
+- Each terminal session maintains its own version counter
+- Stars (✨) indicate Claude Code invocation frequency
+- Visual progression shows development activity across sessions
+- Helps track productivity and context switching between projects
+
+### Robust Fallback Behavior
+The statusline features **comprehensive error handling** for edge cases:
+- **Empty Input**: Gracefully handles missing or invalid data from Claude Code
+- **Git Errors**: Falls back to directory name when git operations fail
+- **Path Resolution**: Handles complex directory structures and symbolic links
+- **Terminal Compatibility**: Works across different terminal environments and shells
+
+The statusline enhances developer awareness by providing contextual information without cluttering the workspace, enabling better focus and productivity during development sessions.
+
 ## 🚀 Quick Start
 
 ### 1. Install Prerequisites
@@ -323,7 +350,7 @@ pwd  # Should show .../claude-config
 # Check audio configuration
 cat ~/.claude/settings.json | grep -A 10 "hooks"
 
-# Test audio playback
+# Test audio playbook
 afplay /System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r
 ```
 
