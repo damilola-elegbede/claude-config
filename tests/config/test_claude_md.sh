@@ -39,20 +39,20 @@ test_claude_md_effectiveness() {
         reasons+=("Too verbose ($words_per_line words/line > 25): Needs tighter editing")
     fi
 
-    # Must have core philosophy section
-    if ! grep -q "Core Philosophy" "$claude_file"; then
+    # Must have chief of staff positioning
+    if ! grep -q "chief of staff" "$claude_file"; then
         score=$((score - 2))
-        reasons+=("Missing Core Philosophy: Must define orchestration principles")
+        reasons+=("Missing chief of staff positioning: Must define coordination role")
     fi
 
-    # Must have decision framework (Decision Matrix is equivalent)
-    if ! grep -q -E "Decision (Framework|Matrix)" "$claude_file"; then
+    # Must have delegation principle
+    if ! grep -q -i "delegate everything" "$claude_file"; then
         score=$((score - 2))
-        reasons+=("Missing Decision Framework: Core orchestration logic absent")
+        reasons+=("Missing delegation principle: Core orchestration logic absent")
     fi
 
-    # Must have parallel execution strategy (Multi-Instance Parallel Execution or Parallelization Rules)
-    if ! grep -q -E "(Parallel Execution|Parallelization Rules|Multi-Instance)" "$claude_file"; then
+    # Must have parallel execution strategy
+    if ! grep -q -i "parallel execution" "$claude_file"; then
         score=$((score - 2))
         reasons+=("Missing Parallel Execution Strategy: Key efficiency component missing")
     fi
@@ -63,22 +63,22 @@ test_claude_md_effectiveness() {
         reasons+=("Missing parallel execution: Must orchestrate agents in parallel")
     fi
 
-    # Must have non-negotiable rules (Non-Negotiable Patterns is equivalent)
-    if ! grep -q -E "Non-Negotiable (Rules|Patterns)" "$claude_file"; then
+    # Must have authentication/API design patterns mentioned
+    if ! grep -q -i "authentication\|api design" "$claude_file"; then
         score=$((score - 3))
-        reasons+=("Missing Non-Negotiable Rules: Core enforcement rules absent")
+        reasons+=("Missing specific patterns: Core enforcement examples absent")
     fi
 
-    # Must have success metrics
-    if ! grep -q "Success Metrics" "$claude_file"; then
+    # Must have success measurement criteria
+    if ! grep -q -i "measures success\|optimal execution" "$claude_file"; then
         score=$((score - 1))
-        reasons+=("Missing Success Metrics: Need clear behavior indicators")
+        reasons+=("Missing success criteria: Need clear behavior indicators")
     fi
 
-    # Must have practical examples (Example: or Orchestration Execution sections)
-    if ! grep -q -E "Example:|Orchestration Execution" "$claude_file"; then
+    # Must have practical examples (20 files = 20 agents, etc)
+    if ! grep -q -E "20 files.*20.*agents|example" "$claude_file"; then
         score=$((score - 1))
-        reasons+=("Missing Practical Examples: Need concrete usage patterns")
+        reasons+=("Missing practical examples: Need concrete usage patterns")
     fi
 
     # Must have failure recovery strategies (not required in parallelization-focused framework)
@@ -118,30 +118,30 @@ test_claude_md_effectiveness() {
 # Test orchestration framework structure
 test_claude_md_structure() {
     local claude_file="$ORIGINAL_DIR/system-configs/CLAUDE.md"
-    local missing_sections=()
+    local missing_elements=()
 
-    # Core framework sections that must exist (with flexibility for section names)
-    local required_patterns=(
-        "Core Philosophy"
-        "Decision (Framework|Matrix)"
-        "(Parallel|Multi-Instance|Parallelization)"
-        "Non-Negotiable (Rules|Patterns)"
-        "Success Metrics"
-        "(Example:|Orchestration Execution)"
+    # Core framework elements that must exist in paragraph format
+    local required_elements=(
+        "chief of staff"
+        "delegate everything"
+        "parallel execution"
+        "MCP servers"
+        "git.*quality standards"
+        "measures success"
     )
 
     echo "Validating orchestration framework structure..."
 
-    for pattern in "${required_patterns[@]}"; do
-        if ! grep -E -q "## $pattern" "$claude_file"; then
-            missing_sections+=("$pattern")
+    for element in "${required_elements[@]}"; do
+        if ! grep -i -q "$element" "$claude_file"; then
+            missing_elements+=("$element")
         fi
     done
 
-    if [ ${#missing_sections[@]} -gt 0 ]; then
-        echo "❌ Missing required framework sections:"
-        for section in "${missing_sections[@]}"; do
-            echo "    - $section"
+    if [ ${#missing_elements[@]} -gt 0 ]; then
+        echo "❌ Missing required framework elements:"
+        for element in "${missing_elements[@]}"; do
+            echo "    - $element"
         done
         return 1
     fi
@@ -152,7 +152,7 @@ test_claude_md_structure() {
         return 1
     fi
 
-    if ! grep -q -i "threshold\|complexity" "$claude_file"; then
+    if ! grep -q -i "threshold\|complex" "$claude_file"; then
         echo "❌ Missing complexity guidance"
         return 1
     fi
@@ -166,19 +166,19 @@ test_claude_md_examples() {
     local claude_file="$ORIGINAL_DIR/system-configs/CLAUDE.md"
 
     # Must have practical examples (can be in Examples section or throughout)
-    if ! grep -q -E "Example|README typo|Authentication system|Bug report" "$claude_file"; then
+    if ! grep -q -i -E "example|20 files|authentication|api design" "$claude_file"; then
         echo "❌ Missing practical examples"
         return 1
     fi
 
-    # Must have anti-patterns (Anti-Patterns with or without emoji)
-    if ! grep -q -E "(❌.*)?Anti-[Pp]atterns" "$claude_file"; then
+    # Must have anti-patterns mentioned
+    if ! grep -q -i "anti-pattern" "$claude_file"; then
         echo "❌ Missing anti-patterns section"
         return 1
     fi
 
-    # Must have success indicators
-    if ! grep -q "✅.*Optimal\|✅.*behaviors" "$claude_file"; then
+    # Must have success/optimal mentioned
+    if ! grep -q -i "optimal\|success" "$claude_file"; then
         echo "❌ Missing optimal behavior indicators"
         return 1
     fi

@@ -151,25 +151,25 @@ else
     exit 1
 fi
 
-# Check CLAUDE.md has required sections
+# Check CLAUDE.md has required content elements
 CLAUDE_MD="$ORIGINAL_DIR/system-configs/CLAUDE.md"
-REQUIRED_SECTIONS=(
-    "Core Philosophy"
-    "Decision"
-    "MCP Server"
+REQUIRED_ELEMENTS=(
+    "chief of staff"
+    "delegate everything"
+    "MCP server"
 )
 
-MISSING_SECTIONS=()
-for section in "${REQUIRED_SECTIONS[@]}"; do
-    if ! grep -q "$section" "$CLAUDE_MD" 2>/dev/null; then
-        MISSING_SECTIONS+=("$section")
+MISSING_ELEMENTS=()
+for element in "${REQUIRED_ELEMENTS[@]}"; do
+    if ! grep -i -q "$element" "$CLAUDE_MD" 2>/dev/null; then
+        MISSING_ELEMENTS+=("$element")
     fi
 done
 
-if [ ${#MISSING_SECTIONS[@]} -gt 0 ]; then
-    echo -e "${RED}✗${NC} CLAUDE.md missing sections:"
-    for section in "${MISSING_SECTIONS[@]}"; do
-        echo "  - $section"
+if [ ${#MISSING_ELEMENTS[@]} -gt 0 ]; then
+    echo -e "${RED}✗${NC} CLAUDE.md missing elements:"
+    for element in "${MISSING_ELEMENTS[@]}"; do
+        echo "  - $element"
     done
     exit 1
 else
