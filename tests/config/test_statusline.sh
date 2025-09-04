@@ -147,7 +147,7 @@ test_terminal_isolation() {
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
     
-    # NOTE: Terminals are identified by gppid+pwd.
+    # NOTE: Terminals are identified by gppid only (no pwd hash).
     # In test environment, we can't easily simulate different terminals since gppid is the same.
     # We test basic version tracking behavior instead.
     
@@ -431,8 +431,8 @@ test_exit_hook() {
         return 1
     fi
     
-    # Run exit hook from /tmp directory (simulating Claude session end from same dir)
-    (cd /tmp && HOME="$TEST_HOME" bash "$exit_hook_path")
+    # Run exit hook from /tmp directory with same version (simulating Claude session end from same dir)
+    (cd /tmp && HOME="$TEST_HOME" echo '{"version":"8.0.0"}' | bash "$exit_hook_path")
     
     # Check file now has flag=0
     content=$(cat "${terminal_file[0]}" 2>/dev/null)
@@ -473,8 +473,8 @@ run_test "jq dependency check" test_jq_dependency
 run_test "Git command handling" test_git_handling
 run_test "VERSION:FLAG format" test_version_flag_format
 run_test "Version change behavior" test_version_change
-# Exit hook test disabled - terminal IDs differ in test environment
-# run_test "Exit hook functionality" test_exit_hook
+# Exit hook test now works since terminal IDs don't include pwd hash
+run_test "Exit hook functionality" test_exit_hook
 
 # Cleanup
 rm -rf "$TEST_TEMP_DIR"
