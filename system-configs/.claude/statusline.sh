@@ -10,17 +10,18 @@
 #
 # HOW IT WORKS:
 # - Uses stable terminal identifier (grandparent PID + pwd hash)
-# - Each terminal independently tracks what semantic version it has seen
-# - Shows ✨ when this specific terminal sees a new semantic version
-# - Stores only semantic versions (e.g., "1.0.102") without UUIDs
-# - Stars persist throughout the terminal session when version changes
+# - Each terminal file stores VERSION;FLAG format (e.g., "1.0.102;1")
+# - FLAG values: 1 = show stars (first time), 0 = don't show stars
+# - Shows ✨ only once per version per terminal
 # - No interference between different terminal windows
-# - Auto-cleanup of tracking files after 7 days
+# - Auto-cleanup of tracking files after 7 days or when process ends
 #
 # STAR LOGIC:
-# - New terminal: shows stars persistently for this session
-# - Version change: shows stars persistently for this session
-# - Same version: no stars
+# - New terminal with new version: writes "1.0.104;1" → shows stars
+# - During session: keeps showing stars while flag=1
+# - On Claude exit: exit hook updates "1.0.104;1" to "1.0.104;0"
+# - Next launch: reads "1.0.104;0" → no stars
+# - Version update: replaces with "1.0.105;1" → shows stars
 # - Unknown version: prints error and exits
 
 # Read Claude session data from stdin
@@ -101,32 +102,49 @@ version_display="$version"
 # Create terminal versions directory if needed
 mkdir -p -m 700 "$terminal_versions_dir" 2>/dev/null || true
 
-# Per-Terminal Version Tracking: Store only semantic version
+# Per-Terminal Version Tracking: Store VERSION;FLAG format
+# FLAG: 1 = show stars (first time), 0 = don't show stars
 show_stars=false
 
 if [[ ! -f "$terminal_version_file" ]]; then
-    # New terminal - show stars persistently and record semantic version
+    # New terminal - create file with flag=1 (show stars)
     tmp_file="$(mktemp "$terminal_versions_dir/.tmp.XXXXXX" 2>/dev/null || printf '%s' "$terminal_versions_dir/.tmp.$$")"
     umask 077
-    printf '%s' "$semantic_version" > "$tmp_file" 2>/dev/null || true
+    printf '%s;1' "$semantic_version" > "$tmp_file" 2>/dev/null || true
     chmod 600 "$tmp_file" 2>/dev/null || true
     mv -f "$tmp_file" "$terminal_version_file" 2>/dev/null || true
     show_stars=true
 else
-    # Read stored semantic version
-    stored_version=$(cat "$terminal_version_file" 2>/dev/null || echo "")
+    # Read stored content (VERSION;FLAG format)
+    stored_content=$(cat "$terminal_version_file" 2>/dev/null || echo "")
+    
+    # Parse version and flag
+    stored_version="${stored_content%;*}"
+    stored_flag="${stored_content#*;}"
+    
+    # Validate flag (default to 1 if invalid)
+    if [[ "$stored_flag" != "0" && "$stored_flag" != "1" ]]; then
+        stored_flag="1"
+    fi
     
     if [[ "$stored_version" != "$semantic_version" ]]; then
-        # Version changed - show stars persistently and update file
+        # Version changed - create new entry with flag=1 (show stars)
         tmp_file="$(mktemp "$terminal_versions_dir/.tmp.XXXXXX" 2>/dev/null || printf '%s' "$terminal_versions_dir/.tmp.$$")"
         umask 077
-        printf '%s' "$semantic_version" > "$tmp_file" 2>/dev/null || true
+        printf '%s;1' "$semantic_version" > "$tmp_file" 2>/dev/null || true
         chmod 600 "$tmp_file" 2>/dev/null || true
         mv -f "$tmp_file" "$terminal_version_file" 2>/dev/null || true
         show_stars=true
     else
-        # Same semantic version - no stars
-        show_stars=false
+        # Same version - check flag
+        if [[ "$stored_flag" == "1" ]]; then
+            # Flag is 1 - keep showing stars for this session
+            # Flag will be updated to 0 on exit
+            show_stars=true
+        else
+            # Flag is 0 - no stars
+            show_stars=false
+        fi
     fi
 fi
 
@@ -135,9 +153,26 @@ if [[ "$show_stars" == "true" ]]; then
     version_display="$version ✨"
 fi
 
-# Clean up old terminal files (older than 7 days)
+# Clean up old terminal files (older than 7 days OR if gppid no longer running)
 if [[ -d "$terminal_versions_dir" ]]; then
+  # Clean files older than 7 days
   find -P "$terminal_versions_dir" -type f -mtime +7 -delete 2>/dev/null || true
+  
+  # Clean files for terminals that are no longer running
+  for file in "$terminal_versions_dir"/terminal_*; do
+    if [[ -f "$file" ]]; then
+      # Extract gppid from filename (terminal_GPPID_HASH format)
+      filename=$(basename "$file")
+      if [[ "$filename" =~ ^terminal_([0-9]+)_ ]]; then
+        file_gppid="${BASH_REMATCH[1]}"
+        # Check if this PID is still running
+        if ! ps -p "$file_gppid" >/dev/null 2>&1; then
+          # Process no longer exists - safe to delete
+          rm -f "$file" 2>/dev/null || true
+        fi
+      fi
+    fi
+  done
 fi
 
 # Clean up legacy files from old implementations

@@ -48,6 +48,17 @@
           }
         ]
       }
+    ],
+    "Exit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/statusline-exit-hook.sh"
+          }
+        ]
+      }
     ]
   }
 }
