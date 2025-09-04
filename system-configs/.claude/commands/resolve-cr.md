@@ -256,7 +256,22 @@ execute_batch_fixes() {
 }
 ```
 
-### 5. Response to CodeRabbit
+### 5. Mark Issues as Resolved
+
+```bash
+mark_resolved() {
+  local pr="$1"
+
+  # IMPORTANT: Post this AFTER pushing fixes
+  # CodeRabbit needs to see the actual code changes before marking issues resolved
+  echo "🔄 Marking resolved issues in CodeRabbit..."
+  gh pr comment "$pr" --body "@coderabbitai resolve"
+
+  echo "✅ CodeRabbit will update resolved comment status"
+}
+```
+
+### 6. Response to CodeRabbit
 
 ```bash
 post_resolution_summary() {
@@ -294,6 +309,9 @@ These items have been logged for team review in our tracking system.
 
 Thank you for the comprehensive review! The auto-fixable issues have been resolved while preserving intentional design decisions.
 "
+
+  # Mark resolved issues (must be done AFTER push)
+  mark_resolved "$pr"
 }
 ```
 
@@ -338,7 +356,12 @@ Would you like to auto-fix the safe categories? (y/n): y
 🚀 Pushing fixes...
 ✅ Pushed 3 commits
 
+🔄 Marking resolved issues...
+✅ CodeRabbit updated comment status
+
 💬 Posted resolution summary to CodeRabbit
+🔄 Marking resolved issues...
+✅ CodeRabbit will update comment status
 
 User: /resolve-cr --auto
 Claude: 🔍 Analyzing CodeRabbit feedback for PR #119...
@@ -353,6 +376,9 @@ Claude: 🔍 Analyzing CodeRabbit feedback for PR #119...
 🔍 Adding type annotations...
 🚀 Pushing fixes...
 ✅ Resolved 43 auto-fixable issues in 4 commits
+
+🔄 Marking resolved issues in CodeRabbit...
+✅ Comments marked as resolved
 
 User: /resolve-cr --dry-run
 Claude: 🔍 Analyzing CodeRabbit feedback for PR #119...
@@ -404,5 +430,20 @@ Categories to be fixed:
 - **Batch Processing**: Groups similar fixes to reduce commit noise
 - **Test Integration**: Runs tests after each batch (configurable)
 - **Clear Communication**: Posts comprehensive summary to CodeRabbit
+- **Issue Resolution**: Marks resolved comments with `@coderabbitai resolve` AFTER pushing
 - **Selective Automation**: Only fixes truly safe categories
 - **Preserves Intent**: Respects architectural and design decisions
+
+### CodeRabbit Resolution Workflow
+
+1. **Apply fixes** - Make all auto-fixable changes
+2. **Commit changes** - Create meaningful commit messages
+3. **Push to PR** - Upload fixes to GitHub
+4. **Post summary** - Explain what was fixed vs deferred
+5. **Mark resolved** - Use `@coderabbitai resolve` to update comment status
+
+**Important**: The `@coderabbitai resolve` command must be posted AFTER pushing because:
+
+- CodeRabbit needs to see the actual code changes
+- It compares current code against its original comments
+- This ensures accurate resolution status
