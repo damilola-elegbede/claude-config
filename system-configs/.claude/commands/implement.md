@@ -1,18 +1,15 @@
-# /implement Command
+---
+description: Implement features from markdown specification using multi-agent orchestration
+argument-hint: [spec-file.md] [options]
+---
 
-## Description
+# /implement Command
 
 Reads a markdown specification file and automatically implements the described features using intelligent
 multi-agent orchestration. Analyzes the specification for tasks, dependencies, and parallelization opportunities,
 then deploys appropriate specialized agents to complete the implementation.
 
-## Usage
-
-```bash
-/implement <spec-file.md> [options]
-```
-
-## Behavior
+## Context
 
 When invoked, I will:
 
@@ -23,9 +20,7 @@ When invoked, I will:
 5. **Coordinate agent outputs** and integrate results into cohesive implementation
 6. **Verify completion** against the original specification requirements
 
-## Implementation Strategy
-
-### Specification Analysis
+### Implementation Strategy
 
 #### Phase 1: Document Parsing
 
@@ -69,7 +64,7 @@ Infrastructure: devops, platform-engineer, cloud-architect
 Analysis: codebase-analyst, debugger, performance-specialist
 ```
 
-## Examples
+## Expected Output
 
 ### Basic Implementation
 
@@ -190,9 +185,17 @@ Analysis: codebase-analyst, debugger, performance-specialist
 # ⚡ Optimized from 6 sequential to 3 phases with parallelization
 ```
 
-## Specification Format Guidelines
+## Usage Guidelines
 
-### Effective Specification Structure
+### Basic Usage
+
+```bash
+/implement <spec-file.md> [options]
+```
+
+### Specification Format Guidelines
+
+#### Effective Specification Structure
 
 ```markdown
 # Feature Name
@@ -209,7 +212,7 @@ Analysis: codebase-analyst, debugger, performance-specialist
 - Relevant files with context
 ```
 
-### Task Dependency Notation
+#### Task Dependency Notation
 
 ```markdown
 ## Tasks
@@ -220,9 +223,46 @@ Analysis: codebase-analyst, debugger, performance-specialist
 5. [ ] Sequential task (after: 4)
 ```
 
-## Agent Orchestration
+### Advanced Features
 
-### Parallel Deployment Strategies
+#### Incremental Implementation
+
+```bash
+/implement feature.md --incremental
+
+# Only implements tasks not marked as complete
+# Useful for resuming partial implementations
+```
+
+#### Dry Run Mode
+
+```bash
+/implement spec.md --dry-run
+
+# Shows execution plan without running
+# Useful for validating agent selection and parallelization
+```
+
+#### Specific Agent Assignment
+
+```bash
+/implement spec.md --prefer-agents "backend-engineer,test-engineer"
+
+# Prefers specified agents when multiple options available
+```
+
+#### Maximum Parallelization
+
+```bash
+/implement spec.md --max-parallel 5
+
+# Limits simultaneous agent deployment
+# Useful for resource-constrained environments
+```
+
+### Agent Orchestration
+
+#### Parallel Deployment Strategies
 
 **Maximum Parallelization:**
 
@@ -238,7 +278,7 @@ Analysis: codebase-analyst, debugger, performance-specialist
 - Optimize for minimal total execution time
 - Consider resource constraints
 
-### Coordination Mechanisms
+#### Coordination Mechanisms
 
 **Progress Tracking:**
 
@@ -254,46 +294,9 @@ Analysis: codebase-analyst, debugger, performance-specialist
 - Maintain consistency across implementation
 - Validate against specification
 
-## Advanced Features
+### Error Handling
 
-### Incremental Implementation
-
-```bash
-/implement feature.md --incremental
-
-# Only implements tasks not marked as complete
-# Useful for resuming partial implementations
-```
-
-### Dry Run Mode
-
-```bash
-/implement spec.md --dry-run
-
-# Shows execution plan without running
-# Useful for validating agent selection and parallelization
-```
-
-### Specific Agent Assignment
-
-```bash
-/implement spec.md --prefer-agents "backend-engineer,test-engineer"
-
-# Prefers specified agents when multiple options available
-```
-
-### Maximum Parallelization
-
-```bash
-/implement spec.md --max-parallel 5
-
-# Limits simultaneous agent deployment
-# Useful for resource-constrained environments
-```
-
-## Error Handling
-
-### Specification Issues
+#### Specification Issues
 
 ```text
 ❌ Invalid specification format
@@ -301,7 +304,7 @@ Analysis: codebase-analyst, debugger, performance-specialist
 💡 Check for proper task formatting and dependencies
 ```
 
-### Agent Failures
+#### Agent Failures
 
 ```text
 ⚠️ backend-engineer failed on task 3
@@ -309,43 +312,43 @@ Analysis: codebase-analyst, debugger, performance-specialist
 ✅ Retry successful with modified strategy
 ```
 
-### Dependency Conflicts
+#### Dependency Conflicts
 
 ```text
 ❌ Circular dependency detected: Task 2 → Task 3 → Task 2
 💡 Review task dependencies and remove cycles
 ```
 
-## Integration Points
+### Integration Points
 
-### With Development Workflow
+#### With Development Workflow
 
 - **Feature Development**: Implement complete features from specifications
 - **Bug Fixes**: Implement fixes described in bug reports
 - **Refactoring**: Execute refactoring plans from technical specs
 - **Migration**: Implement migration plans from documentation
 
-### With Other Commands
+#### With Other Commands
 
 - **`/plan`**: Generate specifications for /implement
 - **`/review`**: Review implementation against specification
 - **`/test`**: Validate implementation with tests
 - **`/docs`**: Generate documentation from implementation
 
-## Best Practices
+### Best Practices
 
 - Write clear, testable requirements with explicit dependencies
 - Break down into modular, atomic tasks for parallel execution
 - Define acceptance criteria and reference relevant code
 - Use dry-run mode to review execution plan before starting
 
-## Performance
+### Performance
 
 - **Analysis & Planning**: 15-45 seconds
 - **Execution**: 40-60% faster with parallelization
 - **Resource Usage**: 2-10 parallel agents, ~100MB each
 
-## Configuration
+### Configuration
 
 ```json
 {
@@ -355,7 +358,7 @@ Analysis: codebase-analyst, debugger, performance-specialist
 }
 ```
 
-## Execution Verification
+### Execution Verification
 
 Deploy execution-evaluator to verify:
 
@@ -368,7 +371,7 @@ Deploy execution-evaluator to verify:
 - ✅ **Integration success** - All components integrated and functioning together
 - ✅ **Specification compliance** - Final implementation matches original requirements
 
-## Notes
+### Notes
 
 - Reads entire specification before starting implementation
 - Automatically identifies parallelization opportunities

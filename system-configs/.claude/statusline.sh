@@ -98,6 +98,16 @@ version_display="$version"
 # Create terminal versions directory if needed
 mkdir -p -m 700 "$terminal_versions_dir" 2>/dev/null || true
 
+# Logging functionality for debugging
+log_file="$terminal_versions_dir/events.log"
+log_event() {
+    local event_type="$1"
+    local details="$2"
+    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    printf '[%s] [STATUSLINE] [%s] PID:%s TERM:%s VER:%s %s\n' \
+        "$timestamp" "$event_type" "$$" "$terminal_id" "$semantic_version" "$details" >> "$log_file" 2>/dev/null || true
+}
+
 # Per-Terminal Version Tracking: Store VERSION:FLAG format
 # Only show stars if this is a new Claude session (file doesn't exist)
 show_stars=false
@@ -110,6 +120,7 @@ if [[ ! -f "$terminal_version_file" ]]; then
     chmod 600 "$tmp_file" 2>/dev/null || true
     mv -f "$tmp_file" "$terminal_version_file" 2>/dev/null || true
     show_stars=true
+    log_event "CREATE" "New terminal session, created file with flag=1 (show stars) from PWD: $PWD"
 else
     # File exists - read and parse the content
     stored_content=$(cat "$terminal_version_file" 2>/dev/null || echo "")
@@ -133,12 +144,15 @@ else
         chmod 600 "$tmp_file" 2>/dev/null || true
         mv -f "$tmp_file" "$terminal_version_file" 2>/dev/null || true
         show_stars=true  # Show stars for new version
+        log_event "UPDATE" "Version changed from $stored_version (flag=$stored_flag) to $semantic_version, set flag=1 (show stars) from PWD: $PWD"
     else
         # Same version - use stored flag
         if [[ "$stored_flag" == "1" ]]; then
             show_stars=true
+            log_event "READ" "Same version, flag=$stored_flag (show stars) from PWD: $PWD"
         else
             show_stars=false
+            log_event "READ" "Same version, flag=$stored_flag (no stars) from PWD: $PWD"
         fi
     fi
 fi

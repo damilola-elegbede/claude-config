@@ -1,28 +1,34 @@
-# /review Command
+---
+description: CodeRabbit-inspired AI code review with linting, security scanning
+argument-hint: [--full|--fix|--security|file-path]
+---
 
-## Description
+# CodeRabbit-Style AI Code Review
 
-CodeRabbit-inspired AI code review combining linting tools, security scanning, and AI synthesis
-to generate structured reports with "Prompts for AI Agents" sections.
+Deploy comprehensive code review combining linting tools, security scanning, and AI synthesis to generate structured reports with "Prompts for AI Agents" sections. Every invocation automatically runs the comprehensive pre-commit checklist first.
 
-## Usage
+## Command Purpose
 
-```bash
-/review                    # Review changed files + run pre-commit checklist
-/review --full             # Full repository review + checklist
-/review <file|directory>   # Review specific target + checklist
-/review --fix             # Auto-fix safe issues + commit
-/review --security        # Security-focused analysis + checklist
-```
-
-## Behavior
-
-**Multi-Layer Analysis:**
+Execute multi-layer code analysis with:
 
 1. **Pre-Commit Checklist**: Automatically runs CodeRabbit checklist (see `docs/quality/CODERABBIT_PRECOMMIT_CHECKLIST.md`)
 2. **Tool Pipeline**: Runs available linters (ESLint, Semgrep, Gitleaks, etc.) in parallel
 3. **AI Synthesis**: Processes tool outputs with contextual reasoning
 4. **Structured Report**: CodeRabbit-style output with "Prompts for AI Agents"
+
+## Usage Modes
+
+- `/review` - Review changed files + run pre-commit checklist
+- `/review --full` - Full repository review + checklist
+- `/review <file|directory>` - Review specific target + checklist
+- `/review --fix` - Auto-fix safe issues + commit
+- `/review --security` - Security-focused analysis + checklist
+
+Use arguments: `$ARGUMENTS`
+
+## Context
+
+**Multi-Layer Analysis:**
 
 **Every invocation** of `/review` automatically runs the comprehensive pre-commit checklist first, covering:
 
@@ -254,9 +260,9 @@ The comprehensive checklist validates:
 
 See `docs/quality/CODERABBIT_PRECOMMIT_CHECKLIST.md` for complete implementation details.
 
-## Report Format
+## Expected Output
 
-### CodeRabbit-Style Output Structure
+### CodeRabbit-Style Report Structure
 
 ```text
 # 🤖 AI Code Review Report

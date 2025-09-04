@@ -1,11 +1,18 @@
-# /resolve-cr Command
+---
+description: Comprehensive CodeRabbit comment resolver with parallel execution
+argument-hint: [pr-number] [--dry-run|--verbose|--status]
+---
 
-## Description
+# Comprehensive CodeRabbit Comment Resolution
 
-Comprehensive CodeRabbit comment resolver that captures ALL suggestions including those embedded in review bodies.
-Tracks resolution state and handles all CodeRabbit formats.
+Capture ALL CodeRabbit suggestions including those embedded in review bodies, track resolution state, and implement fixes using parallel agent orchestration.
 
-## Usage
+When invoked, there ARE CodeRabbit comments to resolve - no questions asked.
+Aggressively search for unresolved CodeRabbit comments, implement all fixes in parallel,
+push the changes once, then post individual "@coderabbitai resolve" comments for each
+specific CodeRabbit comment that was addressed.
+
+## Command Usage
 
 ```bash
 /resolve-cr              # Current branch's PR
@@ -15,9 +22,7 @@ Tracks resolution state and handles all CodeRabbit formats.
 /resolve-cr --status     # Show resolution tracking
 ```
 
-## Behavior
-
-## Agent Orchestration
+## Agent Orchestration Strategy
 
 ### Parallel CodeRabbit Resolution - Multiple Instances
 
@@ -106,12 +111,7 @@ Optimization Metrics:
   - Instance scaling: Up to 10 parallel agents for large PRs
 ```
 
-When invoked, there ARE CodeRabbit comments to resolve - no questions asked.
-I will aggressively search for unresolved CodeRabbit comments, implement all fixes,
-push the changes once, then post individual "@coderabbitai resolve" comments for each
-specific CodeRabbit comment that was addressed.
-
-## Workflow
+## Implementation Workflow
 
 ### Find Comments (Comprehensive Search)
 
@@ -185,7 +185,7 @@ Quality: ["refactor", "complexity", "duplicate", "maintainability"]
 Testing: ["test", "coverage", "assertion", "validation"]
 ```
 
-## Implementation
+## Core Implementation
 
 ```bash
 # Initialize tracking
@@ -446,7 +446,7 @@ All embedded suggestions extracted and addressed.
 }
 ```
 
-## Examples
+## Expected Output Examples
 
 ```text
 User: /resolve-cr
@@ -514,7 +514,7 @@ Deploy execution-evaluator to verify:
 - ✅ **Individual confirmations** - Separate resolve comment for each suggestion
 - ✅ **Summary posted** - Comprehensive resolution report with metrics
 
-## Notes
+## Context Notes
 
 - **100% Coverage**: Captures ALL CodeRabbit comments including embedded review suggestions
 - **Review Body Parsing**: Extracts individual suggestions from comprehensive reviews (88+ from single review)

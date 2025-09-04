@@ -52,6 +52,12 @@ run_test() {
         TESTS_FAILED=$((TESTS_FAILED + 1))
         print_fail "$test_name"
     fi
+    
+    # Clean up terminal files after each test
+    if [[ -d "$TEST_HOME/.claude/terminal_versions" ]]; then
+        rm -f "$TEST_HOME/.claude/terminal_versions"/terminal_* 2>/dev/null || true
+    fi
+    
     echo
 }
 
@@ -106,6 +112,7 @@ test_new_version_tracking() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # First run should show stars for new version
     HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
@@ -146,6 +153,7 @@ test_terminal_isolation() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # NOTE: Terminals are identified by gppid only (no pwd hash).
     # In test environment, we can't easily simulate different terminals since gppid is the same.
@@ -188,6 +196,7 @@ test_version_file_management() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # Run statusline to create version tracking
     HOME="$TEST_HOME" bash "$statusline_path" <<< "$test_input" >/dev/null 2>&1
@@ -222,6 +231,7 @@ test_unknown_version_handling() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # Run with unknown version (capture stderr)
     HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>&1)
@@ -303,6 +313,7 @@ test_version_change() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # First run with version 10.0.0
     local input1='{"model":{"display_name":"Claude"},"version":"10.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
@@ -359,6 +370,7 @@ test_version_flag_format() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # First run should create file with VERSION:1
     HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
@@ -409,6 +421,7 @@ test_exit_hook() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # First run creates file with VERSION:1
     HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
@@ -476,7 +489,12 @@ run_test "Version change behavior" test_version_change
 # Exit hook test now works since terminal IDs don't include pwd hash
 run_test "Exit hook functionality" test_exit_hook
 
-# Cleanup
+# Cleanup terminal files created during testing
+if [[ -d "$TEST_HOME/.claude/terminal_versions" ]]; then
+    rm -f "$TEST_HOME/.claude/terminal_versions"/terminal_* 2>/dev/null || true
+fi
+
+# Cleanup test directory
 rm -rf "$TEST_TEMP_DIR"
 
 # Print summary

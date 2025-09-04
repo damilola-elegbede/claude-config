@@ -1,22 +1,16 @@
-# /agent-audit Command
+---
+description: Comprehensive validation of agent ecosystem for integrity and compliance
+---
 
-## Description
+# Command Purpose
 
-Comprehensive validation of agent ecosystem to ensure category integrity, template compliance, and system
-consistency. **This command generates a REPORT ONLY - it provides recommendations and optional patch snippets;
-it does not make any changes automatically.**
+Perform comprehensive validation of all agents in the agent ecosystem to ensure category integrity, template compliance, and system consistency. **This command generates a REPORT ONLY - it provides recommendations and optional patch snippets; it does not make any changes automatically.**
 
-## Usage
+## Context
 
-```bash
-/agent-audit
-```
+### Parallel Validation Strategy - Multi-Instance Deployment
 
-## Behavior
-
-## Parallel Validation Strategy - Multi-Instance Deployment
-
-### Category-Based Parallelization with Instance Pools
+Execute validation using parallel deployment of specialized agents to optimize performance:
 
 ```yaml
 # PARALLEL WAVE 1: Multi-Instance Category Validation (30-45 seconds total)
@@ -62,17 +56,9 @@ debugger:
 #   Instance scaling: Automatic based on category count
 ```
 
-This command performs thorough validation of all agents across multiple dimensions, executed in parallel by
-category for maximum efficiency.
+### Validation Scope
 
-## Purpose
-
-Ensure agent ecosystem maintains high standards of consistency, proper categorization, and adherence to system
-design principles.
-
-## Validation Scope
-
-### 1. Category Validation (Per AGENT_CATEGORIES.md)
+#### 1. Category Validation (Per AGENT_CATEGORIES.md)
 
 - **Exactly 8 Categories**: Validate against docs/agents/AGENT_CATEGORIES.md
 - **Category Assignment**: Verify each agent matches AGENT_CATEGORIES.md assignments
@@ -81,7 +67,7 @@ design principles.
   - Design (pink), Analysis (yellow), Infrastructure (orange), Coordination (cyan)
 - **Category Balance**: Report distribution (max 7 agents per category recommended)
 
-### 2. Template Compliance
+#### 2. Template Compliance
 
 - **AGENT_TEMPLATE.md Format**: All agents must follow the standard template
 - **Required Sections**: Verify presence of all mandatory sections
@@ -90,20 +76,20 @@ design principles.
 - **Multi-line String Compliance**: Check description fields for proper YAML multi-line syntax
 - **System Boundary**: Ensure anti-pattern warning is present
 
-### 3. Tool Assignment Validation
+#### 3. Tool Assignment Validation
 
 - **Tool Appropriateness**: Verify tools match agent responsibilities
 - **No Task Tool**: Ensure no agent has access to Task tool (Claude exclusive)
 - **Tool Categories**: Validate read-only vs write vs execute permissions
 
-### 4. Anti-Pattern Enforcement
+#### 4. Anti-Pattern Enforcement
 
 - **No Orchestration**: Agents must not attempt to coordinate other agents
 - **No Self-Reference**: Agents cannot reference themselves
 - **No Task Tool Usage**: Task tool is reserved exclusively for Claude
 - **Clear Boundaries**: Agents stay within their domain expertise
 
-### 5. Description Quality
+#### 5. Description Quality
 
 - **Actionable Triggers**: Descriptions must include "MUST BE USED" scenarios
 - **Proactive Triggers**: Include "use PROACTIVELY" for agents that should be used without explicit request
@@ -111,7 +97,7 @@ design principles.
 - **Usage Context**: When Claude should select this agent
 - **Updated Descriptions**: Derive from agent's actual capabilities if needed
 
-### 6. Markdown Parsing Standards
+#### 6. Markdown Parsing Standards
 
 - **Code Fencing Consistency**: Ensure all code blocks use proper language tags (`bash`, `yaml`, `python`, etc.)
 - **Example Quality**: Verify examples are focused, well-commented, and provide clear context
@@ -127,13 +113,13 @@ design principles.
 - Missing language tags on code fences
 - Poorly structured workflow examples
 
-### 7. Tier Validation
+#### 7. Tier Validation
 
 - **Tier 1 Only**: All agents must be tier 1 (no tier 2 agents allowed)
 - **Model Assignment**: Verify appropriate model selection
 - **Performance Optimization**: Ensure efficient agent deployment
 
-### 8. Model Appropriateness Analysis
+#### 8. Model Appropriateness Analysis
 
 - **Strategic Tasks → Opus**: Complex reasoning, cross-domain expertise, high-stakes decisions
 - **Technical Tasks → Sonnet**: Implementation, analysis, specialized domain work
@@ -142,9 +128,9 @@ design principles.
 - **Capability Gaps**: Identify under-provisioned agents (needing higher model)
 - **Usage Patterns**: Review actual complexity vs assigned model
 
-## Execution Strategy
+### Execution Strategy
 
-### Phase 0: YAML Validation (Critical - Run First)
+#### Phase 0: YAML Validation (Critical - Run First)
 
 Before any other validation, ensure all agent files conform to AGENT_TEMPLATE.md and AGENT_CATEGORIES.md:
 
@@ -175,7 +161,7 @@ yaml_validation:
     required_sections: [Identity, Core Capabilities, When to Engage, When NOT to Engage, Coordination, SYSTEM BOUNDARY]
 ```
 
-### PARALLEL WAVE 1: Multi-Instance Category Audits
+#### PARALLEL WAVE 1: Multi-Instance Category Audits
 
 **Launch all these concurrently:** Multiple agent instances to validate all categories simultaneously:
 
@@ -218,7 +204,7 @@ multi_instance_execution:
 #   - Result: 5-6x faster validation with better resource utilization
 ```
 
-### PARALLEL WAVE 2: Cross-Category Analysis
+#### PARALLEL WAVE 2: Cross-Category Analysis
 
 **Execute in parallel (not sequentially):**
 
@@ -227,7 +213,7 @@ multi_instance_execution:
 - Coverage gap identification
 - Redundancy detection
 
-### PARALLEL WAVE 3: Remediation
+#### PARALLEL WAVE 3: Remediation
 
 **Run simultaneously in a single response:**
 
@@ -237,7 +223,7 @@ multi_instance_execution:
 - Document all changes made
 - **Model changes are RECOMMENDATIONS ONLY** (not auto-applied)
 
-## Execution Verification
+### Execution Verification
 
 After audit completion, **execution-evaluator** is deployed to verify:
 
@@ -252,7 +238,7 @@ After audit completion, **execution-evaluator** is deployed to verify:
 - Patch snippets (if any) are syntactically correct
 - Fix commands for YAML issues were generated
 
-## Report Structure
+## Expected Output
 
 ### Executive Summary
 
@@ -304,6 +290,7 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 - Language Tags: XX/XX agents compliant
 - Example Quality: XX/XX agents compliant
 - Format Consistency: XX/XX agents compliant
+
 **Common Anti-Patterns Found**:
 
 - Missing language tags on code fences: X agents
@@ -384,7 +371,7 @@ sed -i '' 's/model: opus/model: sonnet/' agent-name.md  # Save 40% cost
 sed -i '' 's/model: haiku/model: sonnet/' agent-name.md  # Better capability
 ```
 
-## Success Criteria
+### Success Criteria
 
 ✅ **Agent Count**: Exactly 28 production agents
 ✅ **YAML Parseability**: 100% of agent files have valid YAML per AGENT_TEMPLATE.md
@@ -398,7 +385,7 @@ sed -i '' 's/model: haiku/model: sonnet/' agent-name.md  # Better capability
 ✅ **Description Quality**: Includes trigger phrases (MUST BE USED, Use PROACTIVELY, Expert, Specializes)
 ✅ **Model Appropriateness**: opus for complex reasoning, sonnet for standard, haiku for rapid tasks
 
-## Implementation Notes
+### Implementation Notes
 
 - **Multi-Instance Deployment**: Deploy 8+ code-reviewer instances for parallel category validation
 - **Dynamic Scaling**: Instance count adjusts based on number of categories and agents

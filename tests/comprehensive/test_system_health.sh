@@ -76,6 +76,14 @@ else
     echo -e "${YELLOW}⚠${NC} Agent validation reported issues (may be expected)"
 fi
 
+# Run command YAML validation
+COMMAND_YAML_OUTPUT=$(cd "$ORIGINAL_DIR" && bash tests/validate_command_yaml.sh 2>&1 | tail -n 1)
+if echo "$COMMAND_YAML_OUTPUT" | grep -q "valid\|passed" && [ $? -eq 0 ]; then
+    echo -e "${GREEN}✓${NC} Command YAML validation pipeline working"
+else
+    echo -e "${YELLOW}⚠${NC} Command YAML validation reported issues (may be expected for legacy format)"
+fi
+
 # Test 4: Command completeness
 echo "Checking command definitions..."
 

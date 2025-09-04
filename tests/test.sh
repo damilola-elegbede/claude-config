@@ -80,12 +80,14 @@ run_test "Push Command" "commands/test_push.sh"
 run_test "Test Command" "commands/test_test.sh"
 run_test "Context Command" "commands/test_context.sh"
 run_test "Sync Command" "commands/test_sync.sh"
+run_test "Command Audit" "commands/test_command_audit.sh"
 
 # Run configuration tests
 echo "Running Configuration Tests..."
 echo "------------------------------"
 run_test "CLAUDE.md Validation" "config/test_claude_md.sh"
 run_test "Command Files Validation" "config/test_command_files.sh"
+run_test "Command YAML Validation" "validate_command_yaml.sh"
 run_test "Statusline Functionality" "config/test_statusline.sh"
 run_test "Statusline Edge Cases" "config/test_statusline_edge_cases.sh"
 
@@ -123,6 +125,7 @@ run_test "ElevenLabs MCP Integration" "mcp/test_elevenlabs_integration.sh"
 echo "Running Integration Tests..."
 echo "----------------------------"
 run_test "Command Integration" "integration/test_integration.sh"
+run_test "Command Template Compliance" "integration/test_command_template_compliance.sh"
 
 # Print summary
 echo "==================================="

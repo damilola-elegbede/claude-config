@@ -60,6 +60,16 @@ fi
 # Create terminal versions directory if needed
 mkdir -p -m 700 "$terminal_versions_dir" 2>/dev/null || true
 
+# Logging functionality for debugging
+log_file="$terminal_versions_dir/events.log"
+log_event() {
+    local event_type="$1"
+    local details="$2"
+    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    printf '[%s] [EXIT_HOOK] [%s] PID:%s TERM:%s VER:%s %s\n' \
+        "$timestamp" "$event_type" "$$" "$terminal_id" "$semantic_version" "$details" >> "$log_file" 2>/dev/null || true
+}
+
 # Function to compare semantic versions
 # Returns 0 if v1 > v2, 1 if v1 = v2, 2 if v1 < v2
 compare_versions() {
@@ -107,6 +117,7 @@ if [[ -f "$terminal_version_file" ]]; then
         printf '%s:1' "$semantic_version" > "$tmp_file" 2>/dev/null || true
         chmod 600 "$tmp_file" 2>/dev/null || true
         mv -f "$tmp_file" "$terminal_version_file" 2>/dev/null || true
+        log_event "UPDATE" "Version upgraded from $stored_version to $semantic_version, set flag=1 (will show stars next time) from PWD: $PWD"
     else
         # Same version (or somehow older) - write VERSION:0
         tmp_file="$(mktemp "$terminal_versions_dir/.tmp.XXXXXX" 2>/dev/null || printf '%s' "$terminal_versions_dir/.tmp.$$")"
@@ -114,6 +125,7 @@ if [[ -f "$terminal_version_file" ]]; then
         printf '%s:0' "$semantic_version" > "$tmp_file" 2>/dev/null || true
         chmod 600 "$tmp_file" 2>/dev/null || true
         mv -f "$tmp_file" "$terminal_version_file" 2>/dev/null || true
+        log_event "RESET" "Same version $semantic_version, set flag=0 (clear stars for next session) from PWD: $PWD"
     fi
 else
     # No existing file - write current version with flag 1 (new session)
@@ -122,6 +134,7 @@ else
     printf '%s:1' "$semantic_version" > "$tmp_file" 2>/dev/null || true
     chmod 600 "$tmp_file" 2>/dev/null || true
     mv -f "$tmp_file" "$terminal_version_file" 2>/dev/null || true
+    log_event "CREATE" "First exit, created file with version $semantic_version flag=1 (new terminal) from PWD: $PWD"
 fi
 
 exit 0

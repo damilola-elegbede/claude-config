@@ -1,12 +1,17 @@
-# /deps Command
+---
+description: Manage dependencies with security scanning and safe updates
+argument-hint: [audit|update|clean|--quick]
+---
 
-## Description
+# Dependency Management Command
 
-Manages dependencies across all package managers with security scanning and
-safe updates. Provides quick audit, update, and cleanup operations for
-polyglot codebases.
+Manages dependencies across all package managers with security scanning and safe updates. Provides quick audit, update, and cleanup operations for polyglot codebases.
 
-## Usage
+## Context
+
+When invoked, deploy multiple security-auditor instances (one per package manager) to scan all ecosystems simultaneously. Quick mode provides essential health checks in 10-15 seconds using parallel scanning, while audit mode deploys additional security-auditor instances for comprehensive analysis in 20-30 seconds (4-6x faster than sequential).
+
+### Command Usage
 
 ```bash
 /deps                        # Quick audit of all dependencies
@@ -16,11 +21,7 @@ polyglot codebases.
 /deps --quick               # Fast check without deep analysis
 ```
 
-## Behavior
-
-## Agent Orchestration - Multi-Instance Package Manager Scanning
-
-### Parallel Dependency Analysis with Instance Pools
+### Agent Orchestration - Multi-Instance Package Manager Scanning
 
 Deploy multiple instances for simultaneous package manager scanning:
 
@@ -99,15 +100,11 @@ Time Optimization:
   - Full CPU utilization: Each instance on separate core
 ```
 
-When invoked, I deploy multiple security-auditor instances (one per package
-manager) to scan all ecosystems simultaneously. Quick mode provides essential
-health checks in 10-15 seconds using parallel scanning, while audit mode deploys
-additional security-auditor instances for comprehensive analysis
-in 20-30 seconds (4-6x faster than sequential).
+## Expected Output
 
-## Two-Mode Operation
+### Two-Mode Operation
 
-### Quick Mode (default) - 30 Second Analysis
+#### Quick Mode (default) - 30 Second Analysis
 
 **What it does**: Essential dependency health check
 
@@ -122,7 +119,7 @@ Agent Usage: None (direct tooling)
 Output: Summary with actionable items only
 ```
 
-### Deep Mode (audit) - Multi-Instance Analysis (20-30 seconds)
+#### Deep Mode (audit) - Multi-Instance Analysis (20-30 seconds)
 
 **What it does**: Comprehensive parallel dependency analysis
 
@@ -145,19 +142,15 @@ Performance:
   - Multi-instance: 20-30 seconds (4-6x faster)
 ```
 
-## Package Manager Support
+### Package Manager Support
 
-### Auto-Detection & Security Scanning
+Auto-detects: npm, pip, go, cargo, maven, gradle, bundler, composer
+Based on presence of manifest files (package.json, requirements.txt, etc.)
+Uses ecosystem-specific tools: npm audit, pip-audit, cargo audit, nancy (Go)
 
-```text
-# Auto-detects: npm, pip, go, cargo, maven, gradle, bundler, composer
-# Based on presence of manifest files (package.json, requirements.txt, etc.)
-# Uses ecosystem-specific tools: npm audit, pip-audit, cargo audit, nancy (Go)
-```
+### Core Operations
 
-## Core Operations
-
-### /deps (Quick Mode)
+#### /deps (Quick Mode)
 
 ```text
 🔍 Scanning dependencies...
@@ -176,7 +169,7 @@ pip install --upgrade-strategy eager
 ⏱️ Completed in 28 seconds
 ```
 
-### /deps audit (Deep Mode)
+#### /deps audit (Deep Mode)
 
 ```text
 ## Comprehensive Dependency Audit
@@ -210,22 +203,18 @@ pip install --upgrade-strategy eager
 ⏱️ Completed in 1m 47s
 ```
 
-### /deps update (Safe Updates)
+#### /deps update (Safe Updates)
 
-```text
-# Staged process: backup → security patches → minor updates → test → rollback if needed
-```
+Staged process: backup → security patches → minor updates → test → rollback if needed
 
-### /deps clean (Unused Removal)
+#### /deps clean (Unused Removal)
 
-```text
-# Uses depcheck (npm), pip-check (python), cargo machete (rust)
-# Safely removes unused dependencies after verification
-```
+Uses depcheck (npm), pip-check (python), cargo machete (rust)
+Safely removes unused dependencies after verification
 
-## Language-Specific Patterns
+### Language-Specific Patterns
 
-### Node.js/npm Workflow
+#### Node.js/npm Workflow
 
 ```bash
 npm_workflow() {
@@ -241,17 +230,15 @@ npm_workflow() {
 }
 ```
 
-### Other Ecosystems
+#### Other Ecosystems
 
-```text
-# Python: pip-audit, pip upgrade, pip-autoremove
-# Go: nancy sleuth, go get -u, go mod tidy
-# Rust: cargo audit, cargo update
-```
+- Python: pip-audit, pip upgrade, pip-autoremove
+- Go: nancy sleuth, go get -u, go mod tidy
+- Rust: cargo audit, cargo update
 
-## Agent Coordination
+### Agent Coordination
 
-### Quick Mode (No Agents)
+#### Quick Mode (No Agents)
 
 ```yaml
 Direct Tooling:
@@ -264,7 +251,7 @@ Accuracy: High for known CVEs
 Coverage: Basic security + outdated packages
 ```
 
-### Deep Mode (Multi-Instance Deployment)
+#### Deep Mode (Multi-Instance Deployment)
 
 ```yaml
 Multi-Instance Agent Deployment:
@@ -293,9 +280,9 @@ Instance Scaling:
   - Large polyglot (5+ ecosystems): 6-8 total instances
 ```
 
-## Risk Assessment Matrix
+### Risk Assessment Matrix
 
-### Vulnerability Severity
+#### Vulnerability Severity
 
 ```yaml
 Critical (CVSS 9.0-10.0):
@@ -315,7 +302,7 @@ Low (CVSS 0.1-3.9):
   Action: Update during next maintenance
 ```
 
-### Supply Chain Risk Factors
+#### Supply Chain Risk Factors
 
 ```yaml
 High Risk Indicators:
@@ -332,7 +319,7 @@ Low Risk Indicators:
   - Large user base, corporate sponsorship
 ```
 
-## Execution Verification
+### Execution Verification
 
 Deploy execution-evaluator to verify:
 
@@ -343,9 +330,9 @@ Deploy execution-evaluator to verify:
 - ✅ **Lock files updated** - Dependency versions properly recorded
 - ✅ **Tests passing** - Quality gates maintained during updates
 
-## Examples
+### Examples
 
-### Quick Dependency Check
+#### Quick Dependency Check
 
 ```text
 User: /deps
@@ -357,7 +344,7 @@ Claude: 🔍 Scanning dependencies across 3 package managers...
 ⏱️ Scan completed in 31 seconds
 ```
 
-### Security-Focused Audit with Multi-Instance
+#### Security-Focused Audit with Multi-Instance
 
 ```text
 User: /deps audit
@@ -377,7 +364,7 @@ Claude: 🔒 Deploying multi-instance dependency scanners...
 ✅ Complete audit finished 4.5x faster than sequential
 ```
 
-### Safe Update Process
+#### Safe Update Process
 
 ```text
 User: /deps update

@@ -1,11 +1,17 @@
-# /sync Command
+---
+description: Sync Claude configurations from system-configs to ~/.claude/
+argument-hint: [--dry-run|--backup|--force]
+---
 
-## Description
+# Synchronize Claude Configuration Files
 
-Synchronizes Claude configuration files from `system-configs/.claude/` to `~/.claude/`.
-Deploys agents, commands, output-styles, and settings with validation and backup creation.
+Synchronize all Claude configuration files from `system-configs/.claude/` to `~/.claude/`. Deploy agents, commands, output-styles, and settings with validation and backup creation.
 
-## Usage
+## Context
+
+This command orchestrates the complete synchronization of Claude system configurations with parallel validation and comprehensive safety measures. It handles agents, commands, output-styles, settings, and MCP server configurations while maintaining data integrity.
+
+### Usage Patterns
 
 ```bash
 /sync                    # Sync system-configs/.claude/ to ~/.claude/
@@ -14,13 +20,9 @@ Deploys agents, commands, output-styles, and settings with validation and backup
 /sync --force            # Overwrite existing files without prompting
 ```
 
-## Behavior
+### Agent Orchestration Strategy
 
-## Agent Orchestration
-
-### Parallel Validation Phase
-
-Deploy specialized agents for configuration validation:
+Deploy specialized agents for configuration validation in parallel:
 
 ```yaml
 code-reviewer:
@@ -39,20 +41,16 @@ platform-engineer:
   output: Compatibility report, setup requirements
 ```
 
-### Parallel Execution Benefits
+Parallel execution benefits:
+- All agents validate simultaneously
+- Security-auditor has veto power
+- Total time: 2-3 seconds (vs 8-10 sequential)
 
-```yaml
-Validation Strategy:
-  - All agents validate simultaneously
-  - Security-auditor has veto power
-  - Total time: 2-3 seconds (vs 8-10 sequential)
-```
+## Expected Output
 
-When invoked, I will synchronize all Claude configuration files from
-`system-configs/.claude/` to `~/.claude/`. This includes agents, commands,
-output-styles, settings.json, and statusline.sh with automatic validation.
+Complete synchronization of Claude configurations with comprehensive validation and reporting.
 
-## What Gets Synced
+### What Gets Synced
 
 ```yaml
 Source: ./system-configs/.claude/
@@ -78,9 +76,9 @@ Excluded:
   - *.tmp, *.backup files
 ```
 
-## Sync Process
+### Sync Process Implementation
 
-### Phase 1: Pre-Sync Validation
+#### Phase 1: Pre-Sync Validation
 
 ```bash
 # Validate source directory exists
@@ -99,7 +97,7 @@ if [[ "$backup" == "true" ]]; then
 fi
 ```
 
-### Phase 2: Sync Files
+#### Phase 2: Sync Files
 
 ```bash
 # Sync with rsync for efficiency
@@ -116,7 +114,7 @@ rsync -av \
 chmod +x ~/.claude/statusline.sh 2>/dev/null || true
 ```
 
-### Phase 3: MCP Server Sync
+#### Phase 3: MCP Server Sync
 
 ```bash
 # Claude Desktop config path
@@ -183,7 +181,7 @@ else
 fi
 ```
 
-### Phase 4: Validation
+#### Phase 4: Validation
 
 ```bash
 # Validate JSON files
@@ -214,10 +212,9 @@ else
 fi
 ```
 
-## Examples
+### Example Outputs
 
-### Basic Sync
-
+#### Basic Sync
 ```text
 User: /sync
 Claude: 🔄 Syncing Claude configurations...
@@ -243,8 +240,7 @@ Claude: 🔄 Syncing Claude configurations...
 🎯 All configurations and MCP servers deployed successfully
 ```
 
-### Dry Run
-
+#### Dry Run
 ```text
 User: /sync --dry-run
 Claude: 📖 Preview mode - no changes will be made
@@ -256,16 +252,7 @@ Would sync:
 - statusline.sh to ~/.claude/statusline.sh (executable)
 ```
 
-### Backup and Sync
-
-```text
-User: /sync --backup
-Claude: 💾 Creating backup: ~/.claude.backup.20240818_164500
-🔄 Syncing configurations...
-✅ Backup created and sync completed
-```
-
-## Execution Verification
+### Execution Verification
 
 Deploy execution-evaluator to verify:
 
@@ -280,7 +267,7 @@ Deploy execution-evaluator to verify:
 - ✅ **Validation passed** - JSON syntax and file integrity verified
 - ✅ **Backup created** - Previous configuration safely backed up (if requested)
 
-## Notes
+### Implementation Notes
 
 - Uses rsync for efficient file synchronization
 - Automatically sets executable permissions on statusline.sh

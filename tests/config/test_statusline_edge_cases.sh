@@ -52,6 +52,12 @@ run_test() {
         TESTS_FAILED=$((TESTS_FAILED + 1))
         print_fail "$test_name"
     fi
+    
+    # Clean up terminal files after each test
+    if [[ -d "$TEST_HOME/.claude/terminal_versions" ]]; then
+        rm -f "$TEST_HOME/.claude/terminal_versions"/terminal_* 2>/dev/null || true
+    fi
+    
     echo
 }
 
@@ -61,6 +67,7 @@ test_concurrent_access() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # Test that the script can handle concurrent-like access patterns
     # Using proper semantic versions (X.Y.Z format)
@@ -95,6 +102,7 @@ test_special_characters_version() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # Run statusline (capture stderr for error message)
     HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>&1)
@@ -118,6 +126,7 @@ test_terminal_tracking() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # Run statusline
     HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
@@ -200,6 +209,7 @@ test_long_version_string() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # Run statusline (capture stderr)
     HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>&1)
@@ -222,6 +232,7 @@ test_malformed_json() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # Run statusline with malformed JSON (capture stderr)
     HOME="$TEST_HOME" output=$(echo "$malformed_input" | bash "$statusline_path" 2>&1)
@@ -243,6 +254,7 @@ test_rapid_version_changes() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # Test rapid version changes
     for version in "1.0.0" "1.0.1" "1.0.2" "1.1.0" "2.0.0"; do
@@ -279,6 +291,7 @@ test_cleanup_functionality() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # Create old files (simulate 8 days old by touching them)
@@ -332,7 +345,12 @@ run_test "Malformed JSON input" test_malformed_json
 run_test "Rapid version changes" test_rapid_version_changes
 run_test "Cleanup functionality" test_cleanup_functionality
 
-# Cleanup
+# Cleanup terminal files created during testing
+if [[ -d "$TEST_HOME/.claude/terminal_versions" ]]; then
+    rm -f "$TEST_HOME/.claude/terminal_versions"/terminal_* 2>/dev/null || true
+fi
+
+# Cleanup test directory  
 rm -rf "$TEST_TEMP_DIR"
 
 # Print summary

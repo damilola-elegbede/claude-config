@@ -1,10 +1,22 @@
-# /prompt Command
+---
+description: Optimize prompts using the SCOPE framework for maximum effectiveness
+argument-hint: [text-to-optimize] or --file [path] or leave empty for interactive
+---
 
-## Description
+# Command Purpose
 
-Optimizes prompts using the SCOPE framework. Removes fluff, clarifies objectives, and structures for maximum effectiveness.
+Optimize prompts using the SCOPE framework. Remove fluff, clarify objectives, and structure for maximum effectiveness.
 
-## Usage
+**SYSTEM BOUNDARY**: This command ONLY optimizes prompts and returns the optimized text.
+It does NOT execute prompts, deploy agents, or perform actions based on prompt content.
+
+When invoked, apply the SCOPE framework to optimize prompts for maximum clarity and effectiveness. Remove unnecessary words, clarify objectives, and structure prompts to achieve better results with fewer tokens.
+
+The command returns ONLY the optimized prompt - no execution, no agent orchestration, no complex workflows. Simple input → optimized output.
+
+## Context
+
+### Usage Patterns
 
 ```bash
 /prompt <text>           # Optimize text
@@ -13,19 +25,7 @@ Optimizes prompts using the SCOPE framework. Removes fluff, clarifies objectives
 /prompt                  # Interactive mode
 ```
 
-## Behavior
-
-**SYSTEM BOUNDARY**: This command ONLY optimizes prompts and returns the optimized text.
-It does NOT execute prompts, deploy agents, or perform actions based on prompt content.
-
-When invoked, I will apply the SCOPE framework to optimize prompts for maximum
-clarity and effectiveness. I remove unnecessary words, clarify objectives, and
-structure prompts to achieve better results with fewer tokens.
-
-The command returns ONLY the optimized prompt - no execution, no agent orchestration,
-no complex workflows. Simple input → optimized output.
-
-## SCOPE Framework
+### SCOPE Framework
 
 ```yaml
 S - Situation: Context (only if essential)
@@ -35,14 +35,28 @@ P - Persona: Role needed (optional)
 E - Examples: Input/output (if ambiguous)
 ```
 
-### Rules
+### Optimization Rules
 
 1. Remove: "please", "thank you", "I need you to"
 2. Use active voice and start with verbs
 3. Every word must be essential
 4. Structure with bullets or numbered lists
 
-## Output Format
+### Interactive Mode (Optional)
+
+For `/prompt` without arguments:
+
+1. Request input text
+2. Apply SCOPE optimization
+3. Return optimized version immediately
+4. Optional single refinement if requested
+   - To request: reply once with `refine: <what to change>` (same thread, one turn)
+
+File input: Supports .md, .txt, .yaml, .json
+
+## Expected Output
+
+### Output Format
 
 ```text
 OPTIMIZED PROMPT:
@@ -55,19 +69,7 @@ IMPROVEMENTS:
 - Clarified objective
 ```
 
-### Interactive Mode (Optional)
-
-For `/prompt` without arguments, I will:
-
-1. Request input text
-2. Apply SCOPE optimization
-3. Return optimized version immediately
-4. Optional single refinement if requested
-   - To request: reply once with `refine: <what to change>` (same thread, one turn)
-
-File input: Supports .md, .txt, .yaml, .json
-
-## Before/After Example
+### Before/After Example
 
 **Original (52 words):**
 
@@ -89,9 +91,9 @@ Requirements:
 
 **Result**: 71% shorter, 100% clearer
 
-## Examples
+### Examples
 
-### Basic Usage
+#### Basic Usage
 
 ```bash
 User: /prompt analyze customer feedback to find complaints
@@ -109,7 +111,7 @@ IMPROVEMENTS:
 - Structured requirements format
 ```
 
-### File Input
+#### File Input
 
 ```bash
 User: /prompt --file verbose_prompt.txt
@@ -129,7 +131,7 @@ IMPROVEMENTS:
 - Clarified requirements
 ```
 
-## Success Criteria
+### Success Criteria
 
 The command succeeds when it delivers:
 
@@ -140,7 +142,7 @@ The command succeeds when it delivers:
 - ✅ **No execution** - Command returns optimized text only, no actions taken
 - ✅ **Immediate usability** - Output ready for copy/paste to other tools
 
-## Notes
+### Notes
 
 - **Primary Goal**: Return optimized prompt text immediately
 - **No Agent Orchestration**: Direct optimization by Claude using SCOPE framework

@@ -1,6 +1,9 @@
-# /push Command
+---
+description: Safely push changes to remote repository with quality gates
+argument-hint: [--simple|--force|--dry-run]
+---
 
-## Description
+# Command Purpose
 
 Safely pushes changes to remote repository using git push with optional quality gates.
 Supports both simple push mode and comprehensive quality-checked push.
@@ -9,7 +12,9 @@ Supports both simple push mode and comprehensive quality-checked push.
 defense before code reaches the remote repository. If pre-push hooks fail, the issues must
 be fixed immediately, never bypassed.
 
-## Usage
+## Context
+
+### Usage Options
 
 ```bash
 /push                        # Full quality gate push
@@ -18,9 +23,9 @@ be fixed immediately, never bypassed.
 /push --dry-run             # Preview what would be pushed
 ```
 
-## Agent Orchestration
+### Agent Orchestration
 
-### Parallel Validation Phase
+#### Parallel Validation Phase
 
 **Launch all these concurrently:** Multiple agents for comprehensive pre-push validation:
 
@@ -41,7 +46,7 @@ security-auditor:
   output: Security vulnerabilities, sensitive data exposure
 ```
 
-### Parallel Execution Strategy
+#### Parallel Execution Strategy
 
 ```yaml
 Execute in parallel (not sequentially):
@@ -56,9 +61,9 @@ Time Optimization:
   - 60-70% time reduction
 ```
 
-## Quality Gate Enforcement
+### Quality Gate Enforcement
 
-### Never Bypass Pre-Push Hooks
+#### Never Bypass Pre-Push Hooks
 
 ```yaml
 Prohibited Practices:
@@ -92,15 +97,9 @@ Rationale:
   - CI/CD costs money - don't waste it on preventable failures
 ```
 
-## Behavior
+### Two-Mode Operation
 
-When invoked, I will safely push changes to the remote repository with parallel
-agent validation. Simple mode performs basic checks. Full mode deploys all agents
-simultaneously for comprehensive validation with auto-fixing.
-
-## Two-Mode Operation
-
-### Simple Mode (--simple) - Quick Push
+#### Simple Mode (--simple) - Quick Push
 
 **What it does**: Basic safety checks then push
 
@@ -115,7 +114,7 @@ Agent Usage: None (skip for speed)
 Duration: 10-15 seconds
 ```
 
-### Full Mode (default) - Parallel Agent Validation
+#### Full Mode (default) - Parallel Agent Validation
 
 **What it does**: Comprehensive parallel validation before push
 
@@ -134,9 +133,9 @@ Agent Usage: code-reviewer + test-engineer + security-auditor (parallel)
 Duration: 10-20 seconds (with parallel execution)
 ```
 
-## Push Workflow
+### Push Workflow
 
-### Phase 1: Pre-Push Validation
+#### Phase 1: Pre-Push Validation
 
 ```bash
 # Basic safety checks
@@ -165,7 +164,7 @@ validate_push_safety() {
 }
 ```
 
-### Phase 2: Basic Auto-Fixes (Full Mode Only)
+#### Phase 2: Basic Auto-Fixes (Full Mode Only)
 
 ```bash
 # Basic linting with automatic fixes only
@@ -182,7 +181,7 @@ run_basic_fixes() {
 }
 ```
 
-### Phase 3: Linting Auto-Fix Implementation
+#### Phase 3: Linting Auto-Fix Implementation
 
 ```bash
 # Linting with automatic fixes
@@ -251,9 +250,9 @@ Auto-generated before push to maintain quality standards."
 }
 ```
 
-## Push Strategy
+### Push Strategy
 
-### Simple Mode (No Processing)
+#### Simple Mode (No Processing)
 
 ```yaml
 Operations:
@@ -267,7 +266,7 @@ Benefits:
   - Perfect for hot fixes and reviewed code
 ```
 
-### Full Mode (Basic Auto-Fix)
+#### Full Mode (Basic Auto-Fix)
 
 ```yaml
 Operations:
@@ -282,7 +281,13 @@ Benefits:
   - Relies on separate /review for quality
 ```
 
-## Basic Push Report
+## Expected Output
+
+When invoked, I will safely push changes to the remote repository with parallel
+agent validation. Simple mode performs basic checks. Full mode deploys all agents
+simultaneously for comprehensive validation with auto-fixing.
+
+### Basic Push Report
 
 When auto-fixes are applied, a simple report is generated:
 
@@ -304,9 +309,9 @@ When auto-fixes are applied, a simple report is generated:
 💡 **Note**: Run /review for comprehensive quality analysis
 ```
 
-## Examples
+### Examples
 
-### Simple Push
+#### Simple Push
 
 ```text
 User: /push --simple
@@ -318,7 +323,7 @@ Claude: 🚀 Simple push mode...
 ✅ Pushed to origin/feature/auth-improvements
 ```
 
-### Standard Push
+#### Standard Push
 
 ```text
 User: /push
@@ -332,7 +337,7 @@ Claude: 🚀 Standard push with basic validation...
 💡 Tip: Run /review for comprehensive quality analysis
 ```
 
-### Push with Manual Review Needed
+#### Push with Manual Review Needed
 
 ```text
 User: /push
@@ -343,7 +348,7 @@ Claude: 🚀 Standard push with basic validation...
 🚀 Pushing 3 commits to origin/feature/auth-improvements
 ```
 
-## Execution Verification
+### Execution Verification
 
 Deploy execution-evaluator to verify:
 
@@ -352,7 +357,7 @@ Deploy execution-evaluator to verify:
 - ✅ **Push successful** - Commits reached remote repository
 - ✅ **Branch tracking set** - Upstream configured correctly
 
-## Notes
+### Notes
 
 - Simple mode perfect for hot fixes and already-reviewed code
 - Full mode provides basic linting with auto-fix capability

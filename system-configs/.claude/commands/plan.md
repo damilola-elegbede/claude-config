@@ -1,22 +1,15 @@
-# /plan Command
+---
+description: Generate PRD and PR-based task files with agent assignments
+argument-hint: [task_description] or -s [task_description] or -f [file_path]
+---
 
-## Description
+# Command Purpose
 
 Generates Product Requirements Document (PRD) and PR-based task files with
 agent assignments. Never guesses unclear requirements - asks for clarification
 while staying in plan mode.
 
-## Usage
-
-```bash
-/plan <task_description>             # Standard mode
-/plan -s <task_description>          # Simple mode (single PR)
-/plan --simple <task_description>    # Simple mode (single PR)
-/plan -f <file_path>                 # Read from file
-/plan --file <file_path>             # Read from file
-```
-
-## Behavior
+## Context
 
 When invoked, I enter plan mode and systematically analyze requirements,
 asking for clarification on any ambiguities. I generate a Product Requirements
@@ -28,9 +21,19 @@ auto-proceed to file creation. Only after receiving explicit "yes", "approve",
 "proceed", or 👍 do I create implementation files in `.tmp/<feature-name>/` with
 detailed agent assignments and technical specifications.
 
-## Agent Orchestration
+### Usage Patterns
 
-### Parallel Planning Phase
+```bash
+/plan <task_description>             # Standard mode
+/plan -s <task_description>          # Simple mode (single PR)
+/plan --simple <task_description>    # Simple mode (single PR)
+/plan -f <file_path>                 # Read from file
+/plan --file <file_path>             # Read from file
+```
+
+### Agent Orchestration
+
+#### Parallel Planning Phase
 
 **Launch all these concurrently:** Specialized agents for comprehensive planning:
 
@@ -51,7 +54,7 @@ project-orchestrator:
   output: Execution strategy, parallel task organization
 ```
 
-### Parallel Planning Benefits
+#### Parallel Planning Benefits
 
 ```yaml
 Execute in parallel (not sequentially):
@@ -60,7 +63,7 @@ Execute in parallel (not sequentially):
   - Run simultaneously in a single response: 40% faster PRD generation
 ```
 
-## Command Execution Flow
+### Command Execution Flow
 
 1. Enter plan mode
 2. Analyze requirements, ask clarification if needed
@@ -70,7 +73,7 @@ Execute in parallel (not sequentially):
 6. If user says "modify" - stay in plan mode and adjust the plan
 7. If user says "no/cancel" - exit without creating files
 
-## Plan Preview Format
+### Plan Preview Format
 
 PRD preview shows:
 
@@ -79,15 +82,15 @@ PRD preview shows:
 - Key Requirements
 - Approval prompt
 
-## File Structure
+### File Structure
 
-### Generated Files
+#### Generated Files
 
 - `prd.md` - Product Requirements Document
 - `phase_X_pr_Y_<description>.md` - PR implementation files
 - `rollback.md` - Rollback procedures (if needed)
 
-### PRD Contents
+#### PRD Contents
 
 - Executive Summary
 - Business Objectives & Scope
@@ -96,7 +99,7 @@ PRD preview shows:
 - Success Metrics & Risks
 - Dependencies & Timeline
 
-### Phase Organization
+#### Phase Organization
 
 Phases are organized with clear dependencies:
 
@@ -104,7 +107,7 @@ Phases are organized with clear dependencies:
 - Phase 2: Implementation (features, logic)
 - Phase 3: Integration (connections, validation)
 
-### Phase Files (Auto-Generated)
+#### Phase Files (Auto-Generated)
 
 Each PR file contains tasks with:
 
@@ -114,7 +117,7 @@ Each PR file contains tasks with:
 - **Technical Details**: Implementation steps
 - **Testing**: Acceptance criteria
 
-## Clarification Protocol
+### Clarification Protocol
 
 **Never guess requirements.** When unclear:
 
@@ -129,9 +132,9 @@ Example ambiguities:
 - "Add search" → Ask scope, volume, features needed
 - "Integrate API" → Ask which API, what operations
 
-## Task Breakdown Logic
+### Task Breakdown Logic
 
-### Granularity Framework
+#### Granularity Framework
 
 Each PR contains **3-5 granular tasks** (1-8 hours each) following this
 hierarchy:
@@ -140,7 +143,7 @@ hierarchy:
 - **Phase 2**: Implementation (logic, endpoints, components)
 - **Phase 3**: Integration (testing, docs, deployment)
 
-### Breakdown Patterns
+#### Breakdown Patterns
 
 ```yaml
 Backend: Schema → Service → Controller → Validation → Tests
@@ -150,9 +153,9 @@ Database: Schema → Migration → Rollback → Validation → Performance
 API: Contract → Implementation → Security → Testing → Docs
 ```
 
-## Dependency Analysis Framework
+### Dependency Analysis Framework
 
-### Dependency Types
+#### Dependency Types
 
 - **Hard Dependencies**: Schema → Code, API → Frontend,
   Infrastructure → Deployment
@@ -160,7 +163,7 @@ API: Contract → Implementation → Security → Testing → Docs
   Testing/Implementation (parallel)
 - **Independent**: Separate services, components, infrastructure, test suites
 
-### Execution Rules
+#### Execution Rules
 
 ```yaml
 Sequential: Foundation → Implementation → Integration
@@ -168,9 +171,9 @@ Parallel: Independent components, Frontend+Backend (post-API), Testing+Implement
 Coordination: API contracts, schema approval, integration checkpoints
 ```
 
-## Agent Assignment Rules
+### Agent Assignment Rules
 
-### Assignment Matrix
+#### Assignment Matrix
 
 ```yaml
 Infrastructure: database-admin, database-admin, api-architect,
@@ -183,21 +186,21 @@ Technology: React/Vue→frontend-architect, Node/Python→backend-engineer,
   K8s→cloud-architect, Auth→security-auditor
 ```
 
-### Priority Rules
+#### Priority Rules
 
 1. **Security-First**: Auth/security → security-auditor (always)
 2. **Specialist-Preferred**: Domain experts for specialized tech
 3. **Multi-Agent**: Complex tasks get primary + secondary + quality agents
 
-## Execution Sequencing
+### Execution Sequencing
 
-### Task Types
+#### Task Types
 
 - **Independent**: Start immediately, full parallel (separate services/components)
 - **Concurrent**: Parallel with coordination (Frontend/Backend shared API)
 - **Depends**: Sequential execution (Migration before code, API before implementation)
 
-### Sequencing Patterns
+#### Sequencing Patterns
 
 ```yaml
 Phase_1: Schema, API contracts, infrastructure (Independent within phase)
@@ -205,34 +208,34 @@ Phase_2: Backend/Frontend services (Concurrent), migrations (Depends on schema)
 Phase_3: E2E testing (Depends on implementation), docs (Concurrent with testing)
 ```
 
-## Agent Patterns
+### Agent Patterns
 
 - **Features**: backend-engineer + frontend-architect + test-engineer
 - **Bug fixes**: debugger → backend-engineer → test-engineer
 - **Performance**: performance-engineer + performance-engineer
 - **Security**: security-auditor + code-reviewer
 
-## Approval Workflow
+### Approval Workflow
 
 **MANDATORY FOR ALL MODES**: Stay in plan mode until user explicitly responds.
 Never assume approval based on input method or command flags.
 
-### User Response Options
+#### User Response Options
 
 - **Approve**: yes, approve, proceed, 👍, ok, go → Exit plan mode, write files
 - **Modify**: modify, update, change, adjust → Stay in plan mode, adjust plan
 - **Cancel**: no, cancel, abort, stop, exit → Exit without writing any files
 
-### Implementation Requirements
+#### Implementation Requirements
 
 - Display clear approval prompt: "Ready to proceed? (yes/no/modify)"
 - Wait for user input before any file operations
 - Default mode, -s mode, and -f mode ALL follow same approval process
 - No auto-proceeding regardless of how requirements were provided
 
-## Task Template Structure
+### Task Template Structure
 
-### Phase File Format
+#### Phase File Format
 
 ```markdown
 # Phase X PR Y: [Description]
@@ -259,9 +262,46 @@ Never assume approval based on input method or command flags.
 - All PRD requirements satisfied per specifications
 ```
 
-### Task ID Format: `Task_X_Y_ZZ` (Phase_PR_Task)
+#### Task ID Format: `Task_X_Y_ZZ` (Phase_PR_Task)
 
-## Example
+### PRD Integration Standards
+
+#### Requirement Format: `REQ-[CATEGORY]-[NUMBER]`
+
+**Categories**: AUTH, DB, API, SEC, PERF, SCALE, UI, DEPLOY, MONITOR, ROLLBACK, COMPLIANCE
+
+#### Task Requirements
+
+Every task must include:
+
+- **PRD Requirements**: Specific REQ-XXX-001 IDs addressed
+- **PRD Reference**: Link to relevant prd.md section
+- **PRD Validation**: Verification step against specifications
+- **Requirement Traceability**: Technical details reference requirements
+
+#### Multi-Phase Tracking
+
+Complex requirements span phases:
+
+- **REQ-AUTH-001**: Phase 1 (schema) → Phase 2 (logic) → Phase 3 (integration)
+- **Cross-phase validation** ensures complete requirement coverage
+
+### Execution Verification
+
+Deploy execution-evaluator to verify:
+
+- ✅ **Requirements analyzed** - All ambiguities clarified before planning
+- ✅ **PRD generated** - Complete Product Requirements Document created
+- ✅ **Tasks broken down** - Granular tasks with proper agent assignments
+- ✅ **Dependencies mapped** - Clear task sequencing and coordination
+- ✅ **Files created** - All phase files generated in .tmp/`feature-name`/
+- ✅ **Agent assignments** - Specialized agents properly matched to tasks
+- ✅ **PRD compliance** - All requirements traceable through task breakdown
+- ✅ **Phase organization** - Clear dependencies and parallel execution plans
+
+## Expected Output
+
+### Example Usage
 
 ```text
 User: /plan implement authentication
@@ -297,42 +337,7 @@ Claude: What would you like me to adjust in the plan?
 [Stays in plan mode awaiting modifications]
 ```
 
-## PRD Integration Standards
-
-### Requirement Format: `REQ-[CATEGORY]-[NUMBER]`
-
-**Categories**: AUTH, DB, API, SEC, PERF, SCALE, UI, DEPLOY, MONITOR, ROLLBACK, COMPLIANCE
-
-### Task Requirements
-
-Every task must include:
-
-- **PRD Requirements**: Specific REQ-XXX-001 IDs addressed
-- **PRD Reference**: Link to relevant prd.md section
-- **PRD Validation**: Verification step against specifications
-- **Requirement Traceability**: Technical details reference requirements
-
-### Multi-Phase Tracking
-
-Complex requirements span phases:
-
-- **REQ-AUTH-001**: Phase 1 (schema) → Phase 2 (logic) → Phase 3 (integration)
-- **Cross-phase validation** ensures complete requirement coverage
-
-## Execution Verification
-
-Deploy execution-evaluator to verify:
-
-- ✅ **Requirements analyzed** - All ambiguities clarified before planning
-- ✅ **PRD generated** - Complete Product Requirements Document created
-- ✅ **Tasks broken down** - Granular tasks with proper agent assignments
-- ✅ **Dependencies mapped** - Clear task sequencing and coordination
-- ✅ **Files created** - All phase files generated in .tmp/`feature-name`/
-- ✅ **Agent assignments** - Specialized agents properly matched to tasks
-- ✅ **PRD compliance** - All requirements traceable through task breakdown
-- ✅ **Phase organization** - Clear dependencies and parallel execution plans
-
-## Notes
+### Notes
 
 - PRD drives all phase file generation with explicit requirement traceability
 - Tasks auto-assigned based on requirement type and technical domain

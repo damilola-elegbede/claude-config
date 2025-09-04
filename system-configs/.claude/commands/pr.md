@@ -1,23 +1,16 @@
-# /pr Command
+---
+description: Creates pull requests with concise change summaries from git diff analysis
+argument-hint: [target_branch] [--draft] [--template]
+---
 
-## Description
+# Command Purpose
 
 Creates pull requests with concise change summaries from git diff analysis.
 Focuses on what actually changed rather than hypothetical features.
 
-## Usage
+## Context
 
-```bash
-/pr [target_branch] [options]
-```
-
-## Arguments
-
-- `target_branch` (optional): Target branch for PR (default: main/master)
-- `--draft`: Create as draft PR
-- `--template`: Use comprehensive PR template (default: simple)
-
-## Agent Orchestration
+Deploy specialized agents in parallel to create comprehensive pull requests:
 
 ### Parallel Analysis Phase - Multi-Agent Instance Deployment
 
@@ -104,9 +97,15 @@ Quality Enhancement:
   - Real-time test execution during PR creation
 ```
 
-## Behavior
+### Arguments
 
-When you invoke `/pr`, I will:
+- `target_branch` (optional): Target branch for PR (default: main/master)
+- `--draft`: Create as draft PR
+- `--template`: Use comprehensive PR template (default: simple)
+
+### Behavior Rules
+
+When you invoke `/pr`, follow this execution pattern:
 
 1. **Parallel Validation & Analysis**:
    - Validate branch status (committed and pushed)
@@ -121,9 +120,9 @@ When you invoke `/pr`, I will:
 3. **Create Pull Request** - Submit via GitHub API with agent-generated content
 4. **Return PR URL** - Provide link for review
 
-## PR Description Format
+### PR Description Format
 
-### Simple Format (Default)
+#### Simple Format (Default)
 
 ```markdown
 ## Summary
@@ -142,12 +141,31 @@ When you invoke `/pr`, I will:
 Closes #123 (if applicable)
 ```
 
-### Template Format (--template flag)
+#### Template Format (--template flag)
 
 Uses `.github/pull_request_template.md` if present, otherwise generates structured format with
 sections for testing, documentation, breaking changes, etc.
 
-## Examples
+## Expected Output
+
+When you invoke `/pr $ARGUMENTS`, I will:
+
+1. **Deploy Parallel Agent Analysis**: Launch tech-writer (2 instances), code-reviewer (2-3 instances), security-auditor, test-engineer, codebase-analyst, and performance-engineer simultaneously to analyze changes comprehensively
+
+2. **Generate PR Content**: Create structured PR description combining insights from all parallel agents
+
+3. **Create Pull Request**: Submit PR via GitHub API with agent-generated content
+
+4. **Provide Results**: Return PR URL with execution verification showing:
+   - ✅ **Branch validated** - Current branch committed and pushed successfully
+   - ✅ **Changes analyzed** - Git diff and commit messages processed by agents
+   - ✅ **PR description generated** - Clear, comprehensive description created
+   - ✅ **Test results included** - Test status and coverage information added
+   - ✅ **Security review completed** - Code changes reviewed for security implications
+   - ✅ **PR created successfully** - Pull request submitted via GitHub API
+   - ✅ **URL returned** - Valid PR URL provided for review and tracking
+
+### Usage Examples
 
 ```bash
 /pr
@@ -163,19 +181,7 @@ sections for testing, documentation, breaking changes, etc.
 # Uses comprehensive template format
 ```
 
-## Execution Verification
-
-Deploy execution-evaluator to verify:
-
-- ✅ **Branch validated** - Current branch committed and pushed successfully
-- ✅ **Changes analyzed** - Git diff and commit messages processed by agents
-- ✅ **PR description generated** - Clear, comprehensive description created
-- ✅ **Test results included** - Test status and coverage information added
-- ✅ **Security review completed** - Code changes reviewed for security implications
-- ✅ **PR created successfully** - Pull request submitted via GitHub API
-- ✅ **URL returned** - Valid PR URL provided for review and tracking
-
-## Notes
+### Notes
 
 - Always run `/test` before creating PR for quality assurance
 - Simple format keeps PRs focused and reviewable

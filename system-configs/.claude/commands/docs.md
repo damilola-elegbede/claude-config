@@ -1,6 +1,9 @@
-# /docs Command
+---
+description: Comprehensive documentation management with parallel multi-instance generation
+argument-hint: [scope|--audit|--clean]
+---
 
-## Description
+# Documentation Management Command
 
 Comprehensive documentation management system that identifies gaps, updates existing docs,
 and maintains current documentation aligned with codebase reality. Deploys multiple agent
@@ -12,10 +15,10 @@ instances in parallel for 3-4x faster documentation generation across all docume
 /docs                    # Complete documentation overhaul
 /docs --audit            # Documentation gap analysis only
 /docs --clean            # Clean temporary docs and organize
-/docs <scope>            # Focused documentation update
+/docs $ARGUMENTS         # Focused documentation update (scope: api, readme, architecture, setup)
 ```
 
-## Behavior
+## Context
 
 When invoked, I will deploy multiple tech-writer instances (4-6) to simultaneously update
 different documentation types. Each instance handles specific documents (README, API docs,
@@ -238,7 +241,7 @@ Clarity:
   - Good use of examples and illustrations
 ```
 
-## Examples
+## Expected Output
 
 ### Complete Documentation Overhaul with Multi-Instance
 

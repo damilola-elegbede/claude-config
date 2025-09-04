@@ -1,25 +1,37 @@
-# /debug Command
+---
+description: Systematic root cause analysis for complex bugs using multi-agent forensics
+argument-hint: [issue_description]
+---
 
-## Description
+# Debug Command
 
 Systematic root cause analysis for complex bugs using multi-agent forensics.
 Specializes in hard-to-reproduce issues, race conditions, memory leaks, and
 production-only failures.
 
-## Usage
-
-```bash
-/debug <issue_description>      # Investigate specific bug
-/debug --repro <steps>          # Focus on reproduction
-/debug --performance            # Performance-specific debugging
-```
-
-## Behavior
+## Context
 
 When invoked, I will systematically investigate complex bugs using multi-agent
 forensics. I deploy specialized agents based on the issue type (memory leaks,
 race conditions, performance degradation) to perform root cause analysis and
 provide targeted fixes.
+
+## Expected Output
+
+- Root cause identification with clear explanation
+- Reproduction steps for reliable issue triggering
+- Targeted fix implementation addressing root cause
+- Verification tests proving the fix works
+- Prevention measures to avoid similar issues
+- Documentation of investigation findings
+
+## Usage Patterns
+
+```bash
+/debug $ARGUMENTS              # Investigate specific bug
+/debug --repro <steps>          # Focus on reproduction
+/debug --performance            # Performance-specific debugging
+```
 
 ## Investigation Framework
 

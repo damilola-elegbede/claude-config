@@ -1,6 +1,9 @@
-# /test Command
+---
+description: Universal test runner with auto-discovery and parallel execution
+argument-hint: [--create|--framework <name>|--coverage]
+---
 
-## Description
+# Universal Test Runner Command
 
 Universal test runner that discovers and runs tests automatically for any repository,
 and creates a base level test suite when none exist. Uses a 3-phase discovery algorithm: README analysis,

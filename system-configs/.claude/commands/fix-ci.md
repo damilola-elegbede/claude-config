@@ -1,26 +1,17 @@
-# /fix-ci Command
+---
+description: Diagnoses and fixes GitHub Actions CI failures automatically
+argument-hint: [run-id] or --learn
+---
 
-## Description
+# Fix CI Failures with High-Confidence Pattern Recognition
 
-Diagnoses and fixes GitHub Actions failures using pattern recognition and
-historical fix data. Only pushes when 95% confident all CI issues are resolved.
-Tests locally before pushing fixes.
+Diagnose and fix GitHub Actions failures using pattern recognition and historical fix data. Only pushes when 95% confident all CI issues are resolved. Tests locally before pushing fixes.
 
-## Usage
+## Context
 
-```bash
-/fix-ci                  # Fix latest failure
-/fix-ci <run-id>         # Fix specific run
-/fix-ci --learn          # Update fix patterns from history
-```
+Deploy multiple specialized agents in parallel for comprehensive CI failure analysis:
 
-## Behavior
-
-## Agent Orchestration
-
-### Parallel CI Failure Analysis - Multi-Instance Deployment
-
-Deploy multiple agent instances for comprehensive parallel CI fixing:
+### Agent Orchestration - Multi-Instance Parallel Deployment
 
 ```yaml
 # PARALLEL WAVE 1: Simultaneous Failure Analysis
@@ -103,11 +94,7 @@ Performance Metrics:
   - Success rate: 95%+ with comprehensive parallel checking
 ```
 
-Analyzes GitHub Actions failures, applies targeted fixes, tests locally for
-validation, and only pushes when 95% confident that 100% of CI issues are
-resolved. Learns from outcomes to improve confidence scoring.
-
-## Fix Patterns with Confidence Scoring
+### Fix Patterns with Confidence Scoring
 
 ```yaml
 Lint/Format: {confidence: 98%, test: "npm run lint", fix: "npm run lint:fix"}
@@ -117,7 +104,7 @@ Type Errors: {confidence: 78%, test: "npm run typecheck", fix: "fix types"}
 Build Issues: {confidence: 70%, test: "npm run build", fix: "rebuild"}
 ```
 
-## Pattern Matching & Fixes
+### Pattern Matching & Fixes
 
 ```bash
 # Whitelist of safe commands
@@ -175,7 +162,7 @@ apply_fix() {
 }
 ```
 
-## History Tracking
+### History Tracking
 
 ```bash
 # Initialize history directory
@@ -206,7 +193,7 @@ get_confidence() {
 }
 ```
 
-## Main Execution Flow
+### Main Execution Flow
 
 ```bash
 fix_ci() {
@@ -285,30 +272,34 @@ Automated fix applied by /fix-ci"
 }
 ```
 
-## Examples
+## Expected Output
+
+Execute the appropriate command based on arguments provided:
+
+- **No arguments**: Fix the latest failed CI run using parallel agent analysis
+- **`$ARGUMENTS` = run-id**: Fix specific GitHub Actions run ID
+- **`$ARGUMENTS` = --learn**: Display confidence scores from historical fix data
+
+### Usage Examples
+
+```bash
+/fix-ci                  # Fix latest failure
+/fix-ci 12345678         # Fix specific run
+/fix-ci --learn          # Update fix patterns from history
+```
+
+### Expected Results
 
 ```text
-User: /fix-ci
-Claude: 🔍 Pattern confidence: 96%
+🔍 Pattern confidence: 96%
 🔧 Applying fix (96% confidence)...
 🧪 Testing fix locally...
 ✅ Local tests passed
 💾 Committed and pushed fix
 📊 Recorded outcome: CI passed = true
-
-User: /fix-ci
-Claude: 🔍 Pattern confidence: 87%
-⚠️ Confidence too low (87% < 95%)
-💡 Manual review recommended
-
-User: /fix-ci --learn
-Claude: 📊 Confidence scores from .tmp/fix-ci/:
-- Lint/Format: 98% (47/48 successful)
-- Dependencies: 92% (23/25 successful)
-- Test Failures: 85% (17/20 successful)
 ```
 
-## Execution Verification
+### Execution Verification
 
 Deploy execution-evaluator to verify:
 
@@ -320,17 +311,19 @@ Deploy execution-evaluator to verify:
 - ✅ **Historical learning** - Outcomes recorded for future confidence scoring
 - ✅ **Threshold compliance** - Only proceeded when confidence >= 95%
 
-## Key Features
+### Key Features
 
 - **95% confidence threshold** - Only pushes when highly confident
 - **Local testing first** - Validates fixes before pushing
 - **100% CI success requirement** - Success only when all CI issues resolved
 - **Historical learning** - Improves confidence scoring from .tmp/fix-ci/ data
 - **Safe execution** - Tests locally accounting for CI environment differences
+- **Parallel agent deployment** - Multiple specialized agents work simultaneously
 
-## Notes
+### Notes
 
 - History stored in `.tmp/fix-ci/` not home directory
 - Success only counted when 100% of CI issues are resolved
 - Local testing accounts for CI environment differences
 - Won't push unless 95%+ confident in fix success
+- Deploys multiple agent instances for comprehensive parallel analysis
