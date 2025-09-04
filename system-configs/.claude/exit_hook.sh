@@ -128,13 +128,8 @@ if [[ -f "$terminal_version_file" ]]; then
         log_event "RESET" "Same version $semantic_version, set flag=0 (clear stars for next session) from PWD: $PWD"
     fi
 else
-    # No existing file - write current version with flag 1 (new session)
-    tmp_file="$(mktemp "$terminal_versions_dir/.tmp.XXXXXX" 2>/dev/null || printf '%s' "$terminal_versions_dir/.tmp.$$")"
-    umask 077
-    printf '%s:1' "$semantic_version" > "$tmp_file" 2>/dev/null || true
-    chmod 600 "$tmp_file" 2>/dev/null || true
-    mv -f "$tmp_file" "$terminal_version_file" 2>/dev/null || true
-    log_event "CREATE" "First exit, created file with version $semantic_version flag=1 (new terminal) from PWD: $PWD"
+    # No existing file - just log the event, don't create file
+    log_event "NO_FILE" "No version file for terminal_$terminal_id, skipping exit hook"
 fi
 
 exit 0

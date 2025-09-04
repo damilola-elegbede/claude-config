@@ -108,6 +108,51 @@ log_event() {
         "$timestamp" "$event_type" "$$" "$terminal_id" "$semantic_version" "$details" >> "$log_file" 2>/dev/null || true
 }
 
+# Function to expire stale stars (files >30 minutes old with flag=1)
+expire_stale_stars() {
+    local file_path="$1"
+    
+    if [[ ! -f "$file_path" ]]; then
+        return 0
+    fi
+    
+    # Get file modification time - works on both macOS and Linux
+    local mod_time
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS
+        mod_time=$(stat -f %m "$file_path" 2>/dev/null || echo "0")
+    else
+        # Linux
+        mod_time=$(stat -c %Y "$file_path" 2>/dev/null || echo "0")
+    fi
+    
+    local current_time=$(date +%s)
+    local age_seconds=$((current_time - mod_time))
+    local age_minutes=$((age_seconds / 60))
+    
+    # Check if file is >30 minutes old
+    if [[ $age_seconds -gt 1800 ]]; then  # 1800 seconds = 30 minutes
+        # Read current content
+        local stored_content=$(cat "$file_path" 2>/dev/null || echo "")
+        
+        # Parse VERSION:FLAG format
+        if [[ "$stored_content" =~ ^([^:]+):([01])$ ]]; then
+            local stored_version="${BASH_REMATCH[1]}"
+            local stored_flag="${BASH_REMATCH[2]}"
+            
+            # If flag=1, reset it to flag=0
+            if [[ "$stored_flag" == "1" ]]; then
+                local tmp_file="$(mktemp "$terminal_versions_dir/.tmp.XXXXXX" 2>/dev/null || printf '%s' "$terminal_versions_dir/.tmp.$$")"
+                umask 077
+                printf '%s:0' "$stored_version" > "$tmp_file" 2>/dev/null || true
+                chmod 600 "$tmp_file" 2>/dev/null || true
+                mv -f "$tmp_file" "$file_path" 2>/dev/null || true
+                log_event "STAR_EXPIRED" "File age ${age_minutes} minutes, reset flag from 1 to 0 for version $stored_version"
+            fi
+        fi
+    fi
+}
+
 # Per-Terminal Version Tracking: Store VERSION:FLAG format
 # Only show stars if this is a new Claude session (file doesn't exist)
 show_stars=false
@@ -122,6 +167,8 @@ if [[ ! -f "$terminal_version_file" ]]; then
     show_stars=true
     log_event "CREATE" "New terminal session, created file with flag=1 (show stars) from PWD: $PWD"
 else
+    # Check for stale stars before processing the file
+    expire_stale_stars "$terminal_version_file"
     # File exists - read and parse the content
     stored_content=$(cat "$terminal_version_file" 2>/dev/null || echo "")
     
