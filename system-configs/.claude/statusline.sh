@@ -55,11 +55,7 @@ fi
 git_branch=$(git branch --show-current 2>/dev/null || echo "")
 [[ -n "$git_branch" ]] || git_branch="no-git"
 
-# Get terminal identifier based on grandparent PID and working directory
-if ! pwd_hash=$(printf '%s' "$PWD" | cksum | cut -d' ' -f1 2>/dev/null); then
-    printf 'Error: Unable to generate PWD hash for statusline\n' >&2
-    exit 1
-fi
+# Get terminal identifier based on grandparent PID only
 
 # Get grandparent PID - required for terminal identification
 if ! ppid=$(ps -o ppid= -p $$ 2>/dev/null | tr -d ' '); then
@@ -72,8 +68,8 @@ if ! gppid=$(ps -o ppid= -p $ppid 2>/dev/null | tr -d ' '); then
     exit 1
 fi
 
-# Use grandparent PID (terminal emulator) + pwd hash for stability
-raw_id="terminal_${gppid}_${pwd_hash}"
+# Use grandparent PID (terminal emulator) for stability across directories
+raw_id="terminal_${gppid}"
 terminal_id="$(printf '%s' "$raw_id" | tr '/\n' '_' | tr -cd 'A-Za-z0-9._-')"
 
 [[ -n "$terminal_id" ]] || terminal_id="fallback_$$"
