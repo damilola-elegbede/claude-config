@@ -1,6 +1,6 @@
 ---
-description: Analyze repository structure, dependencies, and documentation
-argument-hint: [--lite | component-name]
+description: Analyze repository structure, dependencies, docs
+argument-hint: [--lite|component-name]
 ---
 
 # Command Purpose

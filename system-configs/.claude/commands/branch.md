@@ -1,5 +1,5 @@
 ---
-description: Context-aware branch creation with intelligent naming conventions
+description: Context-aware branch creation with smart naming
 argument-hint: [feature-description]
 ---
 

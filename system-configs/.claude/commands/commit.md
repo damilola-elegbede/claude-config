@@ -1,5 +1,6 @@
 ---
-description: Creates a git commit following Claude's standards with quality gates
+description: Creates git commit with Claude standards and quality gates
+argument-hint: [--amend]
 ---
 
 # Command Purpose

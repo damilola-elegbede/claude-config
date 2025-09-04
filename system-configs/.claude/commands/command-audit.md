@@ -1,5 +1,5 @@
 ---
-description: Audit all commands for template compliance and quality standards
+description: Generate audit report for template compliance
 ---
 
 # Command Audit and Validation
@@ -13,7 +13,7 @@ Generate comprehensive audit report with actionable remediation guidance.
 Commands must follow the standardized template in `docs/commands/COMMAND_TEMPLATE.md` with proper frontmatter
 containing required `description` field and optional `argument-hint` field. All commands should specify
 appropriate specialized agents, leverage parallel execution where applicable, and maintain high-quality
-markdown formatting.
+Markdown formatting.
 
 ## Expected Output
 
@@ -140,8 +140,8 @@ done
 
 ```bash
 # Add missing language tags to common patterns
-sed -i 's/```$/```bash/g' commands/*.md  # For shell commands
-sed -i 's/```\n#/```bash\n#/g' commands/*.md  # For commented bash
+sed -i 's/```$/```bash/g' system-configs/.claude/commands/*.md  # For shell commands
+sed -i 's/```\n#/```bash\n#/g' system-configs/.claude/commands/*.md  # For commented bash
 
 # Standardize frontmatter structure
 # Add missing frontmatter delimiters where needed

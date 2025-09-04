@@ -1,5 +1,5 @@
 ---
-description: Comprehensive documentation management with parallel multi-instance generation
+description: Documentation management with parallel generation
 argument-hint: [scope|--audit|--clean]
 ---
 

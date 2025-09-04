@@ -1,5 +1,5 @@
 ---
-description: Systematic root cause analysis for complex bugs using multi-agent forensics
+description: Root cause analysis for complex bugs with forensics
 argument-hint: [issue_description]
 ---
 

@@ -1,5 +1,5 @@
 ---
-description: CodeRabbit-inspired AI code review with linting, security scanning
+description: AI code review with linting and security scanning
 argument-hint: [--full|--fix|--security|file-path]
 ---
 

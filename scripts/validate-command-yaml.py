@@ -59,7 +59,7 @@ def extract_frontmatter(content: str) -> tuple[Optional[Dict[str, Any]], str]:
         return {
             '_yaml_error': str(e),
             '_yaml_content': yaml_content
-        }, content
+        }, markdown_content
 
 
 def validate_command_yaml(file_path: Path) -> Dict[str, Any]:

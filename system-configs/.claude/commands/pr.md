@@ -1,5 +1,5 @@
 ---
-description: Creates pull requests with concise change summaries from git diff analysis
+description: Creates pull requests with change summaries from git diff
 argument-hint: [target_branch] [--draft] [--template]
 ---
 

@@ -1,6 +1,6 @@
 ---
 description: Diagnoses and fixes GitHub Actions CI failures automatically
-argument-hint: [run-id or --learn]
+argument-hint: [run-id|--learn]
 ---
 
 # Fix CI Failures with High-Confidence Pattern Recognition

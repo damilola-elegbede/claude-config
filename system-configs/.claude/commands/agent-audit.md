@@ -1,8 +1,10 @@
 ---
-description: Comprehensive validation of agent ecosystem for integrity and compliance
+description: Validate agent ecosystem integrity and compliance
 ---
 
-# Command Purpose
+# /agent-audit Command
+
+## Command Purpose
 
 Perform comprehensive validation of all agents in the agent ecosystem to ensure category integrity,
 template compliance, and system consistency. **This command generates a REPORT ONLY - it provides

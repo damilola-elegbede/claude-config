@@ -1,6 +1,6 @@
 ---
 description: Generate PRD and PR-based task files with agent assignments
-argument-hint: [task_description] or -s [task_description] or -f [file_path]
+argument-hint: [task_description]
 ---
 
 # Command Purpose

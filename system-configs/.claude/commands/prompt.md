@@ -1,5 +1,5 @@
 ---
-description: Optimize prompts using the SCOPE framework for maximum effectiveness
+description: Optimize prompts using SCOPE framework for effectiveness
 argument-hint: [text-to-optimize or --file <path> or leave empty for interactive]
 ---
 

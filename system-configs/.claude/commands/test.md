@@ -1,5 +1,5 @@
 ---
-description: Universal test runner with auto-discovery and parallel execution
+description: Universal test runner with auto-discovery and execution
 argument-hint: [--create|--framework <name>|--coverage]
 ---
 

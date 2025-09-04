@@ -1,5 +1,5 @@
 ---
-description: Implement features from markdown specification using multi-agent orchestration
+description: Implement features from markdown specs with multi-agents
 argument-hint: [spec-file.md] [options]
 ---
 

@@ -1,5 +1,5 @@
 ---
-description: File GitHub issues from conversation context or explicit bug reports
+description: File GitHub issues from context or explicit bug reports
 argument-hint: [description] [--priority high] [--labels label1,label2]
 ---
 
@@ -103,7 +103,7 @@ project-orchestrator:
 ### Auto-Validation
 
 - Repository access and permissions
-- Title length limits (truncates if >100 chars)
+- Title length limits (truncates if >256 chars)
 - Label existence (creates missing labels)
 - Issue creation success and URL accessibility
 

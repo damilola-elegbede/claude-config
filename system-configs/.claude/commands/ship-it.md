@@ -1,5 +1,5 @@
 ---
-description: Orchestrate development workflows with automatic issue resolution
+description: Orchestrate development workflows with auto-resolution
 argument-hint: [--full | --lite]
 ---
 
