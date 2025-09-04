@@ -115,11 +115,11 @@ test_new_version_tracking() {
         return 1
     fi
     
-    # Second run should not show stars
+    # Second run should STILL show stars (session persistence)
     HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
     
-    if [[ "$output" == *"2.0.0 ✨"* ]]; then
-        echo "Same version should not show stars on second run, got: $output"
+    if [[ "$output" != *"2.0.0 ✨"* ]]; then
+        echo "Same version should still show stars in same session, got: $output"
         return 1
     fi
     
@@ -152,11 +152,11 @@ test_terminal_isolation() {
         return 1
     fi
     
-    # Second run with same version should NOT show stars
+    # Second run with same version should STILL show stars (session persistence)
     HOME="$TEST_HOME" output2=$(echo "$input" | bash "$statusline_path" 2>/dev/null)
     
-    if [[ "$output2" == *"3.0.0 ✨"* ]]; then
-        echo "Second run with same version should not show stars: $output2"
+    if [[ "$output2" != *"3.0.0 ✨"* ]]; then
+        echo "Second run with same version should still show stars in session: $output2"
         return 1
     fi
     
@@ -196,9 +196,10 @@ test_version_file_management() {
         return 1
     fi
     
-    # Check file content
+    # Check file content (VERSION;FLAG format)
     version_content=$(cat "${terminal_files[0]}")
-    if [[ "$version_content" != "4.0.0" ]]; then
+    # Should be VERSION;1 for new version
+    if [[ "$version_content" != "4.0.0;1" ]]; then
         echo "Version file content incorrect: $version_content"
         return 1
     fi

@@ -157,9 +157,9 @@ test_corrupted_version_file() {
         return 1
     fi
     
-    # Verify a terminal_* file now contains exactly 2.0.0
-    if ! grep -rlq -- '^2\.0\.0$' "$TEST_HOME/.claude/terminal_versions"; then
-        echo "No terminal version file updated with 2.0.0"
+    # Verify a terminal_* file now contains 2.0.0;1 (new format)
+    if ! grep -rlq -- '^2\.0\.0;1$' "$TEST_HOME/.claude/terminal_versions"; then
+        echo "No terminal version file updated with 2.0.0;1"
         return 1
     fi
     
@@ -260,10 +260,10 @@ test_rapid_version_changes() {
         sleep 0.1
     done
     
-    # Final check - last version should be recorded
+    # Final check - last version should be recorded with flag
     version_files=("$TEST_HOME/.claude/terminal_versions"/*)
     final_version=$(cat "${version_files[0]}" 2>/dev/null || echo "")
-    if [[ "$final_version" != "2.0.0" ]]; then
+    if [[ "$final_version" != "2.0.0;1" ]]; then
         echo "Final version not recorded correctly: $final_version"
         return 1
     fi
