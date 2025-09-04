@@ -6,22 +6,26 @@
 # FALLBACK BEHAVIOR:
 # - When Claude Code passes empty/invalid JSON: shows "Claude" model, current dir, "default" style
 # - When Claude Code passes valid JSON: uses provided data with smart defaults
+# - Invalid/unknown versions default to 1.0.100
 # - Always maintains per-terminal version tracking and git branch detection
 #
 # HOW IT WORKS:
 # - Uses stable terminal identifier (grandparent PID + pwd hash)
-# - Each terminal independently tracks what semantic version it has seen
-# - Shows ✨ when this specific terminal sees a new semantic version
-# - Stores only semantic versions (e.g., "1.0.102") without UUIDs
-# - Stars persist throughout the terminal session when version changes
+# - Terminal files store VERSION:FLAG format (e.g., "1.0.102:1")
+# - FLAG=1 means show stars, FLAG=0 means don't show stars
+# - Shows ✨ when FLAG=1 in the terminal's tracking file
+# - New terminals create file with FLAG=1
+# - Version changes update file with FLAG=1
+# - Same version keeps existing flag
 # - No interference between different terminal windows
 # - Auto-cleanup of tracking files after 7 days
 #
 # STAR LOGIC:
-# - New terminal: shows stars persistently for this session
-# - Version change: shows stars persistently for this session
-# - Same version: no stars
-# - Unknown version: prints error and exits
+# - File format: VERSION:FLAG (e.g., "1.0.102:1")
+# - New terminal: creates file with VERSION:1 (show stars)
+# - Version change: updates file with NEW_VERSION:1 (show stars)
+# - Same version: reads existing flag from file
+# - Unknown/invalid version: defaults to 1.0.100:1
 
 # Read Claude session data from stdin
 input=$(cat)
@@ -79,21 +83,18 @@ version_dir="$HOME/.claude"
 terminal_versions_dir="$version_dir/terminal_versions"
 terminal_version_file="$terminal_versions_dir/${terminal_id}"
 
-# Check for unknown version and print error
-if [[ "$version" == "unknown" ]]; then
-    printf '\033[31m⚠️ ERROR: Claude Code is not reporting version properly (got "unknown")\033[0m\n' >&2
-    printf '\033[31mPlease restart Claude Code or report this issue\033[0m\n' >&2
-    exit 1
+# Handle unknown/invalid version - use default 1.0.100
+if [[ "$version" == "unknown" ]] || [[ -z "$version" ]]; then
+    version="1.0.100"
 fi
 
 # Extract semantic version (e.g., "1.0.102" from "1.0.102:uuid:uuid")
 semantic_version="${version%%:*}"
 
-# Validate semantic version format
+# Validate semantic version format - use default if invalid
 if [[ ! "$semantic_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    printf '\033[31m⚠️ ERROR: Invalid version format: %s\033[0m\n' "$version" >&2
-    printf '\033[31mExpected format: X.Y.Z or X.Y.Z:uuid:uuid\033[0m\n' >&2
-    exit 1
+    semantic_version="1.0.100"
+    version="1.0.100"  # Also update display version
 fi
 
 version_display="$version"
@@ -101,32 +102,48 @@ version_display="$version"
 # Create terminal versions directory if needed
 mkdir -p -m 700 "$terminal_versions_dir" 2>/dev/null || true
 
-# Per-Terminal Version Tracking: Store only semantic version
+# Per-Terminal Version Tracking: Store VERSION:FLAG format
+# Only show stars if this is a new Claude session (file doesn't exist)
 show_stars=false
 
 if [[ ! -f "$terminal_version_file" ]]; then
-    # New terminal - show stars persistently and record semantic version
+    # New Claude session - create file with VERSION:1 (show stars)
     tmp_file="$(mktemp "$terminal_versions_dir/.tmp.XXXXXX" 2>/dev/null || printf '%s' "$terminal_versions_dir/.tmp.$$")"
     umask 077
-    printf '%s' "$semantic_version" > "$tmp_file" 2>/dev/null || true
+    printf '%s:1' "$semantic_version" > "$tmp_file" 2>/dev/null || true
     chmod 600 "$tmp_file" 2>/dev/null || true
     mv -f "$tmp_file" "$terminal_version_file" 2>/dev/null || true
     show_stars=true
 else
-    # Read stored semantic version
-    stored_version=$(cat "$terminal_version_file" 2>/dev/null || echo "")
+    # File exists - read and parse the content
+    stored_content=$(cat "$terminal_version_file" 2>/dev/null || echo "")
     
+    # Parse VERSION:FLAG format
+    if [[ "$stored_content" =~ ^([^:]+):([01])$ ]]; then
+        stored_version="${BASH_REMATCH[1]}"
+        stored_flag="${BASH_REMATCH[2]}"
+    else
+        # Old format or corrupted - treat as version only
+        stored_version="$stored_content"
+        stored_flag="0"
+    fi
+    
+    # Check if version changed
     if [[ "$stored_version" != "$semantic_version" ]]; then
-        # Version changed - show stars persistently and update file
+        # Version changed - update file with new VERSION:1 (show stars for new version)
         tmp_file="$(mktemp "$terminal_versions_dir/.tmp.XXXXXX" 2>/dev/null || printf '%s' "$terminal_versions_dir/.tmp.$$")"
         umask 077
-        printf '%s' "$semantic_version" > "$tmp_file" 2>/dev/null || true
+        printf '%s:1' "$semantic_version" > "$tmp_file" 2>/dev/null || true
         chmod 600 "$tmp_file" 2>/dev/null || true
         mv -f "$tmp_file" "$terminal_version_file" 2>/dev/null || true
-        show_stars=true
+        show_stars=true  # Show stars for new version
     else
-        # Same semantic version - no stars
-        show_stars=false
+        # Same version - use stored flag
+        if [[ "$stored_flag" == "1" ]]; then
+            show_stars=true
+        else
+            show_stars=false
+        fi
     fi
 fi
 
@@ -142,11 +159,6 @@ fi
 
 # Clean up legacy files from old implementations
 rm -f "$version_dir/acknowledged_version" "$version_dir/notified_session" 2>/dev/null || true
-find -P "$version_dir" -name "session_version_*" -type f -delete 2>/dev/null || true
-# Clean up all session_* files from previous implementations
-if [[ -d "$terminal_versions_dir" ]]; then
-    find -P "$terminal_versions_dir" -name "session_*" -type f -delete 2>/dev/null || true
-fi
 
 # Reset any previous formatting first
 printf '\033[0m'
