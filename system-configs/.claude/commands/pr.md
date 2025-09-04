@@ -1,6 +1,6 @@
 ---
 description: Creates pull requests with concise change summaries from git diff analysis
-argument-hint: [target_branch] [--draft] [--template]
+argument-hint: "[target_branch] [--draft] [--template]"
 ---
 
 # Command Purpose

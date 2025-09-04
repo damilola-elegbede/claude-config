@@ -1,6 +1,6 @@
 ---
 description: Optimize prompts using the SCOPE framework for maximum effectiveness
-argument-hint: [text-to-optimize] or --file [path] or leave empty for interactive
+argument-hint: "[text-to-optimize] or --file [path] or leave empty for interactive"
 ---
 
 # Command Purpose

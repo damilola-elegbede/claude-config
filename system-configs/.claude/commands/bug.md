@@ -1,6 +1,6 @@
 ---
 description: File GitHub issues from conversation context or explicit bug reports
-argument-hint: [description] [--priority high] [--labels label1,label2]
+argument-hint: "[description] [--priority high] [--labels label1,label2]"
 ---
 
 # Command Purpose
