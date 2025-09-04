@@ -1,6 +1,6 @@
 ---
 description: Creates pull requests with concise change summaries from git diff analysis
-argument-hint: "[target_branch] [--draft] [--template]"
+argument-hint: [target_branch] [--draft] [--template]
 ---
 
 # Command Purpose
@@ -150,7 +150,9 @@ sections for testing, documentation, breaking changes, etc.
 
 When you invoke `/pr $ARGUMENTS`, I will:
 
-1. **Deploy Parallel Agent Analysis**: Launch tech-writer (2 instances), code-reviewer (2-3 instances), security-auditor, test-engineer, codebase-analyst, and performance-engineer simultaneously to analyze changes comprehensively
+1. **Deploy Parallel Agent Analysis**: Launch tech-writer (2 instances), code-reviewer (2-3 instances),
+   security-auditor, test-engineer, codebase-analyst, and performance-engineer simultaneously to analyze
+   changes comprehensively
 
 2. **Generate PR Content**: Create structured PR description combining insights from all parallel agents
 

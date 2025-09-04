@@ -5,14 +5,18 @@ argument-hint: [--full | --lite]
 
 # Command Purpose
 
-Orchestrate development workflows by running multiple `/` commands in sequence with **automatic issue resolution**. When commands report problems, deploy specialized agents to fix them and retry until success. Never stop on failures - always find a way forward.
+Orchestrate development workflows by running multiple `/` commands in sequence with **automatic issue
+resolution**. When commands report problems, deploy specialized agents to fix them and retry until
+success. Never stop on failures - always find a way forward.
 
 Execute one of three workflow types:
+
 - **Basic (default)**: `/docs --audit` → `/docs readme` → `/review --quick` → `/commit` → `/push`
 - **Full (--full/-f)**: `/docs --audit` → `/docs` → `/review` → `/test` → `/docs --clean` → `/commit` → `/push` → `/pr` (if no PR exists)
 - **Lite (--lite/-l)**: `/commit` → `/push`
 
-Arguments: Use `$ARGUMENTS` to determine workflow type (empty for basic, `--full` or `-f` for full, `--lite` or `-l` for lite).
+Arguments: Use `$ARGUMENTS` to determine workflow type (empty for basic, `--full` or `-f` for full,
+`--lite` or `-l` for lite).
 
 ## Context
 
@@ -183,6 +187,7 @@ Deploy execution-evaluator to verify:
 ### Output Format
 
 Provide real-time progress updates showing:
+
 - Current workflow step and total progress
 - Command execution status and results
 - Issue detection and classification
@@ -191,7 +196,8 @@ Provide real-time progress updates showing:
 - Final success metrics and audit trail
 
 Example output format:
-```
+
+```text
 🚀 Starting ship-it workflow: [basic|full|lite]
 
 Step X/Y: [command]
@@ -222,6 +228,9 @@ Step X/Y: [command]
 
 ### Success Philosophy
 
-The `/ship-it` command embodies the principle that **development workflows should never fail due to solvable problems**. By combining Claude's intelligence with specialized agent deployment, it automatically resolves issues that would traditionally require manual intervention, ensuring that code always ships when technically feasible.
+The `/ship-it` command embodies the principle that **development workflows should never fail due to
+solvable problems**. By combining Claude's intelligence with specialized agent deployment, it
+automatically resolves issues that would traditionally require manual intervention, ensuring that
+code always ships when technically feasible.
 
 **"Fix Forward, Never Fail Back"** - The ship-it mindset.

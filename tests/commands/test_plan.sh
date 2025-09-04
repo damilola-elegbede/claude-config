@@ -14,21 +14,22 @@ test_plan_file_exists() {
 test_plan_structure() {
     local plan_file="$ORIGINAL_DIR/system-configs/.claude/commands/plan.md"
 
-    # Check required sections
-    assert_file_contains "$plan_file" "# /plan Command" \
-        "Should have command header"
+    # Check for YAML frontmatter
+    assert_file_contains "$plan_file" "^---" \
+        "Should have YAML frontmatter start"
 
-    assert_file_contains "$plan_file" "## Description" \
-        "Should have Description section"
+    assert_file_contains "$plan_file" "description:" \
+        "Should have description in frontmatter"
 
-    assert_file_contains "$plan_file" "## Usage" \
-        "Should have Usage section"
+    # Check required sections (new format)
+    assert_file_contains "$plan_file" "# Command Purpose" \
+        "Should have Command Purpose header"
 
-    assert_file_contains "$plan_file" "## Command Execution Flow" \
-        "Should have Command Execution Flow section"
+    assert_file_contains "$plan_file" "## Context" \
+        "Should have Context section"
 
-    assert_file_contains "$plan_file" "## Plan Preview Format" \
-        "Should have Plan Preview Format section"
+    assert_file_contains "$plan_file" "### Agent Orchestration" \
+        "Should have Agent Orchestration subsection"
 }
 
 # Test plan command content

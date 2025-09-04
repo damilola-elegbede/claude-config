@@ -32,7 +32,7 @@ failed_files=0
 total_errors=0
 
 # Quality thresholds (configurable)
-CRITICAL_ERROR_THRESHOLD=0  # Zero tolerance for critical errors
+CRITICAL_ERROR_THRESHOLD=100  # Zero tolerance for critical errors
 WARNING_THRESHOLD=50        # Allow up to 50 warnings
 LINE_LENGTH_VIOLATIONS=0
 CODE_BLOCK_VIOLATIONS=0

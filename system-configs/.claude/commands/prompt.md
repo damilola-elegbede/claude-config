@@ -1,18 +1,22 @@
 ---
 description: Optimize prompts using the SCOPE framework for maximum effectiveness
-argument-hint: "[text-to-optimize] or --file [path] or leave empty for interactive"
+argument-hint: [text-to-optimize or --file <path> or leave empty for interactive]
 ---
 
 # Command Purpose
 
-Optimize prompts using the SCOPE framework. Remove fluff, clarify objectives, and structure for maximum effectiveness.
+Optimize prompts using the SCOPE framework. Remove fluff, clarify objectives, and structure for
+maximum effectiveness.
 
 **SYSTEM BOUNDARY**: This command ONLY optimizes prompts and returns the optimized text.
 It does NOT execute prompts, deploy agents, or perform actions based on prompt content.
 
-When invoked, apply the SCOPE framework to optimize prompts for maximum clarity and effectiveness. Remove unnecessary words, clarify objectives, and structure prompts to achieve better results with fewer tokens.
+When invoked, apply the SCOPE framework to optimize prompts for maximum clarity and effectiveness.
+Remove unnecessary words, clarify objectives, and structure prompts to achieve better results with
+fewer tokens.
 
-The command returns ONLY the optimized prompt - no execution, no agent orchestration, no complex workflows. Simple input → optimized output.
+The command returns ONLY the optimized prompt - no execution, no agent orchestration, no complex workflows.
+Simple input → optimized output.
 
 ## Context
 

@@ -5,11 +5,14 @@ argument-hint: [--dry-run|--backup|--force]
 
 # Synchronize Claude Configuration Files
 
-Synchronize all Claude configuration files from `system-configs/.claude/` to `~/.claude/`. Deploy agents, commands, output-styles, and settings with validation and backup creation.
+Synchronize all Claude configuration files from `system-configs/.claude/` to `~/.claude/`.
+Deploy agents, commands, output-styles, and settings with validation and backup creation.
 
 ## Context
 
-This command orchestrates the complete synchronization of Claude system configurations with parallel validation and comprehensive safety measures. It handles agents, commands, output-styles, settings, and MCP server configurations while maintaining data integrity.
+This command orchestrates the complete synchronization of Claude system configurations with parallel
+validation and comprehensive safety measures. It handles agents, commands, output-styles, settings,
+and MCP server configurations while maintaining data integrity.
 
 ### Usage Patterns
 
@@ -42,6 +45,7 @@ platform-engineer:
 ```
 
 Parallel execution benefits:
+
 - All agents validate simultaneously
 - Security-auditor has veto power
 - Total time: 2-3 seconds (vs 8-10 sequential)
@@ -215,6 +219,7 @@ fi
 ### Example Outputs
 
 #### Basic Sync
+
 ```text
 User: /sync
 Claude: 🔄 Syncing Claude configurations...
@@ -241,6 +246,7 @@ Claude: 🔄 Syncing Claude configurations...
 ```
 
 #### Dry Run
+
 ```text
 User: /sync --dry-run
 Claude: 📖 Preview mode - no changes will be made

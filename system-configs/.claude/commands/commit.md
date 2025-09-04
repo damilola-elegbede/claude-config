@@ -6,7 +6,8 @@ description: Creates a git commit following Claude's standards with quality gate
 
 Creates a git commit following Claude's standards with proper formatting and co-authorship attribution.
 
-**CRITICAL**: This command NEVER uses `--no-verify`. Quality gates exist to protect code integrity and must always be respected. If pre-commit hooks fail, the issues must be fixed, not bypassed.
+**CRITICAL**: This command NEVER uses `--no-verify`. Quality gates exist to protect code integrity
+and must always be respected. If pre-commit hooks fail, the issues must be fixed, not bypassed.
 
 ## Context
 
@@ -125,9 +126,11 @@ Before staging files for commit, the command automatically cleans up temporary a
 
 **Automatic Cleanup Patterns**:
 
-- **Temporary Files**: `*.tmp`, `*.temp`, `*.bak`, `*.orig`, `*.tmp.html`, `*.temp.html`, `*.tmp.js`, `*.temp.py`, `debug_*.html`, `test_output_*.txt`, `scratch_*.md`
+- **Temporary Files**: `*.tmp`, `*.temp`, `*.bak`, `*.orig`, `*.tmp.html`, `*.temp.html`,
+  `*.tmp.js`, `*.temp.py`, `debug_*.html`, `test_output_*.txt`, `scratch_*.md`
 - **System Files**: `.DS_Store`, `Thumbs.db`, `desktop.ini`, `*.swp`, `*.swo`, `*~`
-- **Build/Cache Artifacts**: `node_modules/`, `dist/`, `build/`, `.cache/`, `*.pyc`, `__pycache__/`, `.pytest_cache/`, coverage reports
+- **Build/Cache Artifacts**: `node_modules/`, `dist/`, `build/`, `.cache/`, `*.pyc`,
+  `__pycache__/`, `.pytest_cache/`, coverage reports
 - **Development Files**: IDE configs, log files, test outputs
 
 **Smart Cleanup Logic**:
@@ -189,6 +192,7 @@ Follows conventional commit format:
 - Subject: imperative mood, lowercase, no period
 
 **Examples**:
+
 - `feat(settings): add dark mode toggle`
 - `fix(auth): resolve login timeout issue`
 - `docs(readme): update installation instructions`

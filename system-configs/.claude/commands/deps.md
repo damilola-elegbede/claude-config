@@ -5,11 +5,15 @@ argument-hint: [audit|update|clean|--quick]
 
 # Dependency Management Command
 
-Manages dependencies across all package managers with security scanning and safe updates. Provides quick audit, update, and cleanup operations for polyglot codebases.
+Manages dependencies across all package managers with security scanning and safe updates.
+Provides quick audit, update, and cleanup operations for polyglot codebases.
 
 ## Context
 
-When invoked, deploy multiple security-auditor instances (one per package manager) to scan all ecosystems simultaneously. Quick mode provides essential health checks in 10-15 seconds using parallel scanning, while audit mode deploys additional security-auditor instances for comprehensive analysis in 20-30 seconds (4-6x faster than sequential).
+When invoked, deploy multiple security-auditor instances (one per package manager) to scan all ecosystems
+simultaneously. Quick mode provides essential health checks in 10-15 seconds using parallel scanning, while
+audit mode deploys additional security-auditor instances for comprehensive analysis in 20-30 seconds
+(4-6x faster than sequential).
 
 ### Command Usage
 

@@ -14,18 +14,22 @@ test_commit_file_exists() {
 test_commit_structure() {
     local commit_file="$ORIGINAL_DIR/system-configs/.claude/commands/commit.md"
 
-    # Check required sections
-    assert_file_contains "$commit_file" "# /commit Command" \
-        "Should have command header"
+    # Check for YAML frontmatter
+    assert_file_contains "$commit_file" "^---" \
+        "Should have YAML frontmatter start"
 
-    assert_file_contains "$commit_file" "## Description" \
-        "Should have Description section"
+    assert_file_contains "$commit_file" "description:" \
+        "Should have description in frontmatter"
 
-    assert_file_contains "$commit_file" "## Usage" \
-        "Should have Usage section"
+    # Check required sections (new format)
+    assert_file_contains "$commit_file" "# Command Purpose" \
+        "Should have Command Purpose header"
 
-    assert_file_contains "$commit_file" "## Behavior" \
-        "Should have Behavior section"
+    assert_file_contains "$commit_file" "## Context" \
+        "Should have Context section"
+
+    assert_file_contains "$commit_file" "## Expected Output" \
+        "Should have Expected Output section"
 }
 
 # Test commit command content

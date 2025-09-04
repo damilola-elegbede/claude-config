@@ -1,6 +1,6 @@
 ---
 description: Comprehensive CodeRabbit comment resolver with parallel execution
-argument-hint: "[pr-number] [--dry-run|--verbose|--status]"
+argument-hint: [pr-number] [--dry-run|--verbose|--status]
 ---
 
 # Comprehensive CodeRabbit Comment Resolution

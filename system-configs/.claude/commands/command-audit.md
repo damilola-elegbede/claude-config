@@ -4,17 +4,23 @@ description: Audit all commands for template compliance and quality standards
 
 # Command Audit and Validation
 
-Systematically validate all command files against the COMMAND_TEMPLATE.md format and quality standards. Check frontmatter compliance, structure, content quality, agent specifications, and markdown formatting. Generate comprehensive audit report with actionable remediation guidance.
+Systematically validate all command files against the COMMAND_TEMPLATE.md format and quality standards.
+Check frontmatter compliance, structure, content quality, agent specifications, and markdown formatting.
+Generate comprehensive audit report with actionable remediation guidance.
 
 ## Context
 
-Commands must follow the standardized template in `docs/commands/COMMAND_TEMPLATE.md` with proper frontmatter containing required `description` field and optional `argument-hint` field. All commands should specify appropriate specialized agents, leverage parallel execution where applicable, and maintain high-quality markdown formatting.
+Commands must follow the standardized template in `docs/commands/COMMAND_TEMPLATE.md` with proper frontmatter
+containing required `description` field and optional `argument-hint` field. All commands should specify
+appropriate specialized agents, leverage parallel execution where applicable, and maintain high-quality
+markdown formatting.
 
 ## Expected Output
 
 Comprehensive audit report showing:
 
 ### Executive Summary
+
 ```text
 Commands: [total] | Template Compliant: [%] | Issues: [count] | Auto-fixed: [count]
 ```
@@ -22,6 +28,7 @@ Commands: [total] | Template Compliant: [%] | Issues: [count] | Auto-fixed: [cou
 ### Validation Framework
 
 #### Core Template Validation (Required)
+
 1. **Frontmatter Structure**: Required YAML frontmatter with `description` field
 2. **Optional Fields**: Proper `argument-hint` formatting when present
 3. **Content Structure**: Clear command purpose, context, and expected output
@@ -31,6 +38,7 @@ Commands: [total] | Template Compliant: [%] | Issues: [count] | Auto-fixed: [cou
 7. **Parallel Execution**: Commands leverage parallel execution where applicable
 
 #### Template Compliance Check
+
 ```bash
 # Validate frontmatter structure for all commands
 for cmd in system-configs/.claude/commands/*.md; do
@@ -42,6 +50,7 @@ done
 ```
 
 #### Agent Specification Validation (28 Production Agents)
+
 ```bash
 VALID_AGENTS=("backend-engineer" "frontend-engineer" "fullstack-lead" "mobile-engineer"
               "data-engineer" "ml-engineer" "test-engineer" "code-reviewer"
@@ -61,6 +70,7 @@ done
 ```
 
 #### Frontmatter Validation Process
+
 ```bash
 # Check for proper YAML frontmatter structure
 grep -l "^---$" system-configs/.claude/commands/*.md | while read file; do
@@ -93,28 +103,33 @@ done
 ### Issues by Category
 
 #### Template Compliance Issues
+
 - Missing YAML frontmatter
 - Missing required 'description' field
 - Invalid argument-hint format
 - Description exceeds 60 character limit
 
 #### Content Quality Issues
+
 - Unclear command purpose
 - Missing context or guidelines
 - Vague expected output descriptions
 
 #### Agent Specification Issues
+
 - Missing agent specifications for complex tasks
 - Invalid agent references (not in 28 production agents)
 - Missing security-auditor for sensitive operations
 - Inappropriate agent selection
 
 #### Parallelization Issues
+
 - Sequential execution where parallel possible
 - Missing parallel phase definitions
 - No concurrent agent deployment specified
 
 #### Markdown Quality Issues
+
 - Code blocks without language tags
 - Inconsistent formatting
 - Poor structure organization
@@ -122,6 +137,7 @@ done
 ### Auto-Fix Capabilities
 
 #### Safe Automatic Fixes Applied
+
 ```bash
 # Add missing language tags to common patterns
 sed -i 's/```$/```bash/g' commands/*.md  # For shell commands
@@ -135,6 +151,7 @@ sed -i 's/```\n#/```bash\n#/g' commands/*.md  # For commented bash
 ### Manual Actions Required
 
 Priority fixes requiring human review:
+
 - Add missing frontmatter to non-compliant commands
 - Enhance content clarity and specificity
 - Add appropriate agent specifications
@@ -144,6 +161,7 @@ Priority fixes requiring human review:
 ### Repository-Specific Exclusions
 
 Commands excluded from sync process (validated for proper exclusion):
+
 - `command-audit.md` (this audit tool)
 - `sync.md` (sync operation itself)
 - Any repository-management specific commands
@@ -151,6 +169,7 @@ Commands excluded from sync process (validated for proper exclusion):
 ### Success Criteria Verification
 
 Deploy execution-evaluator to verify:
+
 - ✅ **Template Compliance** - All commands follow COMMAND_TEMPLATE.md format
 - ✅ **Frontmatter Valid** - Required description field present, proper YAML syntax
 - ✅ **Content Quality** - Clear purpose, context, and expected output
@@ -165,22 +184,27 @@ Deploy execution-evaluator to verify:
 ### Validation Categories
 
 #### Git Workflow Commands
+
 Required agents: tech-writer (messages), code-reviewer (validation), security-auditor (safety)
 Parallelization: Concurrent validation checks before operations
 
 #### Repository Analysis Commands
+
 Required agents: codebase-analyst, test-engineer, debugger
 Parallelization: Multiple domain analysts, parallel test execution
 
 #### System Management Commands
+
 Required agents: platform-engineer (setup), devops (CI/CD), security-auditor (vulnerabilities)
 Parallelization: Concurrent file validation, simultaneous package scanning
 
 #### Quality Assurance Commands
+
 Required agents: code-reviewer, security-auditor, performance-engineer
 Parallelization: Multiple reviewer agents simultaneously
 
 #### Development Support Commands
+
 Required agents: product-strategist (planning), tech-writer (docs), project-orchestrator (coordination)
 Parallelization: Concurrent phase execution, multiple agents per workflow
 
@@ -195,4 +219,6 @@ Parallelization: Concurrent phase execution, multiple agents per workflow
 /command-audit --fix          # Apply safe automatic fixes
 ```
 
-This comprehensive audit ensures all commands maintain consistent quality, follow the standardized template format, and provide clear value to users through proper agent coordination and parallel execution patterns.
+This comprehensive audit ensures all commands maintain consistent quality, follow the standardized
+template format, and provide clear value to users through proper agent coordination and parallel
+execution patterns.

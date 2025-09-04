@@ -24,9 +24,11 @@ argument-hint: [optional - hint for arguments, e.g., "[issue-number]", "[file-pa
 ## Frontmatter Fields
 
 ### Required Fields
+
 - **description**: A concise, clear description of the command's purpose (shown in autocomplete)
 
 ### Optional Fields
+
 - **argument-hint**: Shows users what arguments to provide (e.g., `[branch-name]`, `[file-path]`)
 - **allowed-tools**: Specify which tools can be used (e.g., `Bash(git add:*)`)
 - **model**: Override the default model (e.g., `claude-3-5-haiku-20241022`)
@@ -42,6 +44,7 @@ argument-hint: [optional - hint for arguments, e.g., "[issue-number]", "[file-pa
 ## Examples
 
 ### Simple Command (no arguments)
+
 ```markdown
 ---
 description: Run all project tests and report results
@@ -51,6 +54,7 @@ Run all tests in the project and provide a summary of results.
 ```
 
 ### Command with Arguments
+
 ```markdown
 ---
 description: Fix a specific GitHub issue
@@ -61,6 +65,7 @@ Find and fix issue #$ARGUMENTS following our coding standards.
 ```
 
 ### Command with Tool Restrictions
+
 ```markdown
 ---
 description: Create a comprehensive git commit

@@ -5,11 +5,15 @@ argument-hint: [--lite | component-name]
 
 # Command Purpose
 
-Analyze repository structure, dependencies, and documentation to provide comprehensive project understanding. Three modes: lite (quick), full (comprehensive), and focused (component-specific). Deploy parallel agents for multi-instance analysis when needed.
+Analyze repository structure, dependencies, and documentation to provide comprehensive project understanding.
+Three modes: lite (quick), full (comprehensive), and focused (component-specific). Deploy parallel agents
+for multi-instance analysis when needed.
 
 ## Context
 
-When invoked, analyze the repository structure, dependencies, and documentation to provide comprehensive project understanding. In focused mode, deploy 3-5 codebase-analyst instances to analyze different aspects of components simultaneously, achieving 4-6x faster analysis than single-agent approaches.
+When invoked, analyze the repository structure, dependencies, and documentation to provide comprehensive
+project understanding. In focused mode, deploy 3-5 codebase-analyst instances to analyze different aspects
+of components simultaneously, achieving 4-6x faster analysis than single-agent approaches.
 
 ### Analysis Modes
 
@@ -284,7 +288,8 @@ Modern React task management app with real-time collaboration features
 
 #### Caching Strategy
 
-Results cached for 1 hour based on git HEAD + date. Prevents repeated analysis of unchanged code and improves performance for frequent context checks.
+Results cached for 1 hour based on git HEAD + date. Prevents repeated analysis of unchanged code
+and improves performance for frequent context checks.
 
 ### Usage Examples
 

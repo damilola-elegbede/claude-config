@@ -1,6 +1,6 @@
 ---
 description: File GitHub issues from conversation context or explicit bug reports
-argument-hint: "[description] [--priority high] [--labels label1,label2]"
+argument-hint: [description] [--priority high] [--labels label1,label2]
 ---
 
 # Command Purpose
@@ -9,6 +9,7 @@ Files GitHub issues directly from conversation context or explicit bug reports u
 Extracts context automatically and creates professional bug reports with proper formatting and labels.
 
 Use the following options when processing user input:
+
 - Simple description: `/bug <description>`
 - Set priority: `/bug --priority <level>` (low, medium, high, critical)
 - Add specific labels: `/bug --labels <label1,label2>`

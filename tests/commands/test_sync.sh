@@ -14,21 +14,25 @@ test_sync_file_exists() {
 test_sync_structure() {
     local sync_file="$ORIGINAL_DIR/system-configs/.claude/commands/sync.md"
 
-    # Check required sections
-    assert_file_contains "$sync_file" "# /sync Command" \
-        "Should have command header"
+    # Check for YAML frontmatter
+    assert_file_contains "$sync_file" "^---" \
+        "Should have YAML frontmatter start"
 
-    assert_file_contains "$sync_file" "## Description" \
-        "Should have Description section"
+    assert_file_contains "$sync_file" "description:" \
+        "Should have description in frontmatter"
 
-    assert_file_contains "$sync_file" "## Usage" \
-        "Should have Usage section"
+    # Check required sections (new format)
+    assert_file_contains "$sync_file" "# Synchronize Claude Configuration Files" \
+        "Should have main header"
 
-    assert_file_contains "$sync_file" "## What Gets Synced" \
-        "Should have What Gets Synced section"
+    assert_file_contains "$sync_file" "## Context" \
+        "Should have Context section"
 
-    assert_file_contains "$sync_file" "## Notes" \
-        "Should have Notes section"
+    assert_file_contains "$sync_file" "## Expected Output" \
+        "Should have Expected Output section"
+
+    assert_file_contains "$sync_file" "### What Gets Synced" \
+        "Should have What Gets Synced subsection"
 }
 
 # Test sync command content
@@ -39,7 +43,7 @@ test_sync_content() {
     assert_file_contains "$sync_file" "system-configs/.claude/" \
         "Should mention source directory"
 
-    assert_file_contains "$sync_file" "Synchronizes Claude configuration" \
+    assert_file_contains "$sync_file" "Synchronize all Claude configuration files" \
         "Should mention Claude configuration synchronization"
 
     assert_file_contains "$sync_file" "rsync" \

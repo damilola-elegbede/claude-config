@@ -5,7 +5,9 @@ argument-hint: [--full|--fix|--security|file-path]
 
 # CodeRabbit-Style AI Code Review
 
-Deploy comprehensive code review combining linting tools, security scanning, and AI synthesis to generate structured reports with "Prompts for AI Agents" sections. Every invocation automatically runs the comprehensive pre-commit checklist first.
+Deploy comprehensive code review combining linting tools, security scanning, and AI synthesis
+to generate structured reports with "Prompts for AI Agents" sections. Every invocation automatically
+runs the comprehensive pre-commit checklist first.
 
 ## Command Purpose
 

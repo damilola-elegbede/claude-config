@@ -5,7 +5,9 @@ argument-hint: [feature-description]
 
 # Branch Creation with Smart Context Analysis
 
-Create intelligent git branches using pattern matching for ticket systems, smart naming conventions, and automated git workflow management. Analyze the user's input to determine branch type and apply appropriate naming patterns.
+Create intelligent git branches using pattern matching for ticket systems, smart naming conventions,
+and automated git workflow management. Analyze the user's input to determine branch type and apply
+appropriate naming patterns.
 
 ## Context
 

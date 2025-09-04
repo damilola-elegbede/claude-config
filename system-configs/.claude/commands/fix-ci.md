@@ -1,11 +1,12 @@
 ---
 description: Diagnoses and fixes GitHub Actions CI failures automatically
-argument-hint: "[run-id] or --learn"
+argument-hint: [run-id or --learn]
 ---
 
 # Fix CI Failures with High-Confidence Pattern Recognition
 
-Diagnose and fix GitHub Actions failures using pattern recognition and historical fix data. Only pushes when 95% confident all CI issues are resolved. Tests locally before pushing fixes.
+Diagnose and fix GitHub Actions failures using pattern recognition and historical fix data.
+Only pushes when 95% confident all CI issues are resolved. Tests locally before pushing fixes.
 
 ## Context
 

@@ -4,7 +4,9 @@ description: Comprehensive validation of agent ecosystem for integrity and compl
 
 # Command Purpose
 
-Perform comprehensive validation of all agents in the agent ecosystem to ensure category integrity, template compliance, and system consistency. **This command generates a REPORT ONLY - it provides recommendations and optional patch snippets; it does not make any changes automatically.**
+Perform comprehensive validation of all agents in the agent ecosystem to ensure category integrity,
+template compliance, and system consistency. **This command generates a REPORT ONLY - it provides
+recommendations and optional patch snippets; it does not make any changes automatically.**
 
 ## Context
 
