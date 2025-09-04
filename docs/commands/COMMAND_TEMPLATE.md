@@ -1,24 +1,47 @@
-# Claude Code Command Template
+---
+description: Template for creating new Claude Code commands
+argument-hint: [command-name]
+---
+
+# Command Template
 
 This template defines the standard format for all Claude Code slash commands.
 All commands in `system-configs/.claude/commands/` should follow this structure.
 
-## Required Structure
+## New Command Template Structure
+
+Use this template to create new commands:
 
 ```markdown
 ---
-description: [Brief one-line description of what this command does]
-argument-hint: [optional - hint for arguments, e.g., "[issue-number]", "[file-path]", or leave empty if no arguments]
+description: Brief description under 60 chars
+argument-hint: [options]
 ---
 
-# Command Purpose
-[Main instruction or prompt that Claude will execute]
+# /command-name Command
 
-## Context
-[Any context, rules, or guidelines Claude should follow]
+## Usage
+
+```bash
+/command-name              # Basic usage
+/command-name --flag       # With options
+/command-name argument     # With arguments
+```
+
+## Description
+
+Brief explanation of what this command does and when to use it. Keep it concise.
 
 ## Expected Output
-[What the command should produce or accomplish]
+
+```text
+Example of what successful execution looks like
+Including success indicators and common variations
+```
+
+## Behavior (optional)
+
+Detailed behavior, workflows, agent strategies if needed for complex commands.
 ```
 
 ## Frontmatter Fields
@@ -37,11 +60,11 @@ argument-hint: [optional - hint for arguments, e.g., "[issue-number]", "[file-pa
 
 1. **Description**: Keep it under 60 characters for clean autocomplete display
 2. **Argument Hints**: Use square brackets for optional args: `[file-path]`
-3. **Content**: Start with a clear directive of what Claude should do
-4. **Arguments**: Use `$ARGUMENTS` placeholder where user input should be inserted
-5. **Context**: Include any project-specific conventions or rules
+3. **Usage Section**: Show common invocation patterns with clear examples
+4. **Expected Output**: Include concrete examples of successful execution
+5. **Behavior Section**: Only include for complex commands requiring detailed workflow explanation
 
-## Examples
+## Template Examples
 
 ### Simple Command (no arguments)
 
@@ -50,10 +73,29 @@ argument-hint: [optional - hint for arguments, e.g., "[issue-number]", "[file-pa
 description: Run all project tests and report results
 ---
 
-Run all tests in the project and provide a summary of results.
+# /test Command
+
+## Usage
+
+```bash
+/test                      # Run all tests
 ```
 
-### Command with Arguments
+## Description
+
+Runs all project tests and provides a comprehensive summary of results including pass/fail counts and coverage metrics.
+
+## Expected Output
+
+```text
+Running test suite...
+✓ Unit tests: 45/45 passed
+✓ Integration tests: 12/12 passed
+✓ Coverage: 87%
+All tests completed successfully
+```
+
+## Command with Arguments
 
 ```markdown
 ---
@@ -61,16 +103,39 @@ description: Fix a specific GitHub issue
 argument-hint: [issue-number]
 ---
 
-Find and fix issue #$ARGUMENTS following our coding standards.
+# /fix-issue Command
+
+## Usage
+
+```bash
+/fix-issue 123            # Fix specific issue
+/fix-issue 123 --review   # Fix with peer review
 ```
 
-### Command with Tool Restrictions
+## Description
 
-```markdown
----
-description: Create a comprehensive git commit
-allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*)
----
+Analyzes the specified GitHub issue and implements a solution following project coding standards.
 
-Review changes and create a meaningful commit message.
+## Expected Output
+
+```text
+Analyzing issue #123...
+✓ Issue understood: Authentication timeout bug
+✓ Solution implemented in src/auth.js
+✓ Tests updated and passing
+✓ Ready for review
 ```
+```
+
+## Markdown Linting Compliance
+
+This template follows all critical linting rules:
+
+- Line length under 150 characters (MD013)
+- Headings surrounded by blank lines (MD022, MD031, MD032)
+- Lists surrounded by blank lines (MD032)
+- Tables surrounded by blank lines (MD058)
+- Single H1 heading (MD025)
+- Sequential heading levels (MD001)
+- Language-specified code blocks (MD040)
+- File ends with single newline (MD047)

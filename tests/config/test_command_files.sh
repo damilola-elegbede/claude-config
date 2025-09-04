@@ -108,10 +108,21 @@ test_command_structure() {
             return 1
         fi
 
-        # For files with old format, check traditional sections
-        if grep -q "## Description" "$cmd_file"; then
+        # For files with YAML frontmatter, check new template sections
+        if grep -q "^---$" "$cmd_file"; then
+            # Check required sections for new template format
             assert_file_contains "$cmd_file" "## Usage" \
                 "${cmd_name}: Should have Usage section"
+            assert_file_contains "$cmd_file" "## Description" \
+                "${cmd_name}: Should have Description section"
+            assert_file_contains "$cmd_file" "## Expected Output" \
+                "${cmd_name}: Should have Expected Output section"
+        else
+            # For files with old format, check traditional sections
+            if grep -q "## Description" "$cmd_file"; then
+                assert_file_contains "$cmd_file" "## Usage" \
+                    "${cmd_name}: Should have Usage section"
+            fi
         fi
 
         # Check for usage example or code blocks
@@ -283,14 +294,25 @@ test_template_format_compliance() {
                 echo "    Warning: ${cmd_name}.md should have main heading after frontmatter"
             fi
 
-            # Check for Context section (template expectation)
-            if ! grep -q "## Context" "$cmd_file"; then
-                echo "    Info: ${cmd_name}.md could benefit from Context section"
+            # Check for required sections in new template format
+            if ! grep -q "## Usage" "$cmd_file"; then
+                echo "    Error: ${cmd_name}.md missing required Usage section"
+                failures=$((failures + 1))
             fi
 
-            # Check for Expected Output section (template expectation)  
+            if ! grep -q "## Description" "$cmd_file"; then
+                echo "    Error: ${cmd_name}.md missing required Description section"
+                failures=$((failures + 1))
+            fi
+
             if ! grep -q "## Expected Output" "$cmd_file"; then
-                echo "    Info: ${cmd_name}.md could benefit from Expected Output section"
+                echo "    Error: ${cmd_name}.md missing required Expected Output section"
+                failures=$((failures + 1))
+            fi
+
+            # Check for optional Behavior section
+            if grep -q "## Behavior" "$cmd_file"; then
+                echo "    Info: ${cmd_name}.md includes optional Behavior section"
             fi
 
             # Check for proper use of $ARGUMENTS placeholder if argument-hint exists
@@ -356,11 +378,30 @@ test_documentation_completeness() {
             return 1
         fi
 
-        # Check for either Behavior or a main content section (varies by command)
-        # Some commands use different section names for their main content
-        if ! grep -q "## Behavior\|## Workflow\|## Discovery Algorithm\|## Analysis Modes\|## Two-Mode Operation\|## SCOPE Framework\|## Smart Branch Creation\|## Validation Framework\|## Investigation Framework\|## Failure Pattern Library\|## Agent Orchestration Strategy\|## Configuration File\|## Command Execution Flow\|## File Structure\|## Context\|# Command Purpose\|## Expected Output" "$cmd_file"; then
-            echo "${cmd_name}: Should have a main content section"
-            return 1
+        # Check for either new template format compliance or legacy content sections
+        if grep -q "^---$" "$cmd_file"; then
+            # New template format - check required sections
+            local missing_sections=()
+            if ! grep -q "## Usage" "$cmd_file"; then
+                missing_sections+=("Usage")
+            fi
+            if ! grep -q "## Description" "$cmd_file"; then
+                missing_sections+=("Description")
+            fi
+            if ! grep -q "## Expected Output" "$cmd_file"; then
+                missing_sections+=("Expected Output")
+            fi
+            
+            if [ ${#missing_sections[@]} -gt 0 ]; then
+                echo "${cmd_name}: Missing required sections: ${missing_sections[*]}"
+                return 1
+            fi
+        else
+            # Legacy format - check for any main content section
+            if ! grep -q "## Behavior\|## Workflow\|## Discovery Algorithm\|## Analysis Modes\|## Two-Mode Operation\|## SCOPE Framework\|## Smart Branch Creation\|## Validation Framework\|## Investigation Framework\|## Failure Pattern Library\|## Agent Orchestration Strategy\|## Configuration File\|## Command Execution Flow\|## File Structure\|## Context\|# Command Purpose\|## Expected Output\|## Usage\|## Description" "$cmd_file"; then
+                echo "${cmd_name}: Should have a main content section"
+                return 1
+            fi
         fi
     done
 }

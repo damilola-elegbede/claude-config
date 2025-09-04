@@ -21,15 +21,15 @@ test_context_structure() {
     assert_file_contains "$context_file" "description:" \
         "Should have description in frontmatter"
 
-    # Check required sections (new format)
-    assert_file_contains "$context_file" "# Command Purpose" \
-        "Should have Command Purpose header"
+    # Check required sections (new template format)
+    assert_file_contains "$context_file" "## Usage" \
+        "Should have Usage section"
 
-    assert_file_contains "$context_file" "## Context" \
-        "Should have Context section"
+    assert_file_contains "$context_file" "## Description" \
+        "Should have Description section"
 
-    assert_file_contains "$context_file" "### Analysis Modes" \
-        "Should have Analysis Modes subsection"
+    assert_file_contains "$context_file" "## Expected Output" \
+        "Should have Expected Output section"
 }
 
 # Test context command content

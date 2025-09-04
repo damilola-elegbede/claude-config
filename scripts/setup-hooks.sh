@@ -322,14 +322,31 @@ command_files=$(find .claude/commands -name "*.md" -not -name "README.md" 2>/dev
 if [ ! -z "$command_files" ]; then
     invalid_commands=0
     for cmd in $command_files; do
-        # Check for required sections
-        if ! grep -q "^## Description" "$cmd"; then
-            echo -e "${YELLOW}⚠️  Missing Description section in $cmd${NC}"
-            ((invalid_commands++))
-        fi
-        if ! grep -q "^## Usage" "$cmd"; then
-            echo -e "${YELLOW}⚠️  Missing Usage section in $cmd${NC}"
-            ((invalid_commands++))
+        # Check if file has YAML frontmatter (new template format)
+        if grep -q "^---$" "$cmd"; then
+            # New template format - check required sections
+            if ! grep -q "^## Usage" "$cmd"; then
+                echo -e "${YELLOW}⚠️  Missing Usage section in $cmd${NC}"
+                ((invalid_commands++))
+            fi
+            if ! grep -q "^## Description" "$cmd"; then
+                echo -e "${YELLOW}⚠️  Missing Description section in $cmd${NC}"
+                ((invalid_commands++))
+            fi
+            if ! grep -q "^## Expected Output" "$cmd"; then
+                echo -e "${YELLOW}⚠️  Missing Expected Output section in $cmd${NC}"
+                ((invalid_commands++))
+            fi
+        else
+            # Legacy format - check traditional sections
+            if ! grep -q "^## Description" "$cmd"; then
+                echo -e "${YELLOW}⚠️  Missing Description section in $cmd${NC}"
+                ((invalid_commands++))
+            fi
+            if ! grep -q "^## Usage" "$cmd"; then
+                echo -e "${YELLOW}⚠️  Missing Usage section in $cmd${NC}"
+                ((invalid_commands++))
+            fi
         fi
     done
     if [ $invalid_commands -eq 0 ]; then

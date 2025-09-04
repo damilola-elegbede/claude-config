@@ -3,22 +3,52 @@ description: Orchestrate development workflows with auto-resolution
 argument-hint: [--full | --lite]
 ---
 
-# Command Purpose
+# /ship-it Command
 
-Orchestrate development workflows by running multiple `/` commands in sequence with **automatic issue
-resolution**. When commands report problems, deploy specialized agents to fix them and retry until
-success. Never stop on failures - always find a way forward.
+## Usage
+
+```bash
+/ship-it                         # Basic workflow: docs audit → review → commit → push
+/ship-it --full                  # Full workflow: docs → review → test → commit → push → pr
+/ship-it --lite                  # Lite workflow: commit → push
+```
+
+Use `$ARGUMENTS` to determine workflow type (empty for basic, `--full` or `-f` for full, `--lite` or `-l` for lite).
+
+## Description
+
+Orchestrate development workflows by running multiple `/` commands in sequence with **automatic issue resolution**.
+When commands report problems, deploy specialized agents to fix them and retry until success. Never stop on failures -
+always find a way forward.
 
 Execute one of three workflow types:
 
 - **Basic (default)**: `/docs --audit` → `/docs readme` → `/review --quick` → `/commit` → `/push`
-- **Full (--full/-f)**: `/docs --audit` → `/docs` → `/review` → `/test` → `/docs --clean` → `/commit` → `/push` → `/pr` (if no PR exists)
+- **Full (--full/-f)**: `/docs --audit` → `/docs` → `/review` → `/test` → `/docs --clean` → `/commit` → `/push` → `/pr`
 - **Lite (--lite/-l)**: `/commit` → `/push`
 
-Arguments: Use `$ARGUMENTS` to determine workflow type (empty for basic, `--full` or `-f` for full,
-`--lite` or `-l` for lite).
+## Expected Output
 
-## Context
+### Execution Flow Example
+
+```text
+🚀 Starting ship-it workflow: [basic|full|lite]
+
+Step X/Y: [command]
+[Command execution and results]
+
+🔧 Auto-remediation triggered:
+🤖 Deploying [agent] for [issue type]...
+✅ [Fix description]
+📝 Committing auto-fixes...
+
+⏳ Retrying [command]...
+✅ [Success confirmation]
+
+🎉 Ship-it workflow completed with auto-remediation!
+```
+
+## Behavior
 
 ### Core Principles
 
@@ -157,80 +187,3 @@ Issue Classification: Security, Performance, Quality, Testing, Infrastructure
 Fix History: Track all auto-remediation actions for audit trail
 Success Metrics: Commands fixed, agents deployed, retry attempts, total time
 ```
-
-## Expected Output
-
-### Execution Flow
-
-1. **Parse Arguments**: Determine workflow type from `$ARGUMENTS`
-2. **Initialize Progress Tracking**: Create `.tmp/ship-it/progress.log`
-3. **Execute Commands Sequentially**: Run each command in workflow order
-4. **Monitor for Issues**: Parse command output for error patterns
-5. **Deploy Auto-Remediation**: Route issues to appropriate specialist agents
-6. **Apply Fixes and Retry**: Re-run commands after fixes applied
-7. **Continue Until Complete**: Move through all workflow steps
-8. **Report Success**: Provide comprehensive summary with metrics
-
-### Success Criteria
-
-Deploy execution-evaluator to verify:
-
-- ✅ **Workflow completed** - All steps executed successfully with issue resolution
-- ✅ **Auto-remediation functional** - Issues automatically fixed when detected
-- ✅ **Agent deployment correct** - Appropriate specialists used for each issue type
-- ✅ **Retry logic working** - Failed commands retried after fixes applied
-- ✅ **Progressive enhancement** - Each step builds on previous with quality gates
-- ✅ **Issue classification** - Problems correctly routed to domain experts
-- ✅ **State management** - Progress tracked with detailed resolution history
-- ✅ **Success criteria** - All original objectives achieved despite initial failures
-
-### Output Format
-
-Provide real-time progress updates showing:
-
-- Current workflow step and total progress
-- Command execution status and results
-- Issue detection and classification
-- Agent deployment for auto-remediation
-- Fix application and retry attempts
-- Final success metrics and audit trail
-
-Example output format:
-
-```text
-🚀 Starting ship-it workflow: [basic|full|lite]
-
-Step X/Y: [command]
-[Command execution and results]
-
-🔧 Auto-remediation triggered:
-🤖 Deploying [agent] for [issue type]...
-✅ [Fix description]
-📝 Committing auto-fixes...
-
-⏳ Retrying [command]...
-✅ [Success confirmation]
-
-🎉 Ship-it workflow completed with auto-remediation!
-```
-
-### Key Features
-
-- **Meta-Command**: Orchestrates Claude to execute command sequences intelligently
-- **Auto-Remediation**: Never stops - deploys agents to fix issues and retries
-- **Progressive Problem Solving**: Systematic approach to issue resolution
-- **Multi-Domain Expertise**: Routes issues to appropriate specialist agents
-- **Resilient Execution**: Handles all common failure modes automatically
-- **Three Workflows**: Basic (default, essential), Full (comprehensive), Lite (minimal)
-- **Context Awareness**: Commands run with complete repository understanding
-- **Quality Gates**: Each step includes comprehensive validation
-- **Audit Trail**: Complete history of issues found and fixes applied
-
-### Success Philosophy
-
-The `/ship-it` command embodies the principle that **development workflows should never fail due to
-solvable problems**. By combining Claude's intelligence with specialized agent deployment, it
-automatically resolves issues that would traditionally require manual intervention, ensuring that
-code always ships when technically feasible.
-
-**"Fix Forward, Never Fail Back"** - The ship-it mindset.

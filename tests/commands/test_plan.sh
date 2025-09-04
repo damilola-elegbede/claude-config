@@ -21,15 +21,15 @@ test_plan_structure() {
     assert_file_contains "$plan_file" "description:" \
         "Should have description in frontmatter"
 
-    # Check required sections (new format)
-    assert_file_contains "$plan_file" "# Command Purpose" \
-        "Should have Command Purpose header"
+    # Check required sections (new template format)
+    assert_file_contains "$plan_file" "## Usage" \
+        "Should have Usage section"
 
-    assert_file_contains "$plan_file" "## Context" \
-        "Should have Context section"
+    assert_file_contains "$plan_file" "## Description" \
+        "Should have Description section"
 
-    assert_file_contains "$plan_file" "### Agent Orchestration" \
-        "Should have Agent Orchestration subsection"
+    assert_file_contains "$plan_file" "## Expected Output" \
+        "Should have Expected Output section"
 }
 
 # Test plan command content

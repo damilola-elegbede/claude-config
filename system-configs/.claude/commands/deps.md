@@ -3,29 +3,92 @@ description: Manage dependencies with security scanning and safe updates
 argument-hint: [audit|update|clean|--quick]
 ---
 
-# Dependency Management Command
+# /deps Command
+
+## Usage
+
+```bash
+/deps                           # Quick audit of all dependencies (30 seconds)
+/deps audit                     # Deep multi-instance security scan (20-30 seconds)
+/deps update                    # Safe dependency updates with rollback
+/deps clean                     # Remove unused dependencies
+/deps --quick                   # Fast check without deep analysis (10-15 seconds)
+```
+
+## Description
 
 Manages dependencies across all package managers with security scanning and safe updates.
 Provides quick audit, update, and cleanup operations for polyglot codebases.
 
-## Context
+## Expected Output
 
-When invoked, deploy multiple security-auditor instances (one per package manager) to scan all ecosystems
-simultaneously. Quick mode provides essential health checks in 10-15 seconds using parallel scanning, while
-audit mode deploys additional security-auditor instances for comprehensive analysis in 20-30 seconds
-(4-6x faster than sequential).
+### Quick Mode (default, 30 seconds)
 
-### Command Usage
+```text
+🔍 Scanning dependencies...
+📦 Detected: npm, pip (2 package managers)
 
-```bash
-/deps                        # Quick audit of all dependencies
-/deps audit                  # Detailed security scan
-/deps update                 # Safe dependency updates
-/deps clean                  # Remove unused dependencies
-/deps --quick               # Fast check without deep analysis
+⚠️ Issues Found:
+🔴 Critical: lodash@4.17.15 (prototype pollution CVE-2020-8203)
+🟡 Medium: axios@0.21.0 (SSRF vulnerability)
+📊 Outdated: 12 packages have newer versions
+🗑️ Unused: 3 packages not imported
+
+💡 Quick Fixes:
+npm audit fix
+pip install --upgrade-strategy eager
+
+⏱️ Completed in 28 seconds
 ```
 
-### Agent Orchestration - Multi-Instance Package Manager Scanning
+### Deep Mode (/deps audit, 20-30 seconds)
+
+```text
+## Comprehensive Dependency Audit
+
+### Security Analysis
+🔴 **Critical Vulnerabilities**: 2 found
+- lodash@4.17.15: Prototype pollution (CVE-2020-8203)
+  Fix: npm install lodash@4.17.21
+- pillow@8.2.0: Buffer overflow (CVE-2021-34552)
+  Fix: pip install pillow>=8.3.2
+
+🟡 **Medium Risk**: 3 vulnerabilities
+🟢 **Low Risk**: 7 vulnerabilities
+
+### Supply Chain Assessment
+✅ **Package Authenticity**: All packages verified
+⚠️ **Maintainer Risk**: 2 packages have single maintainer
+🔍 **Suspicious Activity**: None detected
+
+### License Compliance
+✅ **Compatible Licenses**: 94% (47/50 packages)
+⚠️ **GPL Dependencies**: 2 packages require review
+❌ **License Conflicts**: 1 incompatible license found
+
+### Recommendations
+1. Update critical vulnerabilities immediately
+2. Consider alternatives for single-maintainer packages
+3. Review GPL license requirements for commercial use
+4. Remove 3 unused dependencies to reduce attack surface
+
+⏱️ Completed in 1m 47s
+```
+
+### Safe Update Process (/deps update)
+
+```text
+🔄 Starting safe dependency update process...
+💾 Backing up current dependency state...
+🔒 Stage 1: Applying security patches (3 updates)...
+📦 Stage 2: Minor version updates (12 packages)...
+🧪 Stage 3: Running tests to verify compatibility...
+✅ All updates successful, tests passing
+```
+
+## Behavior
+
+### Multi-Instance Package Manager Scanning
 
 Deploy multiple instances for simultaneous package manager scanning:
 
@@ -104,8 +167,6 @@ Time Optimization:
   - Full CPU utilization: Each instance on separate core
 ```
 
-## Expected Output
-
 ### Two-Mode Operation
 
 #### Quick Mode (default) - 30 Second Analysis
@@ -151,70 +212,6 @@ Performance:
 Auto-detects: npm, pip, go, cargo, maven, gradle, bundler, composer
 Based on presence of manifest files (package.json, requirements.txt, etc.)
 Uses ecosystem-specific tools: npm audit, pip-audit, cargo audit, nancy (Go)
-
-### Core Operations
-
-#### /deps (Quick Mode)
-
-```text
-🔍 Scanning dependencies...
-📦 Detected: npm, pip (2 package managers)
-
-⚠️ Issues Found:
-🔴 Critical: lodash@4.17.15 (prototype pollution CVE-2020-8203)
-🟡 Medium: axios@0.21.0 (SSRF vulnerability)
-📊 Outdated: 12 packages have newer versions
-🗑️ Unused: 3 packages not imported
-
-💡 Quick Fixes:
-npm audit fix
-pip install --upgrade-strategy eager
-
-⏱️ Completed in 28 seconds
-```
-
-#### /deps audit (Deep Mode)
-
-```text
-## Comprehensive Dependency Audit
-
-### Security Analysis
-🔴 **Critical Vulnerabilities**: 2 found
-- lodash@4.17.15: Prototype pollution (CVE-2020-8203)
-  Fix: npm install lodash@4.17.21
-- pillow@8.2.0: Buffer overflow (CVE-2021-34552)
-  Fix: pip install pillow>=8.3.2
-
-🟡 **Medium Risk**: 3 vulnerabilities
-🟢 **Low Risk**: 7 vulnerabilities
-
-### Supply Chain Assessment
-✅ **Package Authenticity**: All packages verified
-⚠️ **Maintainer Risk**: 2 packages have single maintainer
-🔍 **Suspicious Activity**: None detected
-
-### License Compliance
-✅ **Compatible Licenses**: 94% (47/50 packages)
-⚠️ **GPL Dependencies**: 2 packages require review
-❌ **License Conflicts**: 1 incompatible license found
-
-### Recommendations
-1. Update critical vulnerabilities immediately
-2. Consider alternatives for single-maintainer packages
-3. Review GPL license requirements for commercial use
-4. Remove 3 unused dependencies to reduce attack surface
-
-⏱️ Completed in 1m 47s
-```
-
-#### /deps update (Safe Updates)
-
-Staged process: backup → security patches → minor updates → test → rollback if needed
-
-#### /deps clean (Unused Removal)
-
-Uses depcheck (npm), pip-check (python), cargo machete (rust)
-Safely removes unused dependencies after verification
 
 ### Language-Specific Patterns
 
@@ -368,19 +365,7 @@ Claude: 🔒 Deploying multi-instance dependency scanners...
 ✅ Complete audit finished 4.5x faster than sequential
 ```
 
-#### Safe Update Process
-
-```text
-User: /deps update
-Claude: 🔄 Starting safe dependency update process...
-💾 Backing up current dependency state...
-🔒 Stage 1: Applying security patches (3 updates)...
-📦 Stage 2: Minor version updates (12 packages)...
-🧪 Stage 3: Running tests to verify compatibility...
-✅ All updates successful, tests passing
-```
-
-## Notes
+### Notes
 
 - **Multi-Instance Scanning**: Deploy one instance per package manager for parallel analysis
 - **Dynamic Scaling**: Instance count adjusts to number of ecosystems detected

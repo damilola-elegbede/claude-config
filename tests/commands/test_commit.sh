@@ -21,12 +21,12 @@ test_commit_structure() {
     assert_file_contains "$commit_file" "description:" \
         "Should have description in frontmatter"
 
-    # Check required sections (new format)
-    assert_file_contains "$commit_file" "# Command Purpose" \
-        "Should have Command Purpose header"
+    # Check required sections (new template format)
+    assert_file_contains "$commit_file" "## Usage" \
+        "Should have Usage section"
 
-    assert_file_contains "$commit_file" "## Context" \
-        "Should have Context section"
+    assert_file_contains "$commit_file" "## Description" \
+        "Should have Description section"
 
     assert_file_contains "$commit_file" "## Expected Output" \
         "Should have Expected Output section"

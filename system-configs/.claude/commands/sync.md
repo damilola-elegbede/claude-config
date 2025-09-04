@@ -3,24 +3,88 @@ description: Sync Claude configurations from system-configs to ~/.claude/
 argument-hint: [--dry-run|--backup|--force]
 ---
 
-# Synchronize Claude Configuration Files
+# /sync Command
 
-Synchronize all Claude configuration files from `system-configs/.claude/` to `~/.claude/`.
-Deploy agents, commands, output-styles, and settings with validation and backup creation.
-
-## Context
-
-This command orchestrates the complete synchronization of Claude system configurations with parallel
-validation and comprehensive safety measures. It handles agents, commands, output-styles, settings,
-and MCP server configurations while maintaining data integrity.
-
-### Usage Patterns
+## Usage
 
 ```bash
-/sync                    # Sync system-configs/.claude/ to ~/.claude/
-/sync --dry-run          # Preview changes without syncing
-/sync --backup           # Create backup before syncing
-/sync --force            # Overwrite existing files without prompting
+/sync                           # Sync system-configs/.claude/ to ~/.claude/
+/sync --dry-run                 # Preview changes without syncing
+/sync --backup                  # Create backup before syncing
+/sync --force                   # Overwrite existing files without prompting
+```
+
+## Description
+
+Synchronize all Claude configuration files from `system-configs/.claude/` to `~/.claude/`. Deploy agents, commands,
+output-styles, and settings with validation and backup creation.
+
+## Expected Output
+
+### Basic Sync Example
+
+```text
+🔄 Syncing Claude configurations...
+📁 Source: system-configs/.claude/ (50 files)
+📁 Destination: ~/.claude/
+✅ Agents synced (28 files)
+✅ Commands synced (15 files)
+✅ Output styles synced (8 files)
+✅ Settings and statusline synced
+
+🔄 Syncing MCP servers to Claude Desktop...
+💾 Backup created: ~/Library/Application Support/Claude/claude_desktop_config.json.backup.20240818_164500
+✅ Claude Desktop MCP configuration updated
+
+📡 MCP Servers configured:
+  ✓ filesystem
+  ✓ github
+  ✓ shadcn-ui
+  ✓ context7
+  ✓ elevenlabs
+  ✓ notionApi
+
+🎯 All configurations and MCP servers deployed successfully
+```
+
+### Dry Run Example
+
+```text
+📖 Preview mode - no changes will be made
+Would sync:
+- 28 agent files to ~/.claude/agents/
+- 18 command files to ~/.claude/commands/
+- 8 output style files to ~/.claude/output-styles/
+- settings.json to ~/.claude/settings.json
+- statusline.sh to ~/.claude/statusline.sh (executable)
+```
+
+## Behavior
+
+### What Gets Synced
+
+```yaml
+Source: ./system-configs/.claude/
+Destination: ~/.claude/
+
+Files Synced:
+  - agents/*.md           → ~/.claude/agents/
+  - commands/*.md         → ~/.claude/commands/
+  - output-styles/*.md    → ~/.claude/output-styles/
+  - settings.json         → ~/.claude/settings.json
+  - statusline.sh         → ~/.claude/statusline.sh
+
+MCP Servers Synced:
+  - From: .mcp.json
+  - To: Claude Desktop config (~/Library/Application Support/Claude/claude_desktop_config.json)
+  - Method: JSON merge with backup
+
+Excluded:
+  - README.md files
+  - AGENT_TEMPLATE.md
+  - AGENT_CATEGORIES.md
+  - AUDIT_VERIFICATION_PROTOCOL.md
+  - *.tmp, *.backup files
 ```
 
 ### Agent Orchestration Strategy
@@ -49,36 +113,6 @@ Parallel execution benefits:
 - All agents validate simultaneously
 - Security-auditor has veto power
 - Total time: 2-3 seconds (vs 8-10 sequential)
-
-## Expected Output
-
-Complete synchronization of Claude configurations with comprehensive validation and reporting.
-
-### What Gets Synced
-
-```yaml
-Source: ./system-configs/.claude/
-Destination: ~/.claude/
-
-Files Synced:
-  - agents/*.md           → ~/.claude/agents/
-  - commands/*.md         → ~/.claude/commands/
-  - output-styles/*.md    → ~/.claude/output-styles/
-  - settings.json         → ~/.claude/settings.json
-  - statusline.sh         → ~/.claude/statusline.sh
-
-MCP Servers Synced:
-  - From: .mcp.json
-  - To: Claude Desktop config (~/Library/Application Support/Claude/claude_desktop_config.json)
-  - Method: JSON merge with backup
-
-Excluded:
-  - README.md files
-  - AGENT_TEMPLATE.md
-  - AGENT_CATEGORIES.md
-  - AUDIT_VERIFICATION_PROTOCOL.md
-  - *.tmp, *.backup files
-```
 
 ### Sync Process Implementation
 
@@ -215,69 +249,3 @@ else
   echo "⚠️  Claude Desktop config not found"
 fi
 ```
-
-### Example Outputs
-
-#### Basic Sync
-
-```text
-User: /sync
-Claude: 🔄 Syncing Claude configurations...
-📁 Source: system-configs/.claude/ (50 files)
-📁 Destination: ~/.claude/
-✅ Agents synced (28 files)
-✅ Commands synced (15 files)
-✅ Output styles synced (8 files)
-✅ Settings and statusline synced
-
-🔄 Syncing MCP servers to Claude Desktop...
-💾 Backup created: ~/Library/Application Support/Claude/claude_desktop_config.json.backup.20240818_164500
-✅ Claude Desktop MCP configuration updated
-
-📡 MCP Servers configured:
-  ✓ filesystem
-  ✓ github
-  ✓ shadcn-ui
-  ✓ context7
-  ✓ elevenlabs
-  ✓ notionApi
-
-🎯 All configurations and MCP servers deployed successfully
-```
-
-#### Dry Run
-
-```text
-User: /sync --dry-run
-Claude: 📖 Preview mode - no changes will be made
-Would sync:
-- 28 agent files to ~/.claude/agents/
-- 18 command files to ~/.claude/commands/
-- 8 output style files to ~/.claude/output-styles/
-- settings.json to ~/.claude/settings.json
-- statusline.sh to ~/.claude/statusline.sh (executable)
-```
-
-### Execution Verification
-
-Deploy execution-evaluator to verify:
-
-- ✅ **Source validated** - system-configs/.claude/ directory exists and accessible
-- ✅ **Destination prepared** - ~/.claude/ directory structure created successfully
-- ✅ **Files synchronized** - All configuration files copied with correct permissions
-- ✅ **Agents deployed** - All agent definitions properly synchronized
-- ✅ **Commands available** - All custom commands deployed and accessible
-- ✅ **Settings applied** - settings.json and statusline.sh configured correctly
-- ✅ **MCP servers synced** - All servers from .mcp.json merged into Claude Desktop config
-- ✅ **MCP config validated** - Claude Desktop configuration JSON syntax verified
-- ✅ **Validation passed** - JSON syntax and file integrity verified
-- ✅ **Backup created** - Previous configuration safely backed up (if requested)
-
-### Implementation Notes
-
-- Uses rsync for efficient file synchronization
-- Automatically sets executable permissions on statusline.sh
-- Validates JSON files after sync
-- Excludes documentation and template files
-- Built-in backup functionality for safety
-- No external configuration files needed

@@ -3,16 +3,103 @@ description: Creates git commit with Claude standards and quality gates
 argument-hint: [--amend]
 ---
 
-# Command Purpose
+# /commit Command
+
+## Usage
+
+```bash
+/commit                         # Create commit with analysis and cleanup
+/commit --amend                 # Amend last commit with staged changes
+```
+
+## Description
 
 Creates a git commit following Claude's standards with proper formatting and co-authorship attribution.
 
 **CRITICAL**: This command NEVER uses `--no-verify`. Quality gates exist to protect code integrity
 and must always be respected. If pre-commit hooks fail, the issues must be fixed, not bypassed.
 
-## Context
+## Expected Output
 
-### Agent Orchestration
+### Parallel Status and Analysis Phase
+
+```text
+🔍 Deploying parallel analysis agents...
+📊 Agent Status:
+  - code-reviewer[1]: Analyzing frontend changes...
+  - code-reviewer[2]: Analyzing backend changes...
+  - code-reviewer[3]: Analyzing test/config changes...
+  - security-auditor[1]: Scanning for secrets...
+  - security-auditor[2]: Vulnerability assessment...
+  - tech-writer: Generating commit messages...
+  - test-engineer: Running affected tests...
+```
+
+### Commit Creation Output
+
+```text
+✅ Analysis complete (4.2 seconds)
+🧹 Cleaning up temporary files...
+📝 Staging changes:
+  - src/components/Login.tsx
+  - src/services/auth.ts
+  - tests/auth.test.ts
+  - src/types/user.ts
+
+📋 Commit Message:
+feat(auth): implement user login with JWT tokens
+
+- Add login component with form validation
+- Integrate JWT authentication service
+- Include comprehensive test coverage
+- Add TypeScript types for user data
+
+🤖 Generated with Claude Code
+Co-Authored-By: Claude <noreply@anthropic.com>
+
+✅ Commit created: abc1234
+```
+
+### File Cleanup Process
+
+Before staging files for commit, the command automatically cleans up temporary and unwanted files:
+
+**Automatic Cleanup Patterns**:
+
+- **Temporary Files**: `*.tmp`, `*.temp`, `*.bak`, `*.orig`, `*.tmp.html`, `*.temp.html`,
+  `*.tmp.js`, `*.temp.py`, `debug_*.html`, `test_output_*.txt`, `scratch_*.md`
+- **System Files**: `.DS_Store`, `Thumbs.db`, `desktop.ini`, `*.swp`, `*.swo`, `*~`
+- **Build/Cache Artifacts**: `node_modules/`, `dist/`, `build/`, `.cache/`, `*.pyc`,
+  `__pycache__/`, `.pytest_cache/`, coverage reports
+- **Development Files**: IDE configs, log files, test outputs
+
+**Smart Cleanup Logic**:
+
+- **Preserve intentional files**: Files explicitly tracked in git are never cleaned
+- **Respect .gitignore**: Uses existing ignore patterns as guidance
+- **Project-aware**: Recognizes framework-specific temp files
+- **User confirmation**: Asks before removing files that might be important
+- **Backup before delete**: Creates `.cleanup-backup/` for recovered files
+
+**Cleanup Override**: Add to `.gitkeep-temp` file, use `# KEEP` comment, or prefix with `keep_`
+
+### Commit Message Format
+
+Follows conventional commit format:
+
+- `type(scope): subject`
+- Types: feat, fix, docs, style, refactor, test, chore
+- Subject: imperative mood, lowercase, no period
+
+**Examples**:
+
+- `feat(settings): add dark mode toggle`
+- `fix(auth): resolve login timeout issue`
+- `docs(readme): update installation instructions`
+
+## Behavior
+
+### Agent Orchestration Strategy
 
 Deploy specialized agents and multiple instances for comprehensive commit preparation:
 
@@ -120,83 +207,6 @@ Rationale:
   - Bypassing hooks creates technical debt
   - Team productivity depends on clean commits
 ```
-
-### File Cleanup Process
-
-Before staging files for commit, the command automatically cleans up temporary and unwanted files:
-
-**Automatic Cleanup Patterns**:
-
-- **Temporary Files**: `*.tmp`, `*.temp`, `*.bak`, `*.orig`, `*.tmp.html`, `*.temp.html`,
-  `*.tmp.js`, `*.temp.py`, `debug_*.html`, `test_output_*.txt`, `scratch_*.md`
-- **System Files**: `.DS_Store`, `Thumbs.db`, `desktop.ini`, `*.swp`, `*.swo`, `*~`
-- **Build/Cache Artifacts**: `node_modules/`, `dist/`, `build/`, `.cache/`, `*.pyc`,
-  `__pycache__/`, `.pytest_cache/`, coverage reports
-- **Development Files**: IDE configs, log files, test outputs
-
-**Smart Cleanup Logic**:
-
-- **Preserve intentional files**: Files explicitly tracked in git are never cleaned
-- **Respect .gitignore**: Uses existing ignore patterns as guidance
-- **Project-aware**: Recognizes framework-specific temp files
-- **User confirmation**: Asks before removing files that might be important
-- **Backup before delete**: Creates `.cleanup-backup/` for recovered files
-
-**Cleanup Override**: Add to `.gitkeep-temp` file, use `# KEEP` comment, or prefix with `keep_`
-
-## Expected Output
-
-When you use `/commit`, I will:
-
-1. **Parallel Status Check** (All simultaneously):
-   - `git status` to see untracked files
-   - `git diff` to see staged and unstaged changes
-   - `git log` to match repository's commit style
-
-2. **Deploy Agents for Parallel Analysis**:
-   - code-reviewer: Analyze change quality
-   - tech-writer: Draft commit message
-   - security-auditor: Check for sensitive data
-
-3. **Clean up and stage appropriate files**:
-   - **Clean up temporary files** before staging with automatic cleanup patterns
-   - Add relevant untracked files that should be committed
-   - Include any files modified by remediation agents
-   - Exclude files that shouldn't be committed (per .gitignore and common patterns)
-
-4. **Create commit** with:
-   - Descriptive message following conventional format
-   - Claude co-authorship attribution:
-
-     ```text
-     🤖 Generated with [Claude Code](https://claude.ai/code)
-
-     Co-Authored-By: Claude <noreply@anthropic.com>
-     ```
-
-5. **Verify success** by checking git status after commit
-
-6. **Deploy execution-evaluator** to validate:
-    - Commit was created successfully
-    - Message format is correct
-    - Co-authorship attribution included
-    - All intended files were committed
-    - No temporary files were committed
-    - **CRITICAL**: Verify --no-verify flag was NOT used (hooks must run)
-
-### Commit Message Format
-
-Follows conventional commit format:
-
-- `type(scope): subject`
-- Types: feat, fix, docs, style, refactor, test, chore
-- Subject: imperative mood, lowercase, no period
-
-**Examples**:
-
-- `feat(settings): add dark mode toggle`
-- `fix(auth): resolve login timeout issue`
-- `docs(readme): update installation instructions`
 
 ### Execution Verification
 

@@ -3,17 +3,121 @@ description: Analyze repository structure, dependencies, docs
 argument-hint: [--lite|component-name]
 ---
 
-# Command Purpose
+# /context Command
+
+## Usage
+
+```bash
+/context                        # Full comprehensive analysis with parallel agents
+/context --lite                 # Quick 2-second essential context
+/context authentication         # Deep component analysis with multi-instance
+/context api                    # Focused API architecture analysis
+/context "payment processing"   # Multi-instance component deep dive
+```
+
+## Description
 
 Analyze repository structure, dependencies, and documentation to provide comprehensive project understanding.
 Three modes: lite (quick), full (comprehensive), and focused (component-specific). Deploy parallel agents
 for multi-instance analysis when needed.
 
-## Context
+## Expected Output
 
-When invoked, analyze the repository structure, dependencies, and documentation to provide comprehensive
-project understanding. In focused mode, deploy 3-5 codebase-analyst instances to analyze different aspects
-of components simultaneously, achieving 4-6x faster analysis than single-agent approaches.
+### Lite Mode Output (--lite, 2 seconds)
+
+```text
+## Quick Context: my-react-app
+
+### Current Status
+🌿 Branch: feature/user-authentication
+📝 3 modified, 1 untracked file
+📋 PR #42: "Add user authentication flow" (Open, all checks passing)
+
+### Modified Files
+- src/components/Login.tsx (modified)
+- src/services/auth.ts (modified)
+- tests/auth.test.ts (modified)
+- src/types/user.ts (untracked)
+
+### Project Purpose
+Modern React task management app with real-time collaboration features
+
+### Key Instructions
+- Run tests before committing (npm test)
+- TypeScript strict mode required
+- Follow atomic commit practices
+```
+
+### Full Mode Output (default, parallel agents)
+
+```text
+## Repository Context: my-react-app
+
+### Technology Stack
+- **Language**: TypeScript 4.9
+- **Framework**: React 18.2 with hooks
+- **Build**: Vite 4.0 (fast HMR, ES modules)
+- **Testing**: Jest + React Testing Library
+- **Styling**: Tailwind CSS + CSS Modules
+- **State**: Zustand for global state
+
+### Project Structure
+- `/src/components` - React components (atomic design)
+- `/src/services` - API clients and business logic
+- `/src/hooks` - Custom React hooks
+- `/src/types` - TypeScript type definitions
+- `/tests` - Unit and integration tests
+- `/docs` - Architecture and API documentation
+
+### Available Commands
+- `npm run dev` - Start development server
+- `npm run build` - Production build
+- `npm test` - Run test suite
+- `npm run lint` - ESLint + Prettier
+- `npm run type-check` - TypeScript validation
+
+### Key Dependencies
+- React Query: Server state management
+- React Router: Client-side routing
+- Axios: HTTP client for API calls
+- Zod: Runtime type validation
+
+### Getting Started
+1. `npm install` - Install dependencies
+2. `cp .env.example .env` - Configure environment
+3. `npm run dev` - Start development server
+4. Open http://localhost:3000
+```
+
+### Focused Mode Output (component analysis)
+
+```text
+## Component Analysis: Authentication Service
+
+### Architecture Assessment
+✅ **Design Pattern**: JWT-based authentication with refresh tokens
+✅ **Security**: Proper token storage in httpOnly cookies
+⚠️  **Session Management**: No automatic cleanup of expired sessions
+
+### Integration Points
+- `/src/services/auth.ts` - Core authentication logic
+- `/src/hooks/useAuth.ts` - React integration hook
+- `/src/components/AuthGuard.tsx` - Route protection
+- `/backend/auth` - Server-side authentication API
+
+### Technical Debt
+🔴 **High Priority**: Password reset flow incomplete
+🟡 **Medium Priority**: Missing rate limiting on login attempts
+🟢 **Low Priority**: Auth hooks could be optimized
+
+### Recommendations
+1. Implement proper session cleanup background task
+2. Add comprehensive password reset workflow
+3. Consider implementing OAuth providers for enhanced UX
+4. Add audit logging for authentication events
+```
+
+## Behavior
 
 ### Analysis Modes
 
@@ -179,102 +283,6 @@ Component Analysis with Instance Pools:
 - **Small repos** (<100 files): Direct analysis without agent overhead
 - **Medium repos** (100-1000 files): Selective agent deployment
 - **Large repos** (>1000 files): Full parallel agent deployment
-
-## Expected Output
-
-### Lite Mode Output
-
-```text
-## Quick Context: my-react-app
-
-### Current Status
-🌿 Branch: feature/user-authentication
-📝 3 modified, 1 untracked file
-📋 PR #42: "Add user authentication flow" (Open, all checks passing)
-
-### Modified Files
-- src/components/Login.tsx (modified)
-- src/services/auth.ts (modified)
-- tests/auth.test.ts (modified)
-- src/types/user.ts (untracked)
-
-### Project Purpose
-Modern React task management app with real-time collaboration features
-
-### Key Instructions
-- Run tests before committing (npm test)
-- TypeScript strict mode required
-- Follow atomic commit practices
-```
-
-### Full Mode Output
-
-```text
-## Repository Context: my-react-app
-
-### Technology Stack
-- **Language**: TypeScript 4.9
-- **Framework**: React 18.2 with hooks
-- **Build**: Vite 4.0 (fast HMR, ES modules)
-- **Testing**: Jest + React Testing Library
-- **Styling**: Tailwind CSS + CSS Modules
-- **State**: Zustand for global state
-
-### Project Structure
-- `/src/components` - React components (atomic design)
-- `/src/services` - API clients and business logic
-- `/src/hooks` - Custom React hooks
-- `/src/types` - TypeScript type definitions
-- `/tests` - Unit and integration tests
-- `/docs` - Architecture and API documentation
-
-### Available Commands
-- `npm run dev` - Start development server
-- `npm run build` - Production build
-- `npm test` - Run test suite
-- `npm run lint` - ESLint + Prettier
-- `npm run type-check` - TypeScript validation
-
-### Key Dependencies
-- React Query: Server state management
-- React Router: Client-side routing
-- Axios: HTTP client for API calls
-- Zod: Runtime type validation
-
-### Getting Started
-1. `npm install` - Install dependencies
-2. `cp .env.example .env` - Configure environment
-3. `npm run dev` - Start development server
-4. Open http://localhost:3000
-```
-
-### Focused Mode Output
-
-```text
-## Component Analysis: Authentication Service
-
-### Architecture Assessment
-✅ **Design Pattern**: JWT-based authentication with refresh tokens
-✅ **Security**: Proper token storage in httpOnly cookies
-⚠️  **Session Management**: No automatic cleanup of expired sessions
-
-### Integration Points
-- `/src/services/auth.ts` - Core authentication logic
-- `/src/hooks/useAuth.ts` - React integration hook
-- `/src/components/AuthGuard.tsx` - Route protection
-- `/backend/auth` - Server-side authentication API
-
-### Technical Debt
-🔴 **High Priority**: Password reset flow incomplete
-🟡 **Medium Priority**: Missing rate limiting on login attempts
-🟢 **Low Priority**: Auth hooks could be optimized
-
-### Recommendations
-1. Implement proper session cleanup background task
-2. Add comprehensive password reset workflow
-3. Consider implementing OAuth providers for enhanced UX
-4. Add audit logging for authentication events
-```
 
 ### Performance & Optimization
 

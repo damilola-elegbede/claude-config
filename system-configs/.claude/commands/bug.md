@@ -3,10 +3,37 @@ description: File GitHub issues from context or explicit bug reports
 argument-hint: [description] [--priority high] [--labels label1,label2]
 ---
 
-# Command Purpose
+# /bug Command
 
-Files GitHub issues directly from conversation context or explicit bug reports using the GitHub MCP server.
-Extracts context automatically and creates professional bug reports with proper formatting and labels.
+## Usage
+
+```bash
+# Simple bug report
+/bug Login form doesn't validate emails properly
+→ Creates issue with bug label, extracts context from git/conversation
+→ Returns: "Created issue #247 in owner/repo"
+
+# Security issue with priority
+/bug --priority critical --labels security SQL injection in user search
+→ Creates high-priority security issue with proper labeling
+→ Returns: "Created issue #248 (critical security) in owner/repo"
+
+# From conversation context
+User: "API timeouts after recent changes"
+/bug
+→ Analyzes conversation, detects performance issue, creates labeled issue
+→ Returns: "Created issue #249 (performance) in owner/repo"
+
+# Error scenarios
+/bug Authentication broken
+→ If GITHUB_TOKEN missing: "Error: GitHub authentication failed. Set GITHUB_TOKEN environment variable"
+→ If network issue: "Retrying... (attempt 2/3)" then creates issue or fails with clear message
+→ If rate limited: "Error: GitHub API rate limit exceeded. Try again in 47 minutes"
+```
+
+## Description
+
+Files GitHub issues directly from conversation context or explicit bug reports using the GitHub MCP server. Extracts context automatically and creates professional bug reports with proper formatting and labels.
 
 Use the following options when processing user input:
 
@@ -15,7 +42,35 @@ Use the following options when processing user input:
 - Add specific labels: `/bug --labels <label1,label2>`
 - Auto-assign: `/bug --assign <username>`
 
-## Context
+## Expected Output
+
+Creates GitHub issues using `mcp__github_create_issue` with automatic context extraction from conversation history, git status, current branch, and recent commits. Applies intelligent labeling and formatting based on issue content. Returns the created issue number (e.g., "#123") immediately after successful creation for tracking and reference.
+
+### Issue Template
+
+```markdown
+**Description:** [Issue summary]
+**Steps to Reproduce:** [Auto-extracted or manual]
+**Expected vs Actual:** [Behavior comparison]
+**Environment:** [Branch, OS, versions from context]
+**Context:** [Recent commits, modified files]
+---
+*Filed by Claude Code*
+```
+
+### Execution Verification
+
+Deploy execution-evaluator to verify:
+
+- ✅ **Issue created** - GitHub issue successfully created with valid issue number
+- ✅ **Context extracted** - Repository context and conversation history analyzed
+- ✅ **Labels applied** - Appropriate labels assigned based on content analysis
+- ✅ **Format validated** - Professional issue format with proper markdown
+- ✅ **Return value** - Issue number returned for tracking and reference
+- ✅ **Authentication verified** - GitHub MCP server authentication successful
+- ✅ **Repository access** - Proper permissions confirmed for issue creation
+
+## Behavior
 
 ### Agent Orchestration
 
@@ -35,7 +90,7 @@ security-auditor:
   parallel_with: [tech-writer, project-orchestrator]
 
 project-orchestrator:
-  role: **Execute in parallel (not sequentially):** Coordinate bug workflow and prioritization
+  role: Coordinate bug workflow and prioritization
   input: Bug severity, component analysis, team assignments
   output: Workflow coordination, team notifications, priority setting
   parallel_with: [tech-writer, security-auditor]
@@ -55,18 +110,6 @@ project-orchestrator:
 - `ui/ux`: "layout", "responsive", "design" → ui/ux label
 - `documentation`: "readme", "docs", "guide" → documentation label
 - Default: bug label
-
-### Issue Template
-
-```markdown
-**Description:** [Issue summary]
-**Steps to Reproduce:** [Auto-extracted or manual]
-**Expected vs Actual:** [Behavior comparison]
-**Environment:** [Branch, OS, versions from context]
-**Context:** [Recent commits, modified files]
----
-*Filed by Claude Code*
-```
 
 ### GitHub Integration
 
@@ -100,13 +143,6 @@ project-orchestrator:
 - GITHUB_TOKEN environment variable
 - GitHub MCP server configured in settings
 
-### Auto-Validation
-
-- Repository access and permissions
-- Title length limits (truncates if >256 chars)
-- Label existence (creates missing labels)
-- Issue creation success and URL accessibility
-
 ### Error Handling
 
 - Missing GitHub CLI → Installation guidance
@@ -117,54 +153,6 @@ project-orchestrator:
 - Rate limiting → Returns "Error: GitHub API rate limit exceeded. Try again in X minutes"
 - Permission denied → Returns "Error: Insufficient permissions to create issues in this repository"
 
-## Expected Output
-
-Creates GitHub issues using `mcp__github_create_issue` with automatic context extraction from conversation
-history, git status, current branch, and recent commits. Applies intelligent labeling and formatting based on
-issue content. Returns the created issue number (e.g., "#123") immediately after successful creation for
-tracking and reference.
-
-### Examples
-
-```bash
-# Simple bug report
-/bug Login form doesn't validate emails properly
-→ Creates issue with bug label, extracts context from git/conversation
-→ Returns: "Created issue #247 in owner/repo"
-
-# Security issue with priority
-/bug --priority critical --labels security SQL injection in user search
-→ Creates high-priority security issue with proper labeling
-→ Returns: "Created issue #248 (critical security) in owner/repo"
-
-# From conversation context
-User: "API timeouts after recent changes"
-/bug
-→ Analyzes conversation, detects performance issue, creates labeled issue
-→ Returns: "Created issue #249 (performance) in owner/repo"
-
-# Error scenarios
-/bug Authentication broken
-→ If GITHUB_TOKEN missing: "Error: GitHub authentication failed. Set GITHUB_TOKEN environment variable"
-→ If network issue: "Retrying... (attempt 2/3)" then creates issue or fails with clear message
-→ If rate limited: "Error: GitHub API rate limit exceeded. Try again in 47 minutes"
-```
-
-### Execution Verification
-
-Deploy execution-evaluator to verify:
-
-- ✅ **Issue created** - GitHub issue successfully created with valid issue number
-- ✅ **Context extracted** - Repository context and conversation history analyzed
-- ✅ **Labels applied** - Appropriate labels assigned based on content analysis
-- ✅ **Format validated** - Professional issue format with proper markdown
-- ✅ **Return value** - Issue number returned for tracking and reference
-- ✅ **Authentication verified** - GitHub MCP server authentication successful
-- ✅ **Repository access** - Proper permissions confirmed for issue creation
-
 ### Integration Notes
 
-Uses GitHub MCP server (`mcp__github_create_issue`) with existing authentication. Auto-detects context from
-git state, conversation history, and file changes. Creates professional issues with smart labeling and proper
-markdown formatting. Returns the created issue number (e.g., "#123") upon successful creation for easy
-reference and tracking.
+Uses GitHub MCP server (`mcp__github_create_issue`) with existing authentication. Auto-detects context from git state, conversation history, and file changes. Creates professional issues with smart labeling and proper markdown formatting. Returns the created issue number (e.g., "#123") upon successful creation for easy reference and tracking.

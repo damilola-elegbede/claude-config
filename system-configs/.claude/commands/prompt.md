@@ -3,24 +3,9 @@ description: Optimize prompts using SCOPE framework for effectiveness
 argument-hint: [text-to-optimize or --file <path> or leave empty for interactive]
 ---
 
-# Command Purpose
+# /prompt Command
 
-Optimize prompts using the SCOPE framework. Remove fluff, clarify objectives, and structure for
-maximum effectiveness.
-
-**SYSTEM BOUNDARY**: This command ONLY optimizes prompts and returns the optimized text.
-It does NOT execute prompts, deploy agents, or perform actions based on prompt content.
-
-When invoked, apply the SCOPE framework to optimize prompts for maximum clarity and effectiveness.
-Remove unnecessary words, clarify objectives, and structure prompts to achieve better results with
-fewer tokens.
-
-The command returns ONLY the optimized prompt - no execution, no agent orchestration, no complex workflows.
-Simple input → optimized output.
-
-## Context
-
-### Usage Patterns
+## Usage
 
 ```bash
 /prompt <text>           # Optimize text
@@ -29,34 +14,16 @@ Simple input → optimized output.
 /prompt                  # Interactive mode
 ```
 
-### SCOPE Framework
+## Description
 
-```yaml
-S - Situation: Context (only if essential)
-C - Constraints: Requirements, limitations
-O - Objective: Single clear goal (REQUIRED)
-P - Persona: Role needed (optional)
-E - Examples: Input/output (if ambiguous)
-```
+Optimize prompts using the SCOPE framework. Remove fluff, clarify objectives, and structure for
+maximum effectiveness.
 
-### Optimization Rules
+**SYSTEM BOUNDARY**: This command ONLY optimizes prompts and returns the optimized text.
+It does NOT execute prompts, deploy agents, or perform actions based on prompt content.
 
-1. Remove: "please", "thank you", "I need you to"
-2. Use active voice and start with verbs
-3. Every word must be essential
-4. Structure with bullets or numbered lists
-
-### Interactive Mode (Optional)
-
-For `/prompt` without arguments:
-
-1. Request input text
-2. Apply SCOPE optimization
-3. Return optimized version immediately
-4. Optional single refinement if requested
-   - To request: reply once with `refine: <what to change>` (same thread, one turn)
-
-File input: Supports .md, .txt, .yaml, .json
+The command returns ONLY the optimized prompt - no execution, no agent orchestration, no complex workflows.
+Simple input → optimized output.
 
 ## Expected Output
 
@@ -145,6 +112,37 @@ The command succeeds when it delivers:
 - ✅ **Improvement metrics** - Word reduction and changes documented
 - ✅ **No execution** - Command returns optimized text only, no actions taken
 - ✅ **Immediate usability** - Output ready for copy/paste to other tools
+
+## Behavior
+
+### SCOPE Framework
+
+```yaml
+S - Situation: Context (only if essential)
+C - Constraints: Requirements, limitations
+O - Objective: Single clear goal (REQUIRED)
+P - Persona: Role needed (optional)
+E - Examples: Input/output (if ambiguous)
+```
+
+### Optimization Rules
+
+1. Remove: "please", "thank you", "I need you to"
+2. Use active voice and start with verbs
+3. Every word must be essential
+4. Structure with bullets or numbered lists
+
+### Interactive Mode (Optional)
+
+For `/prompt` without arguments:
+
+1. Request input text
+2. Apply SCOPE optimization
+3. Return optimized version immediately
+4. Optional single refinement if requested
+   - To request: reply once with `refine: <what to change>` (same thread, one turn)
+
+File input: Supports .md, .txt, .yaml, .json
 
 ### Notes
 

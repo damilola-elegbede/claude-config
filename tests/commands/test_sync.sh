@@ -21,18 +21,15 @@ test_sync_structure() {
     assert_file_contains "$sync_file" "description:" \
         "Should have description in frontmatter"
 
-    # Check required sections (new format)
-    assert_file_contains "$sync_file" "# Synchronize Claude Configuration Files" \
-        "Should have main header"
+    # Check required sections (new template format)
+    assert_file_contains "$sync_file" "## Usage" \
+        "Should have Usage section"
 
-    assert_file_contains "$sync_file" "## Context" \
-        "Should have Context section"
+    assert_file_contains "$sync_file" "## Description" \
+        "Should have Description section"
 
     assert_file_contains "$sync_file" "## Expected Output" \
         "Should have Expected Output section"
-
-    assert_file_contains "$sync_file" "### What Gets Synced" \
-        "Should have What Gets Synced subsection"
 }
 
 # Test sync command content

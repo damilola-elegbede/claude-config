@@ -3,25 +3,89 @@ description: Universal test runner with auto-discovery and execution
 argument-hint: [--create|--framework <name>|--coverage]
 ---
 
-# Universal Test Runner Command
-
-Universal test runner that discovers and runs tests automatically for any repository,
-and creates a base level test suite when none exist. Uses a 3-phase discovery algorithm: README analysis,
-package manager detection, and framework conventions. Creates comprehensive
-test suites when none exist.
+# /test Command
 
 ## Usage
 
 ```bash
-/test                    # Auto-discover and run tests
-/test --create           # Generate test suite if missing
-/test --framework <name> # Use specific framework (jest, pytest, etc.)
-/test --coverage         # Run with coverage reporting
+/test                           # Auto-discover and run tests
+/test --create                  # Generate test suite if missing
+/test --framework <name>        # Use specific framework (jest, pytest, etc.)
+/test --coverage                # Run with coverage reporting
 ```
 
-## Agent Orchestration - Multi-Instance Test Runners
+## Description
 
-### Parallel Test Execution with Instance Pools
+Universal test runner that discovers and runs tests automatically for any repository, and creates a base level test
+suite when none exist. Uses a 3-phase discovery algorithm: README analysis, package manager detection, and framework
+conventions. Creates comprehensive test suites when none exist.
+
+## Expected Output
+
+### Node.js Project with Jest Example
+
+```text
+🔍 Discovering tests...
+✅ Found in package.json: "test": "jest"
+🧪 Running: npm test
+
+✅ All tests passed (4/4)
+📊 Coverage: 87.3% lines, 82.1% branches
+```
+
+### Python Project (No Tests) Example
+
+```text
+🔍 Discovering tests...
+⚠️  No tests found. Deploying test-engineer to create test suite...
+📝 Generated: tests/test_main.py, tests/test_utils.py
+✅ Created pytest.ini configuration
+🧪 Running: pytest -v
+
+✅ All tests passed (6/6)
+```
+
+### Go Project with Custom Command Example
+
+```text
+🔍 Discovering tests...
+✅ Found in README.md: "make test"
+🧪 Running: make test
+
+✅ All tests passed
+📊 Coverage: 78.9% of statements
+```
+
+### Real-time Test Output with Enhanced Formatting
+
+```text
+🧪 Running Tests: npm test
+
+✅ PASS src/utils.test.js (1.2s)
+  ✓ add function (5ms)
+  ✓ multiply function (3ms)
+
+✅ PASS src/auth.test.js (2.1s)
+  ✓ validates email format (12ms)
+  ✓ hashes passwords correctly (45ms)
+
+📊 Test Results:
+  Suites: 2 passed, 2 total
+  Tests:  4 passed, 4 total
+  Time:   3.3s
+  Coverage: 85.2% (lines), 78.9% (branches)
+```
+
+## Behavior
+
+When invoked, I automatically discover and run tests using multi-instance parallel agent deployment. I deploy 3-5
+test-engineer instances to execute different test suites simultaneously (unit, integration, e2e, performance, security),
+achieving 4-5x faster execution than sequential testing. Each instance handles a specific test type independently for
+maximum efficiency and isolation.
+
+### Agent Orchestration - Multi-Instance Test Runners
+
+#### Parallel Test Execution with Instance Pools
 
 Deploy multiple test-engineer instances for simultaneous test suite execution:
 
@@ -74,7 +138,7 @@ debugger:
 #   Test isolation: Each instance runs independently
 ```
 
-### Multi-Instance Execution Strategy
+#### Multi-Instance Execution Strategy
 
 ```yaml
 Test Suite Parallelization with Instance Pools:
@@ -104,17 +168,9 @@ Time Optimization:
   - Test isolation: No interference between suites
 ```
 
-## Behavior
+### Discovery Algorithm
 
-When invoked, I automatically discover and run tests using multi-instance parallel
-agent deployment. I deploy 3-5 test-engineer instances to execute different test
-suites simultaneously (unit, integration, e2e, performance, security), achieving
-4-5x faster execution than sequential testing. Each instance handles a specific
-test type independently for maximum efficiency and isolation.
-
-## Discovery Algorithm
-
-### Phase 1: Parallel Discovery & Analysis
+#### Phase 1: Parallel Discovery & Analysis
 
 I scan README.md for test commands using these patterns:
 
@@ -131,7 +187,7 @@ grep -i "test\|testing\|run.*test" README.md
 - cargo test
 ```
 
-### Phase 2: Package Manager Detection
+#### Phase 2: Package Manager Detection
 
 Language-specific package manager inspection:
 
@@ -166,7 +222,7 @@ Java:
   command: dotnet test
 ```
 
-### Phase 3: Framework Convention Detection
+#### Phase 3: Framework Convention Detection
 
 File pattern analysis for common test structures:
 
@@ -183,7 +239,7 @@ find . -name "*test*" -o -name "*spec*" | head -10
 - **/tests/**      # General test directory
 ```
 
-## Test Generation (--create)
+### Test Generation (--create)
 
 When no tests exist, **test-engineer** agent creates comprehensive test suites:
 
@@ -215,15 +271,15 @@ func TestAdd(t *testing.T) {
 
 Automatically adds test scripts to package.json/pyproject.toml and creates config files
 
-## Test Execution Process
+### Test Execution Process
 
-### Pre-Execution Validation
+#### Pre-Execution Validation
 
 1. **Dependency Check**: Ensure test framework is installed
 2. **Environment Setup**: Set NODE_ENV=test, activate virtual environments
 3. **Database Preparation**: Run migrations, seed test data if configured
 
-### Execution Strategy
+#### Execution Strategy
 
 ```yaml
 Discovery Result Processing:
@@ -242,28 +298,7 @@ Discovery Result Processing:
     - Run generated tests to verify setup
 ```
 
-### Output Enhancement
-
-```text
-# Real-time test output with enhanced formatting:
-🧪 Running Tests: npm test
-
-✅ PASS src/utils.test.js (1.2s)
-  ✓ add function (5ms)
-  ✓ multiply function (3ms)
-
-✅ PASS src/auth.test.js (2.1s)
-  ✓ validates email format (12ms)
-  ✓ hashes passwords correctly (45ms)
-
-📊 Test Results:
-  Suites: 2 passed, 2 total
-  Tests:  4 passed, 4 total
-  Time:   3.3s
-  Coverage: 85.2% (lines), 78.9% (branches)
-```
-
-## Framework-Specific Optimizations
+### Framework-Specific Optimizations
 
 ```bash
 # JavaScript (Jest/Vitest)
@@ -281,16 +316,16 @@ go test ./...                    # Standard
 go test -cover -race ./...       # Coverage + race detection
 ```
 
-## Error Handling & Recovery
+### Error Handling & Recovery
 
-### Common Failure Scenarios
+#### Common Failure Scenarios
 
 - **Missing Dependencies**: Auto-install with package manager
 - **Database Issues**: Create test DB and run migrations
 - **Config Errors**: Generate minimal working config
 - **Permission Issues**: Fix with chmod or container
 
-### Graceful Degradation
+#### Graceful Degradation
 
 If test discovery fails completely:
 
@@ -298,9 +333,9 @@ If test discovery fails completely:
 2. **Manual guidance**: Provide setup commands for detected project type
 3. **Test generation**: Offer to create basic test structure
 
-## Integration with Specialized Agents
+### Integration with Specialized Agents
 
-### test-engineer Multi-Instance Deployment
+#### test-engineer Multi-Instance Deployment
 
 Multiple test-engineer instances are deployed for:
 
@@ -318,7 +353,7 @@ Medium project (100-500 tests): 3 instances (unit + integration + e2e)
 Large project (500+ tests): 5 instances (all test types)
 ```
 
-### execution-evaluator Verification
+#### execution-evaluator Verification
 
 After test execution, validates:
 
@@ -327,57 +362,3 @@ After test execution, validates:
 - ✅ Coverage thresholds met (if configured)
 - ✅ Test artifacts generated correctly
 - ✅ CI integration working properly
-
-## Success Metrics
-
-- ✅ >95% test command discovery rate
-- ✅ <5 seconds discovery time
-- ✅ 90% error recovery rate
-
-## Examples
-
-### Node.js Project with Jest
-
-```text
-User: /test
-Claude: 🔍 Discovering tests...
-✅ Found in package.json: "test": "jest"
-🧪 Running: npm test
-
-✅ All tests passed (4/4)
-📊 Coverage: 87.3% lines, 82.1% branches
-```
-
-### Python Project (No Tests)
-
-```text
-User: /test
-Claude: 🔍 Discovering tests...
-⚠️  No tests found. Deploying test-engineer to create test suite...
-📝 Generated: tests/test_main.py, tests/test_utils.py
-✅ Created pytest.ini configuration
-🧪 Running: pytest -v
-
-✅ All tests passed (6/6)
-```
-
-### Go Project with Custom Command
-
-```text
-User: /test
-Claude: 🔍 Discovering tests...
-✅ Found in README.md: "make test"
-🧪 Running: make test
-
-✅ All tests passed
-📊 Coverage: 78.9% of statements
-```
-
-## Notes
-
-- Automatically detects CI environments and adjusts flags accordingly
-- Supports mono-repos by detecting multiple project types
-- Preserves existing test configurations and conventions
-- Generates tests follow language-specific best practices
-- Real-time output with enhanced formatting and emojis
-- Comprehensive error recovery with actionable suggestions

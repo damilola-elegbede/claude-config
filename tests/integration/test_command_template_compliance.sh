@@ -70,13 +70,31 @@ test_existing_commands_template_compliance() {
                 echo "      ⚠️  Consider adding main heading after frontmatter"
             fi
 
-            # Check for expected template sections
-            if grep -q "## Context" "$cmd_file"; then
-                echo "      ✅ Has Context section"
+            # Check for required template sections
+            if grep -q "## Usage" "$cmd_file"; then
+                echo "      ✅ Has Usage section"
+            else
+                echo "      ❌ Missing required Usage section"
+                compliance_issues=$((compliance_issues + 1))
+            fi
+            
+            if grep -q "## Description" "$cmd_file"; then
+                echo "      ✅ Has Description section"
+            else
+                echo "      ❌ Missing required Description section"
+                compliance_issues=$((compliance_issues + 1))
             fi
             
             if grep -q "## Expected Output" "$cmd_file"; then
                 echo "      ✅ Has Expected Output section"
+            else
+                echo "      ❌ Missing required Expected Output section"
+                compliance_issues=$((compliance_issues + 1))
+            fi
+
+            # Check for optional template sections
+            if grep -q "## Behavior" "$cmd_file"; then
+                echo "      ✅ Has optional Behavior section"
             fi
 
         else
@@ -213,11 +231,26 @@ argument-hint: [file-path]
 # Perfect Command Purpose
 This command follows the template exactly.
 
-## Context
-Clear context and guidelines.
+## Usage
+
+```bash
+/perfect-command [file-path]
+```
+
+## Description
+
+This command demonstrates perfect template compliance with all required sections.
 
 ## Expected Output
-Well-defined output expectations using $ARGUMENTS placeholder.
+
+```text
+✅ Command executed successfully with [file-path]
+Processing complete
+```
+
+## Behavior
+
+Optional detailed behavior description.
 EOF
 
     # Simulate validation logic

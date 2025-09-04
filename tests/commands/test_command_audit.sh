@@ -158,9 +158,13 @@ test_template_file_exists() {
     assert_file_contains "$template_file" "description.*:" \
         "template should document description field"
 
-    # Check template shows argument-hint as optional
-    assert_file_contains "$template_file" "argument-hint.*optional\|optional.*argument-hint" \
-        "template should specify argument-hint as optional"
+    # Check template shows argument-hint in Optional Fields section
+    assert_file_contains "$template_file" "Optional Fields" \
+        "template should have Optional Fields section"
+    
+    # Check that argument-hint is documented in the Optional Fields section
+    assert_file_contains "$template_file" "argument-hint" \
+        "template should document argument-hint field"
 
     return 0
 }
@@ -182,21 +186,42 @@ argument-hint: [optional-arg]
 # Valid Command Purpose
 This is a properly formatted command.
 
-## Context
-Clear context provided.
+## Usage
+
+```bash
+/valid-command [optional-arg]
+```
+
+## Description
+
+This command demonstrates proper template compliance.
 
 ## Expected Output
-Well-defined output expectations.
+
+```text
+✅ Command executed successfully
+Output: [optional-arg] processed
+```
+
+## Behavior
+
+Optional detailed behavior section.
 EOF
 
-    # Create invalid command missing description
+    # Create invalid command missing description and sections
     cat > "$test_commands_dir/invalid-command.md" << 'EOF'
 ---
 argument-hint: [arg]
 ---
 
 # Invalid Command
-Missing required description field.
+Missing required description field and template sections.
+
+## Usage
+
+```bash
+/invalid-command [arg]
+```
 EOF
 
     # Create command with invalid argument-hint format

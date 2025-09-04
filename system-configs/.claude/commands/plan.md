@@ -3,25 +3,9 @@ description: Generate PRD and PR-based task files with agent assignments
 argument-hint: [task_description]
 ---
 
-# Command Purpose
+# /plan Command
 
-Generates Product Requirements Document (PRD) and PR-based task files with
-agent assignments. Never guesses unclear requirements - asks for clarification
-while staying in plan mode.
-
-## Context
-
-When invoked, I enter plan mode and systematically analyze requirements,
-asking for clarification on any ambiguities. I generate a Product Requirements
-Document (PRD) preview showing phases, PRs, and task breakdown.
-
-**CRITICAL**: ALL modes (default, -s, -f) MUST wait for explicit user approval
-before creating any implementation files. No mode should assume approval or
-auto-proceed to file creation. Only after receiving explicit "yes", "approve",
-"proceed", or 👍 do I create implementation files in `.tmp/<feature-name>/` with
-detailed agent assignments and technical specifications.
-
-### Usage Patterns
+## Usage
 
 ```bash
 /plan <task_description>             # Standard mode
@@ -30,6 +14,85 @@ detailed agent assignments and technical specifications.
 /plan -f <file_path>                 # Read from file
 /plan --file <file_path>             # Read from file
 ```
+
+## Description
+
+Generates Product Requirements Document (PRD) and PR-based task files with agent assignments. Never guesses unclear
+requirements - asks for clarification while staying in plan mode.
+
+## Expected Output
+
+### Standard Planning Mode
+
+```text
+User: /plan implement authentication
+Claude: 📋 Entering plan mode...
+
+## PRD Preview: Authentication System
+
+Executive Summary: JWT-based auth with registration/login
+Phases: 3 phases, 9 PRs, 33 tasks
+Key Requirements: Bcrypt, RS256, <500ms response
+
+Ready to proceed? (yes/no/modify)
+
+User: yes
+Claude: ✅ Approved! Creating implementation files in .tmp/authentication/:
+- prd.md
+- phase_1_pr_1_database.md (3 tasks)
+- phase_1_pr_2_services.md (4 tasks)
+[... 7 more PR files]
+```
+
+### File-Based Planning
+
+```text
+User: /plan -f requirements.txt
+Claude: 📋 Entering plan mode...
+Reading requirements from file...
+
+## PRD Preview: [Feature from File]
+
+[Generated plan preview]
+
+Ready to proceed? (yes/no/modify)
+
+User: modify
+Claude: What would you like me to adjust in the plan?
+[Stays in plan mode awaiting modifications]
+```
+
+### Simple Mode Planning
+
+```text
+User: /plan -s add user profile page
+Claude: 📋 Entering plan mode (simple)...
+
+## PRD Preview: User Profile Page
+
+Executive Summary: Single-page user profile with edit functionality
+Phases: 1 phase, 1 PR, 5 tasks
+Key Requirements: Form validation, avatar upload, responsive design
+
+Ready to proceed? (yes/no/modify)
+
+User: yes
+Claude: ✅ Approved! Creating implementation files in .tmp/user-profile/:
+- prd.md
+- phase_1_pr_1_user_profile.md (5 tasks)
+```
+
+## Behavior
+
+### Command Execution Flow
+
+1. Enter plan mode
+2. Analyze requirements, ask clarification if needed
+3. Generate PRD preview with "Ready to proceed? (yes/no/modify)" prompt
+4. **MANDATORY**: Wait for explicit user approval - NEVER assume or skip this step
+5. Create files in `.tmp/<feature-name>/` ONLY after receiving approval
+6. If user says "modify" - stay in plan mode and adjust the plan
+7. If user says "no/cancel" - exit without creating files
 
 ### Agent Orchestration
 
@@ -63,60 +126,6 @@ Execute in parallel (not sequentially):
   - Run simultaneously in a single response: 40% faster PRD generation
 ```
 
-### Command Execution Flow
-
-1. Enter plan mode
-2. Analyze requirements, ask clarification if needed
-3. Generate PRD preview with "Ready to proceed? (yes/no/modify)" prompt
-4. **MANDATORY**: Wait for explicit user approval - NEVER assume or skip this step
-5. Create files in `.tmp/<feature-name>/` ONLY after receiving approval
-6. If user says "modify" - stay in plan mode and adjust the plan
-7. If user says "no/cancel" - exit without creating files
-
-### Plan Preview Format
-
-PRD preview shows:
-
-- Executive Summary
-- Implementation Phases with PR counts
-- Key Requirements
-- Approval prompt
-
-### File Structure
-
-#### Generated Files
-
-- `prd.md` - Product Requirements Document
-- `phase_X_pr_Y_<description>.md` - PR implementation files
-- `rollback.md` - Rollback procedures (if needed)
-
-#### PRD Contents
-
-- Executive Summary
-- Business Objectives & Scope
-- Technical Requirements
-- Implementation Phases
-- Success Metrics & Risks
-- Dependencies & Timeline
-
-#### Phase Organization
-
-Phases are organized with clear dependencies:
-
-- Phase 1: Foundation (infrastructure, contracts)
-- Phase 2: Implementation (features, logic)
-- Phase 3: Integration (connections, validation)
-
-#### Phase Files (Auto-Generated)
-
-Each PR file contains tasks with:
-
-- **Task ID**: `Task_X_Y_ZZ` format
-- **Assignees**: Specialized agents
-- **Execution**: Independent/Concurrent/Depends
-- **Technical Details**: Implementation steps
-- **Testing**: Acceptance criteria
-
 ### Clarification Protocol
 
 **Never guess requirements.** When unclear:
@@ -136,8 +145,7 @@ Example ambiguities:
 
 #### Granularity Framework
 
-Each PR contains **3-5 granular tasks** (1-8 hours each) following this
-hierarchy:
+Each PR contains **3-5 granular tasks** (1-8 hours each) following this hierarchy:
 
 - **Phase 1**: Infrastructure (schema, APIs, configs)
 - **Phase 2**: Implementation (logic, endpoints, components)
@@ -157,10 +165,8 @@ API: Contract → Implementation → Security → Testing → Docs
 
 #### Dependency Types
 
-- **Hard Dependencies**: Schema → Code, API → Frontend,
-  Infrastructure → Deployment
-- **Soft Dependencies**: Frontend/Backend (shared API),
-  Testing/Implementation (parallel)
+- **Hard Dependencies**: Schema → Code, API → Frontend, Infrastructure → Deployment
+- **Soft Dependencies**: Frontend/Backend (shared API), Testing/Implementation (parallel)
 - **Independent**: Separate services, components, infrastructure, test suites
 
 #### Execution Rules
@@ -176,14 +182,10 @@ Coordination: API contracts, schema approval, integration checkpoints
 #### Assignment Matrix
 
 ```yaml
-Infrastructure: database-admin, database-admin, api-architect,
-  devops, performance-engineer, security-auditor
-Implementation: backend-engineer, frontend-architect, mobile-engineer,
-  ui-designer
-Quality: code-reviewer, security-auditor, performance-engineer,
-  test-engineer, accessibility-auditor
-Technology: React/Vue→frontend-architect, Node/Python→backend-engineer,
-  K8s→cloud-architect, Auth→security-auditor
+Infrastructure: database-admin, database-admin, api-architect, devops, performance-engineer, security-auditor
+Implementation: backend-engineer, frontend-architect, mobile-engineer, ui-designer
+Quality: code-reviewer, security-auditor, performance-engineer, test-engineer, accessibility-auditor
+Technology: React/Vue→frontend-architect, Node/Python→backend-engineer, K8s→cloud-architect, Auth→security-auditor
 ```
 
 #### Priority Rules
@@ -192,33 +194,10 @@ Technology: React/Vue→frontend-architect, Node/Python→backend-engineer,
 2. **Specialist-Preferred**: Domain experts for specialized tech
 3. **Multi-Agent**: Complex tasks get primary + secondary + quality agents
 
-### Execution Sequencing
-
-#### Task Types
-
-- **Independent**: Start immediately, full parallel (separate services/components)
-- **Concurrent**: Parallel with coordination (Frontend/Backend shared API)
-- **Depends**: Sequential execution (Migration before code, API before implementation)
-
-#### Sequencing Patterns
-
-```yaml
-Phase_1: Schema, API contracts, infrastructure (Independent within phase)
-Phase_2: Backend/Frontend services (Concurrent), migrations (Depends on schema)
-Phase_3: E2E testing (Depends on implementation), docs (Concurrent with testing)
-```
-
-### Agent Patterns
-
-- **Features**: backend-engineer + frontend-architect + test-engineer
-- **Bug fixes**: debugger → backend-engineer → test-engineer
-- **Performance**: performance-engineer + performance-engineer
-- **Security**: security-auditor + code-reviewer
-
 ### Approval Workflow
 
-**MANDATORY FOR ALL MODES**: Stay in plan mode until user explicitly responds.
-Never assume approval based on input method or command flags.
+**MANDATORY FOR ALL MODES**: Stay in plan mode until user explicitly responds. Never assume approval based on input
+method or command flags.
 
 #### User Response Options
 
@@ -232,6 +211,31 @@ Never assume approval based on input method or command flags.
 - Wait for user input before any file operations
 - Default mode, -s mode, and -f mode ALL follow same approval process
 - No auto-proceeding regardless of how requirements were provided
+
+### File Structure
+
+#### Generated Files
+
+- `prd.md` - Product Requirements Document
+- `phase_X_pr_Y_<description>.md` - PR implementation files
+- `rollback.md` - Rollback procedures (if needed)
+
+#### PRD Contents
+
+- Executive Summary
+- Business Objectives & Scope
+- Technical Requirements
+- Implementation Phases
+- Success Metrics & Risks
+- Dependencies & Timeline
+
+### Phase Organization
+
+Phases are organized with clear dependencies:
+
+- Phase 1: Foundation (infrastructure, contracts)
+- Phase 2: Implementation (features, logic)
+- Phase 3: Integration (connections, validation)
 
 ### Task Template Structure
 
@@ -286,6 +290,29 @@ Complex requirements span phases:
 - **REQ-AUTH-001**: Phase 1 (schema) → Phase 2 (logic) → Phase 3 (integration)
 - **Cross-phase validation** ensures complete requirement coverage
 
+### Execution Sequencing
+
+#### Task Types
+
+- **Independent**: Start immediately, full parallel (separate services/components)
+- **Concurrent**: Parallel with coordination (Frontend/Backend shared API)
+- **Depends**: Sequential execution (Migration before code, API before implementation)
+
+#### Sequencing Patterns
+
+```yaml
+Phase_1: Schema, API contracts, infrastructure (Independent within phase)
+Phase_2: Backend/Frontend services (Concurrent), migrations (Depends on schema)
+Phase_3: E2E testing (Depends on implementation), docs (Concurrent with testing)
+```
+
+### Agent Patterns
+
+- **Features**: backend-engineer + frontend-architect + test-engineer
+- **Bug fixes**: debugger → backend-engineer → test-engineer
+- **Performance**: performance-engineer + performance-engineer
+- **Security**: security-auditor + code-reviewer
+
 ### Execution Verification
 
 Deploy execution-evaluator to verify:
@@ -298,44 +325,6 @@ Deploy execution-evaluator to verify:
 - ✅ **Agent assignments** - Specialized agents properly matched to tasks
 - ✅ **PRD compliance** - All requirements traceable through task breakdown
 - ✅ **Phase organization** - Clear dependencies and parallel execution plans
-
-## Expected Output
-
-### Example Usage
-
-```text
-User: /plan implement authentication
-Claude: 📋 Entering plan mode...
-
-## PRD Preview: Authentication System
-
-Executive Summary: JWT-based auth with registration/login
-Phases: 3 phases, 9 PRs, 33 tasks
-Key Requirements: Bcrypt, RS256, <500ms response
-
-Ready to proceed? (yes/no/modify)
-
-User: yes
-Claude: ✅ Approved! Creating implementation files in .tmp/authentication/:
-- prd.md
-- phase_1_pr_1_database.md (3 tasks)
-- phase_1_pr_2_services.md (4 tasks)
-[... 7 more PR files]
-
-User: /plan -f requirements.txt
-Claude: 📋 Entering plan mode...
-Reading requirements from file...
-
-## PRD Preview: [Feature from File]
-
-[Generated plan preview]
-
-Ready to proceed? (yes/no/modify)
-
-User: modify
-Claude: What would you like me to adjust in the plan?
-[Stays in plan mode awaiting modifications]
-```
 
 ### Notes
 

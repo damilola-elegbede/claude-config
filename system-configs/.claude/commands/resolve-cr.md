@@ -3,25 +3,121 @@ description: Smart CodeRabbit feedback resolver with selective automation
 argument-hint: [pr-number] [--auto|--dry-run|--skip-tests]
 ---
 
-# CodeRabbit Feedback Resolution
+# /resolve-cr Command
+
+## Usage
+
+```bash
+/resolve-cr                   # Interactive mode (default) - preview & confirm
+/resolve-cr <pr-number>       # Specific PR, interactive
+/resolve-cr --auto            # Auto-fix safe categories without confirmation
+/resolve-cr --dry-run         # Preview only, no changes
+/resolve-cr --skip-tests      # Skip test runs between batches (faster but riskier)
+```
+
+## Description
 
 Intelligently categorize and resolve CodeRabbit suggestions with safety-first automation.
 Interactive mode is the default - shows what will be fixed and gets confirmation before proceeding.
 Only auto-fixes truly safe categories while preserving architectural decisions for human review.
 
-## Command Usage
+## Expected Output
 
-```bash
-/resolve-cr                  # Interactive mode (default) - preview & confirm
-/resolve-cr <pr-number>      # Specific PR, interactive
-/resolve-cr --auto           # Auto-fix safe categories without confirmation
-/resolve-cr --dry-run        # Preview only, no changes
-/resolve-cr --skip-tests     # Skip test runs between batches (faster but riskier)
+```text
+User: /resolve-cr
+Claude: 🔍 Analyzing CodeRabbit feedback for PR #119...
+
+📊 CodeRabbit Feedback Summary:
+  ✅ Auto-fixable: 43 suggestions
+  👀 Needs review: 18 suggestions
+
+🔧 Auto-fixable suggestions:
+  - Missing docstrings in auth.js
+  - Import order in components/Button.tsx
+  - Formatting issues in utils/helpers.js
+  - Console.log statements in api/routes.js
+  - Missing type annotations in types.ts
+  ... and 38 more
+
+👀 Requires human review:
+  - Security: Input validation in login handler
+  - Performance: N+1 query in user loader
+  - Architecture: Suggested state management refactor
+  - Business logic: Price calculation algorithm
+  - Design: Component structure reorganization
+  ... and 13 more
+
+Would you like to auto-fix the safe categories? (y/n): y
+
+🎨 Fixing formatting issues...
+✅ Formatted 12 files
+🧪 Tests passing
+
+📝 Generating missing docstrings...
+✅ Added docstrings to 23 functions
+
+📦 Organizing imports...
+✅ Organized imports in 8 files
+
+🚀 Pushing fixes...
+✅ Pushed 3 commits
+
+🔄 Marking resolved issues...
+✅ CodeRabbit updated comment status
+
+💬 Posted resolution summary to CodeRabbit
+🔄 Marking resolved issues...
+✅ CodeRabbit will update comment status
 ```
 
-## Resolution Strategy
+### Auto Mode Example
 
-### Auto-Fixable Categories (Safe)
+```text
+User: /resolve-cr --auto
+Claude: 🔍 Analyzing CodeRabbit feedback for PR #119...
+
+📊 CodeRabbit Feedback Summary:
+  ✅ Auto-fixable: 43 suggestions
+  👀 Needs review: 18 suggestions
+
+🎨 Fixing formatting issues...
+📝 Generating missing docstrings...
+📦 Organizing imports...
+🔍 Adding type annotations...
+🚀 Pushing fixes...
+✅ Resolved 43 auto-fixable issues in 4 commits
+
+🔄 Marking resolved issues in CodeRabbit...
+✅ Comments marked as resolved
+```
+
+### Dry Run Example
+
+```text
+User: /resolve-cr --dry-run
+Claude: 🔍 Analyzing CodeRabbit feedback for PR #119...
+
+📊 CodeRabbit Feedback Summary:
+  ✅ Auto-fixable: 43 suggestions
+  👀 Needs review: 18 suggestions
+
+🔍 Dry-run mode - no changes will be made
+Would fix: 43 auto-fixable issues
+Would skip: 18 issues requiring review
+
+Categories to be fixed:
+  - Formatting: 12 files
+  - Docstrings: 23 functions
+  - Imports: 8 files
+  - Type annotations: 5 files
+  - Debug cleanup: 3 files
+```
+
+## Behavior
+
+### Resolution Strategy
+
+#### Auto-Fixable Categories (Safe)
 
 ```yaml
 Formatting & Style:
@@ -45,7 +141,7 @@ Type Safety:
   - Unnecessary type assertions → Remove if provable
 ```
 
-### Requires Human Review
+#### Requires Human Review
 
 ```yaml
 Architecture & Design:
@@ -73,9 +169,9 @@ Business Logic:
   - User flow alterations
 ```
 
-## Implementation Workflow
+### Implementation Workflow
 
-### 1. Fetch and Parse Comments
+#### 1. Fetch and Parse Comments
 
 ```bash
 # Get all CodeRabbit reviews and comments
@@ -104,7 +200,7 @@ parse_suggestions() {
 }
 ```
 
-### 2. Categorize Suggestions
+#### 2. Categorize Suggestions
 
 ```bash
 categorize_suggestion() {
@@ -134,7 +230,7 @@ categorize_suggestion() {
 }
 ```
 
-### 3. Interactive Resolution Flow
+#### 3. Interactive Resolution Flow
 
 ```bash
 resolve_cr() {
@@ -212,7 +308,7 @@ Would you like to auto-fix the safe categories? (y/n): "
 }
 ```
 
-### 4. Batch Execution
+#### 4. Batch Execution
 
 ```bash
 execute_batch_fixes() {
@@ -256,7 +352,7 @@ execute_batch_fixes() {
 }
 ```
 
-### 5. Mark Issues as Resolved
+#### 5. Mark Issues as Resolved
 
 ```bash
 mark_resolved() {
@@ -271,7 +367,7 @@ mark_resolved() {
 }
 ```
 
-### 6. Response to CodeRabbit
+#### 6. Response to CodeRabbit
 
 ```bash
 post_resolution_summary() {
@@ -315,93 +411,9 @@ Thank you for the comprehensive review! The auto-fixable issues have been resolv
 }
 ```
 
-## Expected Output Examples
+### Key Features
 
-```text
-User: /resolve-cr
-Claude: 🔍 Analyzing CodeRabbit feedback for PR #119...
-
-📊 CodeRabbit Feedback Summary:
-  ✅ Auto-fixable: 43 suggestions
-  👀 Needs review: 18 suggestions
-
-🔧 Auto-fixable suggestions:
-  - Missing docstrings in auth.js
-  - Import order in components/Button.tsx
-  - Formatting issues in utils/helpers.js
-  - Console.log statements in api/routes.js
-  - Missing type annotations in types.ts
-  ... and 38 more
-
-👀 Requires human review:
-  - Security: Input validation in login handler
-  - Performance: N+1 query in user loader
-  - Architecture: Suggested state management refactor
-  - Business logic: Price calculation algorithm
-  - Design: Component structure reorganization
-  ... and 13 more
-
-Would you like to auto-fix the safe categories? (y/n): y
-
-🎨 Fixing formatting issues...
-✅ Formatted 12 files
-🧪 Tests passing
-
-📝 Generating missing docstrings...
-✅ Added docstrings to 23 functions
-
-📦 Organizing imports...
-✅ Organized imports in 8 files
-
-🚀 Pushing fixes...
-✅ Pushed 3 commits
-
-🔄 Marking resolved issues...
-✅ CodeRabbit updated comment status
-
-💬 Posted resolution summary to CodeRabbit
-🔄 Marking resolved issues...
-✅ CodeRabbit will update comment status
-
-User: /resolve-cr --auto
-Claude: 🔍 Analyzing CodeRabbit feedback for PR #119...
-
-📊 CodeRabbit Feedback Summary:
-  ✅ Auto-fixable: 43 suggestions
-  👀 Needs review: 18 suggestions
-
-🎨 Fixing formatting issues...
-📝 Generating missing docstrings...
-📦 Organizing imports...
-🔍 Adding type annotations...
-🚀 Pushing fixes...
-✅ Resolved 43 auto-fixable issues in 4 commits
-
-🔄 Marking resolved issues in CodeRabbit...
-✅ Comments marked as resolved
-
-User: /resolve-cr --dry-run
-Claude: 🔍 Analyzing CodeRabbit feedback for PR #119...
-
-📊 CodeRabbit Feedback Summary:
-  ✅ Auto-fixable: 43 suggestions
-  👀 Needs review: 18 suggestions
-
-🔍 Dry-run mode - no changes will be made
-Would fix: 43 auto-fixable issues
-Would skip: 18 issues requiring review
-
-Categories to be fixed:
-  - Formatting: 12 files
-  - Docstrings: 23 functions
-  - Imports: 8 files
-  - Type annotations: 5 files
-  - Debug cleanup: 3 files
-```
-
-## Key Features
-
-### Safety-First Automation
+#### Safety-First Automation
 
 - ✅ **Intelligent categorization** - Distinguishes auto-fixable from review-required
 - ✅ **Interactive by default** - Shows preview and requests confirmation
@@ -409,7 +421,7 @@ Categories to be fixed:
 - ✅ **Test validation** - Runs tests between fix batches (unless skipped)
 - ✅ **Clear boundaries** - Never auto-fixes security, architecture, or business logic
 
-### Auto-Fixable Categories
+#### Auto-Fixable Categories
 
 - **Formatting** - prettier, black, rustfmt, gofmt
 - **Docstrings** - Uses "@coderabbitai generate docstrings"
@@ -417,22 +429,12 @@ Categories to be fixed:
 - **Type annotations** - Adds obvious types where inferrable
 - **Debug cleanup** - Removes console.log, print statements
 
-### Human Review Required
+#### Human Review Required
 
 - **Security** - Authentication, validation, cryptography
 - **Architecture** - Component structure, API design
 - **Performance** - Algorithm choices, caching strategies
 - **Business Logic** - Feature behavior, calculations
-
-## Implementation Notes
-
-- **Default Interactive Mode**: Always shows what will be fixed before proceeding
-- **Batch Processing**: Groups similar fixes to reduce commit noise
-- **Test Integration**: Runs tests after each batch (configurable)
-- **Clear Communication**: Posts comprehensive summary to CodeRabbit
-- **Issue Resolution**: Marks resolved comments with `@coderabbitai resolve` AFTER pushing
-- **Selective Automation**: Only fixes truly safe categories
-- **Preserves Intent**: Respects architectural and design decisions
 
 ### CodeRabbit Resolution Workflow
 
@@ -447,3 +449,13 @@ Categories to be fixed:
 - CodeRabbit needs to see the actual code changes
 - It compares current code against its original comments
 - This ensures accurate resolution status
+
+### Implementation Notes
+
+- **Default Interactive Mode**: Always shows what will be fixed before proceeding
+- **Batch Processing**: Groups similar fixes to reduce commit noise
+- **Test Integration**: Runs tests after each batch (configurable)
+- **Clear Communication**: Posts comprehensive summary to CodeRabbit
+- **Issue Resolution**: Marks resolved comments with `@coderabbitai resolve` AFTER pushing
+- **Selective Automation**: Only fixes truly safe categories
+- **Preserves Intent**: Respects architectural and design decisions
