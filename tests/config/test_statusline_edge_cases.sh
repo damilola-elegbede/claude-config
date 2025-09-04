@@ -138,8 +138,8 @@ test_terminal_tracking() {
     fi
     
     # Check that terminal ID was created
-    version_files=("$TEST_HOME/.claude/terminal_versions"/*)
-    if [[ ! -f "${version_files[0]}" ]]; then
+    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    if [[ ! -f "$terminal_file" ]]; then
         echo "Version file not created for terminal"
         return 1
     fi
@@ -273,8 +273,8 @@ test_rapid_version_changes() {
     done
     
     # Final check - last version should be recorded with flag
-    version_files=("$TEST_HOME/.claude/terminal_versions"/*)
-    final_version=$(cat "${version_files[0]}" 2>/dev/null || echo "")
+    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    final_version=$(cat "$terminal_file" 2>/dev/null || echo "")
     if [[ "$final_version" != "2.0.0:1" ]]; then
         echo "Final version not recorded correctly: $final_version"
         return 1
@@ -308,16 +308,16 @@ test_cleanup_functionality() {
     # Run statusline - should trigger cleanup
     HOME="$TEST_HOME" bash "$statusline_path" <<< "$test_input" >/dev/null 2>&1
     
-    # Check if new file was created and old files still exist (find might not work perfectly in test)
-    version_files=("$TEST_HOME/.claude/terminal_versions"/*)
-    if [[ ${#version_files[@]} -lt 1 ]]; then
+    # Check if new file was created
+    files_count=$(ls -1 "$TEST_HOME/.claude/terminal_versions"/ | wc -l)
+    if [[ $files_count -lt 1 ]]; then
         echo "Cleanup test failed - no version files found"
         return 1
     fi
     
-    # At minimum, a new terminal file should exist (no more session files)
-    terminal_files=("$TEST_HOME/.claude/terminal_versions/terminal_"*)
-    if [[ ! -f "${terminal_files[0]}" ]]; then
+    # At minimum, a new terminal file should exist
+    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    if [[ ! -f "$terminal_file" ]]; then
         echo "New terminal file not created during cleanup test"
         return 1
     fi

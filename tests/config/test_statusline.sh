@@ -131,9 +131,9 @@ test_new_version_tracking() {
     fi
     
     # Manually reset flag to simulate exit hook
-    terminal_file=("$TEST_HOME/.claude/terminal_versions"/*)
-    if [[ -f "${terminal_file[0]}" ]]; then
-        echo "2.0.0:0" > "${terminal_file[0]}"
+    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    if [[ -f "$terminal_file" ]]; then
+        echo "2.0.0:0" > "$terminal_file"
     fi
     
     # Now should NOT show stars
@@ -208,14 +208,14 @@ test_version_file_management() {
     fi
     
     # Check if terminal version file exists
-    terminal_files=("$TEST_HOME/.claude/terminal_versions"/*)
-    if [[ ${#terminal_files[@]} -eq 0 || ! -f "${terminal_files[0]}" ]]; then
+    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    if [[ ! -f "$terminal_file" ]]; then
         echo "Terminal version file not created"
         return 1
     fi
     
     # Check file content (should be VERSION:FLAG format)
-    version_content=$(cat "${terminal_files[0]}")
+    version_content=$(cat "$terminal_file")
     if [[ "$version_content" != "4.0.0:1" ]]; then
         echo "Version file content incorrect: $version_content (expected 4.0.0:1)"
         return 1
@@ -325,8 +325,8 @@ test_version_change() {
     fi
     
     # Manually reset flag to simulate exit hook
-    terminal_file=("$TEST_HOME/.claude/terminal_versions"/*)
-    echo "10.0.0:0" > "${terminal_file[0]}"
+    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    echo "10.0.0:0" > "$terminal_file"
     
     # Run with same version - should NOT show stars
     HOME="$TEST_HOME" output=$(echo "$input1" | bash "$statusline_path" 2>/dev/null)
@@ -346,7 +346,7 @@ test_version_change() {
     fi
     
     # Check file was updated with new version and flag=1
-    content=$(cat "${terminal_file[0]}")
+    content=$(cat "$terminal_file")
     if [[ "$content" != "11.0.0:1" ]]; then
         echo "File should be updated to 11.0.0:1, got: $content"
         return 1
@@ -382,9 +382,9 @@ test_version_flag_format() {
     fi
     
     # Check file format
-    terminal_file=("$TEST_HOME/.claude/terminal_versions"/*)
-    if [[ -f "${terminal_file[0]}" ]]; then
-        content=$(cat "${terminal_file[0]}")
+    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    if [[ -f "$terminal_file" ]]; then
+        content=$(cat "$terminal_file")
         if [[ "$content" != "7.0.0:1" ]]; then
             echo "File should contain VERSION:1 format, got: $content"
             return 1
@@ -395,7 +395,7 @@ test_version_flag_format() {
     fi
     
     # Manually set flag to 0
-    echo "7.0.0:0" > "${terminal_file[0]}"
+    echo "7.0.0:0" > "$terminal_file"
     
     # Run again - should NOT show stars since flag is 0
     HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
@@ -432,9 +432,9 @@ test_exit_hook() {
     fi
     
     # Check file has flag=1
-    terminal_file=("$TEST_HOME/.claude/terminal_versions"/*)
-    if [[ -f "${terminal_file[0]}" ]]; then
-        content=$(cat "${terminal_file[0]}")
+    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    if [[ -f "$terminal_file" ]]; then
+        content=$(cat "$terminal_file")
         if [[ "$content" != "8.0.0:1" ]]; then
             echo "File should have flag=1, got: $content"
             return 1
@@ -448,7 +448,7 @@ test_exit_hook() {
     (cd /tmp && HOME="$TEST_HOME" echo '{"version":"8.0.0"}' | bash "$exit_hook_path")
     
     # Check file now has flag=0
-    content=$(cat "${terminal_file[0]}" 2>/dev/null)
+    content=$(cat "$terminal_file" 2>/dev/null)
     if [[ "$content" != "8.0.0:0" ]]; then
         echo "Exit hook should set flag to 0, got: $content"
         return 1
