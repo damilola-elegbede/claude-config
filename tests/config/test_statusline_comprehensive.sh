@@ -86,8 +86,8 @@ run_test() {
     fi
     
     # Clean up terminal files after each test
-    if [[ -d "$TEST_HOME/.claude/terminal_versions" ]]; then
-        rm -f "$TEST_HOME/.claude/terminal_versions"/terminal_* 2>/dev/null || true
+    if [[ -d ".tmp/terminal_versions" ]]; then
+        rm -f ".tmp/terminal_versions"/terminal_* 2>/dev/null || true
     fi
     
     echo
@@ -173,7 +173,7 @@ test_basic_output_format() {
     local statusline_path="../../system-configs/.claude/statusline.sh"
     local test_input='{"model":{"display_name":"Claude 3.5 Sonnet"},"version":"1.2.3","workspace":{"current_dir":"/Users/test/project"},"output_style":{"name":"default"}}'
     
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     
     if [[ "$output" != *"Claude 3.5 Sonnet"* ]]; then
         echo "Output missing model name: $output"
@@ -197,7 +197,7 @@ test_minimal_output_style() {
     local statusline_path="../../system-configs/.claude/statusline.sh"
     local test_input='{"model":{"display_name":"Claude"},"version":"1.2.3","workspace":{"current_dir":"/tmp"},"output_style":{"name":"minimal"}}'
     
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     
     # Minimal style should still include version
     if [[ "$output" != *"1.2.3"* ]]; then
@@ -212,7 +212,7 @@ test_custom_output_style() {
     local statusline_path="../../system-configs/.claude/statusline.sh"
     local test_input='{"model":{"display_name":"Claude"},"version":"1.2.3","workspace":{"current_dir":"/tmp"},"output_style":{"name":"custom","template":"Version: {{version}}"}}'
     
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     
     # Should use default style if custom template handling not implemented
     if [[ "$output" != *"1.2.3"* ]]; then
@@ -232,9 +232,9 @@ test_new_version_tracking() {
     local test_input='{"model":{"display_name":"Claude"},"version":"2.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     
     if [[ "$output" != *"2.0.0 ✨"* ]]; then
         echo "New version should show stars, got: $output"
@@ -242,7 +242,7 @@ test_new_version_tracking() {
     fi
     
     # Stars should persist
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     
     if [[ "$output" != *"2.0.0 ✨"* ]]; then
         echo "Stars should persist until exit hook resets flag, got: $output"
@@ -250,12 +250,12 @@ test_new_version_tracking() {
     fi
     
     # Manually reset flag to simulate exit hook
-    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    terminal_file=$(find ".tmp/terminal_versions" -name "terminal_*" -type f | head -1)
     if [[ -f "$terminal_file" ]]; then
         echo "2.0.0:0" > "$terminal_file"
     fi
     
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     
     if [[ "$output" == *"2.0.0 ✨"* ]]; then
         echo "Should not show stars after flag reset, got: $output"
@@ -269,11 +269,11 @@ test_version_change_detection() {
     local statusline_path="../../system-configs/.claude/statusline.sh"
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
     # First version
     local input1='{"model":{"display_name":"Claude"},"version":"10.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
-    HOME="$TEST_HOME" output=$(echo "$input1" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$input1" | bash "$statusline_path" --test 2>/dev/null)
     
     if [[ "$output" != *"10.0.0 ✨"* ]]; then
         echo "First version should show stars: $output"
@@ -281,11 +281,11 @@ test_version_change_detection() {
     fi
     
     # Reset flag
-    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    terminal_file=$(find ".tmp/terminal_versions" -name "terminal_*" -type f | head -1)
     echo "10.0.0:0" > "$terminal_file"
     
     # Same version
-    HOME="$TEST_HOME" output=$(echo "$input1" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$input1" | bash "$statusline_path" --test 2>/dev/null)
     
     if [[ "$output" == *"10.0.0 ✨"* ]]; then
         echo "Same version with flag=0 should not show stars: $output"
@@ -294,7 +294,7 @@ test_version_change_detection() {
     
     # New version
     local input2='{"model":{"display_name":"Claude"},"version":"11.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
-    HOME="$TEST_HOME" output=$(echo "$input2" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$input2" | bash "$statusline_path" --test 2>/dev/null)
     
     if [[ "$output" != *"11.0.0 ✨"* ]]; then
         echo "New version should show stars: $output"
@@ -316,16 +316,16 @@ test_version_flag_format() {
     local test_input='{"model":{"display_name":"Claude"},"version":"7.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     
     if [[ "$output" != *"7.0.0 ✨"* ]]; then
         echo "First run should show stars: $output"
         return 1
     fi
     
-    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    terminal_file=$(find ".tmp/terminal_versions" -name "terminal_*" -type f | head -1)
     if [[ -f "$terminal_file" ]]; then
         content=$(cat "$terminal_file")
         if [[ "$content" != "7.0.0:1" ]]; then
@@ -339,7 +339,7 @@ test_version_flag_format() {
     
     echo "7.0.0:0" > "$terminal_file"
     
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     
     if [[ "$output" == *"7.0.0 ✨"* ]]; then
         echo "Should not show stars when flag is 0: $output"
@@ -362,18 +362,18 @@ test_terminal_isolation() {
     local statusline_path="../../system-configs/.claude/statusline.sh"
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
     local input='{"model":{"display_name":"Claude"},"version":"3.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
-    HOME="$TEST_HOME" output1=$(echo "$input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output1=$(echo "$input" | bash "$statusline_path" --test 2>/dev/null)
     
     if [[ "$output1" != *"3.0.0 ✨"* ]]; then
         echo "First run should show stars for new terminal: $output1"
         return 1
     fi
     
-    HOME="$TEST_HOME" output2=$(echo "$input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output2=$(echo "$input" | bash "$statusline_path" --test 2>/dev/null)
     
     if [[ "$output2" != *"3.0.0 ✨"* ]]; then
         echo "Stars should persist until exit hook resets flag: $output2"
@@ -381,7 +381,7 @@ test_terminal_isolation() {
     fi
     
     local input_new='{"model":{"display_name":"Claude"},"version":"3.1.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
-    HOME="$TEST_HOME" output3=$(echo "$input_new" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output3=$(echo "$input_new" | bash "$statusline_path" --test 2>/dev/null)
     
     if [[ "$output3" != *"3.1.0 ✨"* ]]; then
         echo "New version should show stars: $output3"
@@ -396,11 +396,11 @@ test_terminal_file_naming() {
     local test_input='{"model":{"display_name":"Claude"},"version":"1.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
-    HOME="$TEST_HOME" bash "$statusline_path" <<< "$test_input" >/dev/null 2>&1
+    HOME="$TEST_HOME" bash "$statusline_path" --test <<< "$test_input" >/dev/null 2>&1
     
-    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    terminal_file=$(find ".tmp/terminal_versions" -name "terminal_*" -type f | head -1)
     if [[ ! -f "$terminal_file" ]]; then
         echo "Terminal version file not created"
         return 1
@@ -425,16 +425,16 @@ test_version_file_management() {
     local test_input='{"model":{"display_name":"Claude"},"version":"4.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
-    HOME="$TEST_HOME" bash "$statusline_path" <<< "$test_input" >/dev/null 2>&1
+    HOME="$TEST_HOME" bash "$statusline_path" --test <<< "$test_input" >/dev/null 2>&1
     
-    if [[ ! -d "$TEST_HOME/.claude/terminal_versions" ]]; then
+    if [[ ! -d ".tmp/terminal_versions" ]]; then
         echo "Terminal versions directory not created"
         return 1
     fi
     
-    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    terminal_file=$(find ".tmp/terminal_versions" -name "terminal_*" -type f | head -1)
     if [[ ! -f "$terminal_file" ]]; then
         echo "Terminal version file not created"
         return 1
@@ -457,7 +457,7 @@ test_legacy_cleanup() {
     echo "1.0.0" > "$TEST_HOME/.claude/acknowledged_version"
     echo "old_session" > "$TEST_HOME/.claude/notified_session"
     
-    HOME="$TEST_HOME" bash "$statusline_path" <<< "$test_input" >/dev/null 2>&1
+    HOME="$TEST_HOME" bash "$statusline_path" --test <<< "$test_input" >/dev/null 2>&1
     
     if [[ -f "$TEST_HOME/.claude/acknowledged_version" ]]; then
         echo "Legacy acknowledged_version file not cleaned up"
@@ -477,25 +477,25 @@ test_cleanup_old_files() {
     local test_input='{"model":{"display_name":"Claude"},"version":"4.5.6","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
     # Create old files
-    echo "old_version" > "$TEST_HOME/.claude/terminal_versions/old_terminal_1"
-    echo "old_version" > "$TEST_HOME/.claude/terminal_versions/old_terminal_2"
+    echo "old_version" > ".tmp/terminal_versions/old_terminal_1"
+    echo "old_version" > ".tmp/terminal_versions/old_terminal_2"
     
     # Try to set modification time to 8 days ago
-    touch -t $(date -v-8d +%Y%m%d%H%M.%S 2>/dev/null || date -d "8 days ago" +%Y%m%d%H%M.%S) "$TEST_HOME/.claude/terminal_versions/old_terminal_1" 2>/dev/null || true
-    touch -t $(date -v-8d +%Y%m%d%H%M.%S 2>/dev/null || date -d "8 days ago" +%Y%m%d%H%M.%S) "$TEST_HOME/.claude/terminal_versions/old_terminal_2" 2>/dev/null || true
+    touch -t $(date -v-8d +%Y%m%d%H%M.%S 2>/dev/null || date -d "8 days ago" +%Y%m%d%H%M.%S) ".tmp/terminal_versions/old_terminal_1" 2>/dev/null || true
+    touch -t $(date -v-8d +%Y%m%d%H%M.%S 2>/dev/null || date -d "8 days ago" +%Y%m%d%H%M.%S) ".tmp/terminal_versions/old_terminal_2" 2>/dev/null || true
     
-    HOME="$TEST_HOME" bash "$statusline_path" <<< "$test_input" >/dev/null 2>&1
+    HOME="$TEST_HOME" bash "$statusline_path" --test <<< "$test_input" >/dev/null 2>&1
     
-    files_count=$(ls -1 "$TEST_HOME/.claude/terminal_versions"/ | wc -l)
+    files_count=$(ls -1 ".tmp/terminal_versions"/ | wc -l)
     if [[ $files_count -lt 1 ]]; then
         echo "Cleanup test failed - no version files found"
         return 1
     fi
     
-    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    terminal_file=$(find ".tmp/terminal_versions" -name "terminal_*" -type f | head -1)
     if [[ ! -f "$terminal_file" ]]; then
         echo "New terminal file not created during cleanup test"
         return 1
@@ -514,16 +514,16 @@ test_exit_hook_functionality() {
     local test_input='{"model":{"display_name":"Claude"},"version":"8.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     
     if [[ "$output" != *"8.0.0 ✨"* ]]; then
         echo "First run should show stars: $output"
         return 1
     fi
     
-    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    terminal_file=$(find ".tmp/terminal_versions" -name "terminal_*" -type f | head -1)
     if [[ -f "$terminal_file" ]]; then
         content=$(cat "$terminal_file")
         if [[ "$content" != "8.0.0:1" ]]; then
@@ -536,7 +536,7 @@ test_exit_hook_functionality() {
     fi
     
     # Run exit hook
-    (cd /tmp && HOME="$TEST_HOME" echo '{"version":"8.0.0"}' | bash "$exit_hook_path")
+    (cd /tmp && HOME="$TEST_HOME" echo '{"version":"8.0.0"}' | bash "$exit_hook_path" --test)
     
     content=$(cat "$terminal_file" 2>/dev/null)
     if [[ "$content" != "8.0.0:0" ]]; then
@@ -544,7 +544,7 @@ test_exit_hook_functionality() {
         return 1
     fi
     
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     
     if [[ "$output" == *"8.0.0 ✨"* ]]; then
         echo "Should not show stars after exit hook: $output"
@@ -558,16 +558,16 @@ test_exit_hook_version_update() {
     local exit_hook_path="$(cd ../../system-configs/.claude && pwd)/exit_hook.sh"
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
     # The exit hook will create its own terminal file based on its ppid calculation
     # We need to run it first and then find the file it creates
     
     # Run exit hook with initial version
-    (cd /tmp && HOME="$TEST_HOME" echo '{"version":"1.0.0"}' | bash "$exit_hook_path")
+    (cd /tmp && HOME="$TEST_HOME" echo '{"version":"1.0.0"}' | bash "$exit_hook_path" --test)
     
     # Find the terminal file created by exit hook
-    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    terminal_file=$(find ".tmp/terminal_versions" -name "terminal_*" -type f | head -1)
     if [[ ! -f "$terminal_file" ]]; then
         echo "Exit hook did not create terminal file"
         return 1
@@ -581,7 +581,7 @@ test_exit_hook_version_update() {
     fi
     
     # Run exit hook with newer version
-    (cd /tmp && HOME="$TEST_HOME" echo '{"version":"2.0.0"}' | bash "$exit_hook_path")
+    (cd /tmp && HOME="$TEST_HOME" echo '{"version":"2.0.0"}' | bash "$exit_hook_path" --test)
     
     # Check file was updated to new version with flag=1 (exit hook detects newer version)
     content=$(cat "$terminal_file" 2>/dev/null)
@@ -591,7 +591,7 @@ test_exit_hook_version_update() {
     fi
     
     # Run exit hook with same version
-    (cd /tmp && HOME="$TEST_HOME" echo '{"version":"2.0.0"}' | bash "$exit_hook_path")
+    (cd /tmp && HOME="$TEST_HOME" echo '{"version":"2.0.0"}' | bash "$exit_hook_path" --test)
     
     # Check file now has flag=0 (same version)
     content=$(cat "$terminal_file" 2>/dev/null)
@@ -611,7 +611,7 @@ test_git_handling() {
     local statusline_path="$(cd ../../system-configs/.claude && pwd)/statusline.sh"
     local test_input='{"model":{"display_name":"Claude"},"version":"6.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
-    output=$(cd /tmp && HOME="$TEST_HOME" echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    output=$(cd /tmp && HOME="$TEST_HOME" echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     
     output_clean=$(echo "$output" | sed 's/\x1b\[[0-9;]*m//g')
     
@@ -628,7 +628,7 @@ test_git_repository_detection() {
     local test_input='{"model":{"display_name":"Claude"},"version":"6.0.0","workspace":{"current_dir":"'$(pwd)'"},"output_style":{"name":"default"}}'
     
     # Run from current directory (which is a git repo)
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     
     output_clean=$(echo "$output" | sed 's/\x1b\[[0-9;]*m//g')
     
@@ -650,9 +650,9 @@ test_unknown_version_handling() {
     local test_input='{"model":{"display_name":"Claude"},"version":"unknown","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>&1)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>&1)
     
     if [[ "$output" == *"1.0.100 ✨"* ]]; then
         return 0
@@ -667,9 +667,9 @@ test_malformed_json() {
     local malformed_input='{"model":{"display_name":"Claude"},"version":'
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
-    HOME="$TEST_HOME" output=$(echo "$malformed_input" | bash "$statusline_path" 2>&1)
+    HOME="$TEST_HOME" output=$(echo "$malformed_input" | bash "$statusline_path" --test 2>&1)
     
     if [[ "$output" == *"1.0.100 ✨"* ]] || [[ "$output" == *"Claude"* ]]; then
         return 0
@@ -683,9 +683,9 @@ test_empty_input() {
     local statusline_path="../../system-configs/.claude/statusline.sh"
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
-    HOME="$TEST_HOME" output=$(echo "" | bash "$statusline_path" 2>&1)
+    HOME="$TEST_HOME" output=$(echo "" | bash "$statusline_path" --test 2>&1)
     
     # Should handle empty input gracefully
     if [[ -z "$output" ]] || [[ "$output" == *"Claude"* ]] || [[ "$output" == *"1.0.100"* ]]; then
@@ -701,7 +701,7 @@ test_missing_fields() {
     
     # Missing version field
     local input1='{"model":{"display_name":"Claude"},"workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
-    HOME="$TEST_HOME" output1=$(echo "$input1" | bash "$statusline_path" 2>&1)
+    HOME="$TEST_HOME" output1=$(echo "$input1" | bash "$statusline_path" --test 2>&1)
     
     # Should handle missing version gracefully (defaults to 1.0.100)
     if [[ "$output1" != *"1.0.100"* ]]; then
@@ -711,7 +711,7 @@ test_missing_fields() {
     
     # Missing model field
     local input2='{"version":"1.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
-    HOME="$TEST_HOME" output2=$(echo "$input2" | bash "$statusline_path" 2>&1)
+    HOME="$TEST_HOME" output2=$(echo "$input2" | bash "$statusline_path" --test 2>&1)
     
     # Should handle missing model gracefully
     if [[ "$output2" != *"1.0.0"* ]]; then
@@ -731,9 +731,9 @@ test_special_characters_version() {
     local test_input='{"model":{"display_name":"Claude"},"version":"v1.2.3-beta+build.123","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>&1)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>&1)
     
     if [[ "$output" == *"1.0.100 ✨"* ]]; then
         return 0
@@ -749,9 +749,9 @@ test_long_version_string() {
     local test_input="{\"model\":{\"display_name\":\"Claude\"},\"version\":\"$long_version\",\"workspace\":{\"current_dir\":\"/tmp\"},\"output_style\":{\"name\":\"default\"}}"
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>&1)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>&1)
     
     if [[ "$output" == *"1.0.100 ✨"* ]]; then
         return 0
@@ -765,12 +765,12 @@ test_concurrent_access() {
     local statusline_path="../../system-configs/.claude/statusline.sh"
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
     local outputs=()
     for i in {1..3}; do
         local test_input="{\"model\":{\"display_name\":\"Claude\"},\"version\":\"9.${i}.0\",\"workspace\":{\"current_dir\":\"/tmp\"},\"output_style\":{\"name\":\"default\"}}"
-        outputs[$i]=$(HOME="$TEST_HOME" echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+        outputs[$i]=$(HOME="$TEST_HOME" echo "$test_input" | bash "$statusline_path" --test --test 2>/dev/null)
     done
     
     for i in {1..3}; do
@@ -791,12 +791,12 @@ test_rapid_version_changes() {
     local statusline_path="../../system-configs/.claude/statusline.sh"
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
     for version in "1.0.0" "1.0.1" "1.0.2" "1.1.0" "2.0.0"; do
         local test_input="{\"model\":{\"display_name\":\"Claude\"},\"version\":\"$version\",\"workspace\":{\"current_dir\":\"/tmp\"},\"output_style\":{\"name\":\"default\"}}"
         
-        HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+        HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
         
         if [[ "$output" != *"$version"* ]]; then
             echo "Rapid version change failed for $version: $output"
@@ -806,7 +806,7 @@ test_rapid_version_changes() {
         sleep 0.01
     done
     
-    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    terminal_file=$(find ".tmp/terminal_versions" -name "terminal_*" -type f | head -1)
     final_version=$(cat "$terminal_file" 2>/dev/null || echo "")
     if [[ "$final_version" != "2.0.0:1" ]]; then
         echo "Final version not recorded correctly: $final_version"
@@ -827,7 +827,7 @@ test_permission_denied() {
     mkdir -p "$TEST_HOME/.claude"
     chmod 444 "$TEST_HOME/.claude"
     
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     
     if [[ "$output" != *"3.0.0"* ]]; then
         echo "Should still work with permission denied: $output"
@@ -843,17 +843,17 @@ test_corrupted_version_file() {
     local statusline_path="../../system-configs/.claude/statusline.sh"
     local test_input='{"model":{"display_name":"Claude"},"version":"2.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
-    echo -e "\x00\x01corrupted\xFF" > "$TEST_HOME/.claude/terminal_versions/terminal_test"
+    mkdir -p ".tmp/terminal_versions"
+    echo -e "\x00\x01corrupted\xFF" > ".tmp/terminal_versions/terminal_test"
     
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     
     if [[ "$output" != *"2.0.0 ✨"* ]]; then
         echo "Corrupted version file should be handled gracefully: $output"
         return 1
     fi
     
-    if ! grep -rlq -- '^2\.0\.0:1$' "$TEST_HOME/.claude/terminal_versions"; then
+    if ! grep -rlq -- '^2\.0\.0:1$' ".tmp/terminal_versions"; then
         echo "No terminal version file updated with 2.0.0:1"
         return 1
     fi
@@ -870,11 +870,11 @@ test_performance_baseline() {
     local test_input='{"model":{"display_name":"Claude"},"version":"1.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
     # Measure execution time
     start_time=$(date +%s%N)
-    HOME="$TEST_HOME" bash "$statusline_path" <<< "$test_input" >/dev/null 2>&1
+    HOME="$TEST_HOME" bash "$statusline_path" --test <<< "$test_input" >/dev/null 2>&1
     end_time=$(date +%s%N)
     
     # Calculate duration in milliseconds
@@ -895,16 +895,16 @@ test_performance_with_many_files() {
     local test_input='{"model":{"display_name":"Claude"},"version":"1.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
     # Create many terminal files
     for i in {1..100}; do
-        echo "old_version:0" > "$TEST_HOME/.claude/terminal_versions/terminal_old_$i"
+        echo "old_version:0" > ".tmp/terminal_versions/terminal_old_$i"
     done
     
     # Measure execution time
     start_time=$(date +%s%N)
-    HOME="$TEST_HOME" bash "$statusline_path" <<< "$test_input" >/dev/null 2>&1
+    HOME="$TEST_HOME" bash "$statusline_path" --test <<< "$test_input" >/dev/null 2>&1
     end_time=$(date +%s%N)
     
     # Calculate duration in milliseconds
@@ -998,8 +998,8 @@ run_test "Performance baseline" test_performance_baseline
 run_test "Performance with many files" test_performance_with_many_files
 
 # Cleanup terminal files created during testing
-if [[ -d "$TEST_HOME/.claude/terminal_versions" ]]; then
-    rm -f "$TEST_HOME/.claude/terminal_versions"/terminal_* 2>/dev/null || true
+if [[ -d ".tmp/terminal_versions" ]]; then
+    rm -f ".tmp/terminal_versions"/terminal_* 2>/dev/null || true
 fi
 
 # Cleanup test directory
