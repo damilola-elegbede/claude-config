@@ -53,7 +53,7 @@ test_existing_commands_template_compliance() {
 
             # Optional: argument-hint format validation
             if echo "$yaml_content" | grep -q "^argument-hint:"; then
-                local hint=$(echo "$yaml_content" | grep "^argument-hint:" | cut -d':' -f2- | sed 's/^[ \t]*//')
+                local hint=$(echo "$yaml_content" | grep "^argument-hint:" | cut -d':' -f2- | sed 's/^[ \t]*//' | sed 's/^"\(.*\)"$/\1/' | sed "s/^'\(.*\)'$/\1/")
                 if [[ "$hint" =~ ^\[.*\]$ ]]; then
                     echo "      ✅ Valid argument-hint: $hint"
                 else

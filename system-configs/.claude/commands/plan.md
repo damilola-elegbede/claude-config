@@ -1,6 +1,6 @@
 ---
 description: Generate PRD and PR-based task files with agent assignments
-argument-hint: [task_description]
+argument-hint: "[task_description]"
 ---
 
 # /plan Command

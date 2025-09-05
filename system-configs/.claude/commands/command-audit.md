@@ -127,7 +127,8 @@ grep -l "^---$" system-configs/.claude/commands/*.md | while read file; do
   fi
 
   # Check description length for autocomplete compatibility
-  desc_length=$(grep "^description:" "$file" | cut -d':' -f2- | tr -d ' ' | wc -c)
+  desc="$(awk '/^description:/{sub(/^description:[[:space:]]*/, ""); print; exit}' "$file")"
+  desc_length=${#desc}
   if [ "$desc_length" -gt 60 ]; then
     echo "Description too long (>60 chars): $file"
   fi
