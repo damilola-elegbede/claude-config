@@ -5,6 +5,17 @@
 # - If newer: writes NEW_VERSION:1 (statusline will show stars)
 # - If same: writes VERSION:0 (statusline won't show stars)
 # Terminal ID is based on grandparent PID only, so tracking persists across directories
+#
+# TEST MODE:
+# - Pass --test flag to use .tmp/terminal_versions/ instead of ~/.claude/terminal_versions/
+# - This isolates test logs from production logs
+
+# Parse command-line arguments
+TEST_MODE=0
+if [[ "$1" == "--test" ]]; then
+    TEST_MODE=1
+    shift  # Remove --test from arguments
+fi
 
 # Get terminal identifier based on grandparent PID only
 # Get grandparent PID - required for terminal identification
@@ -25,8 +36,18 @@ terminal_id="$(printf '%s' "$raw_id" | tr '/\n' '_' | tr -cd 'A-Za-z0-9._-')"
 [[ -n "$terminal_id" ]] || terminal_id="fallback_$$"
 
 # Version tracking files
-version_dir="$HOME/.claude"
-terminal_versions_dir="$version_dir/terminal_versions"
+if [[ "$TEST_MODE" -eq 1 ]]; then
+    # Test mode: use test directory specified by environment variable or default
+    if [[ -n "${CLAUDE_TEST_DIR:-}" ]]; then
+        terminal_versions_dir="${CLAUDE_TEST_DIR}/terminal_versions"
+    else
+        terminal_versions_dir=".tmp/terminal_versions"
+    fi
+else
+    # Production mode: use ~/.claude/terminal_versions/
+    version_dir="$HOME/.claude"
+    terminal_versions_dir="$version_dir/terminal_versions"
+fi
 terminal_version_file="$terminal_versions_dir/${terminal_id}"
 
 # Robust version detection: Try stdin JSON first, then claude --version

@@ -54,8 +54,8 @@ run_test() {
     fi
     
     # Clean up terminal files after each test
-    if [[ -d "$TEST_HOME/.claude/terminal_versions" ]]; then
-        rm -f "$TEST_HOME/.claude/terminal_versions"/terminal_* 2>/dev/null || true
+    if [[ -d ".tmp/terminal_versions" ]]; then
+        rm -f ".tmp/terminal_versions"/terminal_* 2>/dev/null || true
     fi
     
     echo
@@ -67,14 +67,14 @@ test_concurrent_access() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
     # Test that the script can handle concurrent-like access patterns
     # Using proper semantic versions (X.Y.Z format)
     local outputs=()
     for i in {1..3}; do
         local test_input="{\"model\":{\"display_name\":\"Claude\"},\"version\":\"9.${i}.0\",\"workspace\":{\"current_dir\":\"/tmp\"},\"output_style\":{\"name\":\"default\"}}"
-        outputs[$i]=$(HOME="$TEST_HOME" echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+        outputs[$i]=$(HOME="$TEST_HOME" echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     done
     
     # Each should work without error
@@ -102,10 +102,10 @@ test_special_characters_version() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
     # Run statusline (capture stderr for error message)
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>&1)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>&1)
     
     # Check that non-semantic version defaults to 1.0.100
     if [[ "$output" == *"1.0.100 ✨"* ]]; then
@@ -126,10 +126,10 @@ test_terminal_tracking() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
     # Run statusline
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     
     # Should still show stars for new version
     if [[ "$output" != *"1.0.0 ✨"* ]]; then
@@ -138,7 +138,7 @@ test_terminal_tracking() {
     fi
     
     # Check that terminal ID was created
-    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    terminal_file=$(find ".tmp/terminal_versions" -name "terminal_*" -type f | head -1)
     if [[ ! -f "$terminal_file" ]]; then
         echo "Version file not created for terminal"
         return 1
@@ -153,12 +153,12 @@ test_corrupted_version_file() {
     local test_input='{"model":{"display_name":"Claude"},"version":"2.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
     # Set up corrupted version file (use terminal_* pattern now)
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     # Create a corrupted file with predictable terminal ID
-    echo -e "\x00\x01corrupted\xFF" > "$TEST_HOME/.claude/terminal_versions/terminal_test"
+    echo -e "\x00\x01corrupted\xFF" > ".tmp/terminal_versions/terminal_test"
     
     # Run statusline - should handle corruption gracefully
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     
     # Should show stars because corrupted file should be treated as no previous version
     if [[ "$output" != *"2.0.0 ✨"* ]]; then
@@ -167,7 +167,7 @@ test_corrupted_version_file() {
     fi
     
     # Verify a terminal_* file now contains 2.0.0:1 (new version with flag)
-    if ! grep -rlq -- '^2\.0\.0:1$' "$TEST_HOME/.claude/terminal_versions"; then
+    if ! grep -rlq -- '^2\.0\.0:1$' ".tmp/terminal_versions"; then
         echo "No terminal version file updated with 2.0.0:1"
         return 1
     fi
@@ -185,7 +185,7 @@ test_permission_denied() {
     chmod 444 "$TEST_HOME/.claude"
     
     # Run statusline - should handle permission errors gracefully
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
     
     # Should still produce output even if can't write files
     if [[ "$output" != *"3.0.0"* ]]; then
@@ -209,10 +209,10 @@ test_long_version_string() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
     # Run statusline (capture stderr)
-    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>&1)
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>&1)
     
     # Should default to 1.0.100 for non-semantic version
     if [[ "$output" == *"1.0.100 ✨"* ]]; then
@@ -232,10 +232,10 @@ test_malformed_json() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
     # Run statusline with malformed JSON (capture stderr)
-    HOME="$TEST_HOME" output=$(echo "$malformed_input" | bash "$statusline_path" 2>&1)
+    HOME="$TEST_HOME" output=$(echo "$malformed_input" | bash "$statusline_path" --test 2>&1)
     
     # Malformed JSON triggers "unknown" version which defaults to 1.0.100
     if [[ "$output" == *"1.0.100 ✨"* ]] || [[ "$output" == *"Claude"* ]]; then
@@ -254,13 +254,13 @@ test_rapid_version_changes() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
     # Test rapid version changes
     for version in "1.0.0" "1.0.1" "1.0.2" "1.1.0" "2.0.0"; do
         local test_input="{\"model\":{\"display_name\":\"Claude\"},\"version\":\"$version\",\"workspace\":{\"current_dir\":\"/tmp\"},\"output_style\":{\"name\":\"default\"}}"
         
-        HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
+        HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
         
         # Each new version should show stars
         if [[ "$output" != *"$version"* ]]; then
@@ -273,7 +273,7 @@ test_rapid_version_changes() {
     done
     
     # Final check - last version should be recorded with flag
-    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    terminal_file=$(find ".tmp/terminal_versions" -name "terminal_*" -type f | head -1)
     final_version=$(cat "$terminal_file" 2>/dev/null || echo "")
     if [[ "$final_version" != "2.0.0:1" ]]; then
         echo "Final version not recorded correctly: $final_version"
@@ -291,32 +291,32 @@ test_cleanup_functionality() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
-    mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
+    mkdir -p ".tmp/terminal_versions"
     
     # Create old files (simulate 8 days old by touching them)
-    echo "old_version" > "$TEST_HOME/.claude/terminal_versions/old_terminal_1"
-    echo "old_version" > "$TEST_HOME/.claude/terminal_versions/old_terminal_2"
+    echo "old_version" > ".tmp/terminal_versions/old_terminal_1"
+    echo "old_version" > ".tmp/terminal_versions/old_terminal_2"
     
     # Use touch to set modification time to 8 days ago
-    touch -t $(date -v-8d +%Y%m%d%H%M.%S) "$TEST_HOME/.claude/terminal_versions/old_terminal_1" 2>/dev/null || \
-    touch -d "8 days ago" "$TEST_HOME/.claude/terminal_versions/old_terminal_1" 2>/dev/null || true
+    touch -t $(date -v-8d +%Y%m%d%H%M.%S) ".tmp/terminal_versions/old_terminal_1" 2>/dev/null || \
+    touch -d "8 days ago" ".tmp/terminal_versions/old_terminal_1" 2>/dev/null || true
     
-    touch -t $(date -v-8d +%Y%m%d%H%M.%S) "$TEST_HOME/.claude/terminal_versions/old_terminal_2" 2>/dev/null || \
-    touch -d "8 days ago" "$TEST_HOME/.claude/terminal_versions/old_terminal_2" 2>/dev/null || true
+    touch -t $(date -v-8d +%Y%m%d%H%M.%S) ".tmp/terminal_versions/old_terminal_2" 2>/dev/null || \
+    touch -d "8 days ago" ".tmp/terminal_versions/old_terminal_2" 2>/dev/null || true
     
     # Run statusline - should trigger cleanup
-    HOME="$TEST_HOME" bash "$statusline_path" <<< "$test_input" >/dev/null 2>&1
+    HOME="$TEST_HOME" bash "$statusline_path" --test <<< "$test_input" >/dev/null 2>&1
     
     # Check if new file was created
-    files_count=$(ls -1 "$TEST_HOME/.claude/terminal_versions"/ | wc -l)
+    files_count=$(ls -1 ".tmp/terminal_versions"/ | wc -l)
     if [[ $files_count -lt 1 ]]; then
         echo "Cleanup test failed - no version files found"
         return 1
     fi
     
     # At minimum, a new terminal file should exist
-    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    terminal_file=$(find ".tmp/terminal_versions" -name "terminal_*" -type f | head -1)
     if [[ ! -f "$terminal_file" ]]; then
         echo "New terminal file not created during cleanup test"
         return 1
@@ -346,8 +346,8 @@ run_test "Rapid version changes" test_rapid_version_changes
 run_test "Cleanup functionality" test_cleanup_functionality
 
 # Cleanup terminal files created during testing
-if [[ -d "$TEST_HOME/.claude/terminal_versions" ]]; then
-    rm -f "$TEST_HOME/.claude/terminal_versions"/terminal_* 2>/dev/null || true
+if [[ -d ".tmp/terminal_versions" ]]; then
+    rm -f ".tmp/terminal_versions"/terminal_* 2>/dev/null || true
 fi
 
 # Cleanup test directory  
