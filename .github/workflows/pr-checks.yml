@@ -90,14 +90,9 @@ jobs:
 
           echo "Checking $cmd..."
 
-          # Check for required sections
+          # Check for required sections in the new template structure
           if ! grep -q "^# /" "$cmd"; then
-            echo "❌ Missing command header in $cmd"
-            exit 1
-          fi
-
-          if ! grep -q "^## Description" "$cmd"; then
-            echo "❌ Missing Description section in $cmd"
+            echo "❌ Missing command header starting with '# /' in $cmd"
             exit 1
           fi
 
@@ -106,11 +101,17 @@ jobs:
             exit 1
           fi
 
-          # Check for either Behavior or Command Execution Flow (plan.md uses the latter)
-          if ! grep -q "^## Behavior" "$cmd" && ! grep -q "^## Command Execution Flow" "$cmd"; then
-            echo "❌ Missing Behavior or Command Execution Flow section in $cmd"
+          if ! grep -q "^## Description" "$cmd"; then
+            echo "❌ Missing Description section in $cmd"
             exit 1
           fi
+
+          if ! grep -q "^## Expected Output" "$cmd"; then
+            echo "❌ Missing Expected Output section in $cmd"
+            exit 1
+          fi
+
+          # Note: Behavior section is now optional in the new template
 
           echo "✓ $cmd structure is valid"
         done

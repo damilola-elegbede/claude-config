@@ -14,21 +14,22 @@ test_test_file_exists() {
 test_test_structure() {
     local test_file="$ORIGINAL_DIR/system-configs/.claude/commands/test.md"
 
-    # Check required sections
-    assert_file_contains "$test_file" "# /test Command" \
-        "Should have command header"
+    # Check for YAML frontmatter
+    assert_file_contains "$test_file" "^---" \
+        "Should have YAML frontmatter start"
+
+    assert_file_contains "$test_file" "description:" \
+        "Should have description in frontmatter"
+
+    # Check required sections (new template format)
+    assert_file_contains "$test_file" "## Usage" \
+        "Should have Usage section"
 
     assert_file_contains "$test_file" "## Description" \
         "Should have Description section"
 
-    assert_file_contains "$test_file" "## Usage" \
-        "Should have Usage section"
-
-    assert_file_contains "$test_file" "## Discovery Algorithm" \
-        "Should have Discovery Algorithm section"
-
-    assert_file_contains "$test_file" "## Test Generation" \
-        "Should have Test Generation section"
+    assert_file_contains "$test_file" "## Expected Output" \
+        "Should have Expected Output section"
 }
 
 # Test test command content
@@ -39,7 +40,7 @@ test_test_content() {
     assert_file_contains "$test_file" "discovers and runs tests" \
         "Should mention test discovery"
 
-    assert_file_contains "$test_file" "creates a base level test suite" \
+    assert_file_contains "$test_file" "test.*creation\|creates.*test" \
         "Should mention test creation"
 
     assert_file_contains "$test_file" "README.md" \

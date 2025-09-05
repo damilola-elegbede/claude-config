@@ -48,6 +48,17 @@
           }
         ]
       }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/exit_hook.sh"
+          }
+        ]
+      }
     ]
   }
 }

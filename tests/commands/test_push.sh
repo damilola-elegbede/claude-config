@@ -14,18 +14,22 @@ test_push_file_exists() {
 test_push_structure() {
     local push_file="$ORIGINAL_DIR/system-configs/.claude/commands/push.md"
 
-    # Check required sections
-    assert_file_contains "$push_file" "# /push Command" \
-        "Should have command header"
+    # Check for YAML frontmatter
+    assert_file_contains "$push_file" "^---" \
+        "Should have YAML frontmatter start"
+
+    assert_file_contains "$push_file" "description:" \
+        "Should have description in frontmatter"
+
+    # Check required sections (new template format)
+    assert_file_contains "$push_file" "## Usage" \
+        "Should have Usage section"
 
     assert_file_contains "$push_file" "## Description" \
         "Should have Description section"
 
-    assert_file_contains "$push_file" "## Usage" \
-        "Should have Usage section"
-
-    assert_file_contains "$push_file" "## Two-Mode Operation" \
-        "Should have Two-Mode Operation section"
+    assert_file_contains "$push_file" "## Expected Output" \
+        "Should have Expected Output section"
 }
 
 # Test push command content

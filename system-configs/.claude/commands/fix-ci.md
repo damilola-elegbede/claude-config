@@ -1,26 +1,61 @@
+---
+description: Diagnoses and fixes GitHub Actions CI failures automatically
+argument-hint: [run-id|--learn]
+---
+
 # /fix-ci Command
-
-## Description
-
-Diagnoses and fixes GitHub Actions failures using pattern recognition and
-historical fix data. Only pushes when 95% confident all CI issues are resolved.
-Tests locally before pushing fixes.
 
 ## Usage
 
 ```bash
 /fix-ci                  # Fix latest failure
-/fix-ci <run-id>         # Fix specific run
+/fix-ci 12345678         # Fix specific run
 /fix-ci --learn          # Update fix patterns from history
+```
+
+## Description
+
+Diagnose and fix GitHub Actions failures using pattern recognition and historical fix data. Only pushes when 95%
+confident all CI issues are resolved. Tests locally before pushing fixes.
+
+## Expected Output
+
+### Successful CI Fix with Confidence
+
+```text
+🔍 Pattern confidence: 96%
+🔧 Applying fix (96% confidence)...
+🧪 Testing fix locally...
+✅ Local tests passed
+💾 Committed and pushed fix
+📊 Recorded outcome: CI passed = true
+```
+
+### Low Confidence Scenario
+
+```text
+User: /fix-ci
+Claude: 🔍 Pattern confidence: 70%
+⚠️ Confidence too low (70% < 95%)
+💡 Manual review recommended
+```
+
+### Learning Mode
+
+```text
+User: /fix-ci --learn
+Claude: 📊 Historical Fix Analysis:
+Lint/Format: 98% success rate (47/48 attempts)
+Dependencies: 92% success rate (23/25 attempts)
+Test Failures: 85% success rate (17/20 attempts)
+Type Errors: 78% success rate (14/18 attempts)
 ```
 
 ## Behavior
 
-## Agent Orchestration
+### Agent Orchestration - Multi-Instance Parallel Deployment
 
-### Parallel CI Failure Analysis - Multi-Instance Deployment
-
-Deploy multiple agent instances for comprehensive parallel CI fixing:
+#### Parallel Fix Strategy
 
 ```yaml
 # PARALLEL WAVE 1: Simultaneous Failure Analysis
@@ -63,38 +98,37 @@ security-auditor:
   output: Security violations, compliance issues
 ```
 
-### Parallel Fix Strategy
+#### CI Job Parallelization Strategy
 
 ```yaml
-CI Job Parallelization Strategy:
-  Phase 1 - Parallel Diagnosis (10-15 seconds):
-    - All failed CI jobs analyzed simultaneously
-    - Deploy N agents where N = number of failure types
-    - Each agent instance handles specific failure domain
-    - Cross-reference findings for related issues
+Phase 1 - Parallel Diagnosis (10-15 seconds):
+  - All failed CI jobs analyzed simultaneously
+  - Deploy N agents where N = number of failure types
+  - Each agent instance handles specific failure domain
+  - Cross-reference findings for related issues
 
-  Phase 2 - Parallel Fix Implementation:
-    Lint/Format Failures:
-      - Multiple code-reviewer instances fix different files
-      - Parallel execution: npm run lint:fix on file groups
+Phase 2 - Parallel Fix Implementation:
+  Lint/Format Failures:
+    - Multiple code-reviewer instances fix different files
+    - Parallel execution: npm run lint:fix on file groups
 
-    Test Failures:
-      - test-engineer instance 1: Fix unit tests
-      - test-engineer instance 2: Fix integration tests
-      - test-engineer instance 3: Fix E2E tests
-      - All work simultaneously
+  Test Failures:
+    - test-engineer instance 1: Fix unit tests
+    - test-engineer instance 2: Fix integration tests
+    - test-engineer instance 3: Fix E2E tests
+    - All work simultaneously
 
-    Build Failures:
-      - platform-engineer instance 1: Fix dependencies
-      - platform-engineer instance 2: Fix environment config
-      - devops: Fix pipeline configuration
-      - Parallel resolution of independent issues
+  Build Failures:
+    - platform-engineer instance 1: Fix dependencies
+    - platform-engineer instance 2: Fix environment config
+    - devops: Fix pipeline configuration
+    - Parallel resolution of independent issues
 
-  Phase 3 - Parallel Validation:
-    - Run all CI checks locally in parallel
-    - Different test suites on different threads
-    - Aggregate results for confidence scoring
-    - Only push when ALL parallel checks pass
+Phase 3 - Parallel Validation:
+  - Run all CI checks locally in parallel
+  - Different test suites on different threads
+  - Aggregate results for confidence scoring
+  - Only push when ALL parallel checks pass
 
 Performance Metrics:
   - Sequential analysis: 3-5 minutes
@@ -103,11 +137,9 @@ Performance Metrics:
   - Success rate: 95%+ with comprehensive parallel checking
 ```
 
-Analyzes GitHub Actions failures, applies targeted fixes, tests locally for
-validation, and only pushes when 95% confident that 100% of CI issues are
-resolved. Learns from outcomes to improve confidence scoring.
+### Fix Pattern Recognition
 
-## Fix Patterns with Confidence Scoring
+#### Pattern Matching with Confidence Scoring
 
 ```yaml
 Lint/Format: {confidence: 98%, test: "npm run lint", fix: "npm run lint:fix"}
@@ -117,7 +149,7 @@ Type Errors: {confidence: 78%, test: "npm run typecheck", fix: "fix types"}
 Build Issues: {confidence: 70%, test: "npm run build", fix: "rebuild"}
 ```
 
-## Pattern Matching & Fixes
+#### Safe Command Validation
 
 ```bash
 # Whitelist of safe commands
@@ -139,7 +171,11 @@ validate_fix_command() {
   echo "❌ Unsafe command: $cmd"
   return 1
 }
+```
 
+#### Pattern Application Logic
+
+```bash
 apply_fix() {
   local error_log="$1"
   local confidence=0
@@ -166,6 +202,7 @@ apply_fix() {
     echo "$pattern,$confidence,$fix_cmd,$test_cmd"
     return 0
   fi
+
   # Validate fix command is safe
   if ! validate_fix_command "$fix_cmd"; then
     return 1
@@ -175,7 +212,9 @@ apply_fix() {
 }
 ```
 
-## History Tracking
+### Historical Learning System
+
+#### History Tracking
 
 ```bash
 # Initialize history directory
@@ -206,7 +245,9 @@ get_confidence() {
 }
 ```
 
-## Main Execution Flow
+### Main Execution Flow
+
+#### Complete Fix Process
 
 ```bash
 fix_ci() {
@@ -216,11 +257,13 @@ fix_ci() {
     echo "❌ gh is not authenticated. Run: gh auth login"
     return 1
   fi
+
   local run_id="${1:-$(gh run list --status=failure --limit=1 --jq '.[0].databaseId')}"
   if [[ -z "$run_id" || "$run_id" == "null" ]]; then
     echo "ℹ️ No failed GitHub Actions runs found."
     return 1
   fi
+
   local logs
   logs=$(gh run view "$run_id" --log-failed)
 
@@ -240,6 +283,7 @@ fix_ci() {
     echo "📝 Pattern matched but requires manual remediation. Recommended test: $test_cmd"
     return 1
   fi
+
   # Only proceed if 95%+ confident
   if [[ $final_confidence -lt 95 ]]; then
     echo "⚠️ Confidence too low (${final_confidence}% < 95%)"
@@ -285,30 +329,7 @@ Automated fix applied by /fix-ci"
 }
 ```
 
-## Examples
-
-```text
-User: /fix-ci
-Claude: 🔍 Pattern confidence: 96%
-🔧 Applying fix (96% confidence)...
-🧪 Testing fix locally...
-✅ Local tests passed
-💾 Committed and pushed fix
-📊 Recorded outcome: CI passed = true
-
-User: /fix-ci
-Claude: 🔍 Pattern confidence: 87%
-⚠️ Confidence too low (87% < 95%)
-💡 Manual review recommended
-
-User: /fix-ci --learn
-Claude: 📊 Confidence scores from .tmp/fix-ci/:
-- Lint/Format: 98% (47/48 successful)
-- Dependencies: 92% (23/25 successful)
-- Test Failures: 85% (17/20 successful)
-```
-
-## Execution Verification
+### Execution Verification
 
 Deploy execution-evaluator to verify:
 
@@ -320,17 +341,19 @@ Deploy execution-evaluator to verify:
 - ✅ **Historical learning** - Outcomes recorded for future confidence scoring
 - ✅ **Threshold compliance** - Only proceeded when confidence >= 95%
 
-## Key Features
+### Key Features
 
 - **95% confidence threshold** - Only pushes when highly confident
 - **Local testing first** - Validates fixes before pushing
 - **100% CI success requirement** - Success only when all CI issues resolved
 - **Historical learning** - Improves confidence scoring from .tmp/fix-ci/ data
 - **Safe execution** - Tests locally accounting for CI environment differences
+- **Parallel agent deployment** - Multiple specialized agents work simultaneously
 
-## Notes
+### Notes
 
 - History stored in `.tmp/fix-ci/` not home directory
 - Success only counted when 100% of CI issues are resolved
 - Local testing accounts for CI environment differences
 - Won't push unless 95%+ confident in fix success
+- Deploys multiple agent instances for comprehensive parallel analysis

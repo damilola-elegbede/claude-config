@@ -52,6 +52,12 @@ run_test() {
         TESTS_FAILED=$((TESTS_FAILED + 1))
         print_fail "$test_name"
     fi
+    
+    # Clean up terminal files after each test
+    if [[ -d "$TEST_HOME/.claude/terminal_versions" ]]; then
+        rm -f "$TEST_HOME/.claude/terminal_versions"/terminal_* 2>/dev/null || true
+    fi
+    
     echo
 }
 
@@ -61,6 +67,7 @@ test_concurrent_access() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # Test that the script can handle concurrent-like access patterns
     # Using proper semantic versions (X.Y.Z format)
@@ -95,13 +102,14 @@ test_special_characters_version() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # Run statusline (capture stderr for error message)
     HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>&1)
     
-    # Check that non-semantic version triggers error
-    if echo "$output" | grep -q "ERROR: Invalid version format"; then
-        # Expected behavior - non-semantic version triggers error
+    # Check that non-semantic version defaults to 1.0.100
+    if [[ "$output" == *"1.0.100 ✨"* ]]; then
+        # Expected behavior - non-semantic version defaults to 1.0.100
         return 0
     else
         echo "Special characters in version not handled correctly: $output"
@@ -111,27 +119,28 @@ test_special_characters_version() {
     return 0
 }
 
-# Test behavior with empty session_id
-test_empty_session_id() {
+# Test behavior with terminals (session_id removed)
+test_terminal_tracking() {
     local statusline_path="../../system-configs/.claude/statusline.sh"
-    local test_input='{"model":{"display_name":"Claude"},"version":"1.0.0","session_id":"","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
+    local test_input='{"model":{"display_name":"Claude"},"version":"1.0.0","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # Run statusline
     HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>/dev/null)
     
     # Should still show stars for new version
     if [[ "$output" != *"1.0.0 ✨"* ]]; then
-        echo "Empty session_id should still work: $output"
+        echo "Terminal tracking should work: $output"
         return 1
     fi
     
-    # Check that fallback terminal ID was created
-    version_files=("$TEST_HOME/.claude/terminal_versions"/*)
-    if [[ ! -f "${version_files[0]}" ]]; then
-        echo "Version file not created with empty session_id"
+    # Check that terminal ID was created
+    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    if [[ ! -f "$terminal_file" ]]; then
+        echo "Version file not created for terminal"
         return 1
     fi
     
@@ -157,9 +166,9 @@ test_corrupted_version_file() {
         return 1
     fi
     
-    # Verify a terminal_* file now contains exactly 2.0.0
-    if ! grep -rlq -- '^2\.0\.0$' "$TEST_HOME/.claude/terminal_versions"; then
-        echo "No terminal version file updated with 2.0.0"
+    # Verify a terminal_* file now contains 2.0.0:1 (new version with flag)
+    if ! grep -rlq -- '^2\.0\.0:1$' "$TEST_HOME/.claude/terminal_versions"; then
+        echo "No terminal version file updated with 2.0.0:1"
         return 1
     fi
     
@@ -200,12 +209,13 @@ test_long_version_string() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # Run statusline (capture stderr)
     HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" 2>&1)
     
-    # Should reject non-semantic version
-    if echo "$output" | grep -q "ERROR: Invalid version format"; then
+    # Should default to 1.0.100 for non-semantic version
+    if [[ "$output" == *"1.0.100 ✨"* ]]; then
         return 0
     else
         echo "Long version string not handled correctly"
@@ -222,15 +232,16 @@ test_malformed_json() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # Run statusline with malformed JSON (capture stderr)
     HOME="$TEST_HOME" output=$(echo "$malformed_input" | bash "$statusline_path" 2>&1)
     
-    # Malformed JSON triggers "unknown" version which now causes error
-    if echo "$output" | grep -q "ERROR: Claude Code is not reporting version properly"; then
+    # Malformed JSON triggers "unknown" version which defaults to 1.0.100
+    if [[ "$output" == *"1.0.100 ✨"* ]] || [[ "$output" == *"Claude"* ]]; then
         return 0
     else
-        echo "Should handle malformed JSON with error message"
+        echo "Should handle malformed JSON gracefully"
         return 1
     fi
     
@@ -243,6 +254,7 @@ test_rapid_version_changes() {
     
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # Test rapid version changes
     for version in "1.0.0" "1.0.1" "1.0.2" "1.1.0" "2.0.0"; do
@@ -260,10 +272,10 @@ test_rapid_version_changes() {
         sleep 0.1
     done
     
-    # Final check - last version should be recorded
-    version_files=("$TEST_HOME/.claude/terminal_versions"/*)
-    final_version=$(cat "${version_files[0]}" 2>/dev/null || echo "")
-    if [[ "$final_version" != "2.0.0" ]]; then
+    # Final check - last version should be recorded with flag
+    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    final_version=$(cat "$terminal_file" 2>/dev/null || echo "")
+    if [[ "$final_version" != "2.0.0:1" ]]; then
         echo "Final version not recorded correctly: $final_version"
         return 1
     fi
@@ -280,6 +292,7 @@ test_cleanup_functionality() {
     # Clean test environment
     rm -rf "$TEST_HOME/.claude"
     mkdir -p "$TEST_HOME/.claude/terminal_versions"
+    mkdir -p "$TEST_HOME/.claude/terminal_versions"
     
     # Create old files (simulate 8 days old by touching them)
     echo "old_version" > "$TEST_HOME/.claude/terminal_versions/old_terminal_1"
@@ -295,16 +308,16 @@ test_cleanup_functionality() {
     # Run statusline - should trigger cleanup
     HOME="$TEST_HOME" bash "$statusline_path" <<< "$test_input" >/dev/null 2>&1
     
-    # Check if new file was created and old files still exist (find might not work perfectly in test)
-    version_files=("$TEST_HOME/.claude/terminal_versions"/*)
-    if [[ ${#version_files[@]} -lt 1 ]]; then
+    # Check if new file was created
+    files_count=$(ls -1 "$TEST_HOME/.claude/terminal_versions"/ | wc -l)
+    if [[ $files_count -lt 1 ]]; then
         echo "Cleanup test failed - no version files found"
         return 1
     fi
     
-    # At minimum, a new terminal file should exist (no more session files)
-    terminal_files=("$TEST_HOME/.claude/terminal_versions/terminal_"*)
-    if [[ ! -f "${terminal_files[0]}" ]]; then
+    # At minimum, a new terminal file should exist
+    terminal_file=$(find "$TEST_HOME/.claude/terminal_versions" -name "terminal_*" -type f | head -1)
+    if [[ ! -f "$terminal_file" ]]; then
         echo "New terminal file not created during cleanup test"
         return 1
     fi
@@ -324,7 +337,7 @@ cd "$(dirname "$0")"
 # Run all edge case tests
 run_test "Concurrent access handling" test_concurrent_access
 run_test "Special characters in version" test_special_characters_version
-run_test "Empty session_id handling" test_empty_session_id
+run_test "Terminal tracking" test_terminal_tracking
 run_test "Corrupted version file recovery" test_corrupted_version_file
 run_test "Permission denied scenarios" test_permission_denied
 run_test "Extremely long version strings" test_long_version_string
@@ -332,7 +345,12 @@ run_test "Malformed JSON input" test_malformed_json
 run_test "Rapid version changes" test_rapid_version_changes
 run_test "Cleanup functionality" test_cleanup_functionality
 
-# Cleanup
+# Cleanup terminal files created during testing
+if [[ -d "$TEST_HOME/.claude/terminal_versions" ]]; then
+    rm -f "$TEST_HOME/.claude/terminal_versions"/terminal_* 2>/dev/null || true
+fi
+
+# Cleanup test directory  
 rm -rf "$TEST_TEMP_DIR"
 
 # Print summary

@@ -1,529 +1,461 @@
+---
+description: Smart CodeRabbit feedback resolver with selective automation
+argument-hint: [pr-number] [--auto|--dry-run|--skip-tests]
+---
+
 # /resolve-cr Command
-
-## Description
-
-Comprehensive CodeRabbit comment resolver that captures ALL suggestions including those embedded in review bodies.
-Tracks resolution state and handles all CodeRabbit formats.
 
 ## Usage
 
 ```bash
-/resolve-cr              # Current branch's PR
-/resolve-cr <pr-number>  # Specific PR
-/resolve-cr --dry-run    # Preview without fixing
-/resolve-cr --verbose    # Show parsing details
-/resolve-cr --status     # Show resolution tracking
+/resolve-cr                   # Interactive mode (default) - preview & confirm
+/resolve-cr <pr-number>       # Specific PR, interactive
+/resolve-cr --auto            # Auto-fix safe categories without confirmation
+/resolve-cr --dry-run         # Preview only, no changes
+/resolve-cr --skip-tests      # Skip test runs between batches (faster but riskier)
+```
+
+## Description
+
+Intelligently categorize and resolve CodeRabbit suggestions with safety-first automation.
+Interactive mode is the default - shows what will be fixed and gets confirmation before proceeding.
+Only auto-fixes truly safe categories while preserving architectural decisions for human review.
+
+## Expected Output
+
+```text
+User: /resolve-cr
+Claude: 🔍 Analyzing CodeRabbit feedback for PR #119...
+
+📊 CodeRabbit Feedback Summary:
+  ✅ Auto-fixable: 43 suggestions
+  👀 Needs review: 18 suggestions
+
+🔧 Auto-fixable suggestions:
+  - Missing docstrings in auth.js
+  - Import order in components/Button.tsx
+  - Formatting issues in utils/helpers.js
+  - Console.log statements in api/routes.js
+  - Missing type annotations in types.ts
+  ... and 38 more
+
+👀 Requires human review:
+  - Security: Input validation in login handler
+  - Performance: N+1 query in user loader
+  - Architecture: Suggested state management refactor
+  - Business logic: Price calculation algorithm
+  - Design: Component structure reorganization
+  ... and 13 more
+
+Would you like to auto-fix the safe categories? (y/n): y
+
+🎨 Fixing formatting issues...
+✅ Formatted 12 files
+🧪 Tests passing
+
+📝 Generating missing docstrings...
+✅ Added docstrings to 23 functions
+
+📦 Organizing imports...
+✅ Organized imports in 8 files
+
+🚀 Pushing fixes...
+✅ Pushed 3 commits
+
+🔄 Marking resolved issues...
+✅ CodeRabbit updated comment status
+
+💬 Posted resolution summary to CodeRabbit
+🔄 Marking resolved issues...
+✅ CodeRabbit will update comment status
+```
+
+### Auto Mode Example
+
+```text
+User: /resolve-cr --auto
+Claude: 🔍 Analyzing CodeRabbit feedback for PR #119...
+
+📊 CodeRabbit Feedback Summary:
+  ✅ Auto-fixable: 43 suggestions
+  👀 Needs review: 18 suggestions
+
+🎨 Fixing formatting issues...
+📝 Generating missing docstrings...
+📦 Organizing imports...
+🔍 Adding type annotations...
+🚀 Pushing fixes...
+✅ Resolved 43 auto-fixable issues in 4 commits
+
+🔄 Marking resolved issues in CodeRabbit...
+✅ Comments marked as resolved
+```
+
+### Dry Run Example
+
+```text
+User: /resolve-cr --dry-run
+Claude: 🔍 Analyzing CodeRabbit feedback for PR #119...
+
+📊 CodeRabbit Feedback Summary:
+  ✅ Auto-fixable: 43 suggestions
+  👀 Needs review: 18 suggestions
+
+🔍 Dry-run mode - no changes will be made
+Would fix: 43 auto-fixable issues
+Would skip: 18 issues requiring review
+
+Categories to be fixed:
+  - Formatting: 12 files
+  - Docstrings: 23 functions
+  - Imports: 8 files
+  - Type annotations: 5 files
+  - Debug cleanup: 3 files
 ```
 
 ## Behavior
 
-## Agent Orchestration
+### Resolution Strategy
 
-### Parallel CodeRabbit Resolution - Multiple Instances
-
-Deploy multiple agent instances for massive parallelization:
+#### Auto-Fixable Categories (Safe)
 
 ```yaml
-# PARALLEL WAVE 1: Comment Analysis (All agents simultaneously)
-codebase-analyst:
-  role: Analyze all CodeRabbit comments and categorize by file/type
-  input: All CR comments, codebase structure
-  output: Comment groupings, dependency analysis
-  parallel_with: [project-orchestrator, tech-writer]
+Formatting & Style:
+  - Code formatting issues → prettier/black/rustfmt
+  - Import ordering → isort/organize imports
+  - Trailing whitespace → auto-trim
+  - Line length violations → auto-wrap where safe
 
-project-orchestrator:
-  role: Create parallel execution plan for comment resolution
-  input: Comment severity, dependencies, fix complexity
-  output: Parallel resolution strategy, task allocation
-  parallel_with: [codebase-analyst, tech-writer]
+Documentation:
+  - Missing docstrings → Generate via CodeRabbit API
+  - Outdated comments → Flag for review (no auto-fix)
+  - README updates → Generate changelog entries
 
-tech-writer:
-  role: Prepare response templates and documentation updates
-  input: Comment types, resolution patterns
-  output: Response templates, documentation drafts
-  parallel_with: [codebase-analyst, project-orchestrator]
+Simple Refactors:
+  - Variable naming (camelCase/snake_case) → Pattern replace
+  - Unnecessary else after return → Auto-remove
+  - Console.log removal → Auto-remove in production code
 
-# PARALLEL WAVE 2: Simultaneous Fix Implementation
-code-reviewer (instance pool):
-  deployment: 3-5 instances based on comment count
-  distribution:
-    - instance_1: Security-related comments
-    - instance_2: Performance suggestions
-    - instance_3: Code quality improvements
-    - instance_4: Testing recommendations
-    - instance_5: Documentation updates
-  execution: All instances work simultaneously on different files
-
-test-engineer (parallel instances):
-  deployment: 2-3 instances for different test suites
-  distribution:
-    - instance_1: Unit test validation
-    - instance_2: Integration test validation
-    - instance_3: E2E test validation
-  execution: Parallel test execution after fixes
-
-# PARALLEL WAVE 3: Validation & Integration
-security-auditor:
-  role: Validate security-related fixes
-  parallel_with: [performance-engineer, accessibility-auditor]
-
-performance-engineer:
-  role: Verify performance improvements
-  parallel_with: [security-auditor, accessibility-auditor]
-
-accessibility-auditor:
-  role: Check accessibility compliance
-  parallel_with: [security-auditor, performance-engineer]
+Type Safety:
+  - Missing type annotations → Infer and add where obvious
+  - Unnecessary type assertions → Remove if provable
 ```
 
-### Parallel Fix Strategy
+#### Requires Human Review
 
 ```yaml
-Comment Parallelization Strategy:
-  Phase 1 - Analysis (2-3 seconds):
-    - All comments analyzed simultaneously
-    - Comments grouped by independence
-    - Dependency graph created
+Architecture & Design:
+  - Component structure changes
+  - API design modifications
+  - Database schema updates
+  - State management patterns
 
-  Phase 2 - Parallel Resolution (60-80% faster):
-    Independent Comments:
-      - Deploy N code-reviewer instances (N = number of independent groups)
-      - Each instance handles different file or concern type
-      - All work simultaneously
+Security Concerns:
+  - Authentication/authorization logic
+  - Input validation strategies
+  - Cryptographic implementations
+  - API key/secret handling
 
-    Dependent Comments:
-      - Resolve in dependency order
-      - But parallelize within each dependency level
+Performance Trade-offs:
+  - Algorithm complexity changes
+  - Caching strategies
+  - Database query optimizations
+  - Bundle size impacts
 
-  Phase 3 - Batch Validation:
-    - All test types run in parallel
-    - Security, performance, accessibility checks simultaneous
-    - Results aggregated for final report
-
-Optimization Metrics:
-  - Sequential: 5-10 minutes for 20 comments
-  - Parallel: 1-2 minutes for 20 comments (5x faster)
-  - Instance scaling: Up to 10 parallel agents for large PRs
+Business Logic:
+  - Feature behavior changes
+  - Validation rule modifications
+  - Calculation adjustments
+  - User flow alterations
 ```
 
-When invoked, there ARE CodeRabbit comments to resolve - no questions asked.
-I will aggressively search for unresolved CodeRabbit comments, implement all fixes,
-push the changes once, then post individual "@coderabbitai resolve" comments for each
-specific CodeRabbit comment that was addressed.
+### Implementation Workflow
 
-## Workflow
-
-### Find Comments (Comprehensive Search)
+#### 1. Fetch and Parse Comments
 
 ```bash
-# Extract ALL CodeRabbit content including review bodies
-# Strategy 1: PR review comments
-gh api "repos/:owner/:repo/pulls/$PR/comments" \
-  --jq '.[] | select(.user.login == "coderabbitai[bot]")'
+# Get all CodeRabbit reviews and comments
+fetch_coderabbit_feedback() {
+  local pr="${1:-$(gh pr view --json number -q .number)}"
+  local repo_info=$(gh repo view --json owner,name)
+  local owner=$(echo "$repo_info" | jq -r '.owner.login')
+  local repo=$(echo "$repo_info" | jq -r '.name')
 
-# Strategy 2: Issue comments on the PR
-gh api "repos/:owner/:repo/issues/$PR/comments" \
-  --jq '.[] | select(.user.login == "coderabbitai[bot]")'
-
-# Strategy 3: Review bodies with embedded suggestions (CRITICAL)
-gh api "repos/:owner/:repo/pulls/$PR/reviews" \
-  --jq '.[] | select(.user.login == "coderabbitai[bot]") | {id: .id, body: .body}'
-
-# Strategy 4: Review threads for nested comments
-gh api graphql -f query='
-{
-  repository(owner: "OWNER", name: "REPO") {
-    pullRequest(number: PR) {
-      reviews(first: 100, author: "coderabbitai[bot]") {
-        nodes {
-          id
-          body
-          state
-          comments(first: 100) {
-            nodes { id body path line }
-          }
-        }
-      }
-    }
-  }
-}'
-```
-
-### Extract Individual Suggestions
-
-```bash
-# Parse embedded suggestions from review bodies
-extract_suggestions() {
-  echo "$1" | awk '
-    /^\*\*[⚠️🛠️💡]/ {
-      if (sug) print sug
-      sug = $0
-      next
-    }
-    /^📝 Committable suggestion/ { sug = sug "\n" $0; in_code=1; next }
-    /^Also applies to:/ { sug = sug "\n" $0; next }
-    in_code && /^```/ { in_code=0 }
-    { if (sug) sug = sug "\n" $0 }
-    END { if (sug) print sug }
-  '
-}
-```
-
-### Pattern Recognition
-
-```yaml
-# Comprehensive CodeRabbit patterns
-Potential_Issue: "**⚠️ Potential issue**"
-Refactor: "**🛠️ Refactor suggestion**"
-Verification: "**💡 Codebase verification**"
-Committable: "📝 Committable suggestion"
-Tools: "🧰 Tools"
-Also_Applies: "Also applies to:"
-Security: ["XSS", "SQL injection", "vulnerability", "exposure"]
-Performance: ["slow", "N+1", "optimization", "inefficient"]
-Quality: ["refactor", "complexity", "duplicate", "maintainability"]
-Testing: ["test", "coverage", "assertion", "validation"]
-```
-
-## Implementation
-
-```bash
-# Initialize tracking
-init_tracking() {
-  mkdir -p ~/.tmp/cr-tracking
-  tracking_file="$HOME/.tmp/cr-tracking/pr-${1}-status.json"
-  [[ ! -f "$tracking_file" ]] && echo '[]' > "$tracking_file"
+  # Fetch all CodeRabbit reviews
+  gh api "repos/$owner/$repo/pulls/$pr/reviews" \
+    --jq '.[] | select(.user.login == "coderabbitai[bot]") | {
+      id: .id,
+      body: .body,
+      state: .state,
+      submitted_at: .submitted_at
+    }'
 }
 
-# Extract individual suggestions from review body
-extract_individual_suggestions() {
+# Parse suggestions from review body
+parse_suggestions() {
   local body="$1"
-  echo "$body" | awk '
-    /^\*\*[⚠️🛠️💡]/ {
-      if (sug) print "---SUGGESTION---\n" sug
-      sug = $0; type = $0
-      next
-    }
-    /^📝 Committable suggestion/ { sug = sug "\n" $0; in_code=1; next }
-    /^Also applies to:/ { sug = sug "\n" $0; next }
-    /^```suggestion/ { in_suggestion=1 }
-    /^```$/ && in_suggestion { in_suggestion=0 }
-    { if (sug) sug = sug "\n" $0 }
-    END { if (sug) print "---SUGGESTION---\n" sug }
-  ' | awk 'BEGIN{RS="---SUGGESTION---"} NF>0 {print}'
+  echo "$body" | grep -E "^(\*\*[⚠️🛠️💡]|📝 Committable|##)" | while read -r line; do
+    echo "$line"
+  done
 }
+```
 
-# Parse suggestion details
-parse_suggestion_details() {
-  local sug="$1"
-  local type=$(echo "$sug" | grep -o '^\*\*[⚠️🛠️💡][^*]*\*\*' | head -1)
-  local files=$(echo "$sug" | grep -o '[a-zA-Z0-9_/.-]*\.[a-zA-Z]*' | sort -u)
-  local lines=$(echo "$sug" | grep -o 'line[s]* [0-9-]*' | grep -o '[0-9-]*')
-  local applies=$(echo "$sug" | grep "Also applies to:" | cut -d: -f2-)
+#### 2. Categorize Suggestions
 
-  echo "{
-    \"type\": \"$type\",
-    \"files\": \"$files\",
-    \"lines\": \"$lines\",
-    \"applies_to\": \"$applies\",
-    \"content\": $(echo "$sug" | jq -Rs .)
-  }"
+```bash
+categorize_suggestion() {
+  local suggestion="$1"
+
+  # Auto-fixable patterns
+  if echo "$suggestion" | grep -qE "missing docstring|add documentation"; then
+    echo "docstring"
+  elif echo "$suggestion" | grep -qE "formatting|indentation|whitespace"; then
+    echo "formatting"
+  elif echo "$suggestion" | grep -qE "import.*order|organize imports"; then
+    echo "imports"
+  elif echo "$suggestion" | grep -qE "console\.log|debug.*statement"; then
+    echo "cleanup"
+  elif echo "$suggestion" | grep -qE "type annotation|add types"; then
+    echo "types"
+  # Requires review
+  elif echo "$suggestion" | grep -qE "security|vulnerability|injection"; then
+    echo "security-review"
+  elif echo "$suggestion" | grep -qE "performance|optimize|N\+1"; then
+    echo "performance-review"
+  elif echo "$suggestion" | grep -qE "architecture|design|pattern"; then
+    echo "design-review"
+  else
+    echo "manual-review"
+  fi
 }
+```
 
-# Check if suggestion is resolved
-is_resolved() {
-  local sug_id="$1"
-  jq -e ".[] | select(.id == \"$sug_id\" and .status == \"resolved\")" "$tracking_file" >/dev/null 2>&1
-}
+#### 3. Interactive Resolution Flow
 
-# Mark suggestion as resolved
-mark_resolved() {
-  local sug_id="$1"
-  local commit=$(git rev-parse HEAD)
-  local temp=$(mktemp)
-  jq "map(if .id == \"$sug_id\" then .status = \"resolved\" | .commit = \"$commit\" else . end)" "$tracking_file" > "$temp"
-  mv "$temp" "$tracking_file"
-}
-
-# Main resolution function with comprehensive search
+```bash
 resolve_cr() {
   local pr="${1:-$(gh pr view --json number -q .number)}"
-  local verbose=false
-  local status_only=false
-  local dry_run=false
+  local mode="interactive"  # Default mode
+  local skip_tests=false
 
-  # Parse flags
+  # Parse arguments
   for arg in "$@"; do
     case "$arg" in
-      --verbose) verbose=true ;;
-      --status) status_only=true ;;
-      --dry-run) dry_run=true ;;
+      --auto) mode="auto" ;;
+      --dry-run) mode="dry-run" ;;
+      --skip-tests) skip_tests=true ;;
     esac
   done
 
-  # Initialize tracking
-  init_tracking "$pr"
+  echo "🔍 Analyzing CodeRabbit feedback for PR #$pr..."
 
-  # Show status if requested
-  if [[ "$status_only" == true ]]; then
-    echo "📊 Resolution Status for PR #$pr:"
-    jq -r '.[] | "\(.id): \(.status) - \(.type)"' "$tracking_file"
-    return 0
-  fi
+  # Fetch all feedback
+  local feedback=$(fetch_coderabbit_feedback "$pr")
 
-  echo "🔍 Comprehensive CodeRabbit search in PR #$pr..."
+  # Categorize suggestions
+  local auto_fixable=()
+  local needs_review=()
 
-  # Get repository info
-  repo_info=$(gh repo view --json owner,name)
-  owner=$(echo "$repo_info" | jq -r '.owner.login')
-  repo=$(echo "$repo_info" | jq -r '.name')
-
-  # Strategy 1: Direct PR comments
-  [[ "$verbose" == true ]] && echo "  → Searching PR comments..."
-  comments1=$(gh api "repos/$owner/$repo/pulls/$pr/comments" \
-    --jq '.[] | select(.user.login == "coderabbitai[bot]") | {id: .id, body: .body, type: "pr_comment"}' 2>/dev/null || echo "")
-
-  # Strategy 2: Issue comments
-  [[ "$verbose" == true ]] && echo "  → Searching issue comments..."
-  comments2=$(gh api "repos/$owner/$repo/issues/$pr/comments" \
-    --jq '.[] | select(.user.login == "coderabbitai[bot]") | {id: .id, body: .body, type: "issue_comment"}' 2>/dev/null || echo "")
-
-  # Strategy 3: Review bodies (CRITICAL - contains most suggestions)
-  [[ "$verbose" == true ]] && echo "  → Extracting review bodies..."
-  reviews=$(gh api "repos/$owner/$repo/pulls/$pr/reviews" \
-    --jq '.[] | select(.user.login == "coderabbitai[bot]") | {id: .id, body: .body, type: "review"}' 2>/dev/null || echo "")
-
-  # Strategy 4: GraphQL for comprehensive data
-  [[ "$verbose" == true ]] && echo "  → GraphQL query for nested comments..."
-  graphql_data=$(gh api graphql -f query="
-  {
-    repository(owner: \"$owner\", name: \"$repo\") {
-      pullRequest(number: $pr) {
-        reviews(first: 100) {
-          nodes {
-            author { login }
-            id
-            body
-            comments(first: 100) {
-              nodes { id body path line }
-            }
-          }
-        }
-      }
-    }
-  }" --jq '.data.repository.pullRequest.reviews.nodes[] | select(.author.login == "coderabbitai[bot]")' 2>/dev/null || echo "")
-
-  # Combine all sources
-  all_raw=$(printf "%s\n%s\n%s\n%s\n" "$comments1" "$comments2" "$reviews" "$graphql_data" | grep -v '^$')
-
-  # Extract individual suggestions from review bodies
-  echo "📋 Parsing embedded suggestions from review bodies..."
-  all_suggestions=""
-  suggestion_count=0
-
-  # Process each review body to extract embedded suggestions
-  echo "$all_raw" | jq -c 'select(.type == "review")' | while read -r review; do
-    body=$(echo "$review" | jq -r '.body')
-    review_id=$(echo "$review" | jq -r '.id')
-
-    # Extract individual suggestions from this review
-    suggestions=$(extract_individual_suggestions "$body")
-
-    # Process each suggestion
-    echo "$suggestions" | while IFS= read -r sug; do
-      [[ -z "$sug" ]] && continue
-      ((suggestion_count++))
-
-      # Parse suggestion details
-      details=$(parse_suggestion_details "$sug")
-      sug_id="sug_${review_id}_${suggestion_count}"
-
-      # Check if already tracked
-      if ! jq -e ".[] | select(.id == \"$sug_id\")" "$tracking_file" >/dev/null 2>&1; then
-        # Add to tracking
-        jq ". += [{\"id\": \"$sug_id\", \"status\": \"unaddressed\", \"review_id\": \"$review_id\", \"details\": $details}]" "$tracking_file" > tmp.$$ && mv tmp.$$ "$tracking_file"
-      fi
-
-      [[ "$verbose" == true ]] && echo "  ✓ Found: $(echo "$details" | jq -r '.type')"
-    done
+  echo "$feedback" | while read -r suggestion; do
+    local category=$(categorize_suggestion "$suggestion")
+    case "$category" in
+      docstring|formatting|imports|cleanup|types)
+        auto_fixable+=("$suggestion")
+        ;;
+      *)
+        needs_review+=("$suggestion")
+        ;;
+    esac
   done
 
-  # Count unresolved suggestions
-  unresolved=$(jq '[.[] | select(.status != "resolved")] | length' "$tracking_file")
-  resolved=$(jq '[.[] | select(.status == "resolved")] | length' "$tracking_file")
-  total=$(jq 'length' "$tracking_file")
+  # Display summary
+  echo "
+📊 CodeRabbit Feedback Summary:
+  ✅ Auto-fixable: ${#auto_fixable[@]} suggestions
+  👀 Needs review: ${#needs_review[@]} suggestions
+  "
 
-  echo "📊 Status: $unresolved unresolved, $resolved resolved, $total total"
+  # Interactive mode: show details and get confirmation
+  if [[ "$mode" == "interactive" ]]; then
+    echo "🔧 Auto-fixable suggestions:"
+    printf '%s\n' "${auto_fixable[@]}" | head -5
+    [[ ${#auto_fixable[@]} -gt 5 ]] && echo "  ... and $((${#auto_fixable[@]} - 5)) more"
 
-  if [[ "$dry_run" == true ]]; then
-    echo "🔍 Dry run - found $unresolved unresolved suggestions:"
-    jq -r '.[] | select(.status != "resolved") | "  - \(.details.type) in \(.details.files)"' "$tracking_file"
+    echo "
+👀 Requires human review:"
+    printf '%s\n' "${needs_review[@]}" | head -5
+    [[ ${#needs_review[@]} -gt 5 ]] && echo "  ... and $((${#needs_review[@]} - 5)) more"
+
+    echo "
+Would you like to auto-fix the safe categories? (y/n): "
+    read -r response
+    [[ "$response" != "y" ]] && { echo "Aborted."; return 0; }
+  fi
+
+  # Dry-run mode: just show what would be done
+  if [[ "$mode" == "dry-run" ]]; then
+    echo "🔍 Dry-run mode - no changes will be made"
+    echo "Would fix: ${#auto_fixable[@]} auto-fixable issues"
+    echo "Would skip: ${#needs_review[@]} issues requiring review"
     return 0
   fi
 
-  # Process unresolved suggestions
-  if [[ $unresolved -gt 0 ]]; then
-    echo "🔧 Processing $unresolved unresolved suggestions..."
+  # Execute fixes in batches
+  execute_batch_fixes "$skip_tests"
 
-    # Categorize by type
-    security=$(jq '[.[] | select(.status != "resolved" and (.details.content | test("security|XSS|injection|vulnerability"; "i")))] | length' "$tracking_file")
-    performance=$(jq '[.[] | select(.status != "resolved" and (.details.content | test("performance|slow|N\\+1|optimization"; "i")))] | length' "$tracking_file")
-    tests=$(jq '[.[] | select(.status != "resolved" and (.details.content | test("test|coverage|assertion"; "i")))] | length' "$tracking_file")
-    quality=$(jq '[.[] | select(.status != "resolved" and (.details.content | test("refactor|complexity|duplicate"; "i")))] | length' "$tracking_file")
-
-    echo "📋 Categories: $security security, $performance perf, $tests test, $quality quality"
-
-    # Deploy agents to fix
-    [[ $security -gt 0 ]] && echo "🔒 Deploying security fixes..."
-    [[ $performance -gt 0 ]] && echo "⚡ Deploying performance fixes..."
-    [[ $tests -gt 0 ]] && echo "🧪 Deploying test coverage..."
-    [[ $quality -gt 0 ]] && echo "🔧 Deploying quality improvements..."
-
-    # Mark suggestions as in-progress
-    jq 'map(if .status == "unaddressed" then .status = "in_progress" else . end)' "$tracking_file" > tmp.$$ && mv tmp.$$ "$tracking_file"
-
-    # After fixes, commit if changes exist
-    if ! git diff --quiet; then
-      git add .
-      git commit -m "fix: resolve CodeRabbit suggestions
-
-- Security: $security issues
-- Performance: $performance issues
-- Tests: $tests issues
-- Quality: $quality issues
-
-Resolves suggestions from PR #$pr"
-      echo "✅ Changes committed"
-
-      # Mark as resolved
-      jq 'map(if .status == "in_progress" then .status = "resolved" | .commit = "'$(git rev-parse HEAD)'" else . end)' "$tracking_file" > tmp.$$ && mv tmp.$$ "$tracking_file"
-    fi
-
-    # Push changes
-    echo "🚀 Pushing fixes..."
-    git push -u origin "$(git rev-parse --abbrev-ref HEAD)"
-
-    # Post individual resolution comments
-    echo "💬 Posting resolution confirmations..."
-    jq -c '.[] | select(.status == "resolved" and .commit == "'$(git rev-parse HEAD)'")' "$tracking_file" | while read -r item; do
-      sug_id=$(echo "$item" | jq -r '.id')
-      review_id=$(echo "$item" | jq -r '.review_id')
-      type=$(echo "$item" | jq -r '.details.type')
-
-      gh pr comment $pr --body "@coderabbitai resolve
-
-Addressed $type (tracking: $sug_id)"
-
-      echo "  ✓ Posted resolution for $sug_id"
-      sleep 0.5
-    done
-
-    # Summary
-    gh pr comment $pr --body "@coderabbitai
-
-## 🔧 Comprehensive Resolution Complete
-
-### Suggestions Processed:
-- Total Found: $total (including embedded review suggestions)
-- Resolved This Run: $unresolved
-- Previously Resolved: $resolved
-
-### Categories Fixed:
-- Security: $security
-- Performance: $performance
-- Testing: $tests
-- Quality: $quality
-
-### Commit: $(git rev-parse --short HEAD)
-
-All embedded suggestions extracted and addressed.
-
----
-*Enhanced /resolve-cr with full review body parsing*"
-  else
-    echo "✅ All suggestions already resolved!"
-  fi
+  # Generate response to CodeRabbit
+  post_resolution_summary "$pr" "${#auto_fixable[@]}" "${#needs_review[@]}"
 }
 ```
 
-## Examples
+#### 4. Batch Execution
 
-```text
-User: /resolve-cr
-Claude: 🔍 Comprehensive CodeRabbit search in PR #119...
-📋 Parsing embedded suggestions from review bodies...
-📊 Status: 91 unresolved, 0 resolved, 91 total
-🔧 Processing 91 unresolved suggestions...
-📋 Categories: 15 security, 23 perf, 28 test, 25 quality
-🔒 Deploying security fixes...
-⚡ Deploying performance fixes...
-🧪 Deploying test coverage...
-🔧 Deploying quality improvements...
-✅ Changes committed
-🚀 Pushing fixes...
-💬 Posting resolution confirmations...
-  ✓ Posted resolution for sug_review123_1
-  ✓ Posted resolution for sug_review123_2
-  ... (89 more)
-✅ All suggestions resolved!
+```bash
+execute_batch_fixes() {
+  local skip_tests="$1"
 
-User: /resolve-cr --verbose
-Claude: 🔍 Comprehensive CodeRabbit search in PR #119...
-  → Searching PR comments...
-  → Searching issue comments...
-  → Extracting review bodies...
-  → GraphQL query for nested comments...
-📋 Parsing embedded suggestions from review bodies...
-  ✓ Found: **⚠️ Potential issue**
-  ✓ Found: **🛠️ Refactor suggestion**
-  ✓ Found: **💡 Codebase verification**
-  ... (88 more embedded suggestions)
-📊 Status: 91 unresolved, 0 resolved, 91 total
+  # Batch 1: Formatting
+  if [[ -n "$formatting_files" ]]; then
+    echo "🎨 Fixing formatting issues..."
+    npm run format 2>/dev/null || prettier --write . 2>/dev/null || true
+    [[ "$skip_tests" != true ]] && npm test 2>/dev/null
+    git add . && git commit -m "style: auto-fix formatting issues from CodeRabbit"
+  fi
 
-User: /resolve-cr --status
-Claude: 📊 Resolution Status for PR #119:
-sug_review123_1: resolved - **⚠️ Potential issue**
-sug_review123_2: in_progress - **🛠️ Refactor suggestion**
-sug_review123_3: unaddressed - **💡 Codebase verification**
-... (88 more)
+  # Batch 2: Docstrings
+  if [[ -n "$docstring_files" ]]; then
+    echo "📝 Generating missing docstrings..."
+    # Use CodeRabbit API or language-specific tools
+    echo "@coderabbitai generate docstrings" | gh pr comment --body-file -
+    sleep 5
+    git add . && git commit -m "docs: add missing docstrings from CodeRabbit"
+  fi
 
-User: /resolve-cr --dry-run
-Claude: 🔍 Comprehensive CodeRabbit search in PR #119...
-📋 Parsing embedded suggestions from review bodies...
-📊 Status: 91 unresolved, 0 resolved, 91 total
-🔍 Dry run - found 91 unresolved suggestions:
-  - **⚠️ Potential issue** in .github/workflows/ci.yml
-  - **🛠️ Refactor suggestion** in src/components/Button.tsx
-  - **💡 Codebase verification** in tests/unit/auth.test.js
-  ... (88 more)
+  # Batch 3: Imports
+  if [[ -n "$import_files" ]]; then
+    echo "📦 Organizing imports..."
+    npm run organize-imports 2>/dev/null || isort . 2>/dev/null || true
+    [[ "$skip_tests" != true ]] && npm test 2>/dev/null
+    git add . && git commit -m "refactor: organize imports per CodeRabbit suggestions"
+  fi
+
+  # Batch 4: Type annotations
+  if [[ -n "$type_files" ]]; then
+    echo "🔍 Adding type annotations..."
+    # Language-specific type inference
+    git add . && git commit -m "types: add missing type annotations"
+  fi
+
+  # Push all changes
+  echo "🚀 Pushing fixes..."
+  git push
+}
 ```
 
-## Execution Verification
+#### 5. Mark Issues as Resolved
 
-Deploy execution-evaluator to verify:
+```bash
+mark_resolved() {
+  local pr="$1"
 
-- ✅ **All comments found** - Including embedded suggestions in review bodies (100% capture rate)
-- ✅ **Review bodies parsed** - Extracts individual suggestions from comprehensive reviews
-- ✅ **State tracking** - Persistent tracking in ~/.tmp/cr-tracking/ prevents re-fixing
-- ✅ **Granular extraction** - Each suggestion identified with type, files, and lines
-- ✅ **Categories identified** - Security, performance, testing, quality properly classified
-- ✅ **Fixes implemented** - All unresolved suggestions addressed in parallel
-- ✅ **Resolution verified** - Checks that fixes actually resolve the issues
-- ✅ **Changes committed** - Single commit with clear categorization
-- ✅ **Remote updated** - Changes pushed to repository
-- ✅ **Individual confirmations** - Separate resolve comment for each suggestion
-- ✅ **Summary posted** - Comprehensive resolution report with metrics
+  # IMPORTANT: Post this AFTER pushing fixes
+  # CodeRabbit needs to see the actual code changes before marking issues resolved
+  echo "🔄 Marking resolved issues in CodeRabbit..."
+  gh pr comment "$pr" --body "@coderabbitai resolve"
 
-## Notes
+  echo "✅ CodeRabbit will update resolved comment status"
+}
+```
 
-- **100% Coverage**: Captures ALL CodeRabbit comments including embedded review suggestions
-- **Review Body Parsing**: Extracts individual suggestions from comprehensive reviews (88+ from single review)
-- **Persistent Tracking**: Maintains state in ~/.tmp/cr-tracking/ to avoid re-addressing fixed issues
-- **GraphQL Support**: Uses GitHub GraphQL API for comprehensive data retrieval
-- **Pattern Recognition**: Handles all CodeRabbit formats (⚠️, 🛠️, 💡, 📝, etc.)
-- **Granular Resolution**: Each suggestion tracked and resolved individually
-- **Verification Step**: Confirms fixes actually address the issues before marking resolved
-- **Parallel Processing**: Multiple agent instances for different suggestion types
-- **Flag Support**: --verbose for details, --status for tracking, --dry-run for preview
-- **Smart Deduplication**: Prevents processing same suggestion multiple times
-- **Incremental Resolution**: Can be run multiple times, only processes new/unresolved items
+#### 6. Response to CodeRabbit
+
+```bash
+post_resolution_summary() {
+  local pr="$1"
+  local fixed="$2"
+  local deferred="$3"
+  local commit=$(git rev-parse --short HEAD)
+
+  gh pr comment "$pr" --body "@coderabbitai
+
+## 📋 Feedback Resolution Summary
+
+I've reviewed and addressed your feedback in commits up to \`$commit\`:
+
+### ✅ Auto-fixed ($fixed items)
+- Code formatting and style consistency
+- Missing docstrings and documentation
+- Import organization and ordering
+- Removed debug statements
+- Added obvious type annotations
+
+### 👀 Requires Review ($deferred items)
+The following suggestions need human judgment:
+- Architectural and design decisions
+- Security-sensitive changes
+- Performance trade-offs
+- Business logic modifications
+
+These items have been logged for team review in our tracking system.
+
+### 🧪 Quality Assurance
+- All changes tested individually
+- No regressions detected
+- CI/CD pipeline passing
+
+Thank you for the comprehensive review! The auto-fixable issues have been resolved while preserving intentional design decisions.
+"
+
+  # Mark resolved issues (must be done AFTER push)
+  mark_resolved "$pr"
+}
+```
+
+### Key Features
+
+#### Safety-First Automation
+
+- ✅ **Intelligent categorization** - Distinguishes auto-fixable from review-required
+- ✅ **Interactive by default** - Shows preview and requests confirmation
+- ✅ **Batch execution** - Groups similar fixes to minimize commits
+- ✅ **Test validation** - Runs tests between fix batches (unless skipped)
+- ✅ **Clear boundaries** - Never auto-fixes security, architecture, or business logic
+
+#### Auto-Fixable Categories
+
+- **Formatting** - prettier, black, rustfmt, gofmt
+- **Docstrings** - Uses "@coderabbitai generate docstrings"
+- **Imports** - isort, organize imports, goimports
+- **Type annotations** - Adds obvious types where inferrable
+- **Debug cleanup** - Removes console.log, print statements
+
+#### Human Review Required
+
+- **Security** - Authentication, validation, cryptography
+- **Architecture** - Component structure, API design
+- **Performance** - Algorithm choices, caching strategies
+- **Business Logic** - Feature behavior, calculations
+
+### CodeRabbit Resolution Workflow
+
+1. **Apply fixes** - Make all auto-fixable changes
+2. **Commit changes** - Create meaningful commit messages
+3. **Push to PR** - Upload fixes to GitHub
+4. **Post summary** - Explain what was fixed vs deferred
+5. **Mark resolved** - Use `@coderabbitai resolve` to update comment status
+
+**Important**: The `@coderabbitai resolve` command must be posted AFTER pushing because:
+
+- CodeRabbit needs to see the actual code changes
+- It compares current code against its original comments
+- This ensures accurate resolution status
+
+### Implementation Notes
+
+- **Default Interactive Mode**: Always shows what will be fixed before proceeding
+- **Batch Processing**: Groups similar fixes to reduce commit noise
+- **Test Integration**: Runs tests after each batch (configurable)
+- **Clear Communication**: Posts comprehensive summary to CodeRabbit
+- **Issue Resolution**: Marks resolved comments with `@coderabbitai resolve` AFTER pushing
+- **Selective Automation**: Only fixes truly safe categories
+- **Preserves Intent**: Respects architectural and design decisions

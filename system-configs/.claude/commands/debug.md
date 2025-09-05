@@ -1,4 +1,19 @@
+---
+description: Root cause analysis for complex bugs with forensics
+argument-hint: [issue_description]
+---
+
 # /debug Command
+
+## Usage
+
+```bash
+/debug [issue_description]      # Investigate specific bug with multi-agent forensics
+/debug --repro <steps>          # Focus on reproduction step creation
+/debug --performance            # Performance-specific debugging analysis
+/debug "memory leak crashes"    # Memory issue investigation
+/debug "race condition"         # Concurrent access debugging
+```
 
 ## Description
 
@@ -6,22 +21,53 @@ Systematic root cause analysis for complex bugs using multi-agent forensics.
 Specializes in hard-to-reproduce issues, race conditions, memory leaks, and
 production-only failures.
 
-## Usage
+## Expected Output
 
-```bash
-/debug <issue_description>      # Investigate specific bug
-/debug --repro <steps>          # Focus on reproduction
-/debug --performance            # Performance-specific debugging
+### Memory Leak Investigation
+
+```text
+🔍 Memory Leak Investigation: User Session Cache
+
+📊 Evidence: Heap growing 50MB/hour, no GC pressure, correlates with logins
+🎯 Root Cause: Session objects in WeakMap never cleaned, event listeners maintaining references
+🔧 Fix: Added cleanup timer, proper listener removal, 24h TTL
+✅ Verification: Memory stable after 2h testing
+```
+
+### Race Condition Analysis
+
+```text
+🧵 Race Condition Investigation: Payment Processing
+
+📊 Evidence: Duplicate charges ~0.1% under high load, conflicting DB timestamps
+🎯 Root Cause: Non-atomic validation+charge, no idempotency key enforcement
+🔧 Fix: DB transactions, unique constraint, distributed lock
+✅ Verification: No duplicates in 1000 concurrent test transactions
+```
+
+### Production-Only Bug Analysis
+
+```text
+🏭 Production-Only Investigation: API Timeout Errors
+
+📊 Evidence: Works in dev/staging, 504 timeouts in prod, affects 30% of /users/search
+🎯 Root Cause: 10M users vs 1K in staging, missing index, table scan at scale
+🔧 Fix: Composite index (email, status, created_at), query optimization
+✅ Verification: Response time 8s → 120ms
+```
+
+### Performance Degradation Analysis
+
+```text
+⚡ Performance Investigation: Dashboard Loading Slowly
+
+📊 Evidence: Load time 2s → 15s after user growth, CPU normal, slow DB queries
+🎯 Root Cause: N+1 query problem, 50+ queries per dashboard load
+🔧 Fix: GraphQL DataLoader, batched queries, Redis caching
+✅ Verification: Dashboard loads in 1.8s (faster than baseline)
 ```
 
 ## Behavior
-
-When invoked, I will systematically investigate complex bugs using multi-agent
-forensics. I deploy specialized agents based on the issue type (memory leaks,
-race conditions, performance degradation) to perform root cause analysis and
-provide targeted fixes.
-
-## Investigation Framework
 
 ### Parallel Agent Deployment Strategy
 
@@ -76,9 +122,9 @@ Issue Classification:
     approach: Comprehensive parallel profiling across all resources
 ```
 
-## Concrete Investigation Patterns
+### Concrete Investigation Patterns
 
-### Memory Leak Investigation
+#### Memory Leak Investigation
 
 ```bash
 # Heap dump analysis pattern
@@ -92,18 +138,7 @@ investigate_memory_leak() {
 }
 ```
 
-**Example Output:**
-
-```text
-🔍 Memory Leak Investigation: User Session Cache
-
-📊 Evidence: Heap growing 50MB/hour, no GC pressure, correlates with logins
-🎯 Root Cause: Session objects in WeakMap never cleaned, event listeners maintaining references
-🔧 Fix: Added cleanup timer, proper listener removal, 24h TTL
-✅ Verification: Memory stable after 2h testing
-```
-
-### Race Condition Analysis
+#### Race Condition Analysis
 
 ```bash
 # Thread synchronization analysis
@@ -117,18 +152,7 @@ analyze_race_condition() {
 }
 ```
 
-**Example Output:**
-
-```text
-🧵 Race Condition Investigation: Payment Processing
-
-📊 Evidence: Duplicate charges ~0.1% under high load, conflicting DB timestamps
-🎯 Root Cause: Non-atomic validation+charge, no idempotency key enforcement
-🔧 Fix: DB transactions, unique constraint, distributed lock
-✅ Verification: No duplicates in 1000 concurrent test transactions
-```
-
-### Production-Only Bug Analysis
+#### Environment Difference Analysis
 
 ```bash
 # Environment difference analysis
@@ -141,18 +165,7 @@ compare_environments() {
 }
 ```
 
-**Example Output:**
-
-```text
-🏭 Production-Only Investigation: API Timeout Errors
-
-📊 Evidence: Works in dev/staging, 504 timeouts in prod, affects 30% of /users/search
-🎯 Root Cause: 10M users vs 1K in staging, missing index, table scan at scale
-🔧 Fix: Composite index (email, status, created_at), query optimization
-✅ Verification: Response time 8s → 120ms
-```
-
-### Performance Degradation Analysis
+#### Performance Profiling Patterns
 
 ```javascript
 // Performance profiling patterns
@@ -166,20 +179,9 @@ const performance_debug = {
 };
 ```
 
-**Example Output:**
+### Multi-Agent Coordination
 
-```text
-⚡ Performance Investigation: Dashboard Loading Slowly
-
-📊 Evidence: Load time 2s → 15s after user growth, CPU normal, slow DB queries
-🎯 Root Cause: N+1 query problem, 50+ queries per dashboard load
-🔧 Fix: GraphQL DataLoader, batched queries, Redis caching
-✅ Verification: Dashboard loads in 1.8s (faster than baseline)
-```
-
-## Multi-Agent Coordination
-
-### Parallel Agent Teams by Issue Type
+#### Parallel Agent Teams by Issue Type
 
 ```yaml
 Memory Issues:
@@ -205,9 +207,9 @@ Complex Multi-Domain:
   execution_time: 80% faster than sequential investigation
 ```
 
-## Debugging Toolchain
+### Debugging Toolchain
 
-### Language-Specific Tools
+#### Language-Specific Tools
 
 ```bash
 # Java debugging
@@ -223,7 +225,7 @@ debug_python() { py-spy top --pid $PID; python -m cProfile script.py; }
 debug_go() { go run -race main.go; dlv attach $PID; }
 ```
 
-### Database Query Analysis
+#### Database Query Analysis
 
 ```sql
 -- PostgreSQL debugging
@@ -231,9 +233,9 @@ EXPLAIN ANALYZE SELECT * FROM slow_table;
 SET log_min_duration_statement = 1000;
 ```
 
-## Reproduction Strategies
+### Reproduction Strategies
 
-### Intermittent Bug Reproduction
+#### Intermittent Bug Reproduction
 
 ```bash
 # Automated reproduction attempts
@@ -255,7 +257,7 @@ reproduce_intermittent() {
 }
 ```
 
-### Environment Simulation
+#### Environment Simulation
 
 ```bash
 # Production environment simulation
@@ -267,7 +269,7 @@ simulate_production() {
 }
 ```
 
-## Verification & Follow-up
+### Verification & Follow-up
 
 Deploy execution-evaluator to verify:
 
@@ -278,7 +280,7 @@ Deploy execution-evaluator to verify:
 - ✅ **Prevention measures** - Steps to avoid similar issues
 - ✅ **Documentation** - Investigation findings documented
 
-## Examples
+### Examples
 
 ```text
 User: /debug Memory leak causing crashes
@@ -301,7 +303,7 @@ Claude: 🏭 Scale issue: Missing database index
 ✅ Result: 8s → 120ms response time
 ```
 
-## Notes
+### Notes
 
 - Focuses on systematic investigation over guesswork
 - Uses appropriate tools for each programming language

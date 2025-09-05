@@ -1,26 +1,94 @@
+---
+description: Manage dependencies with security scanning and safe updates
+argument-hint: [audit|update|clean|--quick]
+---
+
 # /deps Command
-
-## Description
-
-Manages dependencies across all package managers with security scanning and
-safe updates. Provides quick audit, update, and cleanup operations for
-polyglot codebases.
 
 ## Usage
 
 ```bash
-/deps                        # Quick audit of all dependencies
-/deps audit                  # Detailed security scan
-/deps update                 # Safe dependency updates
-/deps clean                  # Remove unused dependencies
-/deps --quick               # Fast check without deep analysis
+/deps                           # Quick audit of all dependencies (30 seconds)
+/deps audit                     # Deep multi-instance security scan (20-30 seconds)
+/deps update                    # Safe dependency updates with rollback
+/deps clean                     # Remove unused dependencies
+/deps --quick                   # Fast check without deep analysis (10-15 seconds)
+```
+
+## Description
+
+Manages dependencies across all package managers with security scanning and safe updates.
+Provides quick audit, update, and cleanup operations for polyglot codebases.
+
+## Expected Output
+
+### Quick Mode (default, 30 seconds)
+
+```text
+🔍 Scanning dependencies...
+📦 Detected: npm, pip (2 package managers)
+
+⚠️ Issues Found:
+🔴 Critical: lodash@4.17.15 (prototype pollution CVE-2020-8203)
+🟡 Medium: axios@0.21.0 (SSRF vulnerability)
+📊 Outdated: 12 packages have newer versions
+🗑️ Unused: 3 packages not imported
+
+💡 Quick Fixes:
+npm audit fix
+pip install --upgrade-strategy eager
+
+⏱️ Completed in 28 seconds
+```
+
+### Deep Mode (/deps audit, 20-30 seconds)
+
+```text
+## Comprehensive Dependency Audit
+
+### Security Analysis
+🔴 **Critical Vulnerabilities**: 2 found
+- lodash@4.17.15: Prototype pollution (CVE-2020-8203)
+  Fix: npm install lodash@4.17.21
+- pillow@8.2.0: Buffer overflow (CVE-2021-34552)
+  Fix: pip install pillow>=8.3.2
+
+🟡 **Medium Risk**: 3 vulnerabilities
+🟢 **Low Risk**: 7 vulnerabilities
+
+### Supply Chain Assessment
+✅ **Package Authenticity**: All packages verified
+⚠️ **Maintainer Risk**: 2 packages have single maintainer
+🔍 **Suspicious Activity**: None detected
+
+### License Compliance
+✅ **Compatible Licenses**: 94% (47/50 packages)
+⚠️ **GPL Dependencies**: 2 packages require review
+❌ **License Conflicts**: 1 incompatible license found
+
+### Recommendations
+1. Update critical vulnerabilities immediately
+2. Consider alternatives for single-maintainer packages
+3. Review GPL license requirements for commercial use
+4. Remove 3 unused dependencies to reduce attack surface
+
+⏱️ Completed in 1m 47s
+```
+
+### Safe Update Process (/deps update)
+
+```text
+🔄 Starting safe dependency update process...
+💾 Backing up current dependency state...
+🔒 Stage 1: Applying security patches (3 updates)...
+📦 Stage 2: Minor version updates (12 packages)...
+🧪 Stage 3: Running tests to verify compatibility...
+✅ All updates successful, tests passing
 ```
 
 ## Behavior
 
-## Agent Orchestration - Multi-Instance Package Manager Scanning
-
-### Parallel Dependency Analysis with Instance Pools
+### Multi-Instance Package Manager Scanning
 
 Deploy multiple instances for simultaneous package manager scanning:
 
@@ -99,15 +167,9 @@ Time Optimization:
   - Full CPU utilization: Each instance on separate core
 ```
 
-When invoked, I deploy multiple security-auditor instances (one per package
-manager) to scan all ecosystems simultaneously. Quick mode provides essential
-health checks in 10-15 seconds using parallel scanning, while audit mode deploys
-additional security-auditor instances for comprehensive analysis
-in 20-30 seconds (4-6x faster than sequential).
+### Two-Mode Operation
 
-## Two-Mode Operation
-
-### Quick Mode (default) - 30 Second Analysis
+#### Quick Mode (default) - 30 Second Analysis
 
 **What it does**: Essential dependency health check
 
@@ -122,7 +184,7 @@ Agent Usage: None (direct tooling)
 Output: Summary with actionable items only
 ```
 
-### Deep Mode (audit) - Multi-Instance Analysis (20-30 seconds)
+#### Deep Mode (audit) - Multi-Instance Analysis (20-30 seconds)
 
 **What it does**: Comprehensive parallel dependency analysis
 
@@ -145,87 +207,15 @@ Performance:
   - Multi-instance: 20-30 seconds (4-6x faster)
 ```
 
-## Package Manager Support
+### Package Manager Support
 
-### Auto-Detection & Security Scanning
+Auto-detects: npm, pip, go, cargo, maven, gradle, bundler, composer
+Based on presence of manifest files (package.json, requirements.txt, etc.)
+Uses ecosystem-specific tools: npm audit, pip-audit, cargo audit, nancy (Go)
 
-```text
-# Auto-detects: npm, pip, go, cargo, maven, gradle, bundler, composer
-# Based on presence of manifest files (package.json, requirements.txt, etc.)
-# Uses ecosystem-specific tools: npm audit, pip-audit, cargo audit, nancy (Go)
-```
+### Language-Specific Patterns
 
-## Core Operations
-
-### /deps (Quick Mode)
-
-```text
-🔍 Scanning dependencies...
-📦 Detected: npm, pip (2 package managers)
-
-⚠️ Issues Found:
-🔴 Critical: lodash@4.17.15 (prototype pollution CVE-2020-8203)
-🟡 Medium: axios@0.21.0 (SSRF vulnerability)
-📊 Outdated: 12 packages have newer versions
-🗑️ Unused: 3 packages not imported
-
-💡 Quick Fixes:
-npm audit fix
-pip install --upgrade-strategy eager
-
-⏱️ Completed in 28 seconds
-```
-
-### /deps audit (Deep Mode)
-
-```text
-## Comprehensive Dependency Audit
-
-### Security Analysis
-🔴 **Critical Vulnerabilities**: 2 found
-- lodash@4.17.15: Prototype pollution (CVE-2020-8203)
-  Fix: npm install lodash@4.17.21
-- pillow@8.2.0: Buffer overflow (CVE-2021-34552)
-  Fix: pip install pillow>=8.3.2
-
-🟡 **Medium Risk**: 3 vulnerabilities
-🟢 **Low Risk**: 7 vulnerabilities
-
-### Supply Chain Assessment
-✅ **Package Authenticity**: All packages verified
-⚠️ **Maintainer Risk**: 2 packages have single maintainer
-🔍 **Suspicious Activity**: None detected
-
-### License Compliance
-✅ **Compatible Licenses**: 94% (47/50 packages)
-⚠️ **GPL Dependencies**: 2 packages require review
-❌ **License Conflicts**: 1 incompatible license found
-
-### Recommendations
-1. Update critical vulnerabilities immediately
-2. Consider alternatives for single-maintainer packages
-3. Review GPL license requirements for commercial use
-4. Remove 3 unused dependencies to reduce attack surface
-
-⏱️ Completed in 1m 47s
-```
-
-### /deps update (Safe Updates)
-
-```text
-# Staged process: backup → security patches → minor updates → test → rollback if needed
-```
-
-### /deps clean (Unused Removal)
-
-```text
-# Uses depcheck (npm), pip-check (python), cargo machete (rust)
-# Safely removes unused dependencies after verification
-```
-
-## Language-Specific Patterns
-
-### Node.js/npm Workflow
+#### Node.js/npm Workflow
 
 ```bash
 npm_workflow() {
@@ -241,17 +231,15 @@ npm_workflow() {
 }
 ```
 
-### Other Ecosystems
+#### Other Ecosystems
 
-```text
-# Python: pip-audit, pip upgrade, pip-autoremove
-# Go: nancy sleuth, go get -u, go mod tidy
-# Rust: cargo audit, cargo update
-```
+- Python: pip-audit, pip upgrade, pip-autoremove
+- Go: nancy sleuth, go get -u, go mod tidy
+- Rust: cargo audit, cargo update
 
-## Agent Coordination
+### Agent Coordination
 
-### Quick Mode (No Agents)
+#### Quick Mode (No Agents)
 
 ```yaml
 Direct Tooling:
@@ -264,7 +252,7 @@ Accuracy: High for known CVEs
 Coverage: Basic security + outdated packages
 ```
 
-### Deep Mode (Multi-Instance Deployment)
+#### Deep Mode (Multi-Instance Deployment)
 
 ```yaml
 Multi-Instance Agent Deployment:
@@ -293,9 +281,9 @@ Instance Scaling:
   - Large polyglot (5+ ecosystems): 6-8 total instances
 ```
 
-## Risk Assessment Matrix
+### Risk Assessment Matrix
 
-### Vulnerability Severity
+#### Vulnerability Severity
 
 ```yaml
 Critical (CVSS 9.0-10.0):
@@ -315,7 +303,7 @@ Low (CVSS 0.1-3.9):
   Action: Update during next maintenance
 ```
 
-### Supply Chain Risk Factors
+#### Supply Chain Risk Factors
 
 ```yaml
 High Risk Indicators:
@@ -332,7 +320,7 @@ Low Risk Indicators:
   - Large user base, corporate sponsorship
 ```
 
-## Execution Verification
+### Execution Verification
 
 Deploy execution-evaluator to verify:
 
@@ -343,9 +331,9 @@ Deploy execution-evaluator to verify:
 - ✅ **Lock files updated** - Dependency versions properly recorded
 - ✅ **Tests passing** - Quality gates maintained during updates
 
-## Examples
+### Examples
 
-### Quick Dependency Check
+#### Quick Dependency Check
 
 ```text
 User: /deps
@@ -357,7 +345,7 @@ Claude: 🔍 Scanning dependencies across 3 package managers...
 ⏱️ Scan completed in 31 seconds
 ```
 
-### Security-Focused Audit with Multi-Instance
+#### Security-Focused Audit with Multi-Instance
 
 ```text
 User: /deps audit
@@ -377,19 +365,7 @@ Claude: 🔒 Deploying multi-instance dependency scanners...
 ✅ Complete audit finished 4.5x faster than sequential
 ```
 
-### Safe Update Process
-
-```text
-User: /deps update
-Claude: 🔄 Starting safe dependency update process...
-💾 Backing up current dependency state...
-🔒 Stage 1: Applying security patches (3 updates)...
-📦 Stage 2: Minor version updates (12 packages)...
-🧪 Stage 3: Running tests to verify compatibility...
-✅ All updates successful, tests passing
-```
-
-## Notes
+### Notes
 
 - **Multi-Instance Scanning**: Deploy one instance per package manager for parallel analysis
 - **Dynamic Scaling**: Instance count adjusts to number of ecosystems detected

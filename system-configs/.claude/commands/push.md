@@ -1,4 +1,18 @@
+---
+description: Safely push changes to remote repository with quality gates
+argument-hint: [--simple|--force|--dry-run]
+---
+
 # /push Command
+
+## Usage
+
+```bash
+/push                   # Full quality gate push
+/push --simple          # Quick push without quality checks
+/push --force           # Force push (use carefully)
+/push --dry-run         # Preview what would be pushed
+```
 
 ## Description
 
@@ -9,56 +23,123 @@ Supports both simple push mode and comprehensive quality-checked push.
 defense before code reaches the remote repository. If pre-push hooks fail, the issues must
 be fixed immediately, never bypassed.
 
-## Usage
+## Expected Output
 
-```bash
-/push                        # Full quality gate push
-/push --simple               # Quick push without quality checks
-/push --force                # Force push (use carefully)
-/push --dry-run             # Preview what would be pushed
+When invoked, I will safely push changes to the remote repository with parallel
+agent validation. Simple mode performs basic checks. Full mode deploys all agents
+simultaneously for comprehensive validation with auto-fixing.
+
+### Basic Push Report
+
+When auto-fixes are applied, a simple report is generated:
+
+```markdown
+# Push Auto-Fix Report
+
+## Summary
+- **Branch**: feature/user-authentication
+- **Commits**: 3 commits ready to push
+- **Auto-fixes Applied**: 8 formatting issues
+
+## Linting Results ✅
+- **ESLint**: 5 issues auto-fixed
+- **Prettier**: 2 formatting issues resolved
+- **Markdown**: 1 line length violation fixed
+
+## Recommendation
+✅ **Ready to push** - Basic formatting applied
+💡 **Note**: Run /review for comprehensive quality analysis
 ```
 
-## Agent Orchestration
+### Examples
 
-### Parallel Validation Phase
+#### Simple Push
 
-**Launch all these concurrently:** Multiple agents for comprehensive pre-push validation:
-
-```yaml
-tech-writer:
-  role: Generate push summary and documentation updates
-  input: Commit messages, changed files, push context
-  output: Push summary, documentation needs, changelog updates
-
-code-reviewer:
-  role: Validate code quality and standards
-  input: Changed files, commit diffs
-  output: Quality issues, auto-fixable problems
-
-security-auditor:
-  role: Final security check before remote push
-  input: All commits to be pushed, changed files
-  output: Security vulnerabilities, sensitive data exposure
+```text
+User: /push --simple
+Claude: 🚀 Simple push mode...
+✅ Not on main branch (feature/auth-improvements)
+✅ No uncommitted changes
+📊 3 commits ready to push
+🔗 Setting upstream tracking...
+✅ Pushed to origin/feature/auth-improvements
 ```
 
-### Parallel Execution Strategy
+#### Standard Push
+
+```text
+User: /push
+Claude: 🚀 Standard push with basic validation...
+✅ Not on main branch (feature/auth-improvements)
+✅ No uncommitted changes
+📊 3 commits ready to push
+🔍 Auto-fixing linting issues... 🔧 Fixed 5 ESLint issues
+📝 Committed auto-fixes
+🚀 Pushing 4 commits to origin/feature/auth-improvements
+💡 Tip: Run /review for comprehensive quality analysis
+```
+
+#### Push with Manual Review Needed
+
+```text
+User: /push
+Claude: 🚀 Standard push with basic validation...
+✅ Basic checks passed
+🔍 Auto-fixing... ⚠️ Some linting issues require manual attention
+💡 Run /review for comprehensive quality analysis
+🚀 Pushing 3 commits to origin/feature/auth-improvements
+```
+
+### Execution Verification
+
+Deploy execution-evaluator to verify:
+
+- ✅ **Basic validation executed** - Safety checks ran according to mode
+- ✅ **Auto-fixes committed** - Linting changes properly staged and committed
+- ✅ **Push successful** - Commits reached remote repository
+- ✅ **Branch tracking set** - Upstream configured correctly
+
+## Behavior
+
+### Two-Mode Operation
+
+#### Simple Mode (--simple) - Quick Push
+
+**What it does**: Basic safety checks then push
 
 ```yaml
-Execute in parallel (not sequentially):
-  - All three agents run simultaneously in a single response
-  - Any agent can block the push
-  - Auto-fix issues in parallel where possible
+Checks Performed:
+  - Verify not on main/master branch
+  - Ensure no uncommitted changes
+  - Check branch has commits to push
+  - Set upstream tracking if needed
+
+Agent Usage: None (skip for speed)
+Duration: 10-15 seconds
+```
+
+#### Full Mode (default) - Parallel Agent Validation
+
+**What it does**: Comprehensive parallel validation before push
+
+```yaml
+Parallel Validation:
+  - code-reviewer: Quality and style checks
+  - test-engineer: Test verification
+  - security-auditor: Security scanning
+
+All agents run simultaneously:
+  - Total duration: 5-10 seconds
+  - Auto-fix issues in parallel
   - Re-validate after fixes
 
-Time Optimization:
-  - Launch all these concurrently: 5-10 seconds
-  - Sequential would take: 15-30 seconds
-  - 60-70% time reduction
+Agent Usage: code-reviewer + test-engineer + security-auditor (parallel)
+Duration: 10-20 seconds (with parallel execution)
 ```
 
-## Quality Gate Enforcement
+### Quality Gate Enforcement
 
-### Never Bypass Pre-Push Hooks
+#### Never Bypass Pre-Push Hooks
 
 ```yaml
 Prohibited Practices:
@@ -92,51 +173,9 @@ Rationale:
   - CI/CD costs money - don't waste it on preventable failures
 ```
 
-## Behavior
+### Push Workflow
 
-When invoked, I will safely push changes to the remote repository with parallel
-agent validation. Simple mode performs basic checks. Full mode deploys all agents
-simultaneously for comprehensive validation with auto-fixing.
-
-## Two-Mode Operation
-
-### Simple Mode (--simple) - Quick Push
-
-**What it does**: Basic safety checks then push
-
-```yaml
-Checks Performed:
-  - Verify not on main/master branch
-  - Ensure no uncommitted changes
-  - Check branch has commits to push
-  - Set upstream tracking if needed
-
-Agent Usage: None (skip for speed)
-Duration: 10-15 seconds
-```
-
-### Full Mode (default) - Parallel Agent Validation
-
-**What it does**: Comprehensive parallel validation before push
-
-```yaml
-Parallel Validation:
-  - code-reviewer: Quality and style checks
-  - test-engineer: Test verification
-  - security-auditor: Security scanning
-
-All agents run simultaneously:
-  - Total duration: 5-10 seconds
-  - Auto-fix issues in parallel
-  - Re-validate after fixes
-
-Agent Usage: code-reviewer + test-engineer + security-auditor (parallel)
-Duration: 10-20 seconds (with parallel execution)
-```
-
-## Push Workflow
-
-### Phase 1: Pre-Push Validation
+#### Phase 1: Pre-Push Validation
 
 ```bash
 # Basic safety checks
@@ -165,7 +204,7 @@ validate_push_safety() {
 }
 ```
 
-### Phase 2: Basic Auto-Fixes (Full Mode Only)
+#### Phase 2: Basic Auto-Fixes (Full Mode Only)
 
 ```bash
 # Basic linting with automatic fixes only
@@ -182,7 +221,7 @@ run_basic_fixes() {
 }
 ```
 
-### Phase 3: Linting Auto-Fix Implementation
+#### Phase 3: Linting Auto-Fix Implementation
 
 ```bash
 # Linting with automatic fixes
@@ -251,9 +290,9 @@ Auto-generated before push to maintain quality standards."
 }
 ```
 
-## Push Strategy
+### Push Strategy
 
-### Simple Mode (No Processing)
+#### Simple Mode (No Processing)
 
 ```yaml
 Operations:
@@ -267,7 +306,7 @@ Benefits:
   - Perfect for hot fixes and reviewed code
 ```
 
-### Full Mode (Basic Auto-Fix)
+#### Full Mode (Basic Auto-Fix)
 
 ```yaml
 Operations:
@@ -282,77 +321,7 @@ Benefits:
   - Relies on separate /review for quality
 ```
 
-## Basic Push Report
-
-When auto-fixes are applied, a simple report is generated:
-
-```markdown
-# Push Auto-Fix Report
-
-## Summary
-- **Branch**: feature/user-authentication
-- **Commits**: 3 commits ready to push
-- **Auto-fixes Applied**: 8 formatting issues
-
-## Linting Results ✅
-- **ESLint**: 5 issues auto-fixed
-- **Prettier**: 2 formatting issues resolved
-- **Markdown**: 1 line length violation fixed
-
-## Recommendation
-✅ **Ready to push** - Basic formatting applied
-💡 **Note**: Run /review for comprehensive quality analysis
-```
-
-## Examples
-
-### Simple Push
-
-```text
-User: /push --simple
-Claude: 🚀 Simple push mode...
-✅ Not on main branch (feature/auth-improvements)
-✅ No uncommitted changes
-📊 3 commits ready to push
-🔗 Setting upstream tracking...
-✅ Pushed to origin/feature/auth-improvements
-```
-
-### Standard Push
-
-```text
-User: /push
-Claude: 🚀 Standard push with basic validation...
-✅ Not on main branch (feature/auth-improvements)
-✅ No uncommitted changes
-📊 3 commits ready to push
-🔍 Auto-fixing linting issues... 🔧 Fixed 5 ESLint issues
-📝 Committed auto-fixes
-🚀 Pushing 4 commits to origin/feature/auth-improvements
-💡 Tip: Run /review for comprehensive quality analysis
-```
-
-### Push with Manual Review Needed
-
-```text
-User: /push
-Claude: 🚀 Standard push with basic validation...
-✅ Basic checks passed
-🔍 Auto-fixing... ⚠️ Some linting issues require manual attention
-💡 Run /review for comprehensive quality analysis
-🚀 Pushing 3 commits to origin/feature/auth-improvements
-```
-
-## Execution Verification
-
-Deploy execution-evaluator to verify:
-
-- ✅ **Basic validation executed** - Safety checks ran according to mode
-- ✅ **Auto-fixes committed** - Linting changes properly staged and committed
-- ✅ **Push successful** - Commits reached remote repository
-- ✅ **Branch tracking set** - Upstream configured correctly
-
-## Notes
+### Notes
 
 - Simple mode perfect for hot fixes and already-reviewed code
 - Full mode provides basic linting with auto-fix capability

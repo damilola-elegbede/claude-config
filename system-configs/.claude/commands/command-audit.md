@@ -1,124 +1,104 @@
+---
+description: Generate audit report for template compliance
+---
+
 # /command-audit Command
-
-## Description
-
-Validates command structure, content quality, and markdown parsing
-compliance across all commands in system-configs/.claude/commands/.
-Generates comprehensive audit report with actionable remediation guidance.
 
 ## Usage
 
 ```bash
+# Full audit of all commands
 /command-audit
+
+# Validate specific aspects
+/command-audit --frontmatter  # Focus on YAML frontmatter compliance
+/command-audit --fix          # Apply safe automatic fixes
+```
+
+## Description
+
+Systematically validate all command files against the COMMAND_TEMPLATE.md format and quality standards.
+Check frontmatter compliance, structure, content quality, agent specifications, and markdown formatting.
+Generate comprehensive audit report with actionable remediation guidance.
+
+## Expected Output
+
+Comprehensive audit report showing:
+
+### Executive Summary
+
+```text
+Commands: [total] | Template Compliant: [%] | Issues: [count] | Auto-fixed: [count]
+```
+
+### Command Status Matrix
+
+| Command | Template | Frontmatter | Description | Agent Refs | Parallel | Markdown | Status |
+|---------|----------|-------------|-------------|------------|----------|----------|--------|
+| [Each command evaluated against all criteria] | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ | Status |
+
+### Issues by Category
+
+#### Template Compliance Issues
+
+- Missing YAML frontmatter
+- Missing required 'description' field
+- Invalid argument-hint format
+- Description exceeds 60 character limit
+
+#### Content Quality Issues
+
+- Unclear command purpose
+- Missing context or guidelines
+- Vague expected output descriptions
+
+#### Agent Specification Issues
+
+- Missing agent specifications for complex tasks
+- Invalid agent references (not in 28 production agents)
+- Missing security-auditor for sensitive operations
+- Inappropriate agent selection
+
+#### Auto-Fix Capabilities
+
+```bash
+# Add missing language tags to common patterns
+sed -i 's/```$/```bash/g' system-configs/.claude/commands/*.md
+sed -i 's/```\n#/```bash\n#/g' system-configs/.claude/commands/*.md
+
+# Standardize frontmatter structure
+# Add missing frontmatter delimiters where needed
 ```
 
 ## Behavior
 
-Systematically validates all command files using available tools (Grep,
-Read, LS) to check structure compliance, markdown formatting, and content
-quality. Provides detailed audit report similar to
-/agent-audit with specific issues and remediation commands.
+### Validation Framework
 
-## Validation Framework
+#### Core Template Validation (Required)
 
-### Core Validation (Required)
+1. **Frontmatter Structure**: Required YAML frontmatter with `description` field
+2. **Optional Fields**: Proper `argument-hint` formatting when present
+3. **Content Structure**: Clear command purpose, context, and expected output
+4. **Markdown Quality**: Code blocks with language tags, proper formatting
+5. **Length Management**: Commands under 400 lines with justified complexity
+6. **Agent References**: Valid references to the 28 production agents
+7. **Parallel Execution**: Commands leverage parallel execution where applicable
 
-1. **Structure**: Required sections (Description, Usage, Behavior)
-2. **Content**: Clear descriptions, practical examples
-3. **Markdown**: Code blocks with language tags
-4. **Length**: Commands under 400 lines
-5. **Agent References**: Must reference valid agents from 28 production agents
-6. **Execution Verification**: All commands must include
-   execution-evaluator validation
-7. **Agent Specification**: Commands must specify appropriate specialized agents
-8. **Parallelization**: Commands must leverage parallel execution where possible
-
-### Category Standards
-
-```yaml
-git_workflow:
-  commands: [commit, branch, push, pr]
-  requirements:
-    - Git safety features documented
-    - Branch protection mechanisms
-  required_agents:
-    - tech-writer (commit messages, PR descriptions)
-    - code-reviewer (change validation)
-    - security-auditor (sensitive data checks)
-  parallelization:
-    - Parallel validation checks before operations
-
-repository_analysis:
-  commands: [context, test, debug]
-  requirements:
-    - Framework detection capabilities
-    - Universal project compatibility
-  required_agents:
-    - codebase-analyst (repository analysis)
-    - test-engineer (test generation/execution)
-    - debugger (issue investigation)
-  parallelization:
-    - Multiple analysts for different domains
-    - Parallel test suite execution
-
-system_management:
-  commands: [sync, deps, fix-ci]
-  requirements:
-    - Environment validation
-    - Backup procedures
-  required_agents:
-    - platform-engineer (environment setup)
-    - devops (CI/CD issues)
-    - security-auditor (dependency vulnerabilities)
-  parallelization:
-    - Parallel file validation
-    - Simultaneous package manager scanning
-
-quality_assurance:
-  commands: [review, agent-audit, command-audit]
-  requirements:
-    - Comprehensive validation
-    - Detailed reporting
-  required_agents:
-    - code-reviewer (quality checks)
-    - security-auditor (security validation)
-    - performance-engineer (performance analysis)
-  parallelization:
-    - Parallel tool execution
-    - Multiple reviewer agents simultaneously
-
-development_support:
-  commands: [plan, resolve-cr, prompt, implement, docs, ship-it]
-  requirements:
-    - Workflow integration
-    - User guidance
-  required_agents:
-    - product-strategist (planning)
-    - tech-writer (documentation)
-    - project-orchestrator (workflow coordination)
-  parallelization:
-    - Parallel phase execution
-    - Multiple agents per workflow phase
-```
-
-## Execution Process
-
-### Phase 1: Structure & Content Validation
+#### Template Compliance Check
 
 ```bash
-# Check required sections exist and are properly ordered
+# Validate frontmatter structure for all commands
 for cmd in system-configs/.claude/commands/*.md; do
-  # Validate: Description → Usage → Behavior sections
-  # Check: Clear purpose statement in description
-  # Verify: Usage examples with proper syntax
-  # Ensure: execution-evaluator verification section exists
+  # Check: YAML frontmatter exists with --- delimiters
+  # Verify: Required 'description' field present
+  # Validate: Optional 'argument-hint' field format if present
+  # Ensure: Description under 60 characters for autocomplete
 done
 ```
 
-### Phase 2: Agent Specification Validation (28 Production Agents)
+#### Agent Specification Validation (28 Production Agents)
 
 ```bash
-# Validate against 28 production agents following AGENT_TEMPLATE.md format
 VALID_AGENTS=("backend-engineer" "frontend-engineer" "fullstack-lead" "mobile-engineer"
               "data-engineer" "ml-engineer" "test-engineer" "code-reviewer"
               "debugger" "security-auditor" "performance-engineer" "principal-architect"
@@ -134,239 +114,81 @@ for cmd in system-configs/.claude/commands/*.md; do
   # Ensure: Complex tasks specify multiple specialists
   # Validate: No references to deprecated agents
 done
+```
 
-# Identify invalid agent references
-grep -o "[a-z-]*-agent\|[a-z-]*-engineer\|[a-z-]*-architect" system-configs/.claude/commands/*.md | \
-  while read agent; do
-    if [[ ! " ${VALID_AGENTS[@]} " =~ " ${agent} " ]]; then
-      echo "Invalid agent reference: $agent"
+#### Frontmatter Validation Process
+
+```bash
+# Check for proper YAML frontmatter structure
+grep -l "^---$" system-configs/.claude/commands/*.md | while read file; do
+  # Verify frontmatter contains required 'description' field
+  if ! grep -q "^description:" "$file"; then
+    echo "Missing required 'description' field: $file"
+  fi
+
+  # Check description length for autocomplete compatibility
+  desc="$(awk '/^description:/{sub(/^description:[[:space:]]*/, ""); print; exit}' "$file")"
+  desc_length=${#desc}
+  if [ "$desc_length" -gt 60 ]; then
+    echo "Description too long (>60 chars): $file"
+  fi
+
+  # Validate argument-hint format if present
+  if grep -q "^argument-hint:" "$file"; then
+    if ! grep -q "argument-hint:.*\[.*\]" "$file"; then
+      echo "Invalid argument-hint format (should use [brackets]): $file"
     fi
-  done
+  fi
+done
 ```
 
-### Phase 3: Parallelization Validation
+### Validation Categories
 
-```bash
-# Check for parallel execution patterns
-grep -l "parallel\|Parallel\|simultaneous\|concurrent" \
-  system-configs/.claude/commands/*.md
+#### Git Workflow Commands
 
-# Validate parallel phase definitions
-grep -l "Phase.*Parallel\|Parallel Wave\|Parallel Execution" \
-  system-configs/.claude/commands/*.md
+Required agents: tech-writer (messages), code-reviewer (validation), security-auditor (safety)
+Parallelization: Concurrent validation checks before operations
 
-# Check for sequential-only anti-patterns
-grep -l "Sequential Phase\|sequential execution\|one at a time" \
-  system-configs/.claude/commands/*.md | \
-  xargs -I {} echo "Review {} for parallelization opportunities"
-```
+#### Repository Analysis Commands
 
-### Phase 4: Execution Verification Check
+Required agents: codebase-analyst, test-engineer, debugger
+Parallelization: Multiple domain analysts, parallel test execution
 
-```bash
-# Check for execution-evaluator deployment statements
-grep -l "execution-evaluator\|Deploy.*to verify" \
-  system-configs/.claude/commands/*.md
+#### System Management Commands
 
-# Validate verification sections exist
-grep -l "## Execution Verification\|### Execution Verification" \
-  system-configs/.claude/commands/*.md
+Required agents: platform-engineer (setup), devops (CI/CD), security-auditor (vulnerabilities)
+Parallelization: Concurrent file validation, simultaneous package scanning
 
-# Check for success criteria checkmarks
-grep -c "✅.*" system-configs/.claude/commands/*.md
-```
+#### Quality Assurance Commands
 
-### Phase 5: Markdown Compliance Check
+Required agents: code-reviewer, security-auditor, performance-engineer
+Parallelization: Multiple reviewer agents simultaneously
 
-```bash
-# Scan for code blocks without language tags
-grep -n '```$' **/*.md
+#### Development Support Commands
 
-# Validate common language tags present
-grep -c '```\(bash\|yaml\|text\|json\|javascript\|python\)' **/*.md
-```
+Required agents: product-strategist (planning), tech-writer (docs), project-orchestrator (coordination)
+Parallelization: Concurrent phase execution, multiple agents per workflow
 
-### Phase 6: Length & Complexity Analysis
-
-```yaml
-Thresholds:
-  Standard: 150-250 lines (optimal)
-  Complex: 250-400 lines (justified complexity)
-  Over-limit: 400+ lines (requires refactoring)
-
-Assessment:
-  - Count total lines per command
-  - Identify commands exceeding thresholds
-  - Suggest refactoring opportunities
-```
-
-## Auto-Fix Capabilities (--fix)
-
-### Safe Automatic Fixes
-
-```bash
-# Add missing language tags to common patterns
-sed -i 's/```$/```bash/g' commands/*.md  # For shell commands
-sed -i 's/```\n#/```bash\n#/g' commands/*.md  # For commented bash
-
-# Standardize section headers
-sed -i 's/^# Usage$/## Usage/g' commands/*.md
-sed -i 's/^# Description$/## Description/g' commands/*.md
-```
-
-### Manual Fix Guidance
-
-Commands requiring human review:
-
-- Complex refactoring for oversized commands
-- Content quality improvements
-- Integration point clarification
-- Repository-specific exclusion updates
-
-## Report Structure
-
-### Executive Summary
-
-```text
-Commands: 16 | Compliance: 87% | Issues: 8 | Auto-fixed: 12
-```
-
-### Issues by Category
-
-```yaml
-Structure Issues: 3
-  - Missing required sections
-  - Incorrect section ordering
-
-Content Issues: 2
-  - Vague descriptions
-  - Missing examples
-
-Agent Specification Issues: 12
-  - Missing agent specifications
-  - Inappropriate agent selection
-  - No security-auditor for sensitive operations
-
-Parallelization Issues: 8
-  - Sequential execution where parallel possible
-  - Missing parallel phase definitions
-  - No concurrent agent deployment
-
-Execution Verification Issues: 5
-  - Missing execution-evaluator deployment
-  - No verification section
-  - Missing success criteria
-
-Markdown Issues: 7
-  - Code blocks without language tags
-  - Inconsistent formatting
-
-Length Issues: 4
-  - Commands over 400 lines
-  - Complexity not justified
-```
-
-### Command Status Matrix
-
-| Command | Lines | Structure | Content | Agents | Parallel | Execution | Markdown | Status |
-|---------|-------|-----------|---------|--------|----------|-----------|----------|--------|
-| plan | 230 | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | ⚠️ Missing agents + parallelization |
-| test | 384 | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ | ⚠️ Missing agents + parallel execution |
-| commit | 185 | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | ⚠️ Missing agents + validation |
-| branch | 201 | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ | ⚠️ Missing agent assistance |
-| implement | 350 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ Good parallel + agents |
-| docs | 290 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ Good parallel structure |
-
-### Auto-Remediation Applied
-
-```text
-# Fixed missing language tags (12 commands):
-- Added 'bash' tags to shell command blocks
-- Added 'yaml' tags to configuration examples
-- Added 'text' tags to output examples
-
-# Standardized section headers (8 commands):
-- Fixed ## Usage formatting
-- Corrected ## Description positioning
-```
-
-### Manual Actions Required
-
-```text
-# Priority optimizations:
-# - Reduce oversized commands to <400 lines
-# - Enhance content with concrete examples where needed
-# - Verify all commands have proper execution validation
-```
-
-## Repository-Specific Commands
-
-Commands excluded from sync process:
-
-- `command-audit.md` (this audit tool)
-- `sync.md` (sync operation itself)
-- `config-diff.md` (repository comparison)
-
-Validation ensures these commands are properly excluded in sync.md.
-
-## Examples
-
-### Basic Audit
-
-```bash
-/command-audit
-# Validates all 16 commands across all criteria
-# Generates comprehensive compliance report
-```
-
-### Auto-Fix Run
-
-```bash
-/command-audit --fix
-# Applies safe automatic fixes for common issues
-# Reports what was fixed and what needs manual attention
-```
-
-### Specific Command
-
-```bash
-/command-audit plan
-# Focused audit of /plan command only
-# Detailed analysis with specific recommendations
-```
-
-## Success Criteria
-
-✅ **Structure**: All commands have required sections in correct order
-✅ **Content**: Clear descriptions with practical examples
-✅ **Agent Specification**: All commands specify appropriate specialized agents
-✅ **Parallelization**: Commands leverage parallel execution where possible
-✅ **Execution Verification**: All commands include execution-evaluator deployment
-✅ **Markdown**: 100% code blocks have language tags
-✅ **Length**: Commands under 400 lines or complexity justified
-✅ **Categories**: Commands meet category-specific standards
-✅ **Repository-Specific**: Proper sync exclusions maintained
-
-## Execution Verification
+### Success Criteria Verification
 
 Deploy execution-evaluator to verify:
 
-- ✅ **Commands scanned** - All command files analyzed for compliance
-- ✅ **Structure validated** - Required sections present in correct order
-- ✅ **Content assessed** - Clear descriptions and practical examples
-- ✅ **Agent specifications checked** - Appropriate agents specified for each command
-- ✅ **Parallelization validated** - Parallel execution patterns where applicable
-- ✅ **Execution verification confirmed** - Execution-evaluator deployment present
-- ✅ **Markdown verified** - Code blocks properly tagged with languages
-- ✅ **Length checked** - Commands under 400 lines or complexity justified
-- ✅ **Categories confirmed** - Commands meet category-specific standards
-- ✅ **Issues identified** - Problems classified by severity and priority
-- ✅ **Fixes provided** - Actionable remediation guidance generated
+- ✅ **Template Compliance** - All commands follow COMMAND_TEMPLATE.md format
+- ✅ **Frontmatter Valid** - Required description field present, proper YAML syntax
+- ✅ **Content Quality** - Clear purpose, context, and expected output
+- ✅ **Agent Specifications** - Appropriate agents specified for complex operations
+- ✅ **Parallel Execution** - Commands leverage parallelization where applicable
+- ✅ **Markdown Quality** - Proper formatting and language tags
+- ✅ **Length Management** - Commands under 400 lines or complexity justified
+- ✅ **Issues Identified** - All compliance gaps documented with remediation steps
+- ✅ **Auto-Fixes Applied** - Safe formatting improvements implemented
+- ✅ **Manual Actions** - Human-review items clearly specified
 
-## Notes
+Commands must follow the standardized template in `docs/commands/COMMAND_TEMPLATE.md` with proper
+frontmatter containing required `description` field and optional `argument-hint` field. All commands
+should specify appropriate specialized agents, leverage parallel execution where applicable, and
+maintain high-quality Markdown formatting.
 
-- Repository-specific command (excluded from sync)
-- Focuses on actionable feedback over comprehensive analysis
-- Auto-fix capability for common formatting issues
-- Length thresholds based on actual command analysis
-- Integrates with execution-evaluator for verification
+This comprehensive audit ensures all commands maintain consistent quality, follow the standardized
+template format, and provide clear value to users through proper agent coordination and parallel
+execution patterns.
