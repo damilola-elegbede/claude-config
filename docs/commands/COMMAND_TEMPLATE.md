@@ -26,7 +26,7 @@ argument-hint: [options]
 /command-name              # Basic usage
 /command-name --flag       # With options
 /command-name argument     # With arguments
-```
+```text
 
 ## Description
 
@@ -34,18 +34,16 @@ Brief explanation of what this command does and when to use it. Keep it concise.
 
 ## Expected Output
 
-```text
+```texttext
 Example of what successful execution looks like
 Including success indicators and common variations
-```
+```text
 
 ## Behavior (optional)
 
 Detailed behavior, workflows, agent strategies if needed for complex commands.
-```
 
 ## Frontmatter Fields
-
 ### Required Fields
 
 - **description**: A concise, clear description of the command's purpose (shown in autocomplete)
@@ -79,21 +77,21 @@ description: Run all project tests and report results
 
 ```bash
 /test                      # Run all tests
-```
+```text
 
-## Description
+## Test Description
 
 Runs all project tests and provides a comprehensive summary of results including pass/fail counts and coverage metrics.
 
-## Expected Output
+## Test Expected Output
 
-```text
+```texttext
 Running test suite...
 ✓ Unit tests: 45/45 passed
 ✓ Integration tests: 12/12 passed
 ✓ Coverage: 87%
 All tests completed successfully
-```
+```text
 
 ## Command with Arguments
 
@@ -110,22 +108,23 @@ argument-hint: [issue-number]
 ```bash
 /fix-issue 123            # Fix specific issue
 /fix-issue 123 --review   # Fix with peer review
-```
+```text
 
-## Description
+## Fix-Issue Description
 
 Analyzes the specified GitHub issue and implements a solution following project coding standards.
 
-## Expected Output
+## Fix-Issue Expected Output
 
-```text
+```texttext
 Analyzing issue #123...
 ✓ Issue understood: Authentication timeout bug
 ✓ Solution implemented in src/auth.js
 ✓ Tests updated and passing
 ✓ Ready for review
-```
-```
+```text
+
+```text
 
 ## Markdown Linting Compliance
 
