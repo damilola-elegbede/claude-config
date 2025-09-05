@@ -17,7 +17,9 @@ description: Validate agent ecosystem integrity and compliance
 
 ## Description
 
-Perform comprehensive validation of all agents in the agent ecosystem to ensure category integrity, template compliance, and system consistency. **This command generates a REPORT ONLY - it provides recommendations and optional patch snippets; it does not make any changes automatically.**
+Perform comprehensive validation of all agents in the agent ecosystem to ensure category integrity,
+template compliance, and system consistency. **This command generates a REPORT ONLY - it provides
+recommendations and optional patch snippets; it does not make any changes automatically.**
 
 ## Expected Output
 

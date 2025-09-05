@@ -17,7 +17,9 @@ description: Generate audit report for template compliance
 
 ## Description
 
-Systematically validate all command files against the COMMAND_TEMPLATE.md format and quality standards. Check frontmatter compliance, structure, content quality, agent specifications, and markdown formatting. Generate comprehensive audit report with actionable remediation guidance.
+Systematically validate all command files against the COMMAND_TEMPLATE.md format and quality standards.
+Check frontmatter compliance, structure, content quality, agent specifications, and markdown formatting.
+Generate comprehensive audit report with actionable remediation guidance.
 
 ## Expected Output
 
@@ -181,6 +183,11 @@ Deploy execution-evaluator to verify:
 - ✅ **Auto-Fixes Applied** - Safe formatting improvements implemented
 - ✅ **Manual Actions** - Human-review items clearly specified
 
-Commands must follow the standardized template in `docs/commands/COMMAND_TEMPLATE.md` with proper frontmatter containing required `description` field and optional `argument-hint` field. All commands should specify appropriate specialized agents, leverage parallel execution where applicable, and maintain high-quality Markdown formatting.
+Commands must follow the standardized template in `docs/commands/COMMAND_TEMPLATE.md` with proper
+frontmatter containing required `description` field and optional `argument-hint` field. All commands
+should specify appropriate specialized agents, leverage parallel execution where applicable, and
+maintain high-quality Markdown formatting.
 
-This comprehensive audit ensures all commands maintain consistent quality, follow the standardized template format, and provide clear value to users through proper agent coordination and parallel execution patterns.
+This comprehensive audit ensures all commands maintain consistent quality, follow the standardized
+template format, and provide clear value to users through proper agent coordination and parallel
+execution patterns.

@@ -33,7 +33,9 @@ User: "API timeouts after recent changes"
 
 ## Description
 
-Files GitHub issues directly from conversation context or explicit bug reports using the GitHub MCP server. Extracts context automatically and creates professional bug reports with proper formatting and labels.
+Files GitHub issues directly from conversation context or explicit bug reports using the GitHub MCP
+server. Extracts context automatically and creates professional bug reports with proper formatting
+and labels.
 
 Use the following options when processing user input:
 
@@ -44,7 +46,10 @@ Use the following options when processing user input:
 
 ## Expected Output
 
-Creates GitHub issues using `mcp__github_create_issue` with automatic context extraction from conversation history, git status, current branch, and recent commits. Applies intelligent labeling and formatting based on issue content. Returns the created issue number (e.g., "#123") immediately after successful creation for tracking and reference.
+Creates GitHub issues using `mcp__github_create_issue` with automatic context extraction from
+conversation history, git status, current branch, and recent commits. Applies intelligent labeling
+and formatting based on issue content. Returns the created issue number (e.g., "#123") immediately
+after successful creation for tracking and reference.
 
 ### Issue Template
 
@@ -155,4 +160,7 @@ project-orchestrator:
 
 ### Integration Notes
 
-Uses GitHub MCP server (`mcp__github_create_issue`) with existing authentication. Auto-detects context from git state, conversation history, and file changes. Creates professional issues with smart labeling and proper markdown formatting. Returns the created issue number (e.g., "#123") upon successful creation for easy reference and tracking.
+Uses GitHub MCP server (`mcp__github_create_issue`) with existing authentication. Auto-detects
+context from git state, conversation history, and file changes. Creates professional issues with
+smart labeling and proper markdown formatting. Returns the created issue number (e.g., "#123") upon
+successful creation for easy reference and tracking.
