@@ -121,15 +121,60 @@ mkdir -p -m 700 "$terminal_versions_dir" 2>/dev/null || true
 
 # Logging functionality for debugging
 log_file="$terminal_versions_dir/events.log"
+
+# Function to rotate log file when it exceeds 10MB
+rotate_log_file() {
+    local file_path="$1"
+    
+    if [[ ! -f "$file_path" ]]; then
+        return 0
+    fi
+    
+    # Get file size - works on both macOS and Linux
+    local file_size
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS
+        file_size=$(stat -f %z "$file_path" 2>/dev/null || echo "0")
+    else
+        # Linux
+        file_size=$(stat -c %s "$file_path" 2>/dev/null || echo "0")
+    fi
+    
+    # Check if file exceeds 10MB (10485760 bytes)
+    if [[ $file_size -gt 10485760 ]]; then
+        local timestamp=$(date '+%Y%m%d_%H%M%S')
+        local rotated_file="${file_path%.*}_${timestamp}.log"
+        
+        # Move current log to rotated file
+        mv "$file_path" "$rotated_file" 2>/dev/null || return 1
+        
+        # Compress the rotated file in background
+        (gzip "$rotated_file" 2>/dev/null || true) &
+        
+        # Create new empty log file with proper permissions
+        touch "$file_path" 2>/dev/null || true
+        chmod 600 "$file_path" 2>/dev/null || true
+        
+        # Log the rotation event to the new file
+        local rotation_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+        printf '[%s] [STATUSLINE] [LOG_ROTATE] PID:%s Rotated log to %s (size: %s bytes)\n' \
+            "$rotation_timestamp" "$$" "$rotated_file.gz" "$file_size" >> "$file_path" 2>/dev/null || true
+    fi
+}
+
 log_event() {
     local event_type="$1"
     local details="$2"
     local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    
+    # Check for log rotation before writing
+    rotate_log_file "$log_file"
+    
     printf '[%s] [STATUSLINE] [%s] PID:%s TERM:%s VER:%s %s\n' \
         "$timestamp" "$event_type" "$$" "$terminal_id" "$semantic_version" "$details" >> "$log_file" 2>/dev/null || true
 }
 
-# Function to expire stale stars (files >30 minutes old with flag=1)
+# Function to expire stale stars (files >3 hours old with flag=1)
 expire_stale_stars() {
     local file_path="$1"
     
@@ -151,8 +196,8 @@ expire_stale_stars() {
     local age_seconds=$((current_time - mod_time))
     local age_minutes=$((age_seconds / 60))
     
-    # Check if file is >30 minutes old
-    if [[ $age_seconds -gt 1800 ]]; then  # 1800 seconds = 30 minutes
+    # Check if file is >3 hours old
+    if [[ $age_seconds -gt 10800 ]]; then  # 10800 seconds = 3 hours
         # Read current content
         local stored_content=$(cat "$file_path" 2>/dev/null || echo "")
         
@@ -230,10 +275,55 @@ if [[ "$show_stars" == "true" ]]; then
     version_display="$version ✨"
 fi
 
-# Clean up old terminal files (older than 7 days)
-if [[ -d "$terminal_versions_dir" ]]; then
-  find -P "$terminal_versions_dir" -type f -mtime +7 -delete 2>/dev/null || true
-fi
+# Comprehensive cleanup function for log rotation and file maintenance
+perform_cleanup() {
+    local versions_dir="$1"
+    
+    if [[ ! -d "$versions_dir" ]]; then
+        return 0
+    fi
+    
+    # Skip cleanup if we've done it recently (within last hour) to improve performance
+    local cleanup_marker="$versions_dir/.last_cleanup"
+    if [[ -f "$cleanup_marker" ]]; then
+        local current_time=$(date +%s)
+        local marker_time
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            # macOS
+            marker_time=$(stat -f %m "$cleanup_marker" 2>/dev/null || echo "0")
+        else
+            # Linux
+            marker_time=$(stat -c %Y "$cleanup_marker" 2>/dev/null || echo "0")
+        fi
+        
+        # If marker is less than 1 hour old, skip cleanup
+        if [[ $((current_time - marker_time)) -lt 3600 ]]; then
+            return 0
+        fi
+    fi
+    
+    # Update cleanup marker
+    touch "$cleanup_marker" 2>/dev/null || true
+    
+    # 30-day cleanup: Remove old terminal_* files (but not events.log)
+    find -P "$versions_dir" -type f -name "terminal_*" -mtime +30 -delete 2>/dev/null || true
+    
+    # 30-day cleanup: Remove old rotated events_*.log* files (but NEVER the main events.log)
+    find -P "$versions_dir" -type f -name "events_*.log*" -mtime +30 -delete 2>/dev/null || true
+    
+    # Also clean up any temporary files that might be left behind
+    find -P "$versions_dir" -type f -name ".tmp.*" -mtime +1 -delete 2>/dev/null || true
+    
+    # Log cleanup activity
+    if [[ -f "$versions_dir/events.log" ]]; then
+        local cleanup_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+        printf '[%s] [STATUSLINE] [CLEANUP] PID:%s Performed 30-day cleanup in %s\n' \
+            "$cleanup_timestamp" "$$" "$versions_dir" >> "$versions_dir/events.log" 2>/dev/null || true
+    fi
+}
+
+# Perform cleanup with new 30-day retention policy
+perform_cleanup "$terminal_versions_dir"
 
 # Clean up legacy files from old implementations
 rm -f "$version_dir/acknowledged_version" "$version_dir/notified_session" 2>/dev/null || true
