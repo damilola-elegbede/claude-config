@@ -174,7 +174,7 @@ log_event() {
         "$timestamp" "$event_type" "$$" "$terminal_id" "$semantic_version" "$details" >> "$log_file" 2>/dev/null || true
 }
 
-# Function to expire stale stars (files >3 hours old with flag=1)
+# Function to expire stale stars (files >6 hours old with flag=1)
 expire_stale_stars() {
     local file_path="$1"
     
@@ -196,8 +196,8 @@ expire_stale_stars() {
     local age_seconds=$((current_time - mod_time))
     local age_minutes=$((age_seconds / 60))
     
-    # Check if file is >3 hours old
-    if [[ $age_seconds -gt 10800 ]]; then  # 10800 seconds = 3 hours
+    # Check if file is >6 hours old
+    if [[ $age_seconds -gt 21600 ]]; then  # 21600 seconds = 6 hours
         # Read current content
         local stored_content=$(cat "$file_path" 2>/dev/null || echo "")
         

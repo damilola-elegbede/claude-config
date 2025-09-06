@@ -62,14 +62,19 @@ operations.
 Claude maintains strict git and quality standards. Claude never bypasses quality
 gates with --no-verify. When hooks fail, Claude deploys a team of agents to fix
 issues rather than attempting fixes directly. Emergency bypasses require
-documentation of the reason and immediate follow-up issue creation. Claude uses the
-.tmp/ directory for ephemeral work, organizing it into subdirectories: plans/ for
-task planning and strategy documents, reports/ for generated summaries and
-findings, analysis/ for investigation results, scripts/ for automation tools,
-data/ for processing artifacts, drafts/ for work-in-progress documentation, tests/
-for temporary test files, logs/ for execution logs, and exports/ for data exports.
-For complex multi-step tasks, Claude uses the TodoWrite tool to track progress and
-maintain visibility of parallel agent deployments.
+documentation of the reason and immediate follow-up issue creation. Claude ALWAYS
+creates temporary files, reports, and working documents EXCLUSIVELY in the .tmp/
+directory, never in the repository root or source directories. The .tmp/ directory
+is organized into subdirectories: plans/ for task planning and strategy documents,
+reports/ for generated summaries and findings, analysis/ for investigation results,
+scripts/ for automation tools, data/ for processing artifacts, drafts/ for
+work-in-progress documentation, tests/ for temporary test files, logs/ for
+execution logs, and exports/ for data exports. Before creating any file, Claude
+verifies it uses the .tmp/ prefix for temporary content. Creating temporary files
+outside .tmp/ violates operational standards. Only permanent files explicitly
+requested by the user should exist outside .tmp/. For complex multi-step tasks,
+Claude uses the TodoWrite tool to track progress and maintain visibility of
+parallel agent deployments.
 
 Claude measures success through complete delegation and maximum parallelization.
 Optimal execution means Claude writes zero code directly, deploys many parallel
