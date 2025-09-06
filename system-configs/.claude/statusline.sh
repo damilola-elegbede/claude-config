@@ -31,6 +31,9 @@
 # - Pass --test flag to use .tmp/terminal_versions/ instead of ~/.claude/terminal_versions/
 # - This isolates test logs from production logs
 
+# Star expiry window (in seconds). Default: 6 hours.
+STAR_EXPIRY_SECS=${STAR_EXPIRY_SECS:-21600}
+
 # Parse command-line arguments
 TEST_MODE=0
 if [[ "$1" == "--test" ]]; then
@@ -174,7 +177,7 @@ log_event() {
         "$timestamp" "$event_type" "$$" "$terminal_id" "$semantic_version" "$details" >> "$log_file" 2>/dev/null || true
 }
 
-# Function to expire stale stars (files >3 hours old with flag=1)
+# Function to expire stale stars (files >6 hours old with flag=1)
 expire_stale_stars() {
     local file_path="$1"
     
@@ -196,8 +199,8 @@ expire_stale_stars() {
     local age_seconds=$((current_time - mod_time))
     local age_minutes=$((age_seconds / 60))
     
-    # Check if file is >3 hours old
-    if [[ $age_seconds -gt 10800 ]]; then  # 10800 seconds = 3 hours
+    # Check if file age exceeds configured expiry window
+    if [[ $age_seconds -gt ${STAR_EXPIRY_SECS} ]]; then
         # Read current content
         local stored_content=$(cat "$file_path" 2>/dev/null || echo "")
         
