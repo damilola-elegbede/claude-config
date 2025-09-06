@@ -31,6 +31,9 @@
 # - Pass --test flag to use .tmp/terminal_versions/ instead of ~/.claude/terminal_versions/
 # - This isolates test logs from production logs
 
+# Star expiry window (in seconds). Default: 6 hours.
+STAR_EXPIRY_SECS=${STAR_EXPIRY_SECS:-21600}
+
 # Parse command-line arguments
 TEST_MODE=0
 if [[ "$1" == "--test" ]]; then
@@ -196,8 +199,8 @@ expire_stale_stars() {
     local age_seconds=$((current_time - mod_time))
     local age_minutes=$((age_seconds / 60))
     
-    # Check if file is >6 hours old
-    if [[ $age_seconds -gt 21600 ]]; then  # 21600 seconds = 6 hours
+    # Check if file age exceeds configured expiry window
+    if [[ $age_seconds -gt ${STAR_EXPIRY_SECS} ]]; then
         # Read current content
         local stored_content=$(cat "$file_path" 2>/dev/null || echo "")
         
