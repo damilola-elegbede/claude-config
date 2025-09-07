@@ -18,7 +18,7 @@ argument-hint: [pr-number] [--auto|--dry-run|--skip-tests]
 ## Description
 
 Aggressively fetches ALL CodeRabbit suggestions from comprehensive comment sources and resolves auto-fixable issues
-with mandatory resolution posting. This command assumes there ARE unresolved comments when executed and performs
+with mandatory resolution posting. This command assumes unresolved comments exist when executed and performs
 exhaustive comment retrieval to find them.
 
 **Critical Behavior**: ALWAYS posts "@coderabbitai resolve" as a PR comment after pushing fixes - this is mandatory, not optional.
@@ -95,7 +95,7 @@ fetch_all_coderabbit_feedback() {
 
   # 1. ALL CodeRabbit reviews (not just latest)
   echo "  - Fetching all PR reviews..."
-  local reviews=$(gh api "repos/$owner/$repo/pulls/$pr/reviews" \
+  local reviews=$(gh api "repos/$owner/$repo/pulls/$pr/reviews" --paginate \
     --jq '.[] | select(.user.login == "coderabbitai[bot]") | {
       id: .id,
       body: .body,
@@ -106,7 +106,7 @@ fetch_all_coderabbit_feedback() {
 
   # 2. Review comments on specific lines
   echo "  - Fetching review line comments..."
-  local review_comments=$(gh api "repos/$owner/$repo/pulls/$pr/comments" \
+  local review_comments=$(gh api "repos/$owner/$repo/pulls/$pr/comments" --paginate \
     --jq '.[] | select(.user.login == "coderabbitai[bot]") | {
       id: .id,
       body: .body,
@@ -118,7 +118,7 @@ fetch_all_coderabbit_feedback() {
 
   # 3. Issue comments for inline suggestions
   echo "  - Fetching issue comments..."
-  local issue_comments=$(gh api "repos/$owner/$repo/issues/$pr/comments" \
+  local issue_comments=$(gh api "repos/$owner/$repo/issues/$pr/comments" --paginate \
     --jq '.[] | select(.user.login == "coderabbitai[bot]") | {
       id: .id,
       body: .body,
@@ -322,7 +322,6 @@ categorize_all_suggestions() {
 # MANDATORY: Always post resolution comment after pushing fixes
 post_mandatory_resolution() {
   local pr="$1"
-  local fixed_count="$2"
 
   echo "🔄 MANDATORY: Posting resolution comment to CodeRabbit..."
   echo ""
@@ -405,7 +404,7 @@ The following suggestions need human judgment:
 Thank you for the comprehensive review! Auto-fixable issues have been resolved while preserving intentional design decisions."
 
   # MANDATORY: Always post resolution command
-  post_mandatory_resolution "$pr" "$fixed"
+  post_mandatory_resolution "$pr"
 }
 ```
 
@@ -488,7 +487,7 @@ resolve_cr() {
     echo "👀 All $REVIEW_COUNT items require human review"
 
     # Still post resolution comment to acknowledge review
-    post_mandatory_resolution "$pr" "0"
+    post_mandatory_resolution "$pr"
   fi
 
   echo ""
@@ -619,7 +618,7 @@ show_critical_warnings() {
 - **Interactive by default**: Shows what will be fixed and asks for confirmation
 - **Comprehensive testing**: Runs tests after each fix batch (unless skipped)
 - **Clear boundaries**: Never auto-fixes security, architecture, or business logic
-- **Fallback mechanisms**: Multiple ways to post resolution comments if primary method fails
+- **Fallback mechanisms**: Multiple ways to post resolution comments if the primary method fails
 
 #### Resolution Process
 
