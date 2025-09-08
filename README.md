@@ -35,7 +35,7 @@ Built from the ground up after a comprehensive cleanup that removed 85+ bloat fi
 - **`/agent-audit`**: 5-6x faster (3-5 min → 30-45 sec) with 8 parallel instances
 - **`/test`**: 4-5x faster (2-3 min → 30-40 sec) with intelligent framework discovery
 - **`/docs`**: 3-4x faster (5-7 min → 1-2 min) with 6 document instances
-- **`/context`**: 4-6x faster (1-2 min → 15-20 sec) with 5 analyzer instances
+- **`/prime`**: 4-6x faster (1-2 min → 15-20 sec) with 5 analyzer instances
 
 ### 🔄 Configuration Management
 - **One-Command Deployment**: Deploy entire framework with `/sync`
@@ -104,7 +104,7 @@ claude-code
 
 ```bash
 # Multi-agent repository analysis with parallel execution
-/context
+/prime
 
 # Intelligent test execution with framework discovery
 /test
@@ -126,7 +126,7 @@ claude-code
 | Command | Description | Performance Gain | Technology |
 |---------|-------------|------------------|------------|
 | **`/test`** | Multi-Agent Test Execution with framework auto-discovery | 4-5x faster | 5 test suite instances |
-| **`/context`** | Parallel Repository Analysis with multiple analysts | 4-6x faster | 5 analyzer instances |
+| **`/prime`** | Parallel Repository Analysis with multiple analysts | 4-6x faster | 5 analyzer instances |
 | **`/agent-audit`** | Ecosystem Health Check across all 8 categories | 5-6x faster | 8 parallel instances |
 | **`/plan`** | Strategic Orchestration with principal-architect | Enhanced quality | TDD methodology |
 | **`/debug`** | Systematic Investigation with evidence gathering | Improved accuracy | Hypothesis testing |
@@ -350,7 +350,7 @@ pwd  # Should show .../claude-config
 # Check audio configuration
 cat ~/.claude/settings.json | grep -A 10 "hooks"
 
-# Test audio playback
+# Test audio playbook
 afplay /System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r
 ```
 

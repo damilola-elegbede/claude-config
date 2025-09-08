@@ -156,7 +156,7 @@ Twenty essential commands providing comprehensive development workflow automatio
 ```yaml
 Five-Star Commands (12):
   - /test: Multi-agent test execution
-  - /context: Parallel repository analysis
+  - /prime: Parallel repository analysis
   - /agent-audit: Ecosystem health validation
   - /plan: Strategic orchestration
   - /debug: Systematic investigation

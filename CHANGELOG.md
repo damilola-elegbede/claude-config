@@ -33,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `/agent-audit`: 3-5 min → 30-45 sec (5-6x faster) with 8 parallel instances
 - `/test`: 2-3 min → 30-40 sec (4-5x faster) with intelligent test discovery
 - `/docs`: 5-7 min → 1-2 min (3-4x faster) with 6 document processors
-- `/context`: 1-2 min → 15-20 sec (4-6x faster) with 5 analyzer instances
+- `/prime`: 1-2 min → 15-20 sec (4-6x faster) with 5 analyzer instances
 - `/deps audit`: 2 min → 20-30 sec (4-6x faster) with per-ecosystem parallelization
 
 ## [2.0.0] - 2025-08-15

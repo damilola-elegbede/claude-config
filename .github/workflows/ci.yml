@@ -83,7 +83,7 @@ jobs:
           "system-configs/.claude/commands/commit.md"
           "system-configs/.claude/commands/push.md"
           "system-configs/.claude/commands/test.md"
-          "system-configs/.claude/commands/context.md"
+          "system-configs/.claude/commands/prime.md"
           "system-configs/.claude/commands/sync.md"
         )
 

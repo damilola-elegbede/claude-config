@@ -39,7 +39,7 @@ COMMAND_AGENT_MAP = {
     '/docs': 'tech-writer',
     '/debug': 'debugger',
     '/orchestrate': 'project-orchestrator',
-    '/context': 'codebase-analyst',
+    '/prime': 'codebase-analyst',
     '/backend': 'backend-engineer',
     '/frontend': 'frontend-engineer',
     '/data': 'data-engineer',

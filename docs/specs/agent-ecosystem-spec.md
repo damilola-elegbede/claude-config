@@ -106,7 +106,7 @@ graph TD
         I --> J
         J --> K[Execution Engine]
     end
-```yaml
+```
 
 ### Agent Categories
 
@@ -185,7 +185,7 @@ graph TD
 | `/docs` | tech-writer | api-documenter | Sequential | Documentation creation and updates |
 | `/debug` | debugger | log-analyst | Sequential | Complex bug investigation |
 | `/orchestrate` | Orchestration Logic | Multiple agents | Parallel | Multi-agent project planning |
-| `/context` | codebase-analyst | Multiple analysts | Parallel | Repository analysis |
+| `/prime` | codebase-analyst | Multiple analysts | Parallel | Repository analysis |
 
 ### Agent Selection Algorithm
 
@@ -200,7 +200,7 @@ def select_agents(task):
         "/docs": "tech-writer",
         "/debug": "debugger",
         "/orchestrate": "project-orchestrator",
-        "/context": "codebase-analyst"
+        "/prime": "codebase-analyst"
     }
 
     if task.starts_with_command():
@@ -270,7 +270,7 @@ def identify_quality_gates(task):
         gates.append("accessibility-auditor")
 
     return gates
-```yaml
+```
 
 ### Parallel Execution Patterns
 
@@ -290,7 +290,7 @@ execution:
       instance: service-3
       task: implement_analytics_service
   coordination: "Shared API standards, common database patterns"
-```yaml
+```
 
 #### Cross-Platform Development
 
@@ -307,7 +307,7 @@ execution:
     - type: mobile-ui
       task: design_mobile_interface
   integration_points: ["API contracts", "shared data models"]
-```yaml
+```
 
 #### Quality Gates
 
@@ -328,7 +328,7 @@ execution:
     - type: performance-engineer
       task: performance_validation
       scope: "Load testing, optimization validation"
-```yaml
+```
 
 #### Documentation Pipeline
 
@@ -344,7 +344,7 @@ execution:
       task: user_guides
     - type: tech-writer
       task: project_summary
-```yaml
+```
 
 #### Large-Scale Analysis (Multiple codebase-analyst instances)
 
@@ -365,7 +365,7 @@ execution:
       instance: infrastructure
       task: analyze_deployment_architecture
   aggregation: "Comprehensive system overview by principal-architect"
-```yaml
+```
 
 ### Tool Access Matrix
 

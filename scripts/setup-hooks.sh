@@ -64,7 +64,7 @@ required_files=(
     ".claude/commands/commit.md"
     ".claude/commands/push.md"
     ".claude/commands/test.md"
-    ".claude/commands/context.md"
+    ".claude/commands/prime.md"
     ".claude/commands/sync.md"
 )
 
