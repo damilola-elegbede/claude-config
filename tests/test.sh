@@ -78,7 +78,7 @@ run_test "Plan Command" "commands/test_plan.sh"
 run_test "Commit Command" "commands/test_commit.sh"
 run_test "Push Command" "commands/test_push.sh"
 run_test "Test Command" "commands/test_test.sh"
-run_test "Context Command" "commands/test_context.sh"
+run_test "Prime Command" "commands/test_prime.sh"
 run_test "Sync Command" "commands/test_sync.sh"
 run_test "Command Audit" "commands/test_command_audit.sh"
 

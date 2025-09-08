@@ -12,7 +12,7 @@ test_all_commands_exist() {
         "Commands directory should exist"
 
     # Check each command file
-    local expected_commands=("plan" "commit" "push" "test" "context" "sync")
+    local expected_commands=("plan" "commit" "push" "test" "prime" "sync")
 
     for cmd in "${expected_commands[@]}"; do
         assert_file_exists "$commands_dir/${cmd}.md" \
@@ -147,9 +147,9 @@ test_command_specifics() {
     assert_file_contains "$commands_dir/plan.md" "## Approval Workflow" \
         "/plan command should have approval workflow"
 
-    # Test /context command has output format
-    assert_file_contains "$commands_dir/context.md" "Output Format:" \
-        "/context command should have output format"
+    # Test /prime command has output format
+    assert_file_contains "$commands_dir/prime.md" "Output Format:" \
+        "/prime command should have output format"
 }
 
 # Test agent specification requirements

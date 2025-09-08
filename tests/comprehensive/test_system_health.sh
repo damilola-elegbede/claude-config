@@ -92,7 +92,7 @@ ESSENTIAL_COMMANDS=(
     "test"
     "commit"
     "push"
-    "context"
+    "prime"
     "ship-it"
     "plan"
 )

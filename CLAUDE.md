@@ -75,7 +75,7 @@ Code CLI.
 
 - `/sync` - **Primary Command**: Synchronizes system configurations from this repository to `~/.claude/`
 - `/agent-audit` - Validates all 28 agent configurations with parallel execution
-- `/context` - Analyzes repository structure and purpose
+- `/prime` - Analyzes repository structure and purpose
 
 ### Development & Testing
 
