@@ -36,6 +36,7 @@ Creates comprehensive documentation that bridges high-level concepts and impleme
 - **MD022**: Headings surrounded by blank lines
 - **MD024**: No duplicate headings (except in different sections)
 - **MD025**: Single H1 per document
+- **MD041**: First content line should be H1 (front matter exempt)
 - **MD031**: Fenced code blocks surrounded by blank lines
 - **MD032**: Lists surrounded by blank lines
 - **MD040**: Code blocks must specify language (see allowed list below)
@@ -49,14 +50,16 @@ Creates comprehensive documentation that bridges high-level concepts and impleme
 bash, javascript, python, yaml, json, typescript, shell, text,
 markdown, mermaid, http, xml, html, css, sql, dockerfile, go,
 rust, java, cpp, c, jsonc, prometheus, hcl, terraform, ruby,
-php, swift, kotlin, promql
+php, swift, kotlin, promql, sh, powershell, ps1, zsh
 ```
 
 ### YAML/JSON Documentation Standards
 
 - **Indentation**: Always 2 spaces (never tabs)
 - **Key-value spacing**: `key: value` (space after colon)
-- **Quote consistency**: Use single quotes for special characters
+- **Quote consistency**:
+  - YAML: Prefer single quotes for strings with special characters.
+  - JSON: Use double quotes (per JSON spec); single quotes are invalid.
 - **Boolean values**: Use `true/false` (never yes/no or on/off)
 - **Array formatting**: Consistent `-` prefix with proper indentation
 - **Comments**: Use `#` with space after for inline documentation
@@ -65,7 +68,7 @@ php, swift, kotlin, promql
 
 Before finalizing any documentation:
 
-1. **Structure check**: Verify MD001 (heading hierarchy) and MD025 (single H1)
+1. **Structure check**: Verify MD001 (heading hierarchy), MD024 (no duplicate headings), and MD025 (single H1)
 2. **Spacing validation**: Check MD022 (headings), MD031 (code blocks), MD032 (lists), MD058 (tables)
 3. **Format validation**: Ensure MD040 (language specs), MD047 (file ending), MD050 (bold style)
 4. **Line length**: Verify MD013 compliance (150 char max, excluding tables/code)
@@ -109,9 +112,9 @@ No heading level skipping (MD001).
 
 Code block with language specified (MD040):
 
-```bash
-echo "Hello World"
-```
+    ​```bash
+    echo "Hello World"
+    ​```
 
 Tables with surrounding blank lines (MD058):
 
@@ -121,10 +124,9 @@ Tables with surrounding blank lines (MD058):
 | port   | int  | 8080    | Server port       |
 
 File ends with single newline (MD047).
-
-```markdown
-# Example ends here
 ```
+
+### Proper Structure Ends Here
 
 ### YAML Configuration Example (Compliant)
 
