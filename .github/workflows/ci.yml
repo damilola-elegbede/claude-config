@@ -76,7 +76,7 @@ jobs:
         echo "Checking required files..."
         required_files=(
           "README.md"
-          "CLAUDE.md"
+          "system-configs/CLAUDE.md"
           "LICENSE"
           "tests/test.sh"
           "system-configs/.claude/commands/plan.md"

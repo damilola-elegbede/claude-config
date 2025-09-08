@@ -250,7 +250,8 @@ The agent ecosystem uses three model tiers optimized for task complexity:
 
 ```bash
 /test         → test-engineer
-/review       → code-reviewer /security     → security-auditor
+/review       → code-reviewer
+/security     → security-auditor
 /perf         → performance-specialist
 /docs         → tech-writer
 /debug        → debugger
@@ -911,6 +912,5 @@ Complexity Assessment
 
 ---
 
-*This ecosystem enables efficient,
-, high-quality software development through intelligent orchestration of specialized agents,
-, following the principle of "Right tool for the job" with parallel-first execution strategies.*
+*This ecosystem enables efficient, high-quality software development through intelligent orchestration of
+specialized agents, following the principle of "Right tool for the job" with parallel-first execution strategies.*

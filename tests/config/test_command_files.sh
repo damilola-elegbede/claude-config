@@ -158,7 +158,7 @@ test_agent_specifications() {
     
     # Commands that must specify agents
     local agent_required_commands=("implement" "docs" "debug" "ship-it" "review" 
-                                  "test" "context" "fix-ci" "deps" "plan" 
+                                  "test" "prime" "fix-ci" "deps" "plan" 
                                   "commit" "branch" "pr" "push" "sync")
     
     for cmd in "${agent_required_commands[@]}"; do
@@ -188,7 +188,7 @@ test_parallelization_patterns() {
     local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
     
     # Commands that should leverage parallelization
-    local parallel_commands=("implement" "docs" "ship-it" "review" "context" 
+    local parallel_commands=("implement" "docs" "ship-it" "review" "prime" 
                             "agent-audit" "command-audit" "fix-ci" "test")
     
     for cmd in "${parallel_commands[@]}"; do
