@@ -19,7 +19,7 @@ performance issues.
 /test
 
 # Check repository context and structure
-/context
+/prime
 ```
 
 ## Installation and Setup Issues

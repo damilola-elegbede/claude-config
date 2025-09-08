@@ -31,7 +31,7 @@ claude-code
 /agent-audit
 
 # Analyze your current project
-/context
+/prime
 
 # Run project tests intelligently
 /test
@@ -46,7 +46,7 @@ claude-code
 |---------|---------|---------|
 | `/sync` | Deploy configurations from repo | `/sync` |
 | `/test` | Auto-discover and run tests | `/test` |
-| `/context` | Analyze repository structure | `/context --lite` |
+| `/prime` | Analyze repository structure | `/prime --lite` |
 | `/review` | Multi-agent code review | `/review src/` |
 | `/commit` | Smart git commits with quality gates | `/commit` |
 | `/debug` | Systematic bug investigation | `/debug "login fails"` |
@@ -77,7 +77,7 @@ git pull origin main
 
 ## 💡 Pro Tips
 
-1. **Use `/context` first** in new repositories for intelligent analysis
+1. **Use `/prime` first** in new repositories for intelligent analysis
 2. **Combine commands**: `/test` → `/review` → `/commit` → `/push` workflow
 3. **Leverage parallel execution**: Commands use multiple agent instances for 4-6x speed
 4. **Quality gates**: Never bypass with `--no-verify` - fix issues instead

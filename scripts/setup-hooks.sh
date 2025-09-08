@@ -13,8 +13,8 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-# Check if we're in the right repository
-if [ ! -f "CLAUDE.md" ] || [ ! -d ".claude" ]; then
+# Check if we're in the right repository - support system-configs layout
+if [ ! -f "system-configs/CLAUDE.md" ] && [ ! -f "CLAUDE.md" ]; then
     echo -e "${RED}❌ This doesn't appear to be the claude-config repository${NC}"
     echo "Please run this script from the repository root"
     exit 1
@@ -47,25 +47,25 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-# Check if we're in the right directory
-if [ ! -f "CLAUDE.md" ]; then
+# Check if we're in the right directory - support system-configs layout
+if [ ! -f "system-configs/CLAUDE.md" ] && [ ! -f "CLAUDE.md" ]; then
     echo -e "${RED}❌ Not in claude-config repository root${NC}"
     exit 1
 fi
 
-# 1. Check for required files (fast check)
+# 1. Check for required files (fast check) - using system-configs paths
 echo "📋 Checking required files..."
 required_files=(
     "README.md"
-    "CLAUDE.md"
+    "system-configs/CLAUDE.md"
     "LICENSE"
     "tests/test.sh"
-    ".claude/commands/plan.md"
-    ".claude/commands/commit.md"
-    ".claude/commands/push.md"
-    ".claude/commands/test.md"
-    ".claude/commands/context.md"
-    ".claude/commands/sync.md"
+    "system-configs/.claude/commands/plan.md"
+    "system-configs/.claude/commands/commit.md"
+    "system-configs/.claude/commands/push.md"
+    "system-configs/.claude/commands/test.md"
+    "system-configs/.claude/commands/prime.md"
+    "system-configs/.claude/commands/sync.md"
 )
 
 for file in "${required_files[@]}"; do
@@ -184,8 +184,8 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Check if we're in the right directory
-if [ ! -f "CLAUDE.md" ]; then
+# Check if we're in the right directory - support system-configs layout
+if [ ! -f "system-configs/CLAUDE.md" ] && [ ! -f "CLAUDE.md" ]; then
     echo -e "${RED}❌ Not in claude-config repository root${NC}"
     exit 1
 fi
@@ -219,7 +219,7 @@ else
     echo -e "${YELLOW}⚠️  No test suite found${NC}"
 fi
 
-# 2. Validate YAML files in agents directory
+# 2. Validate YAML files in agents directory - using system-configs path
 echo -e "${BLUE}📄 Validating agent YAML frontmatter...${NC}"
 if [ -f "scripts/validate_yaml.sh" ]; then
     chmod +x scripts/validate_yaml.sh 2>/dev/null || true
@@ -229,8 +229,8 @@ if [ -f "scripts/validate_yaml.sh" ]; then
         echo -e "${YELLOW}⚠️  Some agent files have invalid YAML${NC}"
     fi
 else
-    # Basic YAML validation fallback
-    agent_files=$(find .claude/agents -name "*.md" 2>/dev/null || true)
+    # Basic YAML validation fallback - using system-configs path
+    agent_files=$(find system-configs/.claude/agents -name "*.md" 2>/dev/null || true)
     if [ ! -z "$agent_files" ]; then
         invalid_count=0
         for file in $agent_files; do
@@ -316,9 +316,9 @@ if ! git diff-index --quiet HEAD --; then
     git status --short
 fi
 
-# 6. Validate command files structure
+# 6. Validate command files structure - using system-configs path
 echo -e "${BLUE}📂 Validating command files...${NC}"
-command_files=$(find .claude/commands -name "*.md" -not -name "README.md" 2>/dev/null || true)
+command_files=$(find system-configs/.claude/commands -name "*.md" -not -name "README.md" 2>/dev/null || true)
 if [ ! -z "$command_files" ]; then
     invalid_commands=0
     for cmd in $command_files; do
@@ -385,6 +385,5 @@ echo "Hooks installed:"
 echo "  • pre-commit: Fast checks before each commit"
 echo "  • pre-push: Comprehensive tests before pushing"
 echo ""
-echo "To bypass hooks in emergency (use sparingly):"
-echo "  git commit --no-verify"
-echo "  git push --no-verify"
+echo -e "${YELLOW}Note: Team policy prohibits using --no-verify flags${NC}"
+echo "Always fix quality gate failures rather than bypassing them"

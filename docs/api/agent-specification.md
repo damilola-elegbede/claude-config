@@ -2,450 +2,756 @@
 
 ## Overview
 
-The Agent Specification format defines how AI agents are configured in the Claude
-Code ecosystem. Each agent is defined in a Markdown file with YAML frontmatter
-that specifies its metadata, capabilities, and tool permissions. This
-specification supports the current ecosystem of 28 specialized agents across 8
-categories.
+The Agent Specification API defines the interface and capabilities for Claude Code CLI agents. This document provides the complete specification for agent definitions, tool access, coordination patterns, and execution models.
 
-## File Format
+## Agent Definition Schema
 
-Agent specifications use Markdown files (`.md`) with YAML frontmatter delimited
-by `---` markers. The frontmatter contains structured metadata, while the
-Markdown body contains the agent's detailed documentation and instructions.
+### Core Schema (YAML Front-matter)
 
-```markdown
----
-name: agent-name
-description: Brief description of the agent's purpose
-color: blue
-category: development
-tools: Read, Write, Edit, Grep, Glob
----
-
-# Agent Name
-
-[Agent documentation and instructions...]
 ```yaml
-
-## YAML Frontmatter Schema
+---
+name: "agent-name"
+category: "development|infrastructure|architecture|design|quality|security|analysis|operations"
+model: "claude-3-5-sonnet-latest|claude-3-5-haiku-latest|claude-3-opus-latest"
+capabilities:
+  - "Primary capability"
+  - "Secondary capability"
+  - "Specialized skill"
+tools:
+  - Read
+  - Write
+  - Bash
+  - TodoWrite
+description: "Brief description of agent purpose and expertise"
+coordination_notes: "How this agent works with others"
+system_boundary: "SYSTEM BOUNDARY: This agent cannot invoke the Task tool."
+quality_gates:
+  - "Quality requirement 1"
+  - "Quality requirement 2"
+performance_tier: "Standard|Premium|Critical"
+---
+```
 
 ### Required Fields
 
-#### `name` (string, required)
-
-- **Type**: String
-- **Pattern**: `^[a-z0-9-]+$` (lowercase letters, numbers, and hyphens)
-- **Description**: Unique identifier for the agent
-- **Constraints**: Must match the filename (without `.md` extension)
-- **Example**: `backend-engineer`, `api-documenter`, `test-engineer`
-
-#### `description` (string, required)
-
-- **Type**: String
-- **Max Length**: 250 characters
-- **Description**: Concise description of the agent's purpose and when to use it
-- **Best Practice**: Include "MUST BE USED" conditions for clarity
-- **Example**: `"Use for building server-side systems, APIs, microservices. MUST BE
-  USED for high-performance optimization (>10k RPS)"`
-
-#### `color` (string, required)
-
-- **Type**: String (color name only)
-- **Valid Color Names**: `blue`, `green`, `red`, `purple`, `yellow`, `orange`,
-  `white`, `brown`, `cyan`, `pink`, `teal`
-
-- **Description**: Visual identifier color for the agent
-- **Constraints**: Should align with the agent's category color assignment (see
-  Category Colors section)
-
-- **Examples**: `"blue"`, `"green"`, `"teal"`
-
-#### `tools` (string, required)
-
-- **Type**: String (comma-separated list or empty string)
-- **Description**: Tools the agent has permission to use
-- **Format**: Tool names separated by commas and optional spaces, or empty string for no tools
-- **Examples**:
-  - `"Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite"`
-  - `"Read, Grep, Glob, LS, TodoWrite"`
-  - `""` (empty string for specialized agents with no tool access)
+| Field | Type | Description | Example |
+|-------|------|-------------|---------|
+| `name` | string | Unique agent identifier | "backend-engineer" |
+| `category` | string | Functional domain | "development" |
+| `model` | string | Claude model version | "claude-3-5-sonnet-latest" |
+| `capabilities` | array | Core competencies | ["API development", "Database design"] |
+| `tools` | array | Allowed tool access | ["Read", "Write", "Bash"] |
+| `description` | string | Agent purpose and context | "Server-side development specialist" |
+| `system_boundary` | string | Security boundary statement | Required exact text |
 
 ### Optional Fields
 
-#### `category` (string, optional but recommended)
+| Field | Type | Description | Default |
+|-------|------|-------------|---------|
+| `coordination_notes` | string | Multi-agent patterns | Empty |
+| `quality_gates` | array | Quality requirements | Empty |
+| `performance_tier` | string | Performance classification | "Standard" |
+| `specializations` | array | Domain-specific expertise | Empty |
+| `dependencies` | array | Required external tools | Empty |
 
-- **Type**: String (enum)
-- **Valid Values**: `development`, `infrastructure`, `architecture`, `design`, `quality`, `security`, `analysis`,
-  `operations`
+## Tool Access Levels
 
-- **Description**: Primary category the agent belongs to
-- **Note**: While technically optional, this field is strongly recommended for proper categorization and
-  agent organization
+### Full Access (Development Agents)
 
-## Category System
-
-### Categories and Color Assignments
-
-| Category | Primary Color | Purpose |
-|----------|---------------|---------|
-| `development` | `blue` | Core programming and implementation |
-| `infrastructure` | `orange` | Systems, operations, and deployment |
-| `architecture` | `purple` | System design and technical planning |
-| `design` | `pink` | User experience and interface design |
-| `quality` | `green` | Testing, review, and validation |
-| `security` | `red` | Security assessment and compliance |
-| `analysis` | `yellow` | Research, documentation, and analysis |
-| `operations` | `teal` | Support, coordination, and workflow management |
-
-### Category Rules
-
-1. Each agent should be assigned to exactly one category (recommended)
-2. Agents should use one of the standard color names only
-3. Categories determine the agent's primary focus area and expertise
-4. Standard color names provide consistent visual identification
-
-## Tool Permissions
-
-### Available Tools
-
-Tools define what capabilities an agent has access to. Common tools include:
-
-#### File System Tools
-
-- `Read` - Read file contents
-- `Write` - Create new files
-- `Edit` - Modify existing files
-- `MultiEdit` - Make multiple edits to a single file
-- `LS` - List directory contents
-- `Glob` - Find files by pattern
-
-#### Search and Analysis Tools
-
-- `Grep` - Search file contents with regex
-- `WebSearch` - Search the web for information
-- `WebFetch` - Fetch and analyze web content
-
-#### Development Tools
-
-- `Bash` - Execute shell commands
-- `TodoWrite` - Manage task lists
-- `NotebookRead` - Read Jupyter notebooks
-- `NotebookEdit` - Edit Jupyter notebooks
-
-#### Planning Tools
-
-- `ExitPlanMode` - Exit planning mode when ready to implement
-
-#### Specialized Tools
-
-Some agents may have access to additional specialized tools not listed here.
-
-### Tool Permission Patterns
-
-Different agent types typically have different tool access patterns:
-
-**Development Agents**: Full file manipulation and execution
+- **Tools**: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
+- **Purpose**: Complete development and implementation
+- **Agents**: backend-engineer, frontend-architect, mobile-platform-engineer, etc.
+- **Security**: Comprehensive access for implementation tasks
 
 ```yaml
-tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
-```text
+tools:
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Grep
+  - Glob
+  - LS
+  - Bash
+  - TodoWrite
+```
 
-**Analysis Agents**: Read-only access with search capabilities
+### Read & Analysis (Analysis Agents)
 
-```yaml
-tools: Read, Grep, Glob, LS, TodoWrite
-```text
-
-**Security Agents**: Read and analysis without execution
-
-```yaml
-tools: Read, Grep, Glob, LS
-```text
-
-**Infrastructure Agents**: Full system access including web tools
-
-```yaml
-tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite, WebFetch
-```text
-
-**Documentation Agents**: File access with web research capabilities
+- **Tools**: Read, Grep, Glob, LS, TodoWrite
+- **Purpose**: Code analysis and assessment
+- **Agents**: codebase-analyst, code-reviewer, security-auditor
+- **Security**: Read-only with analysis capabilities
 
 ```yaml
-tools: Read, Write, Edit, Grep, Glob, LS, TodoWrite, WebFetch, WebSearch
-```text
+tools:
+  - Read
+  - Grep
+  - Glob
+  - LS
+  - TodoWrite
+```
 
-**Specialized Agents**: May have no tools or very specific tool combinations
+### Documentation & Writing
+
+- **Tools**: Read, Write, Edit, MultiEdit, Grep, Glob, LS, TodoWrite
+- **Purpose**: Documentation and content creation
+- **Agents**: tech-writer, api-documenter
+- **Security**: File modification for documentation only
 
 ```yaml
-tools: ""
-# or
-tools: Read, Grep, Glob
+tools:
+  - Read
+  - Write
+  - Edit
+  - MultiEdit
+  - Grep
+  - Glob
+  - LS
+  - TodoWrite
+```
+
+### Infrastructure & Operations
+
+- **Tools**: Read, Write, Edit, Bash, Grep, Glob, LS, TodoWrite
+- **Purpose**: System operations and infrastructure
+- **Agents**: devops, platform-engineer, kubernetes-admin
+- **Security**: System access for infrastructure management
+
 ```yaml
+tools:
+  - Read
+  - Write
+  - Edit
+  - Bash
+  - Grep
+  - Glob
+  - LS
+  - TodoWrite
+```
 
-## Complete Specification Example
+### Quality & Testing
 
-### Backend Engineer Agent
+- **Tools**: Read, Write, Edit, Bash, Grep, Glob, LS, TodoWrite
+- **Purpose**: Quality assurance and testing
+- **Agents**: test-engineer, performance-specialist
+- **Security**: Execution access for testing
 
 ```yaml
+tools:
+  - Read
+  - Write
+  - Edit
+  - Bash
+  - Grep
+  - Glob
+  - LS
+  - TodoWrite
+```
+
+### Strategic & Planning
+
+- **Tools**: Read, Write, TodoWrite, Grep, Glob, LS
+- **Purpose**: Planning and coordination
+- **Agents**: principal-architect, project-orchestrator
+- **Security**: Planning tools without system execution
+
+```yaml
+tools:
+  - Read
+  - Write
+  - TodoWrite
+  - Grep
+  - Glob
+  - LS
+```
+
+## Agent Categories
+
+### Development Category (Blue)
+
+```yaml
+category: "development"
+color: "#0066CC"
+purpose: "Core programming and implementation"
+typical_tools: ["Read", "Write", "Edit", "MultiEdit", "Bash", "TodoWrite"]
+coordination: "Parallel execution for independent components"
+```
+
+**Members**: backend-engineer, frontend-architect, mobile-platform-engineer, ml-engineer, test-engineer, etc.
+
+### Infrastructure Category (Orange)
+
+```yaml
+category: "infrastructure"
+color: "#FF6600"
+purpose: "Systems, operations, and deployment"
+typical_tools: ["Read", "Write", "Edit", "Bash", "Grep", "LS", "TodoWrite"]
+coordination: "Sequential for deployment pipelines"
+```
+
+**Members**: devops, platform-engineer, kubernetes-admin, cloud-architect, etc.
+
+### Architecture Category (Purple)
+
+```yaml
+category: "architecture"
+color: "#9900CC"
+purpose: "System design and technical planning"
+typical_tools: ["Read", "Write", "TodoWrite", "Grep", "Glob", "LS"]
+coordination: "Design-first, then implementation coordination"
+```
+
+**Members**: principal-architect, api-architect, cloud-architect, etc.
+
+### Design Category (Pink)
+
+```yaml
+category: "design"
+color: "#FF66CC"
+purpose: "User experience and interface design"
+typical_tools: ["Read", "Write", "Edit", "TodoWrite", "Grep", "LS"]
+coordination: "Design systems and consistency focus"
+```
+
+**Members**: ui-designer, ux-researcher
+
+### Quality Category (Green)
+
+```yaml
+category: "quality"
+color: "#00CC66"
+purpose: "Testing, review, and validation"
+typical_tools: ["Read", "Write", "Edit", "Bash", "Grep", "TodoWrite"]
+coordination: "Parallel quality gates"
+```
+
+**Members**: test-engineer, code-reviewer, performance-specialist, accessibility-auditor
+
+### Security Category (Red)
+
+```yaml
+category: "security"
+color: "#CC0000"
+purpose: "Security assessment and compliance"
+typical_tools: ["Read", "Bash", "Grep", "Glob", "LS", "TodoWrite"]
+coordination: "Security-first validation"
+```
+
+**Members**: security-auditor, regulatory-compliance-specialist, supply-chain-security-engineer
+
+### Analysis Category (Cyan)
+
+```yaml
+category: "analysis"
+color: "#00CCCC"
+purpose: "Research, documentation, and analysis"
+typical_tools: ["Read", "Grep", "Glob", "LS", "TodoWrite"]
+coordination: "Parallel analysis with synthesis"
+```
+
+**Members**: codebase-analyst, tech-writer, dependency-analyst, metrics-analyst
+
+### Operations Category (Yellow)
+
+```yaml
+category: "operations"
+color: "#CCCC00"
+purpose: "Support, coordination, and strategic planning"
+typical_tools: ["Read", "Write", "Bash", "Grep", "TodoWrite"]
+coordination: "Incident response and operational support"
+```
+
+**Members**: debugger, incident-commander, production-reliability-engineer, project-orchestrator
+
+## Model Selection Guidelines
+
+### Claude 3.5 Opus (Strategic & Complex)
+
+```yaml
+model: "claude-3-5-opus-latest"
+use_cases:
+  - Strategic architecture decisions
+  - Complex system design
+  - Multi-agent coordination
+  - Critical incident response
+agents:
+  - principal-architect
+  - project-orchestrator
+  - incident-commander
+  - performance-specialist
+cost: "High - use for strategic decisions"
+```
+
+### Claude 3.5 Sonnet (Standard Implementation)
+
+```yaml
+model: "claude-3-5-sonnet-latest"
+use_cases:
+  - Standard development tasks
+  - Code review and analysis
+  - Documentation creation
+  - Quality assurance
+agents: "Majority of agents (80%+)"
+cost: "Balanced - standard choice"
+```
+
+### Claude 3.5 Haiku (Simple & Fast)
+
+```yaml
+model: "claude-3-5-haiku-latest"
+use_cases:
+  - Simple validation tasks
+  - Quick analysis
+  - Basic documentation updates
+  - Rule-based operations
+agents:
+  - execution-evaluator
+  - simple validators
+cost: "Low - use for simple tasks"
+```
+
+## Agent Coordination Patterns
+
+### Parallel Execution Pattern
+
+```yaml
+execution_pattern: "parallel"
+use_case: "Independent tasks that can run simultaneously"
+examples:
+  - Multiple backend-engineer instances for different microservices
+  - Quality gates (code-reviewer + security-auditor + test-engineer)
+  - Multi-platform development (iOS + Android + Web)
+coordination_method: "Result aggregation after completion"
+```
+
+**Implementation**:
+```yaml
+agents:
+  - name: backend-engineer
+    instance: service-1
+    task: authentication_service
+  - name: backend-engineer
+    instance: service-2
+    task: payment_service
+  - name: backend-engineer
+    instance: service-3
+    task: notification_service
+aggregation: project-orchestrator
+```
+
+### Sequential Pipeline Pattern
+
+```yaml
+execution_pattern: "sequential"
+use_case: "Dependent tasks requiring ordered execution"
+examples:
+  - Architecture design → Implementation → Testing
+  - Database migration planning → Execution → Validation
+  - Security assessment → Remediation → Compliance verification
+coordination_method: "Hand-off between stages"
+```
+
+**Implementation**:
+```yaml
+pipeline:
+  stage_1:
+    agent: principal-architect
+    task: system_design
+    output: architecture_specifications
+  stage_2:
+    agent: backend-engineer
+    task: implementation
+    input: architecture_specifications
+    output: implemented_system
+  stage_3:
+    agent: test-engineer
+    task: validation
+    input: implemented_system
+    output: test_results
+```
+
+### Hub-and-Spoke Pattern
+
+```yaml
+execution_pattern: "coordinated"
+use_case: "Complex multi-agent scenarios requiring orchestration"
+central_coordinator: project-orchestrator
+spoke_agents:
+  - Multiple specialists working on related tasks
+  - Regular coordination and synchronization
+  - Conflict resolution through coordinator
+```
+
+**Implementation**:
+```yaml
+coordinator: project-orchestrator
+agents:
+  - backend-engineer: API development
+  - frontend-architect: UI implementation
+  - mobile-platform-engineer: Mobile app
+  - test-engineer: Quality validation
+  - security-auditor: Security assessment
+coordination_frequency: "After each major milestone"
+```
+
+## Command Integration API
+
+### Direct Command Mapping
+
+Commands can directly invoke specific agents:
+
+```yaml
+command_mappings:
+  "/test": "test-engineer"
+  "/review": "code-reviewer"
+  "/security": "security-auditor"
+  "/perf": "performance-specialist"
+  "/docs": "tech-writer"
+  "/debug": "debugger"
+  "/prime": "codebase-analyst"
+```
+
+### Multi-Agent Command Patterns
+
+Commands can trigger multi-agent workflows:
+
+```yaml
+complex_commands:
+  "/agent-audit":
+    pattern: parallel
+    agents:
+      - type: code-reviewer
+        instances: 8
+        distribution: by_category
+    aggregation: comprehensive_report
+
+  "/resolve-cr":
+    pattern: sequential
+    pipeline:
+      - codebase-analyst: analyze_pr_context
+      - appropriate_specialist: implement_changes
+      - test-engineer: validate_changes
+      - code-reviewer: final_review
+```
+
+## Quality Gates API
+
+### Pre-Commit Quality Gates
+
+```yaml
+pre_commit_gates:
+  code_quality:
+    agent: code-reviewer
+    criteria:
+      - style_compliance: ">= 8.5/10"
+      - complexity_score: "< 10"
+      - maintainability: ">= 8/10"
+
+  security_check:
+    agent: security-auditor
+    criteria:
+      - vulnerability_scan: "zero_critical"
+      - dependency_scan: "zero_high_risk"
+
+  test_validation:
+    agent: test-engineer
+    criteria:
+      - coverage: ">= 80%"
+      - passing_tests: "100%"
+```
+
+### Deployment Quality Gates
+
+```yaml
+deployment_gates:
+  performance_validation:
+    agent: performance-specialist
+    criteria:
+      - response_time: "< 200ms P95"
+      - throughput: ">= baseline"
+      - memory_usage: "< 80% capacity"
+
+  security_clearance:
+    agent: security-auditor
+    criteria:
+      - penetration_test: "passed"
+      - compliance_check: "100%"
+      - audit_trail: "complete"
+
+  production_readiness:
+    agent: production-reliability-engineer
+    criteria:
+      - monitoring_coverage: "100%"
+      - alerting_configured: "yes"
+      - runbook_complete: "yes"
+```
+
+## Agent Lifecycle Management
+
+### Agent Registration
+
+```yaml
+registration_process:
+  1. schema_validation: "Validate YAML front-matter"
+  2. capability_verification: "Confirm stated capabilities"
+  3. tool_access_validation: "Verify tool permissions"
+  4. integration_testing: "Test with existing agents"
+  5. deployment_approval: "Production readiness check"
+```
+
+### Agent Updates
+
+```yaml
+update_process:
+  version_control: "Git-based versioning"
+  backward_compatibility: "Maintain interface compatibility"
+  migration_path: "Clear upgrade instructions"
+  rollback_capability: "Quick rollback if issues arise"
+  testing_requirements: "Comprehensive testing before deployment"
+```
+
+### Agent Deprecation
+
+```yaml
+deprecation_process:
+  advance_notice: "30 days minimum"
+  migration_guide: "Clear path to replacement"
+  transition_period: "Gradual phase-out"
+  support_timeline: "Extended support during transition"
+  removal_date: "Fixed date after transition period"
+```
+
+## Error Handling and Recovery
+
+### Agent Failure Patterns
+
+```yaml
+failure_types:
+  timeout:
+    detection: "30-second timeout"
+    recovery: "Retry once, then fallback"
+    fallback: "Claude handles directly"
+
+  invalid_output:
+    detection: "Output validation failure"
+    recovery: "Request clarification"
+    fallback: "Claude intervention"
+
+  tool_access_denied:
+    detection: "Permission error"
+    recovery: "Escalate to Claude"
+    fallback: "Manual override with user consent"
+
+  resource_exhaustion:
+    detection: "Memory or CPU limits exceeded"
+    recovery: "Reduce scope, retry"
+    fallback: "Sequential execution"
+```
+
+### Recovery Strategies
+
+```yaml
+recovery_levels:
+  automatic:
+    - Simple retry logic
+    - Alternative agent deployment
+    - Scope reduction
+
+  semi_automatic:
+    - User notification with options
+    - Fallback suggestions
+    - Manual approval for changes
+
+  manual:
+    - Full Claude intervention
+    - User decision required
+    - Detailed error reporting
+```
+
+## Performance Metrics API
+
+### Agent Performance Tracking
+
+```yaml
+performance_metrics:
+  execution_time:
+    measurement: "Wall clock time from invocation to completion"
+    target: "< 30 seconds for standard tasks"
+    monitoring: "Per-agent performance tracking"
+
+  success_rate:
+    measurement: "Percentage of successful task completions"
+    target: "> 95% success rate"
+    monitoring: "Trend analysis over time"
+
+  quality_score:
+    measurement: "Output quality assessment"
+    target: "> 8.5/10 average quality"
+    monitoring: "User feedback and automated assessment"
+
+  resource_utilization:
+    measurement: "CPU, memory, and token usage"
+    target: "Efficient resource usage"
+    monitoring: "Cost optimization tracking"
+```
+
+### System-Wide Metrics
+
+```yaml
+system_metrics:
+  parallel_execution_rate:
+    measurement: "Percentage of tasks executed in parallel"
+    target: "> 70% parallelization rate"
+
+  coordination_overhead:
+    measurement: "Time spent on inter-agent coordination"
+    target: "< 10% of total execution time"
+
+  quality_gate_efficiency:
+    measurement: "First-pass success rate through quality gates"
+    target: "> 95% first-pass success"
+
+  user_satisfaction:
+    measurement: "User feedback and adoption metrics"
+    target: "> 4.5/5.0 satisfaction score"
+```
+
+## Security Model
+
+### Agent Isolation
+
+```yaml
+security_boundaries:
+  process_isolation:
+    description: "Each agent runs in isolated context"
+    enforcement: "Runtime environment separation"
+    monitoring: "Process boundary violations tracked"
+
+  data_access:
+    description: "Agents access only required data"
+    enforcement: "Tool-level permission checking"
+    monitoring: "Data access auditing"
+
+  inter_agent_communication:
+    description: "Agents cannot directly invoke others"
+    enforcement: "SYSTEM BOUNDARY protection"
+    monitoring: "Invocation attempt logging"
+```
+
+### Audit and Compliance
+
+```yaml
+audit_requirements:
+  action_logging:
+    scope: "All agent actions logged"
+    retention: "90 days minimum"
+    format: "Structured JSON logs"
+
+  permission_tracking:
+    scope: "Tool access and file modifications"
+    retention: "1 year minimum"
+    format: "Audit trail with timestamps"
+
+  compliance_reporting:
+    frequency: "Monthly compliance reports"
+    scope: "Security violations, performance metrics"
+    distribution: "Security and operations teams"
+```
+
+## Testing and Validation
+
+### Agent Testing Framework
+
+```yaml
+testing_levels:
+  unit_testing:
+    scope: "Individual agent capabilities"
+    framework: "Agent-specific test suites"
+    frequency: "On every agent update"
+
+  integration_testing:
+    scope: "Multi-agent coordination"
+    framework: "End-to-end workflow testing"
+    frequency: "Weekly integration tests"
+
+  performance_testing:
+    scope: "Response time and resource usage"
+    framework: "Automated benchmarking"
+    frequency: "Continuous monitoring"
+
+  user_acceptance_testing:
+    scope: "Real-world usage scenarios"
+    framework: "User feedback collection"
+    frequency: "Before major releases"
+```
+
+### Validation Criteria
+
+```yaml
+validation_requirements:
+  functional_correctness:
+    criteria: "Agent produces expected outputs"
+    measurement: "Automated test suite success rate"
+    threshold: "100% critical test passage"
+
+  performance_standards:
+    criteria: "Agent meets performance targets"
+    measurement: "Response time and resource usage"
+    threshold: "Within 20% of baseline performance"
+
+  security_compliance:
+    criteria: "Agent follows security protocols"
+    measurement: "Security audit findings"
+    threshold: "Zero high-severity security issues"
+
+  integration_compatibility:
+    criteria: "Agent works with existing ecosystem"
+    measurement: "Integration test results"
+    threshold: "No regression in existing functionality"
+```
+
+## Future API Extensions
+
+### Planned Enhancements
+
+```yaml
+roadmap:
+  v2.0:
+    features:
+      - Dynamic agent capability discovery
+      - Machine learning-based agent selection
+      - Cross-repository agent sharing
+      - Advanced orchestration patterns
+
+  v3.0:
+    features:
+      - Custom agent creation API
+      - Real-time collaboration features
+      - Advanced analytics and insights
+      - Plugin architecture for extensions
+```
+
+### Extension Points
+
+```yaml
+extension_mechanisms:
+  custom_tools:
+    description: "Add new tools for agents"
+    interface: "Tool registration API"
+    validation: "Security and capability validation"
+
+  custom_categories:
+    description: "Define new agent categories"
+    interface: "Category registration API"
+    validation: "Consistency and uniqueness checks"
+
+  custom_coordination:
+    description: "New coordination patterns"
+    interface: "Pattern definition API"
+    validation: "Performance and reliability testing"
+```
+
 ---
-name: backend-engineer
-description: Use for building server-side systems, APIs, microservices, databases, and distributed
-  architectures. MUST BE USED for high-performance optimization (>10k RPS), event-driven systems, and
-  cloud-native backend development
-color: blue
-category: development
-tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
----
 
-# Backend Engineer
-
-## Working with Claude Orchestration Engine
-
-You are a specialized agent working under the coordination of Claude...
-
-## Identity
-You are an expert backend engineer specializing in server-side architecture...
-
-## Core Capabilities
-[Detailed capabilities documentation...]
-```yaml
-
-### Accessibility Auditor Agent
-
-```yaml
----
-name: accessibility-auditor
-description: Use for WCAG compliance audits, screen reader testing, keyboard navigation checks, and
-  accessibility remediation. MUST BE USED when implementing accessible UI components or fixing accessibility
-  violations
-color: yellow
-category: quality
-tools: Read, Edit, MultiEdit, Write, Grep, Glob, LS, WebFetch, WebSearch, TodoWrite
----
-
-# Accessibility Auditor
-
-## Working with Claude Orchestration Engine
-[Standard orchestration section...]
-
-## Identity
-You are an accessibility compliance specialist...
-```yaml
-
-## Agent Loading and Discovery
-
-### File Location
-
-- Agents are stored in: `.claude/agents/`
-- Each agent has its own `.md` file
-- Filename must match the `name` field in YAML frontmatter
-
-### Loading Process
-
-1. Claude Code scans the `.claude/agents/` directory
-2. Each `.md` file is parsed for YAML frontmatter
-3. Agents are validated against the schema
-4. Valid agents are registered and made available
-
-### Non-Agent Files
-
-The following files in the agents directory are documentation, not agent definitions:
-
-- `README.md`
-- `AGENT_CATEGORIES.md`
-- `AGENT_TEMPLATE.md`
-- `AUDIT_VERIFICATION_PROTOCOL.md`
-- `CONSOLIDATED_AGENTS_LIST.md`
-- `ORCHESTRATION_PATTERNS.md`
-- Other documentation files
-
-## Validation Rules
-
-### Required Field Validation
-
-1. All required fields must be present
-2. Fields must have non-empty values
-3. Field types must match schema
-
-### Name Validation
-
-- Must be lowercase with hyphens
-- Must match filename (without `.md`)
-- Must be unique across all agents
-
-### Description Validation
-
-- Maximum 250 characters
-- Should be clear and actionable
-- Should include "MUST BE USED" conditions when applicable
-
-### Color Validation
-
-- Must be from the valid color list: blue, green, red, purple, yellow, orange, white, brown, cyan, pink, teal
-- Should align with category assignment
-- Consistency across similar agents
-
-### Tools Validation
-
-- Must be comma-separated list or empty string
-- Tool names must be valid (when provided)
-- No duplicate tools
-- Appropriate for agent's role
-- Empty string is acceptable for specialized agents
-
-## Best Practices
-
-### Writing Descriptions
-
-1. Start with primary use case
-2. List key capabilities
-3. Include "MUST BE USED" for specific scenarios
-4. Keep under 250 characters
-5. Be specific and actionable
-
-Example:
-
-```yaml
-description: Use for building React/Vue/Angular apps, state management, and frontend optimization. MUST BE
-  USED for responsive design, accessibility implementation, and Core Web Vitals
-```yaml
-
-### Tool Selection
-
-1. Only request tools the agent needs
-2. Follow category patterns
-3. Avoid over-permissioning
-4. Consider security implications
-
-### Category Assignment
-
-1. Choose the most appropriate primary category
-2. Ensure color matches category
-3. Consider the agent's main focus
-4. Review similar agents for consistency
-
-## Error Handling
-
-### Common Validation Errors
-
-#### Missing Required Field
-
-```text
-Error: Missing required field: tools
-Solution: Add the tools field with appropriate permissions or empty string
-```yaml
-
-#### Name Mismatch
-
-```text
-Error: Name mismatch: YAML says 'backend-engineer' but filename is 'backend.md'
-Solution: Ensure name field matches filename (without .md extension)
-```yaml
-
-#### Invalid Color
-
-```text
-Error: Invalid color format 'invalid-color'
-Solution: Use a valid color name (e.g., 'blue', 'green', 'teal')
-```yaml
-
-#### Description Too Long
-
-```text
-Error: Description too long (275 chars). Should be under 250.
-Solution: Shorten the description while keeping key information
-```yaml
-
-#### Empty Tools Field
-
-```text
-Note: Empty tools field is valid for specialized agents
-Action: No action required if intentional
-```yaml
-
-## Integration with Claude Code
-
-### Agent Selection
-
-Claude Code uses the specification to:
-
-1. Match user requests to appropriate agents
-2. Understand agent capabilities
-3. Enforce tool permissions
-4. Display agent information
-
-### Parallel Execution
-
-Multiple instances of the same agent can run concurrently:
-
-- Specifications define capabilities, not instances
-- Claude orchestrates multiple instances as needed
-- Each instance has the same permissions
-
-### Command Mapping
-
-Some commands automatically select agents:
-
-- `/test` → `test-engineer`
-- `/review` → `code-reviewer`
-- `/security` → `security-auditor`
-- `/perf` → `performance-engineer`
-- `/docs` → `tech-writer` or `api-documenter`
-- `/debug` → `debugger`
-- `/context` → `codebase-analyst` (often multiple instances)
-
-## Version Control
-
-### Changes to Specifications
-
-1. Agent specs are version controlled
-2. Changes require validation
-3. Breaking changes should be documented
-4. Maintain backwards compatibility when possible
-
-### Migration Process
-
-When updating specifications:
-
-1. Update the YAML frontmatter
-2. Run validation script
-3. Test agent functionality
-4. Update dependent documentation
-
-## Validation Script
-
-A Python validation script is provided for agent validation:
-
-```bash
-# Validate all agents
-python scripts/validate-agent-yaml.py
-
-# Output includes:
-# - Validation status for each agent
-# - Detailed error messages
-# - Summary statistics
-# - Category distribution analysis
-# - Tool usage patterns
-# - Color validation results
-```yaml
-
-## Future Considerations
-
-### Potential Extensions
-
-- Additional metadata fields (version, dependencies, priority)
-- Tool permission levels (read/write/admin)
-- Agent relationships and dependencies
-- Performance metrics and resource limits
-- Custom validation rules per category
-- Agent capability matrices
-- Integration testing requirements
-
-### Backwards Compatibility
-
-- New fields should be optional with sensible defaults
-- Existing agents should continue working without modification
-- Deprecation notices for removed features with migration paths
-- Support for standard color names only
-- Graceful handling of empty tools fields
+This API specification provides the complete interface for working with Claude Code CLI agents, enabling consistent development, deployment, and management of the agent ecosystem while maintaining security, performance, and quality standards.

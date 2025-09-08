@@ -22,7 +22,7 @@ execution through intelligent agent instance pooling and concurrent processing.
 | `/test` | 2-3 minutes | 30-40 seconds | **4-5x** | 3-5 test-engineer instances |
 | `/docs` | 5-7 minutes | 1-2 minutes | **3-4x** | 4-6 tech-writer instances |
 | `/deps audit` | 2 minutes | 20-30 seconds | **4-6x** | 1 per package manager |
-| `/context focused` | 1-2 minutes | 15-20 seconds | **4-6x** | 3-5 codebase-analyst instances |
+| `/prime focused` | 1-2 minutes | 15-20 seconds | **4-6x** | 3-5 codebase-analyst instances |
 | `/review` | 3-4 minutes | 45-60 seconds | **3-4x** | 3-5 code-reviewer instances |
 | `/fix-ci` | 2-3 minutes | 30-45 seconds | **4x** | 2-3 devops instances |
 | `/resolve-cr` | 5-10 minutes | 1-2 minutes | **5x** | Up to 10 parallel instances |
@@ -146,14 +146,14 @@ Aggregation Methods:
 /test: 2m 23s
 /docs: 6m 12s
 /deps audit: 1m 58s
-/context payment: 1m 34s
+/prime payment: 1m 34s
 
 # Parallel Execution (After)
 /agent-audit: 38s (-84%)
 /test: 35s (-85%)
 /docs: 1m 43s (-72%)
 /deps audit: 24s (-80%)
-/context payment: 19s (-80%)
+/prime payment: 19s (-80%)
 ```
 
 ### Throughput Improvements
@@ -201,7 +201,7 @@ Peak Memory by Command:
   /test: 800MB (5 instances + test frameworks)
   /docs: 500MB (6 instances)
   /deps: 400MB (variable instances)
-  /context: 350MB (5 instances)
+  /prime: 350MB (5 instances)
 ```
 
 ## I/O Optimization

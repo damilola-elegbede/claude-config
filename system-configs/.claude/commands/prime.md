@@ -3,16 +3,16 @@ description: Analyze repository structure, dependencies, docs
 argument-hint: [--lite|component-name]
 ---
 
-# /context Command
+# /prime Command
 
 ## Usage
 
 ```bash
-/context                        # Full comprehensive analysis with parallel agents
-/context --lite                 # Quick 2-second essential context
-/context authentication         # Deep component analysis with multi-instance
-/context api                    # Focused API architecture analysis
-/context "payment processing"   # Multi-instance component deep dive
+/prime                          # Full comprehensive analysis with parallel agents
+/prime --lite                   # Quick 2-second essential context
+/prime authentication           # Deep component analysis with multi-instance
+/prime api                      # Focused API architecture analysis
+/prime "payment processing"     # Multi-instance component deep dive
 ```
 
 ## Description
@@ -304,7 +304,7 @@ and improves performance for frequent context checks.
 #### Quick Status Check
 
 ```text
-User: /context --lite
+User: /prime --lite
 Claude: 📖 Reading essential files...
 ## Quick Context: ecommerce-api
 🌿 Branch: fix/payment-gateway (2 modified files)
@@ -315,7 +315,7 @@ Claude: 📖 Reading essential files...
 #### New Repository Exploration
 
 ```text
-User: /context
+User: /prime
 Claude: 🔍 Analyzing repository structure...
 📊 Detected: Python/Django project (127 files)
 ✅ Technology stack identified
@@ -326,7 +326,7 @@ Claude: 🔍 Analyzing repository structure...
 #### Component Deep Dive with Multi-Instance
 
 ```text
-User: /context payment processing
+User: /prime payment processing
 Claude: 🎯 Deploying multi-instance analyzers for payment processing...
 📊 Instance Pool Status:
   - codebase-analyst[1]: Analyzing payment flow architecture...
@@ -347,7 +347,7 @@ Claude: 🎯 Deploying multi-instance analyzers for payment processing...
 
 ### Notes
 
-- Auto-executes on Claude Code startup (disable with `.claude/noautocontext`)
+- Auto-executes on Claude Code startup (disable with `.claude/noautoprime`)
 - **Multi-Instance Focused Mode**: 3-5 instances analyze components in parallel
 - **Performance Improvement**: 15-20 seconds for deep analysis (was 1-2 minutes)
 - Works with any programming language or framework

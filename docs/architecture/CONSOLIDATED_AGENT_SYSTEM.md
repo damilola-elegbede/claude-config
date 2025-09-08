@@ -203,7 +203,7 @@ codebase_understanding:
 
 - `/security` → security-auditor
 - `/docs` → tech-writer
-- `/context` → codebase-analyst (multiple instances)
+- `/prime` → codebase-analyst (multiple instances)
 
 ### Multi-Agent Orchestration
 

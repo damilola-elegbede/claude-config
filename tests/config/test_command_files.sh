@@ -12,7 +12,7 @@ test_all_commands_exist() {
         "Commands directory should exist"
 
     # Check each command file
-    local expected_commands=("plan" "commit" "push" "test" "context" "sync")
+    local expected_commands=("plan" "commit" "push" "test" "prime" "sync")
 
     for cmd in "${expected_commands[@]}"; do
         assert_file_exists "$commands_dir/${cmd}.md" \
@@ -147,9 +147,9 @@ test_command_specifics() {
     assert_file_contains "$commands_dir/plan.md" "## Approval Workflow" \
         "/plan command should have approval workflow"
 
-    # Test /context command has output format
-    assert_file_contains "$commands_dir/context.md" "Output Format:" \
-        "/context command should have output format"
+    # Test /prime command has output format
+    assert_file_contains "$commands_dir/prime.md" "Output Format:" \
+        "/prime command should have output format"
 }
 
 # Test agent specification requirements
@@ -158,7 +158,7 @@ test_agent_specifications() {
     
     # Commands that must specify agents
     local agent_required_commands=("implement" "docs" "debug" "ship-it" "review" 
-                                  "test" "context" "fix-ci" "deps" "plan" 
+                                  "test" "prime" "fix-ci" "deps" "plan" 
                                   "commit" "branch" "pr" "push" "sync")
     
     for cmd in "${agent_required_commands[@]}"; do
@@ -188,7 +188,7 @@ test_parallelization_patterns() {
     local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
     
     # Commands that should leverage parallelization
-    local parallel_commands=("implement" "docs" "ship-it" "review" "context" 
+    local parallel_commands=("implement" "docs" "ship-it" "review" "prime" 
                             "agent-audit" "command-audit" "fix-ci" "test")
     
     for cmd in "${parallel_commands[@]}"; do

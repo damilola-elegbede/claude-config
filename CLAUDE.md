@@ -46,7 +46,7 @@ Code CLI.
 
 # Validate YAML agent definitions
 ./scripts/validate_yaml.sh
-```yaml
+```
 
 ### Quality Gates
 
@@ -75,7 +75,7 @@ Code CLI.
 
 - `/sync` - **Primary Command**: Synchronizes system configurations from this repository to `~/.claude/`
 - `/agent-audit` - Validates all 28 agent configurations with parallel execution
-- `/context` - Analyzes repository structure and purpose
+- `/prime` - Analyzes repository structure and purpose
 
 ### Development & Testing
 
@@ -133,7 +133,7 @@ core programming to infrastructure, quality assurance, and documentation.
 
 # Scan agent capabilities
 ./scripts/scan-agent-capabilities.py
-```yaml
+```
 
 ### Repository Maintenance
 
@@ -146,7 +146,7 @@ core programming to infrastructure, quality assurance, and documentation.
 
 # Standardize agent formats
 ./scripts/standardize-agents.py
-```yaml
+```
 
 ## Quality Standards
 

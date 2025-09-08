@@ -29,7 +29,7 @@ instance_pool:
 | `/test` | 2-3 minutes | 30-40 seconds | **4-5x faster** | 3-5 test-engineer |
 | `/docs` | 5-7 minutes | 1-2 minutes | **3-4x faster** | 4-6 tech-writer |
 | `/deps audit` | 2 minutes | 20-30 seconds | **4-6x faster** | 1 per package manager |
-| `/context focused` | 1-2 minutes | 15-20 seconds | **4-6x faster** | 3-5 codebase-analyst |
+| `/prime focused` | 1-2 minutes | 15-20 seconds | **4-6x faster** | 3-5 codebase-analyst |
 
 ## Implementation Details
 
@@ -145,7 +145,7 @@ dependency-analyst (instance pool):
   benefit: Complete dependency audit in 20-30 seconds
 ```
 
-### `/context` - Component Analysis Parallelization
+### `/prime` - Component Analysis Parallelization
 
 Analyzes different component aspects in parallel:
 

@@ -9,6 +9,9 @@ import re
 from pathlib import Path
 from collections import defaultdict
 
+# Get repository root directory
+REPO_ROOT = Path(__file__).resolve().parents[1]
+
 # Expected final state - Updated based on actual agent ecosystem (AGENT_TEMPLATE.md format)
 EXPECTED_AGENTS = 28  # Production agents following 46-line template
 EXPECTED_CATEGORIES = {
@@ -39,7 +42,7 @@ COMMAND_AGENT_MAP = {
     '/docs': 'tech-writer',
     '/debug': 'debugger',
     '/orchestrate': 'project-orchestrator',
-    '/context': 'codebase-analyst',
+    '/prime': 'codebase-analyst',
     '/backend': 'backend-engineer',
     '/frontend': 'frontend-engineer',
     '/data': 'data-engineer',
@@ -52,7 +55,7 @@ COMMAND_AGENT_MAP = {
 
 def test_agent_count():
     """Test that we have exactly 28 agents following AGENT_TEMPLATE.md format."""
-    agents_dir = Path('/Users/damilola/Documents/Projects/claude-config/system-configs/.claude/agents')
+    agents_dir = REPO_ROOT / "system-configs" / ".claude" / "agents"
     agent_files = [f for f in agents_dir.glob('*.md') 
                    if f.name not in ['README.md', 'AGENT_TEMPLATE.md', 'AGENT_CATEGORIES.md']]
 
@@ -63,7 +66,7 @@ def test_agent_count():
 
 def test_no_deprecated_agents():
     """Test that no deprecated agents exist."""
-    agents_dir = Path('/Users/damilola/Documents/Projects/claude-config/system-configs/.claude/agents')
+    agents_dir = REPO_ROOT / "system-configs" / ".claude" / "agents"
     existing_agents = [f.stem for f in agents_dir.glob('*.md') 
                       if f.name not in ['README.md', 'AGENT_TEMPLATE.md']]
 
@@ -78,14 +81,14 @@ def test_no_deprecated_agents():
 
 def test_agent_categories():
     """Test agent color distribution matches expected categories."""
-    agents_dir = Path('/Users/damilola/Documents/Projects/claude-config/system-configs/.claude/agents')
+    agents_dir = REPO_ROOT / "system-configs" / ".claude" / "agents"
     color_counts = defaultdict(int)
 
     for agent_file in agents_dir.glob('*.md'):
         if agent_file.name in ['README.md', 'AGENT_TEMPLATE.md']:
             continue
 
-        with open(agent_file, 'r') as f:
+        with open(agent_file, 'r', encoding='utf-8') as f:
             content = f.read()
 
         color_match = re.search(r'^color:\s*(\w+)$', content, re.MULTILINE)
@@ -106,14 +109,14 @@ def test_agent_categories():
 
 def test_command_mappings():
     """Test command shortcuts map to correct agents."""
-    commands_dir = Path('/Users/damilola/Documents/Projects/claude-config/.claude/commands')
+    commands_dir = REPO_ROOT / "system-configs" / ".claude" / "commands"
 
     all_good = True
     for command, expected_agent in COMMAND_AGENT_MAP.items():
         command_file = commands_dir / f"{command[1:]}.md"
 
         if command_file.exists():
-            with open(command_file, 'r') as f:
+            with open(command_file, 'r', encoding='utf-8') as f:
                 content = f.read()
 
             # Check if the command mentions the correct agent
@@ -130,7 +133,7 @@ def test_command_mappings():
 
 def test_agent_yaml_validity():
     """Test agents have valid YAML front-matter."""
-    agents_dir = Path('/Users/damilola/Documents/Projects/claude-config/.claude/agents')
+    agents_dir = REPO_ROOT / "system-configs" / ".claude" / "agents"
 
     invalid_agents = []
     non_agent_files = ['README.md', 'AGENT_CATEGORIES.md', 'AGENT_TEMPLATE.md', 'AUDIT_VERIFICATION_PROTOCOL.md']
@@ -139,7 +142,7 @@ def test_agent_yaml_validity():
         if agent_file.name in non_agent_files:
             continue
 
-        with open(agent_file, 'r') as f:
+        with open(agent_file, 'r', encoding='utf-8') as f:
             content = f.read()
 
         # Check for basic YAML structure
@@ -166,7 +169,7 @@ def test_agent_yaml_validity():
 
 def test_deprecated_directory():
     """Test deprecated agents are properly archived."""
-    deprecated_dir = Path('/Users/damilola/Documents/Projects/claude-config/.claude/deprecated/agents')
+    deprecated_dir = REPO_ROOT / "system-configs" / ".claude" / "deprecated" / "agents"
 
     if deprecated_dir.exists():
         deprecated_files = list(deprecated_dir.glob('*.md'))
