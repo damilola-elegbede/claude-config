@@ -1,5 +1,5 @@
 ---
-description: Wave-based root cause analysis for complex bugs with forensics
+description: Wave-based root cause analysis for complex bugs
 argument-hint: [issue_description]
 ---
 

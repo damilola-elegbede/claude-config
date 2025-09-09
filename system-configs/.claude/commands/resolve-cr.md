@@ -1,5 +1,5 @@
 ---
-description: Aggressive CodeRabbit feedback resolver with wave-based parallel execution
+description: CodeRabbit feedback resolver with parallel execution
 argument-hint: [pr-number] [--auto|--dry-run|--skip-tests]
 ---
 

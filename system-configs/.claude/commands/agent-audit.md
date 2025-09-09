@@ -18,8 +18,8 @@ description: Validate agent ecosystem integrity and compliance
 ## Description
 
 Perform comprehensive validation of all agents in the agent ecosystem to ensure category integrity,
-template compliance, and system consistency. **This command generates a REPORT ONLY - it provides
-recommendations and optional patch snippets; it does not make any changes automatically.**
+template compliance, and system consistency. By default this is **REPORT ONLY** (recommendations and patch
+snippets, no changes). Use `--fix` to apply safe, automated fixes.
 
 ## Expected Output
 

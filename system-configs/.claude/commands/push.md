@@ -1,5 +1,5 @@
 ---
-description: Safely push changes to remote repository with wave-based orchestration
+description: Safely push changes with wave-based orchestration
 argument-hint: [--simple|--force|--dry-run]
 ---
 

@@ -1,5 +1,5 @@
 ---
-description: Generate PRD and PR-based task files with agent assignments using iterative wave-based orchestration
+description: Generate PRD and task files with wave orchestration
 argument-hint: "[task_description]"
 ---
 

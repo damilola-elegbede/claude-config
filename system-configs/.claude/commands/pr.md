@@ -1,5 +1,5 @@
 ---
-description: Creates pull requests with comprehensive wave-based orchestration analysis
+description: Create PRs with wave-based orchestration analysis
 argument-hint: [target_branch] [--draft] [--template]
 ---
 

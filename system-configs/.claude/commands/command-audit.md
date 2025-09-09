@@ -1,5 +1,5 @@
 ---
-description: Comprehensive command validation and Template Compliance analysis
+description: Command validation and Template Compliance analysis
 ---
 
 # /command-audit Command

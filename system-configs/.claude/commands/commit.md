@@ -1,5 +1,5 @@
 ---
-description: Creates git commit with wave-based orchestration and auto-remediation
+description: Create git commits with wave-based orchestration
 argument-hint: [--amend]
 ---
 

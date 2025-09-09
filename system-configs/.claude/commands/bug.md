@@ -1,5 +1,5 @@
 ---
-description: Wave-based bug impact analysis and comprehensive reporting system
+description: Wave-based bug analysis and comprehensive reporting
 argument-hint: [description] [--priority high] [--labels label1,label2]
 ---
 

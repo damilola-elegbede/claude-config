@@ -249,7 +249,7 @@ Multi-Package Manager Support:
   parallel_tools_per_instance:
     - npm: npm audit, npm outdated, depcheck
     - pip: pip-audit, pip list --outdated, pipdeptree
-    - go: nancy sleuth, go list -u, go mod graph
+    - go: nancy, govulncheck, go list -u, go mod graph
     - cargo: cargo audit, cargo outdated, cargo tree
     - maven: dependency:analyze, versions:display
 

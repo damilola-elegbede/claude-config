@@ -1,5 +1,5 @@
 ---
-description: Progressive repository understanding through wave-based agent orchestration
+description: Repository understanding via wave orchestration
 argument-hint: [--lite|--full|component-name]
 ---
 

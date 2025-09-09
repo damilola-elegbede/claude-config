@@ -1,5 +1,5 @@
 ---
-description: Sync Claude configurations using direct execution with validation and rollback
+description: Sync Claude configs with validation and rollback
 argument-hint: [--dry-run|--backup|--force]
 ---
 
