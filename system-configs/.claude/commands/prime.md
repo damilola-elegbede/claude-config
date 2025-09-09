@@ -27,15 +27,17 @@ Each wave builds upon previous insights, culminating in comprehensive repository
 
 **Objective**: Establish core repository understanding and identify key characteristics
 
+**Repository Analysis Strategy**: Comprehensive examination of codebase, architecture, and technology stack through coordinated agent deployment
 **Parallel Agent Deployment**:
 
 ```yaml
-codebase-analyst instances (3-5):
+codebase-analyst instances (3-6):
   - analyst[1]: Technology stack detection and build system analysis
   - analyst[2]: Project structure and architecture patterns
   - analyst[3]: Dependency analysis and integration points
-  - analyst[4]: Code organization and module relationships
-  - analyst[5]: Development workflow and tooling assessment
+  - analyst[4]: Configuration files analysis (package.json, tsconfig.json, etc.)
+  - analyst[5]: Code organization and module relationships
+  - analyst[6]: Development workflow and tooling assessment
 
 tech-writer:
   - Documentation inventory and quality assessment

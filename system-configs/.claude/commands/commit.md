@@ -133,7 +133,7 @@ Generate comprehensive commit message and create commit with all fixes included:
 ```yaml
 # WAVE 3: FINAL COMMIT CREATION
 tech-writer:
-  role: Generate final conventional commit message
+  role: Generate final conventional commit message using conventional commit format
   input: All changes, fixes applied, repository commit style
   output: Polished commit message with fix descriptions
 
