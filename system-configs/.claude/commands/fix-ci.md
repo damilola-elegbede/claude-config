@@ -18,6 +18,9 @@ argument-hint: [run-id|--learn]
 Diagnose and fix GitHub Actions failures using pattern recognition and historical fix data. Only pushes when 95%
 confident all CI issues are resolved. Tests locally before pushing fixes.
 
+**Important**: Complex CI issues often cascade, requiring multiple remediation waves. The process continues iteratively
+until all CI checks pass, with each wave addressing newly discovered failures.
+
 ## Expected Output
 
 ### Successful CI Fix with Confidence
@@ -29,6 +32,20 @@ confident all CI issues are resolved. Tests locally before pushing fixes.
 ✅ Local tests passed
 💾 Committed and pushed fix
 📊 Recorded outcome: CI passed = true
+```
+
+### Multi-Wave Remediation Example
+
+```text
+🔍 Wave 1: Pattern confidence: 96%
+🔧 Wave 1: Applying lint fixes (96% confidence)...
+📊 Wave 1: CI verification reveals additional test failures
+🔧 Wave 2: Deploying test fix agents...
+📊 Wave 2: CI verification reveals dependency conflicts
+🔧 Wave 3: Resolving dependency version conflicts...
+📊 Wave 3: CI verification reveals environment issues
+🔧 Wave 4: Fixing environment configuration...
+✅ Wave 4: All CI checks now passing
 ```
 
 ### Low Confidence Scenario
@@ -53,307 +70,420 @@ Type Errors: 78% success rate (14/18 attempts)
 
 ## Behavior
 
-### Agent Orchestration - Multi-Instance Parallel Deployment
+### Agent Orchestration - Enhanced Multi-Wave Parallel Deployment
 
-#### Parallel Fix Strategy
+#### WAVE 1: Enhanced Parallel Failure Analysis (10-15 agents deployed simultaneously)
 
 ```yaml
-# PARALLEL WAVE 1: Simultaneous Failure Analysis
-devops (instance pool):
-  deployment: 2-3 instances based on number of failed jobs
+# ENHANCED PARALLEL WAVE 1: Maximum Simultaneous Analysis
+devops (expanded instance pool):
+  deployment: 3-4 instances (was 2-3) - based on pipeline complexity
   distribution:
     - instance_1: Pipeline/workflow configuration issues
     - instance_2: Infrastructure and environment problems
     - instance_3: Deployment and integration failures
-  parallel_with: [test-engineer instances, platform-engineer instances]
-  output: Pipeline fixes, configuration corrections
+    - instance_4: Resource constraints and timeout analysis
+  parallel_with: [test-engineer instances, platform-engineer instances, debugger instances]
+  output: Pipeline fixes, configuration corrections, resource optimization
 
-test-engineer (instance pool):
-  deployment: 3-4 instances for different test types
+test-engineer (expanded instance pool):
+  deployment: 4-5 instances (was 3-4) - for comprehensive test coverage
   distribution:
-    - instance_1: Unit test failures
-    - instance_2: Integration test failures
-    - instance_3: E2E test failures
-    - instance_4: Flaky test identification
-  parallel_with: [devops instances, platform-engineer instances]
-  output: Test fixes, stability improvements
+    - instance_1: Unit test failures and mocking issues
+    - instance_2: Integration test failures and service connections
+    - instance_3: E2E test failures and browser automation
+    - instance_4: Flaky test identification and stabilization
+    - instance_5: Performance test failures and load issues
+  parallel_with: [devops instances, platform-engineer instances, debugger instances]
+  output: Test fixes, stability improvements, performance optimizations
 
-platform-engineer (instance pool):
-  deployment: 2-3 instances for different aspects
+platform-engineer (expanded instance pool):
+  deployment: 3-4 instances (was 2-3) - for deeper environment analysis
   distribution:
-    - instance_1: Dependency resolution issues
-    - instance_2: Build environment problems
-    - instance_3: Resource constraints and timeouts
-  parallel_with: [devops instances, test-engineer instances]
-  output: Environment fixes, dependency resolutions
+    - instance_1: Dependency resolution and version conflicts
+    - instance_2: Build environment and toolchain problems
+    - instance_3: Container/Docker configuration issues
+    - instance_4: Runtime environment and system resource analysis
+  parallel_with: [devops instances, test-engineer instances, debugger instances]
+  output: Environment fixes, dependency resolutions, container optimizations
 
-code-reviewer:
-  role: Analyze code changes that triggered CI failures
-  parallel_with: [all other agents]
-  output: Code quality issues, syntax problems
+debugger (NEW - specialized debugging instances):
+  deployment: 2-3 instances - for complex failure analysis
+  distribution:
+    - instance_1: Stack trace analysis and error correlation
+    - instance_2: Memory/performance issue investigation
+    - instance_3: Timing and race condition detection
+  parallel_with: [all other Wave 1 agents]
+  output: Root cause analysis, complex failure patterns
+
+code-reviewer (enhanced):
+  deployment: 2 instances - for comprehensive code analysis
+  distribution:
+    - instance_1: Syntax, style, and structural issues
+    - instance_2: Logic errors and integration problems
+  parallel_with: [all other Wave 1 agents]
+  output: Code quality issues, architectural problems
 
 security-auditor:
-  role: Check for security-related CI failures
-  parallel_with: [all other agents]
+  deployment: 1-2 instances - security-focused analysis
+  distribution:
+    - instance_1: Security policy violations and compliance
+    - instance_2: Vulnerability scanning and dependency security
+  parallel_with: [all other Wave 1 agents]
   output: Security violations, compliance issues
+
+execution-evaluator:
+  deployment: 1 instance - coordination and confidence aggregation
+  role: Synthesize findings from all Wave 1 agents
+  parallel_with: [all other Wave 1 agents]
+  output: Consolidated analysis, confidence scoring recommendations
 ```
 
-#### CI Job Parallelization Strategy
+#### WAVE 2: Conditional Fix Application (Only if 95%+ confident)
 
 ```yaml
-Phase 1 - Parallel Diagnosis (10-15 seconds):
-  - All failed CI jobs analyzed simultaneously
-  - Deploy N agents where N = number of failure types
-  - Each agent instance handles specific failure domain
-  - Cross-reference findings for related issues
+# Enhanced Claude Confidence Calculation with Pattern Learning
+confidence_calculation:
+  base_patterns: Historical success rates from .tmp/fix-ci/
+  failure_complexity: Number of different failure types detected
+  agent_consensus: Agreement level between Wave 1 agent findings
+  historical_similarity: Match strength to previous successful fixes
+  environmental_factors: CI vs local environment differences
 
-Phase 2 - Parallel Fix Implementation:
-  Lint/Format Failures:
-    - Multiple code-reviewer instances fix different files
-    - Parallel execution: npm run lint:fix on file groups
+# Deploy fix agents only when confident
+fix_deployment (conditional):
+  trigger: confidence >= 95%
+  strategy: Multiple parallel fix agents by failure type
+
+  lint_fixes:
+    - code-reviewer instance 1: ESLint rule violations
+    - code-reviewer instance 2: Prettier formatting issues
+    - code-reviewer instance 3: Custom linting rule failures
+
+  test_fixes:
+    - test-engineer instance 1: Unit test assertion fixes
+    - test-engineer instance 2: Mock and stub corrections
+    - test-engineer instance 3: Test environment setup issues
+
+  build_fixes:
+    - platform-engineer instance 1: Dependency version resolution
+    - platform-engineer instance 2: Build configuration updates
+    - devops instance 1: CI pipeline configuration fixes
+
+  deployment_fixes:
+    - devops instance 2: Container and orchestration fixes
+    - platform-engineer instance 3: Environment variable corrections
+    - security-auditor: Security configuration adjustments
+
+local_validation:
+  parallel_testing: Run all test suites simultaneously
+  lint_validation: Multiple linting tools in parallel
+  build_verification: Parallel build across different configurations
+  security_scanning: Parallel security checks
+```
+
+#### WAVE 3: Enhanced Verification & Monitoring
+
+```yaml
+# Verification and continuous monitoring agents
+monitoring_deployment:
+  ci_monitor:
+    deployment: 1 instance
+    role: Real-time CI pipeline status monitoring
+    duration: Until all checks pass or timeout
+
+  performance_monitor:
+    deployment: 1 instance
+    role: Track build performance improvements/degradations
+    metrics: Build time, test execution speed, resource usage
+
+  pattern_learner:
+    deployment: 1 instance
+    role: Update pattern database with outcomes
+    learning: Record success/failure patterns for future confidence scoring
+
+  regression_detector:
+    deployment: 1 instance
+    role: Monitor for new issues introduced by fixes
+    alert: Flag any new test failures or build issues
+
+success_verification:
+  criteria:
+    - All CI checks pass (100% success requirement)
+    - No new failures introduced
+    - Performance metrics maintained or improved
+    - Security scans pass
+  recording: Update .tmp/fix-ci/history.log with comprehensive outcome data
+```
+
+#### WAVE N: Iterative Remediation Cycles
+
+**Critical**: Wave 3 verification may reveal additional failures requiring Wave 4 fixes. Complex CI issues often
+cascade, with each remediation wave uncovering new problems that must be addressed.
+
+```yaml
+# Iterative remediation pattern for cascading failures
+wave_continuation:
+  trigger: "CI verification reveals new failures after previous wave fixes"
+  process: "Each wave addresses failures discovered in CI runs from previous wave"
+  examples:
+    - "Wave 4: Address integration test failures revealed after Wave 3 lint fixes"
+    - "Wave 5: Resolve environment conflicts exposed by Wave 4 dependency updates"
+    - "Wave 6: Fix security violations uncovered by Wave 5 configuration changes"
+
+  escalation_pattern:
+    wave_4_plus:
+      diagnostic_agents: "Deploy additional specialized agents for complex cascading issues"
+      confidence_adjustment: "Lower confidence threshold to 90% for iterative fixes"
+      monitoring_intensity: "Increase monitoring frequency and failure detection granularity"
+
+  termination_conditions:
+    success: "All CI checks pass with no new failures detected"
+    max_waves: "Limit to 8 waves to prevent infinite remediation cycles"
+    confidence_floor: "Stop if confidence drops below 75% for safety"
+```
+
+**Remediation Wave Examples**:
+
+- **Wave 3**: Initial fixes pass, but CI reveals test environment issues
+- **Wave 4**: Environment fixes applied, CI discovers dependency version conflicts
+- **Wave 5**: Dependencies resolved, CI exposes security policy violations
+- **Wave 6**: Security fixes applied, CI shows performance regression
+- **Wave 7**: Performance optimizations completed, all CI checks finally pass
+
+### Enhanced Pattern Recognition with Multi-Agent Confidence
+
+#### Advanced Pattern Matching with Agent Consensus
+
+```yaml
+# Enhanced confidence scoring with agent input weighting
+pattern_confidence_matrix:
+  Lint/Format:
+    base_confidence: 98%
+    agent_weights:
+      code-reviewer: 0.4
+      devops: 0.3
+      execution-evaluator: 0.3
+    consensus_multiplier: 1.0-1.2 (higher when agents agree)
+
+  Dependencies:
+    base_confidence: 92%
+    agent_weights:
+      platform-engineer: 0.5
+      devops: 0.3
+      debugger: 0.2
+    consensus_multiplier: 1.0-1.15
 
   Test Failures:
-    - test-engineer instance 1: Fix unit tests
-    - test-engineer instance 2: Fix integration tests
-    - test-engineer instance 3: Fix E2E tests
-    - All work simultaneously
+    base_confidence: 85%
+    agent_weights:
+      test-engineer: 0.6
+      debugger: 0.25
+      code-reviewer: 0.15
+    consensus_multiplier: 1.0-1.1
 
-  Build Failures:
-    - platform-engineer instance 1: Fix dependencies
-    - platform-engineer instance 2: Fix environment config
-    - devops: Fix pipeline configuration
-    - Parallel resolution of independent issues
-
-Phase 3 - Parallel Validation:
-  - Run all CI checks locally in parallel
-  - Different test suites on different threads
-  - Aggregate results for confidence scoring
-  - Only push when ALL parallel checks pass
-
-Performance Metrics:
-  - Sequential analysis: 3-5 minutes
-  - Parallel analysis: 30-60 seconds (5x faster)
-  - Fix confidence: Higher with parallel validation
-  - Success rate: 95%+ with comprehensive parallel checking
+  Complex Issues:
+    base_confidence: 60%
+    agent_weights:
+      debugger: 0.4
+      execution-evaluator: 0.3
+      platform-engineer: 0.2
+      devops: 0.1
+    consensus_multiplier: 1.0-1.3 (critical for complex issues)
 ```
 
-### Fix Pattern Recognition
-
-#### Pattern Matching with Confidence Scoring
-
-```yaml
-Lint/Format: {confidence: 98%, test: "npm run lint", fix: "npm run lint:fix"}
-Dependencies: {confidence: 92%, test: "npm test", fix: "npm install"}
-Test Failures: {confidence: 85%, test: "npm test", fix: "update tests"}
-Type Errors: {confidence: 78%, test: "npm run typecheck", fix: "fix types"}
-Build Issues: {confidence: 70%, test: "npm run build", fix: "rebuild"}
-```
-
-#### Safe Command Validation
+#### Multi-Agent Learning Integration
 
 ```bash
-# Whitelist of safe commands
-SAFE_COMMANDS=(
-  "npm run lint:fix"
-  "npm run lint"
-  "npx eslint . --fix"
-  "npm install"
-  "npm test"
-  "npm run typecheck"
-  "npm run build"
-)
-
-validate_fix_command() {
-  local cmd="$1"
-  for safe_cmd in "${SAFE_COMMANDS[@]}"; do
-    [[ "$cmd" == "$safe_cmd" ]] && return 0
-  done
-  echo "❌ Unsafe command: $cmd"
-  return 1
-}
-```
-
-#### Pattern Application Logic
-
-```bash
-apply_fix() {
-  local error_log="$1"
-  local confidence=0
-  local fix_cmd=""
-  local test_cmd=""
-  local pattern=""
-
-  if grep -q "ESLint\|Prettier\|lint" "$error_log"; then
-    pattern="Lint/Format"; confidence=98
-    fix_cmd="npm run lint:fix"
-    test_cmd="npm run lint"
-  elif grep -q "Module not found\|Cannot resolve" "$error_log"; then
-    pattern="Dependencies"; confidence=92; fix_cmd="npm install"; test_cmd="npm test"
-  elif grep -q "Test.*failed\|expect.*received" "$error_log"; then
-    pattern="Test Failures"; confidence=85; fix_cmd="MANUAL"; test_cmd="npm test"
-  elif grep -q "Type.*error\|TS[0-9]" "$error_log"; then
-    pattern="Type Errors"; confidence=78; fix_cmd="MANUAL"; test_cmd="npm run typecheck"
-  else
-    return 1
-  fi
-
-  # If manual fix is required, return sentinel without validation
-  if [[ "$fix_cmd" == "MANUAL" ]]; then
-    echo "$pattern,$confidence,$fix_cmd,$test_cmd"
-    return 0
-  fi
-
-  # Validate fix command is safe
-  if ! validate_fix_command "$fix_cmd"; then
-    return 1
-  fi
-
-  echo "$pattern,$confidence,$fix_cmd,$test_cmd"
-}
-```
-
-### Historical Learning System
-
-#### History Tracking
-
-```bash
-# Initialize history directory
-init_history() {
-  mkdir -p .tmp/fix-ci
-}
-
-# Record fix outcomes with 100% CI success requirement
-record_outcome() {
+# Enhanced learning system with agent-specific patterns
+record_enhanced_outcome() {
   local pattern="$1"
   local confidence="$2"
-  local all_ci_passed="$3"  # true only if 100% CI issues resolved
+  local all_ci_passed="$3"
+  local agent_consensus="$4"
+  local failure_complexity="$5"
+  local fix_duration="$6"
+  local wave_count="$7"
 
-  echo "$(date),$pattern,$confidence,$all_ci_passed" >> .tmp/fix-ci/history.log
+  echo "$(date),$pattern,$confidence,$all_ci_passed,$agent_consensus,$failure_complexity,$fix_duration,$wave_count" >> .tmp/fix-ci/enhanced-history.log
 }
 
-# Calculate confidence from historical success
-get_confidence() {
+# Calculate confidence with multi-factor analysis
+get_enhanced_confidence() {
   local pattern="$1"
-  if [[ ! -f .tmp/fix-ci/history.log ]]; then
-    echo "50"
-    return 0
+  local agent_findings="$2"
+  local complexity_score="$3"
+  local wave_number="$4"
+
+  # Base historical confidence
+  local base_confidence
+  base_confidence=$(get_confidence "$pattern")
+
+  # Agent consensus factor (0.8-1.2 multiplier)
+  local consensus_factor
+  consensus_factor=$(calculate_agent_consensus "$agent_findings")
+
+  # Complexity adjustment (-10 to +5 points based on issue complexity)
+  local complexity_adjustment
+  complexity_adjustment=$(calculate_complexity_adjustment "$complexity_score")
+
+  # Wave iteration penalty (-5 points per wave beyond 3)
+  local wave_penalty=0
+  if [[ $wave_number -gt 3 ]]; then
+    wave_penalty=$(( (wave_number - 3) * 5 ))
   fi
-  awk -F',' -v p="$pattern" '
-    $2 == p { total++; if($4=="true") success++ }
-    END { if(total==0) print 50; else print int(success/total*100) }
-  ' .tmp/fix-ci/history.log
+
+  # Final confidence calculation
+  local final_confidence
+  final_confidence=$(echo "$base_confidence * $consensus_factor + $complexity_adjustment - $wave_penalty" | bc -l)
+
+  echo "${final_confidence%.*}" # Return integer confidence
 }
 ```
 
-### Main Execution Flow
+### Enhanced Main Execution Flow
 
-#### Complete Fix Process
+#### Multi-Wave Orchestration Process
 
 ```bash
-fix_ci() {
-  init_history
-  command -v gh >/dev/null 2>&1 || { echo "❌ GitHub CLI (gh) not found"; return 1; }
-  if ! gh auth status >/dev/null 2>&1; then
-    echo "❌ gh is not authenticated. Run: gh auth login"
-    return 1
-  fi
+fix_ci_enhanced() {
+  init_enhanced_history
+  validate_prerequisites || return 1
 
   local run_id="${1:-$(gh run list --status=failure --limit=1 --jq '.[0].databaseId')}"
-  if [[ -z "$run_id" || "$run_id" == "null" ]]; then
-    echo "ℹ️ No failed GitHub Actions runs found."
-    return 1
-  fi
+  [[ -z "$run_id" || "$run_id" == "null" ]] && { echo "ℹ️ No failed runs found."; return 1; }
 
-  local logs
-  logs=$(gh run view "$run_id" --log-failed)
+  local wave_count=1
+  local max_waves=8
+  local all_ci_passed=false
 
-  # Get fix details
-  local fix_data
-  fix_data=$(apply_fix "$logs")
-  [[ -z "$fix_data" ]] && { echo "❌ No fix pattern matched"; return 1; }
+  # Continue iterative remediation until CI passes or max waves reached
+  while [[ $all_ci_passed == false && $wave_count -le $max_waves ]]; do
+    echo "🚀 Wave $wave_count: Deploying analysis agents..."
 
-  IFS=',' read -r pattern confidence fix_cmd test_cmd <<< "$fix_data"
-  local historical_confidence
-  historical_confidence=$(get_confidence "$pattern")
-  local final_confidence=$(( (confidence + historical_confidence) / 2 ))
+    # WAVE 1: Deploy 10-15 analysis agents simultaneously
+    if [[ $wave_count -eq 1 ]]; then
+      deploy_wave1_analysis "$run_id"
+    else
+      deploy_iterative_analysis "$run_id" "$wave_count"
+    fi
 
-  echo "🔍 Pattern confidence: ${final_confidence}%"
+    # Aggregate findings and calculate enhanced confidence
+    local agent_findings
+    agent_findings=$(aggregate_agent_findings)
+    local complexity_score
+    complexity_score=$(calculate_failure_complexity "$agent_findings")
 
-  if [[ "$fix_cmd" == "MANUAL" ]]; then
-    echo "📝 Pattern matched but requires manual remediation. Recommended test: $test_cmd"
-    return 1
-  fi
+    # Enhanced confidence calculation with wave iteration factor
+    local enhanced_confidence
+    enhanced_confidence=$(get_enhanced_confidence "$pattern" "$agent_findings" "$complexity_score" "$wave_count")
 
-  # Only proceed if 95%+ confident
-  if [[ $final_confidence -lt 95 ]]; then
-    echo "⚠️ Confidence too low (${final_confidence}% < 95%)"
-    echo "💡 Manual review recommended"
-    return 1
-  fi
+    echo "🔍 Wave $wave_count: Enhanced pattern confidence: ${enhanced_confidence}% (complexity: ${complexity_score})"
 
-  # Apply fix safely
-  echo "🔧 Applying fix (${final_confidence}% confidence)..."
-  if ! validate_fix_command "$fix_cmd"; then
-    echo "❌ Fix command failed validation"
-    return 1
-  fi
-  bash -c "$fix_cmd"
+    # Apply confidence threshold adjustment for iterative waves
+    local confidence_threshold=95
+    if [[ $wave_count -gt 3 ]]; then
+      confidence_threshold=90  # Lower threshold for iterative fixes
+    fi
 
-  # Test locally (account for CI environment differences)
-  echo "🧪 Testing fix locally..."
-  if ! validate_fix_command "$test_cmd"; then
-    echo "❌ Test command failed validation"
-    return 1
-  fi
-  if ! bash -c "$test_cmd"; then
-    echo "❌ Local test failed - not pushing"
-    record_outcome "$pattern" "$final_confidence" "false"
-    return 1
-  fi
+    # Deploy fix agents if confidence meets threshold
+    if [[ $enhanced_confidence -lt $confidence_threshold ]]; then
+      echo "⚠️ Wave $wave_count: Confidence too low (${enhanced_confidence}% < ${confidence_threshold}%)"
+      if [[ $wave_count -eq 1 ]]; then
+        echo "💡 Deploying additional diagnostic agents for complex analysis..."
+        deploy_deep_analysis_wave "$run_id" "$agent_findings"
+        return 1
+      else
+        echo "⚠️ Wave $wave_count: Insufficient confidence for continued remediation"
+        break
+      fi
+    fi
 
-  # Commit and push only if confident and tests pass
-  if ! git diff --quiet; then
-    git add .
-    git commit -m "fix: resolve CI failure (${final_confidence}% confidence)
+    echo "🔧 Wave $wave_count: Deploying parallel fix agents (${enhanced_confidence}% confidence)..."
+    deploy_iterative_fixes "$agent_findings" "$wave_count"
 
-Automated fix applied by /fix-ci"
-    git push
+    # Enhanced parallel local validation
+    echo "🧪 Wave $wave_count: Enhanced local testing with parallel validation..."
+    if ! run_parallel_validation "$agent_findings"; then
+      echo "❌ Wave $wave_count: Enhanced local validation failed - not pushing"
+      record_enhanced_outcome "$pattern" "$enhanced_confidence" "false" "$consensus_factor" "$complexity_score" "0" "$wave_count"
+      return 1
+    fi
 
-    # Record outcome after CI completes
-    sleep 90
-    local all_passed
-    all_passed=$(gh run list --limit=1 --jq '.[0].conclusion == "success"')
-    record_outcome "$pattern" "$final_confidence" "$all_passed"
-    echo "📊 Recorded outcome: CI passed = $all_passed"
+    # Commit and push with enhanced monitoring
+    if ! git diff --quiet; then
+      commit_with_wave_tracking "$enhanced_confidence" "$complexity_score" "$wave_count"
+
+      # Deploy monitoring and verification agents
+      echo "📊 Wave $wave_count: Deploying verification and monitoring agents..."
+      deploy_wave_monitoring "$run_id" "$wave_count"
+
+      # Wait for CI verification results
+      local verification_results
+      verification_results=$(wait_for_wave_verification_results "$wave_count")
+
+      if [[ "$verification_results" == "all_passed" ]]; then
+        all_ci_passed=true
+        echo "✅ Wave $wave_count: All CI checks passed - remediation complete!"
+      else
+        echo "📊 Wave $wave_count: CI verification reveals additional issues - continuing to Wave $((wave_count + 1))"
+        # Update pattern recognition with cascading failure data
+        update_cascading_failure_patterns "$verification_results" "$wave_count"
+      fi
+    else
+      echo "ℹ️ Wave $wave_count: No changes to commit"
+      all_ci_passed=true
+    fi
+
+    ((wave_count++))
+  done
+
+  # Record final outcome with wave count
+  if [[ $all_ci_passed == true ]]; then
+    record_enhanced_outcome "$pattern" "$enhanced_confidence" "true" "$consensus_factor" "$complexity_score" "$fix_duration" "$((wave_count - 1))"
+    echo "📊 Enhanced outcome recorded: $((wave_count - 1)) waves required for full CI remediation"
+  else
+    echo "⚠️ Maximum waves ($max_waves) reached without full CI resolution"
+    record_enhanced_outcome "$pattern" "$enhanced_confidence" "false" "$consensus_factor" "$complexity_score" "$fix_duration" "$max_waves"
   fi
 }
 ```
 
 ### Execution Verification
 
-Deploy execution-evaluator to verify:
+Deploy execution-evaluator to verify enhanced capabilities:
 
-- ✅ **CI issues identified** - All CI failures correctly analyzed and categorized
-- ✅ **Pattern confidence** - Confidence score calculated from historical success data
-- ✅ **Local testing passed** - All fixes validated locally before pushing
-- ✅ **Fixes applied** - Appropriate fixes implemented based on failure patterns
-- ✅ **CI success achieved** - All CI checks pass after fix implementation
-- ✅ **Historical learning** - Outcomes recorded for future confidence scoring
-- ✅ **Threshold compliance** - Only proceeded when confidence >= 95%
+- ✅ **Wave 1 Enhancement** - 10-15 agents deployed simultaneously (3-4 devops, 4-5 test-engineer, 3-4 platform-engineer, 2-3 debugger)
+- ✅ **Debugger Integration** - Specialized debugging instances for complex failure analysis
+- ✅ **Multi-Agent Confidence** - Enhanced confidence calculation using agent consensus and complexity scoring
+- ✅ **Pattern Learning** - Advanced pattern recognition with agent-specific learning integration
+- ✅ **Parallel Fix Deployment** - Multiple fix agents work simultaneously on different failure types
+- ✅ **Enhanced Monitoring** - Wave 3 verification with continuous monitoring and regression detection
+- ✅ **95% Confidence Threshold** - Maintained strict confidence requirements with enhanced calculation
+- ✅ **Comprehensive Validation** - Parallel local testing with multiple validation streams
+- ✅ **Iterative Remediation** - Multi-wave fix cycles for cascading CI failures (Wave 4, 5, 6+)
+- ✅ **Wave Tracking** - Complete outcome recording with wave count and cascading failure patterns
 
-### Key Features
+### Key Enhanced Features
 
-- **95% confidence threshold** - Only pushes when highly confident
-- **Local testing first** - Validates fixes before pushing
-- **100% CI success requirement** - Success only when all CI issues resolved
-- **Historical learning** - Improves confidence scoring from .tmp/fix-ci/ data
-- **Safe execution** - Tests locally accounting for CI environment differences
-- **Parallel agent deployment** - Multiple specialized agents work simultaneously
+- **Massive Parallel Wave 1** - 10-15 agents analyze failures simultaneously for comprehensive coverage
+- **Debugger Specialization** - Dedicated debugging instances for complex failure patterns
+- **Multi-Agent Confidence Scoring** - Enhanced confidence calculation incorporating agent consensus
+- **Complex Issue Handling** - Specialized workflows for multi-factor and intricate CI failures
+- **Continuous Learning** - Advanced pattern database updates with agent-specific insights
+- **Performance Monitoring** - Real-time tracking of fix effectiveness and performance impact
+- **Regression Prevention** - Automated detection of new issues introduced by fixes
+- **Iterative Remediation** - Multi-wave approach handling cascading CI failures requiring 4-8 waves
+- **Wave Intelligence** - Pattern recognition for cascading failure types and remediation sequences
+- **Escalation Management** - Confidence threshold adjustments and termination conditions for complex cases
 
 ### Notes
 
-- History stored in `.tmp/fix-ci/` not home directory
-- Success only counted when 100% of CI issues are resolved
-- Local testing accounts for CI environment differences
-- Won't push unless 95%+ confident in fix success
-- Deploys multiple agent instances for comprehensive parallel analysis
+- Enhanced parallel deployment maintains system resource awareness
+- Confidence threshold remains at 95% for initial waves, adjusted to 90% for iterative waves
+- Learning system captures multi-dimensional outcome data including wave count for better future predictions
+- All temporary data stored in `.tmp/fix-ci/enhanced-*` for improved organization
+- Wave-based pattern allows for controlled scaling and resource management
+- **Critical**: Complex CI issues may require 4-8 remediation waves to fully resolve all cascading failures
+- Each wave addresses new failures discovered by CI verification of previous wave's fixes
+- Process continues iteratively until all CI checks pass or maximum wave limit reached

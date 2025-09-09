@@ -1,5 +1,5 @@
 ---
-description: Context-aware branch creation with smart naming
+description: Direct branch creation with intelligent naming patterns
 argument-hint: [feature-description]
 ---
 
@@ -10,135 +10,225 @@ argument-hint: [feature-description]
 ```bash
 # Create branch with intelligent naming
 /branch user-dashboard
-→ Creates: feature/user-dashboard
+→ Creates feature/user-dashboard branch
 
 # From ticket patterns
 /branch JIRA-123
-→ Creates: feature/JIRA-123
+→ Creates feature/jira-123 branch
 
 # Fix patterns
 /branch fix-auth-bug
-→ Creates: fix/auth-bug
+→ Creates fix/auth-bug branch
 
 # Interactive mode (no arguments)
 /branch
-→ Provides context-aware suggestions based on repo state
+→ Context-aware analysis and recommendations
 ```
 
 ## Description
 
-Create intelligent git branches using pattern matching for ticket systems, smart naming conventions,
-and automated git workflow management. Analyze the user's input to determine branch type and apply
-appropriate naming patterns.
+Create git branches with intelligent naming patterns based on context and description. Analyzes input to determine
+appropriate branch type and name, then executes git operations directly.
 
 ## Expected Output
 
-Execute the complete branch creation workflow:
+Direct execution workflow for efficient branch creation:
 
-1. **Git State Assessment**: Analyze current repository state and handle uncommitted changes
-2. **Pattern Recognition**: Identify branch type from user input using intelligent pattern matching
-3. **Branch Creation**: Create appropriately named branch following team conventions
-4. **Verification**: Confirm successful branch creation and provide user feedback
-5. **Context Documentation**: Track branch purpose and link to related tickets/issues
-
-For interactive mode (no arguments), provide intelligent suggestions based on repository context and team patterns.
-
-Handle common scenarios:
-
-- **Naming Conflicts**: Generate alternative names preserving user intent
-- **Uncommitted Changes**: Automatic stashing with descriptive messages
-- **Network Issues**: Retry operations with fallback to local-only mode
-- **Permission Problems**: Provide clear guidance and escalation paths
-
-Always maintain git-flow conventions and ensure reliable execution with comprehensive error handling.
+1. **Context Analysis**: Analyze description to determine branch type and naming pattern
+2. **Branch Creation**: Execute git commands with intelligent naming
+3. **Basic Setup**: Switch to new branch and confirm creation
 
 ## Behavior
 
-### Intelligent Branch Naming
+### Intelligent Pattern Recognition
 
-Apply pattern recognition for different branch types:
-
-- **Ticket patterns**: `JIRA-123`, `GH-456`, `TICKET-789` → `feature/JIRA-123`
-- **Fix patterns**: `fix-auth-bug` → `fix/auth-bug`
-- **Feature patterns**: `user-dashboard` → `feature/user-dashboard`
-- **Hotfix patterns**: `hotfix-critical-issue` → `hotfix/critical-issue`
-
-### Smart Context Analysis
-
-Perform comprehensive git state assessment:
+Apply context-aware naming automatically:
 
 ```yaml
-Pre-Creation Checks:
-  - Ensure working on main/master branch
-  - Stash uncommitted changes if present
-  - Pull latest changes from remote
-  - Validate branch name availability
+Ticket Patterns:
+  - JIRA-123 → feature/jira-123
+  - GH-456 → feature/gh-456
+  - BUG-789 → fix/bug-789
+  - HOTFIX-101 → hotfix/hotfix-101
 
-Context Gathering:
-  - Recent commit messages analysis
-  - Current PR/issue context
-  - Team branching conventions
-  - Project-specific patterns
+Feature Patterns:
+  - user-dashboard → feature/user-dashboard
+  - api-integration → feature/api-integration
+  - performance-opt → enhancement/performance-opt
+  - auth-system → feature/auth-system
+
+Fix Patterns:
+  - fix-auth-bug → fix/auth-bug
+  - bugfix-login → fix/login-issue
+  - auth-bug → fix/auth-bug
+  - data-corruption → hotfix/data-corruption
+
+Experimental Patterns:
+  - experiment-* → experiment/*
+  - poc-* → experiment/*
+  - test-* → experiment/*
 ```
 
-### Branch Preparation Process
+### Branch Type Detection
 
-Execute automated cleanup and setup:
+Determine branch type from input patterns:
 
 ```yaml
-Setup Process:
-  1. Switch to main branch
-  2. Pull latest changes
-  3. Create and switch to new branch
-  4. Verify branch creation success
+Feature Branch Indicators:
+  - No prefix or "feature-" prefix
+  - Ticket numbers (JIRA-*, GH-*, etc.)
+  - Component names (dashboard, api, auth)
 
-Naming Conflicts:
-  - Auto-append timestamp if branch exists
-  - Suggest alternative names
-  - Preserve user intent in naming
+Fix Branch Indicators:
+  - "fix", "bugfix", "bug" in description
+  - "BUG-" ticket prefix
+  - Issue-related keywords
+
+Hotfix Branch Indicators:
+  - "hotfix" prefix
+  - "critical", "urgent" keywords
+  - Production issue references
+
+Enhancement Branch Indicators:
+  - "enhancement", "improve", "optimize"
+  - Performance-related terms
+  - "refactor", "cleanup" keywords
+
+Experimental Branch Indicators:
+  - "experiment", "poc", "test"
+  - "prototype", "spike" keywords
+  - Research and exploration terms
 ```
 
-### Ticket System Integration
+### Direct Execution Flow
 
-Support major ticket systems:
+Execute branch creation with minimal overhead:
 
-- **JIRA**: `PROJ-123` → `feature/PROJ-123`
-- **GitHub Issues**: `#456` → `feature/gh-456`
-- **Linear**: `LIN-789` → `feature/LIN-789`
-- **Azure DevOps**: `ADO-012` → `feature/ADO-012`
+1. **Input Analysis**
+   - Parse description for type and naming hints
+   - Check for existing branch conflicts
+   - Determine appropriate prefix and format
+
+2. **Name Generation**
+   - Apply intelligent naming patterns
+   - Sanitize input (lowercase, replace spaces/special chars)
+   - Add appropriate prefix based on type
+   - Handle conflicts with timestamp suffix if needed
+
+3. **Git Operations**
+
+   ```bash
+   # Check current repository state
+   git status --porcelain
+
+   # Handle uncommitted changes if needed
+   git stash push -m "Auto-stash before branch creation"
+
+   # Create and switch to new branch
+   git checkout -b <generated-branch-name>
+
+   # Confirm creation
+   git branch --show-current
+   ```
+
+4. **Confirmation**
+   - Display created branch name
+   - Show current branch status
+   - Provide next steps guidance
 
 ### Interactive Mode
 
-When no arguments provided, offer context-aware suggestions:
+When no arguments provided:
+
+1. **Repository Analysis**
+   - Check recent commits for context
+   - Examine current branch and uncommitted changes
+   - Scan for open issues or common patterns
+
+2. **Suggestion Generation**
+   - Suggest branch types based on recent activity
+   - Provide naming templates for common patterns
+   - Offer guided branch creation
+
+3. **User Selection**
+   - Present categorized options
+   - Allow custom input with pattern assistance
+   - Apply selected pattern and create branch
+
+### Error Handling
+
+Handle common scenarios gracefully:
 
 ```yaml
-Context-Aware Suggestions:
-  - Based on recent commit messages
-  - Extracted from current working files
-  - Derived from open PR titles
-  - Generated from project patterns
+Uncommitted Changes:
+  - Check git status
+  - Auto-stash with descriptive message
+  - Proceed with branch creation
+  - Remind user about stashed changes
 
-Suggestion Categories:
-  - Feature branches for new work
-  - Fix branches for bug reports
-  - Hotfix branches for critical issues
-  - Experimental branches for POCs
+Naming Conflicts:
+  - Detect existing branch with same name
+  - Append timestamp: feature/user-dashboard-20250109-143052
+  - Confirm with user before proceeding
+
+Network Issues:
+  - Create branch locally
+  - Note that remote operations may be needed later
+  - Provide commands for future remote setup
+
+Permission Issues:
+  - Report specific permission problems
+  - Suggest solutions (SSH key, authentication)
+  - Provide fallback local-only workflow
 ```
 
-### Team Convention Detection
+### Branch Name Sanitization
 
-Automatically analyze and adapt to project patterns:
+Clean and format branch names:
 
 ```yaml
-Convention Analysis:
-  - Analyze existing branch names
-  - Detect team naming patterns
-  - Learn project-specific conventions
-  - Adapt suggestions accordingly
+Sanitization Rules:
+  - Convert to lowercase
+  - Replace spaces with hyphens
+  - Remove special characters except hyphens
+  - Trim leading/trailing hyphens
+  - Limit length to 50 characters
+  - Ensure valid git branch name format
 
-Pattern Examples:
-  - feature/user-story-123
-  - bugfix/issue-456
-  - enhancement/performance-optimization
-  - docs/update-readme
+Examples:
+  - "User Dashboard Feature" → "feature/user-dashboard-feature"
+  - "Fix Auth Bug!!!" → "fix/auth-bug"
+  - "API Integration - Phase 1" → "feature/api-integration-phase-1"
+  - "JIRA-1234: User Management" → "feature/jira-1234-user-management"
+```
+
+## Success Criteria
+
+Simple and effective branch creation:
+
+- Branch created with appropriate intelligent naming
+- User switched to new branch successfully
+- Clear confirmation of branch creation
+- Guidance for next steps provided
+- Minimal execution time and complexity
+
+## Command Philosophy
+
+Transform branch creation from manual naming decisions to intelligent, context-aware automation while maintaining
+simplicity and speed. Focus on direct execution rather than complex orchestration.
+
+```yaml
+Direct Execution Benefits:
+  - Fast branch creation (seconds, not minutes)
+  - Clear, predictable naming patterns
+  - Minimal system overhead
+  - Easy to understand and debug
+  - Consistent behavior across environments
+
+Key Capabilities Preserved:
+  - Intelligent naming based on context
+  - Pattern recognition for different branch types
+  - Conflict resolution with fallback naming
+  - Interactive mode for guidance
+  - Error handling for common scenarios
 ```

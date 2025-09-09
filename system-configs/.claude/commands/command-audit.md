@@ -1,5 +1,5 @@
 ---
-description: Generate audit report for template compliance
+description: Comprehensive command optimization through wave-based orchestration
 ---
 
 # /command-audit Command
@@ -7,188 +7,242 @@ description: Generate audit report for template compliance
 ## Usage
 
 ```bash
-# Full audit of all commands
+# Comprehensive wave-based command audit
 /command-audit
 
-# Validate specific aspects
-/command-audit --frontmatter  # Focus on YAML frontmatter compliance
-/command-audit --fix          # Apply safe automatic fixes
+# Run specific validation waves
+/command-audit --wave1    # Basic validation only
+/command-audit --wave2    # Enhancement analysis only
+/command-audit --wave3    # Report generation only
+
+# Apply discovered optimizations
+/command-audit --apply-fixes
 ```
 
 ## Description
 
-Systematically validate all command files against the COMMAND_TEMPLATE.md format and quality standards.
-Check frontmatter compliance, structure, content quality, agent specifications, and markdown formatting.
-Generate comprehensive audit report with actionable remediation guidance.
+Orchestrates comprehensive command optimization through systematic wave-based analysis. Deploys specialized agent
+teams in parallel waves for validation, enhancement analysis, and optimization recommendations.
+Transforms from simple validation to complete command ecosystem optimization.
+
+## Wave-Based Orchestration Architecture
+
+### Wave 1: Basic Validation (Parallel Foundation)
+
+Deploy multiple specialist agents simultaneously for foundational analysis:
+
+**Parallel Agent Deployment:**
+
+- **code-reviewer**: Syntax validation, structure compliance, template adherence
+- **security-auditor**: Security pattern analysis, sensitive operation detection
+- **test-engineer**: Testability assessment, validation strategy evaluation
+
+**Claude Analysis Phase:** Categorize discovered issues by severity levels:
+
+- **Critical**: Breaks functionality, security vulnerabilities, template violations
+- **High**: Performance impacts, missing agent specifications, poor structure
+- **Medium**: Documentation gaps, style inconsistencies, optimization opportunities
+- **Low**: Minor formatting issues, optional improvements
+
+### Wave 2: Command Enhancement Analysis (Strategic Optimization)
+
+Deploy enhancement specialists based on Wave 1 categorization:
+
+**Parallel Agent Deployment:**
+
+- **performance-engineer**: Optimization opportunities, parallel execution patterns
+- **tech-writer**: Documentation quality, clarity improvements, user experience
+- **project-orchestrator**: Workflow optimization, agent coordination patterns
+
+**Claude Decision Phase:** Determine enhancement priorities:
+
+- **High-Impact Optimizations**: Commands with significant performance/usability gains
+- **Agent Coordination Improvements**: Better parallel execution patterns
+- **Documentation Enhancement**: Critical clarity and completeness gaps
+- **Workflow Optimization**: Cross-command integration opportunities
+
+### Wave 3: Report Generation & Implementation (Comprehensive Output)
+
+Generate actionable optimization roadmap:
+
+**Deliverables:**
+
+- **Comprehensive Audit Report**: Multi-dimensional analysis with prioritized recommendations
+- **Fix Recommendations**: Automated fixes vs. manual improvements with implementation guides
+- **Enhancement Priorities**: Strategic roadmap for command ecosystem optimization
 
 ## Expected Output
 
-Comprehensive audit report showing:
-
-### Executive Summary
+### Executive Dashboard
 
 ```text
-Commands: [total] | Template Compliant: [%] | Issues: [count] | Auto-fixed: [count]
+COMMAND OPTIMIZATION AUDIT - Wave-Based Analysis Complete
+────────────────────────────────────────────────────────────────
+
+Commands Analyzed: [total] | Critical Issues: [count] | Optimizations Found: [count]
+Security Score: [rating] | Performance Score: [rating] | Documentation Score: [rating]
+Auto-Fix Available: [count] | Manual Optimization: [count] | Enhancement Opportunities: [count]
 ```
 
-### Command Status Matrix
+### Wave Analysis Results
 
-| Command | Template | Frontmatter | Description | Agent Refs | Parallel | Markdown | Status |
-|---------|----------|-------------|-------------|------------|----------|----------|--------|
-| [Each command evaluated against all criteria] | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ | Status |
+#### Wave 1: Validation Foundation Results
 
-### Issues by Category
+**Critical Issues Detected:**
 
-#### Template Compliance Issues
+- Template compliance violations
+- Security vulnerabilities in sensitive operations
+- Broken or invalid agent references
+- Syntax errors and structural problems
 
-- Missing YAML frontmatter
-- Missing required 'description' field
-- Invalid argument-hint format
-- Description exceeds 60 character limit
+**Severity Classification:**
+| Command | Critical | High | Medium | Low | Test Coverage | Security Score |
+|---------|----------|------|--------|-----|---------------|----------------|
+| /commit | 0 | 1 | 2 | 3 | 85% | 9/10 |
+| /push | 0 | 0 | 1 | 2 | 90% | 10/10 |
+| /pr | 0 | 1 | 3 | 5 | 75% | 8/10 |
 
-#### Content Quality Issues
+#### Wave 2: Enhancement Analysis Results
 
-- Unclear command purpose
-- Missing context or guidelines
-- Vague expected output descriptions
+**Optimization Opportunities:**
 
-#### Agent Specification Issues
+- Parallel execution improvements
+- Agent coordination enhancements
+- Performance bottleneck elimination
+- Documentation completeness gaps
 
-- Missing agent specifications for complex tasks
-- Invalid agent references (not in 28 production agents)
-- Missing security-auditor for sensitive operations
-- Inappropriate agent selection
+**Enhancement Priority Matrix:**
+| Command | Impact | Complexity | ROI Score | Optimization Type | Recommended Agents |
+|---------|--------|------------|-----------|-------------------|-------------------|
+| /commit | High | Medium | 8.5 | Parallel execution | code-reviewer, test-engineer |
+| /push | High | Low | 9.0 | Quality gates | devops, security-auditor |
+| /pr | Medium | High | 6.5 | Content generation | tech-writer, business-analyst |
 
-#### Auto-Fix Capabilities
+#### Wave 3: Implementation Roadmap
+
+**Immediate Actions (Auto-Fix):**
 
 ```bash
-# Add missing language tags to common patterns
-sed -i 's/```$/```bash/g' system-configs/.claude/commands/*.md
-sed -i 's/```\n#/```bash\n#/g' system-configs/.claude/commands/*.md
-
-# Standardize frontmatter structure
-# Add missing frontmatter delimiters where needed
+# High-confidence automatic improvements
+./scripts/auto-fix-commands.sh --syntax --formatting --references
 ```
+
+**Manual Optimization Tasks:**
+
+1. **High-Priority Enhancements** (Immediate impact)
+2. **Agent Coordination Improvements** (Parallel execution patterns)
+3. **Documentation Quality** (User experience improvements)
+4. **Strategic Optimizations** (Long-term ecosystem health)
 
 ## Behavior
 
-### Validation Framework
+### Wave 1: Basic Validation Execution
 
-#### Core Template Validation (Required)
-
-1. **Frontmatter Structure**: Required YAML frontmatter with `description` field
-2. **Optional Fields**: Proper `argument-hint` formatting when present
-3. **Content Structure**: Clear command purpose, context, and expected output
-4. **Markdown Quality**: Code blocks with language tags, proper formatting
-5. **Length Management**: Commands under 400 lines with justified complexity
-6. **Agent References**: Valid references to the 28 production agents
-7. **Parallel Execution**: Commands leverage parallel execution where applicable
-
-#### Template Compliance Check
+**Parallel Agent Coordination:**
 
 ```bash
-# Validate frontmatter structure for all commands
-for cmd in system-configs/.claude/commands/*.md; do
-  # Check: YAML frontmatter exists with --- delimiters
-  # Verify: Required 'description' field present
-  # Validate: Optional 'argument-hint' field format if present
-  # Ensure: Description under 60 characters for autocomplete
-done
+# Deploy code-reviewer instances for comprehensive syntax validation
+TASK: code-reviewer-syntax "Validate command syntax, structure, template compliance"
+TASK: code-reviewer-agents "Verify agent references against 28 production agents"
+TASK: code-reviewer-format "Check markdown quality, code blocks, formatting"
+
+# Deploy security-auditor for security pattern analysis
+TASK: security-auditor-patterns "Analyze security-sensitive operations"
+TASK: security-auditor-refs "Validate security agent usage in critical commands"
+
+# Deploy test-engineer for testability assessment
+TASK: test-engineer-coverage "Assess command testability and validation strategies"
+TASK: test-engineer-integration "Evaluate integration test requirements"
 ```
 
-#### Agent Specification Validation (28 Production Agents)
+**Issue Categorization Logic:**
+
+- **Critical**: Template violations, security gaps, broken references
+- **High**: Missing parallelization, performance impacts, structural issues
+- **Medium**: Documentation gaps, style inconsistencies, minor optimizations
+- **Low**: Formatting preferences, optional enhancements
+
+### Wave 2: Enhancement Analysis Execution
+
+**Strategic Agent Deployment:**
 
 ```bash
-VALID_AGENTS=("backend-engineer" "frontend-engineer" "fullstack-lead" "mobile-engineer"
-              "data-engineer" "ml-engineer" "test-engineer" "code-reviewer"
-              "debugger" "security-auditor" "performance-engineer" "principal-architect"
-              "api-architect" "frontend-architect" "ui-designer" "mobile-ui"
-              "ux-researcher" "codebase-analyst" "researcher" "business-analyst"
-              "product-strategist" "devops" "platform-engineer" "cloud-architect"
-              "database-admin" "tech-writer" "project-orchestrator" "accessibility-auditor")
+# Deploy performance-engineer for optimization analysis
+TASK: performance-engineer-parallel "Identify parallelization opportunities"
+TASK: performance-engineer-bottlenecks "Detect performance bottlenecks"
 
-# Validate agent usage patterns
-for cmd in system-configs/.claude/commands/*.md; do
-  # Check: Agent names match 28 production agents
-  # Verify: Security-critical operations include security-auditor
-  # Ensure: Complex tasks specify multiple specialists
-  # Validate: No references to deprecated agents
-done
+# Deploy tech-writer for documentation enhancement
+TASK: tech-writer-clarity "Analyze documentation clarity and completeness"
+TASK: tech-writer-examples "Evaluate example quality and coverage"
+
+# Deploy project-orchestrator for workflow optimization
+TASK: project-orchestrator-coordination "Optimize agent coordination patterns"
+TASK: project-orchestrator-workflows "Enhance cross-command workflows"
 ```
 
-#### Frontmatter Validation Process
+**Enhancement Priority Calculation:**
+
+- **Impact Score** (1-10): User value, performance improvement, security enhancement
+- **Complexity Score** (1-10): Implementation difficulty, risk assessment
+- **ROI Score**: Impact/Complexity ratio for optimization prioritization
+
+### Wave 3: Report Generation & Recommendations
+
+**Comprehensive Analysis Integration:**
 
 ```bash
-# Check for proper YAML frontmatter structure
-grep -l "^---$" system-configs/.claude/commands/*.md | while read file; do
-  # Verify frontmatter contains required 'description' field
-  if ! grep -q "^description:" "$file"; then
-    echo "Missing required 'description' field: $file"
-  fi
-
-  # Check description length for autocomplete compatibility
-  desc="$(awk '/^description:/{sub(/^description:[[:space:]]*/, ""); print; exit}' "$file")"
-  desc_length=${#desc}
-  if [ "$desc_length" -gt 60 ]; then
-    echo "Description too long (>60 chars): $file"
-  fi
-
-  # Validate argument-hint format if present
-  if grep -q "^argument-hint:" "$file"; then
-    if ! grep -q "argument-hint:.*\[.*\]" "$file"; then
-      echo "Invalid argument-hint format (should use [brackets]): $file"
-    fi
-  fi
-done
+# Consolidate findings from all waves
+CONSOLIDATION: Merge validation results, enhancement analysis, priority rankings
+REPORTING: Generate executive summary, detailed findings, implementation roadmap
+RECOMMENDATIONS: Create actionable fix scripts, manual optimization guides
 ```
 
-### Validation Categories
+**Implementation Strategy:**
 
-#### Git Workflow Commands
-
-Required agents: tech-writer (messages), code-reviewer (validation), security-auditor (safety)
-Parallelization: Concurrent validation checks before operations
-
-#### Repository Analysis Commands
-
-Required agents: codebase-analyst, test-engineer, debugger
-Parallelization: Multiple domain analysts, parallel test execution
-
-#### System Management Commands
-
-Required agents: platform-engineer (setup), devops (CI/CD), security-auditor (vulnerabilities)
-Parallelization: Concurrent file validation, simultaneous package scanning
-
-#### Quality Assurance Commands
-
-Required agents: code-reviewer, security-auditor, performance-engineer
-Parallelization: Multiple reviewer agents simultaneously
-
-#### Development Support Commands
-
-Required agents: product-strategist (planning), tech-writer (docs), project-orchestrator (coordination)
-Parallelization: Concurrent phase execution, multiple agents per workflow
+1. **Auto-Fix Deployment**: Safe, high-confidence improvements
+2. **Manual Enhancement Guide**: Step-by-step optimization instructions
+3. **Strategic Roadmap**: Long-term command ecosystem evolution
 
 ### Success Criteria Verification
 
-Deploy execution-evaluator to verify:
+Deploy execution-evaluator to verify comprehensive optimization:
 
-- ✅ **Template Compliance** - All commands follow COMMAND_TEMPLATE.md format
-- ✅ **Frontmatter Valid** - Required description field present, proper YAML syntax
-- ✅ **Content Quality** - Clear purpose, context, and expected output
-- ✅ **Agent Specifications** - Appropriate agents specified for complex operations
-- ✅ **Parallel Execution** - Commands leverage parallelization where applicable
-- ✅ **Markdown Quality** - Proper formatting and language tags
-- ✅ **Length Management** - Commands under 400 lines or complexity justified
-- ✅ **Issues Identified** - All compliance gaps documented with remediation steps
-- ✅ **Auto-Fixes Applied** - Safe formatting improvements implemented
-- ✅ **Manual Actions** - Human-review items clearly specified
+- ✅ **Wave 1 Complete** - All validation agents deployed, issues categorized by severity
+- ✅ **Wave 2 Complete** - Enhancement analysis finished, priorities established
+- ✅ **Wave 3 Complete** - Comprehensive report generated with actionable recommendations
+- ✅ **Critical Issues Identified** - All template violations, security gaps documented
+- ✅ **Optimization Opportunities** - Performance, parallelization, documentation improvements mapped
+- ✅ **Implementation Roadmap** - Clear priorities with auto-fix and manual optimization paths
+- ✅ **Agent Coordination** - Parallel execution patterns optimized across command ecosystem
+- ✅ **Security Enhanced** - All security-sensitive operations properly validated
+- ✅ **Performance Optimized** - Parallel execution and bottleneck elimination opportunities identified
+- ✅ **Documentation Improved** - Clarity, completeness, and user experience enhancements prioritized
 
-Commands must follow the standardized template in `docs/commands/COMMAND_TEMPLATE.md` with proper
-frontmatter containing required `description` field and optional `argument-hint` field. All commands
-should specify appropriate specialized agents, leverage parallel execution where applicable, and
-maintain high-quality Markdown formatting.
+## Advanced Orchestration Features
 
-This comprehensive audit ensures all commands maintain consistent quality, follow the standardized
-template format, and provide clear value to users through proper agent coordination and parallel
-execution patterns.
+### Dynamic Agent Scaling
+
+Based on repository size and complexity:
+
+- **Small repos (<20 commands)**: 3-5 agents per wave
+- **Medium repos (20-50 commands)**: 5-10 agents per wave
+- **Large repos (50+ commands)**: 10-20 agents per wave
+
+### Intelligent Issue Correlation
+
+Cross-reference issues across commands to identify:
+
+- **Systematic Problems**: Template violations across multiple commands
+- **Security Patterns**: Consistent security gaps requiring global fixes
+- **Optimization Opportunities**: Common parallelization improvements
+
+### Progressive Enhancement
+
+Each wave builds on previous findings:
+
+- **Wave 1 → Wave 2**: Severity categorization drives enhancement focus
+- **Wave 2 → Wave 3**: Priority analysis determines implementation order
+- **Iterative Improvement**: Continuous optimization based on usage patterns
+
+This comprehensive wave-based orchestration transforms simple command validation into strategic command ecosystem
+optimization, ensuring maximum parallel efficiency, security compliance, and user experience enhancement.
