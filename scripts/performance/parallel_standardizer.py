@@ -5,14 +5,14 @@ High-Performance Parallel Agent Standardization System
 
 Optimizes agent standardization through:
 - Concurrent file processing with worker pools
-- Intelligent change detection to avoid redundant operations  
+- Intelligent change detection to avoid redundant operations
 - Memory-efficient streaming for large operations
 - Batch processing with rollback capabilities
 - Advanced caching and deduplication
 
 Performance improvements:
 - 70% faster processing through parallel execution
-- 60% memory reduction via streaming operations  
+- 60% memory reduction via streaming operations
 - 80% fewer disk operations through change detection
 - Atomic operations with rollback for safety
 
@@ -43,7 +43,7 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-@dataclass 
+@dataclass
 class AgentProcessingResult:
     """Result of agent processing operation."""
     agent_name: str
@@ -67,12 +67,12 @@ class BatchOperation:
 
 class ChangeDetector:
     """Intelligent change detection system."""
-    
+
     def __init__(self, cache_dir: Path):
         self.cache_file = cache_dir / 'change_cache.json'
         self.file_hashes: Dict[str, str] = {}
         self.load_cache()
-    
+
     def load_cache(self):
         """Load change detection cache."""
         if self.cache_file.exists():
@@ -83,7 +83,7 @@ class ChangeDetector:
             except Exception as e:
                 logger.warning(f"Failed to load change cache: {e}")
                 self.file_hashes = {}
-    
+
     def save_cache(self):
         """Save change detection cache."""
         try:
@@ -92,7 +92,7 @@ class ChangeDetector:
                 json.dump(self.file_hashes, f, indent=2)
         except Exception as e:
             logger.error(f"Failed to save change cache: {e}")
-    
+
     def get_file_hash(self, file_path: Path) -> str:
         """Calculate file hash efficiently."""
         hasher = hashlib.md5()
@@ -104,28 +104,28 @@ class ChangeDetector:
             return hasher.hexdigest()
         except Exception:
             return ""
-    
+
     def has_changed(self, file_path: Path) -> bool:
         """Check if file has changed since last processing."""
         if not file_path.exists():
             return False
-            
+
         file_key = str(file_path)
         current_hash = self.get_file_hash(file_path)
-        
+
         if file_key not in self.file_hashes:
             # New file
             self.file_hashes[file_key] = current_hash
             return True
-        
+
         if self.file_hashes[file_key] != current_hash:
             # File changed
             self.file_hashes[file_key] = current_hash
             return True
-        
+
         # No change detected
         return False
-    
+
     def mark_processed(self, file_path: Path):
         """Mark file as processed with current hash."""
         file_key = str(file_path)
@@ -133,7 +133,7 @@ class ChangeDetector:
 
 class ParallelAgentStandardizer:
     """High-performance parallel agent standardization system."""
-    
+
     # Define the final 26 agents with their categories and colors
     FINAL_AGENTS = {
         # Development & Implementation (6 agents)
@@ -143,42 +143,42 @@ class ParallelAgentStandardizer:
         'mobile-engineer': {'color': 'blue', 'category': 'development', 'level': 'senior'},
         'data-engineer': {'color': 'blue', 'category': 'development', 'level': 'senior'},
         'ml-engineer': {'color': 'blue', 'category': 'development', 'level': 'senior'},
-        
+
         # Quality & Testing (5 agents)
         'test-engineer': {'color': 'green', 'category': 'quality', 'level': 'senior'},
         'code-reviewer': {'color': 'green', 'category': 'quality', 'level': 'senior'},
         'debugger': {'color': 'orange', 'category': 'infrastructure', 'level': 'specialist'},
         'security-auditor': {'color': 'green', 'category': 'quality', 'level': 'specialist'},
         'performance-engineer': {'color': 'green', 'category': 'quality', 'level': 'specialist'},
-        
+
         # Architecture (2 agents)
         'principal-architect': {'color': 'purple', 'category': 'architecture', 'level': 'principal'},
         'api-architect': {'color': 'purple', 'category': 'architecture', 'level': 'senior'},
-        
+
         # Design (2 agents)
         'ui-designer': {'color': 'pink', 'category': 'design', 'level': 'specialist'},
         'mobile-ui': {'color': 'pink', 'category': 'design', 'level': 'specialist'},
-        
+
         # Analysis & Research (3 agents)
         'codebase-analyst': {'color': 'purple', 'category': 'analysis', 'level': 'specialist'},
         'researcher': {'color': 'purple', 'category': 'analysis', 'level': 'specialist'},
         'business-analyst': {'color': 'purple', 'category': 'analysis', 'level': 'specialist'},
-        
+
         # Infrastructure & Operations (3 agents)
         'devops': {'color': 'yellow', 'category': 'infrastructure', 'level': 'senior'},
         'platform-engineer': {'color': 'yellow', 'category': 'infrastructure', 'level': 'senior'},
         'cloud-architect': {'color': 'yellow', 'category': 'infrastructure', 'level': 'senior'},
-        
+
         # Documentation & Support (3 agents)
         'tech-writer': {'color': 'orange', 'category': 'documentation', 'level': 'specialist'},
         'project-orchestrator': {'color': 'orange', 'category': 'documentation', 'level': 'senior'},
         'product-strategist': {'color': 'orange', 'category': 'documentation', 'level': 'senior'},
-        
+
         # Specialized Support (2 agents)
         'accessibility-auditor': {'color': 'white', 'category': 'specialized', 'level': 'specialist'},
         'database-admin': {'color': 'white', 'category': 'specialized', 'level': 'specialist'},
     }
-    
+
     # Agents to be removed or consolidated
     DEPRECATED_AGENTS = {
         'qa-tester': 'test-engineer',
@@ -193,7 +193,7 @@ class ParallelAgentStandardizer:
         'arch-reviewer': None,  # Remove
         'tech-lead': None,  # Remove
     }
-    
+
     def __init__(self, cache_dir: Path, max_workers: int = 8):
         self.change_detector = ChangeDetector(cache_dir)
         self.max_workers = max_workers
@@ -205,12 +205,12 @@ class ParallelAgentStandardizer:
             'errors': 0,
             'total_time': 0
         }
-        
+
         # Pre-compile templates for performance
         self.agent_descriptions = self._load_agent_descriptions()
         self.domain_expertise_map = self._load_domain_expertise()
         self.compiled_templates = self._compile_yaml_templates()
-    
+
     def _load_agent_descriptions(self) -> Dict[str, str]:
         """Pre-load agent descriptions for performance."""
         return {
@@ -241,7 +241,7 @@ class ParallelAgentStandardizer:
             'accessibility-auditor': 'Accessibility testing and WCAG compliance specialist',
             'database-admin': 'Database security, optimization, and administration expert'
         }
-    
+
     def _load_domain_expertise(self) -> Dict[str, List[str]]:
         """Pre-load domain expertise mappings."""
         return {
@@ -272,11 +272,11 @@ class ParallelAgentStandardizer:
             'accessibility-auditor': ['accessibility_testing', 'wcag_compliance', 'inclusive_design'],
             'database-admin': ['database_administration', 'database_security', 'database_optimization']
         }
-    
+
     def _compile_yaml_templates(self) -> Dict[str, str]:
         """Pre-compile YAML templates for each category."""
         templates = {}
-        
+
         for category in ['development', 'quality', 'architecture', 'analysis', 'infrastructure', 'documentation', 'specialized', 'design']:
             # Define allowed tools based on category
             if category == 'development':
@@ -307,26 +307,26 @@ class ParallelAgentStandardizer:
     read: "Accessing relevant information"
     write: "Creating documentation and reports"
     # NO Task tool - Claude handles all orchestration"""
-            
+
             # Forbidden tools
             forbidden = """  forbidden:
     task: "Orchestration restricted to Claude (no direct Task tool access)\""""
-            
+
             if category != 'infrastructure':
                 forbidden += '\n    deploy: "Production deployment restricted to infrastructure agents"'
-            
+
             templates[category] = f"""tools:
 {tools}
 {forbidden}"""
-        
+
         return templates
-    
+
     async def extract_content_sections(self, file_path: Path) -> Tuple[str, str]:
         """Extract YAML and markdown content efficiently."""
         try:
             async with aiofiles.open(file_path, 'r') as f:
                 content = await f.read()
-            
+
             match = re.match(r'^---\n(.*?)\n---\n(.*)', content, re.DOTALL)
             if match:
                 return match.group(1), match.group(2)
@@ -334,13 +334,13 @@ class ParallelAgentStandardizer:
         except Exception as e:
             logger.error(f"Failed to read {file_path}: {e}")
             return '', ''
-    
+
     def create_standardized_yaml(self, agent_name: str, agent_info: Dict, existing_yaml: str = '') -> str:
         """Create optimized standardized YAML with templates."""
         # Use pre-loaded descriptions and expertise
         description = self.agent_descriptions.get(agent_name, f'Expert {agent_name} agent')
         domain_expertise = self.domain_expertise_map.get(agent_name, ['general_expertise'])
-        
+
         # Build YAML efficiently using templates
         yaml_parts = [
             "---",
@@ -351,16 +351,16 @@ class ParallelAgentStandardizer:
             "",
             "domain_expertise:"
         ]
-        
+
         # Add domain expertise
         yaml_parts.extend(f"  - {expertise}" for expertise in domain_expertise)
-        
+
         # Add tools using pre-compiled templates
         yaml_parts.extend([
             "",
             self.compiled_templates[agent_info['category']]
         ])
-        
+
         # Add coordination protocols efficiently
         yaml_parts.extend([
             "",
@@ -381,29 +381,29 @@ class ParallelAgentStandardizer:
             f"    approach: \"Systematic approach using {agent_info['category']} expertise\"",
             "---"
         ])
-        
+
         return '\n'.join(yaml_parts)
-    
+
     async def process_agent_async(self, agent_name: str, agents_dir: Path, deprecated_dir: Path) -> AgentProcessingResult:
         """Process single agent with async operations."""
         start_time = time.time()
         file_path = agents_dir / f"{agent_name}.md"
-        
+
         # Get file size before processing
         file_size_before = file_path.stat().st_size if file_path.exists() else 0
-        
+
         try:
             # Check if this is a deprecated agent
             if agent_name in self.DEPRECATED_AGENTS:
                 return await self._handle_deprecated_agent(agent_name, file_path, deprecated_dir, start_time)
-            
+
             # Check if this is a final agent
             if agent_name not in self.FINAL_AGENTS:
                 return await self._handle_unknown_agent(agent_name, file_path, deprecated_dir, start_time)
-            
+
             # Process final agent
             agent_info = self.FINAL_AGENTS[agent_name]
-            
+
             if file_path.exists():
                 # Check for changes first
                 if not self.change_detector.has_changed(file_path):
@@ -417,13 +417,13 @@ class ParallelAgentStandardizer:
                         changes_detected=False,
                         cached=True
                     )
-                
+
                 # Update existing file
                 return await self._update_existing_agent(agent_name, agent_info, file_path, start_time, file_size_before)
             else:
                 # Create new agent
                 return await self._create_new_agent(agent_name, agent_info, file_path, start_time)
-        
+
         except Exception as e:
             logger.error(f"Error processing {agent_name}: {e}")
             return AgentProcessingResult(
@@ -435,12 +435,12 @@ class ParallelAgentStandardizer:
                 changes_detected=False,
                 error_message=str(e)
             )
-    
+
     async def _handle_deprecated_agent(self, agent_name: str, file_path: Path, deprecated_dir: Path, start_time: float) -> AgentProcessingResult:
         """Handle deprecated agent efficiently."""
         target = self.DEPRECATED_AGENTS[agent_name]
         file_size = file_path.stat().st_size if file_path.exists() else 0
-        
+
         if target is None and file_path.exists():
             # Move to deprecated
             await asyncio.get_event_loop().run_in_executor(
@@ -468,7 +468,7 @@ class ParallelAgentStandardizer:
                 file_size_after=0,
                 changes_detected=True
             )
-        
+
         return AgentProcessingResult(
             agent_name=agent_name,
             operation='skipped',
@@ -477,16 +477,16 @@ class ParallelAgentStandardizer:
             file_size_after=file_size,
             changes_detected=False
         )
-    
+
     async def _handle_unknown_agent(self, agent_name: str, file_path: Path, deprecated_dir: Path, start_time: float) -> AgentProcessingResult:
         """Handle unknown agent."""
         file_size = file_path.stat().st_size if file_path.exists() else 0
-        
+
         if file_path.exists():
             await asyncio.get_event_loop().run_in_executor(
                 None, shutil.move, str(file_path), str(deprecated_dir / f"{agent_name}.md")
             )
-        
+
         return AgentProcessingResult(
             agent_name=agent_name,
             operation='deprecated',
@@ -495,22 +495,22 @@ class ParallelAgentStandardizer:
             file_size_after=0,
             changes_detected=True
         )
-    
+
     async def _update_existing_agent(self, agent_name: str, agent_info: Dict, file_path: Path, start_time: float, file_size_before: int) -> AgentProcessingResult:
         """Update existing agent file."""
         yaml_section, markdown_content = await self.extract_content_sections(file_path)
         new_yaml = self.create_standardized_yaml(agent_name, agent_info, yaml_section)
-        
+
         # Write updated content
         new_content = f"{new_yaml}\n{markdown_content}"
         async with aiofiles.open(file_path, 'w') as f:
             await f.write(new_content)
-        
+
         # Mark as processed
         self.change_detector.mark_processed(file_path)
-        
+
         file_size_after = len(new_content)
-        
+
         return AgentProcessingResult(
             agent_name=agent_name,
             operation='updated',
@@ -519,11 +519,11 @@ class ParallelAgentStandardizer:
             file_size_after=file_size_after,
             changes_detected=True
         )
-    
+
     async def _create_new_agent(self, agent_name: str, agent_info: Dict, file_path: Path, start_time: float) -> AgentProcessingResult:
         """Create new agent file."""
         new_yaml = self.create_standardized_yaml(agent_name, agent_info)
-        
+
         # Basic template content
         markdown_content = f"""
 # {agent_name.replace('-', ' ').title()}
@@ -562,16 +562,16 @@ You are an expert {agent_name.replace('-', ' ')} specializing in {agent_info['ca
 """
 
         new_content = f"{new_yaml}\n{markdown_content}"
-        
+
         # Write new file
         async with aiofiles.open(file_path, 'w') as f:
             await f.write(new_content)
-        
+
         # Mark as processed
         self.change_detector.mark_processed(file_path)
-        
+
         file_size_after = len(new_content)
-        
+
         return AgentProcessingResult(
             agent_name=agent_name,
             operation='created',
@@ -580,31 +580,31 @@ You are an expert {agent_name.replace('-', ' ')} specializing in {agent_info['ca
             file_size_after=file_size_after,
             changes_detected=True
         )
-    
+
     async def standardize_agents_parallel(self, agents_dir: Path, deprecated_dir: Path) -> List[AgentProcessingResult]:
         """Standardize all agents with maximum parallelism."""
         # Create deprecated directory
         deprecated_dir.mkdir(parents=True, exist_ok=True)
-        
+
         # Get all existing agent files
         existing_agents = [f.stem for f in agents_dir.glob('*.md') if f.name != 'README.md']
-        
+
         # Add missing final agents to processing list
         all_agents_to_process = set(existing_agents) | set(self.FINAL_AGENTS.keys())
-        
+
         logger.info(f"Processing {len(all_agents_to_process)} agents with {self.max_workers} workers...")
-        
+
         # Create processing tasks
         tasks = [
             self.process_agent_async(agent_name, agents_dir, deprecated_dir)
             for agent_name in sorted(all_agents_to_process)
         ]
-        
+
         # Execute all tasks concurrently
         start_time = time.time()
         results = await asyncio.gather(*tasks, return_exceptions=True)
         total_time = time.time() - start_time
-        
+
         # Process results
         processing_results = []
         for i, result in enumerate(results):
@@ -621,18 +621,18 @@ You are an expert {agent_name.replace('-', ' ')} specializing in {agent_info['ca
                 ))
             else:
                 processing_results.append(result)
-        
+
         # Update stats
         self.processing_stats['total_time'] = total_time
         self.processing_stats['files_processed'] = len([r for r in processing_results if r.operation not in ['error', 'skipped']])
         self.processing_stats['files_skipped'] = len([r for r in processing_results if r.operation == 'skipped'])
         self.processing_stats['errors'] = len([r for r in processing_results if r.operation == 'error'])
-        
+
         logger.info(f"Processing completed in {total_time:.2f}s")
         logger.info(f"Cache hit rate: {self.processing_stats['cache_hits']}/{len(processing_results)}")
-        
+
         return processing_results
-    
+
     def cleanup(self):
         """Cleanup resources and save caches."""
         self.change_detector.save_cache()
@@ -645,26 +645,26 @@ async def main():
     agents_dir = project_root / 'system-configs' / '.claude' / 'agents'
     deprecated_dir = project_root / 'system-configs' / '.claude' / 'deprecated' / 'agents'
     cache_dir = project_root / '.cache'
-    
+
     if not agents_dir.exists():
         print(f"Error: Agents directory not found at {agents_dir}")
         sys.exit(1)
-    
+
     # Initialize standardizer
     standardizer = ParallelAgentStandardizer(cache_dir, max_workers=8)
-    
+
     try:
         print("=== High-Performance Agent Standardization Process ===\n")
-        
+
         # Process all agents
         results = await standardizer.standardize_agents_parallel(agents_dir, deprecated_dir)
-        
+
         # Generate comprehensive report
         await generate_standardization_report(results, standardizer.processing_stats, project_root)
-        
+
         # Print summary
         print_processing_summary(results, standardizer.processing_stats)
-        
+
     finally:
         standardizer.cleanup()
 
@@ -674,13 +674,13 @@ async def generate_standardization_report(results: List[AgentProcessingResult], 
     operations = {'created': [], 'updated': [], 'deprecated': [], 'skipped': [], 'error': []}
     for result in results:
         operations[result.operation].append(result)
-    
+
     # Calculate performance metrics
     total_size_before = sum(r.file_size_before for r in results)
     total_size_after = sum(r.file_size_after for r in results)
     total_processing_time = sum(r.processing_time for r in results)
     avg_processing_time = total_processing_time / len(results) if results else 0
-    
+
     report_content = f"""# High-Performance Agent Standardization Report
 
 Generated: {datetime.now().isoformat()}
@@ -698,31 +698,31 @@ Generated: {datetime.now().isoformat()}
 
 ### ✅ Created Agents ({len(operations['created'])})
 """
-    
+
     for result in operations['created']:
         report_content += f"- **{result.agent_name}** - {result.processing_time:.3f}s - {result.file_size_after:,} bytes\n"
-    
+
     if operations['updated']:
         report_content += f"\n### 🔄 Updated Agents ({len(operations['updated'])})\n"
         for result in operations['updated']:
             report_content += f"- **{result.agent_name}** - {result.processing_time:.3f}s - {result.file_size_after:,} bytes\n"
-    
+
     if operations['deprecated']:
         report_content += f"\n### 🗑️ Deprecated Agents ({len(operations['deprecated'])})\n"
         for result in operations['deprecated']:
             report_content += f"- **{result.agent_name}** - Moved to deprecated\n"
-    
+
     if operations['skipped']:
         report_content += f"\n### ⏭️ Skipped (No Changes) ({len(operations['skipped'])})\n"
         for result in operations['skipped']:
             cache_indicator = " (cached)" if result.cached else ""
             report_content += f"- **{result.agent_name}**{cache_indicator}\n"
-    
+
     if operations['error']:
         report_content += f"\n### ❌ Errors ({len(operations['error'])})\n"
         for result in operations['error']:
             report_content += f"- **{result.agent_name}**: {result.error_message}\n"
-    
+
     # Performance optimizations achieved
     report_content += f"""
 
@@ -753,7 +753,7 @@ Generated: {datetime.now().isoformat()}
 ### 🔵 Development & Implementation (6)
 - backend-engineer, frontend-engineer, fullstack-lead, mobile-engineer, data-engineer, ml-engineer
 
-### 🟢 Quality & Testing (5) 
+### 🟢 Quality & Testing (5)
 - test-engineer, code-reviewer, debugger, security-auditor, performance-engineer
 
 ### 🟣 Architecture (2)
@@ -782,14 +782,14 @@ Generated: {datetime.now().isoformat()}
 - ✅ Security compliance verified
 - ✅ Performance optimizations maintain security posture
 """
-    
+
     # Save report to .tmp directory
     reports_dir = project_root / '.tmp' / 'reports'
     reports_dir.mkdir(parents=True, exist_ok=True)
     report_path = reports_dir / 'performance-standardization-report.md'
     async with aiofiles.open(report_path, 'w') as f:
         await f.write(report_content)
-    
+
     print(f"\n📊 Detailed report saved to: {report_path}")
 
 def print_processing_summary(results: List[AgentProcessingResult], stats: Dict):
@@ -797,13 +797,13 @@ def print_processing_summary(results: List[AgentProcessingResult], stats: Dict):
     operations = {'created': 0, 'updated': 0, 'deprecated': 0, 'skipped': 0, 'error': 0}
     for result in results:
         operations[result.operation] += 1
-    
+
     print(f"\n{'='*60}")
-    print("PROCESSING SUMMARY")  
+    print("PROCESSING SUMMARY")
     print(f"{'='*60}")
     print(f"Total agents: {len(results)}")
     print(f"Created: {operations['created']}")
-    print(f"Updated: {operations['updated']}")  
+    print(f"Updated: {operations['updated']}")
     print(f"Deprecated: {operations['deprecated']}")
     print(f"Skipped (cached): {operations['skipped']}")
     print(f"Errors: {operations['error']}")

@@ -22,7 +22,7 @@ paths:
       description: |
         Orchestrates development workflows by running multiple commands in sequence.
         Automates commit, push, PR creation, and quality gates with progress tracking.
-        
+
         Supported workflows:
         - **Full**: /review → /test → /commit → /push → /pr (default)
         - **Basic**: /review --quick → /commit → /push

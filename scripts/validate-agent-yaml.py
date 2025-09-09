@@ -103,7 +103,7 @@ def validate_agent_file(file_path):
     # Skip non-agent files
     if Path(file_path).name in NON_AGENT_FILES:
         return agent_name, []
-    
+
     # Read full file content
     with open(file_path, 'r') as f:
         full_content = f.read()
@@ -137,25 +137,25 @@ def validate_agent_file(file_path):
             issues.append("Description should include trigger phrase (MUST BE USED, Use PROACTIVELY, Expert, Specializes)")
 
     # Check for deprecated fields that should not exist in new format
-    deprecated_fields = ['specialization_level:', 'domain_expertise:', 'coordination_protocols:', 
+    deprecated_fields = ['specialization_level:', 'domain_expertise:', 'coordination_protocols:',
                         'knowledge_base:', 'escalation_path:']
     for field in deprecated_fields:
         if field in yaml_section:
             issues.append(f"Contains deprecated field: {field} (not in AGENT_TEMPLATE.md format)")
-    
+
     # Check file length (should be ~46 lines as per AGENT_TEMPLATE.md)
     if line_count < 40:
         issues.append(f"File too short ({line_count} lines, expected ~46 per AGENT_TEMPLATE.md)")
     elif line_count > 60:
         issues.append(f"File too long ({line_count} lines, expected ~46 per AGENT_TEMPLATE.md)")
-    
+
     # Check for required markdown sections as per AGENT_TEMPLATE.md
-    required_sections = ['## Identity', '## Core Capabilities', '## When to Engage', 
+    required_sections = ['## Identity', '## Core Capabilities', '## When to Engage',
                         '## When NOT to Engage', '## Coordination', '## SYSTEM BOUNDARY']
     for section in required_sections:
         if section not in full_content:
             issues.append(f"Missing required section: {section}")
-    
+
     # Check for SYSTEM BOUNDARY protection
     if 'Only Claude has orchestration authority' not in full_content:
         issues.append("Missing SYSTEM BOUNDARY protection statement")
@@ -241,10 +241,10 @@ def main():
     if '--legacy' in sys.argv:
         print("Running in legacy compatibility mode...")
         return legacy_main()
-    
+
     # Use high-performance async version
     print("Using high-performance concurrent validation...")
-    
+
     # Import and run optimized validator
     sys.path.append(str(Path(__file__).parent / 'performance'))
     try:

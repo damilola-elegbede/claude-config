@@ -196,7 +196,7 @@ if [ -d "$ORIGINAL_DIR/.git" ]; then
     else
         echo -e "${GREEN}✓${NC} Repository is clean"
     fi
-    
+
     # Check remote is configured
     if git remote -v | grep -q "origin"; then
         echo -e "${GREEN}✓${NC} Git remote configured"

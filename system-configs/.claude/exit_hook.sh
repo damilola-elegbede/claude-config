@@ -96,21 +96,21 @@ log_event() {
 compare_versions() {
     local v1="$1"
     local v2="$2"
-    
+
     IFS='.' read -r -a v1_parts <<< "$v1"
     IFS='.' read -r -a v2_parts <<< "$v2"
-    
+
     for i in {0..2}; do
         v1_part="${v1_parts[i]:-0}"
         v2_part="${v2_parts[i]:-0}"
-        
+
         if (( v1_part > v2_part )); then
             return 0  # v1 is newer
         elif (( v1_part < v2_part )); then
             return 2  # v1 is older
         fi
     done
-    
+
     return 1  # versions are equal
 }
 
@@ -118,7 +118,7 @@ compare_versions() {
 if [[ -f "$terminal_version_file" ]]; then
     # Read current content
     stored_content=$(cat "$terminal_version_file" 2>/dev/null || echo "")
-    
+
     # Parse VERSION:FLAG format
     if [[ "$stored_content" =~ ^([^:]+):([01])$ ]]; then
         stored_version="${BASH_REMATCH[1]}"
@@ -126,11 +126,11 @@ if [[ -f "$terminal_version_file" ]]; then
         # Old format or corrupted - treat as version only
         stored_version="$stored_content"
     fi
-    
+
     # Compare versions
     compare_versions "$semantic_version" "$stored_version"
     comparison_result=$?
-    
+
     if [[ $comparison_result -eq 0 ]]; then
         # Current version is newer - write NEW_VERSION:1
         tmp_file="$(mktemp "$terminal_versions_dir/.tmp.XXXXXX" 2>/dev/null || printf '%s' "$terminal_versions_dir/.tmp.$$")"

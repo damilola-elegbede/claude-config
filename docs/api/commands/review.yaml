@@ -23,7 +23,7 @@ paths:
         Multi-agent code review with comprehensive documentation analysis for context,
         orchestrating specialized agents for security, performance, testing, and
         accessibility validation.
-        
+
         Review modes:
         - **Default**: Review changed files only (fast feedback)
         - **Full**: Review entire codebase (comprehensive analysis)

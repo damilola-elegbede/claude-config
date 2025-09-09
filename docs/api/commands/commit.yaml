@@ -22,7 +22,7 @@ paths:
       description: |
         Creates a git commit following Claude's standards with proper formatting,
         co-authorship attribution, automated code review, and remediation.
-        
+
         Process includes:
         1. Repository status analysis
         2. Enhanced code review using specialized agents

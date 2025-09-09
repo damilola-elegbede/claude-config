@@ -171,7 +171,7 @@ jobs:
 
         for attempt in $(seq 1 $max_attempts); do
           echo "🔄 Attempt $attempt/$max_attempts to install dependencies..."
-          
+
           # Calculate exponential backoff delay
           if [ $attempt -gt 1 ]; then
             delay=$((base_delay * (2 ** (attempt - 2))))

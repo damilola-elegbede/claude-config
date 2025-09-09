@@ -44,15 +44,15 @@ fail_test() {
 # Test with valid configuration
 test_valid_configuration() {
     log_test "Valid configuration scenario"
-    
+
     # Create temporary test environment
     local temp_dir=$(mktemp -d)
     local config_dir="$temp_dir/system-configs/.claude/mcp"
     local settings_dir="$temp_dir/system-configs"
-    
+
     mkdir -p "$config_dir"
     mkdir -p "$settings_dir"
-    
+
     # Create valid configuration
     cat > "$config_dir/elevenlabs-config.json" << 'EOF'
 {
@@ -67,14 +67,14 @@ test_valid_configuration() {
   }
 }
 EOF
-    
+
     # Create valid settings.json
     cat > "$settings_dir/settings.json" << 'EOF'
 {
   "mcpServers": {}
 }
 EOF
-    
+
     # Test configuration validation only (not full script as it requires system dependencies)
     if python3 -c "
 import json
@@ -96,7 +96,7 @@ except Exception as e:
     else
         fail_test "Valid configuration parsing"
     fi
-    
+
     # Cleanup
     rm -rf "$temp_dir"
 }
@@ -104,12 +104,12 @@ except Exception as e:
 # Test with invalid JSON
 test_invalid_json() {
     log_test "Invalid JSON handling"
-    
+
     local temp_dir=$(mktemp -d)
     local config_dir="$temp_dir/system-configs/.claude/mcp"
-    
+
     mkdir -p "$config_dir"
-    
+
     # Create invalid JSON
     cat > "$config_dir/elevenlabs-config.json" << 'EOF'
 {
@@ -120,14 +120,14 @@ test_invalid_json() {
     }
   // Missing closing brace
 EOF
-    
+
     # Test JSON validation
     if ! python3 -m json.tool "$config_dir/elevenlabs-config.json" >/dev/null 2>&1; then
         pass_test "Invalid JSON detection"
     else
         fail_test "Invalid JSON detection"
     fi
-    
+
     # Cleanup
     rm -rf "$temp_dir"
 }
@@ -135,12 +135,12 @@ EOF
 # Test with missing required fields
 test_missing_fields() {
     log_test "Missing required fields detection"
-    
+
     local temp_dir=$(mktemp -d)
     local config_dir="$temp_dir/system-configs/.claude/mcp"
-    
+
     mkdir -p "$config_dir"
-    
+
     # Create config missing required fields
     cat > "$config_dir/elevenlabs-config.json" << 'EOF'
 {
@@ -151,7 +151,7 @@ test_missing_fields() {
   }
 }
 EOF
-    
+
     # Test missing fields detection
     if ! python3 -c "
 import json
@@ -165,7 +165,7 @@ assert 'env' in data['mcpServers']['elevenlabs']
     else
         fail_test "Missing fields detection"
     fi
-    
+
     # Cleanup
     rm -rf "$temp_dir"
 }
@@ -173,7 +173,7 @@ assert 'env' in data['mcpServers']['elevenlabs']
 # Test script help functionality
 test_help_functionality() {
     log_test "Help functionality"
-    
+
     if "$TEST_SCRIPT" --help >/dev/null 2>&1; then
         pass_test "Help option works"
     else
@@ -184,7 +184,7 @@ test_help_functionality() {
 # Test script exists and is executable
 test_script_executable() {
     log_test "Script exists and is executable"
-    
+
     if [[ -x "$TEST_SCRIPT" ]]; then
         pass_test "Script is executable"
     else
@@ -195,11 +195,11 @@ test_script_executable() {
 # Test configuration file structure validation
 test_config_structure_validation() {
     log_test "Configuration structure validation"
-    
+
     # Test correct structure
     local temp_dir=$(mktemp -d)
     local config_file="$temp_dir/config.json"
-    
+
     cat > "$config_file" << 'EOF'
 {
   "mcpServers": {
@@ -213,7 +213,7 @@ test_config_structure_validation() {
   }
 }
 EOF
-    
+
     # Validate structure
     if python3 -c "
 import json
@@ -235,7 +235,7 @@ assert 'ELEVENLABS_API_KEY' in elevenlabs_config['env']
     else
         fail_test "Configuration structure validation"
     fi
-    
+
     # Cleanup
     rm -rf "$temp_dir"
 }
@@ -244,7 +244,7 @@ assert 'ELEVENLABS_API_KEY' in elevenlabs_config['env']
 main() {
     echo -e "${BLUE}=== ElevenLabs MCP Validation Tests ===${NC}"
     echo
-    
+
     # Run all tests
     test_script_executable
     test_help_functionality
@@ -252,14 +252,14 @@ main() {
     test_invalid_json
     test_missing_fields
     test_config_structure_validation
-    
+
     # Summary
     echo
     echo -e "${BLUE}=== Test Results ===${NC}"
     echo "Tests run: $tests_run"
     echo "Tests passed: $tests_passed"
     echo "Tests failed: $tests_failed"
-    
+
     if [[ $tests_failed -eq 0 ]]; then
         echo -e "${GREEN}✓ All tests passed!${NC}"
         exit 0

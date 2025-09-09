@@ -21,7 +21,7 @@ echo "Validating Python scripts..."
 while IFS= read -r script; do
     PYTHON_SCRIPTS+=("$script")
     script_name=$(basename "$script")
-    
+
     # Check Python syntax
     if python3 -m py_compile "$script" 2>/dev/null; then
         echo -e "  ${GREEN}✓${NC} $script_name: syntax valid"
@@ -29,7 +29,7 @@ while IFS= read -r script; do
         echo -e "  ${RED}✗${NC} $script_name: syntax error"
         FAILED_SCRIPTS+=("$script_name: Python syntax error")
     fi
-    
+
     # Check for shebang
     if head -n 1 "$script" | grep -q "^#!/usr/bin/env python3\|^#!/usr/bin/python3"; then
         :  # Good shebang
@@ -46,7 +46,7 @@ echo "Validating Bash scripts..."
 while IFS= read -r script; do
     BASH_SCRIPTS+=("$script")
     script_name=$(basename "$script")
-    
+
     # Check bash syntax
     if bash -n "$script" 2>/dev/null; then
         echo -e "  ${GREEN}✓${NC} $script_name: syntax valid"
@@ -54,14 +54,14 @@ while IFS= read -r script; do
         echo -e "  ${RED}✗${NC} $script_name: syntax error"
         FAILED_SCRIPTS+=("$script_name: Bash syntax error")
     fi
-    
+
     # Check for shebang
     if head -n 1 "$script" | grep -q "^#!/bin/bash\|^#!/usr/bin/env bash"; then
         :  # Good shebang
     else
         echo -e "  ${YELLOW}⚠${NC} $script_name: missing or incorrect bash shebang"
     fi
-    
+
     # Check executable permissions
     if [ -x "$script" ]; then
         :  # Good permissions

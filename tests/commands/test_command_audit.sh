@@ -154,14 +154,14 @@ test_template_file_exists() {
     # Check template shows description field requirement
     assert_file_contains "$template_file" "Required.*Fields" \
         "template should specify required fields section"
-    
+
     assert_file_contains "$template_file" "description.*:" \
         "template should document description field"
 
     # Check template shows argument-hint in Optional Fields section
     assert_file_contains "$template_file" "Optional Fields" \
         "template should have Optional Fields section"
-    
+
     # Check that argument-hint is documented in the Optional Fields section
     assert_file_contains "$template_file" "argument-hint" \
         "template should document argument-hint field"
@@ -172,7 +172,7 @@ test_template_file_exists() {
 # Create mock command files for testing validation logic
 test_validation_with_mock_files() {
     setup_test_env
-    
+
     local test_commands_dir="$TEST_DIR/commands"
     mkdir -p "$test_commands_dir"
 
@@ -241,10 +241,10 @@ EOF
 
     for cmd_file in "$test_commands_dir"/*.md; do
         local cmd_name=$(basename "$cmd_file" .md)
-        
+
         if grep -q "^---$" "$cmd_file"; then
             local yaml_content=$(sed -n '/^---$/,/^---$/p' "$cmd_file" | sed '1d;$d')
-            
+
             # Check for required description field
             if echo "$yaml_content" | grep -q "^description:"; then
                 # Check argument-hint format if present

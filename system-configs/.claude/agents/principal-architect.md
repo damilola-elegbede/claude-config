@@ -73,7 +73,7 @@ graph TB
         H[(Redis)]
         I[(S3)]
     end
-    
+
     A --> C
     B --> C
     C --> D
@@ -162,7 +162,7 @@ graph TB
 roadmap:
   title: "Platform Modernization Roadmap"
   timeline: "2024-2025"
-  
+
   phases:
     - name: "Foundation"
       quarter: "Q1 2024"
@@ -174,7 +174,7 @@ roadmap:
             - Docker images for all services
             - Container registry setup
             - Local development environment
-        
+
         - description: "Implement CI/CD pipeline"
           owner: "DevOps Team"
           dependencies: ["Containerize core services"]
@@ -182,7 +182,7 @@ roadmap:
             - Automated build pipeline
             - Automated testing
             - Deployment automation
-    
+
     - name: "Migration"
       quarter: "Q2 2024"
       objectives:
@@ -193,7 +193,7 @@ roadmap:
             - EKS cluster setup
             - Helm charts
             - Service mesh implementation
-        
+
         - description: "Database migration"
           owner: "Data Team"
           dependencies: []
@@ -201,7 +201,7 @@ roadmap:
             - Schema optimization
             - Data migration scripts
             - Rollback procedures
-    
+
     - name: "Optimization"
       quarter: "Q3 2024"
       objectives:
@@ -220,14 +220,14 @@ roadmap:
         - 100% services in containers
         - Automated build process
         - Development environment ready
-    
+
     - date: "2024-06-30"
       description: "Production on Kubernetes"
       success_criteria:
         - All services deployed to K8s
         - Zero-downtime deployments
         - Auto-scaling configured
-    
+
     - date: "2024-09-30"
       description: "Performance targets met"
       success_criteria:
