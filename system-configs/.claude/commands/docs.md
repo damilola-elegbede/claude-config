@@ -23,6 +23,23 @@ Progressive documentation enhancement system using wave-based orchestration. Ide
 documentation in parallel waves, and applies quality enhancement passes. Each wave includes quality gates to ensure
 comprehensive coverage and excellence.
 
+**IMPORTANT: This command explicitly excludes all CLAUDE.md files from any operations.** CLAUDE.md files at any level
+(root directory, home directory, project directory, or nested locations) are never read, written, modified, or
+analyzed by the /docs command. These configuration files are protected system files that must remain untouched
+during documentation operations.
+
+## Protected Files
+
+The following files are **NEVER** touched, read, written, or modified by the /docs command:
+
+- **CLAUDE.md** (any location: root, home, project, nested directories)
+- **~/.claude/CLAUDE.md** (home directory configuration)
+- **./CLAUDE.md** (project root configuration)
+- **Any path containing CLAUDE.md** (all nested locations)
+
+These files contain critical system configurations and agent orchestration instructions that must remain isolated
+from documentation generation processes.
+
 ## Expected Output
 
 ### Wave-Based Progressive Enhancement
@@ -31,7 +48,7 @@ comprehensive coverage and excellence.
 User: /docs
 Claude: 🌊 Wave 1: Gap Analysis & Assessment
 📊 Deploying analysis wave...
-  - codebase-analyst[1]: Scanning undocumented components...
+  - codebase-analyst[1]: Scanning undocumented components (excluding CLAUDE.md)...
   - codebase-analyst[2]: Checking API completeness...
   - tech-writer: Assessing documentation quality...
   - api-architect: Evaluating API documentation...
@@ -41,6 +58,7 @@ Claude: 🌊 Wave 1: Gap Analysis & Assessment
   - 5 missing API endpoints found
   - README.md installation steps outdated
   - Architecture diagrams need updates
+  - CLAUDE.md files skipped (protected system files)
 
 🌊 Wave 2: Documentation Generation
 ⚡ Deploying 6 parallel generators...
@@ -68,7 +86,7 @@ Claude: 🌊 Wave 1: Gap Analysis & Assessment
 ```text
 User: /docs --audit
 Claude: 🔍 Running Wave 1 gap analysis only...
-📊 codebase-analyst[1]: Frontend documentation gaps...
+📊 codebase-analyst[1]: Frontend documentation gaps (excluding CLAUDE.md)...
 📊 codebase-analyst[2]: Backend API coverage...
 📊 tech-writer: Quality assessment...
 📊 api-architect: API completeness check...
@@ -80,6 +98,7 @@ Claude: 🔍 Running Wave 1 gap analysis only...
 - 3 configuration options undocumented
 - Mobile development docs missing
 - Accessibility guidelines incomplete
+- CLAUDE.md files skipped (system protection)
 ```
 
 ## Behavior
@@ -97,18 +116,22 @@ Parallel Gap Analysis:
       - instance_2: Backend services, API endpoints, data models
       - instance_3: Infrastructure, deployment, configuration docs
     role: Identify undocumented code sections and missing documentation
+    exclusions: All CLAUDE.md files at any level are skipped during scanning
     output: Comprehensive gap inventory with priority rankings
+    protection: CLAUDE.md files never included in analysis or recommendations
 
   tech-writer (assessment instance):
     role: Evaluate existing documentation quality and structure
     parallel_with: [codebase-analyst instances]
     focus: Content quality, organization, clarity, completeness
+    exclusions: CLAUDE.md files are never assessed or modified
     output: Quality assessment with improvement recommendations
 
   api-architect:
     role: Assess API documentation completeness and accuracy
     parallel_with: [codebase-analyst instances, tech-writer]
     focus: OpenAPI specs, endpoint coverage, schema documentation
+    exclusions: CLAUDE.md files are never analyzed for API documentation needs
     output: API documentation requirements and missing specifications
 
 Claude Analysis Phase:
@@ -116,6 +139,7 @@ Claude Analysis Phase:
   prioritization: Rank documentation gaps by importance and impact
   resource_planning: Determine Wave 2 instance allocation based on scope
   quality_gate: Verify complete gap identification before Wave 2
+  protection_verification: Confirm CLAUDE.md files were never accessed
 ```
 
 #### Wave 2: Parallel Documentation Generation (2-3 minutes)
@@ -134,24 +158,28 @@ High-Priority Documentation Generation:
       - instance_6: Developer guides and contribution docs
     parallel_execution: All high-priority documents generated simultaneously
     role: Create comprehensive documentation for identified gaps
+    exclusions: CLAUDE.md files are never modified or referenced
     output: Complete documentation suite addressing Wave 1 findings
 
   api-architect (specialized generation):
     parallel_with: [tech-writer instances]
     role: Generate OpenAPI specifications and API contracts
     focus: Endpoint documentation, request/response schemas, authentication
+    exclusions: CLAUDE.md files are never used as source material
     output: Complete API documentation with interactive examples
 
   accessibility-auditor:
     parallel_with: [tech-writer instances]
     role: Create accessibility documentation and guidelines
     focus: WCAG compliance, testing procedures, implementation guides
+    exclusions: CLAUDE.md files are never analyzed for accessibility
     output: Comprehensive accessibility documentation
 
   mobile-engineer:
     parallel_with: [tech-writer instances]
     role: Mobile development documentation and platform guides
     focus: iOS/Android setup, platform-specific considerations, testing
+    exclusions: CLAUDE.md files are never referenced for mobile documentation
     output: Mobile development documentation suite
 
 Claude Review Phase:
@@ -159,6 +187,7 @@ Claude Review Phase:
   quality_assessment: Review generated content for accuracy and clarity
   missing_sections: Identify any documentation still needed for Wave 3
   integration_planning: Plan cross-references and navigation improvements
+  protection_verification: Confirm no CLAUDE.md files were modified
 ```
 
 #### Wave 3: Quality Enhancement & Integration (1-2 minutes)
@@ -169,18 +198,21 @@ Quality Enhancement and Polish:
     role: Polish documentation, add cross-references, improve navigation
     focus: Consistency, clarity, organization, comprehensive linking
     input: All Wave 2 documentation outputs
+    exclusions: CLAUDE.md files are never included in cross-referencing
     output: Polished, interconnected documentation suite
 
   ux-researcher:
     parallel_with: [tech-writer enhancement]
     role: Add user experience guidelines and usability documentation
     focus: User journey documentation, interface guidelines, best practices
+    exclusions: CLAUDE.md files are never analyzed for UX patterns
     output: UX documentation and user-centered design guides
 
   business-analyst:
     parallel_with: [tech-writer enhancement, ux-researcher]
     role: Add business context, value propositions, and strategic alignment
     focus: Business requirements, stakeholder documentation, ROI context
+    exclusions: CLAUDE.md files are never referenced for business context
     output: Business-aligned documentation with strategic context
 
 Claude Final Integration:
@@ -188,6 +220,7 @@ Claude Final Integration:
   completeness_verification: Confirm all original gaps are addressed
   quality_standards_check: Verify documentation meets excellence criteria
   organization_optimization: Final structure and navigation improvements
+  protection_verification: Final confirmation CLAUDE.md files remain untouched
 ```
 
 ### Progressive Enhancement Benefits
@@ -201,6 +234,7 @@ Wave 1 → Wave 2 Gate:
     - Priority ranking established
     - Resource allocation plan confirmed
     - No critical documentation areas missed
+    - CLAUDE.md protection verified
 
 Wave 2 → Wave 3 Gate:
   requirements:
@@ -208,6 +242,7 @@ Wave 2 → Wave 3 Gate:
     - Content accuracy verified
     - Examples tested and functional
     - API documentation complete and validated
+    - No CLAUDE.md files modified
 
 Wave 3 → Completion Gate:
   requirements:
@@ -216,6 +251,7 @@ Wave 3 → Completion Gate:
     - Quality standards met
     - Business context integrated
     - User experience guidelines included
+    - CLAUDE.md files remain completely untouched
 ```
 
 #### Documentation Targets by Wave
@@ -227,12 +263,14 @@ Wave 1 Targets (Gap Analysis):
     - Missing API endpoint documentation
     - Configuration options without documentation
     - Setup and deployment procedures
+    - EXCLUSION: CLAUDE.md files are never scanned or analyzed
 
   Quality Assessment:
     - Outdated installation instructions
     - Broken links and examples
     - Inconsistent formatting
     - Missing troubleshooting sections
+    - EXCLUSION: CLAUDE.md files are never assessed for quality
 
 Wave 2 Targets (Core Generation):
   Essential Documentation:
@@ -241,12 +279,14 @@ Wave 2 Targets (Core Generation):
     - Architecture: System design and components
     - User Guides: Installation and usage
     - Developer Guides: Contribution and development
+    - EXCLUSION: CLAUDE.md files are never generated or modified
 
   Specialized Documentation:
     - OpenAPI specifications
     - Accessibility guidelines
     - Mobile development guides
     - Security documentation
+    - EXCLUSION: CLAUDE.md files are never referenced as source material
 
 Wave 3 Targets (Enhancement):
   Quality Improvements:
@@ -255,6 +295,7 @@ Wave 3 Targets (Enhancement):
     - Consistency and clarity
     - User experience guidelines
     - Business context and value propositions
+    - EXCLUSION: CLAUDE.md files are never included in cross-references
 ```
 
 ### Execution Strategy
@@ -267,7 +308,8 @@ Wave 1 Execution (Gap Analysis):
   agents: 4-5 instances (codebase-analyst × 2-3, tech-writer × 1, api-architect × 1)
   duration: 45-60 seconds
   success_criteria: Complete gap inventory with priorities
-  gate_check: Verify all documentation areas assessed
+  gate_check: Verify all documentation areas assessed (excluding CLAUDE.md)
+  protection: Confirm CLAUDE.md files were never accessed
 
 Wave 2 Execution (Core Generation):
   trigger: Wave 1 gate passed
@@ -275,6 +317,7 @@ Wave 2 Execution (Core Generation):
   duration: 2-3 minutes
   success_criteria: All priority documentation generated
   gate_check: Verify content accuracy and completeness
+  protection: Confirm no CLAUDE.md files were modified
 
 Wave 3 Execution (Enhancement):
   trigger: Wave 2 gate passed
@@ -282,33 +325,38 @@ Wave 3 Execution (Enhancement):
   duration: 1-2 minutes
   success_criteria: Polished, integrated documentation suite
   gate_check: Final quality and consistency verification
+  protection: Final verification CLAUDE.md files remain untouched
 
 Total Time Optimization:
   - Sequential approach: 8-12 minutes
   - Wave-based parallel: 4-6 minutes (2-3x faster)
   - Quality assurance: Built-in gates between waves
   - Progressive enhancement: Each wave builds on previous
+  - System protection: CLAUDE.md files never accessed throughout process
 ```
 
 #### Quality Standards by Wave
 
 ```yaml
 Wave 1 Standards (Analysis):
-  Completeness: All code sections scanned for documentation needs
+  Completeness: All code sections scanned for documentation needs (excluding CLAUDE.md)
   Accuracy: Current state of documentation accurately assessed
   Prioritization: Gaps ranked by importance and user impact
+  Protection: CLAUDE.md files completely ignored during analysis
 
 Wave 2 Standards (Generation):
   Functionality: All code examples execute successfully
   Accuracy: Version numbers and references are current
   Completeness: All identified gaps addressed with quality content
   Consistency: Formatting and style maintained across documents
+  Protection: No CLAUDE.md files referenced or modified
 
 Wave 3 Standards (Enhancement):
   Navigation: Clear document structure with working cross-references
   Clarity: Content optimized for target audience comprehension
   Integration: Business context and user experience considerations included
   Excellence: Documentation exceeds basic requirements with value-added content
+  Protection: CLAUDE.md files never included in any cross-referencing or linking
 ```
 
 ### Cleanup Targets
@@ -327,18 +375,21 @@ draft-*.md → .tmp/drafts/
 temp-*.md → .tmp/drafts/
 notes-*.md → .tmp/drafts/
 enhancement-*.md → .tmp/drafts/
+
+# EXCLUSION: CLAUDE.md files are never moved or organized by cleanup
 ```
 
 ### Execution Verification
 
 Deploy execution-evaluator to verify:
 
-- ✅ **Wave 1 Completeness** - All documentation gaps identified and prioritized
+- ✅ **Wave 1 Completeness** - All documentation gaps identified and prioritized (CLAUDE.md excluded)
 - ✅ **Wave 2 Generation** - Core documentation created addressing all priority gaps
 - ✅ **Wave 3 Enhancement** - Quality improvements and integration completed
 - ✅ **Quality Gates** - Each wave met success criteria before proceeding
 - ✅ **Progressive Enhancement** - Documentation quality improved through systematic waves
 - ✅ **Agent Coordination** - All wave deployments executed successfully with no conflicts
+- ✅ **System Protection** - CLAUDE.md files never accessed, read, written, or modified throughout entire process
 
 ### Notes
 
@@ -348,6 +399,8 @@ Deploy execution-evaluator to verify:
 - **Progressive Enhancement**: Each wave builds systematically on previous wave outputs
 - **Comprehensive Coverage**: Analysis → Generation → Enhancement ensures no gaps remain
 - **Performance Target**: 4-6 minutes for complete documentation overhaul (2-3x faster than sequential)
+- **System Protection**: CLAUDE.md files are completely excluded from all documentation operations
 - Automatically adapts wave scope based on project size and documentation needs
 - Maintains quality standards while maximizing parallel execution efficiency
 - Organizes all temporary files and maintains clean workspace throughout process
+- **Zero-Touch Policy**: CLAUDE.md files at any level remain completely untouched by design

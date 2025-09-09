@@ -10,6 +10,46 @@ test_claude_md_exists() {
         "System CLAUDE.md should exist in system-configs directory"
 }
 
+# Test that CLAUDE.md is in paragraph form with no markdown headers
+test_claude_md_paragraph_form() {
+    local claude_file="$ORIGINAL_DIR/system-configs/CLAUDE.md"
+    local has_markdown_headers=false
+    local has_markdown_lists=false
+    
+    echo "Validating CLAUDE.md is in paragraph form..."
+    
+    # Check for markdown headers (##, ###, etc.)
+    if grep -q "^##" "$claude_file"; then
+        has_markdown_headers=true
+        echo "❌ Found markdown headers (##) - file must be in paragraph form"
+    fi
+    
+    if grep -q "^###" "$claude_file"; then
+        has_markdown_headers=true
+        echo "❌ Found markdown headers (###) - file must be in paragraph form"
+    fi
+    
+    # Check for markdown bullet lists
+    if grep -q "^- " "$claude_file" || grep -q "^\* " "$claude_file"; then
+        has_markdown_lists=true
+        echo "❌ Found markdown bullet lists - file must be in paragraph form"
+    fi
+    
+    # Check for numbered lists
+    if grep -q "^[0-9]\+\. " "$claude_file"; then
+        has_markdown_lists=true
+        echo "❌ Found numbered lists - file must be in paragraph form"
+    fi
+    
+    if [ "$has_markdown_headers" = true ] || [ "$has_markdown_lists" = true ]; then
+        echo "❌ CLAUDE.md contains markdown formatting - must be pure paragraph form"
+        return 1
+    fi
+    
+    echo "✅ CLAUDE.md is in correct paragraph form (no markdown headers or lists)"
+    return 0
+}
+
 # Test CLAUDE.md effectiveness criteria - check system config for orchestration framework
 test_claude_md_effectiveness() {
     local claude_file="$ORIGINAL_DIR/system-configs/CLAUDE.md"
@@ -21,15 +61,14 @@ test_claude_md_effectiveness() {
     local reasons=()
 
     # CRITICAL: Size limits for attention/effectiveness
-    # Orchestration framework needs comprehensive guidance, adjusted thresholds
-    if [ "$line_count" -gt 200 ]; then
+    if [ "$line_count" -gt 100 ]; then
         score=$((score - 1))
-        reasons+=("Getting long ($line_count lines > 200): Monitor for attention impact")
+        reasons+=("Getting long ($line_count lines > 100): Monitor for attention impact")
     fi
 
-    if [ "$line_count" -gt 300 ]; then
+    if [ "$line_count" -gt 150 ]; then
         score=$((score - 3))
-        reasons+=("Too long ($line_count lines > 300): Will impact effectiveness")
+        reasons+=("Too long ($line_count lines > 150): Will impact effectiveness")
     fi
 
     # Word density check (should be concise, not verbose)
@@ -51,43 +90,46 @@ test_claude_md_effectiveness() {
         reasons+=("Missing delegation principle: Core orchestration logic absent")
     fi
 
+    # Must have Task tool execution requirement
+    if ! grep -q -i "Task tool" "$claude_file"; then
+        score=$((score - 2))
+        reasons+=("Missing Task tool execution requirements")
+    fi
+
     # Must have parallel execution strategy
     if ! grep -q -i "parallel execution" "$claude_file"; then
         score=$((score - 2))
-        reasons+=("Missing Parallel Execution Strategy: Key efficiency component missing")
+        reasons+=("Missing parallel execution strategy")
     fi
 
-    # Must have parallel execution guidance
-    if ! grep -q -i "parallel\|simultaneous\|concurrent" "$claude_file"; then
-        score=$((score - 2))
-        reasons+=("Missing parallel execution: Must orchestrate agents in parallel")
+    # Must have 1.5K token threshold
+    if ! grep -q "1\.5K" "$claude_file"; then
+        score=$((score - 1))
+        reasons+=("Missing 1.5K token delegation threshold")
     fi
 
-    # Must have authentication/API design patterns mentioned
-    if ! grep -q -i "authentication\|api design" "$claude_file"; then
-        score=$((score - 3))
-        reasons+=("Missing specific patterns: Core enforcement examples absent")
+    # Must have wave-based orchestration
+    if ! grep -q -i "wave" "$claude_file"; then
+        score=$((score - 1))
+        reasons+=("Missing wave-based orchestration pattern")
+    fi
+
+    # Must have git quality standards
+    if ! grep -q -i "git.*quality\|quality.*git\|--no-verify" "$claude_file"; then
+        score=$((score - 1))
+        reasons+=("Missing git quality standards")
     fi
 
     # Must have success measurement criteria
-    if ! grep -q -i "measures success\|optimal execution" "$claude_file"; then
+    if ! grep -q -i "measures success\|success.*metric" "$claude_file"; then
         score=$((score - 1))
-        reasons+=("Missing success criteria: Need clear behavior indicators")
+        reasons+=("Missing success measurement criteria")
     fi
 
-    # Must have practical examples (20 files = 20 agents, etc)
-    if ! grep -q -E "20 files.*20.*agents|example" "$claude_file"; then
+    # Must have .tmp directory requirement
+    if ! grep -q "\.tmp/" "$claude_file"; then
         score=$((score - 1))
-        reasons+=("Missing practical examples: Need concrete usage patterns")
-    fi
-
-    # Must have failure recovery strategies (not required in parallelization-focused framework)
-    # Removing this check as it's not part of the parallelization framework
-
-    # Must be actionable (not just theory)
-    if ! grep -q -E "→|Deploy|delegate|Handle Directly" "$claude_file"; then
-        score=$((score - 1))
-        reasons+=("Not actionable enough: Needs clear directives")
+        reasons+=("Missing .tmp directory operational standard")
     fi
 
     # Report results
@@ -104,10 +146,9 @@ test_claude_md_effectiveness() {
         done
     fi
 
-    # Require 8/10 or higher for orchestration framework (comprehensive requirements)
-    if [ "$score" -lt 8 ]; then
-        echo "❌ CLAUDE.md effectiveness score too low: $score/10 (requires ≥8/10)"
-        echo "   Orchestration framework needs improvements to be effective"
+    # Require 7/10 or higher for effectiveness
+    if [ "$score" -lt 7 ]; then
+        echo "❌ CLAUDE.md effectiveness score too low: $score/10 (requires ≥7/10)"
         return 1
     else
         echo "✅ CLAUDE.md effectiveness score: $score/10"
@@ -115,86 +156,13 @@ test_claude_md_effectiveness() {
     fi
 }
 
-# Test orchestration framework structure
-test_claude_md_structure() {
-    local claude_file="$ORIGINAL_DIR/system-configs/CLAUDE.md"
-    local missing_elements=()
-
-    # Core framework elements that must exist in paragraph format
-    local required_elements=(
-        "chief of staff"
-        "delegate everything"
-        "parallel execution"
-        "MCP servers"
-        "git.*quality standards"
-        "measures success"
-    )
-
-    echo "Validating orchestration framework structure..."
-
-    for element in "${required_elements[@]}"; do
-        if ! grep -i -q "$element" "$claude_file"; then
-            missing_elements+=("$element")
-        fi
-    done
-
-    if [ ${#missing_elements[@]} -gt 0 ]; then
-        echo "❌ Missing required framework elements:"
-        for element in "${missing_elements[@]}"; do
-            echo "    - $element"
-        done
-        return 1
-    fi
-
-    # Check for key orchestration concepts
-    if ! grep -q -i "agent" "$claude_file" || ! grep -q -i "specialist" "$claude_file"; then
-        echo "❌ Missing agent/specialist terminology"
-        return 1
-    fi
-
-    if ! grep -q -i "threshold\|complex" "$claude_file"; then
-        echo "❌ Missing complexity guidance"
-        return 1
-    fi
-
-    echo "✅ Framework structure validation passed"
-    return 0
-}
-
-# Test examples and anti-patterns
-test_claude_md_examples() {
-    local claude_file="$ORIGINAL_DIR/system-configs/CLAUDE.md"
-
-    # Must have practical examples (can be in Examples section or throughout)
-    if ! grep -q -i -E "example|20 files|authentication|api design" "$claude_file"; then
-        echo "❌ Missing practical examples"
-        return 1
-    fi
-
-    # Must have anti-patterns mentioned
-    if ! grep -q -i "anti-pattern" "$claude_file"; then
-        echo "❌ Missing anti-patterns section"
-        return 1
-    fi
-
-    # Must have success/optimal mentioned
-    if ! grep -q -i "optimal\|success" "$claude_file"; then
-        echo "❌ Missing optimal behavior indicators"
-        return 1
-    fi
-
-    echo "✅ Examples and patterns validation passed"
-    return 0
-}
-
 # Run all tests
 run_claude_md_tests() {
     echo "Testing CLAUDE.md validation..."
-
+    
     test_claude_md_exists && \
-    test_claude_md_effectiveness && \
-    test_claude_md_structure && \
-    test_claude_md_examples
+    test_claude_md_paragraph_form && \
+    test_claude_md_effectiveness
 }
 
 # Execute if called directly
