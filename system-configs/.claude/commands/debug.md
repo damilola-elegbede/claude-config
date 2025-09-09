@@ -1,5 +1,5 @@
 ---
-description: Root cause analysis for complex bugs with forensics
+description: Wave-based root cause analysis for complex bugs
 argument-hint: [issue_description]
 ---
 
@@ -8,7 +8,7 @@ argument-hint: [issue_description]
 ## Usage
 
 ```bash
-/debug [issue_description]      # Investigate specific bug with multi-agent forensics
+/debug [issue_description]      # Progressive multi-wave investigation with adaptive specialization
 /debug --repro <steps>          # Focus on reproduction step creation
 /debug --performance            # Performance-specific debugging analysis
 /debug "memory leak crashes"    # Memory issue investigation
@@ -17,9 +17,14 @@ argument-hint: [issue_description]
 
 ## Description
 
-Systematic root cause analysis for complex bugs using multi-agent forensics.
-Specializes in hard-to-reproduce issues, race conditions, memory leaks, and
-production-only failures.
+Systematic root cause analysis for complex bugs using wave-based multi-agent forensics.
+Progressive investigation with adaptive specialization based on issue classification.
+Specializes in hard-to-reproduce issues, race conditions, memory leaks, and production-only failures.
+
+**Iterative Investigation Process**: Complex bugs often require multiple investigation waves beyond the standard
+3-wave approach. The debugging process continues with additional waves until the root cause is fully identified and
+resolved. Each wave builds progressively on previous findings, with Claude orchestrating continued investigation
+cycles as needed.
 
 ## Expected Output
 
@@ -56,70 +61,178 @@ production-only failures.
 ✅ Verification: Response time 8s → 120ms
 ```
 
-### Performance Degradation Analysis
-
-```text
-⚡ Performance Investigation: Dashboard Loading Slowly
-
-📊 Evidence: Load time 2s → 15s after user growth, CPU normal, slow DB queries
-🎯 Root Cause: N+1 query problem, 50+ queries per dashboard load
-🔧 Fix: GraphQL DataLoader, batched queries, Redis caching
-✅ Verification: Dashboard loads in 1.8s (faster than baseline)
-```
-
 ## Behavior
 
-### Parallel Agent Deployment Strategy
+### Wave-Based Orchestration Strategy
 
-Deploy multiple specialized agents simultaneously for comprehensive forensic analysis:
+Progressive investigation with adaptive specialization through coordinated agent waves:
 
 ```yaml
-# PARALLEL WAVE 1: Initial Investigation (All agents deploy simultaneously)
-debugger:
-  role: Primary investigation and forensic analysis
-  input: Error logs, system state, reproduction data
-  output: Root cause analysis, fix recommendations
-  parallel_with: [codebase-analyst, test-engineer, performance-engineer]
+# WAVE 1: Initial Investigation (Parallel Foundation Team)
+wave_1:
+  trigger: Issue description provided
+  parallel_agents:
+    debugger:
+      role: Basic root cause analysis and forensic evidence gathering
+      input: Error logs, stack traces, system state, reproduction attempts
+      output: Initial hypotheses, evidence patterns, investigation priorities
 
-codebase-analyst:
-  role: Analyze code structure and identify bug patterns
-  input: Source code, error traces, system architecture
-  output: Code pattern analysis, potential root causes
-  parallel_with: [debugger, test-engineer, performance-engineer]
+    codebase-analyst:
+      role: Code pattern identification and architectural analysis
+      input: Source code, error contexts, system architecture, change history
+      output: Code smells, pattern analysis, potential root causes, scope assessment
 
-test-engineer:
-  role: Design reproduction tests and validation strategies
-  input: Bug description, reproduction steps, test scenarios
-  output: Test cases, reproduction reliability, validation plans
-  parallel_with: [debugger, codebase-analyst, performance-engineer]
+    test-engineer:
+      role: Reproduction attempts and validation strategy development
+      input: Bug description, reproduction steps, test scenarios, environment data
+      output: Reproduction reliability, test cases, validation plans, success rates
 
-performance-engineer:
-  role: Profile performance bottlenecks and resource usage
-  input: Performance metrics, resource logs, timing data
-  output: Performance analysis, optimization opportunities
-  parallel_with: [debugger, codebase-analyst, test-engineer]
+  duration: 3-5 minutes
+  success_criteria: Basic understanding established, issue classified
 
-# PARALLEL WAVE 2: Specialized Analysis (Based on issue type)
-Issue Classification:
-  Intermittent Issues:
-    symptoms: ["works sometimes", "random failures", "can't reproduce"]
-    parallel_agents: [debugger, codebase-analyst, test-engineer, monitoring-specialist]
-    approach: Statistical analysis, environmental testing
+# CLAUDE DECISION POINT: Issue Classification and Wave 2 Planning
+claude_analysis:
+  input: Wave 1 findings from all agents
+  classification_types:
+    - Memory Issues: ["memory leak", "growing heap", "OOM", "crashes", "GC pressure"]
+    - Race Conditions: ["deadlock", "data corruption", "concurrent access", "intermittent", "timing"]
+    - Production-Only: ["works in dev", "scale dependent", "env specific", "load dependent"]
+    - Performance: ["slow response", "timeout", "high CPU", "resource exhaustion", "bottleneck"]
+    - Test Failures: ["flaky tests", "CI failures", "test environment", "assertion errors"]
 
-  Race Conditions:
-    symptoms: ["deadlock", "data corruption", "concurrent access errors"]
-    parallel_agents: [debugger (2 instances), codebase-analyst, performance-engineer]
-    approach: Concurrent thread analysis, lock inspection, timing manipulation
+  output:
+    - Issue type classification with confidence score
+    - Specialized agent deployment plan for Wave 2
+    - Investigation approach and resource allocation
+    - Expected timeline and success metrics
 
-  Memory Issues:
-    symptoms: ["memory leak", "crashes", "growing heap", "OOM errors"]
-    parallel_agents: [debugger, codebase-analyst, test-engineer, performance-engineer]
-    approach: Parallel heap analysis, reference tracking, allocation patterns
+# WAVE 2: Specialized Investigation (Adaptive Based on Issue Type)
+wave_2_deployments:
 
-  Performance Degradation:
-    symptoms: ["slow response", "high CPU", "timeout", "lag"]
-    parallel_agents: [performance-engineer (3 instances), debugger, codebase-analyst]
-    approach: Comprehensive parallel profiling across all resources
+  memory_issues:
+    condition: Memory-related symptoms detected
+    parallel_agents:
+      - performance-engineer: Heap analysis, allocation tracking, GC profiling
+      - monitoring-specialist: Memory metrics analysis, trend identification
+      - debugger (instance-2): Memory leak specific investigation patterns
+    approach: Parallel heap analysis, reference tracking, allocation pattern investigation
+    expected_duration: 5-8 minutes
+
+  race_conditions:
+    condition: Concurrency or timing-related symptoms
+    parallel_agents:
+      - debugger (instance-2): Thread synchronization analysis
+      - debugger (instance-3): Lock contention investigation
+      - performance-engineer: Concurrent access profiling
+    approach: Multiple debugger instances for comprehensive concurrency analysis
+    expected_duration: 6-10 minutes
+
+  production_only:
+    condition: Environment-specific or scale-dependent issues
+    parallel_agents:
+      - platform-engineer: Infrastructure and environment analysis
+      - devops: Deployment and configuration investigation
+      - monitoring-specialist: Production metrics and log correlation
+    approach: Environment comparison, scale testing, infrastructure analysis
+    expected_duration: 7-12 minutes
+
+  performance_degradation:
+    condition: Speed, resource, or efficiency issues
+    parallel_agents:
+      - performance-engineer (instance-2): CPU and resource profiling
+      - performance-engineer (instance-3): Database and query optimization
+      - monitoring-specialist: Performance trend analysis
+    approach: Comprehensive parallel profiling across all performance vectors
+    expected_duration: 5-9 minutes
+
+  test_failures:
+    condition: Test-related or CI/CD issues
+    parallel_agents:
+      - test-engineer (instance-2): Test environment analysis
+      - test-engineer (instance-3): Flaky test investigation
+      - devops: CI/CD pipeline investigation
+    approach: Multiple test engineer instances for comprehensive test failure analysis
+    expected_duration: 4-7 minutes
+
+# CLAUDE VALIDATION POINT: Root Cause Verification
+claude_verification:
+  input: Wave 2 specialized findings
+  validation_criteria:
+    - Root cause identified with high confidence (>80%)
+    - Reproduction steps reliable and consistent
+    - Fix approach clearly defined and scoped
+    - Risk assessment completed
+
+  decision_outcomes:
+    root_cause_identified: Proceed to Wave 3 (Solution Implementation)
+    inconclusive_results: Deploy additional specialized investigation waves
+    multiple_root_causes: Coordinate parallel fix streams
+    insufficient_evidence: Continue with Wave N+1 investigation cycles
+
+# WAVE 3: Solution Implementation (Parallel Fix Deployment)
+wave_3:
+  trigger: Root cause verified with high confidence
+  parallel_agents:
+
+    fix_implementation:
+      # Deploy appropriate fix agents based on issue type and scope
+      backend-engineer: Server-side fixes, API changes, database modifications
+      frontend-engineer: Client-side fixes, UI changes, state management
+      devops: Infrastructure fixes, deployment changes, configuration updates
+      database-engineer: Schema changes, query optimization, index management
+
+    test_validation:
+      test-engineer (instance-4):
+        role: Create comprehensive reproduction tests
+        deliverables: Unit tests, integration tests, reproduction scenarios
+
+      test-engineer (instance-5):
+        role: Fix verification and regression testing
+        deliverables: Verification test suite, performance benchmarks
+
+    quality_assurance:
+      code-reviewer:
+        role: Fix quality verification and security assessment
+        deliverables: Code review, security analysis, best practices validation
+
+  coordination: All Wave 3 agents work in parallel with clear deliverable boundaries
+  duration: 8-15 minutes depending on fix complexity
+  success_criteria: Fix implemented, tested, and verified
+
+# ITERATIVE WAVE CONTINUATION
+adaptive_continuation:
+  trigger: Wave 3 solution reveals deeper issues or incomplete resolution
+  approach: |
+    Complex bugs may require 4-7+ investigation waves for complete resolution.
+    Each wave builds progressively on previous findings until root cause is fully resolved.
+
+  wave_n_examples:
+    wave_4: "Continue investigation cycles until root cause identified and verified"
+    wave_5: "Deep architectural analysis if initial fixes reveal systemic issues"
+    wave_6: "Cross-system impact analysis for distributed system bugs"
+    wave_7: "Performance optimization after core fix implementation"
+
+  continuation_triggers:
+    - Wave 3 fix reveals additional underlying issues
+    - Solution works partially but symptoms persist
+    - Fix introduces new problems or regressions
+    - Root cause analysis incomplete or confidence <80%
+    - Distributed system effects require broader investigation
+    - Performance implications need deeper analysis
+
+  escalation_approach: |
+    - Deploy specialized investigation teams for newly discovered issues
+    - Expand scope to include related systems and dependencies
+    - Engage architecture specialists for systemic problems
+    - Continue until complete resolution with high confidence validation
+
+  success_criteria: |
+    Investigation continues until:
+    ✅ Root cause fully identified with >90% confidence
+    ✅ Complete fix implemented and thoroughly tested
+    ✅ No residual symptoms or related issues detected
+    ✅ Solution validated under realistic production conditions
+    ✅ Prevention measures documented and implemented
 ```
 
 ### Concrete Investigation Patterns
@@ -179,32 +292,47 @@ const performance_debug = {
 };
 ```
 
-### Multi-Agent Coordination
-
-#### Parallel Agent Teams by Issue Type
+### Wave Execution Timeline
 
 ```yaml
-Memory Issues:
-  agents: [debugger, codebase-analyst, test-engineer, performance-engineer]
-  execution_time: 60% faster than sequential
+Total Investigation Time: 15-35+ minutes (adaptive based on complexity)
 
-Performance Issues:
-  agents: [performance-engineer (3 instances), debugger, codebase-analyst]
-  execution_time: 70% faster with parallel instances
+Wave 1 (Foundation): 3-5 minutes
+  - All agents deploy simultaneously
+  - Basic investigation and classification
+  - Issue type determination
 
-Production Issues:
-  agents: [debugger, platform-engineer, monitoring-specialist, platform-engineer]
-  execution_time: All agents work simultaneously
+Claude Decision Point: 1-2 minutes
+  - Analysis of Wave 1 findings
+  - Wave 2 deployment planning
+  - Resource allocation optimization
 
-Security Issues:
-  agents: [security-auditor (2 instances), debugger, codebase-analyst]
-  execution_time: Multiple instances for comprehensive coverage
+Wave 2 (Specialized): 4-12 minutes (varies by issue type)
+  - Adaptive agent deployment based on issue classification
+  - Deep dive investigation with appropriate specialists
+  - Parallel instances for comprehensive coverage
 
-Complex Multi-Domain:
-  wave_1: [debugger, codebase-analyst, test-engineer, performance-engineer]
-  wave_2: [security-auditor, monitoring-specialist, platform-engineer]
-  wave_3: Integration and correlation of findings
-  execution_time: 80% faster than sequential investigation
+Claude Validation: 1-2 minutes
+  - Root cause verification
+  - Solution approach validation
+  - Wave 3 deployment authorization OR continuation planning
+
+Wave 3 (Implementation): 8-15 minutes
+  - Parallel fix implementation
+  - Comprehensive test creation
+  - Quality verification and validation
+
+Wave N (Continuation): Variable duration
+  - Additional investigation cycles as needed
+  - Progressive problem resolution
+  - Continues until complete resolution achieved
+
+Adaptive Benefits:
+  - Iterative approach handles complex multi-layered issues
+  - Each wave builds on previous findings systematically
+  - No time limits on achieving complete resolution
+  - Higher accuracy through persistent investigation
+  - Handles distributed system and architectural complexities
 ```
 
 ### Debugging Toolchain
@@ -269,45 +397,93 @@ simulate_production() {
 }
 ```
 
-### Verification & Follow-up
+### Progressive Verification & Follow-up
 
-Deploy execution-evaluator to verify:
+Deploy execution-evaluator after each wave to verify:
+
+#### Wave 1 Verification
+
+- ✅ **Issue classified** - Problem type identified with confidence
+- ✅ **Evidence gathered** - Initial patterns and symptoms documented
+- ✅ **Scope defined** - Impact and complexity assessed
+- ✅ **Investigation plan** - Wave 2 deployment strategy confirmed
+
+#### Wave 2 Verification
 
 - ✅ **Root cause identified** - Clear explanation of why bug occurs
-- ✅ **Reproduction steps** - Reliable way to trigger the issue
-- ✅ **Fix implemented** - Solution addresses root cause
-- ✅ **Verification tests** - Proof the fix works
-- ✅ **Prevention measures** - Steps to avoid similar issues
-- ✅ **Documentation** - Investigation findings documented
+- ✅ **Reproduction reliable** - Consistent way to trigger the issue
+- ✅ **Fix approach defined** - Solution strategy validated
+- ✅ **Risk assessment** - Impact and complexity of fix understood
+
+#### Wave 3 Verification
+
+- ✅ **Fix implemented** - Solution addresses root cause completely
+- ✅ **Tests created** - Reproduction and regression tests in place
+- ✅ **Quality verified** - Code review and security validation complete
+- ✅ **Prevention measures** - Steps to avoid similar issues documented
+
+#### Wave N Verification (Continued Investigation)
+
+- ✅ **Complete resolution** - All symptoms eliminated with >90% confidence
+- ✅ **Systemic issues addressed** - Architectural or distributed system problems resolved
+- ✅ **Performance validated** - Solution performs well under realistic conditions
+- ✅ **Long-term stability** - Fix demonstrates durability over extended testing
 
 ### Examples
 
 ```text
 User: /debug Memory leak causing crashes
-Claude: 🔍 Memory analysis: Event listeners not cleaned up
-🔧 Fix: Proper cleanup in useEffect
-✅ Result: Memory stable
+
+Wave 1: debugger + codebase-analyst + test-engineer (3 min)
+Claude: Issue classified as memory leak with 90% confidence
+
+Wave 2: performance-engineer + monitoring-specialist + debugger-2 (6 min)
+Claude: Root cause verified - event listeners not cleaned up
+
+Wave 3: frontend-engineer + test-engineer-4 + code-reviewer (8 min)
+Result: Fix implemented with cleanup in useEffect + comprehensive tests
 ```
 
 ```text
-User: /debug Duplicate payment charges
-Claude: 🧵 Race condition: Non-atomic payment flow
-🔧 Fix: Database transactions + idempotency
-✅ Result: Zero duplicates in load test
+User: /debug Complex distributed system timeout
+
+Wave 1: debugger + codebase-analyst + test-engineer (4 min)
+Claude: Issue classified as distributed system problem, requires deeper investigation
+
+Wave 2: platform-engineer + devops + monitoring-specialist (8 min)
+Claude: Partial root cause identified - service mesh configuration issues
+
+Wave 3: Initial fix attempt - service mesh reconfiguration (10 min)
+Claude: Fix partially successful but latency spikes persist, continuing investigation
+
+Wave 4: performance-engineer + platform-engineer-2 + monitoring-specialist-2 (12 min)
+Claude: Discovered cascading failure pattern in dependent services
+
+Wave 5: backend-engineer + devops-2 + database-engineer (15 min)
+Result: Complete resolution with circuit breakers, connection pooling, and monitoring
 ```
 
 ```text
-User: /debug Production API timeouts
-Claude: 🏭 Scale issue: Missing database index
-🔧 Fix: Added composite index
-✅ Result: 8s → 120ms response time
+User: /debug Race condition in payment system
+
+Wave 1: debugger + codebase-analyst + test-engineer (4 min)
+Claude: Issue classified as race condition with 95% confidence
+
+Wave 2: debugger-2 + debugger-3 + performance-engineer (8 min)
+Claude: Root cause verified - non-atomic payment flow
+
+Wave 3: backend-engineer + database-engineer + test-engineer-4 (12 min)
+Result: Database transactions + idempotency keys + comprehensive testing
 ```
 
 ### Notes
 
-- Focuses on systematic investigation over guesswork
-- Uses appropriate tools for each programming language
-- Emphasizes reproduction before attempting fixes
-- Documents findings for future similar issues
-- Coordinates multiple specialist agents for complex problems
-- Always verifies fixes under realistic conditions
+- **Adaptive Wave Approach**: Investigation continues with additional waves until complete resolution
+- **No Fixed Timeline**: Complex bugs may require 5-7+ waves for thorough resolution
+- **Progressive Building**: Each wave builds systematically on previous findings
+- **Quality Focus**: Investigation continues until >90% confidence in root cause and fix
+- **Systemic Problem Handling**: Capable of addressing architectural and distributed system issues
+- **Verification at Each Stage**: Claude validates progress and determines continuation needs
+- **Resource Optimization**: Parallel execution within waves maximizes efficiency
+- **Complete Resolution Goal**: Process continues until all symptoms eliminated and prevention measures in place
+- **Documentation**: Each wave documents findings for knowledge transfer and future prevention

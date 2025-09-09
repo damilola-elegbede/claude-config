@@ -22,150 +22,329 @@ conventions. Creates comprehensive test suites when none exist.
 
 ## Expected Output
 
-### Node.js Project with Jest Example
+### Wave-Based Execution with Auto-Remediation Example
 
 ```text
-🔍 Discovering tests...
-✅ Found in package.json: "test": "jest"
-🧪 Running: npm test
+🌊 WAVE 1: Initial Test Execution (20-30s)
+🔍 Discovering tests... Found 3 test suites
+🚀 Deploying 3 test-engineer instances + 2 specialized agents in parallel
 
-✅ All tests passed (4/4)
-📊 Coverage: 87.3% lines, 82.1% branches
+✅ Unit Tests (Instance 1): 45/45 passed (8.2s)
+✅ Integration Tests (Instance 2): 12/12 passed (15.1s)
+❌ E2E Tests (Instance 3): 2/8 failed (22.3s)
+✅ Performance Tests: All benchmarks within thresholds (18.7s)
+✅ Security Tests: No vulnerabilities detected (14.2s)
+
+🧠 CLAUDE ANALYSIS: Categorizing 2 E2E failures (3s)
+  - UI selector failures (auto-fixable)
+  - Timing synchronization issues (auto-fixable)
+
+🌊 WAVE 2: Auto-Remediation Deployment (15-25s)
+🔧 Deploying 1 e2e_fix_instance for targeted remediation
+
+✅ Fixed: Updated CSS selectors for DOM changes
+✅ Fixed: Added explicit waits for async operations
+📝 Changes: 2 test files modified, 0 regressions detected
+
+🌊 WAVE 3: Final Validation (10-15s)
+🔍 Re-running E2E tests with fixes...
+
+✅ E2E Tests (Validation): 8/8 passed (12.1s)
+✅ Regression Check: No new failures introduced
+✅ Coverage maintained: 87.3% lines, 82.1% branches
+
+📊 FINAL REPORT:
+  Total Execution Time: 62 seconds
+  Original Failures: 2
+  Auto-Fixed: 2 (100% success rate)
+  Manual Review Required: 0
+  Final Status: ALL TESTS PASSING ✅
 ```
 
-### Python Project (No Tests) Example
+### Complex Project with Multiple Failures Example
 
 ```text
-🔍 Discovering tests...
-⚠️  No tests found. Deploying test-engineer to create test suite...
-📝 Generated: tests/test_main.py, tests/test_utils.py
-✅ Created pytest.ini configuration
-🧪 Running: pytest -v
+🌊 WAVE 1: Initial Test Execution (25-35s)
+🔍 Discovering tests... Found 5 test suites
+🚀 Deploying 5 test-engineer instances + 2 specialized agents in parallel
 
-✅ All tests passed (6/6)
+✅ Unit Tests (Instance 1): 156/156 passed (12.3s)
+❌ Integration Tests (Instance 2): 8/15 failed (28.1s)
+❌ E2E Tests (Instance 3): 3/12 failed (32.4s)
+❌ Performance Tests: 2 benchmarks failed (25.7s)
+✅ Security Tests: No vulnerabilities detected (18.9s)
+
+🧠 CLAUDE ANALYSIS: Categorizing 13 failures (8s)
+  - Database connection issues (auto-fixable)
+  - API endpoint changes (auto-fixable)
+  - UI timing issues (auto-fixable)
+  - Performance threshold violations (requires investigation)
+
+🌊 WAVE 2: Auto-Remediation Deployment (20-30s)
+🔧 Deploying 3 fix instances + 1 performance specialist
+
+✅ Integration Fix: Updated database connection strings
+✅ Integration Fix: Corrected API endpoint URLs
+✅ E2E Fix: Added explicit waits and updated selectors
+🔍 Performance Analysis: Identified memory leak in test setup
+
+🌊 WAVE 3: Final Validation (15-20s)
+🔍 Re-running affected test suites...
+
+✅ Integration Tests: 15/15 passed (18.2s)
+✅ E2E Tests: 12/12 passed (16.7s)
+⚠️  Performance Tests: 1 test still failing (requires manual review)
+
+📊 FINAL REPORT:
+  Total Execution Time: 89 seconds
+  Original Failures: 13
+  Auto-Fixed: 11 (85% success rate)
+  Manual Review Required: 2 performance optimizations
+  Auto-Fix Categories: DB config, API endpoints, UI timing
+  Status: 91% tests passing, performance review needed
 ```
 
-### Go Project with Custom Command Example
+### Python Project (No Tests) with Generation Example
 
 ```text
-🔍 Discovering tests...
-✅ Found in README.md: "make test"
-🧪 Running: make test
+🔍 Discovering tests... No test suites found
+🚀 Deploying test-engineer to generate comprehensive test suite
 
-✅ All tests passed
-📊 Coverage: 78.9% of statements
-```
+📝 Generated test structure:
+  ├── tests/test_main.py (unit tests)
+  ├── tests/test_utils.py (utility functions)
+  ├── tests/test_integration.py (API tests)
+  └── pytest.ini (configuration)
 
-### Real-time Test Output with Enhanced Formatting
+🌊 WAVE 1: Initial Test Execution (15-20s)
+🧪 Running generated tests: pytest -v
 
-```text
-🧪 Running Tests: npm test
-
-✅ PASS src/utils.test.js (1.2s)
-  ✓ add function (5ms)
-  ✓ multiply function (3ms)
-
-✅ PASS src/auth.test.js (2.1s)
-  ✓ validates email format (12ms)
-  ✓ hashes passwords correctly (45ms)
-
-📊 Test Results:
-  Suites: 2 passed, 2 total
-  Tests:  4 passed, 4 total
-  Time:   3.3s
-  Coverage: 85.2% (lines), 78.9% (branches)
+✅ All generated tests passed (18/18)
+📊 Initial coverage: 76.4% lines, 68.2% branches
+💡 Recommendations: Add E2E tests for user workflows
 ```
 
 ## Behavior
 
-When invoked, I automatically discover and run tests using multi-instance parallel agent deployment. I deploy 3-5
-test-engineer instances to execute different test suites simultaneously (unit, integration, e2e, performance, security),
-achieving 4-5x faster execution than sequential testing. Each instance handles a specific test type independently for
-maximum efficiency and isolation.
+When invoked, I execute a sophisticated wave-based orchestration pattern for comprehensive test execution and
+auto-remediation. This approach maximizes parallel execution while enabling intelligent failure resolution through
+automated self-healing test suites.
 
-### Agent Orchestration - Multi-Instance Test Runners
+### Wave-Based Test Orchestration with Auto-Remediation
 
-#### Parallel Test Execution with Instance Pools
+#### Wave 1: Initial Test Execution (20-30 seconds)
 
-Deploy multiple test-engineer instances for simultaneous test suite execution:
+Deploy 3-5 test-engineer instances for comprehensive parallel test execution:
 
 ```yaml
-# PARALLEL WAVE 1: Multi-Instance Test Discovery (5-10 seconds)
-codebase-analyst (instance pool):
-  deployment: 2-3 instances for rapid discovery
-  distribution:
-    - instance_1: Frontend test discovery (components, UI tests)
-    - instance_2: Backend test discovery (API, service tests)
-    - instance_3: Infrastructure test discovery (config, deployment)
-  parallel_with: [test-engineer instances]
-  role: Analyze codebase structure for test discovery
-  output: Test locations and frameworks identified simultaneously
-
-# PARALLEL WAVE 2: Multi-Instance Test Execution (20-30 seconds)
+# WAVE 1: Parallel Test Suite Execution
 test-engineer (instance pool):
   deployment: 3-5 instances based on test suite types
-  calculation: min(5, number_of_test_suites)
+  calculation: min(5, discovered_test_suites)
   distribution:
-    - instance_1: Unit tests (fastest, highest volume)
-    - instance_2: Integration tests (API, database)
-    - instance_3: E2E tests (browser, user flows)
-    - instance_4: Performance tests (load, stress)
-    - instance_5: Security tests (vulnerability scans)
+    - instance_1: Unit tests (fastest execution, high volume)
+    - instance_2: Integration tests (API endpoints, database operations)
+    - instance_3: E2E tests (browser automation, user workflows)
+    - instance_4: Performance tests (load testing, benchmarks)
+    - instance_5: Security tests (vulnerability scanning, auth flows)
   parallel_execution: All test types run simultaneously
-  role: Execute different test suites in parallel
-  output: Parallel test results from all suites
+  role: Execute different test suites independently
+  output: Parallel test results with failure categorization
+  timeout: 30 seconds per instance
 
 performance-engineer (specialized instance):
-  deployment: Dedicated instance for performance testing
+  deployment: Dedicated instance for performance validation
   parallel_with: [test-engineer instances]
-  role: Run performance and load tests independently
-  output: Performance metrics without blocking other tests
+  role: Execute performance benchmarks independently
+  output: Performance metrics and threshold violations
 
 security-auditor (specialized instance):
-  deployment: Dedicated instance for security testing
+  deployment: Dedicated instance for security validation
   parallel_with: [test-engineer instances]
-  role: Execute security test suites independently
-  output: Security scan results in parallel
+  role: Run security test suites and vulnerability scans
+  output: Security findings and compliance violations
 
-debugger:
-  role: Aggregate and investigate failures from all instances
-  input: Collected failures from all test instances
-  output: Consolidated failure analysis, fix recommendations
-
-# Performance Impact:
-#   Sequential: 2-3 minutes for all test suites
-#   Parallel with instances: 30-40 seconds (4-5x faster)
-#   Test isolation: Each instance runs independently
+# Wave 1 Success Criteria:
+#   - All test suites execute without critical failures
+#   - Performance benchmarks meet thresholds
+#   - Security scans pass vulnerability checks
+#   - Test coverage meets minimum requirements
 ```
 
-#### Multi-Instance Execution Strategy
+#### Claude Analysis Phase: Intelligent Failure Categorization (5-10 seconds)
+
+Between Wave 1 and Wave 2, Claude analyzes all failures and categorizes them for targeted remediation:
 
 ```yaml
-Test Suite Parallelization with Instance Pools:
-  instance_distribution:
-    - Automatic detection of test suite types
-    - Deploy one instance per test type (unit, integration, e2e, etc.)
-    - Each instance handles its test suite independently
-    - Maximum 5 concurrent test instances
+Failure Pattern Recognition:
+  unit_test_failures:
+    - Logic errors in functions
+    - Assertion mismatches
+    - Mock configuration issues
 
-  execution_optimization:
-    - Unit tests: Instance 1 with --parallel flag
-    - Integration tests: Instance 2 with database isolation
-    - E2E tests: Instance 3 with browser parallelization
-    - Performance tests: Instance 4 with dedicated resources
-    - Security tests: Instance 5 with vulnerability scanners
+  integration_test_failures:
+    - Database connection issues
+    - API endpoint failures
+    - Service communication errors
 
-  result_aggregation:
-    - Real-time streaming from all instances
-    - Unified test report generation
-    - Failure collection and prioritization
-    - Coverage metrics merged from all suites
+  e2e_test_failures:
+    - UI element selection failures
+    - Timing/synchronization issues
+    - Browser compatibility problems
 
-Time Optimization:
-  - Sequential execution: 2-3 minutes typical
-  - Multi-instance parallel: 30-40 seconds (4-5x faster)
-  - Resource utilization: Full CPU core usage
-  - Test isolation: No interference between suites
+  performance_test_failures:
+    - Response time threshold violations
+    - Memory leak detection
+    - Resource utilization spikes
+
+  security_test_failures:
+    - Authentication bypass attempts
+    - Input validation vulnerabilities
+    - Authorization control weaknesses
+
+Auto-Remediation Eligibility Assessment:
+  - Simple assertion fixes: AUTO-FIX
+  - Mock/stub configuration: AUTO-FIX
+  - Test data issues: AUTO-FIX
+  - Environment setup: AUTO-FIX
+  - Complex logic errors: MANUAL REVIEW
+  - Architecture changes needed: MANUAL REVIEW
+```
+
+#### Wave 2: Auto-Fix Deployment (15-25 seconds)
+
+Based on Claude's analysis, deploy targeted remediation agents in parallel:
+
+```yaml
+# WAVE 2: Parallel Auto-Remediation Based on Failure Types
+test-engineer (failure-specific instances):
+  deployment: 1 instance per failure category
+  distribution:
+    - unit_fix_instance: Fix unit test assertion errors
+    - integration_fix_instance: Resolve API/database issues
+    - e2e_fix_instance: Fix UI selectors and timing
+    - mock_fix_instance: Repair mock configurations
+  role: Apply automated fixes to categorized test failures
+  output: Fixed test files with change documentation
+
+debugger (complex failure instance):
+  deployment: Dedicated instance for complex failures
+  role: Investigate failures requiring logic analysis
+  input: Complex failures from Claude categorization
+  output: Detailed failure analysis and fix recommendations
+
+performance-engineer (performance fix instance):
+  deployment: Conditional on performance test failures
+  role: Fix performance threshold violations
+  output: Optimized code or adjusted performance expectations
+
+security-auditor (security fix instance):
+  deployment: Conditional on security test failures
+  role: Fix security vulnerabilities in test scenarios
+  output: Hardened test security configurations
+
+# Auto-Fix Patterns Applied:
+#   - Update outdated assertions
+#   - Fix mock return values
+#   - Repair test data setup
+#   - Resolve environment variables
+#   - Update UI selectors
+#   - Fix async/await timing
+```
+
+#### Claude Verification: Non-Regression Validation (5 seconds)
+
+Claude analyzes fixes to ensure they don't break other tests:
+
+```yaml
+Fix Impact Analysis:
+  changed_files: List of files modified by auto-fix agents
+  potential_conflicts: Cross-test dependencies analysis
+  regression_risk: Assessment of fix side effects
+
+Verification Strategy:
+  - Check fixes don't modify shared utilities incorrectly
+  - Ensure mock changes don't affect other tests
+  - Validate test data changes maintain referential integrity
+  - Confirm environment changes are test-scoped
+```
+
+#### Wave 3: Final Validation & Reporting (10-15 seconds)
+
+Re-run affected test suites and generate comprehensive reports:
+
+```yaml
+# WAVE 3: Targeted Re-execution and Validation
+test-engineer (validation instances):
+  deployment: 1 instance per previously failed test suite
+  scope: Only re-run tests that were fixed
+  role: Validate fixes resolve original failures
+  output: Final test status for each fixed suite
+
+codebase-analyst (regression instance):
+  deployment: Single instance for regression detection
+  scope: Run broader test suite to detect regressions
+  role: Ensure fixes don't break existing functionality
+  output: Regression analysis report
+
+# Final Report Generation:
+comprehensive_test_report:
+  original_failures: Count and types of initial failures
+  auto_fixed: Successfully resolved issues
+  manual_review: Issues requiring developer attention
+  regression_status: No new failures introduced
+  coverage_impact: Test coverage before/after fixes
+  execution_time: Total time from start to completion
+
+Success Metrics:
+  - Auto-fix rate: >80% of simple failures resolved
+  - Zero regressions introduced
+  - All critical test suites passing
+  - Performance within acceptable thresholds
+```
+
+#### Auto-Remediation Patterns & Intelligence
+
+```yaml
+Intelligent Auto-Fix Categories:
+  simple_fixes:
+    - Outdated assertion values (expected vs actual mismatches)
+    - Mock return value corrections
+    - Test data setup and teardown issues
+    - Environment variable configuration
+    - Import/dependency resolution
+    - Async/await timing adjustments
+    success_rate: 85-95%
+
+  moderate_fixes:
+    - UI selector updates (DOM changes)
+    - API endpoint URL corrections
+    - Database schema alignment
+    - Configuration file updates
+    - Test runner option adjustments
+    success_rate: 70-85%
+
+  complex_issues:
+    - Business logic errors
+    - Architecture mismatches
+    - Performance optimization needs
+    - Security vulnerability fixes
+    - Cross-cutting concerns
+    requires: Manual review and developer intervention
+
+Wave-Based Execution Timeline:
+  total_execution_time: 60-90 seconds (vs 3-5 minutes sequential)
+  wave_1_parallel: 20-30 seconds (initial test execution)
+  claude_analysis: 5-10 seconds (failure categorization)
+  wave_2_auto_fix: 15-25 seconds (parallel remediation)
+  claude_verification: 5 seconds (regression analysis)
+  wave_3_validation: 10-15 seconds (final verification)
+
+Performance Benefits:
+  - 3-4x faster than sequential testing
+  - Auto-remediation reduces manual intervention by 80%
+  - Continuous improvement through failure pattern learning
+  - Zero-downtime test suite maintenance
 ```
 
 ### Discovery Algorithm
@@ -335,30 +514,66 @@ If test discovery fails completely:
 
 ### Integration with Specialized Agents
 
-#### test-engineer Multi-Instance Deployment
+#### Wave-Based Agent Coordination
 
-Multiple test-engineer instances are deployed for:
+The test command orchestrates multiple waves of specialized agents for maximum efficiency and auto-remediation:
 
-- **Parallel test execution**: 3-5 instances run different test suites simultaneously
-- **Test suite generation**: Multiple instances create tests for different components
-- **Complex test strategy**: Instances specialize by test type (unit, integration, e2e)
-- **Test optimization**: Each instance optimizes its specific test domain
-- **Failure investigation**: Debugger aggregates failures from all instances
+**Wave 1 - Initial Execution Agents**:
+
+- **test-engineer instances**: 3-5 parallel instances by test type
+- **performance-engineer**: Dedicated performance validation
+- **security-auditor**: Independent security testing
+- **Execution time**: 20-30 seconds parallel
+
+**Wave 2 - Auto-Remediation Agents**:
+
+- **test-engineer fix instances**: Targeted failure remediation
+- **debugger**: Complex failure investigation
+- **performance-engineer**: Performance issue resolution
+- **security-auditor**: Security vulnerability fixes
+- **Deployment strategy**: Conditional based on Wave 1 failures
+
+**Wave 3 - Validation Agents**:
+
+- **test-engineer validation**: Re-run fixed test suites
+- **codebase-analyst**: Regression detection
+- **execution-evaluator**: Final success verification
 
 **Instance Allocation Strategy**:
 
 ```yaml
-Small project (<100 tests): 2 instances (unit + integration)
-Medium project (100-500 tests): 3 instances (unit + integration + e2e)
-Large project (500+ tests): 5 instances (all test types)
+Auto-Scaling Based on Codebase Size:
+  Small project (<100 tests):
+    wave_1: 2 instances (unit + integration)
+    wave_2: 1-2 fix instances (conditional)
+    wave_3: 1 validation instance
+
+  Medium project (100-500 tests):
+    wave_1: 3 instances (unit + integration + e2e)
+    wave_2: 2-3 fix instances (conditional)
+    wave_3: 2 validation instances
+
+  Large project (500+ tests):
+    wave_1: 5 instances (all test types)
+    wave_2: 3-5 fix instances (conditional)
+    wave_3: 3 validation instances
+
+  Enterprise project (1000+ tests):
+    wave_1: 5 instances with load balancing
+    wave_2: Up to 5 specialized fix instances
+    wave_3: Comprehensive validation and reporting
 ```
 
-#### execution-evaluator Verification
+#### execution-evaluator Final Verification
 
-After test execution, validates:
+After all waves complete, validates:
 
-- ✅ Test command executed successfully
-- ✅ All tests passed or failure reasons are clear
-- ✅ Coverage thresholds met (if configured)
-- ✅ Test artifacts generated correctly
-- ✅ CI integration working properly
+- ✅ Initial test execution successful (Wave 1)
+- ✅ Auto-remediation completed without regressions (Wave 2)
+- ✅ Final validation confirms all fixes (Wave 3)
+- ✅ Coverage thresholds maintained or improved
+- ✅ Performance benchmarks within acceptable ranges
+- ✅ Security tests pass vulnerability checks
+- ✅ Test artifacts and reports generated correctly
+- ✅ Auto-fix rate >80% for eligible issues
+- ✅ Zero new test failures introduced by fixes

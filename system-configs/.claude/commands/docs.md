@@ -1,5 +1,5 @@
 ---
-description: Documentation management with parallel generation
+description: Documentation management with wave-based orchestration
 argument-hint: [scope|--audit|--clean]
 ---
 
@@ -8,8 +8,8 @@ argument-hint: [scope|--audit|--clean]
 ## Usage
 
 ```bash
-/docs                    # Complete documentation overhaul
-/docs --audit            # Documentation gap analysis only
+/docs                    # Progressive documentation enhancement (3 waves)
+/docs --audit            # Wave 1 gap analysis only
 /docs --clean            # Clean temporary docs and organize
 /docs api                # Focused API documentation update
 /docs readme             # README.md refresh only
@@ -19,286 +19,335 @@ argument-hint: [scope|--audit|--clean]
 
 ## Description
 
-Comprehensive documentation management system that identifies gaps, updates existing docs, and maintains current
-documentation aligned with codebase reality. Deploys multiple agent instances in parallel for 3-4x faster
-documentation generation across all document types.
+Progressive documentation enhancement system using wave-based orchestration. Identifies gaps systematically, generates
+documentation in parallel waves, and applies quality enhancement passes. Each wave includes quality gates to ensure
+comprehensive coverage and excellence.
 
 ## Expected Output
 
-### Complete Documentation Overhaul with Multi-Instance
+### Wave-Based Progressive Enhancement
 
 ```text
 User: /docs
-Claude: 🚀 Deploying 6 tech-writer instances for parallel generation...
-📊 Instance Pool Status:
-  - tech-writer[1]: Updating README.md...
-  - tech-writer[2]: Refreshing CLAUDE.md...
-  - tech-writer[3]: Generating API documentation...
-  - tech-writer[4]: Creating architecture docs...
-  - tech-writer[5]: Writing user guides...
-  - tech-writer[6]: Extracting code documentation...
+Claude: 🌊 Wave 1: Gap Analysis & Assessment
+📊 Deploying analysis wave...
+  - codebase-analyst[1]: Scanning undocumented components...
+  - codebase-analyst[2]: Checking API completeness...
+  - tech-writer: Assessing documentation quality...
+  - api-architect: Evaluating API documentation...
 
-⚡ Parallel Processing:
-  - 12 documentation gaps identified
-  - 6 documents updating simultaneously
-  - Real-time progress: [████████░░] 80%
+📋 Wave 1 Results:
+  - 8 undocumented code sections identified
+  - 5 missing API endpoints found
+  - README.md installation steps outdated
+  - Architecture diagrams need updates
 
-✅ All instances completed in 1m 47s (was 5-7 minutes)
-🧹 Organizing outputs and temporary files...
-📚 Documentation suite fully synchronized
+🌊 Wave 2: Documentation Generation
+⚡ Deploying 6 parallel generators...
+  - tech-writer[1]: README.md refresh...
+  - tech-writer[2]: API documentation...
+  - tech-writer[3]: Architecture docs...
+  - tech-writer[4]: User guides...
+  - api-architect: OpenAPI specifications...
+  - accessibility-auditor: Accessibility guidelines...
+
+✅ Wave 2 Complete: Core documentation generated
+
+🌊 Wave 3: Quality Enhancement & Polish
+🔍 Deploying enhancement wave...
+  - tech-writer[5]: Cross-referencing and polish...
+  - ux-researcher: User experience guidelines...
+  - business-analyst: Business context integration...
+
+📚 All waves complete in 3m 15s
+✨ Documentation suite enhanced with quality gates
 ```
 
-### Documentation Audit Only
+### Audit-Only Mode
 
 ```text
 User: /docs --audit
-Claude: 🔍 Running documentation gap analysis...
-📊 codebase-analyst: Mapping undocumented components...
-✍️ tech-writer: Assessing documentation quality...
+Claude: 🔍 Running Wave 1 gap analysis only...
+📊 codebase-analyst[1]: Frontend documentation gaps...
+📊 codebase-analyst[2]: Backend API coverage...
+📊 tech-writer: Quality assessment...
+📊 api-architect: API completeness check...
 
-📋 Documentation Audit Results:
+📋 Documentation Gap Analysis:
 - 5 missing API endpoints
 - README.md installation steps outdated
 - Architecture diagrams need updates
 - 3 configuration options undocumented
-```
-
-### Cleanup and Organization
-
-```text
-User: /docs --clean
-Claude: 🧹 Cleaning and organizing documentation files...
-📁 Creating .tmp/ directory structure...
-📄 Moving 6 analysis reports to .tmp/reports/
-📝 Archiving 4 draft documents to .tmp/drafts/
-✅ Workspace cleaned and organized
+- Mobile development docs missing
+- Accessibility guidelines incomplete
 ```
 
 ## Behavior
 
-### Agent Orchestration - Multi-Instance Parallel Deployment
+### Wave-Based Orchestration Strategy
 
-#### Phase 1: Multi-Instance Analysis & Gap Identification
-
-```yaml
-# PARALLEL WAVE: Multi-Instance Documentation Analysis (20-30 seconds)
-codebase-analyst (instance pool):
-  deployment: 2-3 instances for rapid analysis
-  distribution:
-    - instance_1: Frontend components and UI documentation needs
-    - instance_2: Backend services and API documentation gaps
-    - instance_3: Infrastructure and deployment documentation
-  parallel_with: [tech-writer instances]
-  output: Comprehensive gap analysis from multiple perspectives
-
-tech-writer (initial assessment instance):
-  role: Documentation inventory and quality assessment
-  parallel_with: [codebase-analyst instances]
-  output: Documentation gaps and update priorities
-
-api-architect:
-  role: API documentation requirements and OpenAPI specs
-  parallel_with: [codebase-analyst instances, tech-writer]
-  output: API documentation needs assessment
-```
-
-#### Phase 2: Multi-Instance Documentation Generation
+#### Wave 1: Gap Analysis & Assessment (45-60 seconds)
 
 ```yaml
-# PARALLEL WAVE: Multi-Instance Document Creation (1-2 minutes total)
-tech-writer (instance pool):
-  deployment: 4-6 instances based on documentation scope
-  calculation: min(6, number_of_doc_types)
-  distribution:
-    - instance_1: README.md updates (installation, usage, examples)
-    - instance_2: CLAUDE.md updates (project instructions, workflows)
-    - instance_3: API documentation (endpoints, schemas, examples)
-    - instance_4: Architecture docs (design, components, patterns)
-    - instance_5: User guides and tutorials
-    - instance_6: Inline code documentation extraction
-  parallel_execution: All document types updated simultaneously
-  role: Generate/update specific documentation domains
-  output: Multiple documents updated in parallel
+Parallel Gap Analysis:
+  codebase-analyst (instance pool):
+    deployment: 2-3 instances for comprehensive scanning
+    distribution:
+      - instance_1: Frontend components and UI documentation needs
+      - instance_2: Backend services, API endpoints, data models
+      - instance_3: Infrastructure, deployment, configuration docs
+    role: Identify undocumented code sections and missing documentation
+    output: Comprehensive gap inventory with priority rankings
 
-api-architect (specialized instance):
-  parallel_with: [tech-writer instance_3]
-  role: OpenAPI specifications and API contracts
-  output: Complete API documentation suite
+  tech-writer (assessment instance):
+    role: Evaluate existing documentation quality and structure
+    parallel_with: [codebase-analyst instances]
+    focus: Content quality, organization, clarity, completeness
+    output: Quality assessment with improvement recommendations
 
-codebase-analyst (documentation extractor):
-  parallel_with: [tech-writer instances]
-  role: Extract and organize code documentation
-  output: Technical reference materials
+  api-architect:
+    role: Assess API documentation completeness and accuracy
+    parallel_with: [codebase-analyst instances, tech-writer]
+    focus: OpenAPI specs, endpoint coverage, schema documentation
+    output: API documentation requirements and missing specifications
 
-# Performance Impact:
-#   Sequential: 5-7 minutes for all documentation
-#   Multi-instance parallel: 1-2 minutes (3-4x faster)
-#   Document isolation: No conflicts between instances
+Claude Analysis Phase:
+  consolidation: Merge findings from all analysis instances
+  prioritization: Rank documentation gaps by importance and impact
+  resource_planning: Determine Wave 2 instance allocation based on scope
+  quality_gate: Verify complete gap identification before Wave 2
 ```
 
-#### Phase 3: Cleanup & Organization (Sequential)
+#### Wave 2: Parallel Documentation Generation (2-3 minutes)
 
 ```yaml
-File Management:
-  Temporary Doc Cleanup:
-    - Move analysis reports to .tmp/analysis/
-    - Archive status documents to .tmp/reports/
-    - Organize meeting notes to .tmp/drafts/
-    - Clean up workspace documentation
+High-Priority Documentation Generation:
+  tech-writer (instance pool):
+    deployment: 4-6 instances based on documentation scope
+    calculation: min(6, number_of_priority_doc_types)
+    distribution:
+      - instance_1: README.md comprehensive refresh
+      - instance_2: Core API documentation and examples
+      - instance_3: Architecture and design documentation
+      - instance_4: User guides and tutorials
+      - instance_5: Installation and setup documentation
+      - instance_6: Developer guides and contribution docs
+    parallel_execution: All high-priority documents generated simultaneously
+    role: Create comprehensive documentation for identified gaps
+    output: Complete documentation suite addressing Wave 1 findings
 
-  Organization Structure:
-    - /docs/api/ - API documentation
-    - /docs/architecture/ - System design docs
-    - /docs/guides/ - User and developer guides
-    - .tmp/analysis/ - Analysis reports
-    - .tmp/reports/ - Status and progress reports
-    - .tmp/drafts/ - Draft documents and notes
+  api-architect (specialized generation):
+    parallel_with: [tech-writer instances]
+    role: Generate OpenAPI specifications and API contracts
+    focus: Endpoint documentation, request/response schemas, authentication
+    output: Complete API documentation with interactive examples
+
+  accessibility-auditor:
+    parallel_with: [tech-writer instances]
+    role: Create accessibility documentation and guidelines
+    focus: WCAG compliance, testing procedures, implementation guides
+    output: Comprehensive accessibility documentation
+
+  mobile-engineer:
+    parallel_with: [tech-writer instances]
+    role: Mobile development documentation and platform guides
+    focus: iOS/Android setup, platform-specific considerations, testing
+    output: Mobile development documentation suite
+
+Claude Review Phase:
+  completeness_check: Verify all Wave 1 gaps addressed
+  quality_assessment: Review generated content for accuracy and clarity
+  missing_sections: Identify any documentation still needed for Wave 3
+  integration_planning: Plan cross-references and navigation improvements
 ```
 
-### Documentation Targets
-
-#### Core Documentation Files
+#### Wave 3: Quality Enhancement & Integration (1-2 minutes)
 
 ```yaml
-CLAUDE.md:
-  purpose: Project-specific instructions and context
-  updates: Current tech stack, workflows, agent usage patterns
+Quality Enhancement and Polish:
+  tech-writer (enhancement instance):
+    role: Polish documentation, add cross-references, improve navigation
+    focus: Consistency, clarity, organization, comprehensive linking
+    input: All Wave 2 documentation outputs
+    output: Polished, interconnected documentation suite
 
-README.md:
-  purpose: Project overview and quick start
-  updates: Installation, usage, examples, contribution guidelines
+  ux-researcher:
+    parallel_with: [tech-writer enhancement]
+    role: Add user experience guidelines and usability documentation
+    focus: User journey documentation, interface guidelines, best practices
+    output: UX documentation and user-centered design guides
 
-API Documentation:
-  purpose: Endpoint documentation and contracts
-  updates: OpenAPI specs, example requests/responses, authentication
+  business-analyst:
+    parallel_with: [tech-writer enhancement, ux-researcher]
+    role: Add business context, value propositions, and strategic alignment
+    focus: Business requirements, stakeholder documentation, ROI context
+    output: Business-aligned documentation with strategic context
 
-Architecture Docs:
-  purpose: System design and technical decisions
-  updates: Component diagrams, data flow, integration patterns
+Claude Final Integration:
+  cross_reference_validation: Ensure all internal links work correctly
+  completeness_verification: Confirm all original gaps are addressed
+  quality_standards_check: Verify documentation meets excellence criteria
+  organization_optimization: Final structure and navigation improvements
 ```
 
-#### Gap Detection Patterns
+### Progressive Enhancement Benefits
+
+#### Quality Gates Between Waves
 
 ```yaml
-Missing Documentation:
-  - New features without corresponding docs
-  - API endpoints lacking documentation
-  - Configuration options not documented
-  - Installation/setup steps outdated
+Wave 1 → Wave 2 Gate:
+  requirements:
+    - Complete gap inventory from all analysis instances
+    - Priority ranking established
+    - Resource allocation plan confirmed
+    - No critical documentation areas missed
 
-Outdated Content:
-  - Version mismatches in installation guides
-  - Deprecated API references
-  - Broken links and examples
-  - Incorrect command examples
+Wave 2 → Wave 3 Gate:
+  requirements:
+    - All high-priority documentation generated
+    - Content accuracy verified
+    - Examples tested and functional
+    - API documentation complete and validated
 
-Quality Issues:
-  - Unclear explanations or missing context
-  - Incomplete code examples
-  - Missing troubleshooting sections
-  - Poor organization and navigation
+Wave 3 → Completion Gate:
+  requirements:
+    - Cross-references established
+    - Navigation optimized
+    - Quality standards met
+    - Business context integrated
+    - User experience guidelines included
 ```
 
-### Cleanup Targets
+#### Documentation Targets by Wave
 
-#### Temporary Files to Organize
+```yaml
+Wave 1 Targets (Gap Analysis):
+  Code Documentation:
+    - Undocumented functions and classes
+    - Missing API endpoint documentation
+    - Configuration options without documentation
+    - Setup and deployment procedures
 
-```text
-# Analysis and report files
-*-analysis.md
-*-report.md
-*-status.md
-*-summary.md
-meeting-notes-*.md
-progress-*.md
+  Quality Assessment:
+    - Outdated installation instructions
+    - Broken links and examples
+    - Inconsistent formatting
+    - Missing troubleshooting sections
 
-# Draft and working documents
-draft-*.md
-temp-*.md
-notes-*.md
-scratch-*.md
-```
+Wave 2 Targets (Core Generation):
+  Essential Documentation:
+    - README.md: Complete project overview
+    - API Documentation: All endpoints with examples
+    - Architecture: System design and components
+    - User Guides: Installation and usage
+    - Developer Guides: Contribution and development
 
-#### Organization Rules
+  Specialized Documentation:
+    - OpenAPI specifications
+    - Accessibility guidelines
+    - Mobile development guides
+    - Security documentation
 
-```bash
-# Move to appropriate .tmp/ subdirectories
-mv *-analysis.md .tmp/analysis/
-mv *-report.md .tmp/reports/
-mv *-status.md .tmp/reports/
-mv draft-*.md .tmp/drafts/
-mv notes-*.md .tmp/drafts/
+Wave 3 Targets (Enhancement):
+  Quality Improvements:
+    - Cross-referencing between documents
+    - Navigation and organization
+    - Consistency and clarity
+    - User experience guidelines
+    - Business context and value propositions
 ```
 
 ### Execution Strategy
 
-#### Multi-Instance Parallel Orchestration
+#### Wave Orchestration Pattern
 
 ```yaml
-Wave 1 (Multi-Instance Analysis - 20-30 seconds):
-  - codebase-analyst instances: 2-3 parallel repository scanners
-  - tech-writer: Documentation gap assessment
-  - api-architect: API documentation requirements
+Wave 1 Execution (Gap Analysis):
+  trigger: Immediate parallel deployment
+  agents: 4-5 instances (codebase-analyst × 2-3, tech-writer × 1, api-architect × 1)
+  duration: 45-60 seconds
+  success_criteria: Complete gap inventory with priorities
+  gate_check: Verify all documentation areas assessed
 
-Wave 2 (Multi-Instance Generation - 1-2 minutes):
-  - tech-writer instances: 4-6 parallel document generators
-    * Instance allocation based on document count/complexity
-    * Each instance handles 1-2 document types maximum
-    * Real-time progress tracking from all instances
-  - api-architect: OpenAPI spec generation
-  - codebase-analyst: Code documentation extraction
+Wave 2 Execution (Core Generation):
+  trigger: Wave 1 gate passed
+  agents: 6-8 instances (tech-writer × 4-6, api-architect × 1, specialists × 1-2)
+  duration: 2-3 minutes
+  success_criteria: All priority documentation generated
+  gate_check: Verify content accuracy and completeness
 
-Wave 3 (Cleanup - 15 seconds):
-  - Direct execution: File organization from all instances
-  - Result aggregation: Merge outputs from all instances
-  - Consistency check: Verify no conflicts between documents
+Wave 3 Execution (Enhancement):
+  trigger: Wave 2 gate passed
+  agents: 3-4 instances (tech-writer × 1, ux-researcher × 1, business-analyst × 1)
+  duration: 1-2 minutes
+  success_criteria: Polished, integrated documentation suite
+  gate_check: Final quality and consistency verification
 
 Total Time Optimization:
-  - Sequential approach: 8-10 minutes
-  - Multi-instance parallel: 2-3 minutes (3-4x faster)
-  - Resource utilization: Full parallel processing
+  - Sequential approach: 8-12 minutes
+  - Wave-based parallel: 4-6 minutes (2-3x faster)
+  - Quality assurance: Built-in gates between waves
+  - Progressive enhancement: Each wave builds on previous
 ```
 
-#### Quality Gates
+#### Quality Standards by Wave
 
 ```yaml
-Documentation Standards:
-  Completeness:
-    - All public APIs documented
-    - Setup instructions tested and current
-    - Examples include expected outputs
-    - Error scenarios documented
+Wave 1 Standards (Analysis):
+  Completeness: All code sections scanned for documentation needs
+  Accuracy: Current state of documentation accurately assessed
+  Prioritization: Gaps ranked by importance and user impact
 
-  Accuracy:
-    - Code examples execute successfully
-    - Version numbers match current release
-    - Links resolve correctly
-    - Screenshots reflect current UI
+Wave 2 Standards (Generation):
+  Functionality: All code examples execute successfully
+  Accuracy: Version numbers and references are current
+  Completeness: All identified gaps addressed with quality content
+  Consistency: Formatting and style maintained across documents
 
-  Clarity:
-    - Clear headings and organization
-    - Consistent formatting and style
-    - Appropriate detail level for audience
-    - Good use of examples and illustrations
+Wave 3 Standards (Enhancement):
+  Navigation: Clear document structure with working cross-references
+  Clarity: Content optimized for target audience comprehension
+  Integration: Business context and user experience considerations included
+  Excellence: Documentation exceeds basic requirements with value-added content
+```
+
+### Cleanup Targets
+
+#### Temporary Files Organization
+
+```text
+# Analysis and report files from all waves
+*-analysis.md → .tmp/analysis/
+*-report.md → .tmp/reports/
+*-status.md → .tmp/reports/
+wave-*-findings.md → .tmp/analysis/
+
+# Draft and working documents
+draft-*.md → .tmp/drafts/
+temp-*.md → .tmp/drafts/
+notes-*.md → .tmp/drafts/
+enhancement-*.md → .tmp/drafts/
 ```
 
 ### Execution Verification
 
 Deploy execution-evaluator to verify:
 
-- ✅ **Documentation completeness** - All gaps identified and addressed
-- ✅ **Content accuracy** - Examples work, links resolve, versions current
-- ✅ **File organization** - Temporary documents properly archived
-- ✅ **Agent coordination** - Parallel execution completed successfully
-- ✅ **Quality standards** - Documentation meets clarity and completeness criteria
+- ✅ **Wave 1 Completeness** - All documentation gaps identified and prioritized
+- ✅ **Wave 2 Generation** - Core documentation created addressing all priority gaps
+- ✅ **Wave 3 Enhancement** - Quality improvements and integration completed
+- ✅ **Quality Gates** - Each wave met success criteria before proceeding
+- ✅ **Progressive Enhancement** - Documentation quality improved through systematic waves
+- ✅ **Agent Coordination** - All wave deployments executed successfully with no conflicts
 
 ### Notes
 
-- **Multi-Instance Deployment**: 4-6 tech-writer instances work simultaneously
-- **Dynamic Scaling**: Instance count adjusts based on documentation scope
-- **Work Distribution**: Each instance handles 1-2 document types maximum
-- **Performance Target**: 2-3 minutes for full documentation update (3-4x faster)
-- Automatically detects project type and documentation needs
-- Preserves existing documentation structure while improving content
-- Organizes temporary files to maintain clean workspace
-- Validates all examples and links for accuracy
+- **Wave-Based Orchestration**: Progressive enhancement through 3 distinct quality-gated waves
+- **Quality Gates**: Each wave must meet success criteria before next wave deploys
+- **Parallel Efficiency**: 6-8 agents per wave for maximum parallel processing
+- **Progressive Enhancement**: Each wave builds systematically on previous wave outputs
+- **Comprehensive Coverage**: Analysis → Generation → Enhancement ensures no gaps remain
+- **Performance Target**: 4-6 minutes for complete documentation overhaul (2-3x faster than sequential)
+- Automatically adapts wave scope based on project size and documentation needs
+- Maintains quality standards while maximizing parallel execution efficiency
+- Organizes all temporary files and maintains clean workspace throughout process

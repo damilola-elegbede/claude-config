@@ -95,64 +95,216 @@ Infrastructure: Hadolint, Checkov
 Documentation: markdownlint, ShellCheck
 ```
 
-#### Agent Orchestration - Multi-Instance Parallel Deployment
+#### Iterative Wave-Based Agent Orchestration
 
-Deploy specialized agents and multiple instances for comprehensive parallel review:
+Deploy agents in strategic waves with Claude decision points for intelligent escalation. This is an **adaptive,
+iterative process** that continues until all critical and high-priority issues are resolved. Wave cycles extend
+beyond Wave 3 as needed.
 
 ```yaml
-# PARALLEL WAVE 1: Simultaneous Multi-Domain Analysis
-code-reviewer (instance pool):
-  deployment: 3-5 instances based on codebase size
-  distribution:
-    - instance_1: Frontend code quality and standards
-    - instance_2: Backend code patterns and architecture
-    - instance_3: Test coverage and quality
-    - instance_4: Configuration and infrastructure
-    - instance_5: Documentation and comments
-  input: Partitioned files, linter results per domain
-  parallel_with: [security-auditor instances, performance-engineer instances, other agents]
-  output: Parallel quality assessments across all domains
+WAVE 1: INITIAL ANALYSIS (5 Core Agents - Parallel Execution)
+═══════════════════════════════════════════════════════════════
 
-security-auditor (instance pool):
-  deployment: 2-3 instances for thorough security analysis
-  distribution:
-    - instance_1: Authentication/authorization vulnerabilities
-    - instance_2: Data validation and injection attacks
-    - instance_3: Dependency vulnerabilities and secrets
-  input: Code changes, dependency manifests, API endpoints
-  parallel_with: [code-reviewer instances, performance-engineer instances, other agents]
-  output: Comprehensive security assessment from multiple angles
+  code-reviewer:
+    role: Basic quality scan across all domains
+    input: Changed files, linter outputs
+    output: Code quality assessment, style violations, architectural concerns
+    execution: PARALLEL with all Wave 1 agents
 
-performance-engineer (instance pool):
-  deployment: 2-3 instances for different performance aspects
-  distribution:
-    - instance_1: Algorithm complexity and big-O analysis
-    - instance_2: Database query optimization
-    - instance_3: Memory usage and resource consumption
-  input: Code changes, profiling data, metrics
-  parallel_with: [code-reviewer instances, security-auditor instances, other agents]
-  output: Multi-dimensional performance analysis
+  security-auditor:
+    role: Initial security vulnerability scan
+    input: Code changes, dependencies, API endpoints
+    output: Security risk assessment, vulnerability classifications
+    execution: PARALLEL with all Wave 1 agents
 
-test-engineer:
-  role: Test coverage and quality validation
-  input: Test files, coverage reports
-  parallel_with: [all other agent instances]
-  output: Test adequacy assessment, missing coverage areas
+  performance-engineer:
+    role: Basic performance scan and bottleneck detection
+    input: Code changes, algorithm patterns
+    output: Performance risk assessment, optimization opportunities
+    execution: PARALLEL with all Wave 1 agents
 
-accessibility-auditor:
-  role: Accessibility compliance checking
-  input: UI components, markup changes
-  parallel_with: [all other agent instances]
-  output: WCAG compliance issues, accessibility improvements
+  accessibility-auditor:
+    role: Accessibility compliance baseline check
+    input: UI components, markup changes
+    output: WCAG compliance assessment, accessibility barriers
+    execution: PARALLEL with all Wave 1 agents
 
-tech-writer:
-  role: Documentation quality and completeness
-  input: Code comments, README files, API docs
-  parallel_with: [all other agent instances]
-  output: Documentation gaps, clarity improvements
+  test-engineer:
+    role: Test coverage and quality validation
+    input: Test files, coverage reports
+    output: Test adequacy assessment, coverage gaps
+    execution: PARALLEL with all Wave 1 agents
+
+WAVE BOUNDARY: CLAUDE ANALYSIS DECISION POINT 1
+════════════════════════════════════════════════
+
+  analysis_input: All Wave 1 agent outputs (5 reports)
+  processing_tasks:
+    - Categorize findings by severity: Critical, High, Medium, Low
+    - Map issues to specialized domains for deep dive analysis
+    - Calculate deployment priority based on issue density per domain
+    - Determine multi-instance needs for high-volume issue areas
+    - Assess cross-cutting concerns requiring coordinated specialists
+
+  conditional_deployment_triggers:
+    security_issues_found: Deploy security specialist team (2-3 instances)
+    performance_bottlenecks_detected: Deploy performance specialist team
+    code_quality_problems_identified: Deploy quality review team (2-4 instances)
+    accessibility_violations_found: Deploy accessibility + design team
+    test_coverage_gaps_detected: Deploy testing specialist team (2-3 instances)
+    infrastructure_concerns_identified: Deploy devops + monitoring team
+
+  deployment_strategy:
+    - Calculate optimal instance count per specialist domain
+    - Assign specific focus areas to prevent overlap
+    - Establish inter-agent coordination for cross-cutting issues
+    - Set conditional thresholds for Wave 3 remediation trigger
+
+WAVE 2: SPECIALIZED DEEP DIVE (Conditional Deployment - 0-15 Agents)
+════════════════════════════════════════════════════════════════════
+
+  conditional_security_team:
+    deployment_trigger: Security issues detected in Wave 1
+    agent_instances:
+      security-auditor-auth: Authentication/authorization vulnerabilities
+      security-auditor-injection: Data validation and injection attacks
+      security-auditor-deps: Dependency vulnerabilities and secrets detection
+    specialized_input: Specific vulnerability types and contexts from Wave 1
+    deep_analysis_output: Detailed remediation strategies per vulnerability class
+
+  conditional_performance_team:
+    deployment_trigger: Performance problems detected in Wave 1
+    agent_instances:
+      performance-engineer-algorithms: Algorithm complexity and optimization
+      performance-engineer-database: Database query optimization and indexing
+      monitoring-specialist: Performance monitoring and alerting setup
+    specialized_input: Performance bottleneck locations and patterns from Wave 1
+    deep_analysis_output: Optimization roadmap with measurable improvements
+
+  conditional_quality_team:
+    deployment_trigger: Code quality issues detected in Wave 1
+    agent_instances:
+      code-reviewer-frontend: Frontend architecture and component patterns
+      code-reviewer-backend: Backend patterns, API design, data flow
+      code-reviewer-integration: Cross-system integration and contracts
+      code-reviewer-architecture: System design and scalability patterns
+    specialized_input: Quality concerns categorized by architectural layer
+    deep_analysis_output: Refactoring roadmap with architectural improvements
+
+  conditional_accessibility_team:
+    deployment_trigger: Accessibility violations detected in Wave 1
+    agent_instances:
+      accessibility-auditor: Detailed WCAG compliance analysis
+      ui-designer: Accessible design patterns and alternatives
+    specialized_input: Accessibility barriers by component and interaction type
+    deep_analysis_output: Comprehensive accessibility remediation plan
+
+  conditional_test_team:
+    deployment_trigger: Test coverage gaps detected in Wave 1
+    agent_instances:
+      test-engineer-unit: Unit test coverage analysis and improvement
+      test-engineer-integration: Integration test strategy and implementation
+      test-engineer-e2e: End-to-end test coverage and critical path validation
+    specialized_input: Coverage gaps mapped to risk areas from Wave 1
+    deep_analysis_output: Comprehensive test improvement strategy with priorities
+
+WAVE BOUNDARY: CLAUDE CONSOLIDATION DECISION POINT 2
+═════════════════════════════════════════════════════
+
+  analysis_input: All Wave 2 specialized analysis outputs (variable count)
+  consolidation_tasks:
+    - Merge findings across all specialized teams without duplication
+    - Cross-reference issues between domains for systemic problems
+    - Identify remaining critical/high priority issues requiring immediate fixes
+    - Prioritize issues for current sprint vs. future technical debt
+    - Calculate overall risk assessment and remediation timeline
+
+  remediation_decision_criteria:
+    critical_security_vulnerabilities: MANDATORY Wave 3 deployment
+    high_priority_performance_blockers: MANDATORY Wave 3 deployment
+    blocking_accessibility_violations: MANDATORY Wave 3 deployment
+    critical_test_failures: MANDATORY Wave 3 deployment
+    architectural_debt_accumulation: CONDITIONAL Wave 3 deployment
+
+  final_decision:
+    deploy_wave_3: Critical/High issues require immediate remediation
+    skip_to_report: All issues documented and categorized for future work
+
+WAVE 3: REMEDIATION (Conditional - Only for Critical/High Issues)
+═════════════════════════════════════════════════════════════════
+
+  conditional_remediation_deployment:
+    deployment_trigger: Critical or High priority issues remain unresolved
+    remediation_strategy:
+      - Deploy targeted fix agents matching unresolved issue types
+      - Deploy validation agents to verify fixes don't introduce regressions
+      - Deploy integration testing agents for end-to-end change verification
+      - Coordinate cross-domain fixes to prevent conflict
+
+  remediation_agent_types:
+    security_fix_agents: Apply security patches and configuration changes
+    performance_fix_agents: Implement performance optimizations
+    quality_fix_agents: Apply code refactoring and architectural improvements
+    accessibility_fix_agents: Implement accessibility compliance changes
+    test_fix_agents: Add missing test coverage and fix failing tests
+
+  validation_protocol:
+    pre_fix_validation: Snapshot current state and test baseline
+    fix_application: Apply changes with rollback capability
+    post_fix_validation: Verify fixes resolve issues without side effects
+    integration_testing: Run full test suite to ensure system stability
+
+ITERATIVE CONTINUATION: WAVE 4, 5, 6... N (As Needed)
+═══════════════════════════════════════════════════════
+
+  adaptive_remediation_cycles:
+    description: Wave-based orchestration continues iteratively until all critical and high-priority issues are resolved
+    continuation_triggers:
+      - Wave 3 remediation discovers new issues requiring additional analysis
+      - Applied fixes introduce regressions detected during validation
+      - Cross-domain fixes reveal systemic problems requiring deeper investigation
+      - Integration testing identifies previously unknown dependencies
+
+  wave_n_examples:
+    Wave 4: "Additional security analysis after fixes reveal broader attack surface"
+    Wave 5: "Performance regression investigation triggered by security patches"
+    Wave 6: "Architecture review required after discovering coupling issues"
+    Wave N: "Continue remediation cycles until all critical/high issues resolved"
+
+  adaptive_decision_points:
+    each_wave_boundary:
+      - Reassess remaining issue severity and impact
+      - Determine if additional specialized analysis is required
+      - Plan next wave deployment or conclude process
+      - Update timeline and resource allocation
+
+  termination_criteria:
+    process_completion:
+      - All critical issues resolved and validated
+      - All high-priority issues addressed or explicitly deferred
+      - System integration tests pass without regressions
+      - Quality gates meet established thresholds
+      - No new critical/high issues discovered in final validation
+
+FINAL BOUNDARY: COMPREHENSIVE REPORT GENERATION
+════════════════════════════════════════════════
+
+  consolidation_input:
+    - All wave outputs (Wave 1: 5 reports, Wave 2: 0-15 reports, Wave 3+: 0-N reports)
+    - Applied fixes documentation with before/after analysis
+    - Validation results for all applied changes
+    - Remaining issues categorized by priority and domain
+
+  report_synthesis:
+    - Executive summary with quantified metrics and risk assessment
+    - Critical/High/Medium/Low issue breakdown with context
+    - Applied fixes documentation with verification status
+    - Remaining technical debt prioritized by impact and effort
+    - "Prompts for AI Agents" sections for future remediation
+    - Next steps roadmap with timeline and resource requirements
 ```
 
-### Parallel Review Strategy
+### Wave-Based Review Strategy
 
 ```yaml
 Execution Optimization:
@@ -162,28 +314,51 @@ Execution Optimization:
     - Performance profilers run concurrently
     - Results collected in real-time
 
-  Phase 2 - Agent Analysis (Massive Parallelization):
-    Simultaneous Analysis (All agents + instances):
-      - 5 code-reviewer instances analyze different domains
-      - 3 security-auditor instances check various vulnerabilities
-      - 3 performance-engineer instances profile different aspects
-      - test-engineer validates coverage
-      - accessibility-auditor checks compliance
-      - tech-writer reviews documentation
+  Phase 2 - Iterative Wave-Based Agent Analysis (Adaptive Escalation):
+    Wave 1 - Foundation Scan (5 agents parallel):
+      Duration: 30-45 seconds
+      Agents: code-reviewer, security-auditor, performance-engineer, accessibility-auditor, test-engineer
+      Output: Initial findings categorized by severity and domain
 
-    Total: Up to 15 agent instances working simultaneously
+    Claude Decision Point (5-10 seconds):
+      - Analyze Wave 1 findings
+      - Determine specialized focus areas
+      - Plan Wave 2 conditional deployment
+      - Optimize agent instance allocation
 
-  Phase 3 - Result Synthesis:
-    - All agent outputs merged intelligently
-    - Duplicate findings deduplicated
-    - Issues prioritized by severity
-    - Comprehensive report generated
+    Wave 2 - Specialized Deep Dive (Conditional 3-15 agents):
+      Duration: 45-90 seconds
+      Conditional Teams:
+        - Security Team: 3 security-auditor instances (if vulnerabilities found)
+        - Performance Team: 2 performance-engineer + monitoring-specialist (if bottlenecks found)
+        - Quality Team: 3 code-reviewer instances (if architectural issues found)
+        - Accessibility Team: accessibility-auditor + ui-designer (if violations found)
+        - Test Team: 3 test-engineer instances (if coverage gaps found)
+      Total: 3-15 agents based on Wave 1 findings
+
+    Claude Consolidation (10-15 seconds):
+      - Merge specialized analysis outputs
+      - Identify remaining critical issues
+      - Decide on remediation need
+
+    Wave 3+ - Iterative Remediation (Conditional, Continues Until Complete):
+      Duration: 60-120 seconds per wave (only if critical/high issues remain)
+      Agents: Targeted fix agents + validation agents per wave
+      Output: Applied fixes with verification, continuation assessment
+      Termination: When all critical/high issues resolved or explicitly deferred
+
+  Phase 3 - Final Report Generation:
+    - All wave outputs synthesized intelligently
+    - Duplicate findings deduplicated across waves
+    - Issues prioritized by severity and impact
+    - CodeRabbit-style comprehensive report generated
 
 Performance Metrics:
-  - Sequential review: 5-10 minutes for large codebase
-  - Parallel review: 30-60 seconds (10x faster)
-  - Coverage: 100% of code analyzed from multiple perspectives
-  - Quality: 3x more issues detected due to specialized instances
+  - Iterative wave-based review: 2-8+ minutes total (adaptive based on complexity)
+  - Agent efficiency: 5-50+ agents deployed (scales with issue discovery)
+  - Coverage: 100% of code analyzed with targeted deep dives
+  - Quality: Adaptive analysis depth based on actual findings
+  - Resource optimization: Deploy only necessary agents per wave
 ```
 
 ### Execution Strategy

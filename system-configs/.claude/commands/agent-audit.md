@@ -18,8 +18,8 @@ description: Validate agent ecosystem integrity and compliance
 ## Description
 
 Perform comprehensive validation of all agents in the agent ecosystem to ensure category integrity,
-template compliance, and system consistency. **This command generates a REPORT ONLY - it provides
-recommendations and optional patch snippets; it does not make any changes automatically.**
+template compliance, and system consistency. By default this is **REPORT ONLY** (recommendations and patch
+snippets, no changes). Use `--fix` to apply safe, automated fixes.
 
 ## Expected Output
 
@@ -88,47 +88,100 @@ sed -i '' 's/model: haiku/model: sonnet/' agent-name.md  # Better capability
 
 ## Behavior
 
-### Parallel Validation Strategy - Multi-Instance Deployment
+### Wave-Based Orchestration Strategy
 
-Execute validation using parallel deployment of specialized agents to optimize performance:
+Execute validation through progressive waves of parallel agent deployment with remediation capabilities:
+
+#### Wave 1: Initial Validation (30-45 seconds)
+
+Deploy specialized agents for comprehensive parallel validation:
 
 ```yaml
-# PARALLEL WAVE 1: Multi-Instance Category Validation (30-45 seconds total)
-code-reviewer (instance pool):
-  deployment: 8 instances (one per category)
-  calculation: min(8, number_of_categories)
+code-reviewer (8 instances - one per category):
+  deployment: 8 parallel instances for category-based validation
   distribution:
-    - instance_1: development category agents (3-5 agents)
-    - instance_2: infrastructure category agents (3-5 agents)
-    - instance_3: quality category agents (3-5 agents)
-    - instance_4: security category agents (1-2 agents)
-    - instance_5: analysis category agents (3-4 agents)
-    - instance_6: architecture category agents (3-4 agents)
-    - instance_7: design category agents (3-4 agents)
-    - instance_8: operations/documentation agents (3-4 agents)
-  parallel_with: [security-auditor instances, performance-engineer]
-  role: Validate agent definitions, YAML compliance, template adherence
-  output: Per-category validation reports generated simultaneously
+    - instance_1: development category (6 agents) - blue
+    - instance_2: quality category (4 agents) - green
+    - instance_3: security category (1 agent) - red
+    - instance_4: architecture category (4 agents) - purple
+    - instance_5: design category (3 agents) - pink
+    - instance_6: analysis category (3 agents) - yellow
+    - instance_7: infrastructure category (4 agents) - orange
+    - instance_8: coordination category (3 agents) - cyan
+  role: YAML validation, template compliance, required sections
+  output: Per-category validation reports with specific compliance metrics
+  success_criteria:
+    - YAML parseability: 100%
+    - Template adherence: All sections present
+    - Required fields validation: name, description, tools, model, category, color
+```
 
-security-auditor (instance pool):
-  deployment: 2-3 instances for comprehensive security validation
-  distribution:
-    - instance_1: Tool permissions and access controls
-    - instance_2: System boundaries and anti-patterns
-    - instance_3: Security compliance and vulnerability assessment
-  parallel_with: [code-reviewer instances, performance-engineer]
-  role: Validate security boundaries and anti-patterns
-  output: Security compliance reports from multiple angles
+**Claude Analysis Phase**: Review Wave 1 results, identify categories with issues, determine need for Wave 2 deployment.
 
-performance-engineer:
-  role: Coordinate parallel execution and monitor performance
-  input: Validation workflows, instance metrics
-  output: Performance optimization, execution coordination
+#### Wave 2: Deep Analysis (conditional - only if issues detected)
 
-debugger:
-  role: Investigate validation failures from all instances
-  input: Aggregated failed validations, error patterns
-  output: Root cause analysis, consolidated fix recommendations
+Deploy specialized analysis agents for problem areas:
+
+```yaml
+security-auditor (conditional deployment):
+  trigger: Agents with elevated permissions or Task tool violations detected
+  role: Validate system boundaries, tool permissions, anti-pattern enforcement
+  focus:
+    - Task tool access violations
+    - Orchestration attempts
+    - Security boundary compliance
+    - Privilege escalation risks
+  output: Security compliance assessment with risk levels
+
+performance-engineer (conditional deployment):
+  trigger: Resource-intensive agents or model optimization opportunities
+  role: Analyze model assignments, resource utilization, performance optimization
+  focus:
+    - Model appropriateness (opus/sonnet/haiku)
+    - Resource allocation patterns
+    - Performance optimization recommendations
+  output: Performance optimization recommendations
+
+debugger (conditional deployment):
+  trigger: YAML parsing failures or validation errors from Wave 1
+  role: Root cause analysis of validation failures
+  focus:
+    - YAML syntax errors
+    - Template format violations
+    - Missing required sections
+    - Parsing error diagnostics
+  output: Detailed error analysis with fix recommendations
+```
+
+**Claude Consolidation Phase**: Aggregate findings from Waves 1-2, determine remediation strategies, plan Wave 3 execution.
+
+#### Wave 3: Remediation (conditional - only if fixes needed)
+
+Apply automated fixes and generate comprehensive recommendations:
+
+```yaml
+Automated Remediation Capabilities:
+  yaml_fixes:
+    - Multi-line description block scalar formatting (|)
+    - Tools field comma-separated string conversion
+    - Required field insertion with default values
+    - Front-matter syntax error correction
+
+  template_compliance:
+    - Missing section insertion (Identity, Core Capabilities, etc.)
+    - System boundary warning addition
+    - Category/color alignment with AGENT_CATEGORIES.md
+
+  model_optimization:
+    - Cost optimization suggestions (opus → sonnet)
+    - Capability enhancement (haiku → sonnet)
+    - Performance tuning recommendations
+
+Report Generation:
+  - Executive summary with compliance percentages
+  - Category health matrix with issue breakdown
+  - Remediation script generation for manual application
+  - Before/after validation metrics
 ```
 
 ### Validation Scope
@@ -160,6 +213,22 @@ debugger:
 - **No Task Tool Usage**: Task tool is reserved exclusively for Claude
 - **Clear Boundaries**: Agents stay within their domain expertise
 
+### Progressive Validation Features
+
+#### Auto-Fix Capabilities
+
+- **YAML Syntax Repair**: Automatically fix common YAML parsing errors
+- **Template Standardization**: Insert missing required sections
+- **Field Normalization**: Standardize field formats and values
+- **Category Alignment**: Auto-correct category/color mismatches
+
+#### Remediation Reports
+
+- **Fix Scripts**: Generate executable remediation commands
+- **Manual Interventions**: Identify issues requiring human review
+- **Optimization Suggestions**: Model and performance improvements
+- **Compliance Tracking**: Before/after validation metrics
+
 ### Success Criteria
 
 ✅ **Agent Count**: Exactly 28 production agents
@@ -169,3 +238,4 @@ debugger:
 ✅ **Tool Validation**: No Task tool access, appropriate permissions
 ✅ **Anti-Pattern Free**: "Only Claude has orchestration authority" statement present
 ✅ **Model Appropriateness**: opus for complex reasoning, sonnet for standard, haiku for rapid tasks
+✅ **Remediation Success**: Auto-fixes applied successfully, manual interventions documented
