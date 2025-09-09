@@ -17,8 +17,9 @@ argument-hint: [--simple|--force|--dry-run]
 ## Description
 
 Safely pushes changes to remote repository using advanced wave-based orchestration for comprehensive
-quality gates, auto-recovery, and CI/CD monitoring. Deploys specialized agents in three coordinated
-waves with automatic issue resolution between phases.
+quality gates, auto-recovery, and CI/CD monitoring. Automatically handles branch management, remote
+tracking, and deploys specialized agents in three coordinated waves with automatic issue resolution
+between phases.
 
 **CRITICAL**: This command NEVER uses `--no-verify`. Pre-push hooks are the last line of
 defense before code reaches the remote repository. If pre-push hooks fail, the issues must

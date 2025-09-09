@@ -19,7 +19,8 @@ argument-hint: [--lite|--full|component-name]
 ## Description
 
 Transform repository analysis from single-pass to progressive understanding through wave-based agent orchestration.
-Each wave builds upon previous insights, culminating in comprehensive repository context optimized for development needs.
+Analyze repository structure systematically, with each wave building upon previous insights, culminating in
+comprehensive repository context optimized for development needs.
 
 ## Wave-Based Orchestration Strategy
 
@@ -165,6 +166,8 @@ Output Optimization:
 - Architecture insights and recommendations
 
 ## Expected Output Formats
+
+**Output Format:** Wave-based analysis results presented in structured markdown format
 
 ### Lite Mode Output (--lite, <2 seconds)
 
