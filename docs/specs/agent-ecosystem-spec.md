@@ -168,7 +168,7 @@ graph TD
 #### 8. Operations Agents (7 agents - teal)
 
 - **Purpose**: Support, coordination, and strategic planning
-- **Members**: incident-commander, debugger, product-strategist, error-resolver, config-specialist,
+- **Members**: debugger, debugger, product-strategist, error-resolver, config-specialist,
   file-navigator, search-coordinator
 
 - **Tool Access**: Specialized operational tools

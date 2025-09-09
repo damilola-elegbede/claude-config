@@ -20,7 +20,7 @@ tool access to fulfill their responsibilities. They operate under the principle 
 ### 2. Read-Only Plus Analysis
 
 **Agents**: security-auditor, debugger, code-reviewer, codebase-analyst,
-performance-specialist, execution-evaluator
+performance-engineer, execution-evaluator
 **Tools Allowed**: [Glob, Grep, LS, Read, NotebookRead, WebFetch, WebSearch,
 Bash(read-only), TodoWrite]
 **Tools Forbidden**: [Edit, MultiEdit, Write, NotebookEdit]
@@ -123,7 +123,7 @@ data analysis capabilities.
 - **codebase-analyst**: Analyzes system architecture for reporting purposes
   only
 
-- **performance-specialist**: Analyzes and tests performance without modifying
+- **performance-engineer**: Analyzes and tests performance without modifying
   implementations
 
 - **execution-evaluator**: Verifies command execution results and validates

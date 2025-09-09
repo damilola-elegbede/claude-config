@@ -15,37 +15,37 @@ test_claude_md_paragraph_form() {
     local claude_file="$ORIGINAL_DIR/system-configs/CLAUDE.md"
     local has_markdown_headers=false
     local has_markdown_lists=false
-    
+
     echo "Validating CLAUDE.md is in paragraph form..."
-    
+
     # Check for markdown headers (##, ###, etc.)
     if grep -q "^##" "$claude_file"; then
         has_markdown_headers=true
         echo "❌ Found markdown headers (##) - file must be in paragraph form"
     fi
-    
+
     if grep -q "^###" "$claude_file"; then
         has_markdown_headers=true
         echo "❌ Found markdown headers (###) - file must be in paragraph form"
     fi
-    
+
     # Check for markdown bullet lists
     if grep -q "^- " "$claude_file" || grep -q "^\* " "$claude_file"; then
         has_markdown_lists=true
         echo "❌ Found markdown bullet lists - file must be in paragraph form"
     fi
-    
+
     # Check for numbered lists
     if grep -q "^[0-9]\+\. " "$claude_file"; then
         has_markdown_lists=true
         echo "❌ Found numbered lists - file must be in paragraph form"
     fi
-    
+
     if [ "$has_markdown_headers" = true ] || [ "$has_markdown_lists" = true ]; then
         echo "❌ CLAUDE.md contains markdown formatting - must be pure paragraph form"
         return 1
     fi
-    
+
     echo "✅ CLAUDE.md is in correct paragraph form (no markdown headers or lists)"
     return 0
 }
@@ -159,7 +159,7 @@ test_claude_md_effectiveness() {
 # Run all tests
 run_claude_md_tests() {
     echo "Testing CLAUDE.md validation..."
-    
+
     test_claude_md_exists && \
     test_claude_md_paragraph_form && \
     test_claude_md_effectiveness

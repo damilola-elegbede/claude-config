@@ -24,7 +24,7 @@ with enterprise-grade security and reliability.
 - `/predict/resource-optimization` - Resource allocation optimization
 - `/predict/failure-prevention` - System failure prevention
 - `/predict/workload-forecast` - Agent workload forecasting
-```text
+```
 
     </category>
 
@@ -35,7 +35,7 @@ with enterprise-grade security and reliability.
 - `/models/{id}/deploy` - Model deployment management
 - `/models/{id}/metrics` - Model performance metrics
 - `/models/{id}/drift` - Model drift analysis
-```text
+```
 
     </category>
 
@@ -46,7 +46,7 @@ with enterprise-grade security and reliability.
 - `/analytics/trends` - Historical trend analysis
 - `/analytics/insights` - AI-generated insights
 - `/analytics/recommendations` - Optimization recommendations
-```text
+```
 
     </category>
 
@@ -57,7 +57,7 @@ with enterprise-grade security and reliability.
 - `/metrics` - Prometheus metrics endpoint
 - `/status` - System status and uptime
 - `/alerts` - Alert management
-```text
+```
 
     </category>
   </service-endpoints>
@@ -74,7 +74,7 @@ with enterprise-grade security and reliability.
 - RSA256 signing with rotation every 24 hours
 - Role-based access control (RBAC) integration
 - Automatic refresh token mechanism
-```text
+```
 
     </method>
 
@@ -85,7 +85,7 @@ with enterprise-grade security and reliability.
 - Scoped permissions per service credential
 - Rate limiting by service credential
 - Audit logging for all service credential usage
-```text
+```
 
     </method>
   </auth-methods>
@@ -97,7 +97,7 @@ with enterprise-grade security and reliability.
 - Standard prediction endpoints
 - Basic analytics queries
 - Model status checks
-```text
+```
 
     </tier>
 
@@ -107,7 +107,7 @@ with enterprise-grade security and reliability.
 - High-frequency prediction requests
 - Bulk analytics operations
 - Real-time streaming endpoints
-```text
+```
 
     </tier>
 
@@ -117,7 +117,7 @@ with enterprise-grade security and reliability.
 - Unlimited prediction requests
 - Priority queue processing
 - Dedicated infrastructure resources
-```text
+```
 
     </tier>
   </rate-limiting>
@@ -137,7 +137,7 @@ with enterprise-grade security and reliability.
 Authorization: Bearer {jwt_token}
 Content-Type: application/json
 X-Request-ID: {unique_request_id}
-```text
+```
 
     </headers>
 
@@ -162,7 +162,7 @@ X-Request-ID: {unique_request_id}
     "deployment_version": "v2.1.3"
   }
 }
-```text
+```
 
     </request-body>
   </request-specification>
@@ -209,7 +209,7 @@ X-Request-ID: {unique_request_id}
     "cached": false
   }
 }
-```text
+```
 
     </success-response>
 
@@ -226,7 +226,7 @@ X-Request-ID: {unique_request_id}
   },
   "request_id": "req_12345abcdef"
 }
-```text
+```
 
       </error>
 
@@ -241,7 +241,7 @@ X-Request-ID: {unique_request_id}
   "remaining": 0,
   "reset_time": "2024-01-15T15:30:00Z"
 }
-```text
+```
 
       </error>
     </error-responses>
@@ -286,7 +286,7 @@ X-Request-ID: {unique_request_id}
     "availability_requirement": 0.999
   }
 }
-```text
+```
 
     </request-body>
   </request-specification>
@@ -343,7 +343,7 @@ X-Request-ID: {unique_request_id}
     }
   ]
 }
-```text
+```
 
     </success-response>
   </response-specification>
@@ -373,7 +373,7 @@ X-Request-ID: {unique_request_id}
   "time_horizons": [15, 60, 240, 1440],
   "severity_threshold": 0.7
 }
-```text
+```
 
     </request-body>
   </request-specification>
@@ -435,7 +435,7 @@ X-Request-ID: {unique_request_id}
     }
   }
 }
-```text
+```
 
     </success-response>
   </response-specification>
@@ -457,7 +457,7 @@ X-Request-ID: {unique_request_id}
     "backend-staff",
     "frontend-architect",
     "ml-engineer",
-    "performance-specialist"
+    "performance-engineer"
   ],
   "historical_context": {
     "seasonal_patterns": true,
@@ -475,7 +475,8 @@ X-Request-ID: {unique_request_id}
     "weekend_factor": 0.3
   }
 }
-```text
+```
+
     </request-body>
   </request-specification>
 
@@ -495,7 +496,7 @@ X-Request-ID: {unique_request_id}
           "backend-staff": 12,
           "frontend-architect": 8,
           "ml-engineer": 6,
-          "performance-specialist": 3
+          "performance-engineer": 3
         }
       },
       {
@@ -506,7 +507,7 @@ X-Request-ID: {unique_request_id}
           "backend-staff": 14,
           "frontend-architect": 9,
           "ml-engineer": 7,
-          "performance-specialist": 4
+          "performance-engineer": 4
         }
       }
     ],
@@ -545,7 +546,8 @@ X-Request-ID: {unique_request_id}
     }
   }
 }
-```yaml
+```
+
     </success-response>
   </response-specification>
 </api-endpoint>
@@ -562,7 +564,7 @@ X-Request-ID: {unique_request_id}
 
 ```http
 ?status=active&type=prediction&limit=50&offset=0
-```text
+```
 
     </query-parameters>
   </request-specification>
@@ -605,7 +607,8 @@ X-Request-ID: {unique_request_id}
     "has_next": false
   }
 }
-```yaml
+```
+
     </success-response>
   </response-specification>
 </api-endpoint>
@@ -620,7 +623,7 @@ X-Request-ID: {unique_request_id}
 
 ```http
 {id}: bottleneck_predictor_v1.2.0
-```text
+```
 
     </path-parameters>
 
@@ -646,7 +649,8 @@ X-Request-ID: {unique_request_id}
     "gpu_request": 0
   }
 }
-```text
+```
+
     </request-body>
   </request-specification>
 
@@ -670,7 +674,8 @@ X-Request-ID: {unique_request_id}
     "metrics_dashboard": "https://grafana.claude.local/d/model-deployment/deploy_789xyz"
   }
 }
-```yaml
+```
+
     </success-response>
   </response-specification>
 </api-endpoint>
@@ -684,8 +689,8 @@ X-Request-ID: {unique_request_id}
     <query-parameters>
 
 ```http
-      ?start_time=2024-01-14T00:00:00Z&end_time=2024-01-15T00:00:00Z&granularity=hourly
-```text
+?start_time=2024-01-14T00:00:00Z&end_time=2024-01-15T00:00:00Z&granularity=hourly
+```
 
     </query-parameters>
   </request-specification>
@@ -693,55 +698,56 @@ X-Request-ID: {unique_request_id}
   <response-specification>
     <success-response code="200">
 
-      ```json
-      {
-        "model_id": "bottleneck_predictor_v1.2.0",
-        "time_period": {
-          "start": "2024-01-14T00:00:00Z",
-          "end": "2024-01-15T00:00:00Z",
-          "granularity": "hourly"
-        },
-        "performance_metrics": {
-          "accuracy": {
-            "current": 0.961,
-            "trend": "stable",
-            "time_series": [
-              {"timestamp": "2024-01-14T00:00:00Z", "value": 0.958},
-              {"timestamp": "2024-01-14T01:00:00Z", "value": 0.962}
-            ]
-          },
-          "latency": {
-            "p50": 32,
-            "p95": 67,
-            "p99": 89,
-            "time_series": [
-              {"timestamp": "2024-01-14T00:00:00Z", "p99": 85},
-              {"timestamp": "2024-01-14T01:00:00Z", "p99": 92}
-            ]
-          },
-          "throughput": {
-            "requests_per_second": 145,
-            "peak_rps": 387,
-            "time_series": [
-              {"timestamp": "2024-01-14T00:00:00Z", "rps": 92},
-              {"timestamp": "2024-01-14T01:00:00Z", "rps": 156}
-            ]
-          },
-          "error_rates": {
-            "total_error_rate": 0.003,
-            "prediction_errors": 0.001,
-            "system_errors": 0.002
-          }
-        },
-        "business_metrics": {
-          "predictions_made": 523847,
-          "bottlenecks_prevented": 23,
-          "cost_savings_usd": 12450.67,
-          "false_positive_rate": 0.024,
-          "false_negative_rate": 0.008
-        }
-      }
-```yaml
+```json
+{
+  "model_id": "bottleneck_predictor_v1.2.0",
+  "time_period": {
+    "start": "2024-01-14T00:00:00Z",
+    "end": "2024-01-15T00:00:00Z",
+    "granularity": "hourly"
+  },
+  "performance_metrics": {
+    "accuracy": {
+      "current": 0.961,
+      "trend": "stable",
+      "time_series": [
+        {"timestamp": "2024-01-14T00:00:00Z", "value": 0.958},
+        {"timestamp": "2024-01-14T01:00:00Z", "value": 0.962}
+      ]
+    },
+    "latency": {
+      "p50": 32,
+      "p95": 67,
+      "p99": 89,
+      "time_series": [
+        {"timestamp": "2024-01-14T00:00:00Z", "p99": 85},
+        {"timestamp": "2024-01-14T01:00:00Z", "p99": 92}
+      ]
+    },
+    "throughput": {
+      "requests_per_second": 145,
+      "peak_rps": 387,
+      "time_series": [
+        {"timestamp": "2024-01-14T00:00:00Z", "rps": 92},
+        {"timestamp": "2024-01-14T01:00:00Z", "rps": 156}
+      ]
+    },
+    "error_rates": {
+      "total_error_rate": 0.003,
+      "prediction_errors": 0.001,
+      "system_errors": 0.002
+    }
+  },
+  "business_metrics": {
+    "predictions_made": 523847,
+    "bottlenecks_prevented": 23,
+    "cost_savings_usd": 12450.67,
+    "false_positive_rate": 0.024,
+    "false_negative_rate": 0.008
+  }
+}
+```
+
     </success-response>
   </response-specification>
 </api-endpoint>
@@ -757,8 +763,8 @@ X-Request-ID: {unique_request_id}
     <query-parameters>
 
 ```http
-      ?system_id=prod-cluster-01&time_range=7d&metrics=cpu,memory,throughput&include_predictions=true
-```text
+?system_id=prod-cluster-01&time_range=7d&metrics=cpu,memory,throughput&include_predictions=true
+```
 
     </query-parameters>
   </request-specification>
@@ -766,77 +772,78 @@ X-Request-ID: {unique_request_id}
   <response-specification>
     <success-response code="200">
 
-      ```json
+```json
+{
+  "system_id": "prod-cluster-01",
+  "analysis_period": {
+    "start": "2024-01-08T00:00:00Z",
+    "end": "2024-01-15T00:00:00Z",
+    "duration_days": 7
+  },
+  "performance_summary": {
+    "overall_health_score": 0.87,
+    "availability": 0.9994,
+    "average_response_time": 52,
+    "peak_concurrent_agents": 28,
+    "total_tasks_completed": 15672
+  },
+  "resource_utilization": {
+    "cpu": {
+      "average": 0.64,
+      "peak": 0.91,
+      "efficiency_score": 0.78,
+      "bottlenecks_detected": 3
+    },
+    "memory": {
+      "average": 0.71,
+      "peak": 0.88,
+      "efficiency_score": 0.82,
+      "memory_leaks_detected": 0
+    },
+    "network": {
+      "average_bandwidth_mbps": 245,
+      "peak_bandwidth_mbps": 892,
+      "packet_loss_rate": 0.0001
+    }
+  },
+  "agent_performance": {
+    "top_performers": [
       {
-        "system_id": "prod-cluster-01",
-        "analysis_period": {
-          "start": "2024-01-08T00:00:00Z",
-          "end": "2024-01-15T00:00:00Z",
-          "duration_days": 7
-        },
-        "performance_summary": {
-          "overall_health_score": 0.87,
-          "availability": 0.9994,
-          "average_response_time": 52,
-          "peak_concurrent_agents": 28,
-          "total_tasks_completed": 15672
-        },
-        "resource_utilization": {
-          "cpu": {
-            "average": 0.64,
-            "peak": 0.91,
-            "efficiency_score": 0.78,
-            "bottlenecks_detected": 3
-          },
-          "memory": {
-            "average": 0.71,
-            "peak": 0.88,
-            "efficiency_score": 0.82,
-            "memory_leaks_detected": 0
-          },
-          "network": {
-            "average_bandwidth_mbps": 245,
-            "peak_bandwidth_mbps": 892,
-            "packet_loss_rate": 0.0001
-          }
-        },
-        "agent_performance": {
-          "top_performers": [
-            {
-              "agent_type": "backend-staff",
-              "efficiency_score": 0.94,
-              "avg_task_time": 187,
-              "success_rate": 0.989
-            }
-          ],
-          "performance_issues": [
-            {
-              "agent_type": "ml-engineer",
-              "issue": "increased_memory_usage",
-              "impact": "moderate",
-              "recommendation": "review_model_loading_strategy"
-            }
-          ]
-        },
-        "predictions": {
-          "next_24h_load": [0.67, 0.82, 0.78, 0.45],
-          "expected_bottlenecks": [
-            {
-              "resource": "memory",
-              "probability": 0.23,
-              "estimated_time": "2024-01-16T14:30:00Z"
-            }
-          ],
-          "optimization_opportunities": [
-            {
-              "type": "resource_reallocation",
-              "potential_savings": "15% CPU reduction",
-              "implementation_effort": "low"
-            }
-          ]
-        }
+        "agent_type": "backend-staff",
+        "efficiency_score": 0.94,
+        "avg_task_time": 187,
+        "success_rate": 0.989
       }
-```yaml
+    ],
+    "performance_issues": [
+      {
+        "agent_type": "ml-engineer",
+        "issue": "increased_memory_usage",
+        "impact": "moderate",
+        "recommendation": "review_model_loading_strategy"
+      }
+    ]
+  },
+  "predictions": {
+    "next_24h_load": [0.67, 0.82, 0.78, 0.45],
+    "expected_bottlenecks": [
+      {
+        "resource": "memory",
+        "probability": 0.23,
+        "estimated_time": "2024-01-16T14:30:00Z"
+      }
+    ],
+    "optimization_opportunities": [
+      {
+        "type": "resource_reallocation",
+        "potential_savings": "15% CPU reduction",
+        "implementation_effort": "low"
+      }
+    ]
+  }
+}
+```
+
     </success-response>
   </response-specification>
 </api-endpoint>
@@ -849,80 +856,79 @@ X-Request-ID: {unique_request_id}
   <response-specification>
     <success-response code="200">
 
-      ```json
-      {
-        "insights": [
-          {
-            "id": "insight_001",
-            "type": "performance_optimization",
-            "priority": "high",
-            "confidence": 0.92,
-            "title": "Memory Allocation Pattern Optimization Opportunity",
-            "description": "Analysis reveals that ml-engineer agents are allocating 40% more memory than necessary during model inference, " +
-                           "leading to resource waste and OOM conditions.",
-            "impact": {
-              "performance_improvement": "18%",
-              "cost_reduction": "$1,200/month",
-              "reliability_increase": "12%"
-            },
-            "recommendations": [
-              {
-                "action": "implement_memory_pooling",
-                "description": "Implement shared memory pools for model inference",
-                "effort": "medium",
-                "timeline": "2 weeks"
-              },
-              {
-                "action": "optimize_model_loading",
-                "description": "Use lazy loading for infrequently used models",
-                "effort": "low",
-                "timeline": "3 days"
-              }
-            ],
-            "supporting_data": {
-              "affected_agents": 12,
-              "memory_waste_gb": 48,
-              "peak_hours_impact": "09:00-17:00 UTC"
-            }
-          },
-          {
-            "id": "insight_002",
-            "type": "capacity_planning",
-            "priority": "medium",
-            "confidence": 0.87,
-            "title": "Predictive Scaling Opportunity",
-            "description": "Historical patterns show 23% of scaling events could be predicted 15 minutes in advance, " +
-                           "enabling proactive allocation.",
-            "recommendations": [
-              {
-                "action": "enable_predictive_autoscaling",
-                "description": "Configure Kubernetes HPA with prediction-based triggers",
-                "effort": "high",
-                "timeline": "4 weeks"
-              }
-            ]
-          }
-        ],
-        "trend_analysis": {
-          "emerging_patterns": [
-            {
-              "pattern": "increased_ml_workload_complexity",
-              "description": "ML inference tasks showing 15% increase in computational requirements",
-              "trend_strength": 0.76,
-              "projected_impact": "Resource requirements will increase by 25% over next 3 months"
-            }
-          ],
-          "anomalies_detected": [
-            {
-              "anomaly": "unusual_network_traffic_pattern",
-              "severity": "low",
-              "description": "10% increase in inter-service communication during off-peak hours",
-              "investigation_required": true
-            }
-          ]
+```json
+{
+  "insights": [
+    {
+      "id": "insight_001",
+      "type": "performance_optimization",
+      "priority": "high",
+      "confidence": 0.92,
+      "title": "Memory Allocation Pattern Optimization Opportunity",
+      "description": "Analysis reveals that ml-engineer agents are allocating 40% more memory than necessary during model inference, leading to resource waste and OOM conditions.",
+      "impact": {
+        "performance_improvement": "18%",
+        "cost_reduction": "$1,200/month",
+        "reliability_increase": "12%"
+      },
+      "recommendations": [
+        {
+          "action": "implement_memory_pooling",
+          "description": "Implement shared memory pools for model inference",
+          "effort": "medium",
+          "timeline": "2 weeks"
+        },
+        {
+          "action": "optimize_model_loading",
+          "description": "Use lazy loading for infrequently used models",
+          "effort": "low",
+          "timeline": "3 days"
         }
+      ],
+      "supporting_data": {
+        "affected_agents": 12,
+        "memory_waste_gb": 48,
+        "peak_hours_impact": "09:00-17:00 UTC"
       }
-```yaml
+    },
+    {
+      "id": "insight_002",
+      "type": "capacity_planning",
+      "priority": "medium",
+      "confidence": 0.87,
+      "title": "Predictive Scaling Opportunity",
+      "description": "Historical patterns show 23% of scaling events could be predicted 15 minutes in advance, enabling proactive allocation.",
+      "recommendations": [
+        {
+          "action": "enable_predictive_autoscaling",
+          "description": "Configure Kubernetes HPA with prediction-based triggers",
+          "effort": "high",
+          "timeline": "4 weeks"
+        }
+      ]
+    }
+  ],
+  "trend_analysis": {
+    "emerging_patterns": [
+      {
+        "pattern": "increased_ml_workload_complexity",
+        "description": "ML inference tasks showing 15% increase in computational requirements",
+        "trend_strength": 0.76,
+        "projected_impact": "Resource requirements will increase by 25% over next 3 months"
+      }
+    ],
+    "anomalies_detected": [
+      {
+        "anomaly": "unusual_network_traffic_pattern",
+        "severity": "low",
+        "description": "10% increase in inter-service communication during off-peak hours",
+        "investigation_required": true
+      }
+    ]
+  }
+}
+```
+
     </success-response>
   </response-specification>
 </api-endpoint>
@@ -936,94 +942,100 @@ X-Request-ID: {unique_request_id}
 
 ```bash
 pip install claude-ml-client
-```text
+```
 
   </installation>
 
   <usage-examples>
     <example name="basic-prediction">
-      ```python
-      from claude_ml import MLClient
-      import os
 
-      # Initialize client with environment variable
-      # Set ML_SERVICE_KEY in your environment
-      auth_key = os.getenv("ML_SERVICE_KEY")
-      client = MLClient(
-          auth_key=auth_key,
-          base_url="https://ml-api.claude.local/v1"
-      )
+```python
+from claude_ml import MLClient
+import os
 
-      # Performance bottleneck prediction
-      prediction = await client.predict_bottleneck(
-          system_id="prod-cluster-01",
-          features={
-              "cpu_utilization": [65.2, 72.1, 68.5],
-              "memory_usage": [78.9, 82.3, 80.1],
-              "disk_io": [1200, 1350, 1275]
-          },
-          horizon_minutes=30
-      )
+# Initialize client with environment variable
+# Set ML_SERVICE_KEY in your environment
+auth_key = os.getenv("ML_SERVICE_KEY")
+client = MLClient(
+    auth_key=auth_key,
+    base_url="https://ml-api.claude.local/v1"
+)
 
-      print(f"Bottleneck probability: {prediction.probability}")
-      print(f"Time to bottleneck: {prediction.time_to_bottleneck} minutes")
+# Performance bottleneck prediction
+prediction = await client.predict_bottleneck(
+    system_id="prod-cluster-01",
+    features={
+        "cpu_utilization": [65.2, 72.1, 68.5],
+        "memory_usage": [78.9, 82.3, 80.1],
+        "disk_io": [1200, 1350, 1275]
+    },
+    horizon_minutes=30
+)
 
-      # Resource optimization
-      optimization = await client.optimize_resources(
-          system_id="prod-cluster-01",
-          current_allocation={
-              "cpu_cores": 64,
-              "memory_gb": 256
-          },
-          objectives={
-              "minimize_cost": 0.3,
-              "maximize_performance": 0.7
-          }
-      )
+print(f"Bottleneck probability: {prediction.probability}")
+print(f"Time to bottleneck: {prediction.time_to_bottleneck} minutes")
 
-      for recommendation in optimization.recommendations:
-          print(f"Action: {recommendation.action}")
-          print(f"Expected impact: {recommendation.expected_impact}")
-```yaml
+# Resource optimization
+optimization = await client.optimize_resources(
+    system_id="prod-cluster-01",
+    current_allocation={
+        "cpu_cores": 64,
+        "memory_gb": 256
+    },
+    objectives={
+        "minimize_cost": 0.3,
+        "maximize_performance": 0.7
+    }
+)
+
+for recommendation in optimization.recommendations:
+    print(f"Action: {recommendation.action}")
+    print(f"Expected impact: {recommendation.expected_impact}")
+```
+
     </example>
 
     <example name="streaming-predictions">
-      ```python
-      # Real-time streaming predictions
-      async def stream_predictions():
-          async for prediction in client.stream_predictions(
-              system_id="prod-cluster-01",
-              prediction_types=["bottleneck", "failure_prevention"],
-              update_interval=30
-          ):
-              if prediction.type == "bottleneck" and prediction.probability > 0.8:
-                  await handle_bottleneck_alert(prediction)
-              elif prediction.type == "failure_prevention" and prediction.severity == "critical":
-                  await handle_failure_alert(prediction)
 
-      # Run streaming predictions
-      asyncio.run(stream_predictions())
-```yaml
+```python
+# Real-time streaming predictions
+async def stream_predictions():
+    async for prediction in client.stream_predictions(
+        system_id="prod-cluster-01",
+        prediction_types=["bottleneck", "failure_prevention"],
+        update_interval=30
+    ):
+        if prediction.type == "bottleneck" and prediction.probability > 0.8:
+            await handle_bottleneck_alert(prediction)
+        elif prediction.type == "failure_prevention" and prediction.severity == "critical":
+            await handle_failure_alert(prediction)
+
+# Run streaming predictions
+asyncio.run(stream_predictions())
+```
+
     </example>
 
     <example name="batch-operations">
-      ```python
-      # Batch prediction operations
-      batch_requests = [
-          {
-              "system_id": f"cluster-{i:02d}",
-              "features": generate_features(f"cluster-{i:02d}")
-          }
-          for i in range(1, 11)
-      ]
 
-      # Process batch predictions
-      batch_results = await client.batch_predict_bottlenecks(batch_requests)
+```python
+# Batch prediction operations
+batch_requests = [
+    {
+        "system_id": f"cluster-{i:02d}",
+        "features": generate_features(f"cluster-{i:02d}")
+    }
+    for i in range(1, 11)
+]
 
-      for result in batch_results:
-          if result.prediction.probability > 0.7:
-              print(f"Alert: {result.system_id} - {result.prediction.probability:.2f}")
-```text
+# Process batch predictions
+batch_results = await client.batch_predict_bottlenecks(batch_requests)
+
+for result in batch_results:
+    if result.prediction.probability > 0.7:
+        print(f"Alert: {result.system_id} - {result.prediction.probability:.2f}")
+```
+
     </example>
   </usage-examples>
 
@@ -1050,7 +1062,7 @@ except AuthenticationError as e:
     print(f"Authentication failed: {e.message}")
 except MLClientError as e:
     print(f"General client error: {e}")
-```yaml
+```
 
   </error-handling>
 </client-library>
@@ -1062,74 +1074,78 @@ except MLClientError as e:
 
 ```bash
 npm install claude-ml-client
-```text
+```
 
   </installation>
 
   <usage-examples>
     <example name="basic-usage">
-      ```javascript
-      const { MLClient } = require('claude-ml-client');
 
-      const client = new MLClient({
-          apiKey: process.env.ML_API_KEY,
-          baseUrl: 'https://ml-api.claude.local/v1'
-      });
+```javascript
+const { MLClient } = require('claude-ml-client');
 
-      // Performance prediction
-      async function checkSystemHealth() {
-          try {
-              const prediction = await client.predictBottleneck({
-                  systemId: 'prod-cluster-01',
-                  features: {
-                      cpuUtilization: [65.2, 72.1, 68.5],
-                      memoryUsage: [78.9, 82.3, 80.1],
-                      diskIo: [1200, 1350, 1275]
-                  },
-                  horizonMinutes: 30
-              });
+const client = new MLClient({
+    apiKey: process.env.ML_API_KEY,
+    baseUrl: 'https://ml-api.claude.local/v1'
+});
 
-              if (prediction.probability > 0.8) {
-                  console.log('High bottleneck probability detected!');
-                  console.log(`Recommendations: ${prediction.recommendations}`);
-              }
+// Performance prediction
+async function checkSystemHealth() {
+    try {
+        const prediction = await client.predictBottleneck({
+            systemId: 'prod-cluster-01',
+            features: {
+                cpuUtilization: [65.2, 72.1, 68.5],
+                memoryUsage: [78.9, 82.3, 80.1],
+                diskIo: [1200, 1350, 1275]
+            },
+            horizonMinutes: 30
+        });
 
-          } catch (error) {
-              if (error.name === 'RateLimitError') {
-                  console.log(`Rate limited. Retry after: ${error.retryAfter}s`);
-              } else {
-                  console.error('Prediction failed:', error.message);
-              }
-          }
-      }
+        if (prediction.probability > 0.8) {
+            console.log('High bottleneck probability detected!');
+            console.log(`Recommendations: ${prediction.recommendations}`);
+        }
 
-      checkSystemHealth();
-```text
+    } catch (error) {
+        if (error.name === 'RateLimitError') {
+            console.log(`Rate limited. Retry after: ${error.retryAfter}s`);
+        } else {
+            console.error('Prediction failed:', error.message);
+        }
+    }
+}
+
+checkSystemHealth();
+```
+
     </example>
 
     <example name="websocket-streaming">
-      ```javascript
-      // Real-time WebSocket streaming
-      const stream = client.createPredictionStream({
-          systemId: 'prod-cluster-01',
-          predictionTypes: ['bottleneck', 'failure_prevention'],
-          updateInterval: 30
-      });
 
-      stream.on('prediction', (prediction) => {
-          console.log(`New prediction: ${prediction.type}`);
+```javascript
+// Real-time WebSocket streaming
+const stream = client.createPredictionStream({
+    systemId: 'prod-cluster-01',
+    predictionTypes: ['bottleneck', 'failure_prevention'],
+    updateInterval: 30
+});
 
-          if (prediction.type === 'bottleneck' && prediction.probability > 0.8) {
-              handleBottleneckAlert(prediction);
-          }
-      });
+stream.on('prediction', (prediction) => {
+    console.log(`New prediction: ${prediction.type}`);
 
-      stream.on('error', (error) => {
-          console.error('Stream error:', error);
-      });
+    if (prediction.type === 'bottleneck' && prediction.probability > 0.8) {
+        handleBottleneckAlert(prediction);
+    }
+});
 
-      stream.connect();
-```yaml
+stream.on('error', (error) => {
+    console.error('Stream error:', error);
+});
+
+stream.connect();
+```
+
     </example>
   </usage-examples>
 </client-library>
@@ -1143,59 +1159,63 @@ npm install claude-ml-client
 
   <response-specification>
     <success-response code="200">
-      ```json
-      {
-        "status": "healthy",
-        "timestamp": "2024-01-15T10:30:00Z",
-        "version": "1.0.0",
-        "uptime": 259200,
-        "services": {
-          "prediction_service": {
-            "status": "healthy",
-            "response_time_ms": 45,
-            "last_check": "2024-01-15T10:29:55Z"
-          },
-          "model_registry": {
-            "status": "healthy",
-            "response_time_ms": 12,
-            "models_loaded": 8
-          },
-          "feature_store": {
-            "status": "healthy",
-            "connection_pool_size": 20,
-            "cache_hit_rate": 0.89
-          },
-          "database": {
-            "status": "healthy",
-            "connection_count": 15,
-            "query_latency_p95": 23
-          }
-        },
-        "resource_usage": {
-          "cpu_percent": 34.5,
-          "memory_percent": 67.2,
-          "disk_usage_percent": 45.1
-        }
-      }
-```text
+
+```json
+{
+  "status": "healthy",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "version": "1.0.0",
+  "uptime": 259200,
+  "services": {
+    "prediction_service": {
+      "status": "healthy",
+      "response_time_ms": 45,
+      "last_check": "2024-01-15T10:29:55Z"
+    },
+    "model_registry": {
+      "status": "healthy",
+      "response_time_ms": 12,
+      "models_loaded": 8
+    },
+    "feature_store": {
+      "status": "healthy",
+      "connection_pool_size": 20,
+      "cache_hit_rate": 0.89
+    },
+    "database": {
+      "status": "healthy",
+      "connection_count": 15,
+      "query_latency_p95": 23
+    }
+  },
+  "resource_usage": {
+    "cpu_percent": 34.5,
+    "memory_percent": 67.2,
+    "disk_usage_percent": 45.1
+  }
+}
+```
+
     </success-response>
 
     <degraded-response code="200">
-      ```json
-      {
-        "status": "degraded",
-        "timestamp": "2024-01-15T10:30:00Z",
-        "version": "1.0.0",
-        "issues": [
-          {
-            "service": "feature_store",
-            "issue": "high_latency",
-            "details": "Cache response time exceeding 100ms threshold",
-            "impact": "minor"
-          }
-        ]
-      }
-```yaml
+
+```json
+{
+  "status": "degraded",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "version": "1.0.0",
+  "issues": [
+    {
+      "service": "feature_store",
+      "issue": "high_latency",
+      "details": "Cache response time exceeding 100ms threshold",
+      "impact": "minor"
+    }
+  ]
+}
+```
+
     </degraded-response>
   </response-specification>
 </api-endpoint>
@@ -1209,32 +1229,33 @@ npm install claude-ml-client
     <metrics-format>
 
 ```text
-      # HELP ml_predictions_total Total number of predictions made
-      # TYPE ml_predictions_total counter
-      ml_predictions_total{model="bottleneck_predictor",version="v1.2.0"} 15234
+# HELP ml_predictions_total Total number of predictions made
+# TYPE ml_predictions_total counter
+ml_predictions_total{model="bottleneck_predictor",version="v1.2.0"} 15234
 
-      # HELP ml_prediction_duration_seconds Time spent on predictions
-      # TYPE ml_prediction_duration_seconds histogram
-      ml_prediction_duration_seconds_bucket{model="bottleneck_predictor",le="0.01"} 1234
-      ml_prediction_duration_seconds_bucket{model="bottleneck_predictor",le="0.05"} 8901
-      ml_prediction_duration_seconds_bucket{model="bottleneck_predictor",le="0.1"} 12456
-      ml_prediction_duration_seconds_sum{model="bottleneck_predictor"} 756.78
-      ml_prediction_duration_seconds_count{model="bottleneck_predictor"} 15234
+# HELP ml_prediction_duration_seconds Time spent on predictions
+# TYPE ml_prediction_duration_seconds histogram
+ml_prediction_duration_seconds_bucket{model="bottleneck_predictor",le="0.01"} 1234
+ml_prediction_duration_seconds_bucket{model="bottleneck_predictor",le="0.05"} 8901
+ml_prediction_duration_seconds_bucket{model="bottleneck_predictor",le="0.1"} 12456
+ml_prediction_duration_seconds_sum{model="bottleneck_predictor"} 756.78
+ml_prediction_duration_seconds_count{model="bottleneck_predictor"} 15234
 
-      # HELP ml_model_accuracy Current model accuracy
-      # TYPE ml_model_accuracy gauge
-      ml_model_accuracy{model="bottleneck_predictor",metric="overall"} 0.963
+# HELP ml_model_accuracy Current model accuracy
+# TYPE ml_model_accuracy gauge
+ml_model_accuracy{model="bottleneck_predictor",metric="overall"} 0.963
 
-      # HELP ml_api_requests_total Total API requests
-      # TYPE ml_api_requests_total counter
-      ml_api_requests_total{endpoint="/predict/bottleneck",status="200"} 14890
-      ml_api_requests_total{endpoint="/predict/bottleneck",status="400"} 23
-      ml_api_requests_total{endpoint="/predict/bottleneck",status="429"} 45
+# HELP ml_api_requests_total Total API requests
+# TYPE ml_api_requests_total counter
+ml_api_requests_total{endpoint="/predict/bottleneck",status="200"} 14890
+ml_api_requests_total{endpoint="/predict/bottleneck",status="400"} 23
+ml_api_requests_total{endpoint="/predict/bottleneck",status="429"} 45
 
-      # HELP ml_cache_hit_rate Cache hit rate for predictions
-      # TYPE ml_cache_hit_rate gauge
-      ml_cache_hit_rate 0.847
-```text
+# HELP ml_cache_hit_rate Cache hit rate for predictions
+# TYPE ml_cache_hit_rate gauge
+ml_cache_hit_rate 0.847
+```
+
     </metrics-format>
   </response-specification>
 </api-endpoint>

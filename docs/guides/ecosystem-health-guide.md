@@ -50,7 +50,7 @@ This triggers parallel execution of:
 - Category-specific auditors for each agent category
 - **codebase-analyst** for structural assessment
 - **security-auditor** for vulnerability checks
-- **performance-specialist** for efficiency metrics
+- **performance-engineer** for efficiency metrics
 
 #### Targeted Audits
 
@@ -293,7 +293,7 @@ def measure_agent_performance(agent):
 # List of agents to benchmark
 agents = [
     'backend-engineer', 'frontend-architect', 'test-engineer',
-    'security-auditor', 'performance-specialist'
+    'security-auditor', 'performance-engineer'
 ]
 
 # Run parallel performance tests
@@ -323,7 +323,7 @@ EXPECTED_CAPABILITIES = {
     'infrastructure': ['cloud', 'devops', 'cloud-network', 'kubernetes', 'monitoring'],
     'architecture': ['frontend-architect', 'api-architect', 'principal-architect'],
     'design': ['ui-designer'],
-    'quality': ['test', 'code-reviewer', 'performance-specialist', 'security-auditor'],
+    'quality': ['test', 'code-reviewer', 'performance-engineer', 'security-auditor'],
     'security': ['security-auditor', 'supply-chain-security'],
     'analysis': ['codebase-analyst', 'tech-writer'],
     'operations': ['incident-commander', 'production-reliability', 'database-evolution']
@@ -677,11 +677,11 @@ Create and maintain a capability matrix:
 |--------|-----------------|--------|---------|
 | Backend Development | ✅ Full | backend-engineer | Maintain |
 | Frontend Architecture | ✅ Full | frontend-architect | Maintain |
-| Mobile Development | ✅ Full | mobile-platform-engineer | Maintain |
+| Mobile Development | ✅ Full | mobile-engineer | Maintain |
 | Data Engineering | ✅ Full | data-platform-engineer | Maintain |
 | Cloud Infrastructure | ✅ Full | cloud-architect, cloud-network-architect | Maintain |
 | Security Operations | ✅ Full | security-auditor, supply-chain-security-engineer | Maintain |
-| Quality Assurance | ✅ Full | test-engineer, code-reviewer, performance-specialist | Maintain |
+| Quality Assurance | ✅ Full | test-engineer, code-reviewer, performance-engineer | Maintain |
 | System Architecture | ✅ Full | api-architect, principal-architect | Maintain |
 | UI/UX Design | ✅ Full | ui-designer | Maintain |
 | Operations | ✅ Full | incident-commander, production-reliability-engineer | Maintain |

@@ -200,7 +200,7 @@ After installation, your configuration structure will be:
 │   ├── codebase-analyst.md
 │   ├── debugger.md
 │   ├── devops.md
-│   ├── performance-specialist.md
+│   ├── performance-engineer.md
 │   ├── principal-architect.md
 │   ├── security-auditor.md
 │   ├── tech-writer.md

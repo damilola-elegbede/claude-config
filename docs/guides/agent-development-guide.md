@@ -97,7 +97,7 @@ Create comprehensive instructions following the structure demonstrated in existi
 3. **Consistency**: Follow existing naming patterns
    - Engineers: `backend-engineer`, `data-platform-engineer`, `ml-engineer`
    - Architects: `frontend-architect`, `cloud-network-architect`, `api-architect`
-   - Specialists: `performance-specialist`, `monitoring-specialist`, `supply-chain-security-engineer`
+   - Specialists: `performance-engineer`, `monitoring-specialist`, `supply-chain-security-engineer`
    - Administrators: `database-admin`, `kubernetes-admin`
 
 4. **Length**: Keep names concise but descriptive

@@ -2,7 +2,7 @@
 
 **Last Updated**: 2025-08-26
 **Documentation Coverage**: Comprehensive (Post-Reorganization)
-**Total Documents**: 37 essential documents organized into categories
+**Total Documents**: 42 essential documents organized into categories
 
 ---
 
@@ -22,6 +22,7 @@ docs/
 ├── api/            # API documentation
 ├── guides/         # General guides and tutorials
 ├── platform/       # Platform engineering docs
+├── ux/             # User experience and usability documentation
 └── specs/          # Technical specifications
 ```
 
@@ -43,6 +44,11 @@ docs/
 ### Initial Setup (`setup/`)
 
 - **[Installation Guide](setup/INSTALLATION.md)** - Complete installation instructions
+- **[Developer Environment Setup](setup/DEVELOPER_ENVIRONMENT_SETUP.md)** - Comprehensive development environment configuration
+- **[Container Infrastructure](setup/CONTAINER_INFRASTRUCTURE.md)** - Docker and Kubernetes deployment setup
+- **[Deployment Pipelines](setup/DEPLOYMENT_PIPELINES.md)** - CI/CD pipeline configuration and automation
+- **[Configuration Management](setup/CONFIGURATION_MANAGEMENT.md)** - Centralized configuration management and environment handling
+- **[Platform Setup Guide](setup/PLATFORM_SETUP_GUIDE.md)** - Platform-specific setup for macOS, Linux, Windows, and cloud platforms
 - **[Dashboard Service Setup](setup/DASHBOARD_SERVICE_SETUP.md)** - Dashboard configuration
 - **[Ngrok Setup](setup/NGROK_SETUP.md)** - Ngrok tunnel configuration
 - **[Audio Hook Setup](setup/AUDIO_HOOK_README.md)** - Audio notification configuration
@@ -104,6 +110,24 @@ docs/
 
 ---
 
+## 🎨 User Experience
+
+### UX Documentation (`ux/`)
+
+- **[UX Overview](ux/README.md)** - User experience guidelines and documentation structure
+- **[User Journey Maps](ux/user-journey-maps.md)** - Detailed workflows for common development tasks
+- **[Interface Guidelines](ux/interface-guidelines.md)** - Command interface design principles and best practices
+- **[Agent Coordination UX](ux/agent-coordination-ux.md)** - User experience patterns for multi-agent workflows
+- **[User-Centered Design Guide](ux/user-centered-design-guide.md)** - Design principles for Claude framework interactions
+- **[Command Interaction Patterns](ux/command-interaction-patterns.md)** - Optimal usage patterns for framework commands
+- **[Error Recovery Flows](ux/error-recovery-flows.md)** - User-friendly error handling and recovery procedures
+- **[Onboarding Experience](ux/onboarding-experience.md)** - New user introduction and learning paths
+- **[Usability Testing Guidelines](ux/usability-testing-guidelines.md)** - Methods for testing Claude framework usability
+- **[Accessibility Standards](ux/accessibility-standards.md)** - Inclusive design practices for all users
+- **[Performance Psychology](ux/performance-psychology.md)** - How system performance affects user experience
+
+---
+
 ## 🔌 API Documentation
 
 ### API References (`api/`)
@@ -160,12 +184,13 @@ docs/
 
 | Category | Documents | Purpose |
 |----------|-----------|---------|
-| Setup | 4 | Installation and configuration |
+| Setup | 9 | Installation, configuration, and infrastructure setup |
 | Development | 4 | Development guidelines and requirements |
 | Performance | 4 | Performance and parallelization |
 | Quality | 3 | Quality assurance and validation |
 | Architecture | 2 | System architecture and design |
 | Agents | 3 | Agent templates and categories |
+| UX | 11 | User experience, usability, and design guidelines |
 | API | 5 | API documentation and references |
 | Guides | 7 | Various guides and tutorials |
 | Integrations | 3 | External system integrations |
@@ -185,17 +210,38 @@ docs/
 ### By Task
 
 - **Setting up a new installation**: Start with [`setup/INSTALLATION.md`](setup/INSTALLATION.md)
+- **Configuring development environment**: See [`setup/DEVELOPER_ENVIRONMENT_SETUP.md`](setup/DEVELOPER_ENVIRONMENT_SETUP.md)
+- **Setting up containers**: Check [`setup/CONTAINER_INFRASTRUCTURE.md`](setup/CONTAINER_INFRASTRUCTURE.md)
+- **Configuring CI/CD pipelines**: Review [`setup/DEPLOYMENT_PIPELINES.md`](setup/DEPLOYMENT_PIPELINES.md)
+- **Managing configurations**: Use [`setup/CONFIGURATION_MANAGEMENT.md`](setup/CONFIGURATION_MANAGEMENT.md)
+- **Platform-specific setup**: Follow [`setup/PLATFORM_SETUP_GUIDE.md`](setup/PLATFORM_SETUP_GUIDE.md)
 - **Creating a new agent**: See [`agents/AGENT_TEMPLATE.md`](agents/AGENT_TEMPLATE.md)
 - **Understanding the architecture**: Read [`architecture/agent-ecosystem-architecture.md`](architecture/agent-ecosystem-architecture.md)
 - **Improving performance**: Check [`performance/PERFORMANCE.md`](performance/PERFORMANCE.md)
 - **API integration**: Refer to [`api/agent-ecosystem-api.md`](api/agent-ecosystem-api.md)
+- **Improving user experience**: Review [`ux/README.md`](ux/README.md) and related UX guides
+- **Understanding user workflows**: See [`ux/user-journey-maps.md`](ux/user-journey-maps.md)
+- **Testing framework usability**: Use [`ux/usability-testing-guidelines.md`](ux/usability-testing-guidelines.md)
+- **Ensuring accessibility**: Follow [`ux/accessibility-standards.md`](ux/accessibility-standards.md)
 
 ### By Role
 
-- **New Users**: Start with [QUICKSTART.md](../QUICKSTART.md)
-- **Developers**: Focus on `development/` and `guides/` directories
-- **System Administrators**: Check `setup/` and `platform/` directories
+- **New Users**: Start with [QUICKSTART.md](../QUICKSTART.md) and [`setup/INSTALLATION.md`](setup/INSTALLATION.md)
+- **Developers**: Focus on `setup/` (especially developer environment), `development/`, and `guides/` directories
+- **DevOps Engineers**: Check `setup/` (container and pipeline docs), `platform/` and infrastructure guides
+- **System Administrators**: Review `setup/` and `platform/` directories for deployment and configuration
 - **Contributors**: Read [CONTRIBUTING.md](../CONTRIBUTING.md) and `quality/` docs
+- **UX Researchers**: Explore `ux/` directory for user experience guidelines and testing methodologies
+- **Product Managers**: Review `ux/user-journey-maps.md` and `ux/user-centered-design-guide.md`
+- **UI/UX Designers**: Focus on `ux/interface-guidelines.md` and `ux/accessibility-standards.md`
+
+### By Environment
+
+- **Development Setup**: [`setup/DEVELOPER_ENVIRONMENT_SETUP.md`](setup/DEVELOPER_ENVIRONMENT_SETUP.md)
+- **Container Deployment**: [`setup/CONTAINER_INFRASTRUCTURE.md`](setup/CONTAINER_INFRASTRUCTURE.md)
+- **Production Deployment**: [`setup/DEPLOYMENT_PIPELINES.md`](setup/DEPLOYMENT_PIPELINES.md)
+- **Configuration Management**: [`setup/CONFIGURATION_MANAGEMENT.md`](setup/CONFIGURATION_MANAGEMENT.md)
+- **Platform-Specific Setup**: [`setup/PLATFORM_SETUP_GUIDE.md`](setup/PLATFORM_SETUP_GUIDE.md)
 
 ---
 

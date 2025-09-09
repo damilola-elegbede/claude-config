@@ -217,7 +217,7 @@ paths:
                         file: "api/users.js"
                         line: 67
                         description: "N+1 query problem detected"
-                        agent: "performance-specialist"
+                        agent: "performance-engineer"
                         autoFixable: false
                       - severity: "medium"
                         type: "testing"
@@ -394,7 +394,7 @@ components:
           items:
             type: string
           description: Specific agents to deploy for review
-          example: ["security-auditor", "performance-specialist"]
+          example: ["security-auditor", "performance-engineer"]
         strict:
           type: boolean
           default: false

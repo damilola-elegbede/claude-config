@@ -65,7 +65,7 @@ graph TB
     style CAT6 fill:#FFA500
     style CAT7 fill:#98FB98
     style CAT8 fill:#D3D3D3
-```yaml
+```
 
 ### Component Architecture
 
@@ -109,7 +109,7 @@ graph LR
     AC --> Task
 
     style SB fill:#ff6666,stroke:#333,stroke-width:2px
-```yaml
+```
 
 ## Agent Categorization Model
 
@@ -164,7 +164,7 @@ graph TD
     style Development fill:#90EE90
     style Infrastructure fill:#87CEEB
     style Quality fill:green
-```yaml
+```
 
 ### Category Capabilities Matrix
 
@@ -218,7 +218,7 @@ graph TB
 
     style SB fill:#ff0000,stroke:#000,stroke-width:3px
     style Claude fill:#90EE90
-```yaml
+```
 
 ### Security Layers
 
@@ -273,7 +273,7 @@ graph LR
     style Claude fill:#90EE90
     style Agent fill:#87CEEB
     style Forbidden fill:#ff6666
-```yaml
+```
 
 ### Access Control Implementation
 
@@ -318,7 +318,7 @@ graph TB
         P2 --> BE4[backend-engineer]
         P2 --> DOC[tech-writer]
     end
-```yaml
+```
 
 ### Execution Strategies
 
@@ -367,7 +367,7 @@ sequenceDiagram
     Claude->>Tools: Execute Actions
     Claude->>FileSystem: Write Files
     Claude->>User: Consolidated Response
-```yaml
+```
 
 ### State Management
 
@@ -390,7 +390,7 @@ graph LR
 
         C1 --> C2 --> C3 --> C4 --> C1
     end
-```yaml
+```
 
 ## Scalability and Performance
 
@@ -423,7 +423,7 @@ graph TB
         Claude --> B1
         Claude --> N1
     end
-```yaml
+```
 
 ### Performance Optimization Strategies
 
@@ -482,7 +482,7 @@ graph TD
     Claude --> WebHooks
     Claude --> Events
     Claude --> Plugins
-```yaml
+```
 
 ### Agent Creation Workflow
 

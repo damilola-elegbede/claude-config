@@ -1,0 +1,1307 @@
+openapi: 3.0.3
+info:
+  title: Claude Agent Management API
+  description: |
+    Comprehensive agent lifecycle management API for Claude Code CLI system.
+    Handles agent discovery, execution, monitoring, and configuration management
+    across the distributed agent ecosystem.
+  version: 1.0.0
+  contact:
+    name: Claude Agent Support
+    email: agents@anthropic.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://agents.claude.ai/api/v1
+    description: Production agent management server
+  - url: https://staging-agents.claude.ai/api/v1
+    description: Staging agent management server
+  - url: http://localhost:3002/api/v1
+    description: Local development server
+
+paths:
+  /agents:
+    get:
+      tags:
+        - Agent Discovery
+      summary: List available agents
+      description: |
+        Retrieve all available agents with their capabilities, status, and metadata.
+        Supports filtering by category, capabilities, and availability status.
+      operationId: listAgents
+      parameters:
+        - name: category
+          in: query
+          description: Filter agents by category
+          required: false
+          schema:
+            type: string
+            enum: [development, infrastructure, security, design, analysis, documentation]
+        - name: capability
+          in: query
+          description: Filter agents by specific capability
+          required: false
+          schema:
+            type: string
+            example: "code-review"
+        - name: status
+          in: query
+          description: Filter agents by availability status
+          required: false
+          schema:
+            type: string
+            enum: [available, busy, maintenance, offline]
+        - name: includeMetrics
+          in: query
+          description: Include performance metrics in response
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Agents retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentsResponse'
+              examples:
+                available_agents:
+                  summary: Available development agents
+                  value:
+                    agents:
+                      - id: "backend-engineer"
+                        name: "Backend Engineer"
+                        description: "Specialized in server-side development"
+                        category: "development"
+                        capabilities: ["api-development", "database-design", "microservices"]
+                        status: "available"
+                        version: "1.2.0"
+                        lastUpdated: "2024-01-15T10:00:00Z"
+                        tags: ["nodejs", "python", "golang"]
+                        metrics:
+                          successRate: 0.94
+                          avgExecutionTime: 45.2
+                          totalExecutions: 1250
+                      - id: "frontend-engineer"
+                        name: "Frontend Engineer"
+                        description: "Expert in modern frontend technologies"
+                        category: "development"
+                        capabilities: ["react-development", "ui-components", "state-management"]
+                        status: "available"
+                        version: "1.1.5"
+                        lastUpdated: "2024-01-14T16:30:00Z"
+                        tags: ["react", "typescript", "css"]
+                    totalCount: 28
+                    categories:
+                      development: 12
+                      infrastructure: 6
+                      security: 4
+                      design: 3
+                      analysis: 2
+                      documentation: 1
+
+  /agents/{agentId}:
+    get:
+      tags:
+        - Agent Discovery
+      summary: Get agent details
+      description: |
+        Retrieve detailed information about a specific agent including
+        configuration, capabilities, and current status.
+      operationId: getAgent
+      parameters:
+        - name: agentId
+          in: path
+          required: true
+          description: Agent identifier
+          schema:
+            type: string
+            example: "backend-engineer"
+      responses:
+        '200':
+          description: Agent details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentDetails'
+              examples:
+                backend_engineer:
+                  summary: Backend Engineer agent details
+                  value:
+                    id: "backend-engineer"
+                    name: "Backend Engineer"
+                    description: "Specialized backend development agent"
+                    category: "development"
+                    capabilities:
+                      - "api-development"
+                      - "database-design"
+                      - "microservices"
+                      - "performance-optimization"
+                    status: "available"
+                    version: "1.2.0"
+                    lastUpdated: "2024-01-15T10:00:00Z"
+                    configuration:
+                      timeout: 300
+                      maxConcurrency: 5
+                      resourceLimits:
+                        memory: "512MB"
+                        cpu: "1 core"
+                    dependencies:
+                      - "code-reviewer"
+                      - "test-engineer"
+                    tags: ["nodejs", "python", "golang", "docker"]
+                    metrics:
+                      successRate: 0.94
+                      avgExecutionTime: 45.2
+                      totalExecutions: 1250
+                      lastExecution: "2024-01-15T09:45:00Z"
+                    documentation:
+                      description: "Expert backend development capabilities"
+                      examples:
+                        - "API endpoint creation"
+                        - "Database schema design"
+                        - "Microservice architecture"
+        '404':
+          description: Agent not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /agents/{agentId}/execute:
+    post:
+      tags:
+        - Agent Execution
+      summary: Execute agent task
+      description: |
+        Execute a task using the specified agent with provided context and parameters.
+        Returns execution results and status information.
+      operationId: executeAgent
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: agentId
+          in: path
+          required: true
+          description: Agent identifier
+          schema:
+            type: string
+            example: "backend-engineer"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecutionRequest'
+            examples:
+              api_development:
+                summary: API development task
+                value:
+                  task: "Create REST API endpoint"
+                  context:
+                    projectType: "nodejs"
+                    framework: "express"
+                    database: "postgresql"
+                  parameters:
+                    endpoint: "/api/users"
+                    methods: ["GET", "POST", "PUT", "DELETE"]
+                    authentication: true
+                  files:
+                    - path: "/src/app.js"
+                      content: "// Existing application code"
+                  priority: "normal"
+                  timeout: 300
+              code_review:
+                summary: Code review task
+                value:
+                  task: "Review API implementation"
+                  context:
+                    language: "typescript"
+                    framework: "nestjs"
+                  files:
+                    - path: "/src/users/users.controller.ts"
+                      content: "// Controller implementation"
+                    - path: "/src/users/users.service.ts" 
+                      content: "// Service implementation"
+                  parameters:
+                    focusAreas: ["security", "performance", "maintainability"]
+                  priority: "high"
+      responses:
+        '202':
+          description: Task accepted for execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecutionAccepted'
+              examples:
+                task_accepted:
+                  summary: Task accepted
+                  value:
+                    accepted: true
+                    executionId: "exec_abc123def456"
+                    agentId: "backend-engineer"
+                    estimatedDuration: 45
+                    status: "queued"
+                    queuePosition: 2
+                    message: "Task queued for execution"
+        '400':
+          description: Invalid execution request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_task:
+                  summary: Invalid task parameters
+                  value:
+                    error:
+                      code: "INVALID_TASK_PARAMETERS"
+                      message: "Required task parameters are missing"
+                      details:
+                        missingFields: ["task", "context"]
+        '503':
+          description: Agent unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                agent_busy:
+                  summary: Agent currently busy
+                  value:
+                    error:
+                      code: "AGENT_UNAVAILABLE"
+                      message: "Agent is currently busy or in maintenance"
+                      details:
+                        status: "busy"
+                        estimatedAvailable: "2024-01-15T11:00:00Z"
+
+  /executions/{executionId}:
+    get:
+      tags:
+        - Agent Execution
+      summary: Get execution status
+      description: |
+        Retrieve the current status and results of an agent execution.
+        Includes progress updates, partial results, and completion status.
+      operationId: getExecution
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: executionId
+          in: path
+          required: true
+          description: Execution identifier
+          schema:
+            type: string
+            example: "exec_abc123def456"
+      responses:
+        '200':
+          description: Execution status retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecutionStatus'
+              examples:
+                completed_execution:
+                  summary: Completed execution
+                  value:
+                    executionId: "exec_abc123def456"
+                    agentId: "backend-engineer"
+                    status: "completed"
+                    startedAt: "2024-01-15T10:00:00Z"
+                    completedAt: "2024-01-15T10:03:42Z"
+                    duration: 222
+                    result:
+                      success: true
+                      output:
+                        filesCreated:
+                          - "/src/routes/users.js"
+                          - "/src/controllers/userController.js"
+                          - "/tests/users.test.js"
+                        summary: "Successfully created user API endpoints with authentication"
+                        codeQuality:
+                          score: 8.5
+                          issues: []
+                    metadata:
+                      tokensUsed: 1250
+                      resourceUsage:
+                        memory: "245MB"
+                        cpu: "0.3 cores"
+                in_progress_execution:
+                  summary: Execution in progress
+                  value:
+                    executionId: "exec_def456ghi789"
+                    agentId: "frontend-engineer"
+                    status: "running"
+                    startedAt: "2024-01-15T10:05:00Z"
+                    progress:
+                      percentage: 65
+                      currentStep: "Implementing component logic"
+                      stepsCompleted: ["Analysis", "Setup", "Component structure"]
+                      stepsRemaining: ["Testing", "Documentation"]
+                    partialResults:
+                      filesModified: 3
+                      testsPassing: 12
+        '404':
+          description: Execution not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - Agent Execution
+      summary: Cancel execution
+      description: |
+        Cancel a running or queued agent execution.
+        Returns the final status and any partial results.
+      operationId: cancelExecution
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: executionId
+          in: path
+          required: true
+          description: Execution identifier
+          schema:
+            type: string
+            example: "exec_abc123def456"
+      responses:
+        '200':
+          description: Execution cancelled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelExecutionResponse'
+              examples:
+                execution_cancelled:
+                  summary: Execution cancelled
+                  value:
+                    cancelled: true
+                    executionId: "exec_abc123def456"
+                    finalStatus: "cancelled"
+                    cancelledAt: "2024-01-15T10:02:30Z"
+                    partialResults:
+                      progress: 45
+                      filesModified: 1
+                    message: "Execution cancelled by user request"
+        '400':
+          description: Cannot cancel execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /executions:
+    get:
+      tags:
+        - Agent Execution
+      summary: List user executions
+      description: |
+        Retrieve execution history for the current user with filtering options.
+        Includes pagination and status filtering capabilities.
+      operationId: listExecutions
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: status
+          in: query
+          description: Filter by execution status
+          required: false
+          schema:
+            type: string
+            enum: [queued, running, completed, failed, cancelled]
+        - name: agentId
+          in: query
+          description: Filter by agent identifier
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Maximum number of results
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          description: Pagination offset
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: startDate
+          in: query
+          description: Filter executions after this date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          description: Filter executions before this date
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Executions retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecutionsResponse'
+              examples:
+                user_executions:
+                  summary: User execution history
+                  value:
+                    executions:
+                      - executionId: "exec_abc123def456"
+                        agentId: "backend-engineer"
+                        status: "completed"
+                        startedAt: "2024-01-15T10:00:00Z"
+                        completedAt: "2024-01-15T10:03:42Z"
+                        duration: 222
+                        success: true
+                        taskSummary: "Created user API endpoints"
+                      - executionId: "exec_def456ghi789"
+                        agentId: "frontend-engineer"
+                        status: "running"
+                        startedAt: "2024-01-15T10:05:00Z"
+                        progress: 65
+                        taskSummary: "Building user interface components"
+                    pagination:
+                      total: 156
+                      limit: 20
+                      offset: 0
+                      hasMore: true
+
+  /agents/{agentId}/health:
+    get:
+      tags:
+        - Agent Monitoring
+      summary: Check agent health
+      description: |
+        Retrieve health status and performance metrics for a specific agent.
+        Includes resource usage, error rates, and availability information.
+      operationId: getAgentHealth
+      parameters:
+        - name: agentId
+          in: path
+          required: true
+          description: Agent identifier
+          schema:
+            type: string
+            example: "backend-engineer"
+      responses:
+        '200':
+          description: Agent health status retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentHealth'
+              examples:
+                healthy_agent:
+                  summary: Healthy agent status
+                  value:
+                    agentId: "backend-engineer"
+                    status: "healthy"
+                    uptime: 86400
+                    lastHealthCheck: "2024-01-15T10:30:00Z"
+                    performance:
+                      successRate: 0.94
+                      avgResponseTime: 45.2
+                      errorRate: 0.06
+                      throughput: 25.5
+                    resources:
+                      memoryUsage: 245
+                      cpuUsage: 0.35
+                      activeConnections: 8
+                      queueLength: 2
+                    recentErrors: []
+                unhealthy_agent:
+                  summary: Agent with issues
+                  value:
+                    agentId: "ml-engineer"
+                    status: "degraded"
+                    uptime: 3600
+                    lastHealthCheck: "2024-01-15T10:30:00Z"
+                    performance:
+                      successRate: 0.72
+                      avgResponseTime: 125.8
+                      errorRate: 0.28
+                      throughput: 8.2
+                    resources:
+                      memoryUsage: 890
+                      cpuUsage: 0.95
+                      activeConnections: 15
+                      queueLength: 12
+                    recentErrors:
+                      - timestamp: "2024-01-15T10:25:00Z"
+                        error: "Memory allocation failed"
+                        count: 3
+                    alerts:
+                      - level: "warning"
+                        message: "High memory usage detected"
+                      - level: "critical"
+                        message: "Error rate above threshold"
+
+  /agents/{agentId}/configuration:
+    get:
+      tags:
+        - Agent Configuration
+      summary: Get agent configuration
+      description: |
+        Retrieve current configuration settings for a specific agent.
+        Includes runtime parameters, resource limits, and behavior settings.
+      operationId: getAgentConfiguration
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: agentId
+          in: path
+          required: true
+          description: Agent identifier
+          schema:
+            type: string
+            example: "backend-engineer"
+      responses:
+        '200':
+          description: Agent configuration retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentConfiguration'
+        '403':
+          description: Insufficient permissions to view configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    patch:
+      tags:
+        - Agent Configuration
+      summary: Update agent configuration
+      description: |
+        Update configuration settings for a specific agent.
+        Changes take effect immediately and may affect performance.
+      operationId: updateAgentConfiguration
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: agentId
+          in: path
+          required: true
+          description: Agent identifier
+          schema:
+            type: string
+            example: "backend-engineer"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfigurationUpdate'
+            examples:
+              performance_tuning:
+                summary: Performance optimization
+                value:
+                  timeout: 600
+                  maxConcurrency: 10
+                  resourceLimits:
+                    memory: "1GB"
+                    cpu: "2 cores"
+                  parameters:
+                    aggressiveOptimization: true
+                    cacheEnabled: true
+      responses:
+        '200':
+          description: Configuration updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigurationUpdateResponse'
+        '400':
+          description: Invalid configuration parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Insufficient permissions to modify configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    AgentsResponse:
+      type: object
+      required:
+        - agents
+        - totalCount
+      properties:
+        agents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Agent'
+        totalCount:
+          type: integer
+          description: Total number of available agents
+        categories:
+          type: object
+          additionalProperties:
+            type: integer
+          description: Agent count by category
+
+    Agent:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - category
+        - capabilities
+        - status
+        - version
+      properties:
+        id:
+          type: string
+          description: Unique agent identifier
+        name:
+          type: string
+          description: Human-readable agent name
+        description:
+          type: string
+          description: Agent description and purpose
+        category:
+          type: string
+          enum: [development, infrastructure, security, design, analysis, documentation]
+          description: Agent category
+        capabilities:
+          type: array
+          items:
+            type: string
+          description: List of agent capabilities
+        status:
+          type: string
+          enum: [available, busy, maintenance, offline]
+          description: Current agent status
+        version:
+          type: string
+          description: Agent version
+        lastUpdated:
+          type: string
+          format: date-time
+          description: Last update timestamp
+        tags:
+          type: array
+          items:
+            type: string
+          description: Technology tags
+        metrics:
+          $ref: '#/components/schemas/AgentMetrics'
+
+    AgentDetails:
+      allOf:
+        - $ref: '#/components/schemas/Agent'
+        - type: object
+          properties:
+            configuration:
+              $ref: '#/components/schemas/AgentConfiguration'
+            dependencies:
+              type: array
+              items:
+                type: string
+              description: Required or recommended companion agents
+            documentation:
+              type: object
+              properties:
+                description:
+                  type: string
+                examples:
+                  type: array
+                  items:
+                    type: string
+                usageNotes:
+                  type: string
+
+    AgentMetrics:
+      type: object
+      properties:
+        successRate:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Success rate (0-1)
+        avgExecutionTime:
+          type: number
+          format: float
+          description: Average execution time in seconds
+        totalExecutions:
+          type: integer
+          description: Total number of executions
+        lastExecution:
+          type: string
+          format: date-time
+          description: Timestamp of last execution
+
+    ExecutionRequest:
+      type: object
+      required:
+        - task
+      properties:
+        task:
+          type: string
+          description: Task description or instruction
+          minLength: 1
+          maxLength: 10000
+        context:
+          type: object
+          description: Task context and environment information
+          additionalProperties: true
+        parameters:
+          type: object
+          description: Task-specific parameters
+          additionalProperties: true
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileInput'
+          description: Input files for the task
+        priority:
+          type: string
+          enum: [low, normal, high, urgent]
+          default: normal
+          description: Task priority level
+        timeout:
+          type: integer
+          minimum: 30
+          maximum: 3600
+          default: 300
+          description: Maximum execution time in seconds
+        tags:
+          type: array
+          items:
+            type: string
+          description: User-defined tags for organization
+
+    FileInput:
+      type: object
+      required:
+        - path
+        - content
+      properties:
+        path:
+          type: string
+          description: File path
+        content:
+          type: string
+          description: File content
+        encoding:
+          type: string
+          enum: [utf8, base64]
+          default: utf8
+          description: Content encoding
+
+    ExecutionAccepted:
+      type: object
+      required:
+        - accepted
+        - executionId
+        - agentId
+        - status
+      properties:
+        accepted:
+          type: boolean
+          description: Whether the task was accepted
+        executionId:
+          type: string
+          description: Unique execution identifier
+        agentId:
+          type: string
+          description: Agent handling the execution
+        estimatedDuration:
+          type: integer
+          description: Estimated execution time in seconds
+        status:
+          type: string
+          enum: [queued, starting]
+          description: Initial execution status
+        queuePosition:
+          type: integer
+          description: Position in execution queue (if applicable)
+        message:
+          type: string
+          description: Human-readable status message
+
+    ExecutionStatus:
+      type: object
+      required:
+        - executionId
+        - agentId
+        - status
+        - startedAt
+      properties:
+        executionId:
+          type: string
+          description: Unique execution identifier
+        agentId:
+          type: string
+          description: Agent handling the execution
+        status:
+          type: string
+          enum: [queued, running, completed, failed, cancelled]
+          description: Current execution status
+        startedAt:
+          type: string
+          format: date-time
+          description: Execution start timestamp
+        completedAt:
+          type: string
+          format: date-time
+          description: Execution completion timestamp
+        duration:
+          type: integer
+          description: Execution duration in seconds
+        progress:
+          $ref: '#/components/schemas/ExecutionProgress'
+        result:
+          $ref: '#/components/schemas/ExecutionResult'
+        partialResults:
+          type: object
+          description: Partial results for in-progress executions
+          additionalProperties: true
+        metadata:
+          $ref: '#/components/schemas/ExecutionMetadata'
+        error:
+          $ref: '#/components/schemas/ExecutionError'
+
+    ExecutionProgress:
+      type: object
+      properties:
+        percentage:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Completion percentage
+        currentStep:
+          type: string
+          description: Current execution step
+        stepsCompleted:
+          type: array
+          items:
+            type: string
+          description: Completed steps
+        stepsRemaining:
+          type: array
+          items:
+            type: string
+          description: Remaining steps
+
+    ExecutionResult:
+      type: object
+      required:
+        - success
+      properties:
+        success:
+          type: boolean
+          description: Whether execution completed successfully
+        output:
+          type: object
+          description: Execution output and results
+          additionalProperties: true
+        summary:
+          type: string
+          description: Human-readable result summary
+        artifacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artifact'
+          description: Generated files or resources
+
+    Artifact:
+      type: object
+      required:
+        - name
+        - type
+        - path
+      properties:
+        name:
+          type: string
+          description: Artifact name
+        type:
+          type: string
+          enum: [file, directory, report, data]
+          description: Artifact type
+        path:
+          type: string
+          description: Artifact location
+        size:
+          type: integer
+          description: Artifact size in bytes
+        checksum:
+          type: string
+          description: Content checksum
+        metadata:
+          type: object
+          additionalProperties: true
+
+    ExecutionMetadata:
+      type: object
+      properties:
+        tokensUsed:
+          type: integer
+          description: Number of tokens consumed
+        resourceUsage:
+          type: object
+          properties:
+            memory:
+              type: string
+            cpu:
+              type: string
+            storage:
+              type: string
+        billingInfo:
+          type: object
+          properties:
+            cost:
+              type: number
+              format: float
+            currency:
+              type: string
+
+    ExecutionError:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+        details:
+          type: object
+          additionalProperties: true
+        stack:
+          type: string
+          description: Error stack trace (if available)
+        recoverable:
+          type: boolean
+          description: Whether the error is recoverable
+
+    CancelExecutionResponse:
+      type: object
+      required:
+        - cancelled
+        - executionId
+        - finalStatus
+      properties:
+        cancelled:
+          type: boolean
+          description: Whether cancellation was successful
+        executionId:
+          type: string
+          description: Execution identifier
+        finalStatus:
+          type: string
+          description: Final execution status
+        cancelledAt:
+          type: string
+          format: date-time
+          description: Cancellation timestamp
+        partialResults:
+          type: object
+          description: Any partial results before cancellation
+          additionalProperties: true
+        message:
+          type: string
+          description: Cancellation message
+
+    ExecutionsResponse:
+      type: object
+      required:
+        - executions
+        - pagination
+      properties:
+        executions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExecutionSummary'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    ExecutionSummary:
+      type: object
+      required:
+        - executionId
+        - agentId
+        - status
+        - startedAt
+      properties:
+        executionId:
+          type: string
+        agentId:
+          type: string
+        status:
+          type: string
+          enum: [queued, running, completed, failed, cancelled]
+        startedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+        duration:
+          type: integer
+        success:
+          type: boolean
+        taskSummary:
+          type: string
+        progress:
+          type: integer
+          minimum: 0
+          maximum: 100
+
+    Pagination:
+      type: object
+      required:
+        - total
+        - limit
+        - offset
+        - hasMore
+      properties:
+        total:
+          type: integer
+          description: Total number of items
+        limit:
+          type: integer
+          description: Items per page
+        offset:
+          type: integer
+          description: Current offset
+        hasMore:
+          type: boolean
+          description: Whether more items are available
+
+    AgentHealth:
+      type: object
+      required:
+        - agentId
+        - status
+        - lastHealthCheck
+      properties:
+        agentId:
+          type: string
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy, offline]
+        uptime:
+          type: integer
+          description: Uptime in seconds
+        lastHealthCheck:
+          type: string
+          format: date-time
+        performance:
+          type: object
+          properties:
+            successRate:
+              type: number
+              format: float
+            avgResponseTime:
+              type: number
+              format: float
+            errorRate:
+              type: number
+              format: float
+            throughput:
+              type: number
+              format: float
+        resources:
+          type: object
+          properties:
+            memoryUsage:
+              type: integer
+              description: Memory usage in MB
+            cpuUsage:
+              type: number
+              format: float
+              description: CPU usage percentage
+            activeConnections:
+              type: integer
+            queueLength:
+              type: integer
+        recentErrors:
+          type: array
+          items:
+            type: object
+            properties:
+              timestamp:
+                type: string
+                format: date-time
+              error:
+                type: string
+              count:
+                type: integer
+        alerts:
+          type: array
+          items:
+            type: object
+            properties:
+              level:
+                type: string
+                enum: [info, warning, critical]
+              message:
+                type: string
+
+    AgentConfiguration:
+      type: object
+      properties:
+        timeout:
+          type: integer
+          description: Default timeout in seconds
+        maxConcurrency:
+          type: integer
+          description: Maximum concurrent executions
+        resourceLimits:
+          type: object
+          properties:
+            memory:
+              type: string
+            cpu:
+              type: string
+            storage:
+              type: string
+        parameters:
+          type: object
+          description: Agent-specific parameters
+          additionalProperties: true
+        features:
+          type: object
+          properties:
+            cacheEnabled:
+              type: boolean
+            debugMode:
+              type: boolean
+            telemetryEnabled:
+              type: boolean
+
+    ConfigurationUpdate:
+      type: object
+      properties:
+        timeout:
+          type: integer
+          minimum: 30
+          maximum: 3600
+        maxConcurrency:
+          type: integer
+          minimum: 1
+          maximum: 50
+        resourceLimits:
+          type: object
+          properties:
+            memory:
+              type: string
+            cpu:
+              type: string
+            storage:
+              type: string
+        parameters:
+          type: object
+          additionalProperties: true
+
+    ConfigurationUpdateResponse:
+      type: object
+      required:
+        - success
+        - configuration
+      properties:
+        success:
+          type: boolean
+        configuration:
+          $ref: '#/components/schemas/AgentConfiguration'
+        changesApplied:
+          type: array
+          items:
+            type: string
+          description: List of configuration changes applied
+        warnings:
+          type: array
+          items:
+            type: string
+          description: Configuration warnings
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: object
+              description: Additional error context
+              additionalProperties: true
+            timestamp:
+              type: string
+              format: date-time
+              description: When the error occurred
+            requestId:
+              type: string
+              description: Unique request identifier for support
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token from authentication service
+
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for programmatic access
+
+security:
+  - BearerAuth: []
+  - ApiKeyAuth: []
+
+tags:
+  - name: Agent Discovery
+    description: Agent discovery and information operations
+  - name: Agent Execution
+    description: Agent task execution and management
+  - name: Agent Monitoring
+    description: Agent health and performance monitoring
+  - name: Agent Configuration
+    description: Agent configuration management

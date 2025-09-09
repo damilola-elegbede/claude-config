@@ -1,0 +1,1639 @@
+openapi: 3.0.3
+info:
+  title: Claude System Administration API
+  description: |
+    System administration and management API for Claude Code CLI infrastructure.
+    Provides comprehensive system monitoring, configuration management, user administration,
+    and operational controls for the Claude ecosystem.
+  version: 1.0.0
+  contact:
+    name: Claude System Administration
+    email: sysadmin@anthropic.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://admin.claude.ai/api/v1
+    description: Production administration server
+  - url: https://staging-admin.claude.ai/api/v1
+    description: Staging administration server
+  - url: http://localhost:3003/api/v1
+    description: Local development server
+
+paths:
+  /system/status:
+    get:
+      tags:
+        - System Monitoring
+      summary: Get system status
+      description: |
+        Retrieve comprehensive system health status including all services,
+        infrastructure components, and performance metrics.
+      operationId: getSystemStatus
+      security:
+        - AdminAuth: [admin:read]
+      responses:
+        '200':
+          description: System status retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemStatus'
+              examples:
+                healthy_system:
+                  summary: Healthy system status
+                  value:
+                    overall:
+                      status: "healthy"
+                      uptime: 2592000
+                      lastRestart: "2024-01-01T00:00:00Z"
+                      version: "1.2.0"
+                    services:
+                      authentication:
+                        status: "healthy"
+                        uptime: 2592000
+                        responseTime: 45
+                        errorRate: 0.001
+                      agentManagement:
+                        status: "healthy"
+                        uptime: 2588400
+                        responseTime: 120
+                        errorRate: 0.003
+                      webhooks:
+                        status: "degraded"
+                        uptime: 1296000
+                        responseTime: 250
+                        errorRate: 0.015
+                    infrastructure:
+                      database:
+                        status: "healthy"
+                        connections: 45
+                        queryTime: 12
+                        storage: "78%"
+                      cache:
+                        status: "healthy"
+                        hitRate: 0.94
+                        memory: "65%"
+                      messageQueue:
+                        status: "healthy"
+                        queueLength: 12
+                        throughput: 1500
+                    metrics:
+                      activeUsers: 1250
+                      requestsPerMinute: 4500
+                      agentExecutions: 150
+                      systemLoad: 0.65
+                      memoryUsage: 0.72
+                      diskUsage: 0.45
+
+  /system/metrics:
+    get:
+      tags:
+        - System Monitoring
+      summary: Get system metrics
+      description: |
+        Retrieve detailed system performance metrics with historical data
+        and trend analysis capabilities.
+      operationId: getSystemMetrics
+      security:
+        - AdminAuth: [admin:read]
+      parameters:
+        - name: timeRange
+          in: query
+          description: Time range for metrics
+          required: false
+          schema:
+            type: string
+            enum: [1h, 6h, 24h, 7d, 30d]
+            default: 24h
+        - name: metrics
+          in: query
+          description: Specific metrics to retrieve
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [cpu, memory, disk, network, requests, errors, latency]
+            example: ["cpu", "memory", "requests"]
+        - name: resolution
+          in: query
+          description: Data point resolution
+          required: false
+          schema:
+            type: string
+            enum: [1m, 5m, 15m, 1h]
+            default: 5m
+      responses:
+        '200':
+          description: System metrics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemMetrics'
+              examples:
+                performance_metrics:
+                  summary: 24-hour performance metrics
+                  value:
+                    timeRange: "24h"
+                    resolution: "5m"
+                    dataPoints: 288
+                    metrics:
+                      cpu:
+                        current: 0.65
+                        average: 0.58
+                        peak: 0.89
+                        data:
+                          - timestamp: "2024-01-15T10:00:00Z"
+                            value: 0.62
+                          - timestamp: "2024-01-15T10:05:00Z"
+                            value: 0.58
+                      memory:
+                        current: 0.72
+                        average: 0.68
+                        peak: 0.85
+                        trend: "stable"
+                      requests:
+                        current: 4500
+                        total: 6480000
+                        errorRate: 0.002
+                        trend: "increasing"
+                    summary:
+                      status: "healthy"
+                      alerts: []
+                      recommendations:
+                        - "Consider scaling agent pool during peak hours"
+
+  /system/logs:
+    get:
+      tags:
+        - System Monitoring
+      summary: Get system logs
+      description: |
+        Retrieve system logs with filtering, search, and aggregation capabilities.
+        Supports real-time log streaming and historical log analysis.
+      operationId: getSystemLogs
+      security:
+        - AdminAuth: [admin:read]
+      parameters:
+        - name: level
+          in: query
+          description: Log level filter
+          required: false
+          schema:
+            type: string
+            enum: [debug, info, warn, error, fatal]
+        - name: service
+          in: query
+          description: Filter by service name
+          required: false
+          schema:
+            type: string
+            example: "authentication"
+        - name: startTime
+          in: query
+          description: Start time for log retrieval
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endTime
+          in: query
+          description: End time for log retrieval
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: search
+          in: query
+          description: Search query for log content
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Maximum number of log entries
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 100
+        - name: stream
+          in: query
+          description: Enable real-time log streaming
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: System logs retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemLogs'
+            text/event-stream:
+              schema:
+                type: string
+                description: Server-sent events for log streaming
+
+  /system/configuration:
+    get:
+      tags:
+        - System Configuration
+      summary: Get system configuration
+      description: |
+        Retrieve current system configuration including service settings,
+        feature flags, and operational parameters.
+      operationId: getSystemConfiguration
+      security:
+        - AdminAuth: [admin:read]
+      responses:
+        '200':
+          description: System configuration retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemConfiguration'
+              examples:
+                current_config:
+                  summary: Current system configuration
+                  value:
+                    services:
+                      authentication:
+                        enabled: true
+                        rateLimit: 100
+                        sessionTimeout: 3600
+                        multiFactorAuth: false
+                      agentManagement:
+                        enabled: true
+                        maxConcurrentExecutions: 50
+                        defaultTimeout: 300
+                        resourceLimits:
+                          memory: "1GB"
+                          cpu: "2 cores"
+                    features:
+                      webhooks: true
+                      realTimeNotifications: true
+                      auditLogging: true
+                      analyticsCollection: true
+                    infrastructure:
+                      database:
+                        connectionPoolSize: 20
+                        queryTimeout: 30
+                        backupInterval: "24h"
+                      cache:
+                        ttl: 3600
+                        maxMemory: "512MB"
+                      messageQueue:
+                        batchSize: 100
+                        retryAttempts: 3
+
+    patch:
+      tags:
+        - System Configuration
+      summary: Update system configuration
+      description: |
+        Update system configuration settings. Changes are applied immediately
+        and may require service restarts for some settings.
+      operationId: updateSystemConfiguration
+      security:
+        - AdminAuth: [admin:write]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfigurationUpdate'
+            examples:
+              feature_update:
+                summary: Enable new features
+                value:
+                  features:
+                    webhooks: true
+                    realTimeNotifications: true
+              service_tuning:
+                summary: Adjust service parameters
+                value:
+                  services:
+                    agentManagement:
+                      maxConcurrentExecutions: 75
+                      defaultTimeout: 450
+      responses:
+        '200':
+          description: Configuration updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigurationUpdateResponse'
+        '400':
+          description: Invalid configuration parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users:
+    get:
+      tags:
+        - User Management
+      summary: List users
+      description: |
+        Retrieve all users with filtering, sorting, and pagination capabilities.
+        Includes user status, roles, and activity information.
+      operationId: listUsers
+      security:
+        - AdminAuth: [admin:users:read]
+      parameters:
+        - name: status
+          in: query
+          description: Filter by user status
+          required: false
+          schema:
+            type: string
+            enum: [active, suspended, pending, deleted]
+        - name: role
+          in: query
+          description: Filter by user role
+          required: false
+          schema:
+            type: string
+            enum: [admin, developer, user]
+        - name: search
+          in: query
+          description: Search in user name or email
+          required: false
+          schema:
+            type: string
+        - name: sortBy
+          in: query
+          description: Sort field
+          required: false
+          schema:
+            type: string
+            enum: [name, email, createdAt, lastLogin]
+            default: createdAt
+        - name: sortOrder
+          in: query
+          description: Sort order
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+        - name: limit
+          in: query
+          description: Maximum number of results
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          description: Pagination offset
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
+              examples:
+                user_list:
+                  summary: System users
+                  value:
+                    users:
+                      - id: "user_123"
+                        email: "admin@example.com"
+                        name: "System Administrator"
+                        role: "admin"
+                        status: "active"
+                        createdAt: "2024-01-01T00:00:00Z"
+                        lastLogin: "2024-01-15T10:30:00Z"
+                        permissions: ["admin:full"]
+                        stats:
+                          agentExecutions: 0
+                          apiCalls: 156
+                      - id: "user_456"
+                        email: "developer@example.com"
+                        name: "John Developer"
+                        role: "developer"
+                        status: "active"
+                        createdAt: "2024-01-05T12:00:00Z"
+                        lastLogin: "2024-01-15T09:45:00Z"
+                        permissions: ["claude:read", "claude:write"]
+                        stats:
+                          agentExecutions: 45
+                          apiCalls: 892
+                    pagination:
+                      total: 156
+                      limit: 20
+                      offset: 0
+                      hasMore: true
+
+    post:
+      tags:
+        - User Management
+      summary: Create user
+      description: |
+        Create a new user account with specified role and permissions.
+        Sends invitation email for account activation.
+      operationId: createUser
+      security:
+        - AdminAuth: [admin:users:write]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+            examples:
+              new_developer:
+                summary: Create developer user
+                value:
+                  email: "newdev@example.com"
+                  name: "New Developer"
+                  role: "developer"
+                  permissions: ["claude:read", "claude:write", "agents:execute"]
+                  sendInvitation: true
+              admin_user:
+                summary: Create admin user
+                value:
+                  email: "newadmin@example.com"
+                  name: "New Administrator"
+                  role: "admin"
+                  permissions: ["admin:full"]
+                  sendInvitation: true
+                  temporaryPassword: true
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUserResponse'
+        '409':
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/{userId}:
+    get:
+      tags:
+        - User Management
+      summary: Get user details
+      description: |
+        Retrieve detailed information about a specific user including
+        permissions, activity history, and resource usage.
+      operationId: getUser
+      security:
+        - AdminAuth: [admin:users:read]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User identifier
+          schema:
+            type: string
+            example: "user_123"
+      responses:
+        '200':
+          description: User details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    patch:
+      tags:
+        - User Management
+      summary: Update user
+      description: |
+        Update user information, role, permissions, or status.
+        Changes take effect immediately.
+      operationId: updateUser
+      security:
+        - AdminAuth: [admin:users:write]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User identifier
+          schema:
+            type: string
+            example: "user_123"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateUserResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - User Management
+      summary: Delete user
+      description: |
+        Delete a user account. This action is irreversible and will
+        immediately revoke all user sessions and API keys.
+      operationId: deleteUser
+      security:
+        - AdminAuth: [admin:users:delete]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User identifier
+          schema:
+            type: string
+            example: "user_123"
+      responses:
+        '200':
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteUserResponse'
+        '400':
+          description: Cannot delete user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /audit-logs:
+    get:
+      tags:
+        - Audit & Compliance
+      summary: Get audit logs
+      description: |
+        Retrieve system audit logs with comprehensive filtering and search capabilities.
+        Includes user actions, system events, and security-related activities.
+      operationId: getAuditLogs
+      security:
+        - AdminAuth: [admin:audit:read]
+      parameters:
+        - name: userId
+          in: query
+          description: Filter by user ID
+          required: false
+          schema:
+            type: string
+        - name: action
+          in: query
+          description: Filter by action type
+          required: false
+          schema:
+            type: string
+            enum: [login, logout, create, update, delete, execute, configure]
+        - name: resource
+          in: query
+          description: Filter by resource type
+          required: false
+          schema:
+            type: string
+            enum: [user, agent, configuration, execution, system]
+        - name: startTime
+          in: query
+          description: Start time for audit log retrieval
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endTime
+          in: query
+          description: End time for audit log retrieval
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: severity
+          in: query
+          description: Filter by event severity
+          required: false
+          schema:
+            type: string
+            enum: [low, medium, high, critical]
+        - name: limit
+          in: query
+          description: Maximum number of log entries
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 500
+            default: 50
+        - name: offset
+          in: query
+          description: Pagination offset
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: Audit logs retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditLogsResponse'
+
+  /maintenance:
+    post:
+      tags:
+        - System Maintenance
+      summary: Schedule maintenance
+      description: |
+        Schedule system maintenance window with notification to users
+        and graceful service degradation.
+      operationId: scheduleMaintenance
+      security:
+        - AdminAuth: [admin:system:write]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MaintenanceRequest'
+            examples:
+              scheduled_maintenance:
+                summary: Scheduled system upgrade
+                value:
+                  type: "upgrade"
+                  scheduledAt: "2024-01-20T02:00:00Z"
+                  estimatedDuration: 7200
+                  services: ["authentication", "agentManagement"]
+                  notifyUsers: true
+                  gracefulShutdown: true
+                  description: "System upgrade to v1.3.0"
+              emergency_maintenance:
+                summary: Emergency maintenance
+                value:
+                  type: "emergency"
+                  scheduledAt: "2024-01-15T11:00:00Z"
+                  estimatedDuration: 3600
+                  services: ["database"]
+                  notifyUsers: true
+                  gracefulShutdown: false
+                  description: "Emergency database maintenance"
+      responses:
+        '201':
+          description: Maintenance scheduled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MaintenanceResponse'
+        '409':
+          description: Maintenance window conflicts with existing schedule
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    get:
+      tags:
+        - System Maintenance
+      summary: Get maintenance schedule
+      description: |
+        Retrieve current and upcoming maintenance windows with status information.
+      operationId: getMaintenanceSchedule
+      security:
+        - AdminAuth: [admin:system:read]
+      parameters:
+        - name: status
+          in: query
+          description: Filter by maintenance status
+          required: false
+          schema:
+            type: string
+            enum: [scheduled, active, completed, cancelled]
+        - name: future
+          in: query
+          description: Include only future maintenance windows
+          required: false
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: Maintenance schedule retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MaintenanceSchedule'
+
+  /backup:
+    post:
+      tags:
+        - Data Management
+      summary: Create system backup
+      description: |
+        Create a comprehensive system backup including configuration,
+        user data, and system state.
+      operationId: createBackup
+      security:
+        - AdminAuth: [admin:system:backup]
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackupRequest'
+            examples:
+              full_backup:
+                summary: Full system backup
+                value:
+                  type: "full"
+                  includeUserData: true
+                  includeSystemLogs: false
+                  compression: true
+                  description: "Weekly full system backup"
+              configuration_backup:
+                summary: Configuration only
+                value:
+                  type: "configuration"
+                  includeUserData: false
+                  includeSystemLogs: false
+                  compression: true
+                  description: "Pre-upgrade configuration backup"
+      responses:
+        '202':
+          description: Backup creation initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupResponse'
+
+    get:
+      tags:
+        - Data Management
+      summary: List backups
+      description: |
+        Retrieve list of available system backups with metadata and status.
+      operationId: listBackups
+      security:
+        - AdminAuth: [admin:system:backup]
+      parameters:
+        - name: type
+          in: query
+          description: Filter by backup type
+          required: false
+          schema:
+            type: string
+            enum: [full, incremental, configuration]
+        - name: limit
+          in: query
+          description: Maximum number of results
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 10
+      responses:
+        '200':
+          description: Backups retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupsResponse'
+
+components:
+  schemas:
+    SystemStatus:
+      type: object
+      required:
+        - overall
+        - services
+        - infrastructure
+      properties:
+        overall:
+          type: object
+          required:
+            - status
+            - uptime
+          properties:
+            status:
+              type: string
+              enum: [healthy, degraded, unhealthy, maintenance]
+            uptime:
+              type: integer
+              description: System uptime in seconds
+            lastRestart:
+              type: string
+              format: date-time
+            version:
+              type: string
+              description: Current system version
+        services:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ServiceStatus'
+        infrastructure:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/InfrastructureStatus'
+        metrics:
+          type: object
+          properties:
+            activeUsers:
+              type: integer
+            requestsPerMinute:
+              type: integer
+            agentExecutions:
+              type: integer
+            systemLoad:
+              type: number
+              format: float
+            memoryUsage:
+              type: number
+              format: float
+            diskUsage:
+              type: number
+              format: float
+
+    ServiceStatus:
+      type: object
+      required:
+        - status
+        - uptime
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy, offline]
+        uptime:
+          type: integer
+          description: Service uptime in seconds
+        responseTime:
+          type: number
+          format: float
+          description: Average response time in milliseconds
+        errorRate:
+          type: number
+          format: float
+          description: Error rate percentage
+        lastHealthCheck:
+          type: string
+          format: date-time
+
+    InfrastructureStatus:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy, offline]
+        connections:
+          type: integer
+        queryTime:
+          type: number
+          format: float
+        storage:
+          type: string
+          description: Storage usage percentage
+        hitRate:
+          type: number
+          format: float
+        memory:
+          type: string
+          description: Memory usage percentage
+        queueLength:
+          type: integer
+        throughput:
+          type: integer
+
+    SystemMetrics:
+      type: object
+      required:
+        - timeRange
+        - resolution
+        - dataPoints
+        - metrics
+      properties:
+        timeRange:
+          type: string
+          description: Time range of metrics
+        resolution:
+          type: string
+          description: Data point resolution
+        dataPoints:
+          type: integer
+          description: Number of data points
+        metrics:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/MetricSeries'
+        summary:
+          type: object
+          properties:
+            status:
+              type: string
+            alerts:
+              type: array
+              items:
+                type: string
+            recommendations:
+              type: array
+              items:
+                type: string
+
+    MetricSeries:
+      type: object
+      required:
+        - current
+        - average
+      properties:
+        current:
+          type: number
+          format: float
+          description: Current value
+        average:
+          type: number
+          format: float
+          description: Average value over time range
+        peak:
+          type: number
+          format: float
+          description: Peak value
+        trend:
+          type: string
+          enum: [increasing, decreasing, stable, volatile]
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataPoint'
+
+    DataPoint:
+      type: object
+      required:
+        - timestamp
+        - value
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        value:
+          type: number
+          format: float
+
+    SystemLogs:
+      type: object
+      required:
+        - logs
+        - totalCount
+      properties:
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/LogEntry'
+        totalCount:
+          type: integer
+          description: Total number of matching log entries
+        hasMore:
+          type: boolean
+          description: Whether more logs are available
+
+    LogEntry:
+      type: object
+      required:
+        - timestamp
+        - level
+        - service
+        - message
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        level:
+          type: string
+          enum: [debug, info, warn, error, fatal]
+        service:
+          type: string
+          description: Service that generated the log
+        message:
+          type: string
+          description: Log message
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Additional log metadata
+        userId:
+          type: string
+          description: Associated user ID (if applicable)
+        requestId:
+          type: string
+          description: Associated request ID
+        error:
+          type: object
+          properties:
+            name:
+              type: string
+            stack:
+              type: string
+
+    SystemConfiguration:
+      type: object
+      required:
+        - services
+        - features
+        - infrastructure
+      properties:
+        services:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: true
+        features:
+          type: object
+          additionalProperties:
+            type: boolean
+        infrastructure:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: true
+        lastUpdated:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+          description: User who made the last update
+
+    ConfigurationUpdate:
+      type: object
+      properties:
+        services:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: true
+        features:
+          type: object
+          additionalProperties:
+            type: boolean
+        infrastructure:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: true
+
+    ConfigurationUpdateResponse:
+      type: object
+      required:
+        - success
+        - updatedFields
+      properties:
+        success:
+          type: boolean
+        updatedFields:
+          type: array
+          items:
+            type: string
+          description: List of configuration fields that were updated
+        warnings:
+          type: array
+          items:
+            type: string
+          description: Configuration warnings
+        restartRequired:
+          type: array
+          items:
+            type: string
+          description: Services that require restart
+
+    UsersResponse:
+      type: object
+      required:
+        - users
+        - pagination
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    User:
+      type: object
+      required:
+        - id
+        - email
+        - name
+        - role
+        - status
+        - createdAt
+      properties:
+        id:
+          type: string
+          description: Unique user identifier
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        role:
+          type: string
+          enum: [admin, developer, user]
+        status:
+          type: string
+          enum: [active, suspended, pending, deleted]
+        createdAt:
+          type: string
+          format: date-time
+        lastLogin:
+          type: string
+          format: date-time
+        permissions:
+          type: array
+          items:
+            type: string
+        stats:
+          type: object
+          properties:
+            agentExecutions:
+              type: integer
+            apiCalls:
+              type: integer
+            storageUsed:
+              type: integer
+
+    CreateUserRequest:
+      type: object
+      required:
+        - email
+        - name
+        - role
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        role:
+          type: string
+          enum: [admin, developer, user]
+        permissions:
+          type: array
+          items:
+            type: string
+        sendInvitation:
+          type: boolean
+          default: true
+        temporaryPassword:
+          type: boolean
+          default: false
+
+    CreateUserResponse:
+      type: object
+      required:
+        - success
+        - user
+      properties:
+        success:
+          type: boolean
+        user:
+          $ref: '#/components/schemas/User'
+        invitationSent:
+          type: boolean
+        temporaryPassword:
+          type: string
+          description: Temporary password (if requested)
+
+    UserDetails:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            profile:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: uri
+                bio:
+                  type: string
+                timezone:
+                  type: string
+            activity:
+              type: object
+              properties:
+                lastApiCall:
+                  type: string
+                  format: date-time
+                lastAgentExecution:
+                  type: string
+                  format: date-time
+                totalSessions:
+                  type: integer
+            quotas:
+              type: object
+              properties:
+                apiCallsPerHour:
+                  type: integer
+                agentExecutionsPerDay:
+                  type: integer
+                storageLimit:
+                  type: integer
+
+    UpdateUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        role:
+          type: string
+          enum: [admin, developer, user]
+        status:
+          type: string
+          enum: [active, suspended, pending]
+        permissions:
+          type: array
+          items:
+            type: string
+        quotas:
+          type: object
+          properties:
+            apiCallsPerHour:
+              type: integer
+            agentExecutionsPerDay:
+              type: integer
+            storageLimit:
+              type: integer
+
+    UpdateUserResponse:
+      type: object
+      required:
+        - success
+        - user
+      properties:
+        success:
+          type: boolean
+        user:
+          $ref: '#/components/schemas/User'
+        changesApplied:
+          type: array
+          items:
+            type: string
+
+    DeleteUserResponse:
+      type: object
+      required:
+        - success
+        - deletedAt
+      properties:
+        success:
+          type: boolean
+        deletedAt:
+          type: string
+          format: date-time
+        dataRetention:
+          type: object
+          properties:
+            auditLogs:
+              type: boolean
+            executionHistory:
+              type: boolean
+            retentionPeriod:
+              type: string
+
+    AuditLogsResponse:
+      type: object
+      required:
+        - logs
+        - pagination
+      properties:
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditLog'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    AuditLog:
+      type: object
+      required:
+        - id
+        - timestamp
+        - userId
+        - action
+        - resource
+      properties:
+        id:
+          type: string
+          description: Unique audit log identifier
+        timestamp:
+          type: string
+          format: date-time
+        userId:
+          type: string
+          description: User who performed the action
+        userName:
+          type: string
+          description: User name for readability
+        action:
+          type: string
+          enum: [login, logout, create, update, delete, execute, configure, access]
+        resource:
+          type: string
+          enum: [user, agent, configuration, execution, system, api_key]
+        resourceId:
+          type: string
+          description: Identifier of the affected resource
+        details:
+          type: object
+          additionalProperties: true
+          description: Action-specific details
+        ipAddress:
+          type: string
+          description: Client IP address
+        userAgent:
+          type: string
+          description: Client user agent
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+        result:
+          type: string
+          enum: [success, failure, partial]
+
+    MaintenanceRequest:
+      type: object
+      required:
+        - type
+        - scheduledAt
+        - estimatedDuration
+        - services
+      properties:
+        type:
+          type: string
+          enum: [upgrade, maintenance, emergency, patch]
+        scheduledAt:
+          type: string
+          format: date-time
+        estimatedDuration:
+          type: integer
+          description: Estimated duration in seconds
+        services:
+          type: array
+          items:
+            type: string
+          description: Services affected by maintenance
+        notifyUsers:
+          type: boolean
+          default: true
+        gracefulShutdown:
+          type: boolean
+          default: true
+        description:
+          type: string
+          maxLength: 500
+
+    MaintenanceResponse:
+      type: object
+      required:
+        - success
+        - maintenanceId
+      properties:
+        success:
+          type: boolean
+        maintenanceId:
+          type: string
+        scheduledAt:
+          type: string
+          format: date-time
+        notificationsSent:
+          type: integer
+          description: Number of users notified
+
+    MaintenanceSchedule:
+      type: object
+      required:
+        - maintenanceWindows
+      properties:
+        maintenanceWindows:
+          type: array
+          items:
+            $ref: '#/components/schemas/MaintenanceWindow'
+
+    MaintenanceWindow:
+      type: object
+      required:
+        - id
+        - type
+        - scheduledAt
+        - estimatedDuration
+        - status
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: [upgrade, maintenance, emergency, patch]
+        scheduledAt:
+          type: string
+          format: date-time
+        estimatedDuration:
+          type: integer
+        actualDuration:
+          type: integer
+        status:
+          type: string
+          enum: [scheduled, active, completed, cancelled]
+        services:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        createdBy:
+          type: string
+        impact:
+          type: string
+          enum: [none, low, medium, high]
+
+    BackupRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [full, incremental, configuration]
+          default: full
+        includeUserData:
+          type: boolean
+          default: true
+        includeSystemLogs:
+          type: boolean
+          default: false
+        compression:
+          type: boolean
+          default: true
+        description:
+          type: string
+          maxLength: 200
+
+    BackupResponse:
+      type: object
+      required:
+        - success
+        - backupId
+      properties:
+        success:
+          type: boolean
+        backupId:
+          type: string
+        estimatedSize:
+          type: integer
+          description: Estimated backup size in bytes
+        estimatedDuration:
+          type: integer
+          description: Estimated completion time in seconds
+
+    BackupsResponse:
+      type: object
+      required:
+        - backups
+      properties:
+        backups:
+          type: array
+          items:
+            $ref: '#/components/schemas/BackupInfo'
+        totalSize:
+          type: integer
+          description: Total size of all backups
+
+    BackupInfo:
+      type: object
+      required:
+        - id
+        - type
+        - createdAt
+        - size
+        - status
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: [full, incremental, configuration]
+        createdAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+        size:
+          type: integer
+          description: Backup size in bytes
+        status:
+          type: string
+          enum: [creating, completed, failed, expired]
+        description:
+          type: string
+        checksum:
+          type: string
+        retention:
+          type: string
+          format: date-time
+          description: Backup expiration date
+
+    Pagination:
+      type: object
+      required:
+        - total
+        - limit
+        - offset
+        - hasMore
+      properties:
+        total:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        hasMore:
+          type: boolean
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              type: object
+              additionalProperties: true
+            timestamp:
+              type: string
+              format: date-time
+            requestId:
+              type: string
+
+  securitySchemes:
+    AdminAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Administrative JWT token with role-based scopes
+
+security:
+  - AdminAuth: []
+
+tags:
+  - name: System Monitoring
+    description: System health and performance monitoring
+  - name: System Configuration
+    description: System-wide configuration management
+  - name: User Management
+    description: User account administration
+  - name: Audit & Compliance
+    description: Audit logging and compliance reporting
+  - name: System Maintenance
+    description: Maintenance window and system operations
+  - name: Data Management
+    description: Backup and data management operations

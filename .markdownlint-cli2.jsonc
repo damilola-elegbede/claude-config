@@ -95,7 +95,8 @@
         "bash", "javascript", "python", "yaml", "json", "typescript", "shell",
         "text", "markdown", "mermaid", "http", "xml", "html", "css", "sql",
         "dockerfile", "go", "rust", "java", "cpp", "c", "jsonc", "prometheus",
-        "hcl", "terraform", "ruby", "php", "swift", "kotlin", "promql"
+        "hcl", "terraform", "ruby", "php", "swift", "kotlin", "promql", "sh",
+        "powershell", "ps1", "zsh"
       ]
     },
     // MD041: First line in file should be a top level heading
@@ -131,10 +132,6 @@
     // Symlinked directories (avoid duplicates)
     ".claude/**",
     // Imported output style templates (external formatting standards)
-    "system-configs/.claude/output-styles/**",
-    // Core documentation with flexible formatting requirements
-    "README.md",
-    "SECURITY.md",
-    "CODE_OF_CONDUCT.md"
+    "system-configs/.claude/output-styles/**"
   ]
 }

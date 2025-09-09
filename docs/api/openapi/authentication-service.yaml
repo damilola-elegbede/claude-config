@@ -1,0 +1,996 @@
+openapi: 3.0.3
+info:
+  title: Claude Authentication Service API
+  description: |
+    Authentication and authorization service for Claude Code CLI system.
+    Manages user authentication, API keys, session management, and access control
+    for all Claude services and agent interactions.
+  version: 1.0.0
+  contact:
+    name: Claude Authentication Support
+    email: auth@anthropic.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://auth.claude.ai/api/v1
+    description: Production authentication server
+  - url: https://staging-auth.claude.ai/api/v1
+    description: Staging authentication server
+  - url: http://localhost:3001/api/v1
+    description: Local development server
+
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: User login
+      description: |
+        Authenticate user credentials and establish a session.
+        Returns JWT token for subsequent API calls.
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            examples:
+              email_password:
+                summary: Email and password login
+                value:
+                  email: "user@example.com"
+                  password: "secure_password123"
+                  rememberMe: false
+              api_key_login:
+                summary: API key authentication
+                value:
+                  apiKey: "claude_sk_abc123def456ghi789"
+      responses:
+        '200':
+          description: Authentication successful
+          headers:
+            Set-Cookie:
+              description: Session cookie (if applicable)
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+              examples:
+                successful_login:
+                  summary: Successful user login
+                  value:
+                    success: true
+                    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    refreshToken: "rt_abc123def456"
+                    expiresAt: "2024-01-15T14:30:00Z"
+                    user:
+                      id: "user_123"
+                      email: "user@example.com"
+                      name: "John Doe"
+                      role: "developer"
+                      permissions: ["claude:read", "claude:write"]
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_credentials:
+                  summary: Invalid email or password
+                  value:
+                    error:
+                      code: "INVALID_CREDENTIALS"
+                      message: "Invalid email or password"
+                      timestamp: "2024-01-15T10:30:00Z"
+        '429':
+          description: Too many login attempts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                rate_limited:
+                  summary: Rate limit exceeded
+                  value:
+                    error:
+                      code: "RATE_LIMIT_EXCEEDED"
+                      message: "Too many login attempts. Please try again later."
+                      details:
+                        retryAfter: 300
+                        attemptsRemaining: 0
+
+  /auth/logout:
+    post:
+      tags:
+        - Authentication
+      summary: User logout
+      description: |
+        Invalidate current session and JWT token.
+        Clears authentication state on the server.
+      operationId: logoutUser
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoutResponse'
+              examples:
+                successful_logout:
+                  summary: User logged out successfully
+                  value:
+                    success: true
+                    message: "Logged out successfully"
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /auth/refresh:
+    post:
+      tags:
+        - Authentication
+      summary: Refresh access token
+      description: |
+        Generate a new access token using a valid refresh token.
+        Extends the user session without requiring re-authentication.
+      operationId: refreshToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+            examples:
+              refresh_request:
+                summary: Token refresh request
+                value:
+                  refreshToken: "rt_abc123def456"
+      responses:
+        '200':
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshResponse'
+              examples:
+                token_refreshed:
+                  summary: New token issued
+                  value:
+                    success: true
+                    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    expiresAt: "2024-01-15T15:30:00Z"
+        '401':
+          description: Invalid or expired refresh token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_refresh_token:
+                  summary: Refresh token invalid
+                  value:
+                    error:
+                      code: "INVALID_REFRESH_TOKEN"
+                      message: "Refresh token is invalid or expired"
+
+  /auth/verify:
+    get:
+      tags:
+        - Authentication
+      summary: Verify token
+      description: |
+        Validate current JWT token and return user information.
+        Used for session verification and user context retrieval.
+      operationId: verifyToken
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Token is valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenVerifyResponse'
+              examples:
+                valid_token:
+                  summary: Valid token with user info
+                  value:
+                    valid: true
+                    user:
+                      id: "user_123"
+                      email: "user@example.com"
+                      name: "John Doe"
+                      role: "developer"
+                      permissions: ["claude:read", "claude:write"]
+                    expiresAt: "2024-01-15T14:30:00Z"
+                    issuedAt: "2024-01-15T10:30:00Z"
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /auth/permissions:
+    get:
+      tags:
+        - Authorization
+      summary: Get user permissions
+      description: |
+        Retrieve detailed permissions for the current user.
+        Returns scoped permissions for different Claude services.
+      operationId: getUserPermissions
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Permissions retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionsResponse'
+              examples:
+                user_permissions:
+                  summary: User permissions
+                  value:
+                    permissions:
+                      agents:
+                        - "agents:read"
+                        - "agents:execute"
+                      configuration:
+                        - "config:read"
+                        - "config:sync"
+                      commands:
+                        - "commands:read"
+                        - "commands:execute"
+                      system:
+                        - "system:status"
+                    scopes:
+                      - "claude:basic"
+                      - "claude:developer"
+                    role: "developer"
+                    restrictions:
+                      rateLimits:
+                        apiCalls: 1000
+                        agentExecutions: 100
+                      allowedServices: ["agents", "config", "commands"]
+
+  /auth/api-keys:
+    get:
+      tags:
+        - API Keys
+      summary: List API keys
+      description: |
+        Retrieve all API keys associated with the current user account.
+        Returns metadata about each key including usage statistics.
+      operationId: listApiKeys
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: includeUsage
+          in: query
+          description: Include usage statistics for each key
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: API keys retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysResponse'
+              examples:
+                api_keys_list:
+                  summary: User API keys
+                  value:
+                    apiKeys:
+                      - id: "key_123"
+                        name: "Production CLI Key"
+                        prefix: "claude_sk_abc123"
+                        scopes: ["claude:full"]
+                        createdAt: "2024-01-01T00:00:00Z"
+                        lastUsed: "2024-01-15T10:00:00Z"
+                        status: "active"
+                        usage:
+                          totalRequests: 1500
+                          lastMonth: 450
+                      - id: "key_456"
+                        name: "Development Key"
+                        prefix: "claude_sk_def456"
+                        scopes: ["claude:basic"]
+                        createdAt: "2024-01-10T00:00:00Z"
+                        lastUsed: null
+                        status: "active"
+
+    post:
+      tags:
+        - API Keys
+      summary: Create API key
+      description: |
+        Generate a new API key for programmatic access.
+        Keys can be scoped to specific permissions and services.
+      operationId: createApiKey
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateApiKeyRequest'
+            examples:
+              production_key:
+                summary: Production API key
+                value:
+                  name: "Production CLI Key"
+                  scopes: ["claude:full"]
+                  expiresAt: "2025-01-15T00:00:00Z"
+                  description: "API key for production Claude CLI usage"
+              limited_key:
+                summary: Limited scope key
+                value:
+                  name: "Agent Execution Key"
+                  scopes: ["agents:execute", "config:read"]
+                  rateLimit: 100
+                  description: "Limited key for agent execution only"
+      responses:
+        '201':
+          description: API key created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateApiKeyResponse'
+              examples:
+                key_created:
+                  summary: New API key created
+                  value:
+                    success: true
+                    apiKey:
+                      id: "key_789"
+                      name: "Production CLI Key"
+                      key: "claude_sk_xyz789abc123def456ghi"
+                      scopes: ["claude:full"]
+                      createdAt: "2024-01-15T10:30:00Z"
+                      expiresAt: "2025-01-15T00:00:00Z"
+                    warning: "This is the only time the full key will be displayed. Please store it securely."
+
+  /auth/api-keys/{keyId}:
+    patch:
+      tags:
+        - API Keys
+      summary: Update API key
+      description: |
+        Update API key properties such as name, scopes, or rate limits.
+        Cannot modify the actual key value.
+      operationId: updateApiKey
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: keyId
+          in: path
+          required: true
+          description: API key identifier
+          schema:
+            type: string
+            example: "key_123"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateApiKeyRequest'
+      responses:
+        '200':
+          description: API key updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateApiKeyResponse'
+        '404':
+          description: API key not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - API Keys
+      summary: Revoke API key
+      description: |
+        Permanently revoke an API key.
+        This action cannot be undone and will immediately invalidate the key.
+      operationId: revokeApiKey
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: keyId
+          in: path
+          required: true
+          description: API key identifier
+          schema:
+            type: string
+            example: "key_123"
+      responses:
+        '200':
+          description: API key revoked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevokeApiKeyResponse'
+        '404':
+          description: API key not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/sessions:
+    get:
+      tags:
+        - Session Management
+      summary: List active sessions
+      description: |
+        Retrieve all active sessions for the current user.
+        Includes session metadata and device information.
+      operationId: listSessions
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Sessions retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionsResponse'
+              examples:
+                active_sessions:
+                  summary: User active sessions
+                  value:
+                    sessions:
+                      - id: "session_abc123"
+                        device: "MacBook Pro"
+                        location: "San Francisco, CA"
+                        ipAddress: "192.168.1.100"
+                        userAgent: "Claude CLI/1.0.0"
+                        createdAt: "2024-01-15T08:00:00Z"
+                        lastActivity: "2024-01-15T10:30:00Z"
+                        current: true
+                      - id: "session_def456"
+                        device: "iPhone"
+                        location: "New York, NY"
+                        ipAddress: "10.0.0.50"
+                        userAgent: "Claude Mobile/2.1.0"
+                        createdAt: "2024-01-14T15:00:00Z"
+                        lastActivity: "2024-01-14T22:15:00Z"
+                        current: false
+
+  /auth/sessions/{sessionId}:
+    delete:
+      tags:
+        - Session Management
+      summary: Revoke session
+      description: |
+        Terminate a specific session and invalidate associated tokens.
+        Cannot revoke the current session - use logout instead.
+      operationId: revokeSession
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          description: Session identifier
+          schema:
+            type: string
+            example: "session_def456"
+      responses:
+        '200':
+          description: Session revoked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevokeSessionResponse'
+        '400':
+          description: Cannot revoke current session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                current_session_error:
+                  summary: Cannot revoke current session
+                  value:
+                    error:
+                      code: "CANNOT_REVOKE_CURRENT_SESSION"
+                      message: "Cannot revoke the current session. Use logout instead."
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: User email address
+          example: "user@example.com"
+        password:
+          type: string
+          format: password
+          description: User password
+          minLength: 8
+        apiKey:
+          type: string
+          description: API key for programmatic access
+          pattern: "^claude_sk_[a-zA-Z0-9]+$"
+        rememberMe:
+          type: boolean
+          description: Extended session duration
+          default: false
+      oneOf:
+        - required: ["email", "password"]
+        - required: ["apiKey"]
+
+    LoginResponse:
+      type: object
+      required:
+        - success
+        - token
+        - expiresAt
+        - user
+      properties:
+        success:
+          type: boolean
+          description: Whether login was successful
+        token:
+          type: string
+          description: JWT access token
+        refreshToken:
+          type: string
+          description: Refresh token for token renewal
+        expiresAt:
+          type: string
+          format: date-time
+          description: Token expiration timestamp
+        user:
+          $ref: '#/components/schemas/User'
+
+    RefreshRequest:
+      type: object
+      required:
+        - refreshToken
+      properties:
+        refreshToken:
+          type: string
+          description: Valid refresh token
+
+    RefreshResponse:
+      type: object
+      required:
+        - success
+        - token
+        - expiresAt
+      properties:
+        success:
+          type: boolean
+        token:
+          type: string
+          description: New JWT access token
+        expiresAt:
+          type: string
+          format: date-time
+          description: New token expiration timestamp
+
+    LogoutResponse:
+      type: object
+      required:
+        - success
+        - message
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+
+    TokenVerifyResponse:
+      type: object
+      required:
+        - valid
+      properties:
+        valid:
+          type: boolean
+          description: Whether the token is valid
+        user:
+          $ref: '#/components/schemas/User'
+        expiresAt:
+          type: string
+          format: date-time
+          description: Token expiration timestamp
+        issuedAt:
+          type: string
+          format: date-time
+          description: Token issued timestamp
+
+    User:
+      type: object
+      required:
+        - id
+        - email
+        - role
+      properties:
+        id:
+          type: string
+          description: Unique user identifier
+        email:
+          type: string
+          format: email
+          description: User email address
+        name:
+          type: string
+          description: Full name
+        role:
+          type: string
+          enum: [admin, developer, user]
+          description: User role
+        permissions:
+          type: array
+          items:
+            type: string
+          description: List of user permissions
+        avatar:
+          type: string
+          format: uri
+          description: URL to user avatar image
+        createdAt:
+          type: string
+          format: date-time
+          description: Account creation timestamp
+        lastLogin:
+          type: string
+          format: date-time
+          description: Last login timestamp
+
+    PermissionsResponse:
+      type: object
+      required:
+        - permissions
+        - role
+      properties:
+        permissions:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Categorized permissions
+        scopes:
+          type: array
+          items:
+            type: string
+          description: OAuth-style scopes
+        role:
+          type: string
+          description: User role
+        restrictions:
+          type: object
+          description: Account restrictions and limits
+          properties:
+            rateLimits:
+              type: object
+              properties:
+                apiCalls:
+                  type: integer
+                agentExecutions:
+                  type: integer
+            allowedServices:
+              type: array
+              items:
+                type: string
+
+    ApiKeysResponse:
+      type: object
+      required:
+        - apiKeys
+      properties:
+        apiKeys:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiKey'
+
+    ApiKey:
+      type: object
+      required:
+        - id
+        - name
+        - prefix
+        - scopes
+        - createdAt
+        - status
+      properties:
+        id:
+          type: string
+          description: Unique key identifier
+        name:
+          type: string
+          description: Human-readable key name
+        prefix:
+          type: string
+          description: Key prefix for identification
+          example: "claude_sk_abc123"
+        scopes:
+          type: array
+          items:
+            type: string
+          description: Key permissions/scopes
+        createdAt:
+          type: string
+          format: date-time
+          description: Key creation timestamp
+        expiresAt:
+          type: string
+          format: date-time
+          description: Key expiration timestamp (if applicable)
+        lastUsed:
+          type: string
+          format: date-time
+          description: Last usage timestamp
+        status:
+          type: string
+          enum: [active, revoked, expired]
+          description: Current key status
+        usage:
+          type: object
+          description: Usage statistics (if requested)
+          properties:
+            totalRequests:
+              type: integer
+            lastMonth:
+              type: integer
+            lastWeek:
+              type: integer
+
+    CreateApiKeyRequest:
+      type: object
+      required:
+        - name
+        - scopes
+      properties:
+        name:
+          type: string
+          description: Human-readable key name
+          minLength: 1
+          maxLength: 100
+        scopes:
+          type: array
+          items:
+            type: string
+          description: Requested permissions/scopes
+          minItems: 1
+        description:
+          type: string
+          description: Optional key description
+          maxLength: 500
+        expiresAt:
+          type: string
+          format: date-time
+          description: Optional expiration date
+        rateLimit:
+          type: integer
+          description: Custom rate limit (requests per hour)
+          minimum: 1
+          maximum: 10000
+
+    CreateApiKeyResponse:
+      type: object
+      required:
+        - success
+        - apiKey
+      properties:
+        success:
+          type: boolean
+        apiKey:
+          allOf:
+            - $ref: '#/components/schemas/ApiKey'
+            - type: object
+              required:
+                - key
+              properties:
+                key:
+                  type: string
+                  description: Full API key (only shown once)
+        warning:
+          type: string
+          description: Security warning about key storage
+
+    UpdateApiKeyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        scopes:
+          type: array
+          items:
+            type: string
+          minItems: 1
+        description:
+          type: string
+          maxLength: 500
+        rateLimit:
+          type: integer
+          minimum: 1
+          maximum: 10000
+
+    UpdateApiKeyResponse:
+      type: object
+      required:
+        - success
+        - apiKey
+      properties:
+        success:
+          type: boolean
+        apiKey:
+          $ref: '#/components/schemas/ApiKey'
+
+    RevokeApiKeyResponse:
+      type: object
+      required:
+        - success
+        - message
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        revokedAt:
+          type: string
+          format: date-time
+
+    SessionsResponse:
+      type: object
+      required:
+        - sessions
+      properties:
+        sessions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Session'
+
+    Session:
+      type: object
+      required:
+        - id
+        - createdAt
+        - lastActivity
+        - current
+      properties:
+        id:
+          type: string
+          description: Unique session identifier
+        device:
+          type: string
+          description: Device description
+        location:
+          type: string
+          description: Geographic location (if available)
+        ipAddress:
+          type: string
+          description: IP address
+        userAgent:
+          type: string
+          description: User agent string
+        createdAt:
+          type: string
+          format: date-time
+          description: Session creation timestamp
+        lastActivity:
+          type: string
+          format: date-time
+          description: Last activity timestamp
+        current:
+          type: boolean
+          description: Whether this is the current session
+
+    RevokeSessionResponse:
+      type: object
+      required:
+        - success
+        - message
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        revokedAt:
+          type: string
+          format: date-time
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: object
+              description: Additional error context
+              additionalProperties: true
+            timestamp:
+              type: string
+              format: date-time
+              description: When the error occurred
+            requestId:
+              type: string
+              description: Unique request identifier for support
+
+  responses:
+    UnauthorizedError:
+      description: Authentication required or token invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            missing_token:
+              summary: Missing authentication token
+              value:
+                error:
+                  code: "MISSING_TOKEN"
+                  message: "Authentication token is required"
+            invalid_token:
+              summary: Invalid or expired token
+              value:
+                error:
+                  code: "INVALID_TOKEN"
+                  message: "Authentication token is invalid or expired"
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from login endpoint
+
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for programmatic access
+
+security:
+  - BearerAuth: []
+  - ApiKeyAuth: []
+
+tags:
+  - name: Authentication
+    description: User authentication operations
+  - name: Authorization
+    description: Permission and access control operations
+  - name: API Keys
+    description: API key management operations
+  - name: Session Management
+    description: User session management operations

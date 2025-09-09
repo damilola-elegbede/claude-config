@@ -85,7 +85,7 @@ category: development
 | infrastructure | orange | devops, cloud-architect, cloud-network, kubernetes-admin |
 | architecture | purple | frontend-architect, api-architect, principal-architect |
 | design | pink | ui-designer |
-| quality | green | test-engineer, code-reviewer, performance-specialist |
+| quality | green | test-engineer, code-reviewer, performance-engineer |
 | security | red | security-auditor, supply-chain-security-engineer |
 | analysis | yellow | codebase-analyst, tech-writer |
 | operations | teal | incident-commander, production-reliability-engineer, database-evolution-specialist |
@@ -242,7 +242,7 @@ done
 ### Phase 3: Support Agents (Week 3)
 
 - **Operations**: incident-commander, production-reliability-engineer
-- **Specialists**: performance-specialist, supply-chain-security-engineer
+- **Specialists**: performance-engineer, supply-chain-security-engineer
 - **Infrastructure**: cloud-network-architect, database-evolution-specialist
 
 ### Phase 4: Validation & Cleanup (Week 4)

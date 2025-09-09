@@ -1,0 +1,42 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"],
+      "env": {}
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "shadcn": {
+      "command": "npx",
+      "args": ["-y", "shadcn-ui-mcp"],
+      "env": {}
+    },
+    "context7": {
+      "command": "npx", 
+      "args": ["-y", "context7-mcp-server"],
+      "env": {
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+      }
+    },
+    "elevenlabs": {
+      "command": "npx",
+      "args": ["-y", "elevenlabs-streaming-mcp-server"], 
+      "env": {
+        "ELEVENLABS_API_KEY": "${ELEVENLABS_API_KEY}"
+      }
+    },
+    "notionApi": {
+      "command": "npx",
+      "args": ["-y", "notion-mcp-server"],
+      "env": {
+        "NOTION_API_KEY": "${NOTION_API_KEY}"
+      }
+    }
+  }
+}

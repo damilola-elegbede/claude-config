@@ -153,7 +153,7 @@ POST /api/orchestration/plan
           "duration": "2 days"
         },
         {
-          "agent": "mobile-platform-engineer",
+          "agent": "mobile-engineer",
           "task": "Mobile app skeleton",
           "duration": "2 days"
         }

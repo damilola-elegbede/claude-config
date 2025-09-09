@@ -96,7 +96,7 @@ Platform Teams:
     - ui-designer: Web-specific design optimization
 
   Mobile Team:
-    - mobile-platform-engineer: React Native/Flutter implementation
+    - mobile-engineer: React Native/Flutter implementation
 
   Backend Team:
     - backend-engineer: API and data layer implementation
@@ -129,7 +129,7 @@ Coordination:
 | **backend-engineer** | frontend-architect, devops, platform-engineer, api-architect | Infrastructure-aware backend development |
 | **code-reviewer** | security-auditor, test-engineer, tech-writer | Comprehensive quality assurance |
 | **principal-architect** | tech-writer | Strategic planning with documentation |
-| **debugger** | security-auditor, codebase-analyst, performance-specialist | Multi-angle problem analysis |
+| **debugger** | security-auditor, codebase-analyst, performance-engineer | Multi-angle problem analysis |
 | **devops** | platform-engineer, backend-engineer, security-auditor | Infrastructure deployment with monitoring |
 
 ### Sequential Dependencies (Require Handoffs)

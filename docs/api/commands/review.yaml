@@ -46,7 +46,7 @@ paths:
                 summary: Full repository review
                 value:
                   scope: "full"
-                  agents: ["code-reviewer", "security-auditor", "performance-specialist", "test-engineer"]
+                  agents: ["code-reviewer", "security-auditor", "performance-engineer", "test-engineer"]
               security_focused:
                 summary: Security-focused review
                 value:
@@ -139,7 +139,7 @@ paths:
                       - id: "PERF001"
                         severity: "high"
                         type: "performance"
-                        agent: "performance-specialist"
+                        agent: "performance-engineer"
                         file: "src/api/users.js"
                         line: 67
                         title: "N+1 Query Problem"
@@ -171,7 +171,7 @@ paths:
                       message: "One or more specified agents are not available"
                       details:
                         unknownAgents: ["invalid-agent"]
-                        availableAgents: ["code-reviewer", "security-auditor", "performance-specialist"]
+                        availableAgents: ["code-reviewer", "security-auditor", "performance-engineer"]
         '422':
           description: Review cannot be performed
           content:
@@ -360,7 +360,7 @@ components:
           items:
             type: string
           description: Specific agents to deploy (overrides automatic selection)
-          example: ["code-reviewer", "security-auditor", "performance-specialist"]
+          example: ["code-reviewer", "security-auditor", "performance-engineer"]
         options:
           type: object
           properties:
