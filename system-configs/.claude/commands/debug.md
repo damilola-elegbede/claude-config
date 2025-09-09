@@ -113,7 +113,7 @@ wave_2_deployments:
     condition: Memory-related symptoms detected
     parallel_agents:
       - performance-engineer: Heap analysis, allocation tracking, GC profiling
-      - monitoring-specialist: Memory metrics analysis, trend identification
+      - performance-engineer: Memory metrics analysis, trend identification
       - debugger (instance-2): Memory leak specific investigation patterns
     approach: Parallel heap analysis, reference tracking, allocation pattern investigation
     expected_duration: 5-8 minutes
@@ -132,7 +132,7 @@ wave_2_deployments:
     parallel_agents:
       - platform-engineer: Infrastructure and environment analysis
       - devops: Deployment and configuration investigation
-      - monitoring-specialist: Production metrics and log correlation
+      - performance-engineer: Production metrics and log correlation
     approach: Environment comparison, scale testing, infrastructure analysis
     expected_duration: 7-12 minutes
 
@@ -141,7 +141,7 @@ wave_2_deployments:
     parallel_agents:
       - performance-engineer (instance-2): CPU and resource profiling
       - performance-engineer (instance-3): Database and query optimization
-      - monitoring-specialist: Performance trend analysis
+      - performance-engineer: Performance trend analysis
     approach: Comprehensive parallel profiling across all performance vectors
     expected_duration: 5-9 minutes
 
@@ -179,7 +179,7 @@ wave_3:
       backend-engineer: Server-side fixes, API changes, database modifications
       frontend-engineer: Client-side fixes, UI changes, state management
       devops: Infrastructure fixes, deployment changes, configuration updates
-      database-engineer: Schema changes, query optimization, index management
+      database-admin: Schema changes, query optimization, index management
 
     test_validation:
       test-engineer (instance-4):
@@ -437,7 +437,7 @@ User: /debug Memory leak causing crashes
 Wave 1: debugger + codebase-analyst + test-engineer (3 min)
 Claude: Issue classified as memory leak with 90% confidence
 
-Wave 2: performance-engineer + monitoring-specialist + debugger-2 (6 min)
+Wave 2: performance-engineer + performance-engineer + debugger-2 (6 min)
 Claude: Root cause verified - event listeners not cleaned up
 
 Wave 3: frontend-engineer + test-engineer-4 + code-reviewer (8 min)
@@ -450,16 +450,16 @@ User: /debug Complex distributed system timeout
 Wave 1: debugger + codebase-analyst + test-engineer (4 min)
 Claude: Issue classified as distributed system problem, requires deeper investigation
 
-Wave 2: platform-engineer + devops + monitoring-specialist (8 min)
+Wave 2: platform-engineer + devops + performance-engineer (8 min)
 Claude: Partial root cause identified - service mesh configuration issues
 
 Wave 3: Initial fix attempt - service mesh reconfiguration (10 min)
 Claude: Fix partially successful but latency spikes persist, continuing investigation
 
-Wave 4: performance-engineer + platform-engineer-2 + monitoring-specialist-2 (12 min)
+Wave 4: performance-engineer + platform-engineer-2 + performance-engineer-2 (12 min)
 Claude: Discovered cascading failure pattern in dependent services
 
-Wave 5: backend-engineer + devops-2 + database-engineer (15 min)
+Wave 5: backend-engineer + devops-2 + database-admin (15 min)
 Result: Complete resolution with circuit breakers, connection pooling, and monitoring
 ```
 
@@ -472,7 +472,7 @@ Claude: Issue classified as race condition with 95% confidence
 Wave 2: debugger-2 + debugger-3 + performance-engineer (8 min)
 Claude: Root cause verified - non-atomic payment flow
 
-Wave 3: backend-engineer + database-engineer + test-engineer-4 (12 min)
+Wave 3: backend-engineer + database-admin + test-engineer-4 (12 min)
 Result: Database transactions + idempotency keys + comprehensive testing
 ```
 

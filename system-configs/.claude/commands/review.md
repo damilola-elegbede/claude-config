@@ -177,7 +177,7 @@ WAVE 2: SPECIALIZED DEEP DIVE (Conditional Deployment - 0-15 Agents)
     agent_instances:
       performance-engineer-algorithms: Algorithm complexity and optimization
       performance-engineer-database: Database query optimization and indexing
-      monitoring-specialist: Performance monitoring and alerting setup
+      performance-engineer: Performance monitoring and alerting setup
     specialized_input: Performance bottleneck locations and patterns from Wave 1
     deep_analysis_output: Optimization roadmap with measurable improvements
 
@@ -330,7 +330,7 @@ Execution Optimization:
       Duration: 45-90 seconds
       Conditional Teams:
         - Security Team: 3 security-auditor instances (if vulnerabilities found)
-        - Performance Team: 2 performance-engineer + monitoring-specialist (if bottlenecks found)
+        - Performance Team: 2 performance-engineer + performance-engineer (if bottlenecks found)
         - Quality Team: 3 code-reviewer instances (if architectural issues found)
         - Accessibility Team: accessibility-auditor + ui-designer (if violations found)
         - Test Team: 3 test-engineer instances (if coverage gaps found)

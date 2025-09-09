@@ -81,20 +81,20 @@ Conditional Agent Deployment (based on Wave 1 findings):
 Web Applications:
   - frontend-engineer: UI/UX analysis, component architecture
   - backend-engineer: Server architecture, API design patterns
-  - database-engineer: Data modeling and query optimization
+  - database-admin: Data modeling and query optimization
 
 APIs and Services:
   - api-architect: Endpoint design and integration patterns
   - performance-engineer: Bottleneck identification and optimization
-  - infrastructure-engineer: Deployment and scaling considerations
+  - platform-engineer: Deployment and scaling considerations
 
 Data Processing:
   - data-engineer: Pipeline architecture and data flow
   - performance-engineer: Processing optimization opportunities
-  - infrastructure-engineer: Resource utilization assessment
+  - platform-engineer: Resource utilization assessment
 
 DevOps/Infrastructure:
-  - infrastructure-engineer: Configuration and deployment analysis
+  - platform-engineer: Configuration and deployment analysis
   - security-auditor: Additional security deep-dive
   - performance-engineer: System performance assessment
 ```
@@ -114,7 +114,7 @@ Component-Specific Deployment:
 
 "database" / "data":
   - codebase-analyst (2 instances): Schema analysis, query patterns
-  - database-engineer: Performance and integrity assessment
+  - database-admin: Performance and integrity assessment
   - performance-engineer: Query optimization opportunities
 
 "api" / "endpoints":
