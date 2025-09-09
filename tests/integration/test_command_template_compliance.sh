@@ -22,9 +22,9 @@ test_existing_commands_template_compliance() {
     # Check each command file
     for cmd_file in "$commands_dir"/*.md; do
         [ -e "$cmd_file" ] || continue  # Skip if no .md files
-        
+
         local cmd_name=$(basename "$cmd_file" .md)
-        
+
         # Skip template and documentation files that shouldn't be validated
         if [[ "$cmd_name" == "README" || "$cmd_name" == "TEMPLATE" ]]; then
             continue
@@ -36,7 +36,7 @@ test_existing_commands_template_compliance() {
         if grep -q "^---$" "$cmd_file"; then
             # New template format validation
             local yaml_content=$(sed -n '/^---$/,/^---$/p' "$cmd_file" | sed '1d;$d')
-            
+
             # Required: description field
             if ! echo "$yaml_content" | grep -q "^description:"; then
                 echo "      ❌ Missing required 'description' field"
@@ -64,7 +64,7 @@ test_existing_commands_template_compliance() {
 
             # Content structure validation
             local content_after_frontmatter=$(sed -n '/^---$/,/^---$/!p' "$cmd_file")
-            
+
             # Should have main heading after frontmatter
             if ! echo "$content_after_frontmatter" | grep -q "^# "; then
                 echo "      ⚠️  Consider adding main heading after frontmatter"
@@ -77,14 +77,14 @@ test_existing_commands_template_compliance() {
                 echo "      ❌ Missing required Usage section"
                 compliance_issues=$((compliance_issues + 1))
             fi
-            
+
             if grep -q "## Description" "$cmd_file"; then
                 echo "      ✅ Has Description section"
             else
                 echo "      ❌ Missing required Description section"
                 compliance_issues=$((compliance_issues + 1))
             fi
-            
+
             if grep -q "## Expected Output" "$cmd_file"; then
                 echo "      ✅ Has Expected Output section"
             else
@@ -100,7 +100,7 @@ test_existing_commands_template_compliance() {
         else
             # Legacy format - check basic structure
             echo "      ℹ️  Using legacy format (no YAML frontmatter)"
-            
+
             # Check for basic documentation sections
             if ! grep -q "^# " "$cmd_file"; then
                 echo "      ❌ Missing main heading"
@@ -109,7 +109,7 @@ test_existing_commands_template_compliance() {
         fi
 
         # Universal validation (applies to all formats)
-        
+
         # Check for code blocks (should have language tags)
         local code_blocks=$(grep -n '^```$' "$cmd_file" | wc -l)
         local tagged_blocks=$(grep -n '^```[a-z]' "$cmd_file" | wc -l)
@@ -150,12 +150,12 @@ test_command_audit_implementation() {
     # Command-audit should follow its own template requirements
     if grep -q "^---$" "$audit_file"; then
         local yaml_content=$(sed -n '/^---$/,/^---$/p' "$audit_file" | sed '1d;$d')
-        
+
         if ! echo "$yaml_content" | grep -q "^description:"; then
             echo "    ❌ command-audit missing required description field"
             return 1
         fi
-        
+
         echo "    ✅ command-audit follows template format"
     else
         echo "    ⚠️  command-audit uses legacy format"
@@ -185,7 +185,7 @@ test_command_audit_implementation() {
 # Test that the validation logic handles edge cases correctly
 test_validation_edge_cases() {
     setup_test_env
-    
+
     local test_commands_dir="$TEST_DIR/commands"
     mkdir -p "$test_commands_dir"
 
@@ -263,13 +263,13 @@ EOF
 
         if grep -q "^---$" "$cmd_file"; then
             local yaml_content=$(sed -n '/^---$/,/^---$/p' "$cmd_file" | sed '1d;$d')
-            
+
             # Check for empty frontmatter
             if [ -z "$(echo "$yaml_content" | tr -d '[:space:]')" ]; then
                 echo "    ❌ $cmd_name: Empty frontmatter"
                 is_valid=false
             fi
-            
+
             # Check required description
             if ! echo "$yaml_content" | grep -q "^description:"; then
                 echo "    ❌ $cmd_name: Missing description field"
@@ -281,7 +281,7 @@ EOF
                     echo "    ⚠️  $cmd_name: Description too long"
                 fi
             fi
-            
+
             # Check YAML syntax - look for lines that are clearly not YAML
             # Valid YAML has key: value format, this catches lines without colons
             if echo "$yaml_content" | grep -v '^$' | grep -v ':' | grep -q '.'; then

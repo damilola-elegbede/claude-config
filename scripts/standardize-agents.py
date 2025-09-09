@@ -59,7 +59,7 @@ PRODUCTION_AGENTS = {
         'category': 'development',
         'color': 'blue'
     },
-    
+
     # Quality & Testing
     'test-engineer': {
         'description': 'MUST BE USED for comprehensive test strategy design and intelligent test implementation across frameworks. Use PROACTIVELY for untested code paths, CI/CD pipeline changes, and quality gate failures.',
@@ -96,7 +96,7 @@ PRODUCTION_AGENTS = {
         'category': 'quality',
         'color': 'green'
     },
-    
+
     # Architecture
     'principal-architect': {
         'description': 'Use PROACTIVELY for system-wide architecture design and comprehensive technical roadmaps. MUST BE USED for complex architectural decisions, enterprise-scale implementation planning, and technical strategy development.',
@@ -119,7 +119,7 @@ PRODUCTION_AGENTS = {
         'category': 'architecture',
         'color': 'purple'
     },
-    
+
     # Design
     'ui-designer': {
         'description': 'MUST BE USED for comprehensive UI/UX design optimization and advanced design system architecture. Use PROACTIVELY for design inconsistencies, accessibility violations, and user experience friction points.',
@@ -142,7 +142,7 @@ PRODUCTION_AGENTS = {
         'category': 'design',
         'color': 'pink'
     },
-    
+
     # Analysis & Research
     'codebase-analyst': {
         'description': 'Use PROACTIVELY for comprehensive code architecture analysis and technical debt assessment. MUST BE USED for evaluating codebases, creating executive summaries, and identifying security risks and performance bottlenecks.',
@@ -172,7 +172,7 @@ PRODUCTION_AGENTS = {
         'category': 'coordination',
         'color': 'cyan'
     },
-    
+
     # Infrastructure & Operations
     'devops': {
         'description': 'MUST BE USED for complex CI/CD pipeline orchestration, enterprise Kubernetes clusters, and Infrastructure as Code at scale. Use PROACTIVELY for deployment bottlenecks, reliability issues, and multi-cloud Terraform deployments.',
@@ -202,7 +202,7 @@ PRODUCTION_AGENTS = {
         'category': 'infrastructure',
         'color': 'orange'
     },
-    
+
     # Documentation & Coordination
     'tech-writer': {
         'description': 'Use PROACTIVELY for documentation, READMEs, API docs, and work summaries. MUST BE USED after completing multi-step tasks (3+ operations) or multi-file changes (5+ files).',
@@ -237,10 +237,10 @@ def validate_agent_format(file_path):
         return False, f"File encoding error: {e}"
     except Exception as e:
         return False, f"Failed to read file: {e}"
-    
+
     if len(lines) < 40 or len(lines) > 60:
         return False, f"File has {len(lines)} lines (expected ~46)"
-    
+
     # Check for required YAML fields
     yaml_content = []
     in_yaml = False
@@ -252,49 +252,49 @@ def validate_agent_format(file_path):
                 break
         elif in_yaml:
             yaml_content.append(line)
-    
+
     yaml_text = ''.join(yaml_content)
-    
+
     # Require color in front-matter validation (per CodeRabbit suggestion)
     required_fields = ['name:', 'description:', 'tools:', 'model:', 'category:', 'color:']
-    
+
     for field in required_fields:
         if field not in yaml_text:
             return False, f"Missing required YAML field: {field}"
-    
+
     # Check for deprecated fields
-    deprecated_fields = ['specialization_level:', 'domain_expertise:', 'coordination_protocols:', 'knowledge_base:', 'escalation_path:']
+    deprecated_fields = ['specialization_level:', 'escalation_path:']
     for field in deprecated_fields:
         if field in yaml_text:
             return False, f"Contains deprecated field: {field}"
-    
+
     # Check for required sections
     content = ''.join(lines)
     required_sections = ['## Identity', '## Core Capabilities', '## When to Engage', '## When NOT to Engage', '## Coordination', '## SYSTEM BOUNDARY']
-    
+
     for section in required_sections:
         if section not in content:
             return False, f"Missing required section: {section}"
-    
+
     # Add orchestration boundary text validation (per CodeRabbit suggestion)
     boundary_patterns = [
         'Only Claude has orchestration authority',
         'This agent cannot invoke other agents or create Task calls',
         'NO Task tool access allowed'
     ]
-    
+
     boundary_found = any(pattern in content for pattern in boundary_patterns)
     if not boundary_found:
         return False, "Missing SYSTEM BOUNDARY protection statement with orchestration boundary text"
-    
+
     return True, "Valid format"
 
 def create_agent_from_template(agent_name, agent_info):
     """Create an agent file following the AGENT_TEMPLATE.md format."""
-    
+
     # Determine the title case name
     title_name = agent_name.replace('-', ' ').title()
-    
+
     # Create the content based on template
     content = f"""---
 name: {agent_name}
@@ -330,7 +330,7 @@ Expert {agent_name.replace('-', ' ')} specializing in {get_specialization(agent_
 ## SYSTEM BOUNDARY
 
 This agent cannot invoke other agents or create Task calls. Only Claude has orchestration authority."""
-    
+
     return content
 
 def get_specialization(agent_name, category):
@@ -363,20 +363,20 @@ def get_core_capabilities(agent_name, category):
 - Performance optimization for sub-100ms latency and 100k+ RPS handling
 - Database engineering including sharding, replication, and query optimization
 - Event-driven architecture with message queues and streaming platforms""",
-        
+
         'frontend-engineer': """- Modern framework expertise (React, Vue, Angular) with advanced patterns
 - Performance optimization including bundle size, lazy loading, and rendering
 - Responsive design and cross-browser compatibility
 - State management and data flow architecture
 - Accessibility and internationalization implementation""",
-        
+
         'security-auditor': """- OWASP Top 10 vulnerability assessment and remediation
 - Security code review and threat modeling
 - Authentication and authorization system validation
 - Cryptography implementation review
 - Compliance verification (SOC2, PCI-DSS, GDPR)"""
     }
-    
+
     return capabilities.get(agent_name, f"""- Core {category} expertise
 - Best practices implementation
 - Quality assurance and validation
@@ -390,18 +390,18 @@ def get_engagement_triggers(agent_name, category):
 - Database schema changes or query optimization needs
 - Performance issues exceeding 100ms latency thresholds
 - Microservices architecture design or modifications""",
-        
+
         'security-auditor': """- Authentication or authorization code changes
 - Handling sensitive data or PII
 - Security vulnerability reports or incidents
 - Compliance audit requirements""",
-        
+
         'test-engineer': """- New feature implementation requiring test coverage
 - CI/CD pipeline failures or quality gate violations
 - Test framework selection or migration
 - Coverage gaps identified in codebase"""
     }
-    
+
     return triggers.get(agent_name, f"""- {category.title()} expertise required
 - Complex technical challenges in domain
 - Quality or performance concerns
@@ -412,14 +412,14 @@ def get_disengagement_conditions(agent_name, category):
     conditions = {
         'backend-engineer': """- Pure frontend or UI-only changes
 - Documentation updates without code changes""",
-        
+
         'frontend-engineer': """- Backend-only API changes without UI impact
 - Database or infrastructure modifications""",
-        
+
         'security-auditor': """- Non-security code refactoring
 - Pure performance optimization without security implications"""
     }
-    
+
     return conditions.get(agent_name, f"""- Tasks outside {category} domain
 - Simple tasks better handled directly by Claude""")
 
@@ -428,58 +428,58 @@ def get_coordination_info(agent_name, category):
     coordination = {
         'backend-engineer': """Works in parallel with frontend-engineer for full-stack features.
 Escalates to principal-architect for system-wide architectural decisions.""",
-        
+
         'frontend-engineer': """Works in parallel with backend-engineer for API integration.
 Escalates to frontend-architect for complex architectural patterns.""",
-        
+
         'security-auditor': """Works in parallel with code-reviewer for comprehensive review.
 Escalates to Claude when security fixes require architectural changes."""
     }
-    
+
     return coordination.get(agent_name, f"""Works in parallel with related {category} agents.
 Escalates to Claude when blocked or requiring cross-domain coordination.""")
 
 def main():
     """Main execution function."""
     agents_dir = Path('system-configs/.claude/agents')
-    
+
     print("=== Agent Standardization to AGENT_TEMPLATE.md Format ===\n")
     print(f"Target: 28 production agents following 46-line template\n")
-    
+
     # Get existing agent files (excluding template and README)
-    existing_agents = [f.stem for f in agents_dir.glob('*.md') 
+    existing_agents = [f.stem for f in agents_dir.glob('*.md')
                       if f.name not in ['AGENT_TEMPLATE.md', 'README.md']]
-    
+
     print(f"Found {len(existing_agents)} existing agent files")
-    
+
     # Validate existing agents
     validation_results = []
     for agent_name in sorted(existing_agents):
         file_path = agents_dir / f"{agent_name}.md"
         valid, message = validate_agent_format(file_path)
         validation_results.append((agent_name, valid, message))
-        
+
         if valid:
             print(f"✅ {agent_name}: Valid format")
         else:
             print(f"⚠️  {agent_name}: {message}")
-    
+
     # Count valid agents
     valid_count = sum(1 for _, valid, _ in validation_results if valid)
-    
+
     print(f"\n=== Summary ===")
     print(f"Valid agents: {valid_count}/{len(existing_agents)}")
     print(f"Target agents: 28")
-    
+
     if valid_count == 28:
         print("\n✅ All agents follow the AGENT_TEMPLATE.md format!")
     else:
         print(f"\n⚠️  {28 - valid_count} agents need updating to match template")
-    
+
     # Generate report using UTF-8 encoding
     report_path = Path('.tmp/reports/agent-validation-report.md')
     report_path.parent.mkdir(parents=True, exist_ok=True)
-    
+
     with open(report_path, 'w', encoding='utf-8') as f:
         f.write(f"# Agent Validation Report\n\n")
         f.write(f"Generated: {datetime.now().isoformat()}\n\n")
@@ -487,12 +487,12 @@ def main():
         f.write(f"- Total agents: {len(existing_agents)}\n")
         f.write(f"- Valid format: {valid_count}\n")
         f.write(f"- Need updating: {len(existing_agents) - valid_count}\n\n")
-        
+
         f.write("## Validation Results\n\n")
         for agent_name, valid, message in sorted(validation_results):
             status = "✅" if valid else "❌"
             f.write(f"- {status} **{agent_name}**: {message}\n")
-    
+
     print(f"\nReport saved to: {report_path}")
 
 if __name__ == '__main__':

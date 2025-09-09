@@ -20,43 +20,43 @@ assert_directory_exists "$AGENTS_DIR" "Agents directory should exist"
 echo "Validating all agent configurations..."
 for agent_file in "$AGENTS_DIR"/*.md; do
     [ -f "$agent_file" ] || continue
-    
+
     # Skip template and README files
     basename=$(basename "$agent_file")
     if [[ "$basename" == "AGENT_TEMPLATE.md" ]] || [[ "$basename" == "README.md" ]]; then
         continue
     fi
-    
+
     AGENT_COUNT=$((AGENT_COUNT + 1))
     agent_name=$(basename "$agent_file" .md)
-    
-    # Check for YAML frontmatter  
+
+    # Check for YAML frontmatter
     if ! grep -q "^---" "$agent_file"; then
         YAML_INVALID+=("$agent_name")
         continue
     fi
-    
+
     # Extract YAML content
     yaml_content=$(sed -n '/^---$/,/^---$/p' "$agent_file" | sed '1d;$d')
-    
+
     # Check for required fields
     if ! echo "$yaml_content" | grep -q "^name:"; then
         FAILED_AGENTS+=("$agent_name: missing 'name' field")
     fi
-    
+
     if ! echo "$yaml_content" | grep -q "^category:"; then
         FAILED_AGENTS+=("$agent_name: missing 'category' field")
     fi
-    
+
     if ! echo "$yaml_content" | grep -q "^tools:"; then
         FAILED_AGENTS+=("$agent_name: missing 'tools' field")
     fi
-    
+
     # Check for SYSTEM BOUNDARY protection (critical security feature)
     if ! grep -q "SYSTEM BOUNDARY" "$agent_file"; then
         SYSTEM_BOUNDARY_MISSING+=("$agent_name")
     fi
-    
+
     # Check that agents don't have Task tool (they can't invoke other agents)
     if echo "$yaml_content" | grep -q -- "- Task"; then
         FAILED_AGENTS+=("$agent_name: has unauthorized 'Task' tool access")

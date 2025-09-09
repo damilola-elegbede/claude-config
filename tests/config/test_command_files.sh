@@ -29,7 +29,7 @@ test_command_yaml_frontmatter() {
     # Test each command file has proper YAML frontmatter
     for cmd_file in "$commands_dir"/*.md; do
         local cmd_name=$(basename "$cmd_file" .md)
-        
+
         # Skip if this is the old format (no frontmatter expected)
         if ! grep -q "^---$" "$cmd_file"; then
             echo "⚠️  ${cmd_name}.md uses legacy format (no YAML frontmatter)"
@@ -58,7 +58,7 @@ test_command_yaml_frontmatter() {
 
         # Check required fields
         local yaml_content=$(cat "$temp_file")
-        
+
         # Required: description field
         if ! echo "$yaml_content" | grep -q "^description:"; then
             echo "❌ Missing required 'description' field in ${cmd_name}.md"
@@ -73,7 +73,7 @@ test_command_yaml_frontmatter() {
             rm "$temp_file"
             return 1
         fi
-        
+
         if [ ${#description} -gt 60 ]; then
             echo "⚠️  Description too long (${#description} chars) in ${cmd_name}.md - consider shortening for better UX"
         fi
@@ -155,12 +155,12 @@ test_command_specifics() {
 # Test agent specification requirements
 test_agent_specifications() {
     local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
-    
+
     # Commands that must specify agents
-    local agent_required_commands=("implement" "docs" "debug" "ship-it" "review" 
-                                  "test" "prime" "fix-ci" "deps" "plan" 
+    local agent_required_commands=("implement" "docs" "debug" "ship-it" "review"
+                                  "test" "prime" "fix-ci" "deps" "plan"
                                   "commit" "branch" "pr" "push" "sync")
-    
+
     for cmd in "${agent_required_commands[@]}"; do
         local cmd_file="$commands_dir/${cmd}.md"
         if [ -f "$cmd_file" ]; then
@@ -170,7 +170,7 @@ test_agent_specifications() {
             fi
         fi
     done
-    
+
     # Security-critical commands must have security-auditor
     local security_commands=("commit" "push" "sync" "deps")
     for cmd in "${security_commands[@]}"; do
@@ -186,11 +186,11 @@ test_agent_specifications() {
 # Test parallelization patterns
 test_parallelization_patterns() {
     local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
-    
+
     # Commands that should leverage parallelization
-    local parallel_commands=("implement" "docs" "ship-it" "review" "prime" 
+    local parallel_commands=("implement" "docs" "ship-it" "review" "prime"
                             "agent-audit" "command-audit" "fix-ci" "test")
-    
+
     for cmd in "${parallel_commands[@]}"; do
         local cmd_file="$commands_dir/${cmd}.md"
         if [ -f "$cmd_file" ]; then
@@ -200,7 +200,7 @@ test_parallelization_patterns() {
             fi
         fi
     done
-    
+
     # Check for sequential anti-patterns in commands that should parallelize
     for cmd in "${parallel_commands[@]}"; do
         local cmd_file="$commands_dir/${cmd}.md"
@@ -234,7 +234,7 @@ test_frontmatter_compliance() {
 
         # Extract YAML frontmatter content
         local yaml_content=$(sed -n '/^---$/,/^---$/p' "$cmd_file" | sed '1d;$d')
-        
+
         # Check for required 'description' field
         if ! echo "$yaml_content" | grep -q "^description:"; then
             echo "    Error: ${cmd_name}.md missing required 'description' field"
@@ -391,7 +391,7 @@ test_documentation_completeness() {
             if ! grep -q "## Expected Output" "$cmd_file"; then
                 missing_sections+=("Expected Output")
             fi
-            
+
             if [ ${#missing_sections[@]} -gt 0 ]; then
                 echo "${cmd_name}: Missing required sections: ${missing_sections[*]}"
                 return 1

@@ -1,6 +1,6 @@
 # High-Performance Script Dependencies
 # ====================================
-# 
+#
 # Required dependencies for performance-optimized scripts:
 # - Async file operations with aiofiles
 # - System monitoring with psutil
@@ -10,14 +10,14 @@
 # Async I/O operations
 aiofiles>=23.1.0
 
-# System monitoring and process management  
+# System monitoring and process management
 psutil>=5.9.0
 
 # Memory profiling (built-in tracemalloc is used, but psutil provides additional metrics)
 
 # Standard library modules used (no additional dependencies):
 # - asyncio (built-in)
-# - concurrent.futures (built-in) 
+# - concurrent.futures (built-in)
 # - hashlib (built-in)
 # - json (built-in)
 # - re (built-in)

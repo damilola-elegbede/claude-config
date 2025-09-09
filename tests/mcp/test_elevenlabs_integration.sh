@@ -30,18 +30,18 @@ else
     exit 1
 fi
 
-# Test 3: Configuration file validation
-echo "Test 3: Configuration file validation"
-CONFIG_FILE="$PROJECT_ROOT/.mcp.json"
+# Test 3: ElevenLabs MCP configuration file validation
+echo "Test 3: ElevenLabs MCP configuration file validation"
+CONFIG_FILE="$PROJECT_ROOT/system-configs/.claude/mcp-servers/.mcp.elevenlabs.json"
 if [[ -f "$CONFIG_FILE" ]]; then
     if python3 -c "import json; json.load(open('$CONFIG_FILE'))" 2>/dev/null; then
-        echo "✓ PASS: Configuration file exists and is valid JSON"
+        echo "✓ PASS: ElevenLabs MCP configuration file exists and is valid JSON"
     else
-        echo "✗ FAIL: Configuration file is invalid JSON"
+        echo "✗ FAIL: ElevenLabs MCP configuration file is invalid JSON"
         exit 1
     fi
 else
-    echo "✗ FAIL: Configuration file does not exist"
+    echo "✗ FAIL: ElevenLabs MCP configuration file does not exist"
     exit 1
 fi
 

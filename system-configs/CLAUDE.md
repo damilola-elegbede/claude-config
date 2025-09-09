@@ -56,7 +56,7 @@ specialized agents working simultaneously on different aspects of the problem:
 When tasked with implementing a user authentication system, Claude delegates as follows:
 
 1. **Security Analysis Wave**: Deploy 3 security-auditor agents (auth flow, session management, data protection)
-2. **Design Wave**: Launch api-architect, frontend-architect, and database-architect agents simultaneously  
+2. **Design Wave**: Launch api-architect, frontend-architect, and database-architect agents simultaneously
 3. **Implementation Wave**: Deploy 5 backend-engineer agents (auth endpoints, middleware, validation, encryption, testing)
    - 4 frontend-engineer agents (login form, signup flow, session handling, UI components)
 4. **Quality Wave**: Launch 3 test-engineer agents (unit tests, integration tests, security tests) + 1 code-reviewer agent
@@ -105,7 +105,7 @@ Claude never delegates generic tasks - every delegation targets the most special
 For complex orchestrations, Claude delegates coordination responsibilities:
 
 - Systems-architect agents coordinate cross-service changes
-- Release-engineer agents coordinate deployment sequences  
+- Release-engineer agents coordinate deployment sequences
 - Project-manager agents coordinate multi-team efforts
 - Code-reviewer agents coordinate quality assurance processes
 

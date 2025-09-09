@@ -186,7 +186,7 @@ analyze_quality_patterns() {
 # Function to generate quality report
 generate_quality_report() {
     echo -e "${YELLOW}Generating quality report...${NC}"
-    
+
     # Ensure the directory exists
     mkdir -p "$(dirname "$QUALITY_REPORT")"
 
@@ -355,12 +355,12 @@ evaluate_quality_gate() {
     # File pass rate - relaxed for line length only violations
     local pass_rate=$(( (passed_files * 100) / total_files ))
     local min_pass_rate=100
-    
+
     # If only line length violations remain and under 10, allow 90% pass rate
     if [[ $total_errors -eq $LINE_LENGTH_VIOLATIONS ]] && [[ $total_errors -le 10 ]]; then
         min_pass_rate=90
     fi
-    
+
     if [[ $pass_rate -lt $min_pass_rate ]]; then
         echo -e "${RED}❌ Pass rate: $pass_rate% (target: ${min_pass_rate}%)${NC}"
         gate_passed=false

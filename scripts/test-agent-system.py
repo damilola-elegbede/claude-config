@@ -56,7 +56,7 @@ COMMAND_AGENT_MAP = {
 def test_agent_count():
     """Test that we have exactly 28 agents following AGENT_TEMPLATE.md format."""
     agents_dir = REPO_ROOT / "system-configs" / ".claude" / "agents"
-    agent_files = [f for f in agents_dir.glob('*.md') 
+    agent_files = [f for f in agents_dir.glob('*.md')
                    if f.name not in ['README.md', 'AGENT_TEMPLATE.md', 'AGENT_CATEGORIES.md']]
 
     passed = len(agent_files) == EXPECTED_AGENTS
@@ -67,7 +67,7 @@ def test_agent_count():
 def test_no_deprecated_agents():
     """Test that no deprecated agents exist."""
     agents_dir = REPO_ROOT / "system-configs" / ".claude" / "agents"
-    existing_agents = [f.stem for f in agents_dir.glob('*.md') 
+    existing_agents = [f.stem for f in agents_dir.glob('*.md')
                       if f.name not in ['README.md', 'AGENT_TEMPLATE.md']]
 
     found_deprecated = [agent for agent in DEPRECATED_AGENTS if agent in existing_agents]

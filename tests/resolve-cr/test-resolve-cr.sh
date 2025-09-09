@@ -31,10 +31,10 @@ TESTS_FAILED=0
 run_test() {
     local test_name="$1"
     local test_function="$2"
-    
+
     echo -e "${YELLOW}Running test:${NC} $test_name"
     TESTS_RUN=$((TESTS_RUN + 1))
-    
+
     if $test_function; then
         echo -e "${GREEN}✓ PASSED${NC}: $test_name"
         TESTS_PASSED=$((TESTS_PASSED + 1))
@@ -47,7 +47,7 @@ run_test() {
 # Create mock gh command
 create_mock_gh() {
     local scenario="$1"
-    
+
     cat > "${MOCK_BIN}/gh" << 'EOF'
 #!/bin/bash
 # Mock gh command for testing
@@ -133,7 +133,7 @@ EOF
 test_happy_path() {
     export MOCK_SCENARIO="happy"
     export PATH="${MOCK_BIN}:$PATH"
-    
+
     # Source the resolve-cr implementation (simplified for testing)
     output=$(bash -c '
         source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
@@ -154,7 +154,7 @@ test_happy_path() {
         export -f git
         resolve_cr 62 2>&1 | head -25
     ' 2>&1)
-    
+
     # Check for expected output patterns in order
     if echo "$output" | grep -q "Aggressively searching for CodeRabbit comments"; then
         if echo "$output" | grep -q "Found:.*security.*perf.*test.*quality"; then
@@ -167,7 +167,7 @@ test_happy_path() {
             fi
         fi
     fi
-    
+
     echo "Output: $output"
     return 1
 }
@@ -176,17 +176,17 @@ test_happy_path() {
 test_no_comments() {
     export MOCK_SCENARIO="empty"
     export PATH="${MOCK_BIN}:$PATH"
-    
+
     output=$(bash -c '
         source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
         resolve_cr 62 2>&1
     ' 2>&1)
-    
+
     # Check for expected error message
     if echo "$output" | grep -q "CRITICAL: No CodeRabbit comments found"; then
         return 0
     fi
-    
+
     echo "Output: $output"
     return 1
 }
@@ -195,7 +195,7 @@ test_no_comments() {
 test_push_and_comment() {
     export MOCK_SCENARIO="happy"
     export PATH="${MOCK_BIN}:$PATH"
-    
+
     output=$(bash -c '
         source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
         # Mock git commands
@@ -215,17 +215,17 @@ test_push_and_comment() {
         export -f git
         resolve_cr 62 2>&1
     ' 2>&1)
-    
+
     # Check that push happens before comments
     push_line=$(echo "$output" | grep -n "Changes pushed successfully" | cut -d: -f1)
     resolve_line=$(echo "$output" | grep -n "Resolution trigger posted" | cut -d: -f1)
-    
+
     if [[ ! -z "$push_line" ]] && [[ ! -z "$resolve_line" ]]; then
         if [[ $push_line -lt $resolve_line ]]; then
             return 0
         fi
     fi
-    
+
     echo "Output: $output"
     echo "Push line: $push_line, Resolve line: $resolve_line"
     return 1
@@ -235,10 +235,10 @@ test_push_and_comment() {
 test_split_comments() {
     export MOCK_SCENARIO="happy"
     export PATH="${MOCK_BIN}:$PATH"
-    
+
     # Track gh pr comment calls
     comment_count=0
-    
+
     output=$(bash -c '
         source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
         # Mock git commands
@@ -258,15 +258,15 @@ test_split_comments() {
         export -f git
         resolve_cr 62 2>&1
     ' 2>&1)
-    
+
     # Check for two separate comment posts via status lines
     resolve_count=$(echo "$output" | grep -c "Resolution trigger posted")
     summary_count=$(echo "$output" | grep -c "Detailed summary posted")
-    
+
     if [[ $resolve_count -ge 1 ]] && [[ $summary_count -ge 1 ]]; then
         return 0
     fi
-    
+
     echo "Output: $output"
     echo "Resolve comments: $resolve_count, Summary comments: $summary_count"
     return 1
@@ -284,35 +284,35 @@ create_testable_resolve_cr() {
 main() {
     echo "=== /resolve-cr Behavioral Test Suite ==="
     echo
-    
+
     # Setup
     create_fixtures
     create_mock_gh
     create_mock_jq
     create_testable_resolve_cr
-    
+
     # Run tests
     run_test "Happy path - finds comments and pushes fixes" test_happy_path
     run_test "Error path - no comments found" test_no_comments
     run_test "Push and comment workflow - push before comments" test_push_and_comment
     run_test "Split comments - resolve trigger and detailed summary" test_split_comments
-    
+
     # Summary
     echo
     echo "=== Test Summary ==="
     echo -e "Tests run: ${TESTS_RUN}"
     echo -e "Tests passed: ${GREEN}${TESTS_PASSED}${NC}"
     echo -e "Tests failed: ${RED}${TESTS_FAILED}${NC}"
-    
+
     # Cleanup
     rm -rf "${MOCK_BIN}" "${FIXTURES_DIR}"
     rm -f "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
-    
+
     # Exit with appropriate code
     if [[ ${TESTS_FAILED} -gt 0 ]]; then
         exit 1
     fi
-    
+
     exit 0
 }
 

@@ -17,7 +17,7 @@ setup_sync_test() {
     # Create test home directory structure
     mkdir -p "$TEST_HOME/.claude"
     mkdir -p "$BACKUP_DIR"
-    
+
     # Create some existing files to test backup
     echo "existing settings" > "$TEST_HOME/.claude/settings.json"
     echo "existing config" > "$TEST_HOME/.claude/CLAUDE.md"
@@ -96,7 +96,7 @@ if [ -f "$SETTINGS_FILE" ]; then
         echo -e "${RED}✗${NC} settings.json has invalid JSON syntax"
         exit 1
     fi
-    
+
     # Check for required sections
     if grep -q '"mcpServers"' "$SETTINGS_FILE"; then
         echo -e "${GREEN}✓${NC} settings.json contains mcpServers configuration"

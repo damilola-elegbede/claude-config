@@ -56,7 +56,7 @@ echo "🔍 Verifying installation..."
 if [ -d "node_modules" ] && [ -f "node_modules/.package-lock.json" ]; then
     echo "✅ node_modules directory created successfully"
     echo "✅ .package-lock.json exists"
-    
+
     # Count installed packages
     installed_packages=$(find node_modules -name "package.json" -maxdepth 2 | wc -l | tr -d ' ')
     echo "📊 Installed packages: $installed_packages"

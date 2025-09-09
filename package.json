@@ -6,6 +6,6 @@
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^24.2.1",
     "js-yaml": "^4.1.0",
-    "markdownlint-cli2": "^0.13.0"
+    "markdownlint-cli2": "0.18.1"
   }
 }

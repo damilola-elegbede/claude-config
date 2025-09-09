@@ -31,7 +31,7 @@ validate_command_yaml_frontmatter() {
 
     # Check required fields
     local yaml_content=$(cat "$temp_file")
-    
+
     # Required: description field
     if ! echo "$yaml_content" | grep -q "^description:"; then
         echo "❌ Missing required 'description' field in $file"
@@ -46,7 +46,7 @@ validate_command_yaml_frontmatter() {
         rm "$temp_file"
         return 1
     fi
-    
+
     # Warn if description is too long for good UX
     if [ ${#description} -gt 60 ]; then
         echo "⚠️  Description length (${#description} chars) exceeds recommended 60 chars in $file"
