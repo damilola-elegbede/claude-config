@@ -53,7 +53,7 @@ Claude: ## Wave 3: Implementation Strategy
 Analysis reveals gaps in security protocols. Launching Wave 4...
 
 ## Wave 4: Security Refinement (Parallel Execution)
-Launching: security-auditor, compliance-auditor
+Launching: security-auditor, security-auditor
 
 [Additional security planning]
 
@@ -212,7 +212,7 @@ api-architect:
 ```yaml
 Wave_4_Security_Review:
   - security-auditor: Authentication flows, data protection
-  - compliance-auditor: Regulatory requirements, audit trails
+  - security-auditor: Regulatory requirements, audit trails
   - Triggered by: Auth systems, payment processing, data handling
 
 Wave_5_Performance_Planning:
@@ -226,7 +226,7 @@ Wave_6_Integration_Strategy:
   - Triggered by: External API dependencies, complex deployments
 
 Wave_7_Compliance_Validation:
-  - compliance-auditor: Legal requirements, industry standards
+  - security-auditor: Legal requirements, industry standards
   - security-auditor: Vulnerability assessments, threat modeling
   - Triggered by: Healthcare, finance, or regulated industry projects
 ```

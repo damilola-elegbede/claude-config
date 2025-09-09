@@ -45,8 +45,8 @@ for agent_file in "$AGENTS_DIR"/*.md; do
             fi
         done
 
-        # Check SYSTEM BOUNDARY warning
-        if ! grep -q "SYSTEM BOUNDARY:" "$agent_file"; then
+        # Check SYSTEM BOUNDARY warning - fix: look for "## SYSTEM BOUNDARY" not "SYSTEM BOUNDARY:"
+        if ! grep -q "## SYSTEM BOUNDARY" "$agent_file"; then
             echo -e "${RED}❌ $agent_name: missing SYSTEM BOUNDARY warning${NC}"
             ((agent_yaml_issues++))
         fi
@@ -82,6 +82,7 @@ get_expected_color() {
         "architecture") echo "purple" ;;
         "design") echo "pink" ;;
         "operations") echo "cyan" ;;  # Operations and coordination
+        "coordination") echo "cyan" ;;  # Fix: coordination should be cyan, not unknown
         *) echo "unknown" ;;
     esac
 }
