@@ -299,9 +299,12 @@ def main():
         print(f"\nDetailed results saved to: {output_file}")
 
         # Exit with error if score is too low
-        avg_score = sum(r['overall_score'] for r in results) / len(results)
-        if avg_score < 0.6:
-            sys.exit(1)
+        if results:
+            avg_score = sum(r['overall_score'] for r in results) / len(results)
+            if avg_score < 0.6:
+                sys.exit(1)
+        else:
+            print("No commands found to validate")
 
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)

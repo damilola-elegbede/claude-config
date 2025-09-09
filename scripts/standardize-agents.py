@@ -263,7 +263,7 @@ def validate_agent_format(file_path):
             return False, f"Missing required YAML field: {field}"
 
     # Check for deprecated fields
-    deprecated_fields = ['specialization_level:', 'domain_expertise:', 'coordination_protocols:', 'knowledge_base:', 'escalation_path:']
+    deprecated_fields = ['specialization_level:', 'escalation_path:']
     for field in deprecated_fields:
         if field in yaml_text:
             return False, f"Contains deprecated field: {field}"

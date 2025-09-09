@@ -47,6 +47,13 @@ sync_files() {
 
     # Sync CLAUDE.md to home directory
     if [ -f "$SOURCE_DIR/CLAUDE.md" ]; then
+        # Backup existing ~/CLAUDE.md if present
+        if [ -f "$HOME/CLAUDE.md" ]; then
+            BACKUP_DIR="${BACKUP_DIR:-$HOME/.claude.backup.$(date +%Y%m%d_%H%M%S)}"
+            mkdir -p "$BACKUP_DIR"
+            cp "$HOME/CLAUDE.md" "$BACKUP_DIR/CLAUDE.md.bak"
+            print_success "Backed up existing ~/CLAUDE.md to $BACKUP_DIR/CLAUDE.md.bak"
+        fi
         cp "$SOURCE_DIR/CLAUDE.md" "$HOME/CLAUDE.md"
         print_success "Synced CLAUDE.md to ~/CLAUDE.md"
     fi

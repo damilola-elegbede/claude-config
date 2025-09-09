@@ -140,17 +140,23 @@ from async_validator import AsyncAgentValidator, main as async_main
 
 def main():
     """Main function maintaining original interface."""
-    # Check if running in compatibility mode
-    if '--legacy' in sys.argv:
-        print("Running in legacy compatibility mode...")
-        # Import and run original script
-        sys.path.append(str(Path(__file__).parent))
-        from validate_agent_yaml_legacy import main as legacy_main
-        return legacy_main()
+    try:
+        # Check if running in compatibility mode
+        if '--legacy' in sys.argv:
+            print("Running in legacy compatibility mode...")
+            # Import and run original script
+            sys.path.append(str(Path(__file__).parent))
+            from validate_agent_yaml_legacy import main as legacy_main
+            result = legacy_main()
+            return result if result is not None else 0
 
-    # Use high-performance async version
-    print("Using high-performance async validation...")
-    return asyncio.run(async_main())
+        # Use high-performance async version
+        print("Using high-performance async validation...")
+        result = asyncio.run(async_main())
+        return result if result is not None else 0
+    except Exception as e:
+        print(f"Error: {e}")
+        return 1
 
 if __name__ == '__main__':
     sys.exit(main())
@@ -200,20 +206,26 @@ from parallel_standardizer import ParallelAgentStandardizer, main as async_main
 
 def main():
     """Main function maintaining original interface."""
-    # Check if running in compatibility mode
-    if '--legacy' in sys.argv:
-        print("Running in legacy compatibility mode...")
-        # Import and run original script
-        sys.path.append(str(Path(__file__).parent))
-        from standardize_agents_legacy import main as legacy_main
-        return legacy_main()
+    try:
+        # Check if running in compatibility mode
+        if '--legacy' in sys.argv:
+            print("Running in legacy compatibility mode...")
+            # Import and run original script
+            sys.path.append(str(Path(__file__).parent))
+            from standardize_agents_legacy import main as legacy_main
+            result = legacy_main()
+            return result if result is not None else 0
 
-    # Use high-performance parallel version
-    print("Using high-performance parallel standardization...")
-    return asyncio.run(async_main())
+        # Use high-performance parallel version
+        print("Using high-performance parallel standardization...")
+        result = asyncio.run(async_main())
+        return result if result is not None else 0
+    except Exception as e:
+        print(f"Error: {e}")
+        return 1
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
 '''
 
         wrapper_path = self.scripts_dir / 'standardize-agents.py'
@@ -260,20 +272,26 @@ from parallel_capability_scanner import ParallelCapabilityScanner, main as async
 
 def main():
     """Main function maintaining original interface."""
-    # Check if running in compatibility mode
-    if '--legacy' in sys.argv:
-        print("Running in legacy compatibility mode...")
-        # Import and run original script
-        sys.path.append(str(Path(__file__).parent))
-        from scan_agent_capabilities_legacy import main as legacy_main
-        return legacy_main()
+    try:
+        # Check if running in compatibility mode
+        if '--legacy' in sys.argv:
+            print("Running in legacy compatibility mode...")
+            # Import and run original script
+            sys.path.append(str(Path(__file__).parent))
+            from scan_agent_capabilities_legacy import main as legacy_main
+            result = legacy_main()
+            return result if result is not None else 0
 
-    # Use high-performance concurrent version
-    print("Using high-performance concurrent capability scanning...")
-    return asyncio.run(async_main())
+        # Use high-performance concurrent version
+        print("Using high-performance concurrent capability scanning...")
+        result = asyncio.run(async_main())
+        return result if result is not None else 0
+    except Exception as e:
+        print(f"Error: {e}")
+        return 1
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
 '''
 
         wrapper_path = self.scripts_dir / 'scan-agent-capabilities.py'
