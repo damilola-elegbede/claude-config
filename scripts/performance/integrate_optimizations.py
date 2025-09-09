@@ -167,7 +167,16 @@ if __name__ == '__main__':
         # Move original to legacy
         if wrapper_path.exists():
             legacy_path = self.scripts_dir / 'validate_agent_yaml_legacy.py'
-            shutil.move(wrapper_path, legacy_path)
+            # Detect if current file is already a wrapper (sentinel in header)
+            is_wrapper = False
+            try:
+                with open(wrapper_path, 'r', encoding='utf-8') as fh:
+                    is_wrapper = "High-Performance Agent Validation Wrapper" in fh.read(256)
+            except Exception:
+                pass
+            # Move only once: if legacy doesn't exist and current is not a wrapper
+            if not legacy_path.exists() and not is_wrapper:
+                shutil.move(wrapper_path, legacy_path)
 
         # Create new wrapper
         with open(wrapper_path, 'w') as f:
@@ -233,7 +242,16 @@ if __name__ == '__main__':
         # Move original to legacy
         if wrapper_path.exists():
             legacy_path = self.scripts_dir / 'standardize_agents_legacy.py'
-            shutil.move(wrapper_path, legacy_path)
+            # Detect if current file is already a wrapper (sentinel in header)
+            is_wrapper = False
+            try:
+                with open(wrapper_path, 'r', encoding='utf-8') as fh:
+                    is_wrapper = "High-Performance Agent Standardization Wrapper" in fh.read(256)
+            except Exception:
+                pass
+            # Move only once: if legacy doesn't exist and current is not a wrapper
+            if not legacy_path.exists() and not is_wrapper:
+                shutil.move(wrapper_path, legacy_path)
 
         # Create new wrapper
         with open(wrapper_path, 'w') as f:
@@ -299,7 +317,16 @@ if __name__ == '__main__':
         # Move original to legacy
         if wrapper_path.exists():
             legacy_path = self.scripts_dir / 'scan_agent_capabilities_legacy.py'
-            shutil.move(wrapper_path, legacy_path)
+            # Detect if current file is already a wrapper (sentinel in header)
+            is_wrapper = False
+            try:
+                with open(wrapper_path, 'r', encoding='utf-8') as fh:
+                    is_wrapper = "High-Performance Capability Scanner Wrapper" in fh.read(256)
+            except Exception:
+                pass
+            # Move only once: if legacy doesn't exist and current is not a wrapper
+            if not legacy_path.exists() and not is_wrapper:
+                shutil.move(wrapper_path, legacy_path)
 
         # Create new wrapper
         with open(wrapper_path, 'w') as f:

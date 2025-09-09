@@ -65,9 +65,13 @@ sync_files() {
         mkdir -p "$TARGET_DIR/commands"
 
         # Sync agents (excluding templates and README)
-        find "$SOURCE_DIR/.claude/agents" -name "*.md" -not -name "*TEMPLATE*" -not -name "README.md" -exec cp {} "$TARGET_DIR/agents/" \;
-        AGENT_COUNT=$(find "$SOURCE_DIR/.claude/agents" -name "*.md" -not -name "*TEMPLATE*" -not -name "README.md" | wc -l | tr -d ' ')
-        print_success "Synced $AGENT_COUNT agents"
+        if [ -d "$SOURCE_DIR/.claude/agents" ]; then
+            find "$SOURCE_DIR/.claude/agents" -name "*.md" -not -name "*TEMPLATE*" -not -name "README.md" -exec cp {} "$TARGET_DIR/agents/" \; 2>/dev/null || true
+            AGENT_COUNT=$(find "$SOURCE_DIR/.claude/agents" -name "*.md" -not -name "*TEMPLATE*" -not -name "README.md" 2>/dev/null | wc -l | tr -d ' ')
+            print_success "Synced $AGENT_COUNT agents"
+        else
+            print_warning "No agents directory found at $SOURCE_DIR/.claude/agents"
+        fi
 
         # Sync commands
         if [ -d "$SOURCE_DIR/.claude/commands" ]; then
