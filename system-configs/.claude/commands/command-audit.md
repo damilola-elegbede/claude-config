@@ -139,6 +139,7 @@ Autocomplete Compatible: [count] | Argument-hint Format: [count] | Process Valid
 - Broken frontmatter structure with delimiter problems
 
 **Frontmatter Valid Classification:**
+
 | Command | Template Compliance | Frontmatter Valid | YAML Syntax | Agent Specification | Content Quality | Autocomplete |
 |---------|---------------------|-------------------|-------------|---------------------|------------------|--------------|
 | /commit | ✅ Compliant | ✅ Valid | ✅ Valid | ✅ Valid | ✅ High | ✅ 45 char |
@@ -157,6 +158,7 @@ Autocomplete Compatible: [count] | Argument-hint Format: [count] | Process Valid
 - Argument-hint format standardization using [bracket] notation
 
 **Content Quality Enhancement Matrix:**
+
 | Command | Template Gap | Frontmatter Issues | Agent Refs | Autocomplete Fix | Priority |
 |---------|--------------|-------------------|------------|------------------|----------|
 | /commit | Minor format | None | Valid | Compliant | Low |
