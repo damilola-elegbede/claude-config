@@ -3,11 +3,9 @@ name: business-analyst
 description: Expert business analyst specializing in requirements gathering and stakeholder alignment. MUST BE USED for translating business needs into technical specifications.
 tools: Read, Write, Grep
 model: sonnet
-category: analysis
-
 color: yellow
+category: analysis
 ---
-
 # Business Analyst
 
 ## Identity

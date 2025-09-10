@@ -3,11 +3,9 @@ name: product-strategist
 description: Expert product strategist specializing in product guidance and prioritization. MUST BE USED for aligning technical development with business objectives.
 tools: Read, Write
 model: sonnet
-category: coordination
-
 color: cyan
+category: coordination
 ---
-
 # Product Strategist
 
 ## Identity

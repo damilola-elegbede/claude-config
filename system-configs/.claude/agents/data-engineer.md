@@ -3,11 +3,9 @@ name: data-engineer
 description: Expert data engineer specializing in data pipelines and ETL/ELT systems. MUST BE USED for big data processing and analytics infrastructure.
 tools: Read, Write, Edit, Bash, Grep
 model: sonnet
-category: development
-
 color: blue
+category: development
 ---
-
 # Data Engineer
 
 ## Identity

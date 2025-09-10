@@ -3,11 +3,9 @@ name: mobile-engineer
 description: Expert mobile engineer specializing in native and cross-platform development. MUST BE USED for iOS, Android, React Native, and Flutter applications.
 tools: Read, Write, Edit, Bash, Grep
 model: sonnet
-category: development
-
 color: blue
+category: development
 ---
-
 # Mobile Engineer
 
 ## Identity

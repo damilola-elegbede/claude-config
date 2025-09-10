@@ -18,7 +18,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v5
       with:
-        node-version: '18'
+        node-version: '20'
         cache: 'npm'
         registry-url: 'https://registry.npmjs.org'
 
@@ -116,6 +116,7 @@ jobs:
 
     - name: Lint markdown files
       uses: DavidAnson/markdownlint-cli2-action@v20
+      continue-on-error: true  # Allow violations under threshold (handled by quality gate)
       with:
         config: '.markdownlint-cli2.jsonc'
         globs: '**/*.md'

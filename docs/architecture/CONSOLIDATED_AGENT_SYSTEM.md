@@ -2,9 +2,9 @@
 
 ## Executive Summary
 
-The agent ecosystem has been optimized to a focused set of 28 specialized agents, each with
-clear domain expertise and defined boundaries. This configuration eliminates redundancy
-while maintaining comprehensive coverage across all technical domains.
+The agent ecosystem has been optimized to a focused set of 28 specialized agents, each with clear domain expertise
+and defined boundaries. This configuration eliminates redundancy while maintaining comprehensive coverage across all
+technical domains.
 
 ## Current Agent Portfolio (28 Agents)
 
@@ -13,7 +13,7 @@ while maintaining comprehensive coverage across all technical domains.
 - **backend-engineer**: Server-side architecture, APIs, databases, microservices
 - **data-platform-engineer**: Data pipelines, ETL/ELT systems, data warehouse architecture
 - **database-engineer**: Database design, optimization, query performance
-- **mobile-platform-engineer**: Native and cross-platform mobile application development
+- **mobile-engineer**: Native and cross-platform mobile application development
 - **ml-engineer**: Machine learning systems, model deployment, MLOps
 
 ### 🟠 Infrastructure (9 agents)
@@ -42,7 +42,7 @@ while maintaining comprehensive coverage across all technical domains.
 
 - **test-engineer**: Comprehensive testing strategy, test implementation, quality assurance
 - **code-reviewer**: Pre-commit code quality review, style compliance, PR readiness
-- **performance-specialist**: Performance optimization, load testing, benchmarking
+- **performance-engineer**: Performance optimization, load testing, benchmarking
 - **accessibility-auditor**: Accessibility testing, WCAG compliance, inclusive design
 
 ### 🔴 Security (2 agents)
@@ -69,7 +69,7 @@ while maintaining comprehensive coverage across all technical domains.
 Backend services → backend-engineer
 Data processing → data-platform-engineer
 Database design → database-engineer
-Mobile applications → mobile-platform-engineer
+Mobile applications → mobile-engineer
 ML/AI systems → ml-engineer
 ```
 
@@ -101,7 +101,7 @@ Mobile UI/UX → mobile-ui
 ```text
 Testing strategy → test-engineer
 Code review → code-reviewer
-Performance optimization → performance-specialist
+Performance optimization → performance-engineer
 Accessibility compliance → accessibility-auditor
 Security assessment → security-auditor
 Supply chain security → supply-chain-security-engineer
@@ -129,7 +129,7 @@ Complex debugging → debugger
 | security | 2 | 7% | Vulnerability, compliance |
 | analysis | 2 | 7% | Research, documentation |
 | operations | 3 | 10% | Production, reliability, debugging |
-| **Total** | **42** | **100%** | **Complete coverage** |
+| **Total** | **29** | **100%** | **Complete coverage** |
 
 ## Coordination Patterns
 
@@ -140,7 +140,7 @@ pre_deployment:
   - code-reviewer: style and quality check
   - security-auditor: vulnerability assessment
   - test-engineer: test coverage validation
-  - performance-specialist: performance validation
+  - performance-engineer: performance validation
 ```
 
 ### Development Streams (Parallel)
@@ -148,7 +148,7 @@ pre_deployment:
 ```yaml
 feature_development:
   - backend-engineer: API implementation
-  - mobile-platform-engineer: mobile app updates
+  - mobile-engineer: mobile app updates
   - test-engineer: test automation
   - tech-writer: documentation updates
 ```
@@ -197,7 +197,7 @@ codebase_understanding:
 - `/test` → test-engineer
 - `/review` → code-reviewer
 - `/debug` → debugger
-- `/perf` → performance-specialist
+- `/perf` → performance-engineer
 
 ### Infrastructure & Operations
 
@@ -250,11 +250,11 @@ codebase_understanding:
 
 ## Implementation Status
 
-✅ **Completed**: 42-agent portfolio optimization
+✅ **Completed**: 28-agent portfolio optimization
 ✅ **Completed**: Category and color standardization
 ✅ **Completed**: System boundary enforcement
 ✅ **Completed**: Tool access optimization
 ✅ **Completed**: Documentation synchronization
 
-The current 42-agent configuration represents an optimal balance of specialization depth,
-operational efficiency, and comprehensive technical coverage.
+The current 28-agent configuration represents an optimal balance of specialization depth, operational efficiency, and
+comprehensive technical coverage.

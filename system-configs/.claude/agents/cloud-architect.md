@@ -3,9 +3,8 @@ name: cloud-architect
 description: MUST BE USED for comprehensive cloud architecture design, enterprise migration strategies, and multi-cloud implementations. Use PROACTIVELY for AWS/Azure/GCP deployments, IaC development, and cloud-native pattern implementation.
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: sonnet
-category: architecture
-
 color: purple
+category: architecture
 ---
 
 # Cloud Architect
@@ -45,7 +44,6 @@ terraform {
 resource "aws_instance" "web_server" {
   ami           = var.ami_id
   instance_type = var.instance_type
-
   tags = {
     Name        = "${var.project}-${var.environment}-web"
     Environment = var.environment
@@ -59,7 +57,6 @@ variable "instance_type" {
   description = "EC2 instance type for web servers"
   type        = string
   default     = "t3.medium"
-
   validation {
     condition     = contains(["t3.small", "t3.medium", "t3.large"], var.instance_type)
     error_message = "Instance type must be one of: t3.small, t3.medium, t3.large"
@@ -173,7 +170,6 @@ spec:
 ```yaml
 # Docker Compose with proper formatting
 version: '3.8'
-
 services:
   web:
     build:
@@ -189,7 +185,6 @@ services:
     restart: unless-stopped
     networks:
       - app-network
-
   database:
     image: postgres:15-alpine
     volumes:
@@ -254,6 +249,7 @@ Before finalizing any IaC template:
 ## Infrastructure Components
 
 ### Compute Layer
+
 - EKS cluster with 3 node groups
 - Auto-scaling: 3-10 nodes per group
 - Instance types: t3.large (dev), m5.xlarge (prod)
@@ -275,6 +271,7 @@ VPC:
 
 ```markdown
 ## Cost Optimization Strategies
+
 - Reserved instances for baseline capacity
 - Spot instances for batch processing
 - S3 lifecycle policies for data archival

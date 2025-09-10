@@ -1,0 +1,1494 @@
+openapi: 3.0.3
+info:
+  title: Claude Webhooks & Events API
+  description: |
+    Webhook and real-time event management API for Claude Code CLI system.
+    Provides comprehensive event streaming, webhook management, and notification
+    services for system integration and monitoring.
+  version: 1.0.0
+  contact:
+    name: Claude Webhooks Support
+    email: webhooks@anthropic.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://webhooks.claude.ai/api/v1
+    description: Production webhooks server
+  - url: https://staging-webhooks.claude.ai/api/v1
+    description: Staging webhooks server
+  - url: http://localhost:3004/api/v1
+    description: Local development server
+
+paths:
+  /webhooks:
+    get:
+      tags:
+        - Webhook Management
+      summary: List webhooks
+      description: |
+        Retrieve all webhook configurations for the current user or organization.
+        Includes webhook status, statistics, and configuration details.
+      operationId: listWebhooks
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: status
+          in: query
+          description: Filter by webhook status
+          required: false
+          schema:
+            type: string
+            enum: [active, inactive, failed, paused]
+        - name: eventType
+          in: query
+          description: Filter by event type
+          required: false
+          schema:
+            type: string
+            example: "agent.execution.completed"
+        - name: includeStats
+          in: query
+          description: Include delivery statistics
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Webhooks retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhooksResponse'
+              examples:
+                active_webhooks:
+                  summary: Active webhook configurations
+                  value:
+                    webhooks:
+                      - id: "webhook_123"
+                        name: "Agent Completion Notifications"
+                        url: "https://api.myapp.com/webhooks/claude/agent-complete"
+                        events: ["agent.execution.completed", "agent.execution.failed"]
+                        status: "active"
+                        createdAt: "2024-01-10T10:00:00Z"
+                        lastDelivery: "2024-01-15T10:25:00Z"
+                        headers:
+                          Authorization: "[REDACTED]"
+                          Content-Type: "application/json"
+                        retryPolicy:
+                          maxRetries: 3
+                          backoffMultiplier: 2
+                        stats:
+                          totalDeliveries: 1250
+                          successfulDeliveries: 1198
+                          failedDeliveries: 52
+                          lastFailureReason: "Connection timeout"
+                      - id: "webhook_456"
+                        name: "System Status Updates"
+                        url: "https://status.myapp.com/claude-updates"
+                        events: ["system.maintenance.scheduled", "system.status.degraded"]
+                        status: "active"
+                        createdAt: "2024-01-05T14:30:00Z"
+                        lastDelivery: "2024-01-15T09:15:00Z"
+                    totalCount: 8
+                    activeCount: 6
+
+    post:
+      tags:
+        - Webhook Management
+      summary: Create webhook
+      description: |
+        Create a new webhook configuration to receive real-time event notifications.
+        Supports custom headers, retry policies, and event filtering.
+      operationId: createWebhook
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWebhookRequest'
+            examples:
+              agent_webhook:
+                summary: Agent execution webhook
+                value:
+                  name: "Production Agent Monitor"
+                  url: "https://api.myapp.com/webhooks/claude/agents"
+                  events: [
+                    "agent.execution.started",
+                    "agent.execution.completed",
+                    "agent.execution.failed"
+                  ]
+                  headers:
+                    Authorization: "Bearer my-app-token"
+                    X-App-ID: "my-production-app"
+                  retryPolicy:
+                    maxRetries: 5
+                    backoffMultiplier: 2
+                    maxBackoffSeconds: 300
+                  filters:
+                    agentIds: ["backend-engineer", "frontend-engineer"]
+                    priority: ["high", "urgent"]
+              system_webhook:
+                summary: System monitoring webhook
+                value:
+                  name: "System Health Monitor"
+                  url: "https://monitoring.myapp.com/claude-health"
+                  events: [
+                    "system.status.degraded",
+                    "system.maintenance.scheduled",
+                    "system.alert.critical"
+                  ]
+                  secret: "webhook-secret-key"
+                  active: true
+      responses:
+        '201':
+          description: Webhook created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateWebhookResponse'
+              examples:
+                webhook_created:
+                  summary: Webhook created
+                  value:
+                    success: true
+                    webhook:
+                      id: "webhook_789"
+                      name: "Production Agent Monitor"
+                      url: "https://api.myapp.com/webhooks/claude/agents"
+                      events: [
+                        "agent.execution.started",
+                        "agent.execution.completed",
+                        "agent.execution.failed"
+                      ]
+                      status: "active"
+                      createdAt: "2024-01-15T11:00:00Z"
+                      secret: "[REDACTED]"
+        '400':
+          description: Invalid webhook configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_url:
+                  summary: Invalid webhook URL
+                  value:
+                    error:
+                      code: "INVALID_WEBHOOK_URL"
+                      message: "Webhook URL must be a valid HTTPS endpoint"
+                      details:
+                        providedUrl: "http://insecure.example.com"
+
+  /webhooks/{webhookId}:
+    get:
+      tags:
+        - Webhook Management
+      summary: Get webhook details
+      description: |
+        Retrieve detailed information about a specific webhook including
+        configuration, statistics, and recent delivery history.
+      operationId: getWebhook
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: webhookId
+          in: path
+          required: true
+          description: Webhook identifier
+          schema:
+            type: string
+            example: "webhook_123"
+        - name: includeDeliveries
+          in: query
+          description: Include recent delivery history
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: deliveryLimit
+          in: query
+          description: Number of recent deliveries to include
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+      responses:
+        '200':
+          description: Webhook details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookDetails'
+              examples:
+                webhook_with_deliveries:
+                  summary: Webhook with delivery history
+                  value:
+                    id: "webhook_123"
+                    name: "Agent Completion Notifications"
+                    url: "https://api.myapp.com/webhooks/claude/agent-complete"
+                    events: ["agent.execution.completed", "agent.execution.failed"]
+                    status: "active"
+                    createdAt: "2024-01-10T10:00:00Z"
+                    updatedAt: "2024-01-12T15:30:00Z"
+                    headers:
+                      Authorization: "[REDACTED]"
+                      Content-Type: "application/json"
+                      X-App-ID: "my-production-app"
+                    retryPolicy:
+                      maxRetries: 3
+                      backoffMultiplier: 2
+                      maxBackoffSeconds: 120
+                    filters:
+                      agentIds: ["backend-engineer"]
+                      priority: ["high", "urgent"]
+                    statistics:
+                      totalDeliveries: 1250
+                      successfulDeliveries: 1198
+                      failedDeliveries: 52
+                      successRate: 0.958
+                      avgResponseTime: 245
+                      lastSuccessfulDelivery: "2024-01-15T10:25:00Z"
+                      lastFailedDelivery: "2024-01-15T09:15:00Z"
+                      lastFailureReason: "HTTP 500 Internal Server Error"
+                    recentDeliveries:
+                      - id: "delivery_abc123"
+                        timestamp: "2024-01-15T10:25:00Z"
+                        event: "agent.execution.completed"
+                        statusCode: 200
+                        responseTime: 180
+                        attempt: 1
+                        success: true
+                      - id: "delivery_def456"
+                        timestamp: "2024-01-15T09:15:00Z"
+                        event: "agent.execution.failed"
+                        statusCode: 500
+                        responseTime: 5000
+                        attempt: 3
+                        success: false
+                        errorMessage: "Connection timeout"
+        '404':
+          description: Webhook not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    patch:
+      tags:
+        - Webhook Management
+      summary: Update webhook
+      description: |
+        Update webhook configuration including URL, events, headers,
+        and retry policies. Changes take effect immediately.
+      operationId: updateWebhook
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: webhookId
+          in: path
+          required: true
+          description: Webhook identifier
+          schema:
+            type: string
+            example: "webhook_123"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateWebhookRequest'
+            examples:
+              update_events:
+                summary: Update event subscriptions
+                value:
+                  events: [
+                    "agent.execution.started",
+                    "agent.execution.completed",
+                    "agent.execution.failed",
+                    "agent.execution.cancelled"
+                  ]
+              update_retry_policy:
+                summary: Update retry policy
+                value:
+                  retryPolicy:
+                    maxRetries: 5
+                    backoffMultiplier: 3
+                    maxBackoffSeconds: 600
+      responses:
+        '200':
+          description: Webhook updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateWebhookResponse'
+        '400':
+          description: Invalid webhook update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Webhook not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - Webhook Management
+      summary: Delete webhook
+      description: |
+        Delete a webhook configuration. This will immediately stop
+        all event deliveries to the webhook endpoint.
+      operationId: deleteWebhook
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: webhookId
+          in: path
+          required: true
+          description: Webhook identifier
+          schema:
+            type: string
+            example: "webhook_123"
+      responses:
+        '200':
+          description: Webhook deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteWebhookResponse'
+        '404':
+          description: Webhook not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /webhooks/{webhookId}/test:
+    post:
+      tags:
+        - Webhook Management
+      summary: Test webhook
+      description: |
+        Send a test event to the webhook endpoint to verify
+        configuration and connectivity.
+      operationId: testWebhook
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: webhookId
+          in: path
+          required: true
+          description: Webhook identifier
+          schema:
+            type: string
+            example: "webhook_123"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestWebhookRequest'
+            examples:
+              test_agent_event:
+                summary: Test with agent event
+                value:
+                  eventType: "agent.execution.completed"
+                  customPayload:
+                    executionId: "test_execution_123"
+                    agentId: "backend-engineer"
+                    result: "success"
+      responses:
+        '200':
+          description: Test webhook sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestWebhookResponse'
+              examples:
+                test_successful:
+                  summary: Successful test
+                  value:
+                    success: true
+                    testId: "test_abc123"
+                    statusCode: 200
+                    responseTime: 245
+                    responseHeaders:
+                      Content-Type: "application/json"
+                    responseBody: '{"status":"ok","message":"Test received"}'
+                test_failed:
+                  summary: Failed test
+                  value:
+                    success: false
+                    testId: "test_def456"
+                    statusCode: 404
+                    responseTime: 1500
+                    errorMessage: "Not Found: /webhooks/claude/agents"
+
+  /webhooks/{webhookId}/deliveries:
+    get:
+      tags:
+        - Webhook Management
+      summary: Get webhook deliveries
+      description: |
+        Retrieve delivery history for a specific webhook with filtering
+        and pagination capabilities.
+      operationId: getWebhookDeliveries
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: webhookId
+          in: path
+          required: true
+          description: Webhook identifier
+          schema:
+            type: string
+            example: "webhook_123"
+        - name: status
+          in: query
+          description: Filter by delivery status
+          required: false
+          schema:
+            type: string
+            enum: [success, failed, pending]
+        - name: eventType
+          in: query
+          description: Filter by event type
+          required: false
+          schema:
+            type: string
+        - name: startTime
+          in: query
+          description: Start time for delivery history
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endTime
+          in: query
+          description: End time for delivery history
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          description: Maximum number of deliveries
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          description: Pagination offset
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: Webhook deliveries retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookDeliveriesResponse'
+
+  /webhooks/{webhookId}/deliveries/{deliveryId}/retry:
+    post:
+      tags:
+        - Webhook Management
+      summary: Retry failed delivery
+      description: |
+        Manually retry a failed webhook delivery.
+        Uses the original event payload and current webhook configuration.
+      operationId: retryWebhookDelivery
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: webhookId
+          in: path
+          required: true
+          description: Webhook identifier
+          schema:
+            type: string
+            example: "webhook_123"
+        - name: deliveryId
+          in: path
+          required: true
+          description: Delivery identifier
+          schema:
+            type: string
+            example: "delivery_abc123"
+      responses:
+        '202':
+          description: Retry initiated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetryDeliveryResponse'
+        '400':
+          description: Cannot retry delivery
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /events:
+    get:
+      tags:
+        - Event Management
+      summary: Get event types
+      description: |
+        Retrieve all available event types that can be subscribed to
+        via webhooks or real-time streams.
+      operationId: getEventTypes
+      responses:
+        '200':
+          description: Event types retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventTypesResponse'
+              examples:
+                available_events:
+                  summary: Available event types
+                  value:
+                    categories:
+                      agent:
+                        - type: "agent.execution.started"
+                          description: "Agent execution has started"
+                          payload: "ExecutionStartedPayload"
+                        - type: "agent.execution.completed"
+                          description: "Agent execution completed successfully"
+                          payload: "ExecutionCompletedPayload"
+                        - type: "agent.execution.failed"
+                          description: "Agent execution failed"
+                          payload: "ExecutionFailedPayload"
+                        - type: "agent.execution.cancelled"
+                          description: "Agent execution was cancelled"
+                          payload: "ExecutionCancelledPayload"
+                      system:
+                        - type: "system.status.degraded"
+                          description: "System status has degraded"
+                          payload: "SystemStatusPayload"
+                        - type: "system.maintenance.scheduled"
+                          description: "System maintenance has been scheduled"
+                          payload: "MaintenanceScheduledPayload"
+                        - type: "system.alert.critical"
+                          description: "Critical system alert"
+                          payload: "SystemAlertPayload"
+                      user:
+                        - type: "user.login"
+                          description: "User logged in"
+                          payload: "UserLoginPayload"
+                        - type: "user.logout"
+                          description: "User logged out"
+                          payload: "UserLogoutPayload"
+
+  /events/stream:
+    get:
+      tags:
+        - Event Streaming
+      summary: Real-time event stream
+      description: |
+        Establish a Server-Sent Events (SSE) connection for real-time
+        event streaming. Supports event filtering and authentication.
+      operationId: streamEvents
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: events
+          in: query
+          description: Event types to stream (comma-separated)
+          required: false
+          schema:
+            type: string
+            example: "agent.execution.completed,system.status.degraded"
+        - name: filters
+          in: query
+          description: JSON-encoded filter criteria
+          required: false
+          schema:
+            type: string
+            example: '{"agentIds":["backend-engineer"],"priority":["high"]}'
+      responses:
+        '200':
+          description: Event stream established
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                description: Server-sent events stream
+              examples:
+                agent_event:
+                  summary: Agent execution event
+                  value: |
+                    event: agent.execution.completed
+                    data: {"executionId":"exec_123","agentId":"backend-engineer","status":"completed","timestamp":"2024-01-15T10:30:00Z"}
+                    
+                system_event:
+                  summary: System status event
+                  value: |
+                    event: system.status.degraded
+                    data: {"service":"authentication","status":"degraded","timestamp":"2024-01-15T10:31:00Z"}
+        '400':
+          description: Invalid stream parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /events/{eventId}:
+    get:
+      tags:
+        - Event Management
+      summary: Get event details
+      description: |
+        Retrieve detailed information about a specific event including
+        payload schema and delivery status across webhooks.
+      operationId: getEvent
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          description: Event identifier
+          schema:
+            type: string
+            example: "event_abc123"
+      responses:
+        '200':
+          description: Event details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDetails'
+              examples:
+                agent_execution_event:
+                  summary: Agent execution completed event
+                  value:
+                    id: "event_abc123"
+                    type: "agent.execution.completed"
+                    timestamp: "2024-01-15T10:30:00Z"
+                    source: "agent-management-service"
+                    payload:
+                      executionId: "exec_456"
+                      agentId: "backend-engineer"
+                      userId: "user_123"
+                      status: "completed"
+                      duration: 245
+                      result:
+                        success: true
+                        artifacts: ["api-endpoints.js", "tests.spec.js"]
+                    deliveries:
+                      - webhookId: "webhook_123"
+                        status: "success"
+                        statusCode: 200
+                        deliveredAt: "2024-01-15T10:30:05Z"
+                        attempts: 1
+                      - webhookId: "webhook_456"
+                        status: "failed"
+                        statusCode: 500
+                        lastAttemptAt: "2024-01-15T10:30:15Z"
+                        attempts: 3
+                        nextRetryAt: "2024-01-15T10:35:00Z"
+        '404':
+          description: Event not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /notifications:
+    get:
+      tags:
+        - Notifications
+      summary: Get user notifications
+      description: |
+        Retrieve notifications for the current user including system alerts,
+        agent execution updates, and administrative messages.
+      operationId: getUserNotifications
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: type
+          in: query
+          description: Filter by notification type
+          required: false
+          schema:
+            type: string
+            enum: [system, agent, security, billing]
+        - name: status
+          in: query
+          description: Filter by read status
+          required: false
+          schema:
+            type: string
+            enum: [read, unread, archived]
+        - name: priority
+          in: query
+          description: Filter by priority level
+          required: false
+          schema:
+            type: string
+            enum: [low, medium, high, urgent]
+        - name: limit
+          in: query
+          description: Maximum number of notifications
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          description: Pagination offset
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: Notifications retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationsResponse'
+
+    patch:
+      tags:
+        - Notifications
+      summary: Update notification status
+      description: |
+        Mark notifications as read, unread, or archived.
+        Supports bulk operations on multiple notifications.
+      operationId: updateNotifications
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNotificationsRequest'
+            examples:
+              mark_read:
+                summary: Mark notifications as read
+                value:
+                  notificationIds: ["notif_123", "notif_456", "notif_789"]
+                  status: "read"
+              archive_all_system:
+                summary: Archive all system notifications
+                value:
+                  filters:
+                    type: "system"
+                    status: "read"
+                  status: "archived"
+      responses:
+        '200':
+          description: Notifications updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateNotificationsResponse'
+
+components:
+  schemas:
+    WebhooksResponse:
+      type: object
+      required:
+        - webhooks
+        - totalCount
+      properties:
+        webhooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Webhook'
+        totalCount:
+          type: integer
+          description: Total number of webhooks
+        activeCount:
+          type: integer
+          description: Number of active webhooks
+
+    Webhook:
+      type: object
+      required:
+        - id
+        - name
+        - url
+        - events
+        - status
+        - createdAt
+      properties:
+        id:
+          type: string
+          description: Unique webhook identifier
+        name:
+          type: string
+          description: Human-readable webhook name
+        url:
+          type: string
+          format: uri
+          description: Webhook endpoint URL
+        events:
+          type: array
+          items:
+            type: string
+          description: Subscribed event types
+        status:
+          type: string
+          enum: [active, inactive, failed, paused]
+          description: Current webhook status
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp
+        lastDelivery:
+          type: string
+          format: date-time
+          description: Last successful delivery timestamp
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+          description: Custom headers (sensitive values redacted)
+        retryPolicy:
+          $ref: '#/components/schemas/RetryPolicy'
+        filters:
+          type: object
+          description: Event filtering criteria
+          additionalProperties: true
+        stats:
+          $ref: '#/components/schemas/WebhookStats'
+
+    WebhookStats:
+      type: object
+      properties:
+        totalDeliveries:
+          type: integer
+          description: Total delivery attempts
+        successfulDeliveries:
+          type: integer
+          description: Successful deliveries
+        failedDeliveries:
+          type: integer
+          description: Failed deliveries
+        successRate:
+          type: number
+          format: float
+          description: Success rate (0-1)
+        avgResponseTime:
+          type: number
+          format: float
+          description: Average response time in milliseconds
+        lastFailureReason:
+          type: string
+          description: Most recent failure reason
+
+    RetryPolicy:
+      type: object
+      properties:
+        maxRetries:
+          type: integer
+          minimum: 0
+          maximum: 10
+          description: Maximum retry attempts
+        backoffMultiplier:
+          type: number
+          format: float
+          minimum: 1
+          maximum: 10
+          description: Exponential backoff multiplier
+        maxBackoffSeconds:
+          type: integer
+          minimum: 1
+          maximum: 3600
+          description: Maximum backoff duration
+
+    CreateWebhookRequest:
+      type: object
+      required:
+        - name
+        - url
+        - events
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Webhook name
+        url:
+          type: string
+          format: uri
+          pattern: "^https://"
+          description: HTTPS webhook endpoint URL
+        events:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          description: Event types to subscribe to
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+          description: Custom HTTP headers
+        secret:
+          type: string
+          minLength: 10
+          maxLength: 100
+          description: Secret for payload signing
+        retryPolicy:
+          $ref: '#/components/schemas/RetryPolicy'
+        filters:
+          type: object
+          description: Event filtering criteria
+          additionalProperties: true
+        active:
+          type: boolean
+          default: true
+          description: Whether webhook is active
+
+    CreateWebhookResponse:
+      type: object
+      required:
+        - success
+        - webhook
+      properties:
+        success:
+          type: boolean
+        webhook:
+          $ref: '#/components/schemas/Webhook'
+
+    WebhookDetails:
+      allOf:
+        - $ref: '#/components/schemas/Webhook'
+        - type: object
+          properties:
+            statistics:
+              allOf:
+                - $ref: '#/components/schemas/WebhookStats'
+                - type: object
+                  properties:
+                    lastSuccessfulDelivery:
+                      type: string
+                      format: date-time
+                    lastFailedDelivery:
+                      type: string
+                      format: date-time
+            recentDeliveries:
+              type: array
+              items:
+                $ref: '#/components/schemas/WebhookDelivery'
+              description: Recent delivery attempts
+
+    WebhookDelivery:
+      type: object
+      required:
+        - id
+        - timestamp
+        - event
+        - statusCode
+        - attempt
+        - success
+      properties:
+        id:
+          type: string
+          description: Unique delivery identifier
+        timestamp:
+          type: string
+          format: date-time
+          description: Delivery attempt timestamp
+        event:
+          type: string
+          description: Event type that was delivered
+        eventId:
+          type: string
+          description: Unique event identifier
+        statusCode:
+          type: integer
+          description: HTTP response status code
+        responseTime:
+          type: number
+          format: float
+          description: Response time in milliseconds
+        attempt:
+          type: integer
+          description: Attempt number (1-based)
+        success:
+          type: boolean
+          description: Whether delivery was successful
+        errorMessage:
+          type: string
+          description: Error message (if failed)
+        responseHeaders:
+          type: object
+          additionalProperties:
+            type: string
+          description: Response headers
+        responseBody:
+          type: string
+          description: Response body (truncated if large)
+
+    UpdateWebhookRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        url:
+          type: string
+          format: uri
+          pattern: "^https://"
+        events:
+          type: array
+          items:
+            type: string
+          minItems: 1
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+        secret:
+          type: string
+          minLength: 10
+          maxLength: 100
+        retryPolicy:
+          $ref: '#/components/schemas/RetryPolicy'
+        filters:
+          type: object
+          additionalProperties: true
+        active:
+          type: boolean
+
+    UpdateWebhookResponse:
+      type: object
+      required:
+        - success
+        - webhook
+      properties:
+        success:
+          type: boolean
+        webhook:
+          $ref: '#/components/schemas/Webhook'
+        changesApplied:
+          type: array
+          items:
+            type: string
+          description: List of fields that were updated
+
+    DeleteWebhookResponse:
+      type: object
+      required:
+        - success
+        - deletedAt
+      properties:
+        success:
+          type: boolean
+        deletedAt:
+          type: string
+          format: date-time
+        message:
+          type: string
+
+    TestWebhookRequest:
+      type: object
+      properties:
+        eventType:
+          type: string
+          description: Event type to simulate
+        customPayload:
+          type: object
+          description: Custom payload data
+          additionalProperties: true
+
+    TestWebhookResponse:
+      type: object
+      required:
+        - success
+        - testId
+      properties:
+        success:
+          type: boolean
+        testId:
+          type: string
+          description: Unique test identifier
+        statusCode:
+          type: integer
+          description: HTTP response status code
+        responseTime:
+          type: number
+          format: float
+          description: Response time in milliseconds
+        responseHeaders:
+          type: object
+          additionalProperties:
+            type: string
+        responseBody:
+          type: string
+          description: Response body
+        errorMessage:
+          type: string
+          description: Error message (if failed)
+
+    WebhookDeliveriesResponse:
+      type: object
+      required:
+        - deliveries
+        - pagination
+      properties:
+        deliveries:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookDelivery'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        statistics:
+          type: object
+          properties:
+            totalDeliveries:
+              type: integer
+            successfulDeliveries:
+              type: integer
+            failedDeliveries:
+              type: integer
+            successRate:
+              type: number
+              format: float
+
+    RetryDeliveryResponse:
+      type: object
+      required:
+        - success
+        - retryId
+      properties:
+        success:
+          type: boolean
+        retryId:
+          type: string
+          description: Unique retry identifier
+        estimatedDeliveryTime:
+          type: string
+          format: date-time
+          description: Estimated delivery time
+
+    EventTypesResponse:
+      type: object
+      required:
+        - categories
+      properties:
+        categories:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/EventType'
+        totalEventTypes:
+          type: integer
+          description: Total number of available event types
+
+    EventType:
+      type: object
+      required:
+        - type
+        - description
+      properties:
+        type:
+          type: string
+          description: Event type identifier
+        description:
+          type: string
+          description: Human-readable description
+        payload:
+          type: string
+          description: Payload schema name
+        deprecated:
+          type: boolean
+          description: Whether this event type is deprecated
+        replacedBy:
+          type: string
+          description: Replacement event type (if deprecated)
+
+    EventDetails:
+      type: object
+      required:
+        - id
+        - type
+        - timestamp
+        - source
+        - payload
+      properties:
+        id:
+          type: string
+          description: Unique event identifier
+        type:
+          type: string
+          description: Event type
+        timestamp:
+          type: string
+          format: date-time
+          description: Event occurrence timestamp
+        source:
+          type: string
+          description: Service that generated the event
+        payload:
+          type: object
+          description: Event payload data
+          additionalProperties: true
+        deliveries:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventDelivery'
+          description: Webhook delivery status
+
+    EventDelivery:
+      type: object
+      required:
+        - webhookId
+        - status
+      properties:
+        webhookId:
+          type: string
+          description: Webhook that received this event
+        webhookName:
+          type: string
+          description: Webhook name for readability
+        status:
+          type: string
+          enum: [success, failed, pending, cancelled]
+          description: Delivery status
+        statusCode:
+          type: integer
+          description: HTTP response status code
+        deliveredAt:
+          type: string
+          format: date-time
+          description: Successful delivery timestamp
+        lastAttemptAt:
+          type: string
+          format: date-time
+          description: Last attempt timestamp
+        attempts:
+          type: integer
+          description: Number of delivery attempts
+        nextRetryAt:
+          type: string
+          format: date-time
+          description: Next retry timestamp (if applicable)
+        errorMessage:
+          type: string
+          description: Error message (if failed)
+
+    NotificationsResponse:
+      type: object
+      required:
+        - notifications
+        - pagination
+      properties:
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        summary:
+          type: object
+          properties:
+            unreadCount:
+              type: integer
+            totalCount:
+              type: integer
+            priorityCounts:
+              type: object
+              additionalProperties:
+                type: integer
+
+    Notification:
+      type: object
+      required:
+        - id
+        - type
+        - title
+        - message
+        - priority
+        - status
+        - createdAt
+      properties:
+        id:
+          type: string
+          description: Unique notification identifier
+        type:
+          type: string
+          enum: [system, agent, security, billing]
+          description: Notification category
+        title:
+          type: string
+          description: Notification title
+        message:
+          type: string
+          description: Notification message
+        priority:
+          type: string
+          enum: [low, medium, high, urgent]
+          description: Priority level
+        status:
+          type: string
+          enum: [read, unread, archived]
+          description: Read status
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation timestamp
+        readAt:
+          type: string
+          format: date-time
+          description: Read timestamp (if read)
+        actionUrl:
+          type: string
+          format: uri
+          description: URL for notification action
+        metadata:
+          type: object
+          description: Additional notification context
+          additionalProperties: true
+
+    UpdateNotificationsRequest:
+      type: object
+      required:
+        - status
+      properties:
+        notificationIds:
+          type: array
+          items:
+            type: string
+          description: Specific notification IDs to update
+        filters:
+          type: object
+          description: Filter criteria for bulk updates
+          properties:
+            type:
+              type: string
+            priority:
+              type: string
+            status:
+              type: string
+        status:
+          type: string
+          enum: [read, unread, archived]
+          description: New status to set
+
+    UpdateNotificationsResponse:
+      type: object
+      required:
+        - success
+        - updatedCount
+      properties:
+        success:
+          type: boolean
+        updatedCount:
+          type: integer
+          description: Number of notifications updated
+
+    Pagination:
+      type: object
+      required:
+        - total
+        - limit
+        - offset
+        - hasMore
+      properties:
+        total:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        hasMore:
+          type: boolean
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: object
+              description: Additional error context
+              additionalProperties: true
+            timestamp:
+              type: string
+              format: date-time
+              description: When the error occurred
+            requestId:
+              type: string
+              description: Unique request identifier for support
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token from authentication service
+
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for programmatic access
+
+security:
+  - BearerAuth: []
+  - ApiKeyAuth: []
+
+tags:
+  - name: Webhook Management
+    description: Webhook configuration and management
+  - name: Event Management
+    description: Event types and event details
+  - name: Event Streaming
+    description: Real-time event streaming capabilities
+  - name: Notifications
+    description: User notification management

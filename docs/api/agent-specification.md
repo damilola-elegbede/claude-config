@@ -60,7 +60,7 @@ performance_tier: "Standard|Premium|Critical"
 
 - **Tools**: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash, TodoWrite
 - **Purpose**: Complete development and implementation
-- **Agents**: backend-engineer, frontend-architect, mobile-platform-engineer, etc.
+- **Agents**: backend-engineer, frontend-architect, mobile-engineer, etc.
 - **Security**: Comprehensive access for implementation tasks
 
 ```yaml
@@ -134,7 +134,7 @@ tools:
 
 - **Tools**: Read, Write, Edit, Bash, Grep, Glob, LS, TodoWrite
 - **Purpose**: Quality assurance and testing
-- **Agents**: test-engineer, performance-specialist
+- **Agents**: test-engineer, performance-engineer
 - **Security**: Execution access for testing
 
 ```yaml
@@ -178,7 +178,7 @@ typical_tools: ["Read", "Write", "Edit", "MultiEdit", "Bash", "TodoWrite"]
 coordination: "Parallel execution for independent components"
 ```
 
-**Members**: backend-engineer, frontend-architect, mobile-platform-engineer, ml-engineer, test-engineer, etc.
+**Members**: backend-engineer, frontend-architect, mobile-engineer, ml-engineer, test-engineer, etc.
 
 ### Infrastructure Category (Orange)
 
@@ -226,7 +226,7 @@ typical_tools: ["Read", "Write", "Edit", "Bash", "Grep", "TodoWrite"]
 coordination: "Parallel quality gates"
 ```
 
-**Members**: test-engineer, code-reviewer, performance-specialist, accessibility-auditor
+**Members**: test-engineer, code-reviewer, performance-engineer, accessibility-auditor
 
 ### Security Category (Red)
 
@@ -238,7 +238,7 @@ typical_tools: ["Read", "Bash", "Grep", "Glob", "LS", "TodoWrite"]
 coordination: "Security-first validation"
 ```
 
-**Members**: security-auditor, regulatory-compliance-specialist, supply-chain-security-engineer
+**Members**: security-auditor, security-auditor, supply-chain-security-engineer
 
 ### Analysis Category (Cyan)
 
@@ -279,7 +279,7 @@ agents:
   - principal-architect
   - project-orchestrator
   - incident-commander
-  - performance-specialist
+  - performance-engineer
 cost: "High - use for strategic decisions"
 ```
 
@@ -389,7 +389,7 @@ coordinator: project-orchestrator
 agents:
   - backend-engineer: API development
   - frontend-architect: UI implementation
-  - mobile-platform-engineer: Mobile app
+  - mobile-engineer: Mobile app
   - test-engineer: Quality validation
   - security-auditor: Security assessment
 coordination_frequency: "After each major milestone"
@@ -406,7 +406,7 @@ command_mappings:
   "/test": "test-engineer"
   "/review": "code-reviewer"
   "/security": "security-auditor"
-  "/perf": "performance-specialist"
+  "/perf": "performance-engineer"
   "/docs": "tech-writer"
   "/debug": "debugger"
   "/prime": "codebase-analyst"
@@ -466,7 +466,7 @@ pre_commit_gates:
 ```yaml
 deployment_gates:
   performance_validation:
-    agent: performance-specialist
+    agent: performance-engineer
     criteria:
       - response_time: "< 200ms P95"
       - throughput: ">= baseline"

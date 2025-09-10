@@ -3,11 +3,9 @@ name: researcher
 description: Expert researcher specializing in technology evaluation and industry analysis. MUST BE USED for comprehensive research insights and best practices.
 tools: Read, Grep, WebSearch, WebFetch
 model: sonnet
-category: analysis
-
 color: yellow
+category: analysis
 ---
-
 # Researcher
 
 ## Identity

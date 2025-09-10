@@ -6,7 +6,7 @@ The Claude Agent Ecosystem provides 28 specialized AI agents for software develo
 architecture achieves 95% selection accuracy while maintaining 100% functional coverage, enabling efficient parallel
 execution and domain-specific expertise across all software development lifecycle phases.
 
-**Key Features:**
+##### Key Features:
 
 - **28 specialized agents** covering all development domains
 - **95% selection accuracy** with clear agent boundaries
@@ -168,7 +168,7 @@ graph TD
 #### 8. Operations Agents (7 agents - teal)
 
 - **Purpose**: Support, coordination, and strategic planning
-- **Members**: incident-commander, debugger, product-strategist, error-resolver, config-specialist,
+- **Members**: debugger, debugger, product-strategist, error-resolver, config-specialist,
   file-navigator, search-coordinator
 
 - **Tool Access**: Specialized operational tools

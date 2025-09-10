@@ -3,9 +3,8 @@ name: devops
 description: MUST BE USED for complex CI/CD pipeline orchestration, enterprise Kubernetes clusters, and Infrastructure as Code at scale. Use PROACTIVELY for deployment bottlenecks, reliability issues, and multi-cloud Terraform deployments.
 tools: Read, Write, Bash
 model: sonnet
-category: infrastructure
-
 color: orange
+category: infrastructure
 ---
 
 # DevOps
@@ -32,7 +31,6 @@ Combines advanced infrastructure automation with intelligent deployment orchestr
 ```yaml
 # Well-formatted GitHub Actions workflow
 name: CI/CD Pipeline
-
 on:
   push:
     branches: [main, develop]
@@ -53,16 +51,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Full history for analysis
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-
       - name: Install dependencies
         run: npm ci --prefer-offline
-
       - name: Run linters
         run: |
           npm run lint
@@ -77,17 +72,14 @@ jobs:
         node-version: [16, 18, 20]
     steps:
       - uses: actions/checkout@v4
-
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-
       - name: Run tests
         run: |
           npm ci
           npm test -- --coverage
-
       - name: Upload coverage
         uses: codecov/codecov-action@v3
         with:
@@ -100,17 +92,14 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
       - name: Log in to Registry
         uses: docker/login-action@v3
         with:
           registry: ${{ env.DOCKER_REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
@@ -216,27 +205,23 @@ spec:
 """
         }
     }
-
     options {
         timestamps()
         timeout(time: 1, unit: 'HOURS')
         buildDiscarder(logRotator(numToKeepStr: '10'))
         skipDefaultCheckout()
     }
-
     environment {
         DOCKER_REGISTRY = 'registry.example.com'
         APP_NAME = 'myapp'
         NAMESPACE = "${env.BRANCH_NAME == 'main' ? 'production' : 'staging'}"
     }
-
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-
         stage('Build') {
             steps {
                 container('docker') {
@@ -246,7 +231,6 @@ spec:
                 }
             }
         }
-
         stage('Test') {
             parallel {
                 stage('Unit Tests') {
@@ -261,7 +245,6 @@ spec:
                 }
             }
         }
-
         stage('Deploy') {
             when {
                 branch 'main'
@@ -277,7 +260,6 @@ spec:
             }
         }
     }
-
     post {
         success {
             slackSend(color: 'good', message: "Build Successful: ${env.JOB_NAME} - ${env.BUILD_NUMBER}")
@@ -343,6 +325,7 @@ autoscaling:
 
 nodeSelector: {}
 tolerations: []
+
 affinity:
   podAntiAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:

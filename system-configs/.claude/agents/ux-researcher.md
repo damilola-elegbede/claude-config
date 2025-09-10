@@ -3,11 +3,9 @@ name: ux-researcher
 description: MUST BE USED for comprehensive user research strategy and advanced usability testing methodologies. Use PROACTIVELY for user experience friction, conversion optimization opportunities, and user feedback patterns.
 tools: Read, Write, Edit, Grep, Glob, LS, WebFetch
 model: sonnet
-category: design
-
 color: pink
+category: design
 ---
-
 # UX Researcher
 
 ## Identity

@@ -9,7 +9,7 @@
 | **Staff Level** | Backend | `backend-engineer` | Multi-service architecture, complex state management, performance < 2.5s | Consolidated from backend-engineer |
 | **Staff Level** | Frontend | `frontend-architect` | Real-time features, complex UI, Core Web Vitals optimization | Consolidated from frontend-engineer |
 | **Senior Level** | General | `fullstack-lead` | Single-service features, well-defined APIs, standard patterns | Legacy fullstack capabilities |
-| **Specialist** | Mobile Development | `mobile-platform-engineer` | Native/cross-platform apps, iOS/Android patterns | Unified mobile platform development |
+| **Specialist** | Mobile Development | `mobile-engineer` | Native/cross-platform apps, iOS/Android patterns | Unified mobile platform development |
 | **Specialist** | Web Design | `ui-designer` | Design systems, visual hierarchy, web/desktop interfaces | Non-mobile interface design |
 
 ### Analysis & Review Tasks
@@ -21,7 +21,7 @@
 | **Code Quality** | Pre-commit | `code-reviewer` | Style, best practices, PR readiness |
 | **Testing Strategy** | Test coverage | `test-engineer` | Framework selection, test architecture, comprehensive QA |
 | **Complex Debugging** | Mystery bugs | `debugger` | Intermittent failures, performance degradation |
-| **Performance Analysis** | System performance | `performance-specialist` | Load testing, optimization, benchmarking |
+| **Performance Analysis** | System performance | `performance-engineer` | Load testing, optimization, benchmarking |
 
 ### Strategic & Planning Tasks
 
@@ -38,7 +38,7 @@
 |---|---|---|---|
 | **Deployment Automation** | CI/CD pipelines | `devops` | Build pipelines, infrastructure provisioning |
 | **Production Reliability** | SRE practices | `platform-engineer` | Monitoring, alerting, observability, site reliability |
-| **Performance Optimization** | System performance | `performance-specialist` | Load testing, benchmarking, optimization |
+| **Performance Optimization** | System performance | `performance-engineer` | Load testing, benchmarking, optimization |
 
 ## Escalation Decision Trees
 
@@ -103,7 +103,7 @@ flowchart LR
 
 ### Analysis Workflow
 
-- **Technical**: `codebase-analyst` + `debugger` + `security-auditor` + `performance-specialist`
+- **Technical**: `codebase-analyst` + `debugger` + `security-auditor` + `performance-engineer`
 - **Strategic**: `principal-architect` + `project-orchestrator`
 - **Infrastructure**: `devops` + `platform-engineer` (deployment + monitoring)
 - **Documentation**: `tech-writer` + any domain expert
@@ -120,21 +120,21 @@ flowchart LR
 
 ## Common Anti-Patterns to Avoid
 
-### ❌ Wrong Agent Selection
+### Wrong Agent Selection
 
 - Using `fullstack-lead` for architecture decisions → Use `principal-architect`
-- Using `ui-designer` for mobile apps → Use `mobile-platform-engineer`
+- Using `ui-designer` for mobile apps → Use `mobile-engineer`
 - Using `codebase-analyst` for implementation → Use implementation agents
 - Using `debugger` for new feature bugs → Use `fullstack-lead` or staff agents
 - Using `devops` for production monitoring → Use `platform-engineer`
 
-### ❌ Missing Parallel Opportunities
+### Missing Parallel Opportunities
 
 - Sequential code review → Run `code-reviewer` + `security-auditor` + `test-engineer` in parallel
 - Single-threaded analysis → Use multiple analysis agents concurrently
 - Independent implementation → Parallel frontend/backend development
 
-### ❌ Incorrect Escalation
+### Incorrect Escalation
 
 - Staff agents for simple tasks → Start with `fullstack-lead`
 - No escalation for complex decisions → Use proper escalation paths
@@ -142,7 +142,7 @@ flowchart LR
 
 ## Quick Decision Prompts
 
-**Before selecting an agent, ask:**
+##### Before selecting an agent, ask:
 
 1. **Complexity**: Staff-level complexity or senior-level execution?
 2. **Domain**: Technical implementation, analysis, strategy, or design?

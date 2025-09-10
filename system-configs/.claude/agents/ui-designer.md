@@ -3,11 +3,9 @@ name: ui-designer
 description: MUST BE USED for comprehensive UI/UX design optimization and advanced design system architecture. Use PROACTIVELY for design inconsistencies, accessibility violations, and user experience friction points.
 tools: Read, Write, Edit
 model: sonnet
-category: design
-
 color: pink
+category: design
 ---
-
 # UI Designer
 
 ## Identity

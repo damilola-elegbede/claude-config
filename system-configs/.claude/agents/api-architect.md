@@ -3,9 +3,8 @@ name: api-architect
 description: MUST BE USED for comprehensive API architecture, OpenAPI specs, and governance policy implementation. Use PROACTIVELY for API strategy, versioning management, GraphQL federation, and enterprise standardization.
 tools: Read, Write, Edit, Grep, Glob
 model: sonnet
-category: architecture
-
 color: purple
+category: architecture
 ---
 
 # API Architect

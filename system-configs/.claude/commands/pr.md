@@ -1,6 +1,6 @@
 ---
 description: Create PRs with wave-based orchestration analysis
-argument-hint: [target_branch] [--draft] [--template]
+argument-hint: "[target_branch] [--draft] [--template]"
 ---
 
 # /pr Command

@@ -42,9 +42,9 @@ Orchestration manages multi-agent execution:
 
 ```http
 POST /api/agents/invoke
-```text
+```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -59,9 +59,9 @@ POST /api/agents/invoke
     "priority": "high"
   }
 }
-```text
+```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -71,15 +71,15 @@ POST /api/agents/invoke
   "started_at": "2024-01-15T10:00:00Z",
   "estimated_completion": "2024-01-15T11:00:00Z"
 }
-```yaml
+```
 
 #### Command-Based Invocation
 
 ```http
 POST /api/commands/execute
-```text
+```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -87,9 +87,9 @@ POST /api/commands/execute
   "args": ["--coverage", "--watch"],
   "working_directory": "/project/path"
 }
-```text
+```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -104,7 +104,7 @@ POST /api/commands/execute
     "coverage": 82.5
   }
 }
-```yaml
+```
 
 ### Multi-Agent Orchestration
 
@@ -112,9 +112,9 @@ POST /api/commands/execute
 
 ```http
 POST /api/orchestration/plan
-```text
+```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -130,9 +130,9 @@ POST /api/orchestration/plan
     "team_size": 5
   }
 }
-```text
+```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -153,7 +153,7 @@ POST /api/orchestration/plan
           "duration": "2 days"
         },
         {
-          "agent": "mobile-platform-engineer",
+          "agent": "mobile-engineer",
           "task": "Mobile app skeleton",
           "duration": "2 days"
         }
@@ -181,15 +181,15 @@ POST /api/orchestration/plan
   "total_duration": "10 days",
   "critical_path": ["WebSocket server", "Message persistence"]
 }
-```yaml
+```
 
 #### Execute Orchestration Plan
 
 ```http
 POST /api/orchestration/execute
-```text
+```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -200,9 +200,9 @@ POST /api/orchestration/execute
     "failure_strategy": "pause"
   }
 }
-```text
+```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -223,7 +223,7 @@ POST /api/orchestration/execute
   ],
   "estimated_completion": "2024-01-25T17:00:00Z"
 }
-```yaml
+```
 
 ### Agent Management
 
@@ -231,9 +231,9 @@ POST /api/orchestration/execute
 
 ```http
 GET /api/agents
-```text
+```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -253,15 +253,15 @@ GET /api/agents
   ],
   "total": 29
 }
-```yaml
+```
 
 #### Get Agent Details
 
 ```http
 GET /api/agents/{agent_name}
-```text
+```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -283,7 +283,7 @@ GET /api/agents/{agent_name}
   "current_load": 2,
   "max_parallel_tasks": 3
 }
-```yaml
+```
 
 ### Execution Monitoring
 
@@ -291,9 +291,9 @@ GET /api/agents/{agent_name}
 
 ```http
 GET /api/executions/{execution_id}
-```text
+```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -318,13 +318,13 @@ GET /api/executions/{execution_id}
     "tests/auth.test.js"
   ]
 }
-```yaml
+```
 
 #### Stream Execution Logs
 
 ```http
 GET /api/executions/{execution_id}/logs/stream
-```text
+```
 
 **Response:** Server-Sent Events stream
 
@@ -337,7 +337,7 @@ data: {"progress": 80, "phase": "testing"}
 
 event: complete
 data: {"status": "success", "duration": 3600, "test_results": {"passed": 25, "failed": 0}}
-```yaml
+```
 
 ### Quality Assurance
 
@@ -345,9 +345,9 @@ data: {"status": "success", "duration": 3600, "test_results": {"passed": 25, "fa
 
 ```http
 POST /api/qa/review
-```text
+```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -361,9 +361,9 @@ POST /api/qa/review
     "security_focus": ["authentication", "authorization"]
   }
 }
-```text
+```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -382,7 +382,7 @@ POST /api/qa/review
     }
   ]
 }
-```yaml
+```
 
 ## Webhooks
 
@@ -390,9 +390,9 @@ POST /api/qa/review
 
 ```http
 POST https://your-webhook-url.com/agent-complete
-```text
+```
 
-**Payload:**
+##### Payload:
 
 ```json
 {
@@ -411,15 +411,15 @@ POST https://your-webhook-url.com/agent-complete
     "complexity": "moderate"
   }
 }
-```yaml
+```
 
 ### Orchestration Checkpoint
 
 ```http
 POST https://your-webhook-url.com/orchestration-checkpoint
-```text
+```
 
-**Payload:**
+##### Payload:
 
 ```json
 {
@@ -435,7 +435,7 @@ POST https://your-webhook-url.com/orchestration-checkpoint
     "test-engineer": "starting"
   }
 }
-```yaml
+```
 
 ## Error Handling
 
@@ -454,7 +454,7 @@ POST https://your-webhook-url.com/orchestration-checkpoint
     }
   }
 }
-```yaml
+```
 
 ### Error Codes
 
@@ -482,21 +482,21 @@ POST https://your-webhook-url.com/orchestration-checkpoint
 X-RateLimit-Limit: 100
 X-RateLimit-Remaining: 95
 X-RateLimit-Reset: 1705333200
-```yaml
+```
 
 ## Authentication
 
 ### API Key Authentication
 
 ```text
-Authorization: Bearer sk_live_abcdef123456
-```yaml
+Authorization: Bearer <YOUR_API_KEY>
+```
 
 ### OAuth2 Flow
 
 ```text
 Authorization: Bearer oauth2_token_xyz789
-```yaml
+```
 
 ## SDK Examples
 
@@ -526,7 +526,7 @@ const plan = await client.orchestration.plan({
 });
 
 const execution = await client.orchestration.execute(plan.id);
-```yaml
+```
 
 ### Python
 
@@ -548,7 +548,7 @@ result = client.commands.execute(
 # Stream execution logs
 for event in client.executions.stream_logs(execution_id):
     print(f"{event.timestamp}: {event.message}")
-```yaml
+```
 
 ## Best Practices
 
@@ -574,3 +574,4 @@ for event in client.executions.stream_logs(execution_id):
 
 1. Use webhook notifications instead of polling
 2. Cache agent availability
+3. Monitor execution metrics for optimization

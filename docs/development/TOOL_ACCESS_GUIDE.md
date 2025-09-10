@@ -49,7 +49,7 @@ Bash(read-only), TodoWrite
 - **debugger**: Investigates issues without changing code during analysis phase.
   Modifications happen after investigation is complete
 
-- **performance-specialist**: Analyzes performance characteristics before
+- **performance-engineer**: Analyzes performance characteristics before
   recommending changes. Separation ensures objective measurement
 
 **Justification**: Analysis agents must remain objective and focused on assessment

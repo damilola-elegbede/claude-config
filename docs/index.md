@@ -203,7 +203,7 @@ Utility and specialized commands:
 ### Specialized Experts
 
 - **principal-architect** - System-wide architecture and technical roadmaps
-- **performance-specialist** - Performance optimization and bottleneck analysis
+- **performance-engineer** - Performance optimization and bottleneck analysis
 - **incident-commander** - Crisis management and post-mortem coordination
 - **debugger** - Complex bug investigation and root cause analysis
 

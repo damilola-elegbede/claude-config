@@ -3,11 +3,9 @@ name: project-orchestrator
 description: MUST BE USED for project timeline analysis, resource planning, and workflow optimization. Use PROACTIVELY for complex project coordination without agent orchestration.
 tools: Read, Write
 model: opus
-category: coordination
-
 color: cyan
+category: coordination
 ---
-
 # Project Orchestrator
 
 ## Identity

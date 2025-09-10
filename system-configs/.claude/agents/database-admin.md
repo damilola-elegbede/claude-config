@@ -3,11 +3,9 @@ name: database-admin
 description: Use PROACTIVELY for database optimization, security hardening, and performance tuning. MUST BE USED for query optimization, index management, high-availability configuration, and disaster recovery planning.
 tools: Read, Write, Edit, Bash, Grep
 model: sonnet
-category: infrastructure
-
 color: orange
+category: infrastructure
 ---
-
 # Database Admin
 
 ## Identity

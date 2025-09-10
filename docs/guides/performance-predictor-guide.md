@@ -21,32 +21,31 @@ prediction accuracy.
   <core-functions>
     <function name="bottleneck-prediction" accuracy="96.3%">
 
-      ```text
-      Identifies CPU, memory, I/O, and network bottlenecks 15-30 minutes
-      before occurrence
-
-```javascript
+```text
+Identifies CPU, memory, I/O, and network bottlenecks 15-30 minutes
+before occurrence
+```
 
     </function>
     <function name="resource-optimization" efficiency="89.7%">
 
-      ```text
-      Recommends optimal resource allocation and scaling strategies
-```javascript
+```text
+Recommends optimal resource allocation and scaling strategies
+```
 
     </function>
     <function name="failure-prevention" recall="93.1%">
 
-      ```text
-      Predicts system failures and critical errors with early warning system
-```javascript
+```text
+Predicts system failures and critical errors with early warning system
+```
 
     </function>
     <function name="workload-forecasting" horizon="24-hours">
 
-      ```text
-      Forecasts agent workload and resource demand patterns
 ```text
+Forecasts agent workload and resource demand patterns
+```
 
     </function>
   </core-functions>
@@ -58,12 +57,12 @@ prediction accuracy.
   <domain name="system-performance">
     <capabilities>
 
-      ```text
-      - Real-time performance metric analysis
-      - Multi-dimensional bottleneck detection
-      - Resource utilization pattern recognition
-      - Performance trend analysis and forecasting
 ```text
+- Real-time performance metric analysis
+- Multi-dimensional bottleneck detection
+- Resource utilization pattern recognition
+- Performance trend analysis and forecasting
+```
 
     </capabilities>
   </domain>
@@ -71,12 +70,12 @@ prediction accuracy.
   <domain name="predictive-modeling">
     <capabilities>
 
-      ```text
-      - Time-series forecasting using LSTM and Transformer models
-      - Ensemble methods combining XGBoost and Neural Networks
-      - Anomaly detection using isolation forests and autoencoders
-      - Statistical process control for performance monitoring
 ```text
+- Time-series forecasting using LSTM and Transformer models
+- Ensemble methods combining XGBoost and Neural Networks
+- Anomaly detection using isolation forests and autoencoders
+- Statistical process control for performance monitoring
+```
 
     </capabilities>
   </domain>
@@ -84,12 +83,12 @@ prediction accuracy.
   <domain name="optimization-recommendations">
     <capabilities>
 
-      ```text
-      - Multi-objective optimization for resource allocation
-      - Cost-performance trade-off analysis
-      - Scaling strategy recommendations
-      - Capacity planning with confidence intervals
 ```text
+- Multi-objective optimization for resource allocation
+- Cost-performance trade-off analysis
+- Scaling strategy recommendations
+- Capacity planning with confidence intervals
+```
 
     </capabilities>
   </domain>
@@ -103,57 +102,57 @@ prediction accuracy.
   <architecture>
     <input-features>
 
-      ```text
-      - CPU utilization (per core, averaged, max)
-      - Memory usage (RSS, VSZ, swap, cache)
-      - Disk I/O (read/write IOPS, throughput, queue depth)
-      - Network I/O (packets/sec, bandwidth, latency)
-      - Agent execution metrics (queue depth, processing time)
 ```text
+- CPU utilization (per core, averaged, max)
+- Memory usage (RSS, VSZ, swap, cache)
+- Disk I/O (read/write IOPS, throughput, queue depth)
+- Network I/O (packets/sec, bandwidth, latency)
+- Agent execution metrics (queue depth, processing time)
+```
 
     </input-features>
 
     <model-architecture>
 
-      ```yaml
-      feature_engineering:
-        rolling_windows: [5min, 15min, 1hr]
-      primary_model:
-        type: XGBoost
-        trees: 500
-        early_stopping: true
-      secondary_model:
-        type: LSTM
-        layers: 2
-        units: 128
-      ensemble:
-        xgboost_weight: 0.7
-        lstm_weight: 0.3
-```text
+```yaml
+feature_engineering:
+  rolling_windows: [5min, 15min, 1hr]
+primary_model:
+  type: XGBoost
+  trees: 500
+  early_stopping: true
+secondary_model:
+  type: LSTM
+  layers: 2
+  units: 128
+ensemble:
+  xgboost_weight: 0.7
+  lstm_weight: 0.3
+```
 
     </model-architecture>
 
     <output-predictions>
 
-      ```text
-      - Bottleneck probability (0.0-1.0) for each resource type
-      - Time to bottleneck (minutes ahead)
-      - Severity score (1-10 scale)
-      - Confidence interval (95% bounds)
 ```text
+- Bottleneck probability (0.0-1.0) for each resource type
+- Time to bottleneck (minutes ahead)
+- Severity score (1-10 scale)
+- Confidence interval (95% bounds)
+```
 
     </output-predictions>
   </architecture>
 
   <performance-metrics>
 
-    ```text
-    - Accuracy: 96.3% on validation set
-    - Precision: 94.1% (low false positives)
-    - Recall: 93.1% (catches most bottlenecks)
-    - F1-Score: 93.6% (balanced performance)
-    - Lead time: 15-30 minutes before occurrence
-```yaml
+```text
+- Accuracy: 96.3% on validation set
+- Precision: 94.1% (low false positives)
+- Recall: 93.1% (catches most bottlenecks)
+- F1-Score: 93.6% (balanced performance)
+- Lead time: 15-30 minutes before occurrence
+```
 
   </performance-metrics>
 </model-specification>
@@ -164,55 +163,55 @@ prediction accuracy.
   <architecture>
       <optimization-objectives>
 
-      ```text
-      - Minimize resource costs
-      - Maximize system throughput
-      - Maintain SLA compliance (>99.9% uptime)
-      - Optimize energy efficiency
 ```text
+- Minimize resource costs
+- Maximize system throughput
+- Maintain SLA compliance (>99.9% uptime)
+- Optimize energy efficiency
+```
 
     </optimization-objectives>
 
     <input-context>
 
-      ```yaml
-      historical_patterns:
-        - resource_usage_trends
-        - seasonal_patterns
-      workload_characteristics:
-        - agent_types
-        - task_complexity
-        - execution_patterns
-      cost_models:
-        - cloud_pricing
-        - on_premise_tco
-      performance_requirements:
-        - sla_targets
-        - response_time_limits
-```text
+```yaml
+historical_patterns:
+  - resource_usage_trends
+  - seasonal_patterns
+workload_characteristics:
+  - agent_types
+  - task_complexity
+  - execution_patterns
+cost_models:
+  - cloud_pricing
+  - on_premise_tco
+performance_requirements:
+  - sla_targets
+  - response_time_limits
+```
 
     </input-context>
 
     <recommendation-engine>
 
-      ```text
-      - Multi-objective optimization using NSGA-II
-      - Constraint satisfaction with genetic algorithms
-      - Reinforcement learning for dynamic adaptation
-      - Monte Carlo simulation for uncertainty quantification
 ```text
+- Multi-objective optimization using NSGA-II
+- Constraint satisfaction with genetic algorithms
+- Reinforcement learning for dynamic adaptation
+- Monte Carlo simulation for uncertainty quantification
+```
 
     </recommendation-engine>
   </architecture>
 
   <optimization-outcomes>
 
-    ```text
-    - Resource allocation recommendations (CPU, memory, storage)
-    - Scaling strategies (horizontal vs vertical)
-    - Cost optimization opportunities (average 20-30% savings)
-    - Performance improvement predictions
-```yaml
+```text
+- Resource allocation recommendations (CPU, memory, storage)
+- Scaling strategies (horizontal vs vertical)
+- Cost optimization opportunities (average 20-30% savings)
+- Performance improvement predictions
+```
 
   </optimization-outcomes>
 </model-specification>
@@ -223,40 +222,40 @@ prediction accuracy.
   <architecture>
     <anomaly-detection>
 
-      ```text
-      - Isolation Forest for outlier detection
-      - Autoencoder neural networks for pattern recognition
-      - Statistical process control (3-sigma rules)
-      - Time-series anomaly detection using Prophet
 ```text
+- Isolation Forest for outlier detection
+- Autoencoder neural networks for pattern recognition
+- Statistical process control (3-sigma rules)
+- Time-series anomaly detection using Prophet
+```
 
     </anomaly-detection>
 
     <failure-classification>
 
-      ```yaml
-      binary_classification:
-        timeframe: 4_hours
-        output: failure_probability
-      multi_class:
-        types: [OOM, disk_full, network_timeout, cpu_exhaustion]
-      severity_prediction:
-        levels: [critical, high, medium, low]
-      root_cause_attribution:
-        method: SHAP_explanations
-```text
+```yaml
+binary_classification:
+  timeframe: 4_hours
+  output: failure_probability
+multi_class:
+  types: [OOM, disk_full, network_timeout, cpu_exhaustion]
+severity_prediction:
+  levels: [critical, high, medium, low]
+root_cause_attribution:
+  method: SHAP_explanations
+```
 
     </failure-classification>
   </architecture>
 
   <early-warning-system>
 
-    ```text
-    - Alert thresholds: 80% probability for critical failures
-    - Escalation levels: warning (60%), critical (80%), emergency (95%)
-    - Time horizons: 15min, 1hr, 4hr, 24hr predictions
-    - Confidence scoring with uncertainty quantification
-```yaml
+```text
+- Alert thresholds: 80% probability for critical failures
+- Escalation levels: warning (60%), critical (80%), emergency (95%)
+- Time horizons: 15min, 1hr, 4hr, 24hr predictions
+- Confidence scoring with uncertainty quantification
+```
 
   </early-warning-system>
 </model-specification>
@@ -269,45 +268,45 @@ prediction accuracy.
   <data-pipeline>
     <metrics-collection>
 
-      ```yaml
-      collectors:
-        - name: system-metrics
-          type: prometheus
-          scrape_interval: 10s
-          metrics:
-            - cpu_usage_percent
-            - memory_usage_bytes
-            - disk_io_ops_per_sec
-            - network_bytes_per_sec
+```yaml
+collectors:
+  - name: system-metrics
+    type: prometheus
+    scrape_interval: 10s
+    metrics:
+      - cpu_usage_percent
+      - memory_usage_bytes
+      - disk_io_ops_per_sec
+      - network_bytes_per_sec
 
-        - name: agent-metrics
-          type: custom
-          collection_interval: 5s
-          metrics:
-            - agent_queue_depth
-            - task_execution_time
-            - success_failure_rate
-            - resource_consumption
-```text
+  - name: agent-metrics
+    type: custom
+    collection_interval: 5s
+    metrics:
+      - agent_queue_depth
+      - task_execution_time
+      - success_failure_rate
+      - resource_consumption
+```
 
     </metrics-collection>
 
     <feature-computation>
 
-      ```python
-      # Real-time feature engineering pipeline
-      @streaming_processor
-      def compute_features(metrics_stream):
-          return (
-              metrics_stream
-              .window(duration=300)  # 5-minute windows
-              .aggregate(['mean', 'max', 'std', 'percentile_95'])
-              .with_derived_features([
-                  'cpu_trend', 'memory_growth_rate',
-                  'io_intensity', 'network_congestion'
-              ])
-          )
-```text
+```python
+# Real-time feature engineering pipeline
+@streaming_processor
+def compute_features(metrics_stream):
+    return (
+        metrics_stream
+        .window(duration=300)  # 5-minute windows
+        .aggregate(['mean', 'max', 'std', 'percentile_95'])
+        .with_derived_features([
+            'cpu_trend', 'memory_growth_rate',
+            'io_intensity', 'network_congestion'
+        ])
+    )
+```
 
     </feature-computation>
   </data-pipeline>
@@ -315,48 +314,48 @@ prediction accuracy.
   <prediction-serving>
     <real-time-api>
 
-      ```python
-      @app.post("/predict/bottleneck")
-      async def predict_bottleneck(request: PredictionRequest):
-          # Fetch latest features
-          features = feature_store.get_online_features(
-              entity_id=request.system_id,
-              feature_names=['cpu_metrics', 'memory_metrics', 'io_metrics']
-          )
+```python
+@app.post("/predict/bottleneck")
+async def predict_bottleneck(request: PredictionRequest):
+    # Fetch latest features
+    features = feature_store.get_online_features(
+        entity_id=request.system_id,
+        feature_names=['cpu_metrics', 'memory_metrics', 'io_metrics']
+    )
 
-          # Generate prediction
-          prediction = model.predict(features)
+    # Generate prediction
+    prediction = model.predict(features)
 
-          return {
-              'bottleneck_probability': prediction.probability,
-              'time_to_bottleneck': prediction.minutes_ahead,
-              'severity': prediction.severity_score,
-              'confidence_interval': prediction.confidence,
-              'recommendations': generate_recommendations(prediction)
-          }
-```text
+    return {
+        'bottleneck_probability': prediction.probability,
+        'time_to_bottleneck': prediction.minutes_ahead,
+        'severity': prediction.severity_score,
+        'confidence_interval': prediction.confidence,
+        'recommendations': generate_recommendations(prediction)
+    }
+```
 
     </real-time-api>
 
     <streaming-predictions>
 
-      ```python
-      # WebSocket streaming for live updates
-      @websocket_handler
-      async def stream_predictions(websocket):
-          while True:
-              current_metrics = await get_live_metrics()
-              prediction = await model.predict_async(current_metrics)
+```python
+# WebSocket streaming for live updates
+@websocket_handler
+async def stream_predictions(websocket):
+    while True:
+        current_metrics = await get_live_metrics()
+        prediction = await model.predict_async(current_metrics)
 
-              if prediction.probability > 0.6:  # Warning threshold
-                  await websocket.send({
-                      'type': 'performance_alert',
-                      'prediction': prediction.dict(),
-                      'timestamp': datetime.utcnow()
-                  })
+        if prediction.probability > 0.6:  # Warning threshold
+            await websocket.send({
+                'type': 'performance_alert',
+                'prediction': prediction.dict(),
+                'timestamp': datetime.utcnow()
+            })
 
-              await asyncio.sleep(30)  # Update every 30 seconds
-```text
+        await asyncio.sleep(30)  # Update every 30 seconds
+```
 
     </streaming-predictions>
   </prediction-serving>
@@ -399,7 +398,8 @@ class PerformanceAwareOrchestrator:
         return max(available_agents,
                   key=lambda x: x['expected_performance']
                       .efficiency_score)
-```text
+```
+
     </performance-aware-routing>
   </agent-selection>
 
@@ -426,7 +426,8 @@ class PredictiveScaler:
             await self.apply_scaling_recommendations(
                 optimization.recommendations
             )
-```yaml
+```
+
     </dynamic-scaling>
   </resource-optimization>
 </orchestration-integration>
@@ -437,6 +438,7 @@ class PredictiveScaler:
 
 <configuration-options>
   <model-parameters>
+
 ```yaml
 performance_predictor:
   models:
@@ -466,7 +468,7 @@ performance_predictor:
         critical: 0.8
         emergency: 0.95
       time_horizons: [15, 60, 240]  # minutes
-```text
+```
 
   </model-parameters>
 
@@ -498,7 +500,8 @@ feature_engineering:
     io_intensity:
       type: composite
       formula: "sqrt(disk_read_iops^2 + disk_write_iops^2)"
-```yaml
+```
+
   </feature-engineering>
 </configuration-options>
 
@@ -506,6 +509,7 @@ feature_engineering:
 
 <alert-configuration>
   <notification-channels>
+
 ```yaml
 alerts:
   channels:
@@ -537,7 +541,8 @@ alerts:
       condition: "failure_probability > 0.8"
       channels: ["slack", "email", "pagerduty"]
       frequency: "immediate"
-```yaml
+```
+
   </notification-channels>
 </alert-configuration>
 
@@ -546,6 +551,7 @@ alerts:
 ### Basic Performance Prediction
 
 <usage-example name="basic-prediction">
+
 ```python
 # Initialize performance predictor agent
 from claude_agents import PerformancePredictorAgent
@@ -572,102 +578,104 @@ if bottleneck_prediction.probability > 0.7:
     for recommendation in optimization.recommendations:
         print(f"- {recommendation.action}: {recommendation.description}")
         print(f"  Expected Impact: {recommendation.expected_impact}")
+```
 
-```yaml
 </usage-example>
 
 ### Resource Optimization Workflow
 
 <usage-example name="resource-optimization">
-  ```python
-  # Comprehensive resource optimization
-  async def optimize_system_resources():
-      predictor = PerformancePredictorAgent()
 
-      # Get current resource utilization
-      current_resources = await predictor.analyze_current_utilization()
+```python
+# Comprehensive resource optimization
+async def optimize_system_resources():
+    predictor = PerformancePredictorAgent()
 
-      # Forecast workload for next 24 hours
-      workload_forecast = await predictor.forecast_workload(
-          horizon_hours=24,
-          confidence_level=0.9
-      )
+    # Get current resource utilization
+    current_resources = await predictor.analyze_current_utilization()
 
-      # Generate optimization recommendations
-      optimization = await predictor.optimize_resources(
-          current_allocation=current_resources,
-          predicted_workload=workload_forecast,
-          objectives={
-              'minimize_cost': 0.3,
-              'maximize_performance': 0.4,
-              'maintain_reliability': 0.3
-          }
-      )
+    # Forecast workload for next 24 hours
+    workload_forecast = await predictor.forecast_workload(
+        horizon_hours=24,
+        confidence_level=0.9
+    )
 
-      # Present recommendations with cost-benefit analysis
-      for rec in optimization.recommendations:
-          print(f"\nRecommendation: {rec.type}")
-          print(f"Action: {rec.description}")
-          print(f"Expected Cost Change: {rec.cost_impact:+.1%}")
-          print(f"Expected Performance Impact: {rec.performance_impact:+.1%}")
-          print(f"Implementation Effort: {rec.implementation_complexity}")
-          print(f"Confidence: {rec.confidence:.1%}")
+    # Generate optimization recommendations
+    optimization = await predictor.optimize_resources(
+        current_allocation=current_resources,
+        predicted_workload=workload_forecast,
+        objectives={
+            'minimize_cost': 0.3,
+            'maximize_performance': 0.4,
+            'maintain_reliability': 0.3
+        }
+    )
 
-      return optimization
-```yaml
+    # Present recommendations with cost-benefit analysis
+    for rec in optimization.recommendations:
+        print(f"\nRecommendation: {rec.type}")
+        print(f"Action: {rec.description}")
+        print(f"Expected Cost Change: {rec.cost_impact:+.1%}")
+        print(f"Expected Performance Impact: {rec.performance_impact:+.1%}")
+        print(f"Implementation Effort: {rec.implementation_complexity}")
+        print(f"Confidence: {rec.confidence:.1%}")
+
+    return optimization
+```
 
 </usage-example>
 
 ### Failure Prevention Setup
 
 <usage-example name="failure-prevention">
-  ```python
-  # Set up proactive failure prevention
-  class FailurePreventionSystem:
-      def __init__(self):
-          self.predictor = PerformancePredictorAgent()
-          self.alert_manager = AlertManager()
 
-      async def monitor_system_health(self):
-          while True:
-              # Check for potential failures
-              failure_predictions = await self.predictor.predict_failures(
-                  time_horizons=[15, 60, 240],  # 15min, 1hr, 4hr
-                  severity_threshold=0.6
-              )
+```python
+# Set up proactive failure prevention
+class FailurePreventionSystem:
+    def __init__(self):
+        self.predictor = PerformancePredictorAgent()
+        self.alert_manager = AlertManager()
 
-              for prediction in failure_predictions:
-                  if prediction.probability > 0.8:  # Critical threshold
-                      await self.handle_critical_prediction(prediction)
-                  elif prediction.probability > 0.6:  # Warning threshold
-                      await self.handle_warning_prediction(prediction)
+    async def monitor_system_health(self):
+        while True:
+            # Check for potential failures
+            failure_predictions = await self.predictor.predict_failures(
+                time_horizons=[15, 60, 240],  # 15min, 1hr, 4hr
+                severity_threshold=0.6
+            )
 
-              await asyncio.sleep(60)  # Check every minute
+            for prediction in failure_predictions:
+                if prediction.probability > 0.8:  # Critical threshold
+                    await self.handle_critical_prediction(prediction)
+                elif prediction.probability > 0.6:  # Warning threshold
+                    await self.handle_warning_prediction(prediction)
 
-      async def handle_critical_prediction(self, prediction):
-          # Generate detailed analysis
-          root_cause_analysis = await self.predictor.analyze_root_cause(
-              prediction.failure_signature
-          )
+            await asyncio.sleep(60)  # Check every minute
 
-          # Create incident with recommendations
-          incident = {
-              'type': 'predicted_failure',
-              'severity': 'critical',
-              'probability': prediction.probability,
-              'time_to_failure': prediction.time_ahead,
-              'root_cause': root_cause_analysis,
-              'recommended_actions': prediction.mitigation_strategies
-          }
+    async def handle_critical_prediction(self, prediction):
+        # Generate detailed analysis
+        root_cause_analysis = await self.predictor.analyze_root_cause(
+            prediction.failure_signature
+        )
 
-          # Alert operations team
-          await self.alert_manager.create_incident(incident)
+        # Create incident with recommendations
+        incident = {
+            'type': 'predicted_failure',
+            'severity': 'critical',
+            'probability': prediction.probability,
+            'time_to_failure': prediction.time_ahead,
+            'root_cause': root_cause_analysis,
+            'recommended_actions': prediction.mitigation_strategies
+        }
 
-          # Attempt automated mitigation if confidence is high
-          if prediction.confidence > 0.95:
-              await self.attempt_automated_mitigation(prediction)
+        # Alert operations team
+        await self.alert_manager.create_incident(incident)
 
-```yaml
+        # Attempt automated mitigation if confidence is high
+        if prediction.confidence > 0.95:
+            await self.attempt_automated_mitigation(prediction)
+```
+
 </usage-example>
 
 ## Best Practices
@@ -770,20 +778,20 @@ if bottleneck_prediction.probability > 0.7:
         **Retrain with recent data**: Collect at least 30 days of recent
         system performance data and retrain the model
 
-        ```bash
-        python ml-pipeline/retrain-models.py --days=30 --validate=true
-```text
+```bash
+python ml-pipeline/retrain-models.py --days=30 --validate=true
+```
 
       </solution>
       <solution priority="2">
         **Adjust prediction thresholds**: Increase threshold values to reduce
         false positives
 
-        ```yaml
-        alert_thresholds:
-          warning: 0.7  # increased from 0.6
-          critical: 0.85  # increased from 0.8
-```text
+```yaml
+alert_thresholds:
+  warning: 0.7  # increased from 0.6
+  critical: 0.85  # increased from 0.8
+```
 
       </solution>
       <solution priority="3">
@@ -805,11 +813,11 @@ if bottleneck_prediction.probability > 0.7:
         **Enable prediction caching**: Implement Redis caching for similar
         system states
 
-        ```python
-        @cached(ttl=300)  # 5-minute cache
-        async def predict_cached(system_metrics_hash):
-            return await model.predict(system_metrics)
-```text
+```python
+@cached(ttl=300)  # 5-minute cache
+async def predict_cached(system_metrics_hash):
+    return await model.predict(system_metrics)
+```
 
       </solution>
       <solution priority="2">
@@ -835,9 +843,9 @@ if bottleneck_prediction.probability > 0.7:
         **Check database connectivity**: Verify feature store database is
         accessible
 
-        ```bash
-        python scripts/test-feature-store.py --verbose
-```text
+```bash
+python scripts/test-feature-store.py --verbose
+```
 
       </solution>
       <solution priority="2">
@@ -856,48 +864,48 @@ if bottleneck_prediction.probability > 0.7:
 <diagnostic-tools>
   <validation-scripts>
 
-    ```bash
-    # Test model prediction accuracy on recent data
-    python scripts/validate-model-accuracy.py \
-      --model=bottleneck_predictor --days=7
+```bash
+# Test model prediction accuracy on recent data
+python scripts/validate-model-accuracy.py \
+  --model=bottleneck_predictor --days=7
 
-    # Check feature store data quality
-    python scripts/check-feature-quality.py --start-date=2024-01-01
+# Check feature store data quality
+python scripts/check-feature-quality.py --start-date=2024-01-01
 
-    # Benchmark prediction latency
-    python scripts/benchmark-prediction-latency.py --iterations=1000
+# Benchmark prediction latency
+python scripts/benchmark-prediction-latency.py --iterations=1000
 
-    # Validate integration with orchestration system
-    python scripts/test-orchestration-integration.py
-```text
+# Validate integration with orchestration system
+python scripts/test-orchestration-integration.py
+```
 
   </validation-scripts>
 
   <monitoring-queries>
 
-    ```sql
-    -- Check prediction accuracy over time
-    SELECT
-        date_trunc('hour', prediction_time) as hour,
-        AVG(accuracy_score) as avg_accuracy,
-        COUNT(*) as prediction_count
-    FROM prediction_logs
-    WHERE prediction_time > NOW() - INTERVAL '24 hours'
-    GROUP BY hour
-    ORDER BY hour;
+```sql
+-- Check prediction accuracy over time
+SELECT
+    date_trunc('hour', prediction_time) as hour,
+    AVG(accuracy_score) as avg_accuracy,
+    COUNT(*) as prediction_count
+FROM prediction_logs
+WHERE prediction_time > NOW() - INTERVAL '24 hours'
+GROUP BY hour
+ORDER BY hour;
 
-    -- Identify high false positive periods
-    SELECT
-        prediction_time,
-        system_id,
-        predicted_probability,
-        actual_outcome,
-        false_positive
-    FROM prediction_logs
-    WHERE false_positive = true
-    AND prediction_time > NOW() - INTERVAL '7 days'
-    ORDER BY prediction_time DESC;
-```text
+-- Identify high false positive periods
+SELECT
+    prediction_time,
+    system_id,
+    predicted_probability,
+    actual_outcome,
+    false_positive
+FROM prediction_logs
+WHERE false_positive = true
+AND prediction_time > NOW() - INTERVAL '7 days'
+ORDER BY prediction_time DESC;
+```
 
   </monitoring-queries>
 </diagnostic-tools>

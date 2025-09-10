@@ -3,9 +3,8 @@ name: principal-architect
 description: Use PROACTIVELY for system-wide architecture design and comprehensive technical roadmaps. MUST BE USED for complex architectural decisions, enterprise-scale implementation planning, and technical strategy development.
 tools: Read, Write
 model: opus
-category: architecture
-
 color: purple
+category: architecture
 ---
 
 # Principal Architect
@@ -73,7 +72,6 @@ graph TB
         H[(Redis)]
         I[(S3)]
     end
-
     A --> C
     B --> C
     C --> D
@@ -162,7 +160,6 @@ graph TB
 roadmap:
   title: "Platform Modernization Roadmap"
   timeline: "2024-2025"
-
   phases:
     - name: "Foundation"
       quarter: "Q1 2024"
@@ -174,7 +171,6 @@ roadmap:
             - Docker images for all services
             - Container registry setup
             - Local development environment
-
         - description: "Implement CI/CD pipeline"
           owner: "DevOps Team"
           dependencies: ["Containerize core services"]
@@ -182,7 +178,6 @@ roadmap:
             - Automated build pipeline
             - Automated testing
             - Deployment automation
-
     - name: "Migration"
       quarter: "Q2 2024"
       objectives:
@@ -193,7 +188,6 @@ roadmap:
             - EKS cluster setup
             - Helm charts
             - Service mesh implementation
-
         - description: "Database migration"
           owner: "Data Team"
           dependencies: []
@@ -201,7 +195,6 @@ roadmap:
             - Schema optimization
             - Data migration scripts
             - Rollback procedures
-
     - name: "Optimization"
       quarter: "Q3 2024"
       objectives:
@@ -212,7 +205,6 @@ roadmap:
             - Load testing results
             - Optimization recommendations
             - Implementation of improvements
-
   milestones:
     - date: "2024-03-31"
       description: "All services containerized"
@@ -220,14 +212,12 @@ roadmap:
         - 100% services in containers
         - Automated build process
         - Development environment ready
-
     - date: "2024-06-30"
       description: "Production on Kubernetes"
       success_criteria:
         - All services deployed to K8s
         - Zero-downtime deployments
         - Auto-scaling configured
-
     - date: "2024-09-30"
       description: "Performance targets met"
       success_criteria:
@@ -247,7 +237,8 @@ Accepted
 
 ## Context
 
-We need to scale our monolithic application to handle 10x growth while maintaining development velocity across multiple teams.
+We need to scale our monolithic application to handle 10x growth while maintaining development velocity
+across multiple teams.
 
 ## Decision
 
@@ -301,23 +292,19 @@ We will adopt a microservices architecture with the following principles:
 @startuml
 !define RECTANGLE stereotype<<component>>
 !define DATABASE stereotype<<database>>
-
 package "Application Layer" {
   [Web Application] as web
   [Mobile Application] as mobile
 }
-
 package "Service Layer" {
   [API Gateway] as gateway
   [Auth Service] as auth
   [Core Service] as core
 }
-
 package "Data Layer" {
   database "PostgreSQL" as postgres
   database "Redis Cache" as redis
 }
-
 web --> gateway
 mobile --> gateway
 gateway --> auth
@@ -325,7 +312,6 @@ gateway --> core
 auth --> postgres
 core --> postgres
 core --> redis
-
 @enduml
 ```
 
@@ -335,7 +321,7 @@ core --> redis
 - **List formatting**: Consistent `-` for bullets
 - **Table alignment**: Proper column alignment
 - **Code blocks**: Language specification required
-- **Line length**: 120 character maximum
+- **Line length**: 150 character maximum
 - **Links**: Descriptive text, no bare URLs
 
 ## YAML Configuration Standards
@@ -399,4 +385,5 @@ Escalates to Claude when strategic decisions impact multiple systems or require 
 
 ## SYSTEM BOUNDARY
 
-This agent cannot invoke other agents or create Task calls. NO Task tool access allowed. Only Claude has orchestration authority.
+This agent cannot invoke other agents or create Task calls. NO Task tool access allowed.
+Only Claude has orchestration authority.

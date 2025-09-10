@@ -6,7 +6,7 @@ This guide provides comprehensive strategies for maximizing parallel agent execu
 system. The expanded agent ecosystem improves coordination efficiency while optimizing development velocity and maintaining
 quality standards.
 
-**Consolidation Benefits for Parallel Execution:**
+##### Consolidation Benefits for Parallel Execution:
 
 - **Reduced coordination overhead**: Fewer agents mean simpler parallel patterns
 - **Clearer boundaries**: Less overlap between parallel agents
@@ -96,7 +96,7 @@ Platform Teams:
     - ui-designer: Web-specific design optimization
 
   Mobile Team:
-    - mobile-platform-engineer: React Native/Flutter implementation
+    - mobile-engineer: React Native/Flutter implementation
 
   Backend Team:
     - backend-engineer: API and data layer implementation
@@ -129,7 +129,7 @@ Coordination:
 | **backend-engineer** | frontend-architect, devops, platform-engineer, api-architect | Infrastructure-aware backend development |
 | **code-reviewer** | security-auditor, test-engineer, tech-writer | Comprehensive quality assurance |
 | **principal-architect** | tech-writer | Strategic planning with documentation |
-| **debugger** | security-auditor, codebase-analyst, performance-specialist | Multi-angle problem analysis |
+| **debugger** | security-auditor, codebase-analyst, performance-engineer | Multi-angle problem analysis |
 | **devops** | platform-engineer, backend-engineer, security-auditor | Infrastructure deployment with monitoring |
 
 ### Sequential Dependencies (Require Handoffs)

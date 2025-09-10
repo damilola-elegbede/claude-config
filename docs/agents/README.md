@@ -12,7 +12,7 @@ category: analysis
 | **code-reviewer** | Code quality, security, best practices | Pre-commit reviews, quality checks | `/review` |
 | **security-auditor** | OWASP Top 10, vulnerability assessment | Any security-related concern | `/security` |
 | **debugger** | Complex bugs, root cause analysis | Hard-to-reproduce issues | `/debug` |
-| **performance-specialist** | Optimization, profiling, load testing | Performance bottlenecks | `/perf` |
+| **performance-engineer** | Optimization, profiling, load testing | Performance bottlenecks | `/perf` |
 | **tech-writer** | Documentation, APIs, guides | Documentation needs | `/docs` |
 | **codebase-analyst** | Code search, dependency analysis | Understanding large codebases | `/prime` |
 | **devops** | CI/CD, deployments, infrastructure | DevOps and deployment tasks | N/A |
@@ -44,7 +44,7 @@ Core programming and implementation agents
 - integration-specialist
 - migration-specialist
 - ml-engineer
-- mobile-platform-engineer
+- mobile-engineer
 - test-engineer
 
 ### 2. **Infrastructure** (orange) - 7 agents
@@ -83,14 +83,13 @@ Testing, review, validation, and verification agents
 - accessibility-auditor
 - code-reviewer
 - execution-evaluator
-- performance-specialist
+- performance-engineer
 - quality-gatekeeper
 
 ### 6. **Security** (red) - 3 agents
 
 Security assessment and compliance agents
 
-- regulatory-compliance-specialist
 - security-auditor
 - supply-chain-security-engineer
 
@@ -112,7 +111,6 @@ Research, documentation, and analysis agents
 Support, coordination, and strategic planning agents
 
 - debugger
-- incident-commander
 - production-reliability-engineer
 - project-orchestrator
 
@@ -123,7 +121,7 @@ The agent ecosystem uses three model tiers optimized for task complexity:
 ### Current Distribution (28 agents)
 
 - **Opus (7 agents, 16.7%)**: Strategic and high-complexity tasks
-  - principal-architect, performance-specialist, project-orchestrator
+  - principal-architect, performance-engineer, project-orchestrator
   - database-evolution-specialist, production-reliability-engineer
   - cloud-network-architect, data-platform-engineer
 - **Sonnet (34 agents, 81.0%)**: Standard technical implementation
@@ -155,7 +153,7 @@ The agent ecosystem uses three model tiers optimized for task complexity:
 
 - **backend-engineer** - Server-side systems, APIs, microservices, databases, and distributed architectures
 - **frontend-architect** - Advanced React/Vue/Angular architectures, state management, and performance optimization
-- **mobile-platform-engineer** - Cross-platform development, native iOS/Android, React Native, and Flutter
+- **mobile-engineer** - Cross-platform development, native iOS/Android, React Native, and Flutter
 - **ml-engineer** - ML model deployment, MLOps pipelines, and production ML systems
 - **data-platform-engineer** - Data pipelines, ETL/ELT systems, data warehouses, and stream processing
 - **database-evolution-specialist** - Database schema migrations, data migrations, and zero-downtime deployments
@@ -187,12 +185,12 @@ The agent ecosystem uses three model tiers optimized for task complexity:
 - **ui-designer** - UI/UX design, design systems, visual hierarchy, and user interface optimization
 - **ux-researcher** - User research, usability testing, analytics, and experience optimization
 
-### Quality & Testing Agents (5)
+### Quality & Testing Agents (8)
 
 - **test-engineer** - Test strategy, automation, coverage analysis, and quality assurance
 - **code-reviewer** - Code quality review, security checks, and best practices validation
 - **execution-evaluator** - Command execution verification, validation, and success assessment
-- **performance-specialist** - Performance profiling, load testing, optimization, and bottleneck analysis
+- **performance-engineer** - Performance profiling, load testing, optimization, and bottleneck analysis
 - **performance-predictor** - Performance modeling, capacity planning, and scalability analysis
 - **accessibility-auditor** - WCAG compliance audits, screen reader testing, and accessibility remediation
 - **quality-gatekeeper** - Quality gates coordination, compliance checking, and release readiness
@@ -201,7 +199,6 @@ The agent ecosystem uses three model tiers optimized for task complexity:
 ### Security & Compliance Agents (3)
 
 - **security-auditor** - Security audits, vulnerability assessment, OWASP compliance, and threat modeling
-- **regulatory-compliance-specialist** - Compliance frameworks (SOC2, GDPR, HIPAA), audit preparation, and governance
 
 ### Analysis & Documentation Agents (8)
 
@@ -212,8 +209,7 @@ The agent ecosystem uses three model tiers optimized for task complexity:
 
 ### Operations & Coordination Agents (4)
 
-- **incident-commander** - Production incidents, crisis management, and post-mortem coordination
-- **debugger** - Complex bug investigation, race conditions, memory leaks, and root cause analysis
+- **debugger** - Production incidents, crisis management, and post-mortem coordination
 - **dependency-strategist** - Strategic dependency management, upgrade planning, and risk assessment
 - **git-workflow-specialist** - Advanced git operations, workflow optimization, and repository management
 
@@ -241,9 +237,9 @@ The agent ecosystem uses three model tiers optimized for task complexity:
 
 - Authentication/Authorization code → security-auditor
 - Database migrations → database-evolution-specialist + database-admin
-- Production incidents → incident-commander
+- Production incidents → debugger
 - API design changes → api-architect
-- Performance regression → performance-specialist
+- Performance regression → performance-engineer
 - 3+ parallel tasks → Deploy in parallel, use project-orchestrator for coordination
 
 ### Command Shortcuts
@@ -252,7 +248,7 @@ The agent ecosystem uses three model tiers optimized for task complexity:
 /test         → test-engineer
 /review       → code-reviewer
 /security     → security-auditor
-/perf         → performance-specialist
+/perf         → performance-engineer
 /docs         → tech-writer
 /debug        → debugger
 /prime        → codebase-analyst
@@ -274,18 +270,18 @@ The agent ecosystem uses three model tiers optimized for task complexity:
 |---------------|------------------|----------------------|------------------|
 | **Backend Development** | backend-engineer | + test-engineer, code-reviewer | Complexity, scale, criticality |
 | **Frontend Development** | frontend-architect | + ui-designer, test-engineer | UI complexity, performance needs |
-| **Mobile Development** | mobile-platform-engineer | + ui-designer, test-engineer | Platform count (iOS/Android) |
+| **Mobile Development** | mobile-engineer | + ui-designer, test-engineer | Platform count (iOS/Android) |
 | **System Architecture** | principal-architect | + multiple implementation agents | System complexity, stakeholder count |
 | **API Design** | api-architect | + backend-engineer, security-auditor | API complexity, security requirements |
 | **Bug Investigation** | debugger | + test-engineer for regression tests | Bug complexity, reproduction difficulty |
 | **Code Quality** | code-reviewer | + security-auditor, test-engineer | Criticality, security sensitivity |
-| **Security Assessment** | security-auditor | + regulatory-compliance-specialist | Compliance requirements |
-| **Performance Issues** | performance-specialist | + monitoring-specialist, metrics-analyst | Scale, SLA requirements |
+| **Security Assessment** | security-auditor | + security-auditor | Compliance requirements |
+| **Performance Issues** | performance-engineer | + monitoring-specialist, metrics-analyst | Scale, SLA requirements |
 | **Testing Strategy** | test-engineer | + quality-gatekeeper | Coverage needs, quality gates |
 | **Documentation** | tech-writer | + api-analyst for API docs | Scope, technical complexity |
 | **Database Work** | database-admin | + database-evolution-specialist | Migration complexity, scale |
 | **Cloud Infrastructure** | cloud-architect | + devops, kubernetes-admin | Multi-cloud, complexity |
-| **Incident Response** | incident-commander | + debugger, monitoring-specialist | Severity, system complexity |
+| **Incident Response** | debugger | + debugger, monitoring-specialist | Severity, system complexity |
 | **Dependency Management** | dependency-strategist | + supply-chain-security-engineer | Security sensitivity, scale |
 
 ### Multi-Agent Patterns by Scenario
@@ -295,7 +291,7 @@ The agent ecosystem uses three model tiers optimized for task complexity:
 ```yaml
 Pattern: Architecture → Parallel Implementation → Quality Gates
 Phase 1: principal-architect (design)
-Phase 2: [backend-engineer + frontend-architect + mobile-platform-engineer] (parallel)
+Phase 2: [backend-engineer + frontend-architect + mobile-engineer] (parallel)
 Phase 3: [test-engineer + code-reviewer + security-auditor] (parallel)
 ```
 
@@ -303,7 +299,7 @@ Phase 3: [test-engineer + code-reviewer + security-auditor] (parallel)
 
 ```yaml
 Pattern: Analysis → Optimization → Validation
-Phase 1: [performance-specialist + monitoring-specialist + metrics-analyst] (parallel)
+Phase 1: [performance-engineer + monitoring-specialist + metrics-analyst] (parallel)
 Phase 2: Targeted optimization by appropriate specialists
 Phase 3: performance-predictor (validation)
 ```
@@ -314,7 +310,7 @@ Phase 3: performance-predictor (validation)
 Pattern: Assessment → Remediation → Compliance
 Phase 1: security-auditor (vulnerability assessment)
 Phase 2: [backend-engineer + frontend-architect] (fixes)
-Phase 3: regulatory-compliance-specialist (compliance validation)
+Phase 3: security-auditor (compliance validation)
 ```
 
 #### Migration Project
@@ -324,7 +320,7 @@ Pattern: Analysis → Planning → Execution → Validation
 Phase 1: [codebase-analyst + dependency-analyst] (parallel)
 Phase 2: migration-specialist (planning)
 Phase 3: [backend-engineer + database-evolution-specialist] (parallel)
-Phase 4: [test-engineer + performance-specialist] (parallel)
+Phase 4: [test-engineer + performance-engineer] (parallel)
 ```
 
 ### Scale-Based Agent Selection
@@ -332,12 +328,12 @@ Phase 4: [test-engineer + performance-specialist] (parallel)
 | Scale/Complexity | Required Agents | Orchestration Strategy |
 |------------------|----------------|----------------------|
 | **Startup/MVP** | backend-engineer, frontend-architect, test-engineer | Sequential, tight coordination |
-| **100k+ users** | backend-engineer, frontend-architect, principal-architect, performance-specialist | Parallel development, performance focus |
-| **10k+ requests/sec** | backend-engineer, performance-specialist, monitoring-specialist, cloud-architect | Performance-first architecture |
+| **100k+ users** | backend-engineer, frontend-architect, principal-architect, performance-engineer | Parallel development, performance focus |
+| **10k+ requests/sec** | backend-engineer, performance-engineer, monitoring-specialist, cloud-architect | Performance-first architecture |
 | **Multi-microservices** | backend-engineer (multiple), api-architect, principal-architect, kubernetes-admin | Service-oriented parallel development |
-| **Multi-platform** | mobile-platform-engineer (per platform), ui-designer, ux-researcher | Platform-specific parallel tracks |
-| **Enterprise/Compliance** | security-auditor, regulatory-compliance-specialist, quality-gatekeeper | Compliance-driven coordination |
-| **Complex debugging** | debugger, monitoring-specialist, performance-specialist | Problem-specific investigation team |
+| **Multi-platform** | mobile-engineer (per platform), ui-designer, ux-researcher | Platform-specific parallel tracks |
+| **Enterprise/Compliance** | security-auditor, quality-gatekeeper | Compliance-driven coordination |
+| **Complex debugging** | debugger, monitoring-specialist, performance-engineer | Problem-specific investigation team |
 | **Legacy modernization** | code-archaeologist, migration-specialist, principal-architect | Migration-focused strategy |
 
 ### Resource Optimization Guidelines
@@ -361,7 +357,7 @@ Phase 4: [test-engineer + performance-specialist] (parallel)
 Single Instance: Most development and analysis tasks
 Multiple Instances:
   - Multiple microservices (backend-engineer per service)
-  - Multi-platform (mobile-platform-engineer per platform)
+  - Multi-platform (mobile-engineer per platform)
   - Large-scale analysis (codebase-analyst per domain)
   - Comprehensive audits (security-auditor per security domain)
 ```
@@ -377,7 +373,7 @@ project-orchestrator (coordination)
 ├── Phase 2: Implementation (parallel)
 │   ├── backend-engineer (API services)
 │   ├── frontend-architect (Web UI)
-│   └── mobile-platform-engineer (Mobile apps)
+│   └── mobile-engineer (Mobile apps)
 └── Phase 3: Quality Gates (parallel)
     ├── test-engineer (test coverage)
     ├── code-reviewer (code quality)
@@ -388,7 +384,7 @@ project-orchestrator (coordination)
 
 ```yaml
 Phase 1: Multi-dimensional Analysis (parallel)
-├── performance-specialist (profiling & bottlenecks)
+├── performance-engineer (profiling & bottlenecks)
 ├── monitoring-specialist (metrics & patterns)
 ├── metrics-analyst (trend analysis)
 └── database-admin (query optimization)
@@ -408,7 +404,7 @@ Phase 1: Security Analysis
 └── supply-chain-security-engineer (dependency security)
 
 Phase 2: Compliance & Remediation
-├── regulatory-compliance-specialist (compliance)
+├── security-auditor (compliance)
 └── Implementation agents (fixes)
 
 Phase 3: Validation
@@ -418,11 +414,11 @@ Phase 3: Validation
 ### 4. Incident Response (Rapid Coordination)
 
 ```yaml
-incident-commander (orchestration)
+debugger (orchestration)
 ├── Phase 1: Investigation (parallel)
 │   ├── debugger (root cause analysis)
 │   ├── monitoring-specialist (system state)
-│   └── performance-specialist (performance impact)
+│   └── performance-engineer (performance impact)
 ├── Phase 2: Resolution
 │   └── Appropriate specialists for fixes
 └── Phase 3: Prevention
@@ -446,7 +442,7 @@ Phase 2: Implementation (coordinated)
 
 Phase 3: Validation & Optimization
 ├── test-engineer (comprehensive testing)
-├── performance-specialist (performance validation)
+├── performance-engineer (performance validation)
 └── monitoring-specialist (observability setup)
 ```
 
@@ -460,8 +456,8 @@ project-orchestrator
 ├── Platform Implementation (parallel)
 │   ├── backend-engineer (shared services)
 │   ├── frontend-architect (web platform)
-│   ├── mobile-platform-engineer #1 (iOS)
-│   └── mobile-platform-engineer #2 (Android)
+│   ├── mobile-engineer #1 (iOS)
+│   └── mobile-engineer #2 (Android)
 └── Cross-Platform Quality (parallel)
     ├── test-engineer (platform-specific testing)
     ├── ui-designer (design consistency)
@@ -488,7 +484,7 @@ Every commit triggers (parallel quality gates):
 ├── test-engineer (test execution)
 ├── security-auditor (security scanning)
 └── execution-evaluator (command verification)
-├── performance-specialist (performance regression)
+├── performance-engineer (performance regression)
 └── quality-gatekeeper (release readiness)
 ```
 
@@ -505,7 +501,6 @@ Every commit triggers (parallel quality gates):
 #### Gate 2: Security & Compliance (Parallel)
 
 - **security-auditor**: OWASP Top 10, vulnerability assessment
-- **regulatory-compliance-specialist**: Compliance frameworks
 - **supply-chain-security-engineer**: Dependency security
 - **KPI**: Zero high/critical security vulnerabilities, 100% compliance
 
@@ -518,7 +513,7 @@ Every commit triggers (parallel quality gates):
 
 #### Gate 4: Performance & Scalability (Parallel)
 
-- **performance-specialist**: Load testing, optimization, profiling
+- **performance-engineer**: Load testing, optimization, profiling
 - **performance-predictor**: Capacity planning, scalability assessment
 - **monitoring-specialist**: Observability and alerting setup
 - **KPI**: Response time ≤ 200ms P95, zero performance regressions
@@ -527,14 +522,14 @@ Every commit triggers (parallel quality gates):
 
 - **production-reliability-engineer**: SRE practices, resilience
 - **devops**: Deployment readiness, infrastructure validation
-- **incident-commander**: Incident response preparedness
+- **debugger**: Incident response preparedness
 - **KPI**: 99.9% uptime target, complete monitoring coverage
 
 ### Priority Hierarchy for Conflict Resolution
 
 1. **Security** (Highest Priority)
    - security-auditor decisions override performance optimizations
-   - regulatory-compliance-specialist requirements are non-negotiable
+   - security-auditor requirements are non-negotiable
 
 2. **Principal Architecture**
    - principal-architect makes final technical architecture decisions
@@ -545,7 +540,7 @@ Every commit triggers (parallel quality gates):
    - test-engineer defines test coverage requirements
 
 4. **Performance Requirements**
-   - performance-specialist sets performance benchmarks
+   - performance-engineer sets performance benchmarks
    - Balanced against security and quality requirements
 
 5. **Implementation Details**
@@ -590,7 +585,7 @@ Recovery:
 
 Example:
   - security-auditor fails → Claude does basic security check + warns user
-  - performance-specialist unavailable → Use monitoring-specialist + manual analysis
+  - performance-engineer unavailable → Use monitoring-specialist + manual analysis
 ```
 
 #### Integration Conflicts (Parallel Agents)
@@ -606,7 +601,7 @@ API Contract Conflicts:
 
 Performance vs Security Trade-offs:
   Resolution: Security requirements take precedence
-  Process: security-auditor → performance-specialist (optimization within constraints)
+  Process: security-auditor → performance-engineer (optimization within constraints)
 
 Test Failures from Parallel Changes:
   Resolution: Re-run tests after integration
@@ -716,9 +711,9 @@ codebase-analyst #5: Database & data layer analysis
 code-reviewer: Code quality & best practices
 security-auditor: Security vulnerabilities & OWASP compliance
 test-engineer: Test coverage & automation strategy
-performance-specialist: Performance bottlenecks & optimization
+performance-engineer: Performance bottlenecks & optimization
 accessibility-auditor: WCAG compliance & usability
-regulatory-compliance-specialist: Compliance frameworks
+security-auditor: Compliance frameworks
 # Coordination: quality-gatekeeper validates overall readiness
 ```
 
@@ -730,24 +725,24 @@ Phase 1: principal-architect + api-architect (design)
 Phase 2: Parallel Implementation
   ├── backend-engineer (API & services)
   ├── frontend-architect (web application)
-  ├── mobile-platform-engineer #1 (iOS)
-  └── mobile-platform-engineer #2 (Android)
+  ├── mobile-engineer #1 (iOS)
+  └── mobile-engineer #2 (Android)
 Phase 3: Parallel Quality Gates
   ├── test-engineer (comprehensive testing)
   ├── code-reviewer (code quality)
   ├── security-auditor (security validation)
-  └── performance-specialist (performance testing)
+  └── performance-engineer (performance testing)
 ```
 
 #### Incident Response Coordination
 
 ```yaml
 # Rapid Response Pattern
-incident-commander: Overall coordination & communication
+debugger: Overall coordination & communication
 Parallel Investigation:
   ├── debugger: Root cause analysis
   ├── monitoring-specialist: System state & metrics
-  ├── performance-specialist: Performance impact assessment
+  ├── performance-engineer: Performance impact assessment
   └── security-auditor: Security incident assessment (if applicable)
 Resolution: Appropriate specialists based on findings
 Prevention: production-reliability-engineer (post-incident improvements)
@@ -769,7 +764,7 @@ Phase 3: Implementation
   └── data-platform-engineer (data pipeline updates)
 Phase 4: Validation
   ├── test-engineer (data integrity testing)
-  └── performance-specialist (performance validation)
+  └── performance-engineer (performance validation)
 ```
 
 ## Tool Permissions & Security Model
@@ -778,13 +773,13 @@ Agents are granted minimal necessary permissions following the principle of leas
 
 | Permission Level | Example Agents | Allowed Tools | Security Rationale |
 |-----------------|----------------|---------------|-------------------|
-| **Full Access** | backend-engineer, frontend-architect, mobile-platform-engineer | All tools | Core development requires full access |
+| **Full Access** | backend-engineer, frontend-architect, mobile-engineer | All tools | Core development requires full access |
 | **Read & Analysis** | code-reviewer, codebase-analyst, security-auditor | Read, Grep, Glob, LS | Analysis-only, no modification capability |
 | **Documentation** | tech-writer | Read, Write, Edit, MultiEdit | Documentation creation and updates |
 | **Infrastructure** | devops, cloud-architect, kubernetes-admin | Read, Write, Edit, Bash | Infrastructure management requires system access |
 | **Quality Gates** | test-engineer, quality-gatekeeper | Read, Write, Edit, Bash | Testing requires execution capabilities |
 | **Strategic Planning** | project-orchestrator, principal-architect | Read, Write, TodoWrite | Planning and coordination tools |
-| **Monitoring** | monitoring-specialist, performance-specialist | Read, Grep, Glob, LS, Bash | System monitoring and analysis |
+| **Monitoring** | monitoring-specialist, performance-engineer | Read, Grep, Glob, LS, Bash | System monitoring and analysis |
 
 ### Security Boundaries
 
@@ -847,8 +842,8 @@ Task Request
 ├── Simple/Urgent (< 5 min)? → Handle Directly
 ├── Security/Auth related? → security-auditor (always)
 ├── 3+ components involved? → project-orchestrator + parallel agents
-├── Performance critical? → performance-specialist + monitoring-specialist
-├── Cross-platform? → Multiple mobile-platform-engineer instances
+├── Performance critical? → performance-engineer + monitoring-specialist
+├── Cross-platform? → Multiple mobile-engineer instances
 └── Single domain expert task? → Appropriate specialist agent
 ```
 

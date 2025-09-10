@@ -30,14 +30,14 @@ demonstrate streamlined workflow patterns now integrated into our specialized ag
 **Purpose**: Rapid file system exploration and navigation
 **Reduces**: Multiple `ls`, `find`, and `cd` commands to single operations
 
-**Key Capabilities:**
+##### Key Capabilities:
 
 - Intelligent directory traversal with pattern matching
 - Smart file discovery across project hierarchies
 - Bulk file location and path resolution
 - Project structure mapping and visualization
 
-**Example Usage:**
+##### Example Usage:
 
 ```bash
 # Before (5-7 tool calls):
@@ -58,7 +58,7 @@ Task: "Use file-navigator to find all React components and utility files in the 
 **Purpose**: Streamlined package and dependency operations
 **Reduces**: Multiple package manager commands and version checks
 
-**Key Capabilities:**
+##### Key Capabilities:
 
 - Multi-package installation and updates
 - Cross-package-manager support (npm, yarn, pip, go mod)
@@ -66,7 +66,7 @@ Task: "Use file-navigator to find all React components and utility files in the 
 - Version compatibility checking
 - Lock file management
 
-**Example Usage:**
+##### Example Usage:
 
 ```bash
 # Before (4-6 tool calls):
@@ -85,7 +85,7 @@ Task: "Use dependency-manager to update React and its types to latest compatible
 **Purpose**: Complex git operations in single commands
 **Reduces**: Multi-step git workflows to atomic operations
 
-**Key Capabilities:**
+##### Key Capabilities:
 
 - Smart branch creation with naming conventions
 - Automated stash/restore for branch switching
@@ -93,7 +93,7 @@ Task: "Use dependency-manager to update React and its types to latest compatible
 - Interactive rebase automation
 - Conflict resolution assistance
 
-**Example Usage:**
+##### Example Usage:
 
 ```bash
 # Before (6-8 tool calls):
@@ -113,7 +113,7 @@ Task: "Use git-workflow to create feature/new-feature branch from latest main"
 **Purpose**: Multi-file configuration management
 **Reduces**: Reading, parsing, and updating multiple config files
 
-**Key Capabilities:**
+##### Key Capabilities:
 
 - Cross-format config handling (JSON, YAML, TOML, INI, .env)
 - Environment-specific configuration management
@@ -121,7 +121,7 @@ Task: "Use git-workflow to create feature/new-feature branch from latest main"
 - Secret management integration
 - Configuration inheritance resolution
 
-**Example Usage:**
+##### Example Usage:
 
 ```bash
 # Before (5-7 tool calls):
@@ -140,7 +140,7 @@ Task: "Use config-specialist to update database configuration across all environ
 **Purpose**: Rapid error diagnosis and resolution
 **Reduces**: Multiple debugging and log analysis steps
 
-**Key Capabilities:**
+##### Key Capabilities:
 
 - Stack trace analysis and root cause identification
 - Common error pattern matching
@@ -148,7 +148,7 @@ Task: "Use config-specialist to update database configuration across all environ
 - Log aggregation and correlation
 - Error tracking integration
 
-**Example Usage:**
+##### Example Usage:
 
 ```bash
 # Before (6-8 tool calls):
@@ -168,7 +168,7 @@ Task: "Use error-resolver to diagnose and fix the TypeError in production logs"
 **Purpose**: Advanced code search and analysis
 **Reduces**: Multiple grep/ripgrep commands across files
 
-**Key Capabilities:**
+##### Key Capabilities:
 
 - Multi-pattern simultaneous search
 - Context-aware code searching
@@ -176,7 +176,7 @@ Task: "Use error-resolver to diagnose and fix the TypeError in production logs"
 - Cross-reference analysis
 - Search result ranking and filtering
 
-**Example Usage:**
+##### Example Usage:
 
 ```bash
 # Before (5-7 tool calls):
@@ -194,7 +194,7 @@ Task: "Use search-coordinator to find all React hooks usage in test files"
 **Purpose**: Intelligent test execution and management
 **Reduces**: Multiple test commands and coverage analysis
 
-**Key Capabilities:**
+##### Key Capabilities:
 
 - Smart test selection based on changes
 - Parallel test execution optimization
@@ -202,7 +202,7 @@ Task: "Use search-coordinator to find all React hooks usage in test files"
 - Test failure pattern analysis
 - Cross-framework test coordination
 
-**Example Usage:**
+##### Example Usage:
 
 ```bash
 # Before (4-6 tool calls):
@@ -220,7 +220,7 @@ Task: "Use test-runner to run affected tests for recent changes with coverage"
 **Purpose**: Rapid documentation and knowledge retrieval
 **Reduces**: Multiple file searches for docs and comments
 
-**Key Capabilities:**
+##### Key Capabilities:
 
 - Multi-source documentation aggregation
 - API documentation extraction
@@ -228,7 +228,7 @@ Task: "Use test-runner to run affected tests for recent changes with coverage"
 - External documentation linking
 - Knowledge graph navigation
 
-**Example Usage:**
+##### Example Usage:
 
 ```bash
 # Before (5-7 tool calls):
@@ -247,7 +247,7 @@ Task: "Use documentation-finder to gather all user API documentation"
 **Purpose**: Bulk file operations and scaffolding
 **Reduces**: Multiple file creation and editing commands
 
-**Key Capabilities:**
+##### Key Capabilities:
 
 - Template-based file generation
 - Bulk file modifications with patterns
@@ -255,7 +255,7 @@ Task: "Use documentation-finder to gather all user API documentation"
 - File migration and refactoring
 - Code generation from schemas
 
-**Example Usage:**
+##### Example Usage:
 
 ```bash
 # Before (8-10 tool calls):

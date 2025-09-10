@@ -3,8 +3,8 @@
 ## Overview
 
 The Claude Code CLI provides a comprehensive API ecosystem for command orchestration,
-agent management, and MCP infrastructure. This documentation covers all public APIs
-available for integration and automation.
+agent management, MCP infrastructure, authentication, and system administration. This
+documentation covers all public APIs available for integration and automation.
 
 ## API Categories
 
@@ -38,6 +38,7 @@ APIs for managing and orchestrating the 28 specialized agents in the Claude ecos
 |-----|-------------|---------------|
 | **[Agent System API](agent-api.md)** | Core agent invocation, orchestration, and management | Markdown Documentation |
 | **[Agent Ecosystem API](agent-ecosystem-api.md)** | Multi-agent coordination and workflow management | Markdown Documentation |
+| **[Agent Management API](agent-management-api.md)** | **NEW** - Complete agent lifecycle management, deployment, monitoring, and scaling | Markdown Documentation |
 | **[Agent Specification](agent-specification.md)** | Agent definition standards and metadata | Markdown Documentation |
 
 #### Agent API Capabilities
@@ -47,6 +48,26 @@ APIs for managing and orchestrating the 28 specialized agents in the Claude ecos
 - **Agent Discovery**: Find and list available agents by capability
 - **Execution Monitoring**: Track agent execution and performance metrics
 - **Quality Assurance**: Built-in review and validation workflows
+- **Lifecycle Management**: Create, update, deploy, and scale agents
+- **Performance Analytics**: Comprehensive metrics and reporting
+
+### 🔐 Authentication & Security APIs
+
+**NEW** - Enterprise-grade authentication, authorization, and security management.
+
+| API | Description | Specification |
+|-----|-------------|---------------|
+| **[Authentication Service API](authentication-service-api.md)** | **NEW** - JWT tokens, API keys, sessions, MFA, OAuth2 integration | Markdown Documentation |
+
+#### Authentication API Capabilities
+
+- **JWT Authentication**: Token-based authentication with refresh capabilities
+- **API Key Management**: Generate, manage, and revoke API keys with scoped permissions
+- **Session Management**: Create, validate, extend, and terminate user sessions
+- **Multi-Factor Authentication**: TOTP setup, verification, and backup codes
+- **OAuth2 Integration**: Full OAuth2 authorization code flow support
+- **Security Monitoring**: Failed login tracking, account lockouts, security events
+- **Permission Management**: Granular permission checking and assignment
 
 ### 🔧 MCP Infrastructure APIs
 
@@ -66,6 +87,25 @@ Low-level infrastructure APIs for Model Context Protocol server management and r
 - **Audio Notifications**: Configurable audio hooks for system events
 - **Comprehensive Metrics**: Detailed performance monitoring and analytics
 - **Health Monitoring**: System health checks and component status
+
+### ⚙️ System Administration APIs
+
+**NEW** - Comprehensive system administration, monitoring, and maintenance capabilities.
+
+| API | Description | Specification |
+|-----|-------------|---------------|
+| **[System Administration API](system-administration-api.md)** | **NEW** - System config, user management, monitoring, maintenance, audit & compliance | Markdown Documentation |
+
+#### System Administration Capabilities
+
+- **System Configuration**: Get and update system-wide settings and parameters
+- **User Management**: Create, update, list, and manage user accounts and permissions
+- **System Monitoring**: Real-time metrics, logs, alerts, and health monitoring
+- **Maintenance Operations**: Schedule, execute, and track system maintenance windows
+- **Audit & Compliance**: Comprehensive audit trails and compliance reporting
+- **Backup & Recovery**: Automated backups, restore operations, and disaster recovery
+- **Security Administration**: Security event monitoring, threat detection, and response
+- **Resource Management**: Monitor and optimize system resource utilization
 
 ## Authentication & Authorization
 
@@ -114,6 +154,8 @@ curl -H "Authorization: Bearer your-jwt-token" \
 |--------------|-------|-------------|-------------|
 | Command APIs | 100 requests | 1 hour | 10 requests/minute |
 | Agent APIs | 500 requests | 1 hour | 25 requests/minute |
+| Authentication APIs | 200 requests | 1 hour | 15 requests/minute |
+| System Admin APIs | 300 requests | 1 hour | 20 requests/minute |
 | MCP Infrastructure | 1000 requests | 1 hour | 50 requests/minute |
 
 ### Performance Guarantees
@@ -121,6 +163,7 @@ curl -H "Authorization: Bearer your-jwt-token" \
 - **Command APIs**: < 30 seconds for complex operations
 - **Tool Routing**: < 100ms routing decisions (guaranteed)
 - **Agent Invocation**: < 5 seconds for simple agents
+- **Authentication**: < 200ms for token validation
 - **Cache Hit Rate**: > 85% for repeated operations
 
 ## Error Handling Standards
@@ -150,6 +193,7 @@ All APIs use a standardized error response format:
 |------|-------------|------------|
 | `INVALID_REQUEST` | Malformed request parameters | Check request schema |
 | `AUTHENTICATION_FAILED` | Invalid or missing credentials | Verify API key/token |
+| `INSUFFICIENT_PERMISSIONS` | User lacks required permissions | Check permission scopes |
 | `RATE_LIMIT_EXCEEDED` | Too many requests | Implement backoff strategy |
 | `RESOURCE_NOT_FOUND` | Requested resource doesn't exist | Check resource identifiers |
 | `INTERNAL_ERROR` | Unexpected system error | Retry with exponential backoff |
@@ -173,6 +217,19 @@ const client = new ClaudeAPI({
   apiKey: process.env.CLAUDE_API_KEY
 });
 
+// Authentication - Get JWT token
+const authResult = await client.auth.login({
+  username: 'user@example.com',
+  password: 'secure_password'
+});
+
+// Agent Management - Create new agent
+const agent = await client.agents.create({
+  name: 'custom-specialist',
+  category: 'development',
+  tools: ['Read', 'Write', 'Edit']
+});
+
 // Execute test discovery and run
 const testResult = await client.commands.test({
   options: { coverage: true, framework: 'jest' }
@@ -181,8 +238,11 @@ const testResult = await client.commands.test({
 // Multi-agent code review
 const reviewResult = await client.commands.review({
   scope: 'changed',
-  agents: ['security-auditor', 'performance-specialist']
+  agents: ['security-auditor', 'performance-engineer']
 });
+
+// System Administration - Get health status
+const healthStatus = await client.admin.system.health();
 
 // Route tool execution
 const routingResult = await client.mcp.toolRouter.route({
@@ -218,6 +278,9 @@ Accept: application/json; version=1.0
 |------------|-------------|----------------|
 | `command.completed` | Command execution finished | Command result with metrics |
 | `agent.invoked` | Agent started execution | Agent details and context |
+| `agent.deployment.completed` | Agent deployment finished | Deployment status and metrics |
+| `auth.login.failed` | Failed login attempt | Security event details |
+| `system.maintenance.started` | Maintenance window started | Maintenance details and impact |
 | `review.critical_issues` | Critical issues found in review | Issue details and blocking status |
 | `workflow.step_completed` | Workflow step finished | Step result and next actions |
 
@@ -226,7 +289,12 @@ Accept: application/json; version=1.0
 ```json
 {
   "url": "https://your-app.com/webhooks/claude",
-  "events": ["command.completed", "review.critical_issues"],
+  "events": [
+    "command.completed",
+    "review.critical_issues",
+    "auth.login.failed",
+    "agent.deployment.completed"
+  ],
   "secret": "webhook-secret-for-signature-verification"
 }
 ```
@@ -249,6 +317,7 @@ Accept: application/json; version=1.0
    export CLAUDE_API_PORT=3000
    export CLAUDE_API_HOST=localhost
    export CLAUDE_LOG_LEVEL=debug
+   export CLAUDE_AUTH_SECRET=your-jwt-secret
    ```
 
 ### Testing Endpoints
@@ -262,6 +331,7 @@ Accept: application/json; version=1.0
 - **Interactive API Explorer**: Built-in Swagger UI at `/api/docs`
 - **Schema Validation**: All requests validated against OpenAPI schemas
 - **Request/Response Logging**: Comprehensive logging for debugging
+- **Postman Collection**: Available for all endpoints
 
 ## Performance Monitoring
 
@@ -272,12 +342,15 @@ Accept: application/json; version=1.0
 - **Error Rates**: 4xx and 5xx error percentages
 - **Cache Performance**: Hit rates and cache efficiency
 - **Agent Performance**: Execution times and success rates
+- **Authentication Performance**: Login success rates and token validation times
+- **System Resource Usage**: CPU, memory, and storage utilization
 
 ### Monitoring Dashboards
 
 - **Grafana Dashboard**: Real-time performance metrics
 - **Log Analytics**: Structured logging with searchable fields
 - **Alert Configuration**: Proactive alerting on performance degradation
+- **Security Dashboard**: Authentication events and threat detection
 
 ## Security Considerations
 
@@ -287,6 +360,7 @@ Accept: application/json; version=1.0
 - **Data Sanitization**: Input validation and output encoding
 - **Access Control**: Role-based access with principle of least privilege
 - **Audit Logging**: Comprehensive audit trails for compliance
+- **Secret Management**: Secure handling of API keys and tokens
 
 ### Security Best Practices
 
@@ -295,6 +369,28 @@ Accept: application/json; version=1.0
 3. **Rate Limiting**: Implement client-side rate limiting
 4. **Error Handling**: Avoid exposing sensitive information in errors
 5. **Monitoring**: Monitor for unusual patterns and potential abuse
+6. **MFA Enforcement**: Require multi-factor authentication for sensitive operations
+7. **Session Security**: Implement proper session timeout and management
+
+## API Coverage Summary
+
+### Comprehensive API Ecosystem
+
+The Claude Code CLI now provides **complete API coverage** across all major functional areas:
+
+| Category | APIs | Coverage | Key Features |
+|----------|------|----------|--------------|
+| **Commands** | 5 core APIs | Workflow automation | Orchestration, validation, progress tracking |
+| **Agents** | 4 comprehensive APIs | Full lifecycle | Invocation, management, deployment, analytics |
+| **Authentication** | 1 enterprise API | Security & access control | JWT, API keys, MFA, OAuth2, monitoring |
+| **System Admin** | 1 comprehensive API | Administration & monitoring | Config, users, monitoring, maintenance, audit |
+| **MCP Infrastructure** | 2 core APIs | Low-level operations | Routing, configuration, performance |
+
+### API Maturity Levels
+
+- **🟢 Production Ready**: Authentication, Agent Management, System Administration
+- **🟡 Stable**: Agent Ecosystem, Agent System, MCP Infrastructure
+- **🔵 Evolving**: Command APIs, Agent Specification
 
 ---
 
@@ -305,6 +401,11 @@ Accept: application/json; version=1.0
 - **Community Discord**: [Claude Developers](https://discord.gg/claude-developers)
 - **API Status Page**: [status.claude.ai](https://status.claude.ai)
 - **Developer Blog**: [blog.claude.ai/developers](https://blog.claude.ai/developers)
+- **Security Contact**: [security@claude.ai](mailto:security@claude.ai)
 
 For questions about API usage, integration support, or feature requests, please refer to our
 [Developer Guide](../guides/developer-guide.md) or create an issue in the GitHub repository.
+
+---
+
+**The Claude Code CLI API ecosystem now provides enterprise-grade capabilities across authentication, agent management, system administration, and infrastructure - delivering a complete platform for AI-powered development workflows.**

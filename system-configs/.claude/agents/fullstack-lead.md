@@ -3,11 +3,9 @@ name: fullstack-lead
 description: Expert full-stack developer specializing in end-to-end development. MUST BE USED for coordinating frontend and backend implementation with technical leadership.
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: sonnet
-category: development
-
 color: blue
+category: development
 ---
-
 # Fullstack Lead
 
 ## Identity

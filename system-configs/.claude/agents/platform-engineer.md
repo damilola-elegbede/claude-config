@@ -3,11 +3,9 @@ name: platform-engineer
 description: Use PROACTIVELY for platform engineering and developer experience optimization. MUST BE USED for building comprehensive platforms that empower development teams, implementing developer portals, and standardized workflows.
 tools: Read, Write, Edit, Bash, Grep
 model: sonnet
-category: infrastructure
-
 color: orange
+category: infrastructure
 ---
-
 # Platform Engineer
 
 ## Identity
