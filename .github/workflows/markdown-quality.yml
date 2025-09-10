@@ -60,13 +60,8 @@ jobs:
           fi
         done
 
-    - name: Cache quality baseline
-      uses: actions/cache@v4
-      with:
-        path: tests/markdown/.baseline_violations
-        key: markdown-quality-baseline-${{ hashFiles('**/*.md') }}
-        restore-keys: |
-          markdown-quality-baseline-
+    # Baseline is now tracked in git, no need to cache
+    # The file tests/markdown/.baseline_violations is committed
 
     - name: Make scripts executable
       run: |
