@@ -7,28 +7,36 @@ This document explores the psychological impact of system performance on user ex
 ## Performance Psychology Fundamentals
 
 ### 1. Perceived vs. Actual Performance
+
 User perception of performance often differs from objective measurements:
+
 - **Perceived performance** is what users feel and experience subjectively
 - **Actual performance** is what can be measured objectively with tools
 - **Perception gaps** occur when user experience doesn't match technical metrics
 - **Optimization priorities** should balance both perceived and actual performance
 
 ### 2. Cognitive Load and Performance Expectations
+
 Mental processing capacity affects performance perception:
+
 - **Cognitive bandwidth** available for task completion
 - **Attention management** during waiting periods
 - **Mental model alignment** between expected and actual behavior
 - **Stress response** to performance delays and interruptions
 
 ### 3. Flow State and Productivity
+
 Performance impacts ability to achieve and maintain productive flow states:
+
 - **Flow triggers** require seamless, responsive interactions
 - **Flow disruption** occurs with unexpected delays or interruptions
 - **Recovery time** needed to regain focus after performance issues
 - **Momentum preservation** through consistent, predictable performance
 
 ### 4. Trust and Confidence Building
+
 System performance directly influences user trust and confidence:
+
 - **Reliability perception** based on consistent performance
 - **Competence attribution** when systems perform as expected
 - **Anxiety reduction** through predictable response patterns
@@ -41,6 +49,7 @@ System performance directly influences user trust and confidence:
 ### Response Time Psychology
 
 #### Immediate Response (0-100ms)
+
 The threshold for perceived instantaneous response:
 
 ```text
@@ -92,6 +101,7 @@ Implementation Strategies:
 ```
 
 #### Quick Response (100ms-1 second)
+
 The threshold for maintaining user attention without distraction:
 
 ```text
@@ -149,6 +159,7 @@ User Experience Optimization:
 ```
 
 #### Standard Response (1-5 seconds)
+
 The threshold where users expect visible progress indication:
 
 ```text
@@ -225,6 +236,7 @@ Anxiety Prevention Strategies:
 ```
 
 #### Extended Response (5-30 seconds)
+
 The threshold requiring comprehensive progress communication and user engagement:
 
 ```text
@@ -303,6 +315,7 @@ User Engagement Strategies:
 ```
 
 #### Long Response (30+ seconds)
+
 The threshold requiring alternative interaction patterns and user choice:
 
 ```text
@@ -385,6 +398,7 @@ Example Long Operation Interface:
 ### Mental Models and Expectations
 
 #### Performance Expectation Formation
+
 How users develop expectations about system performance:
 
 ```text
@@ -509,6 +523,7 @@ Example Cognitive Load Reduction:
 ### Flow State and Performance
 
 #### Flow State Preservation
+
 Maintaining productive flow states through performance optimization:
 
 ```text
@@ -651,6 +666,7 @@ Example Recovery Interface:
 ### Trust and Confidence Building
 
 #### Performance-Based Trust Development
+
 How system performance influences user trust and confidence:
 
 ```text
@@ -726,6 +742,7 @@ Example Trust-Building Communication:
 ```
 
 #### Confidence Through Predictability
+
 Building user confidence through consistent, predictable performance:
 
 ```text
@@ -797,6 +814,7 @@ Example Confidence-Building Patterns:
 ### Stress Response and Performance Anxiety
 
 #### Performance-Related Stress Factors
+
 Understanding how performance issues create stress and anxiety:
 
 ```text
@@ -862,6 +880,7 @@ Example Stress-Reducing Interface:
 ```
 
 #### Anxiety Prevention and Management
+
 Proactive strategies for preventing and managing performance-related anxiety:
 
 ```text
@@ -930,6 +949,7 @@ Example Anxiety Management:
 ### Progress Communication Psychology
 
 #### Effective Progress Indication
+
 Designing progress communication that supports positive user psychology:
 
 ```text
@@ -995,6 +1015,7 @@ Example Effective Progress Communication:
 ```
 
 #### Time Estimation Psychology
+
 Communicating time estimates in ways that manage expectations and reduce anxiety:
 
 ```text
@@ -1060,6 +1081,7 @@ Example Time Communication:
 ### Error and Delay Communication
 
 #### Performance Problem Communication
+
 Communicating performance issues and delays in psychologically supportive ways:
 
 ```text
@@ -1148,6 +1170,7 @@ Recovery Communication Psychology:
 ### Psychological Performance Optimization
 
 #### Perceived Performance Enhancement
+
 Techniques for improving perceived performance even when actual performance is unchanged:
 
 ```text
@@ -1275,6 +1298,7 @@ Example Attention Management:
 ### User Empowerment and Control
 
 #### Performance Control Options
+
 Giving users agency over performance characteristics and trade-offs:
 
 ```text

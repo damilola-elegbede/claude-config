@@ -62,7 +62,7 @@ graph TB
 
 ### 1. Core Configuration Files
 
-**Directory Structure:**
+##### Directory Structure:
 
 ```text
 system-configs/
@@ -100,7 +100,7 @@ system-configs/
 
 ### 2. Base Configuration
 
-**system-configs/config.yaml (Base):**
+##### system-configs/config.yaml (Base):
 
 ```yaml
 # Claude Configuration Management Base Settings
@@ -170,7 +170,7 @@ security:
 
 ### 3. Environment-Specific Configurations
 
-**environments/development/config.yaml:**
+##### environments/development/config.yaml:
 
 ```yaml
 # Development Environment Configuration
@@ -219,7 +219,7 @@ audio:
     warning: "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Note.m4r"
 ```
 
-**environments/production/config.yaml:**
+##### environments/production/config.yaml:
 
 ```yaml
 # Production Environment Configuration
@@ -281,7 +281,7 @@ disaster_recovery:
 
 ### 1. Configuration Manager Implementation
 
-**scripts/config-manager.py:**
+##### scripts/config-manager.py:
 
 ```python
 #!/usr/bin/env python3
@@ -731,7 +731,7 @@ if __name__ == '__main__':
 
 ### 2. Configuration Sync Command
 
-**scripts/sync-config.sh:**
+##### scripts/sync-config.sh:
 
 ```bash
 #!/bin/bash
@@ -1125,7 +1125,7 @@ main "$@"
 
 ### 1. Environment Configuration Templates
 
-**environments/template/config.yaml:**
+##### environments/template/config.yaml:
 
 ```yaml
 # Environment Configuration Template
@@ -1208,7 +1208,7 @@ integrations:
 
 ### 2. Environment Switcher
 
-**scripts/switch-environment.sh:**
+##### scripts/switch-environment.sh:
 
 ```bash
 #!/bin/bash
@@ -1331,7 +1331,7 @@ main
 
 ### 1. Secret Configuration
 
-**secrets/secrets-template.yaml:**
+##### secrets/secrets-template.yaml:
 
 ```yaml
 # Secrets Configuration Template
@@ -1379,7 +1379,7 @@ certificates:
 
 ### 2. Secret Management Script
 
-**scripts/manage-secrets.sh:**
+##### scripts/manage-secrets.sh:
 
 ```bash
 #!/bin/bash
@@ -1632,7 +1632,7 @@ main "$@"
 
 ### 1. Schema Definitions
 
-**schemas/agent-schema.json:**
+##### schemas/agent-schema.json:
 
 ```json
 {
@@ -1683,7 +1683,7 @@ main "$@"
 
 ### 2. Configuration Validator
 
-**scripts/validate-config.py:**
+##### scripts/validate-config.py:
 
 ```python
 #!/usr/bin/env python3
@@ -2118,7 +2118,7 @@ if __name__ == '__main__':
 
 ### 1. Automated Sync Service
 
-**scripts/config-sync-daemon.py:**
+##### scripts/config-sync-daemon.py:
 
 ```python
 #!/usr/bin/env python3
@@ -2467,7 +2467,7 @@ if __name__ == '__main__':
 
 ### 1. Configuration Metrics
 
-**monitoring/config-metrics.py:**
+##### monitoring/config-metrics.py:
 
 ```python
 #!/usr/bin/env python3
@@ -2592,7 +2592,7 @@ if __name__ == '__main__':
 
 ### Common Configuration Issues
 
-**Issue: Configuration sync fails**
+##### Issue: Configuration sync fails
 
 ```bash
 # Solution: Check permissions and validate configuration
@@ -2601,7 +2601,7 @@ chmod -R 755 ~/.claude
 ./scripts/sync-config.sh --no-backup
 ```
 
-**Issue: Environment switching not working**
+##### Issue: Environment switching not working
 
 ```bash
 # Solution: Verify environment configuration exists
@@ -2610,7 +2610,7 @@ ls system-configs/environments/
 source ~/.bashrc  # or ~/.zshrc
 ```
 
-**Issue: Schema validation errors**
+##### Issue: Schema validation errors
 
 ```bash
 # Solution: Update configuration to match schema

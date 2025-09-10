@@ -7,25 +7,33 @@ This document defines the user experience principles and patterns for multi-agen
 ## Core UX Principles for Agent Coordination
 
 ### 1. Transparent Orchestration
+
 Users should understand what agents are doing and why:
+
 - Clear visibility into agent selection rationale
 - Real-time progress updates for multi-agent operations
 - Explicit communication of dependencies and sequencing
 
 ### 2. Intelligent Automation
+
 The system should handle complexity while keeping users in control:
+
 - Automatic agent selection based on task context
 - Smart wave-based execution with dependency management
 - Graceful degradation when agents fail or timeout
 
 ### 3. Progressive Disclosure
+
 Complexity should be revealed only when needed:
+
 - Simple commands that hide multi-agent coordination
 - Detailed progress view available on demand
 - Expert controls accessible without cluttering basic interface
 
 ### 4. Predictable Behavior
+
 Agent coordination should follow consistent patterns:
+
 - Similar tasks use similar agent combinations
 - Wave execution follows logical dependency chains
 - Error handling and recovery procedures are standardized
@@ -37,6 +45,7 @@ Agent coordination should follow consistent patterns:
 ### Automatic Agent Selection
 
 #### Context-Aware Assignment
+
 The system analyzes task context and automatically selects appropriate agents:
 
 ```text
@@ -58,6 +67,7 @@ The system analyzes task context and automatically selects appropriate agents:
 ```
 
 #### User Confirmation and Override
+
 Users can review and modify automatic selections:
 
 ```text
@@ -84,6 +94,7 @@ Wave 3 (Quality):
 ### Manual Agent Selection
 
 #### Guided Selection Interface
+
 For users who prefer explicit control:
 
 ```text
@@ -122,6 +133,7 @@ Testing and review requirements:
 ### Wave Visualization
 
 #### Progress Dashboard
+
 Real-time view of multi-wave execution:
 
 ```text
@@ -148,6 +160,7 @@ Wave 3: Integration and Polish ░░░░░░░░░░░░░░░░ 
 ```
 
 #### Simplified Progress View
+
 For users who prefer minimal information:
 
 ```text
@@ -163,6 +176,7 @@ Overall: 58% complete, ~8 minutes remaining
 ### Wave Transition Communication
 
 #### Inter-Wave Handoffs
+
 Clear communication when waves transition:
 
 ```text
@@ -186,6 +200,7 @@ Agents receiving handoff:
 ### Error Handling in Multi-Agent Workflows
 
 #### Agent Failure Recovery
+
 When individual agents fail within a wave:
 
 ```text
@@ -209,6 +224,7 @@ When individual agents fail within a wave:
 ```
 
 #### Wave Failure Handling
+
 When entire waves fail or need restructuring:
 
 ```text
@@ -241,6 +257,7 @@ When entire waves fail or need restructuring:
 ### Inter-Agent Communication UX
 
 #### Shared Context Visualization
+
 How agents share information and build on each other's work:
 
 ```text
@@ -268,6 +285,7 @@ backend-engineer → test-engineer:
 ```
 
 #### Coordination Points
+
 Clear communication about agent collaboration:
 
 ```text
@@ -292,6 +310,7 @@ Impact: Wave 2 implementation can proceed once resolved
 ### Quality Gate Integration
 
 #### Embedded Quality Checks
+
 Quality agents working alongside implementation agents:
 
 ```text
@@ -317,6 +336,7 @@ security-auditor (Security Companion):
 ```
 
 #### Quality Gate Checkpoints
+
 Formal quality validation points:
 
 ```text
@@ -349,6 +369,7 @@ Performance Review:
 ### Execution Control Options
 
 #### Pause and Resume Capabilities
+
 Users can control execution flow:
 
 ```text
@@ -368,6 +389,7 @@ Control Options:
 ```
 
 #### Real-Time Modifications
+
 Adjusting coordination during execution:
 
 ```text
@@ -394,6 +416,7 @@ Impact Analysis:
 ### Customization Preferences
 
 #### Agent Selection Preferences
+
 User-defined preferences for agent selection:
 
 ```text
@@ -419,6 +442,7 @@ Workflow Preferences:
 ```
 
 #### Team Coordination Patterns
+
 Customizable patterns for team workflows:
 
 ```text
@@ -449,6 +473,7 @@ Customizable patterns for team workflows:
 ### Resource Usage Visualization
 
 #### Agent Resource Monitoring
+
 Understanding system resource utilization:
 
 ```text
@@ -476,6 +501,7 @@ Resource Recommendations:
 ### Scalability Considerations
 
 #### Large Project Handling
+
 UX adaptations for complex, multi-service projects:
 
 ```text
@@ -509,6 +535,7 @@ Wave Execution Plan:
 ### Screen Reader Support
 
 #### Structured Information Hierarchy
+
 Agent coordination information organized for screen reader navigation:
 
 ```text
@@ -538,6 +565,7 @@ Wave 2 heading level 2
 ### Keyboard Navigation
 
 #### Keyboard Shortcuts for Agent Control
+
 ```text
 Agent Coordination Keyboard Controls:
 
@@ -569,6 +597,7 @@ Global:
 ### Proactive Error Prevention
 
 #### Dependency Validation
+
 Preventing coordination issues before they occur:
 
 ```text
@@ -592,6 +621,7 @@ Validation Options:
 ```
 
 #### Resource Conflict Prevention
+
 Avoiding resource contention issues:
 
 ```text
@@ -613,6 +643,7 @@ Apply Optimizations? [Y]es [N]o [C]ustomize
 ### Recovery Assistance
 
 #### Guided Problem Resolution
+
 Step-by-step assistance for coordination issues:
 
 ```text
@@ -650,6 +681,7 @@ Step 4/4: Prevention
 ### Coordination Effectiveness Metrics
 
 #### Real-Time Performance Dashboard
+
 ```text
 📊 Agent Coordination Performance
 
@@ -677,6 +709,7 @@ User Experience:
 ### Continuous Improvement Feedback
 
 #### Usage Pattern Analysis
+
 ```text
 🔍 Coordination Pattern Insights
 

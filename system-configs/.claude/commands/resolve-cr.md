@@ -1,6 +1,6 @@
 ---
 description: CodeRabbit feedback resolver with parallel execution
-argument-hint: [pr-number] [--auto|--dry-run|--skip-tests]
+argument-hint: "[pr-number] [--auto|--dry-run|--skip-tests]"
 ---
 
 # /resolve-cr Command
@@ -18,8 +18,10 @@ argument-hint: [pr-number] [--auto|--dry-run|--skip-tests]
 ## Description
 
 Aggressively fetches ALL CodeRabbit suggestions from comprehensive comment sources and resolves auto-fixable issues
-using **wave-based parallel execution** with mandatory resolution posting. This command assumes unresolved comments
-exist when executed and performs exhaustive comment retrieval to find them.
+using **wave-based parallel execution** with mandatory resolution posting. When invoked, there ARE CodeRabbit comments
+to resolve - no questions asked. The command performs exhaustive comment retrieval to find them, implements fixes,
+pushes the changes, then posts two comments: first "@coderabbitai resolve" to trigger resolution, followed by a
+detailed summary of the fixes for CodeRabbit.
 
 **Critical Behavior**: ALWAYS posts "@coderabbitai resolve" as a PR comment after pushing fixes - this is mandatory, not optional.
 

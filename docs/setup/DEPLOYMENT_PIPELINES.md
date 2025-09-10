@@ -69,7 +69,7 @@ graph TB
 
 ### 1. Main CI/CD Pipeline
 
-**.github/workflows/ci-cd.yml:**
+##### .github/workflows/ci-cd.yml:
 
 ```yaml
 name: Claude Config CI/CD Pipeline
@@ -506,7 +506,7 @@ jobs:
 
 ### 2. Pull Request Validation
 
-**.github/workflows/pr-validation.yml:**
+##### .github/workflows/pr-validation.yml:
 
 ```yaml
 name: Pull Request Validation
@@ -584,7 +584,7 @@ jobs:
 
 ### 3. Release Automation
 
-**.github/workflows/release.yml:**
+##### .github/workflows/release.yml:
 
 ```yaml
 name: Release Automation
@@ -625,7 +625,7 @@ jobs:
 
 ### 1. Main Pipeline Configuration
 
-**.gitlab-ci.yml:**
+##### .gitlab-ci.yml:
 
 ```yaml
 stages:
@@ -784,7 +784,7 @@ deploy:prod:
 
 ### 1. Main Pipeline Configuration
 
-**azure-pipelines.yml:**
+##### azure-pipelines.yml:
 
 ```yaml
 trigger:
@@ -962,7 +962,7 @@ stages:
 
 ### 1. Blue-Green Deployment
 
-**scripts/blue-green-deploy.sh:**
+##### scripts/blue-green-deploy.sh:
 
 ```bash
 #!/bin/bash
@@ -1019,7 +1019,7 @@ echo "✅ Blue-green deployment completed successfully!"
 
 ### 2. Canary Deployment
 
-**scripts/canary-deploy.sh:**
+##### scripts/canary-deploy.sh:
 
 ```bash
 #!/bin/bash
@@ -1074,7 +1074,7 @@ echo "✅ Canary deployment configured with ${TRAFFIC_PERCENTAGE}% traffic"
 
 ### 3. Rollback Script
 
-**scripts/rollback-deployment.sh:**
+##### scripts/rollback-deployment.sh:
 
 ```bash
 #!/bin/bash
@@ -1107,7 +1107,7 @@ echo "✅ Rollback completed successfully!"
 
 ### 1. Pipeline Monitoring
 
-**monitoring/pipeline-alerts.yml:**
+##### monitoring/pipeline-alerts.yml:
 
 ```yaml
 groups:
@@ -1143,7 +1143,7 @@ groups:
 
 ### 2. Deployment Health Monitoring
 
-**scripts/deployment-health-monitor.sh:**
+##### scripts/deployment-health-monitor.sh:
 
 ```bash
 #!/bin/bash
@@ -1185,7 +1185,7 @@ echo "✅ Deployment health check passed"
 
 ### 1. Development Environment
 
-**k8s/overlays/development/kustomization.yaml:**
+##### k8s/overlays/development/kustomization.yaml:
 
 ```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -1214,7 +1214,7 @@ images:
 
 ### 2. Production Environment
 
-**k8s/overlays/production/kustomization.yaml:**
+##### k8s/overlays/production/kustomization.yaml:
 
 ```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -1250,7 +1250,7 @@ replicas:
 
 ### 1. Security Scanning
 
-**scripts/security-scan.sh:**
+##### scripts/security-scan.sh:
 
 ```bash
 #!/bin/bash
@@ -1275,7 +1275,7 @@ echo "✅ Security scanning completed"
 
 ### 2. Compliance Checks
 
-**scripts/compliance-check.sh:**
+##### scripts/compliance-check.sh:
 
 ```bash
 #!/bin/bash
@@ -1302,7 +1302,7 @@ echo "✅ Compliance checks completed"
 
 ### 1. Parallel Job Configuration
 
-**parallelization-strategy.md:**
+##### parallelization-strategy.md:
 
 ```yaml
 # Matrix strategy for parallel testing
@@ -1321,7 +1321,7 @@ strategy:
 
 ### 2. Caching Strategy
 
-**cache-configuration.yml:**
+##### cache-configuration.yml:
 
 ```yaml
 # Docker layer caching
@@ -1352,7 +1352,7 @@ strategy:
 
 ### Common Pipeline Issues
 
-**Issue: Pipeline timeouts**
+##### Issue: Pipeline timeouts
 
 ```bash
 # Solution: Optimize resource allocation
@@ -1368,7 +1368,7 @@ strategy:
     parallel: [1, 2, 3, 4]
 ```
 
-**Issue: Deployment failures**
+##### Issue: Deployment failures
 
 ```bash
 # Solution: Improve error handling
@@ -1384,7 +1384,7 @@ for i in {1..3}; do
 done
 ```
 
-**Issue: Flaky tests**
+##### Issue: Flaky tests
 
 ```bash
 # Solution: Implement test stability measures

@@ -64,7 +64,8 @@ Task for ui-designer:
 - Accessibility color contrast requirements"
 ```
 
-**Expected Output from ui-designer:**
+##### Expected Output from ui-designer:
+
 - Design token definitions in JSON/CSS custom properties format
 - Component visual specifications with all states (default, hover, active, disabled)
 - Responsive behavior guidelines
@@ -82,7 +83,8 @@ Task for frontend-architect:
 - Bundle optimization and tree-shaking strategy"
 ```
 
-**Expected Output from frontend-architect:**
+##### Expected Output from frontend-architect:
+
 - Project structure with clear separation of concerns
 - TypeScript configuration with comprehensive type safety
 - Component API design patterns for consistency
@@ -101,7 +103,8 @@ Task for frontend-engineer:
 - Setup Storybook for component documentation"
 ```
 
-**Implementation Checklist:**
+##### Implementation Checklist:
+
 - [ ] Development environment setup complete
 - [ ] Design tokens implemented and accessible
 - [ ] Core components with all visual states
@@ -120,7 +123,8 @@ Task for test-engineer:
 - Integration testing for component interactions"
 ```
 
-**Testing Deliverables:**
+##### Testing Deliverables:
+
 - Jest configuration with React Testing Library
 - Unit tests achieving 90%+ coverage
 - Accessibility tests for WCAG compliance
@@ -225,7 +229,8 @@ Task for api-architect:
 - Rate limiting and security headers strategy"
 ```
 
-**Expected Output:**
+##### Expected Output:
+
 - Complete OpenAPI specification
 - Authentication and authorization flow diagrams
 - Error response standardization
@@ -244,7 +249,8 @@ Task for security-auditor:
 - OWASP compliance checklist"
 ```
 
-**Security Deliverables:**
+##### Security Deliverables:
+
 - Security requirements specification
 - Threat model and mitigation strategies
 - Input validation rules and patterns
@@ -263,7 +269,8 @@ Task for database-admin:
 - Migration scripts for schema deployment"
 ```
 
-**Database Outputs:**
+##### Database Outputs:
+
 - Complete database schema with relationships
 - Migration scripts for all tables
 - Indexing strategy for query optimization
@@ -283,7 +290,8 @@ Task for backend-engineer:
 - API documentation with Swagger/ReDoc"
 ```
 
-**Implementation Checklist:**
+##### Implementation Checklist:
+
 - [ ] Server setup with proper middleware stack
 - [ ] Authentication endpoints with secure password handling
 - [ ] JWT token generation and validation
@@ -304,7 +312,8 @@ Task for test-engineer:
 - Load testing for performance validation"
 ```
 
-**Testing Framework:**
+##### Testing Framework:
+
 - Jest/Mocha unit tests with 90%+ coverage
 - Supertest/Postman integration tests
 - Authentication and authorization test scenarios
@@ -388,7 +397,8 @@ Task for principal-architect:
 - Scalability and performance considerations"
 ```
 
-**Architecture Deliverables:**
+##### Architecture Deliverables:
+
 - System architecture diagram
 - Technology stack justification
 - Component interaction specifications
@@ -446,7 +456,8 @@ Task for backend-engineer:
 - Error handling and logging middleware"
 ```
 
-**Backend Implementation Checklist:**
+##### Backend Implementation Checklist:
+
 - [ ] Express.js server with proper middleware
 - [ ] Database connection and ORM setup
 - [ ] Authentication system with JWT tokens
@@ -468,7 +479,8 @@ Task for frontend-engineer:
 - Form handling and validation"
 ```
 
-**Frontend Implementation Checklist:**
+##### Frontend Implementation Checklist:
+
 - [ ] React application with TypeScript setup
 - [ ] Component library matching design system
 - [ ] State management implementation
@@ -592,7 +604,8 @@ Task for mobile-engineer:
 - Platform-specific optimizations for iOS and Android"
 ```
 
-**Mobile Implementation Checklist:**
+##### Mobile Implementation Checklist:
+
 - [ ] React Native project setup with TypeScript
 - [ ] Navigation structure with stack and tab navigators
 - [ ] Component library matching mobile design system

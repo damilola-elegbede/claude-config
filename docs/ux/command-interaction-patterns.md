@@ -7,25 +7,33 @@ This document defines optimal interaction patterns for Claude framework commands
 ## Core Interaction Principles
 
 ### 1. Natural Language Mapping
+
 Commands should feel natural and intuitive:
+
 - Use familiar development terminology
 - Map to existing mental models from git, npm, and common CLI tools
 - Provide clear semantic relationships between related commands
 
 ### 2. Workflow Continuity
+
 Commands should connect logically in common workflows:
+
 - Previous command output informs next command suggestions
 - Related commands are easily discoverable
 - Workflow state is preserved across command sequences
 
 ### 3. Contextual Intelligence
+
 Commands adapt to current project and user context:
+
 - Automatic parameter inference from project state
 - Smart defaults based on repository analysis
 - Context-aware help and suggestions
 
 ### 4. Graceful Escalation
+
 Simple commands can escalate to complex operations smoothly:
+
 - Basic commands work with minimal parameters
 - Advanced options available through clear flags
 - Expert features accessible without breaking simple workflows
@@ -37,6 +45,7 @@ Simple commands can escalate to complex operations smoothly:
 ### Help and Documentation Integration
 
 #### Contextual Help System
+
 Commands provide immediate assistance without breaking workflow:
 
 ```bash
@@ -58,6 +67,7 @@ Example 3: /test --coverage         # Generate coverage report
 ```
 
 #### Command Discovery Flow
+
 Progressive discovery of framework capabilities:
 
 ```text
@@ -91,6 +101,7 @@ Discovery Mechanisms:
 ### Autocomplete and Suggestions
 
 #### Intelligent Command Completion
+
 Smart completion based on context and history:
 
 ```bash
@@ -114,6 +125,7 @@ Recent: "user auth with OAuth2"
 ```
 
 #### Smart Parameter Suggestions
+
 Context-aware parameter recommendations:
 
 ```text
@@ -143,6 +155,7 @@ Quality Requirements:
 ### Command Chaining and Workflows
 
 #### Natural Workflow Sequences
+
 Commands that naturally follow each other in development workflows:
 
 ```bash
@@ -171,6 +184,7 @@ Commands that naturally follow each other in development workflows:
 ```
 
 #### Command Pipeline Patterns
+
 Commands that can be efficiently combined:
 
 ```bash
@@ -190,6 +204,7 @@ Commands that can be efficiently combined:
 ### Parameter Pattern Consistency
 
 #### Consistent Flag Patterns
+
 Standardized parameter patterns across commands:
 
 ```bash
@@ -215,6 +230,7 @@ Standardized parameter patterns across commands:
 ```
 
 #### Parameter Value Patterns
+
 Consistent value formats and validation:
 
 ```bash
@@ -243,6 +259,7 @@ Consistent value formats and validation:
 ### Proactive Error Prevention
 
 #### Input Validation Patterns
+
 Comprehensive validation before command execution:
 
 ```text
@@ -274,6 +291,7 @@ Safety Validation:
 ```
 
 #### Safe Defaults and Confirmations
+
 Protecting users from unintended consequences:
 
 ```bash
@@ -298,6 +316,7 @@ Continue? [y/N]
 ### Error Recovery Patterns
 
 #### Graceful Error Handling
+
 Clear error communication with actionable recovery steps:
 
 ```text
@@ -341,6 +360,7 @@ Example Error Recovery:
 ```
 
 #### Progressive Error Resolution
+
 Escalating support for complex issues:
 
 ```text
@@ -382,6 +402,7 @@ Level 4: Human Escalation
 ### Command Optimization
 
 #### Performance-Conscious Design
+
 Commands optimized for developer productivity:
 
 ```text
@@ -415,6 +436,7 @@ Resource Management:
 ```
 
 #### Caching and State Management
+
 Intelligent state preservation for efficiency:
 
 ```bash
@@ -436,6 +458,7 @@ Intelligent state preservation for efficiency:
 ### Batch Operations and Automation
 
 #### Efficient Batch Processing
+
 Handling multiple related operations efficiently:
 
 ```bash
@@ -453,6 +476,7 @@ Handling multiple related operations efficiently:
 ```
 
 #### Automation and Scripting Support
+
 Commands designed for automation and integration:
 
 ```bash
@@ -478,6 +502,7 @@ Commands designed for automation and integration:
 ### Context-Aware Intelligence
 
 #### Smart Command Adaptation
+
 Commands that adapt to current development context:
 
 ```text
@@ -523,6 +548,7 @@ Recent Activity Context:
 ```
 
 #### Learning and Personalization
+
 Commands that learn from user patterns and preferences:
 
 ```bash
@@ -546,6 +572,7 @@ Commands that learn from user patterns and preferences:
 ### Team Collaboration Patterns
 
 #### Shared Context and Standards
+
 Commands that facilitate team coordination:
 
 ```bash
@@ -566,6 +593,7 @@ Commands that facilitate team coordination:
 ```
 
 #### Integration with Team Tools
+
 Seamless integration with existing team workflows:
 
 ```bash
@@ -592,6 +620,7 @@ Seamless integration with existing team workflows:
 ### Mobile-Optimized Interactions
 
 #### Touch-Friendly Interface Adaptations
+
 Commands designed for mobile development environments:
 
 ```text
@@ -616,6 +645,7 @@ Responsive Development:
 ### Universal Design Integration
 
 #### Accessibility-First Command Design
+
 Commands that prioritize inclusive design:
 
 ```bash
@@ -642,6 +672,7 @@ Commands that prioritize inclusive design:
 ### Built-in Quality Gates
 
 #### Quality-First Command Design
+
 Every command includes appropriate quality validations:
 
 ```text
@@ -667,6 +698,7 @@ Quality Reporting:
 ```
 
 #### Continuous Quality Improvement
+
 Commands that learn and improve quality over time:
 
 ```bash

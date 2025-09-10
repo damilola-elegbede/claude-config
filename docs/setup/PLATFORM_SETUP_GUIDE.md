@@ -8,13 +8,15 @@ This guide provides detailed, platform-specific installation and configuration i
 
 ### System Requirements
 
-**Minimum Requirements:**
+##### Minimum Requirements:
+
 - macOS 12.0 (Monterey) or later
 - 8 GB RAM (16 GB recommended)
 - 5 GB free disk space
 - Intel x64 or Apple Silicon (M1/M2/M3)
 
-**Optimal Configuration:**
+##### Optimal Configuration:
+
 - macOS 14.0 (Sonoma) or later
 - 16 GB RAM or more
 - SSD storage with 20 GB free space
@@ -22,7 +24,7 @@ This guide provides detailed, platform-specific installation and configuration i
 
 ### 1. Development Tools Installation
 
-**Xcode Command Line Tools:**
+##### Xcode Command Line Tools:
 
 ```bash
 # Install Xcode Command Line Tools
@@ -33,7 +35,7 @@ xcode-select -p
 gcc --version
 ```
 
-**Homebrew Package Manager:**
+##### Homebrew Package Manager:
 
 ```bash
 # Install Homebrew
@@ -53,7 +55,7 @@ brew --version
 
 ### 2. Core Dependencies
 
-**Install Required Packages:**
+##### Install Required Packages:
 
 ```bash
 # Update Homebrew
@@ -87,7 +89,7 @@ claude-code --version
 
 ### 3. macOS-Specific Configuration
 
-**Terminal Configuration:**
+##### Terminal Configuration:
 
 ```bash
 # Set default shell to Zsh (if not already)
@@ -101,7 +103,7 @@ defaults write com.apple.Terminal "Startup Window Settings" -string "Pro"
 defaults write com.apple.finder QLEnableTextSelection -bool true
 ```
 
-**Audio Notifications Setup:**
+##### Audio Notifications Setup:
 
 ```bash
 # Verify audio system integrity
@@ -117,7 +119,7 @@ afplay /System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resour
 afplay /System/Library/Sounds/Glass.aiff
 ```
 
-**Security Configuration:**
+##### Security Configuration:
 
 ```bash
 # Allow Terminal full disk access (manually in System Preferences > Security & Privacy)
@@ -129,7 +131,7 @@ sudo spctl --master-disable  # Only if necessary for development
 
 ### 4. Installation and Setup
 
-**Clone and Configure Repository:**
+##### Clone and Configure Repository:
 
 ```bash
 # Navigate to preferred directory
@@ -155,7 +157,7 @@ claude-code
 /test --quick
 ```
 
-**Performance Optimization:**
+##### Performance Optimization:
 
 ```bash
 # Optimize for Apple Silicon
@@ -174,7 +176,7 @@ source ~/.zshrc
 
 ### 5. macOS-Specific Features
 
-**Spotlight Integration:**
+##### Spotlight Integration:
 
 ```bash
 # Add Claude config directory to Spotlight
@@ -186,7 +188,7 @@ echo 'alias ccd="cd $CLAUDE_CONFIG_PATH"' >> ~/.zshrc
 echo 'alias claude-config="cd $CLAUDE_CONFIG_PATH && claude-code"' >> ~/.zshrc
 ```
 
-**Automator Workflows (Optional):**
+##### Automator Workflows (Optional):
 
 ```applescript
 -- Create Automator Quick Action for /sync
@@ -204,13 +206,14 @@ end run
 
 ### Ubuntu/Debian Distribution
 
-**System Requirements:**
+##### System Requirements:
+
 - Ubuntu 20.04 LTS or later / Debian 11 or later
 - 8 GB RAM (16 GB recommended)
 - 5 GB free disk space
 - x86_64 or ARM64 architecture
 
-**1. System Preparation:**
+##### 1. System Preparation:
 
 ```bash
 # Update package lists
@@ -232,7 +235,7 @@ sudo apt install -y git
 git --version
 ```
 
-**2. Node.js Installation:**
+##### 2. Node.js Installation:
 
 ```bash
 # Install Node.js LTS via NodeSource
@@ -251,7 +254,7 @@ sudo chown -R $(whoami) ~/.npm
 sudo chown -R $(whoami) /usr/local/lib/node_modules
 ```
 
-**3. Python Environment:**
+##### 3. Python Environment:
 
 ```bash
 # Install Python 3.11 and pip
@@ -274,7 +277,7 @@ python3 --version
 pip3 --version
 ```
 
-**4. Additional Tools:**
+##### 4. Additional Tools:
 
 ```bash
 # Install Go
@@ -293,7 +296,7 @@ sudo sh get-docker.sh
 sudo usermod -aG docker $USER
 ```
 
-**5. Environment Configuration:**
+##### 5. Environment Configuration:
 
 ```bash
 # Configure shell environment
@@ -323,7 +326,7 @@ git clone https://github.com/damilola-elegbede/claude-config.git
 cd claude-config
 ```
 
-**6. System Service (Optional):**
+##### 6. System Service (Optional):
 
 ```bash
 # Create systemd service for automatic sync
@@ -355,7 +358,7 @@ sudo systemctl status claude-config-sync
 
 ### CentOS/RHEL/Fedora Setup
 
-**1. System Preparation:**
+##### 1. System Preparation:
 
 ```bash
 # CentOS/RHEL
@@ -369,7 +372,7 @@ sudo dnf groupinstall -y "Development Tools"
 sudo dnf install -y curl wget git
 ```
 
-**2. Node.js Installation:**
+##### 2. Node.js Installation:
 
 ```bash
 # Install Node.js via NodeSource (CentOS/RHEL)
@@ -383,7 +386,7 @@ sudo dnf install -y nodejs npm
 sudo npm install -g @anthropic/claude-code
 ```
 
-**3. Python Environment:**
+##### 3. Python Environment:
 
 ```bash
 # CentOS/RHEL 8+
@@ -408,7 +411,7 @@ pip3 install --user pyyaml jsonschema requests watchdog
 
 ### 1. Windows Subsystem for Linux (Recommended)
 
-**Enable WSL2:**
+##### Enable WSL2:
 
 ```powershell
 # Run in PowerShell as Administrator
@@ -421,7 +424,7 @@ wsl --install -d Ubuntu
 # Restart computer when prompted
 ```
 
-**Configure WSL2:**
+##### Configure WSL2:
 
 ```bash
 # In WSL2 Ubuntu terminal
@@ -431,7 +434,7 @@ sudo apt update && sudo apt upgrade -y
 # All Linux commands work in WSL2 environment
 ```
 
-**Windows-WSL Integration:**
+##### Windows-WSL Integration:
 
 ```powershell
 # Create PowerShell profile for easy access
@@ -456,7 +459,7 @@ Set-Alias -Name claude-sync -Value Sync-Claude
 
 ### 2. Native Windows Setup (Alternative)
 
-**Install Package Manager:**
+##### Install Package Manager:
 
 ```powershell
 # Install winget (if not available)
@@ -468,7 +471,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 ```
 
-**Install Dependencies:**
+##### Install Dependencies:
 
 ```powershell
 # Using winget
@@ -487,7 +490,7 @@ npm install -g @anthropic/claude-code
 pip install pyyaml jsonschema requests watchdog
 ```
 
-**Environment Configuration:**
+##### Environment Configuration:
 
 ```powershell
 # Set environment variables
@@ -501,7 +504,7 @@ $currentPath = [Environment]::GetEnvironmentVariable("PATH", "User")
 # Restart PowerShell to apply changes
 ```
 
-**Clone and Setup:**
+##### Clone and Setup:
 
 ```powershell
 # Navigate to Documents
@@ -520,7 +523,7 @@ claude-code
 
 ### 3. Windows-Specific Features
 
-**Task Scheduler Integration:**
+##### Task Scheduler Integration:
 
 ```powershell
 # Create scheduled task for automatic sync
@@ -532,7 +535,7 @@ $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interac
 Register-ScheduledTask -TaskName "Claude Config Sync" -Action $action -Trigger $trigger -Settings $settings -Principal $principal
 ```
 
-**Windows Terminal Configuration:**
+##### Windows Terminal Configuration:
 
 ```json
 {
@@ -553,7 +556,7 @@ Register-ScheduledTask -TaskName "Claude Config Sync" -Action $action -Trigger $
 
 ### AWS Cloud9 / EC2 Setup
 
-**1. Launch EC2 Instance:**
+##### 1. Launch EC2 Instance:
 
 ```bash
 # Recommended instance types:
@@ -565,7 +568,7 @@ Register-ScheduledTask -TaskName "Claude Config Sync" -Action $action -Trigger $
 ssh -i your-key.pem ubuntu@your-instance-ip
 ```
 
-**2. Environment Setup:**
+##### 2. Environment Setup:
 
 ```bash
 # Update system
@@ -583,7 +586,7 @@ sudo systemctl enable awslogs
 sudo systemctl start awslogs
 ```
 
-**3. AWS-Specific Configuration:**
+##### 3. AWS-Specific Configuration:
 
 ```bash
 # Configure CloudWatch agent for monitoring
@@ -611,7 +614,7 @@ sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-c
 
 ### Google Cloud Platform Setup
 
-**1. Create VM Instance:**
+##### 1. Create VM Instance:
 
 ```bash
 # Create instance via gcloud CLI
@@ -625,7 +628,7 @@ gcloud compute instances create claude-config-vm \
 gcloud compute ssh claude-config-vm
 ```
 
-**2. GCP-Specific Setup:**
+##### 2. GCP-Specific Setup:
 
 ```bash
 # Install Google Cloud SDK
@@ -643,7 +646,7 @@ sudo systemctl start google-fluentd
 
 ### Azure Setup
 
-**1. Create Virtual Machine:**
+##### 1. Create Virtual Machine:
 
 ```bash
 # Create VM via Azure CLI
@@ -660,7 +663,7 @@ az vm show --resource-group myResourceGroup --name claude-config-vm --show-detai
 ssh azureuser@<public-ip>
 ```
 
-**2. Azure-Specific Configuration:**
+##### 2. Azure-Specific Configuration:
 
 ```bash
 # Install Azure CLI
@@ -674,7 +677,7 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
 ### Docker Setup
 
-**Dockerfile for Development:**
+##### Dockerfile for Development:
 
 ```dockerfile
 FROM ubuntu:22.04
@@ -712,7 +715,7 @@ ENV PATH="/home/claude/claude-config/scripts:$PATH"
 CMD ["bash"]
 ```
 
-**Build and Run:**
+##### Build and Run:
 
 ```bash
 # Build image
@@ -730,7 +733,7 @@ docker run -it --name claude-config-dev \
 
 ### Kubernetes Setup
 
-**Deployment Manifest:**
+##### Deployment Manifest:
 
 ```yaml
 apiVersion: apps/v1
@@ -825,7 +828,7 @@ wsl --shutdown
 
 ### macOS Issues
 
-**Issue: Permission denied errors**
+##### Issue: Permission denied errors
 
 ```bash
 # Solution: Fix permissions
@@ -833,7 +836,7 @@ sudo chown -R $(whoami) ~/.claude
 sudo chown -R $(whoami) /usr/local/lib/node_modules
 ```
 
-**Issue: Audio notifications not working**
+##### Issue: Audio notifications not working
 
 ```bash
 # Solution: Check audio permissions
@@ -843,7 +846,7 @@ ls -la /System/Library/PrivateFrameworks/ToneLibrary.framework/
 
 ### Linux Issues
 
-**Issue: Node.js installation problems**
+##### Issue: Node.js installation problems
 
 ```bash
 # Solution: Use different installation method
@@ -853,7 +856,7 @@ nvm install --lts
 nvm use --lts
 ```
 
-**Issue: Python module import errors**
+##### Issue: Python module import errors
 
 ```bash
 # Solution: Fix Python path
@@ -863,7 +866,7 @@ pip3 install --user --upgrade pip setuptools
 
 ### Windows Issues
 
-**Issue: WSL2 networking problems**
+##### Issue: WSL2 networking problems
 
 ```powershell
 # Solution: Reset WSL2 networking
@@ -874,7 +877,7 @@ netsh winhttp reset proxy
 ipconfig /flushdns
 ```
 
-**Issue: Path issues in PowerShell**
+##### Issue: Path issues in PowerShell
 
 ```powershell
 # Solution: Refresh environment variables
@@ -885,7 +888,7 @@ $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";"
 
 ### Automated Platform Tests
 
-**test-platform.sh:**
+##### test-platform.sh:
 
 ```bash
 #!/bin/bash

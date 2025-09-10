@@ -69,7 +69,7 @@ graph TB
 
 ### 1. Base Infrastructure
 
-**Directory Structure:**
+##### Directory Structure:
 
 ```text
 docker/
@@ -91,7 +91,7 @@ docker/
 
 ### 2. Core Service Dockerfile
 
-**Dockerfile.claude-core:**
+##### Dockerfile.claude-core:
 
 ```dockerfile
 # Multi-stage build for Claude Core Service
@@ -170,7 +170,7 @@ CMD ["npm", "start"]
 
 ### 3. Agent Pool Dockerfile
 
-**Dockerfile.agent-pool:**
+##### Dockerfile.agent-pool:
 
 ```dockerfile
 FROM python:3.11-slim
@@ -219,7 +219,7 @@ CMD ["python", "agent_pool_service.py"]
 
 ### 4. Configuration Manager Dockerfile
 
-**Dockerfile.config-manager:**
+##### Dockerfile.config-manager:
 
 ```dockerfile
 FROM alpine:3.18
@@ -271,7 +271,7 @@ CMD ["python3", "config_manager.py"]
 
 ### 5. Docker Compose Configuration
 
-**docker-compose.yml (Development):**
+##### docker-compose.yml (Development):
 
 ```yaml
 version: '3.8'
@@ -398,7 +398,7 @@ networks:
         - subnet: 172.20.0.0/16
 ```
 
-**docker-compose.prod.yml (Production):**
+##### docker-compose.prod.yml (Production):
 
 ```yaml
 version: '3.8'
@@ -603,7 +603,7 @@ networks:
 
 ### 1. Kubernetes Manifests
 
-**namespace.yaml:**
+##### namespace.yaml:
 
 ```yaml
 apiVersion: v1
@@ -628,7 +628,7 @@ spec:
     persistentvolumeclaims: "10"
 ```
 
-**configmap.yaml:**
+##### configmap.yaml:
 
 ```yaml
 apiVersion: v1
@@ -687,7 +687,7 @@ data:
     }
 ```
 
-**deployment.yaml:**
+##### deployment.yaml:
 
 ```yaml
 apiVersion: apps/v1
@@ -816,7 +816,7 @@ spec:
           sizeLimit: 500Mi
 ```
 
-**service.yaml:**
+##### service.yaml:
 
 ```yaml
 apiVersion: v1
@@ -868,7 +868,7 @@ spec:
   type: LoadBalancer
 ```
 
-**storage.yaml:**
+##### storage.yaml:
 
 ```yaml
 apiVersion: v1
@@ -900,7 +900,7 @@ spec:
 
 ### 2. Helm Chart Structure
 
-**Chart.yaml:**
+##### Chart.yaml:
 
 ```yaml
 apiVersion: v2
@@ -921,7 +921,7 @@ sources:
   - https://github.com/damilola-elegbede/claude-config
 ```
 
-**values.yaml:**
+##### values.yaml:
 
 ```yaml
 # Default values for claude-config
@@ -1018,7 +1018,7 @@ persistence:
 
 ### 1. Build and Deploy Script
 
-**scripts/deploy-stack.sh:**
+##### scripts/deploy-stack.sh:
 
 ```bash
 #!/bin/bash
@@ -1090,7 +1090,7 @@ echo "✅ Deployment completed successfully!"
 
 ### 2. Health Check Script
 
-**scripts/health-check.sh:**
+##### scripts/health-check.sh:
 
 ```bash
 #!/bin/bash
@@ -1209,7 +1209,7 @@ echo "🏥 Health check completed"
 
 ### 1. Prometheus Configuration
 
-**configs/prometheus.yml:**
+##### configs/prometheus.yml:
 
 ```yaml
 global:
@@ -1258,7 +1258,7 @@ scrape_configs:
 
 ### 2. Grafana Dashboard
 
-**configs/grafana/dashboards/claude-overview.json:**
+##### configs/grafana/dashboards/claude-overview.json:
 
 ```json
 {
@@ -1305,7 +1305,7 @@ scrape_configs:
 
 ### 1. Container Security
 
-**Security Best Practices:**
+##### Security Best Practices:
 
 ```bash
 # Run containers as non-root
@@ -1330,7 +1330,7 @@ USER claude:claude
 
 ### 2. Kubernetes Security
 
-**security-policy.yaml:**
+##### security-policy.yaml:
 
 ```yaml
 apiVersion: policy/v1beta1
@@ -1362,7 +1362,7 @@ spec:
 
 ### Common Container Issues
 
-**Issue: Container fails to start**
+##### Issue: Container fails to start
 
 ```bash
 # Check container logs
@@ -1376,7 +1376,7 @@ docker stats
 docker-compose restart
 ```
 
-**Issue: Health checks failing**
+##### Issue: Health checks failing
 
 ```bash
 # Check service endpoints
@@ -1389,7 +1389,7 @@ docker network inspect claude-network
 docker exec claude-core cat /app/.claude/CLAUDE.md
 ```
 
-**Issue: Poor performance in containers**
+##### Issue: Poor performance in containers
 
 ```bash
 # Monitor resource usage

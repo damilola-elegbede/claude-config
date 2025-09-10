@@ -10,14 +10,14 @@ Before beginning the setup process, verify system requirements:
 
 ### Hardware Requirements
 
-**Minimum Requirements:**
+##### Minimum Requirements:
 
 - **RAM**: 8 GB (16 GB recommended for parallel agent execution)
 - **Storage**: 2 GB free space (5 GB recommended for development)
 - **CPU**: Multi-core processor (4+ cores recommended for optimal agent orchestration)
 - **Network**: Stable internet connection for MCP integrations and API access
 
-**Recommended Specifications:**
+##### Recommended Specifications:
 
 - **RAM**: 16 GB+ for optimal multi-agent parallel processing
 - **Storage**: 10 GB+ on SSD for fast file operations
@@ -36,7 +36,7 @@ Before beginning the setup process, verify system requirements:
 
 ### 1. Claude Code CLI Installation
 
-**Primary Installation Methods:**
+##### Primary Installation Methods:
 
 ```bash
 # Method 1: NPM (Recommended)
@@ -52,7 +52,7 @@ curl -sSL https://install.claude-code.anthropic.com | sh
 claude-code --version
 ```
 
-**Configuration:**
+##### Configuration:
 
 ```bash
 # Initialize configuration
@@ -72,7 +72,7 @@ EOF
 
 ### 2. Version Control Setup
 
-**Git Configuration:**
+##### Git Configuration:
 
 ```bash
 # Install Git (if not already installed)
@@ -101,7 +101,7 @@ git config --global alias.br branch
 git config --global alias.ci commit
 ```
 
-**Git Quality Gates Setup:**
+##### Git Quality Gates Setup:
 
 ```bash
 # The repository includes pre-commit and pre-push hooks
@@ -117,7 +117,7 @@ echo "Testing quality gates..."
 
 ### 3. Node.js and Package Management
 
-**Node.js Installation:**
+##### Node.js Installation:
 
 ```bash
 # Install Node.js v18+ LTS (Required)
@@ -136,7 +136,7 @@ node --version  # Should be v18+
 npm --version   # Should be v9+
 ```
 
-**Development Dependencies:**
+##### Development Dependencies:
 
 ```bash
 # Global utilities for Claude development
@@ -154,7 +154,7 @@ eslint --version
 
 ### 4. Python Development Environment
 
-**Python Installation:**
+##### Python Installation:
 
 ```bash
 # Install Python 3.8+ (Required for validation scripts)
@@ -172,7 +172,7 @@ python3 --version  # Should be 3.8+
 pip3 --version
 ```
 
-**Python Development Setup:**
+##### Python Development Setup:
 
 ```bash
 # Create virtual environment for Claude development
@@ -230,7 +230,7 @@ go version
 
 ### 1. Repository Setup
 
-**Clone and Configure Repository:**
+##### Clone and Configure Repository:
 
 ```bash
 # Clone the repository
@@ -246,7 +246,7 @@ git remote add upstream https://github.com/damilola-elegbede/claude-config.git
 ./scripts/setup-dev-environment.sh  # If available
 ```
 
-**Development Branch Strategy:**
+##### Development Branch Strategy:
 
 ```bash
 # Create feature branch
@@ -262,9 +262,9 @@ git push origin feature/your-feature-name
 
 ### 2. IDE and Editor Setup
 
-**Recommended IDEs:**
+##### Recommended IDEs:
 
-**Visual Studio Code (Recommended):**
+##### Visual Studio Code (Recommended):
 
 ```bash
 # Install VS Code
@@ -281,7 +281,7 @@ sudo apt update && sudo apt install code
 winget install Microsoft.VisualStudioCode
 ```
 
-**Essential VS Code Extensions:**
+##### Essential VS Code Extensions:
 
 ```json
 {
@@ -299,7 +299,7 @@ winget install Microsoft.VisualStudioCode
 }
 ```
 
-**VS Code Configuration for Claude Development:**
+##### VS Code Configuration for Claude Development:
 
 ```json
 {
@@ -326,7 +326,7 @@ winget install Microsoft.VisualStudioCode
 
 ### 3. Shell Environment Configuration
 
-**Bash Configuration (.bashrc):**
+##### Bash Configuration (.bashrc):
 
 ```bash
 # Claude Development Environment
@@ -355,7 +355,7 @@ alias dev-push="/push"
 alias perf-test="time /agent-audit && time /test && time /prime"
 ```
 
-**Zsh Configuration (.zshrc):**
+##### Zsh Configuration (.zshrc):
 
 ```zsh
 # Source bash configuration for compatibility
@@ -374,7 +374,7 @@ PROMPT='%F{blue}claude%f:%F{green}%c%f%F{yellow}$(git branch 2>/dev/null | grep 
 
 ### 4. Environment Variables
 
-**Required Environment Variables:**
+##### Required Environment Variables:
 
 ```bash
 # Core Claude Configuration
@@ -400,7 +400,7 @@ export CLAUDE_QUALITY_GATES_ENABLED=true
 EOF
 ```
 
-**Optional MCP Integration Variables:**
+##### Optional MCP Integration Variables:
 
 ```bash
 # ElevenLabs Integration (Optional)
@@ -427,7 +427,7 @@ echo 'source ~/.claude-env-secure' >> ~/.bashrc
 
 ### 1. Testing Environment
 
-**Test Suite Configuration:**
+##### Test Suite Configuration:
 
 ```bash
 # Navigate to repository
@@ -454,7 +454,7 @@ time /test          # Should be ~30-40 seconds
 time /prime         # Should be ~15-20 seconds
 ```
 
-**Continuous Testing Setup:**
+##### Continuous Testing Setup:
 
 ```bash
 # Set up file watching for development
@@ -479,7 +479,7 @@ chmod +x scripts/watch-and-test.sh
 
 ### 2. Documentation Development
 
-**Documentation Workflow:**
+##### Documentation Workflow:
 
 ```bash
 # Generate documentation
@@ -501,7 +501,7 @@ mkdocs serve
 
 ### 3. Agent Development Workflow
 
-**Creating New Agents:**
+##### Creating New Agents:
 
 ```bash
 # Use agent template
@@ -521,7 +521,7 @@ code system-configs/.claude/agents/new-agent.md
 /commit
 ```
 
-**Agent Testing and Validation:**
+##### Agent Testing and Validation:
 
 ```bash
 # Test individual agent
@@ -537,7 +537,7 @@ time /agent-audit  # Compare before/after performance
 
 ### 4. Quality Assurance Workflow
 
-**Pre-commit Quality Checks:**
+##### Pre-commit Quality Checks:
 
 ```bash
 # Run all quality checks before committing
@@ -562,7 +562,7 @@ echo "✓ Documentation updated"
 
 ### 1. System Optimization
 
-**Memory Optimization:**
+##### Memory Optimization:
 
 ```bash
 # Increase Node.js memory limit for large operations
@@ -575,7 +575,7 @@ export PYTHONUNBUFFERED=1
 export UV_THREADPOOL_SIZE=16
 ```
 
-**Disk Optimization:**
+##### Disk Optimization:
 
 ```bash
 # Use SSD for optimal performance
@@ -590,7 +590,7 @@ find . -name ".DS_Store" -delete
 
 ### 2. Parallel Processing Setup
 
-**Configure for Multi-Agent Performance:**
+##### Configure for Multi-Agent Performance:
 
 ```bash
 # Optimize parallel execution
@@ -606,7 +606,7 @@ alias perf-monitor="ps aux | grep claude && netstat -an | grep ESTABLISHED"
 
 ### Common Issues
 
-**Issue: Claude Code CLI not responding**
+##### Issue: Claude Code CLI not responding
 
 ```bash
 # Solution: Clear CLI cache
@@ -617,7 +617,7 @@ rm -rf ~/.anthropic/cache
 claude-code --reset
 ```
 
-**Issue: Agent validation fails**
+##### Issue: Agent validation fails
 
 ```bash
 # Solution: Reset and re-sync
@@ -626,7 +626,7 @@ cd $CLAUDE_CONFIG_PATH
 ./scripts/validate-agent-yaml.py --fix
 ```
 
-**Issue: Quality gates failing**
+##### Issue: Quality gates failing
 
 ```bash
 # Solution: Run auto-fix sequence
@@ -635,7 +635,7 @@ cd $CLAUDE_CONFIG_PATH
 ./tests/test.sh --fix-issues
 ```
 
-**Issue: Poor performance**
+##### Issue: Poor performance
 
 ```bash
 # Solution: System optimization
@@ -655,7 +655,7 @@ rm -rf .tmp/
 
 ### Debug Mode
 
-**Enable Debug Logging:**
+##### Enable Debug Logging:
 
 ```bash
 # Enable debug mode
@@ -674,7 +674,7 @@ tail -f ~/.claude/logs/debug.log
 
 ### End-to-End Testing
 
-**Complete Development Workflow Test:**
+##### Complete Development Workflow Test:
 
 ```bash
 #!/bin/bash

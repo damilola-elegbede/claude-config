@@ -23,7 +23,7 @@ The Claude Code CLI System Administration API provides comprehensive management 
 GET /admin/system/config
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -124,7 +124,7 @@ GET /admin/system/config
 PUT /admin/system/config
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -152,7 +152,7 @@ PUT /admin/system/config
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -194,7 +194,7 @@ PUT /admin/system/config
 GET /admin/system/health
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -288,14 +288,14 @@ GET /admin/system/health
 GET /admin/users
 ```
 
-**Query Parameters:**
+##### Query Parameters:
 
 - `status` (optional): Filter by user status (active, inactive, locked)
 - `role` (optional): Filter by user role
 - `limit` (optional): Number of users to return
 - `search` (optional): Search by username or email
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -366,7 +366,7 @@ GET /admin/users
 POST /admin/users
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -387,7 +387,7 @@ POST /admin/users
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -425,7 +425,7 @@ POST /admin/users
 PUT /admin/users/{user_id}
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -444,7 +444,7 @@ PUT /admin/users/{user_id}
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -474,7 +474,7 @@ PUT /admin/users/{user_id}
 POST /admin/users/{user_id}/lock
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -485,7 +485,7 @@ POST /admin/users/{user_id}/lock
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -508,13 +508,13 @@ POST /admin/users/{user_id}/lock
 GET /admin/system/metrics
 ```
 
-**Query Parameters:**
+##### Query Parameters:
 
 - `time_range` (optional): Time range for metrics (1h, 24h, 7d, 30d)
 - `granularity` (optional): Data granularity (1m, 5m, 1h)
 - `components` (optional): Specific components to include
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -634,7 +634,7 @@ GET /admin/system/metrics
 GET /admin/system/logs
 ```
 
-**Query Parameters:**
+##### Query Parameters:
 
 - `level` (optional): Log level filter (DEBUG, INFO, WARN, ERROR)
 - `component` (optional): Filter by component
@@ -643,7 +643,7 @@ GET /admin/system/logs
 - `limit` (optional): Number of log entries to return
 - `search` (optional): Search term in log messages
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -719,13 +719,13 @@ GET /admin/system/logs
 GET /admin/system/alerts
 ```
 
-**Query Parameters:**
+##### Query Parameters:
 
 - `severity` (optional): Filter by alert severity
 - `status` (optional): Filter by alert status (active, resolved, acknowledged)
 - `component` (optional): Filter by component
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -808,7 +808,7 @@ GET /admin/system/alerts
 POST /admin/maintenance/schedule
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -869,7 +869,7 @@ POST /admin/maintenance/schedule
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -906,14 +906,14 @@ POST /admin/maintenance/schedule
 GET /admin/maintenance/history
 ```
 
-**Query Parameters:**
+##### Query Parameters:
 
 - `type` (optional): Filter by maintenance type
 - `status` (optional): Filter by status
 - `start_date` (optional): Start date for filtering
 - `end_date` (optional): End date for filtering
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -988,7 +988,7 @@ GET /admin/maintenance/history
 POST /admin/backup/create
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -1009,7 +1009,7 @@ POST /admin/backup/create
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -1046,14 +1046,14 @@ POST /admin/backup/create
 GET /admin/backup/list
 ```
 
-**Query Parameters:**
+##### Query Parameters:
 
 - `backup_type` (optional): Filter by backup type (full, incremental, differential)
 - `status` (optional): Filter by status
 - `start_date` (optional): Start date for filtering
 - `limit` (optional): Number of backups to return
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -1125,7 +1125,7 @@ GET /admin/backup/list
 POST /admin/backup/restore
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -1143,7 +1143,7 @@ POST /admin/backup/restore
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {

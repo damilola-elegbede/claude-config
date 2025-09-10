@@ -2,7 +2,7 @@
 
 ## 🚀 Get Started in 5 Minutes
 
-This guide gets you up and running with the Claude Configuration Framework in minutes. Experience the power of **28 specialized agents** 
+This guide gets you up and running with the Claude Configuration Framework in minutes. Experience the power of **28 specialized agents**
 and **20 essential commands** for dramatically faster development workflows.
 
 ## Prerequisites
@@ -59,7 +59,7 @@ This command will:
 /test
 ```
 
-**Expected Results:**
+##### Expected Results:
 
 - `/agent-audit`: All 28 agents validated and ready
 - `/prime`: Repository analysis with actionable insights
@@ -89,7 +89,7 @@ Let's build a React component to see agent coordination in action:
 Task: "Create a reusable Button component with TypeScript, testing, and Storybook documentation"
 ```
 
-**What happens next:**
+##### What happens next:
 
 1. **ui-designer** creates component specifications
 2. **frontend-engineer** implements the component with TypeScript
@@ -329,10 +329,10 @@ Track your improvement with these metrics:
 
 ## 🚀 Ready to Transform Your Development Workflow?
 
-You now have a production-ready Smart Agent Orchestration Framework at your fingertips. The 28 specialists are ready to accelerate your 
+You now have a production-ready Smart Agent Orchestration Framework at your fingertips. The 28 specialists are ready to accelerate your
 development with 4-6x performance improvements and superior quality.
 
-**Start with a simple task and experience the difference:**
+##### Start with a simple task and experience the difference:
 
 ```bash
 # Your first agent-coordinated task
@@ -344,5 +344,5 @@ Welcome to the future of intelligent development workflows! 🎯
 
 ---
 
-*Questions or issues? Check the [troubleshooting guide](docs/setup/INSTALLATION.md#troubleshooting) or 
+*Questions or issues? Check the [troubleshooting guide](docs/setup/INSTALLATION.md#troubleshooting) or
 [open an issue](https://github.com/damilola-elegbede/claude-config/issues).*

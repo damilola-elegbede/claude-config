@@ -25,7 +25,7 @@ The Claude Code CLI Authentication Service provides comprehensive security mecha
 POST /auth/token
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -36,7 +36,7 @@ POST /auth/token
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -55,7 +55,7 @@ POST /auth/token
 POST /auth/refresh
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -64,7 +64,7 @@ POST /auth/refresh
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -84,7 +84,7 @@ POST /auth/refresh
 POST /auth/api-keys
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -103,7 +103,7 @@ POST /auth/api-keys
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -131,7 +131,7 @@ POST /auth/api-keys
 GET /auth/api-keys
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -157,7 +157,7 @@ GET /auth/api-keys
 DELETE /auth/api-keys/{key_id}
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -175,7 +175,7 @@ DELETE /auth/api-keys/{key_id}
 POST /auth/sessions
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -193,7 +193,7 @@ POST /auth/sessions
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -222,7 +222,7 @@ POST /auth/sessions
 GET /auth/sessions/{session_id}/validate
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -249,7 +249,7 @@ GET /auth/sessions/{session_id}/validate
 PUT /auth/sessions/{session_id}/extend
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -257,7 +257,7 @@ PUT /auth/sessions/{session_id}/extend
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -274,7 +274,7 @@ PUT /auth/sessions/{session_id}/extend
 DELETE /auth/sessions/{session_id}
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -324,7 +324,7 @@ DELETE /auth/sessions/{session_id}
 POST /auth/permissions/check
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -342,7 +342,7 @@ POST /auth/permissions/check
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -375,7 +375,7 @@ POST /auth/permissions/check
 POST /auth/permissions/grant
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -390,7 +390,7 @@ POST /auth/permissions/grant
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -421,7 +421,7 @@ POST /auth/permissions/grant
 POST /auth/mfa/setup
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -431,7 +431,7 @@ POST /auth/mfa/setup
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -454,7 +454,7 @@ POST /auth/mfa/setup
 POST /auth/mfa/setup/complete
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -463,7 +463,7 @@ POST /auth/mfa/setup/complete
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -481,7 +481,7 @@ POST /auth/mfa/setup/complete
 POST /auth/mfa/verify
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -491,7 +491,7 @@ POST /auth/mfa/verify
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -509,7 +509,7 @@ POST /auth/mfa/verify
 DELETE /auth/mfa/{user_id}
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -518,7 +518,7 @@ DELETE /auth/mfa/{user_id}
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -539,7 +539,7 @@ DELETE /auth/mfa/{user_id}
 GET /auth/oauth2/authorize
 ```
 
-**Query Parameters:**
+##### Query Parameters:
 
 ```text
 response_type=code
@@ -551,7 +551,7 @@ code_challenge=E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM
 code_challenge_method=S256
 ```
 
-**Response:**
+##### Response:
 Redirects to `redirect_uri` with authorization code:
 
 ```text
@@ -564,7 +564,7 @@ https://app.example.com/callback?code=auth_code_123&state=random_state_string
 POST /auth/oauth2/token
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -577,7 +577,7 @@ POST /auth/oauth2/token
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -595,7 +595,7 @@ POST /auth/oauth2/token
 POST /auth/oauth2/clients
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -616,7 +616,7 @@ POST /auth/oauth2/clients
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -644,7 +644,7 @@ POST /auth/oauth2/clients
 GET /auth/security/events
 ```
 
-**Query Parameters:**
+##### Query Parameters:
 
 - `user_id` (optional): Filter by user
 - `event_type` (optional): Filter by event type
@@ -652,7 +652,7 @@ GET /auth/security/events
 - `end_date` (optional): End date for filtering
 - `limit` (optional): Number of events to return (default: 100)
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -697,7 +697,7 @@ GET /auth/security/events
 GET /auth/security/failed-logins
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -728,7 +728,7 @@ GET /auth/security/failed-logins
 GET /auth/security/lockouts/{user_id}
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -748,7 +748,7 @@ GET /auth/security/lockouts/{user_id}
 POST /auth/security/unlock/{user_id}
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -758,7 +758,7 @@ POST /auth/security/unlock/{user_id}
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {

@@ -44,7 +44,7 @@ Orchestration manages multi-agent execution:
 POST /api/agents/invoke
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -61,7 +61,7 @@ POST /api/agents/invoke
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -79,7 +79,7 @@ POST /api/agents/invoke
 POST /api/commands/execute
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -89,7 +89,7 @@ POST /api/commands/execute
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -114,7 +114,7 @@ POST /api/commands/execute
 POST /api/orchestration/plan
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -132,7 +132,7 @@ POST /api/orchestration/plan
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -189,7 +189,7 @@ POST /api/orchestration/plan
 POST /api/orchestration/execute
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -202,7 +202,7 @@ POST /api/orchestration/execute
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -233,7 +233,7 @@ POST /api/orchestration/execute
 GET /api/agents
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -261,7 +261,7 @@ GET /api/agents
 GET /api/agents/{agent_name}
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -293,7 +293,7 @@ GET /api/agents/{agent_name}
 GET /api/executions/{execution_id}
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -347,7 +347,7 @@ data: {"status": "success", "duration": 3600, "test_results": {"passed": 25, "fa
 POST /api/qa/review
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -363,7 +363,7 @@ POST /api/qa/review
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -392,7 +392,7 @@ POST /api/qa/review
 POST https://your-webhook-url.com/agent-complete
 ```
 
-**Payload:**
+##### Payload:
 
 ```json
 {
@@ -419,7 +419,7 @@ POST https://your-webhook-url.com/agent-complete
 POST https://your-webhook-url.com/orchestration-checkpoint
 ```
 
-**Payload:**
+##### Payload:
 
 ```json
 {

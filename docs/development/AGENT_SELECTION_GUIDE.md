@@ -142,7 +142,7 @@ flowchart LR
 
 ## Quick Decision Prompts
 
-**Before selecting an agent, ask:**
+##### Before selecting an agent, ask:
 
 1. **Complexity**: Staff-level complexity or senior-level execution?
 2. **Domain**: Technical implementation, analysis, strategy, or design?

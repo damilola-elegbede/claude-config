@@ -23,7 +23,7 @@ The Claude Agent Management API provides comprehensive lifecycle management for 
 POST /agents/manage/create
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -56,7 +56,7 @@ POST /agents/manage/create
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -110,7 +110,7 @@ POST /agents/manage/create
 GET /agents/manage/list
 ```
 
-**Query Parameters:**
+##### Query Parameters:
 
 - `category` (optional): Filter by agent category
 - `status` (optional): Filter by agent status
@@ -118,7 +118,7 @@ GET /agents/manage/list
 - `limit` (optional): Number of agents to return
 - `offset` (optional): Pagination offset
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -193,7 +193,7 @@ GET /agents/manage/list
 GET /agents/manage/{agent_id}
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -287,7 +287,7 @@ GET /agents/manage/{agent_id}
 PUT /agents/manage/{agent_id}
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -319,7 +319,7 @@ PUT /agents/manage/{agent_id}
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -363,12 +363,12 @@ PUT /agents/manage/{agent_id}
 DELETE /agents/manage/{agent_id}
 ```
 
-**Query Parameters:**
+##### Query Parameters:
 
 - `force` (optional): Force deletion even if agent has active tasks
 - `backup` (optional): Create backup before deletion
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -394,7 +394,7 @@ DELETE /agents/manage/{agent_id}
 GET /agents/manage/{agent_id}/configuration
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -458,7 +458,7 @@ GET /agents/manage/{agent_id}/configuration
 PUT /agents/manage/{agent_id}/configuration
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -482,7 +482,7 @@ PUT /agents/manage/{agent_id}/configuration
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -518,7 +518,7 @@ PUT /agents/manage/{agent_id}/configuration
 POST /agents/manage/{agent_id}/deploy
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -546,7 +546,7 @@ POST /agents/manage/{agent_id}/deploy
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -605,7 +605,7 @@ POST /agents/manage/{agent_id}/deploy
 GET /agents/manage/deployments/{deployment_id}
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -692,7 +692,7 @@ GET /agents/manage/deployments/{deployment_id}
 POST /agents/manage/deployments/{deployment_id}/rollback
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -705,7 +705,7 @@ POST /agents/manage/deployments/{deployment_id}/rollback
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -752,13 +752,13 @@ POST /agents/manage/deployments/{deployment_id}/rollback
 GET /agents/manage/{agent_id}/metrics
 ```
 
-**Query Parameters:**
+##### Query Parameters:
 
 - `time_range` (optional): Time range for metrics (1h, 24h, 7d, 30d)
 - `granularity` (optional): Data granularity (1m, 5m, 1h)
 - `metrics` (optional): Specific metrics to retrieve
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -845,7 +845,7 @@ GET /agents/manage/{agent_id}/metrics
 GET /agents/manage/{agent_id}/logs
 ```
 
-**Query Parameters:**
+##### Query Parameters:
 
 - `start_time` (optional): Start time for log filtering
 - `end_time` (optional): End time for log filtering
@@ -853,7 +853,7 @@ GET /agents/manage/{agent_id}/logs
 - `limit` (optional): Number of log entries to return
 - `stream` (optional): Enable real-time log streaming
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -916,7 +916,7 @@ GET /agents/manage/{agent_id}/logs
 GET /agents/manage/{agent_id}/health
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -1006,7 +1006,7 @@ GET /agents/manage/{agent_id}/health
 POST /agents/manage/{agent_id}/scale
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -1022,7 +1022,7 @@ POST /agents/manage/{agent_id}/scale
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -1078,7 +1078,7 @@ POST /agents/manage/{agent_id}/scale
 GET /agents/manage/{agent_id}/scaling/history
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -1129,7 +1129,7 @@ GET /agents/manage/{agent_id}/scaling/history
 PUT /agents/manage/{agent_id}/scaling/config
 ```
 
-**Request Body:**
+##### Request Body:
 
 ```json
 {
@@ -1181,7 +1181,7 @@ PUT /agents/manage/{agent_id}/scaling/config
 }
 ```
 
-**Response:**
+##### Response:
 
 ```json
 {
@@ -1211,13 +1211,13 @@ PUT /agents/manage/{agent_id}/scaling/config
 GET /agents/manage/{agent_id}/analytics/performance
 ```
 
-**Query Parameters:**
+##### Query Parameters:
 
 - `time_range`: Analysis time range (24h, 7d, 30d, 90d)
 - `include_comparisons`: Include period-over-period comparisons
 - `breakdown_by`: Breakdown dimension (hour, day, task_type)
 
-**Response:**
+##### Response:
 
 ```json
 {

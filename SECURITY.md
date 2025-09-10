@@ -21,12 +21,14 @@ We take security vulnerabilities seriously. If you discover a security issue, pl
 ### 2. Report Privately
 
 Send security vulnerability reports to:
+
 - Open a private security advisory on GitHub (preferred)
 - Contact repository maintainers directly through secure channels
 
 ### 3. Include in Your Report
 
 Please provide:
+
 - Description of the vulnerability
 - Steps to reproduce the issue
 - Potential impact assessment
@@ -88,6 +90,7 @@ chmod 600 ~/.claude/settings.json
 ### Coordinated Disclosure
 
 We follow a coordinated disclosure model:
+
 1. Security issues are fixed in private
 2. Patches are released to all supported versions
 3. Public disclosure happens after patches are available
@@ -96,6 +99,7 @@ We follow a coordinated disclosure model:
 ### Security Advisories
 
 Security advisories are published through:
+
 - GitHub Security Advisories
 - Release notes for security updates
 - Direct notification to affected users (when possible)
@@ -103,6 +107,7 @@ Security advisories are published through:
 ## Security Checklist for Releases
 
 Before each release:
+
 - [ ] Dependency vulnerability scan
 - [ ] Static code analysis
 - [ ] Security-focused code review
@@ -112,12 +117,14 @@ Before each release:
 ## Contact
 
 For security-related questions that are not vulnerabilities:
+
 - Open a discussion on GitHub
 - Tag with `security-question` label
 
 ## Acknowledgments
 
 We thank the following security researchers for responsible disclosure:
+
 - (List will be updated as reports are received and resolved)
 
 ---
