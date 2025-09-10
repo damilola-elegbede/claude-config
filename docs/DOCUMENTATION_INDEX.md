@@ -162,16 +162,19 @@ Detailed technical specifications:
 ### By Use Case
 
 #### New Users
+
 - Start with [`setup/INSTALLATION.md`](setup/INSTALLATION.md)
 - Review [`agents/AGENT_CATEGORIES.md`](agents/AGENT_CATEGORIES.md)
 - Try [`guides/common-tasks-tutorial.md`](guides/common-tasks-tutorial.md)
 
 #### Development Teams
+
 - [`development/DEVELOPMENT_STANDARDS.md`](development/DEVELOPMENT_STANDARDS.md)
 - [`quality/QUALITY_GATES.md`](quality/QUALITY_GATES.md)
 - [`performance/PARALLEL_EXECUTION_PATTERNS.md`](performance/PARALLEL_EXECUTION_PATTERNS.md)
 
 #### System Administrators
+
 - [`setup/DEPLOYMENT_PIPELINES.md`](setup/DEPLOYMENT_PIPELINES.md)
 - [`setup/CONTAINER_INFRASTRUCTURE.md`](setup/CONTAINER_INFRASTRUCTURE.md)
 - [`platform/platform-engineering-guide.md`](platform/platform-engineering-guide.md)
@@ -179,17 +182,20 @@ Detailed technical specifications:
 ### By Role
 
 #### Developers
+
 - **Backend**: Review `api/` directory and `guides/authentication-setup-guide.md`
 - **Frontend**: Focus on `guides/frontend-agent-usage-guide.md` and `ux/` directory
 - **Mobile**: Start with `guides/mobile-development-guide.md`
 - **ML/Data**: Explore `api/ml-api-reference.md` and `guides/mlops-implementation-guide.md`
 
 #### DevOps Engineers
+
 - **Setup**: Review `setup/` directory comprehensively
 - **Performance**: Focus on `performance/` and `platform/` directories
 - **Security**: Review `guides/security-implementation-guide.md`
 
 #### Quality Engineers
+
 - **Testing**: Start with `quality/TESTING_STANDARDS.md`
 - **Automation**: Review `quality/QUALITY_GATES.md`
 - **Accessibility**: Focus on `ux/accessibility-standards.md`

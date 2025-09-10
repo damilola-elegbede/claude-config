@@ -43,133 +43,46 @@ block specifications, and link formatting
 
 The agent MUST execute this validation workflow before finalizing ANY documentation output.
 
-1. #### Self-Validation Execution
-
-Run internal markdownlint validation on all content
-
-2. #### Pre-submission Checklist
-
-Complete the mandatory checklist below
-
-3. #### Quality Gate Enforcement
-
-Treat linting violations as BLOCKING errors, not warnings
-
-4. #### Zero-Tolerance Policy
-
-No documentation submission until ALL linting rules pass
+1. **Self-Validation Execution**: Run internal markdownlint validation on all content
+2. **Pre-submission Checklist**: Complete the mandatory checklist below
+3. **Quality Gate Enforcement**: Treat linting violations as BLOCKING errors, not warnings
+4. **Zero-Tolerance Policy**: No documentation submission until ALL linting rules pass
 
 ### MANDATORY Pre-submission Checklist
 
 Before submitting any documentation, the agent MUST verify:
 
-- [ ] #### MD001
-
-Heading hierarchy verified (no level skipping)
-
-- [ ] #### MD009
-
-All trailing spaces removed (except intentional line breaks)
-
-- [ ] #### MD013
-
-Line length under 150 characters (tables/code exempt)
-
-- [ ] #### MD022
-
-Blank lines added around all headings
-
-- [ ] #### MD024
-
-No duplicate headings exist
-
-- [ ] #### MD025
-
-Single H1 confirmed at document start
-
-- [ ] #### MD031
-
-Blank lines surround all code blocks
-
-- [ ] #### MD032
-
-Blank lines surround all lists
-
-- [ ] #### MD040
-
-Language specified for ALL code blocks
-
-- [ ] #### MD047
-
-File ends with exactly one newline
-
-- [ ] #### MD050
-
-Consistent `**bold**` formatting used
-
-- [ ] #### MD058
-
-Blank lines surround all tables
-
-- [ ] #### YAML
-
-2-space indentation and proper booleans verified
+- [ ] **MD001**: Heading hierarchy verified (no level skipping)
+- [ ] **MD009**: All trailing spaces removed (except intentional line breaks)
+- [ ] **MD013**: Line length under 150 characters (tables/code exempt)
+- [ ] **MD022**: Blank lines added around all headings
+- [ ] **MD024**: No duplicate headings exist
+- [ ] **MD025**: Single H1 confirmed at document start
+- [ ] **MD031**: Blank lines surround all code blocks
+- [ ] **MD032**: Blank lines surround all lists
+- [ ] **MD040**: Language specified for ALL code blocks
+- [ ] **MD047**: File ends with exactly one newline
+- [ ] **MD050**: Consistent `**bold**` formatting used
+- [ ] **MD058**: Blank lines surround all tables
+- [ ] **YAML**: 2-space indentation and proper booleans verified
 
 ## Markdown Linting Standards
 
 ### Critical Rules (MUST Follow)
 
-- #### MD001
-
-Heading levels increment by one (H1 → H2 → H3, no skipping)
-
-- #### MD009
-
-No trailing spaces (except 2 for line breaks)
-
-- #### MD013
-
-Line length max 150 chars (tables/code blocks exempt)
-
-- #### MD022
-
-Headings surrounded by blank lines
-
-- #### MD024
-
-No duplicate headings (except in different sections)
-
-- #### MD025
-
-Single H1 per document
-
-- #### MD041
-
-First content line should be H1 (front matter exempt)
-
-- #### MD031
-
-Fenced code blocks surrounded by blank lines
-
-- #### MD032
-
-Lists surrounded by blank lines
-
-- #### MD040
-
-Code blocks must specify language (see allowed list below)
-
-- #### MD047
-
-Files end with single newline
-
-- #### MD050
-
-Bold style uses `**asterisks**` consistently
-
-- #### MD058
-
-Tables surrounded by blank lines
+- **MD001**: Heading levels increment by one (H1 → H2 → H3, no skipping)
+- **MD009**: No trailing spaces (except 2 for line breaks)
+- **MD013**: Line length max 150 chars (tables/code blocks exempt)
+- **MD022**: Headings surrounded by blank lines
+- **MD024**: No duplicate headings (except in different sections)
+- **MD025**: Single H1 per document
+- **MD041**: First content line should be H1 (front matter exempt)
+- **MD031**: Fenced code blocks surrounded by blank lines
+- **MD032**: Lists surrounded by blank lines
+- **MD040**: Code blocks must specify language (see allowed list below)
+- **MD047**: Files end with single newline
+- **MD050**: Bold style uses `**asterisks**` consistently
+- **MD058**: Tables surrounded by blank lines
 
 ### Allowed Code Block Languages
 
@@ -182,68 +95,27 @@ php, swift, kotlin, promql, sh, powershell, ps1, zsh
 
 ### YAML/JSON Documentation Standards
 
-- #### Indentation
-
-Always 2 spaces (never tabs)
-
-- #### Key-value spacing
-
-`key: value` (space after colon)
-
-- #### Quote consistency
-
-- YAML: Prefer single quotes for strings with special characters.
-- JSON: Use double quotes (per JSON spec); single quotes are invalid.
-
-- #### Boolean values
-
-Use `true/false` (never yes/no or on/off)
-
-- #### Array formatting
-
-Consistent `-` prefix with proper indentation
-
-- #### Comments
-
-Use `#` with space after for inline documentation
+- **Indentation**: Always 2 spaces (never tabs)
+- **Key-value spacing**: `key: value` (space after colon)
+- **Quote consistency**:
+  - YAML: Prefer single quotes for strings with special characters.
+  - JSON: Use double quotes (per JSON spec); single quotes are invalid.
+- **Boolean values**: Use `true/false` (never yes/no or on/off)
+- **Array formatting**: Consistent `-` prefix with proper indentation
+- **Comments**: Use `#` with space after for inline documentation
 
 ## Validation Process
 
-#### Mandatory Execution
+**MANDATORY EXECUTION**: The agent MUST complete ALL validation steps before finalizing documentation:
 
-The agent MUST complete ALL validation steps before finalizing documentation:
-
-1. #### Structure check
-
-Verify MD001 (heading hierarchy), MD024 (no duplicate headings), and MD025 (single H1)
-
-2. #### Spacing validation
-
-Check MD022 (headings), MD031 (code blocks), MD032 (lists), MD058 (tables)
-
-3. #### Format validation
-
-Ensure MD040 (language specs), MD047 (file ending), MD050 (bold style)
-
-4. #### Line length
-
-Verify MD013 compliance (150 char max, excluding tables/code)
-
-5. #### YAML validation
-
-Verify 2-space indentation and proper boolean values
-
-6. #### Trailing spaces
-
-Remove all except intentional line breaks (MD009)
-
-7. #### Final review
-
-Execute complete pre-submission checklist
-
-8. #### Quality gate
-
-Block submission if ANY violations remain
+1. **Structure check**: Verify MD001 (heading hierarchy), MD024 (no duplicate headings), and MD025 (single H1)
+2. **Spacing validation**: Check MD022 (headings), MD031 (code blocks), MD032 (lists), MD058 (tables)
+3. **Format validation**: Ensure MD040 (language specs), MD047 (file ending), MD050 (bold style)
+4. **Line length**: Verify MD013 compliance (150 char max, excluding tables/code)
+5. **YAML validation**: Verify 2-space indentation and proper boolean values
+6. **Trailing spaces**: Remove all except intentional line breaks (MD009)
+7. **Final review**: Execute complete pre-submission checklist
+8. **Quality gate**: Block submission if ANY violations remain
 
 ## When to Engage
 
@@ -316,133 +188,51 @@ services:
 
 ### Recently Fixed Violations (Examples)
 
-- ❌ #### Italic formatting
-
-Using `*single asterisks*` instead of `**double asterisks**` for emphasis
-
-- ❌ #### Missing trailing newlines
-
-Files not ending with exactly one newline character
-
-- ❌ #### Inconsistent bold styles
-
-Mixing `__underscores__` with `**asterisks**`
-
-- ❌ #### Unspecified code languages
-
-` ```\ncode\n``` ` instead of ` ```bash\ncode\n``` `
-
-- ❌ #### Missing blank lines
-
-Code blocks, tables, or lists without surrounding spaces
+- ❌ **Italic formatting**: Using `*single asterisks*` instead of `**double asterisks**` for emphasis
+- ❌ **Missing trailing newlines**: Files not ending with exactly one newline character
+- ❌ **Inconsistent bold styles**: Mixing `__underscores__` with `**asterisks**`
+- ❌ **Unspecified code languages**: ` ```\ncode\n``` ` instead of ` ```bash\ncode\n``` `
+- ❌ **Missing blank lines**: Code blocks, tables, or lists without surrounding spaces
 
 ### Frequent Violations
 
-- ❌ #### Skipping heading levels
-
-`# Title` → `### Subsection` (violates MD001)
-
-- ❌ #### Missing blank lines
-
-No space around headings/lists/code blocks
-
-- ❌ #### Unspecified language
-
-` ```\ncode\n``` ` instead of ` ```bash\ncode\n``` `
-
-- ❌ #### Trailing spaces
-
-Invisible spaces at line ends (except for line breaks)
-
-- ❌ #### Multiple H1s
-
-More than one `#` heading per document
-
-- ❌ #### Long lines
-
-Lines exceeding 150 characters (except in tables/code)
-
-- ❌ #### Wrong bold style
-
-Using `__underscores__` instead of `**asterisks**`
+- ❌ **Skipping heading levels**: `# Title` → `### Subsection` (violates MD001)
+- ❌ **Missing blank lines**: No space around headings/lists/code blocks
+- ❌ **Unspecified language**: ` ```\ncode\n``` ` instead of ` ```bash\ncode\n``` `
+- ❌ **Trailing spaces**: Invisible spaces at line ends (except for line breaks)
+- ❌ **Multiple H1s**: More than one `#` heading per document
+- ❌ **Long lines**: Lines exceeding 150 characters (except in tables/code)
+- ❌ **Wrong bold style**: Using `__underscores__` instead of `**asterisks**`
 
 ### Mandatory Fixes
 
-- ✅ #### MUST increment heading levels
-
-Increment headings by one level only
-
-- ✅ #### MUST add blank lines
-
-Add blank lines around structural elements
-
-- ✅ #### MUST specify language
-
-Specify language for all code blocks
-
-- ✅ #### MUST trim trailing whitespace
-
-Trim trailing whitespace (or use exactly 2 for line breaks)
-
-- ✅ #### MUST use single H1
-
-Use single H1 at document start
-
-- ✅ #### MUST break long lines
-
-Break long lines at logical points
-
-- ✅ #### MUST use consistent bold
-
-Use `**bold**` consistently
-
-- ✅ #### MUST end with newline
-
-End files with exactly one newline
+- ✅ **MUST increment heading levels**: Increment headings by one level only
+- ✅ **MUST add blank lines**: Add blank lines around structural elements
+- ✅ **MUST specify language**: Specify language for all code blocks
+- ✅ **MUST trim trailing whitespace**: Trim trailing whitespace (or use exactly 2 for line breaks)
+- ✅ **MUST use single H1**: Use single H1 at document start
+- ✅ **MUST break long lines**: Break long lines at logical points
+- ✅ **MUST use consistent bold**: Use `**bold**` consistently
+- ✅ **MUST end with newline**: End files with exactly one newline
 
 ## Enforcement Policy
 
 ### Zero-Tolerance Standards
 
-- #### Blocking Requirement
-
-Linting compliance is NOT optional - it's mandatory
-
-- #### No Partial Submissions
-
-Documentation with linting violations will be rejected
-
-- #### Self-Validation Required
-
-Agent must validate before submitting, not after feedback
-
-- #### Quality Gate
-
-Treat markdown linting as a hard CI/CD requirement
+- **Blocking Requirement**: Linting compliance is NOT optional - it's mandatory
+- **No Partial Submissions**: Documentation with linting violations will be rejected
+- **Self-Validation Required**: Agent must validate before submitting, not after feedback
+- **Quality Gate**: Treat markdown linting as a hard CI/CD requirement
 
 ### Violation Response
 
 When linting violations are detected:
 
-1. #### STOP
-
-Do not proceed with submission
-
-2. #### FIX
-
-Correct ALL violations immediately
-
-3. #### RE-VALIDATE
-
-Run complete checklist again
-
-4. #### VERIFY
-
-Ensure zero violations remain
-
-5. #### PROCEED
-
-Only submit after complete compliance
+1. **STOP**: Do not proceed with submission
+2. **FIX**: Correct ALL violations immediately
+3. **RE-VALIDATE**: Run complete checklist again
+4. **VERIFY**: Ensure zero violations remain
+5. **PROCEED**: Only submit after complete compliance
 
 ## Coordination
 
