@@ -770,9 +770,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Built with ❤️ by the Smart Agent Orchestration Community**
+Built with ❤️ by the Smart Agent Orchestration Community
 
-**Experience the future of intelligent development workflows through coordinated AI specialist orchestration**
+Experience the future of intelligent development workflows through coordinated AI specialist orchestration
 
 [Report Bug](https://github.com/damilola-elegbede/claude-config/issues) •
 [Request Feature](https://github.com/damilola-elegbede/claude-config/issues) •
