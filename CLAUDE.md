@@ -1,4 +1,4 @@
-This is a Claude Code CLI Configuration Management Repository - a clean, organized system for managing Claude
+This is a Claude Code CLI Configuration Repository - a clean, organized system for managing Claude
 configurations, specialized agents, and custom commands with the Claude Code CLI.
 
 The core Claude configurations live in the system-configs directory, which serves as the source of truth for all
