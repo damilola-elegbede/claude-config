@@ -15,8 +15,8 @@
 
 ## Overview
 
-This document details the comprehensive data flow architecture within the Claude ecosystem, covering how data moves through the system, is transformed, stored, and accessed across all components and services.
-
+This document details the comprehensive data flow architecture within the Claude ecosystem, covering how
+data moves through the system, is transformed, stored, and accessed across all components and services.
 ### Data Flow Categories
 
 ```mermaid
@@ -1468,3 +1468,4 @@ The data flows architecture provides comprehensive patterns for data movement, t
 4. **Resource Optimization**: Efficient resource utilization across all data flows
 
 This architecture ensures reliable, scalable, and secure data processing while supporting the complex requirements of the multi-agent Claude ecosystem.
+

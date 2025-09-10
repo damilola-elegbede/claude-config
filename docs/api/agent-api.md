@@ -489,7 +489,7 @@ X-RateLimit-Reset: 1705333200
 ### API Key Authentication
 
 ```text
-Authorization: Bearer sk_live_abcdef123456
+Authorization: Bearer <YOUR_API_KEY>
 ```
 
 ### OAuth2 Flow

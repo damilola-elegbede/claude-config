@@ -20,3 +20,4 @@ BOUNDARY protection that prevents agents from invoking themselves or other agent
 docs/commands/COMMAND_TEMPLATE.md to maintain consistency with existing command patterns. After creating new
 configurations, run the validation scripts like ./scripts/validate-agent-yaml.py to ensure compliance before syncing
 changes to your local environment.
+

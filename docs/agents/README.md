@@ -91,7 +91,6 @@ Testing, review, validation, and verification agents
 Security assessment and compliance agents
 
 - security-auditor
-- security-auditor
 - supply-chain-security-engineer
 
 ### 7. **Analysis** (cyan) - 8 agents
@@ -111,7 +110,6 @@ Research, documentation, and analysis agents
 
 Support, coordination, and strategic planning agents
 
-- debugger
 - debugger
 - production-reliability-engineer
 - project-orchestrator
@@ -187,7 +185,7 @@ The agent ecosystem uses three model tiers optimized for task complexity:
 - **ui-designer** - UI/UX design, design systems, visual hierarchy, and user interface optimization
 - **ux-researcher** - User research, usability testing, analytics, and experience optimization
 
-### Quality & Testing Agents (5)
+### Quality & Testing Agents (8)
 
 - **test-engineer** - Test strategy, automation, coverage analysis, and quality assurance
 - **code-reviewer** - Code quality review, security checks, and best practices validation
@@ -201,7 +199,6 @@ The agent ecosystem uses three model tiers optimized for task complexity:
 ### Security & Compliance Agents (3)
 
 - **security-auditor** - Security audits, vulnerability assessment, OWASP compliance, and threat modeling
-- **security-auditor** - Compliance frameworks (SOC2, GDPR, HIPAA), audit preparation, and governance
 
 ### Analysis & Documentation Agents (8)
 
@@ -213,7 +210,6 @@ The agent ecosystem uses three model tiers optimized for task complexity:
 ### Operations & Coordination Agents (4)
 
 - **debugger** - Production incidents, crisis management, and post-mortem coordination
-- **debugger** - Complex bug investigation, race conditions, memory leaks, and root cause analysis
 - **dependency-strategist** - Strategic dependency management, upgrade planning, and risk assessment
 - **git-workflow-specialist** - Advanced git operations, workflow optimization, and repository management
 
@@ -336,7 +332,7 @@ Phase 4: [test-engineer + performance-engineer] (parallel)
 | **10k+ requests/sec** | backend-engineer, performance-engineer, monitoring-specialist, cloud-architect | Performance-first architecture |
 | **Multi-microservices** | backend-engineer (multiple), api-architect, principal-architect, kubernetes-admin | Service-oriented parallel development |
 | **Multi-platform** | mobile-engineer (per platform), ui-designer, ux-researcher | Platform-specific parallel tracks |
-| **Enterprise/Compliance** | security-auditor, security-auditor, quality-gatekeeper | Compliance-driven coordination |
+| **Enterprise/Compliance** | security-auditor, quality-gatekeeper | Compliance-driven coordination |
 | **Complex debugging** | debugger, monitoring-specialist, performance-engineer | Problem-specific investigation team |
 | **Legacy modernization** | code-archaeologist, migration-specialist, principal-architect | Migration-focused strategy |
 
@@ -505,7 +501,6 @@ Every commit triggers (parallel quality gates):
 #### Gate 2: Security & Compliance (Parallel)
 
 - **security-auditor**: OWASP Top 10, vulnerability assessment
-- **security-auditor**: Compliance frameworks
 - **supply-chain-security-engineer**: Dependency security
 - **KPI**: Zero high/critical security vulnerabilities, 100% compliance
 
@@ -914,3 +909,4 @@ Complexity Assessment
 
 *This ecosystem enables efficient, high-quality software development through intelligent orchestration of
 specialized agents, following the principle of "Right tool for the job" with parallel-first execution strategies.*
+
