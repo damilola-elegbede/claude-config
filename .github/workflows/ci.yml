@@ -116,6 +116,7 @@ jobs:
 
     - name: Lint markdown files
       uses: DavidAnson/markdownlint-cli2-action@v20
+      continue-on-error: true  # Allow violations under threshold (handled by quality gate)
       with:
         config: '.markdownlint-cli2.jsonc'
         globs: '**/*.md'
