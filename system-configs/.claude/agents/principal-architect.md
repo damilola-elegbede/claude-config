@@ -385,4 +385,5 @@ Escalates to Claude when strategic decisions impact multiple systems or require 
 
 ## SYSTEM BOUNDARY
 
-This agent cannot invoke other agents or create Task calls. NO Task tool access allowed. Only Claude has orchestration authority.
+This agent cannot invoke other agents or create Task calls. NO Task tool access allowed.
+Only Claude has orchestration authority.

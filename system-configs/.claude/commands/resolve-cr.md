@@ -17,15 +17,20 @@ argument-hint: "[pr-number] [--auto|--dry-run|--skip-tests]"
 
 ## Description
 
-Aggressively fetches ALL CodeRabbit suggestions from comprehensive comment sources and resolves auto-fixable issues
-using **wave-based parallel execution** with mandatory resolution posting. When invoked, there ARE CodeRabbit comments
-to resolve - no questions asked. The command performs exhaustive comment retrieval to find them, implements fixes,
-pushes the changes, then posts two comments: first "@coderabbitai resolve" to trigger resolution, followed by a
-detailed summary of the fixes for CodeRabbit.
+Aggressively fetches ALL CodeRabbit suggestions from comprehensive comment sources and resolves auto-fixable
+issues using **wave-based parallel execution** with mandatory resolution posting. When invoked, there ARE
+CodeRabbit comments to resolve - no questions asked. The command performs exhaustive comment retrieval to
+find them, implements fixes, pushes the changes, then posts two comments: first "@coderabbitai resolve" to
+trigger resolution, followed by a detailed summary of the fixes for CodeRabbit.
 
-**Critical Behavior**: ALWAYS posts "@coderabbitai resolve" as a PR comment after pushing fixes - this is mandatory, not optional.
+### Critical Behavior
 
-**Enhanced Architecture**: Uses parallel agent deployment waves for maximum efficiency:
+ALWAYS posts "@coderabbitai resolve" as a PR comment after pushing fixes - this is
+mandatory, not optional.
+
+### Enhanced Architecture
+
+Uses parallel agent deployment waves for maximum efficiency:
 
 - **Wave 1**: Comprehensive feedback collection with multiple parallel analyzers
 - **Claude Orchestration**: Auto-fixable vs manual categorization
@@ -333,7 +338,8 @@ categorize_with_claude_intelligence() {
   # Display categorization summary
   echo ""
   echo "📊 Consolidated Analysis Results:"
-  echo "  ✅ Auto-fixable: $AUTO_FIXABLE_COUNT suggestions across $(echo "$AUTO_FIXABLE_ITEMS" | cut -d'|' -f1 | sort -u | wc -l) categories"
+  echo "  ✅ Auto-fixable: $AUTO_FIXABLE_COUNT suggestions across" \
+       "$(echo "$AUTO_FIXABLE_ITEMS" | cut -d'|' -f1 | sort -u | wc -l) categories"
   echo "  👀 Needs review: $REVIEW_COUNT suggestions requiring human judgment"
   echo "  🔍 Total unresolved: $((AUTO_FIXABLE_COUNT + REVIEW_COUNT)) items found"
 }
@@ -808,4 +814,5 @@ resolve_cr "$@"
 4. **Quality validation** - tests run after changes
 5. **Safe categorization** - never auto-fixes sensitive areas
 
-**The enhanced wave-based pattern maximizes parallel efficiency while maintaining all critical safety and resolution requirements.**
+The enhanced wave-based pattern maximizes parallel efficiency while maintaining all critical safety and
+resolution requirements.

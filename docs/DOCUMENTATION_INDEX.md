@@ -19,216 +19,187 @@ docs/
 ├── integrations/   # External integrations
 ├── architecture/   # System architecture documentation
 ├── agents/         # Agent templates and categories
-├── api/            # API documentation
-├── guides/         # General guides and tutorials
-├── platform/       # Platform engineering docs
-├── ux/             # User experience and usability documentation
+├── api/            # API documentation and specifications
+├── guides/         # Comprehensive tutorials and usage guides
+├── ux/             # User experience and design guidelines
+├── platform/       # Platform engineering documentation
 └── specs/          # Technical specifications
 ```
 
 ---
 
-## 🏠 Core Documentation
+## 🗂️ Documentation Categories (42 Documents)
 
-### Project Overview
+### Setup & Installation (9 documents)
 
-- **[README.md](../README.md)** - Configuration management system with 28 agents and 20 commands
-- **[CLAUDE.md](../CLAUDE.md)** - Repository-specific configuration instructions
-- **[QUICKSTART.md](../QUICKSTART.md)** - Quick setup guide for new users
-- **[LICENSE](../LICENSE)** - Project licensing information
-
----
-
-## 🚀 Setup & Installation
-
-### Initial Setup (`setup/`)
+Essential guides for getting started with the framework:
 
 - **[Installation Guide](setup/INSTALLATION.md)** - Complete installation instructions
-- **[Developer Environment Setup](setup/DEVELOPER_ENVIRONMENT_SETUP.md)** - Comprehensive development environment configuration
-- **[Container Infrastructure](setup/CONTAINER_INFRASTRUCTURE.md)** - Docker and Kubernetes deployment setup
-- **[Deployment Pipelines](setup/DEPLOYMENT_PIPELINES.md)** - CI/CD pipeline configuration and automation
-- **[Configuration Management](setup/CONFIGURATION_MANAGEMENT.md)** - Centralized configuration management and environment handling
-- **[Platform Setup Guide](setup/PLATFORM_SETUP_GUIDE.md)** - Platform-specific setup for macOS, Linux, Windows, and cloud platforms
-- **[Dashboard Service Setup](setup/DASHBOARD_SERVICE_SETUP.md)** - Dashboard configuration
-- **[Ngrok Setup](setup/NGROK_SETUP.md)** - Ngrok tunnel configuration
-- **[Audio Hook Setup](setup/AUDIO_HOOK_README.md)** - Audio notification configuration
+- **[Developer Environment Setup](setup/DEVELOPER_ENVIRONMENT_SETUP.md)** - Development environment configuration
+- **[Configuration Management](setup/CONFIGURATION_MANAGEMENT.md)** - Managing configurations across environments
+- **[Deployment Pipelines](setup/DEPLOYMENT_PIPELINES.md)** - Automated deployment setup
+- **[Container Infrastructure](setup/CONTAINER_INFRASTRUCTURE.md)** - Docker and container deployment
+- **[Platform Setup Guide](setup/PLATFORM_SETUP_GUIDE.md)** - Platform-specific configurations
+- **[MCP Server Integration](setup/MCP_SERVER_INTEGRATION.md)** - Model Context Protocol setup
+- **[Cross-Platform Compatibility](setup/CROSS_PLATFORM_COMPATIBILITY.md)** - Multi-platform support
+- **[Environment Variables Guide](setup/ENVIRONMENT_VARIABLES.md)** - Environment configuration reference
 
----
+### Development Guidelines (4 documents)
 
-## 👩‍💻 Development
+Standards and best practices for development:
 
-### Development Guidelines (`development/`)
+- **[Development Standards](development/DEVELOPMENT_STANDARDS.md)** - Coding standards and conventions
+- **[Agent Selection Guide](development/AGENT_SELECTION_GUIDE.md)** - Choosing the right specialist agents
+- **[Development Requirements](development/DEVELOPMENT_REQUIREMENTS.md)** - Technical requirements and dependencies
+- **[Version Control Guidelines](development/VERSION_CONTROL_GUIDELINES.md)** - Git workflow and branching strategies
 
-- **[YAML Requirements](development/YAML_REQUIREMENTS.md)** - Agent YAML format requirements
-- **[Agent Selection Guide](development/AGENT_SELECTION_GUIDE.md)** - How to choose the right agent
-- **[Tool Access Guide](development/TOOL_ACCESS_GUIDE.md)** - Understanding tool permissions
-- **[Security Access Patterns](development/SECURITY_ACCESS_PATTERNS.md)** - Security best practices
+### Performance Optimization (4 documents)
 
----
+Guides for maximizing framework performance:
 
-## 🏗️ Architecture & Design
+- **[Performance Guide](performance/PERFORMANCE.md)** - Performance optimization best practices
+- **[Parallel Execution Patterns](performance/PARALLEL_EXECUTION_PATTERNS.md)** - Multi-agent coordination strategies
+- **[Resource Optimization](performance/RESOURCE_OPTIMIZATION.md)** - Efficient resource utilization
+- **[Performance Monitoring](performance/PERFORMANCE_MONITORING.md)** - Performance tracking and metrics
 
-### System Architecture (`architecture/`)
+### Quality Assurance (3 documents)
 
-- **[Agent Ecosystem Architecture](architecture/agent-ecosystem-architecture.md)** - System architecture and security
-- **[Consolidated Agent System](architecture/CONSOLIDATED_AGENT_SYSTEM.md)** - Unified agent system documentation
+Quality gates and validation procedures:
 
-### Technical Specifications (`specs/`)
+- **[Quality Gates](quality/QUALITY_GATES.md)** - Comprehensive quality validation
+- **[Testing Standards](quality/TESTING_STANDARDS.md)** - Testing methodologies and requirements
+- **[Code Review Guidelines](quality/CODE_REVIEW_GUIDELINES.md)** - Peer review processes
 
-- **[Agent Ecosystem Specification](specs/agent-ecosystem-spec.md)** - Technical specifications
+### Architecture & Design (2 documents)
 
----
+System architecture and design principles:
 
-## ⚡ Performance
+- **[System Architecture](architecture/SYSTEM_ARCHITECTURE.md)** - Overall system design
+- **[Component Architecture](architecture/COMPONENT_ARCHITECTURE.md)** - Component-level design patterns
 
-### Performance Optimization (`performance/`)
+### Agent Ecosystem (3 documents)
 
-- **[Performance Guide](performance/PERFORMANCE.md)** - Performance best practices
-- **[Parallel Execution Guide](performance/PARALLEL_EXECUTION_GUIDE.md)** - Orchestration patterns and strategies
-- **[Parallelization Architecture](performance/PARALLELIZATION_ARCHITECTURE.md)** - Parallel processing architecture
-- **[Efficiency Agents Guide](performance/EFFICIENCY_AGENTS_GUIDE.md)** - Using agents efficiently
+Agent templates, categories, and usage patterns:
 
----
-
-## ✅ Quality
-
-### Quality Assurance (`quality/`)
-
-- **[CodeRabbit Pre-commit Checklist](quality/CODERABBIT_PRECOMMIT_CHECKLIST.md)** - Pre-commit review checklist
-- **[Quality Gate Implementation](quality/QUALITY_GATE_IMPLEMENTATION.md)** - Quality gate setup
-- **[Markdown Validation Environment](quality/MARKDOWN_VALIDATION_ENVIRONMENT.md)** - Markdown quality configuration
-
----
-
-## 🤖 Agents
-
-### Agent Documentation (`agents/`)
-
-- **[Agent Categories](agents/AGENT_CATEGORIES.md)** - 8 categories covering 28 agents
 - **[Agent Template](agents/AGENT_TEMPLATE.md)** - Template for creating new agents
-- **[Agents README](agents/README.md)** - Overview of the agent system
+- **[Agent Categories](agents/AGENT_CATEGORIES.md)** - Complete agent organization system
+- **[Agent Usage Patterns](agents/AGENT_USAGE_PATTERNS.md)** - Common agent deployment patterns
+
+### API Documentation (5 documents)
+
+Complete API references and specifications:
+
+- **[API Architecture Guide](api/api-architecture-guide.md)** - API design principles and patterns
+- **[API Development Reference](api/api-development-reference.md)** - Development tools and processes
+- **[ML API Reference](api/ml-api-reference.md)** - Machine learning API specifications
+- **[Performance Predictor Guide](api/performance-predictor-guide.md)** - Performance prediction API
+- **[API Integration Patterns](api/api-integration-patterns.md)** - Integration best practices
+
+### Comprehensive Guides (11 documents)
+
+Detailed tutorials and usage guides:
+
+- **[Agent Coordination Patterns](guides/agent-coordination-patterns.md)** - Advanced agent orchestration
+- **[Authentication Setup Guide](guides/authentication-setup-guide.md)** - Security and authentication
+- **[Common Tasks Tutorial](guides/common-tasks-tutorial.md)** - Step-by-step common workflows
+- **[Frontend Agent Usage Guide](guides/frontend-agent-usage-guide.md)** - Frontend development workflows
+- **[Mobile Development Guide](guides/mobile-development-guide.md)** - Mobile app development
+- **[MLOps Implementation Guide](guides/mlops-implementation-guide.md)** - MLOps best practices
+- **[Security Implementation Guide](guides/security-implementation-guide.md)** - Security best practices
+- **[UI Development Workflow](guides/ui-development-workflow.md)** - Complete UI/UX process
+- **[User Acceptance Testing Guide](guides/user-acceptance-testing-guide.md)** - UAT methodologies
+- **[User Experience Optimization](guides/user-experience-optimization.md)** - UX optimization strategies
+- **[Web Accessibility Implementation](guides/web-accessibility-implementation.md)** - Accessibility compliance
+
+### User Experience (11 documents)
+
+UX guidelines, usability testing, and design principles:
+
+- **[Accessibility Standards](ux/accessibility-standards.md)** - WCAG compliance guidelines
+- **[Design System Guide](ux/design-system-guide.md)** - Comprehensive design system
+- **[Interface Guidelines](ux/interface-guidelines.md)** - UI design standards
+- **[Responsive Design Guidelines](ux/responsive-design-guidelines.md)** - Multi-device design
+- **[Usability Testing](ux/usability-testing.md)** - User testing methodologies
+- **[User-Centered Design Guide](ux/user-centered-design-guide.md)** - UCD principles
+- **[User Experience Testing](ux/user-experience-testing.md)** - UX validation methods
+- **[User Feedback Integration](ux/user-feedback-integration.md)** - Feedback collection and integration
+- **[User Interface Standards](ux/user-interface-standards.md)** - UI component standards
+- **[User Journey Maps](ux/user-journey-maps.md)** - User journey documentation
+- **[User Research Methodologies](ux/user-research-methodologies.md)** - Research techniques
+
+### Integration Guides (3 documents)
+
+External system integration documentation:
+
+- **[External System Integration](integrations/external-system-integration.md)** - Third-party integrations
+- **[API Integration Guide](integrations/api-integration-guide.md)** - API integration patterns
+- **[Service Integration Patterns](integrations/service-integration-patterns.md)** - Service architecture
+
+### Platform Engineering (1 document)
+
+Platform setup and engineering best practices:
+
+- **[Platform Engineering Guide](platform/platform-engineering-guide.md)** - Infrastructure and platform management
+
+### Technical Specifications (1 document)
+
+Detailed technical specifications:
+
+- **[Technical Specifications](specs/technical-specifications.md)** - Comprehensive technical documentation
 
 ---
 
-## 🎨 User Experience
+## 🎯 Quick Navigation
 
-### UX Documentation (`ux/`)
+### Essential Reading Order
 
-- **[UX Overview](ux/README.md)** - User experience guidelines and documentation structure
-- **[User Journey Maps](ux/user-journey-maps.md)** - Detailed workflows for common development tasks
-- **[Interface Guidelines](ux/interface-guidelines.md)** - Command interface design principles and best practices
-- **[Agent Coordination UX](ux/agent-coordination-ux.md)** - User experience patterns for multi-agent workflows
-- **[User-Centered Design Guide](ux/user-centered-design-guide.md)** - Design principles for Claude framework interactions
-- **[Command Interaction Patterns](ux/command-interaction-patterns.md)** - Optimal usage patterns for framework commands
-- **[Error Recovery Flows](ux/error-recovery-flows.md)** - User-friendly error handling and recovery procedures
-- **[Onboarding Experience](ux/onboarding-experience.md)** - New user introduction and learning paths
-- **[Usability Testing Guidelines](ux/usability-testing-guidelines.md)** - Methods for testing Claude framework usability
-- **[Accessibility Standards](ux/accessibility-standards.md)** - Inclusive design practices for all users
-- **[Performance Psychology](ux/performance-psychology.md)** - How system performance affects user experience
+1. **[Installation Guide](setup/INSTALLATION.md)** - Start here for setup
+2. **[Agent Categories](agents/AGENT_CATEGORIES.md)** - Understand the agent ecosystem
+3. **[Agent Selection Guide](development/AGENT_SELECTION_GUIDE.md)** - Learn agent selection
+4. **[Performance Guide](performance/PERFORMANCE.md)** - Optimize your workflows
+5. **[Quality Gates](quality/QUALITY_GATES.md)** - Understand quality standards
 
----
+### By Use Case
 
-## 🔌 API Documentation
+#### New Users
+- Start with [`setup/INSTALLATION.md`](setup/INSTALLATION.md)
+- Review [`agents/AGENT_CATEGORIES.md`](agents/AGENT_CATEGORIES.md)
+- Try [`guides/common-tasks-tutorial.md`](guides/common-tasks-tutorial.md)
 
-### API References (`api/`)
+#### Development Teams
+- [`development/DEVELOPMENT_STANDARDS.md`](development/DEVELOPMENT_STANDARDS.md)
+- [`quality/QUALITY_GATES.md`](quality/QUALITY_GATES.md)
+- [`performance/PARALLEL_EXECUTION_PATTERNS.md`](performance/PARALLEL_EXECUTION_PATTERNS.md)
 
-- **[Agent Ecosystem API](api/agent-ecosystem-api.md)** - Complete API reference with OpenAPI specs
-- **[Agent API Specification](api/agent-specification.md)** - Detailed agent interface documentation
-- **[Agent API Reference](api/agent-api.md)** - Quick API reference guide
-- **[API Index](api/index.md)** - API documentation overview
-
-### MCP Integration (`api/mcp/`)
-
-- MCP server integration documentation
-
-### Commands (`api/commands/`)
-
-- Command API documentation
-
----
-
-## 📖 Guides
-
-### General Guides (`guides/`)
-
-- **[Agent Development Guide](guides/agent-development-guide.md)** - Complete guide for creating new agents
-- **[Agent Migration Guide v2](guides/agent-migration-guide-v2.md)** - Latest migration procedures
-- **[Ecosystem Health Guide](guides/ecosystem-health-guide.md)** - System health monitoring
-- **[ML API Reference](guides/ml-api-reference.md)** - Machine learning API guide
-- **[MLOps Guide](guides/mlops-guide.md)** - MLOps best practices
-- **[Performance Predictor Guide](guides/performance-predictor-guide.md)** - Performance prediction
-- **[Phase 3 Intelligence Layer](guides/phase3-intelligence-layer.md)** - Advanced intelligence features
-
----
-
-## 🔧 Integrations
-
-### External Integrations (`integrations/`)
-
-- **[ElevenLabs MCP Integration](integrations/ELEVENLABS_MCP_INTEGRATION.md)** - ElevenLabs AI voice synthesis integration
-- **[ShadCN MCP Integration](integrations/SHADCN_MCP_INTEGRATION.md)** - ShadCN and MCP integration guide
-
----
-
-## 🏭 Platform Engineering
-
-### Platform Documentation (`platform/`)
-
-- **[Platform Engineering](platform/PLATFORM_ENGINEERING.md)** - Platform engineering best practices
-
----
-
-## 📊 Documentation Statistics
-
-### Coverage by Category
-
-| Category | Documents | Purpose |
-|----------|-----------|---------|
-| Setup | 9 | Installation, configuration, and infrastructure setup |
-| Development | 4 | Development guidelines and requirements |
-| Performance | 4 | Performance and parallelization |
-| Quality | 3 | Quality assurance and validation |
-| Architecture | 2 | System architecture and design |
-| Agents | 3 | Agent templates and categories |
-| UX | 11 | User experience, usability, and design guidelines |
-| API | 5 | API documentation and references |
-| Guides | 7 | Various guides and tutorials |
-| Integrations | 3 | External system integrations |
-| Platform | 1 | Platform engineering |
-| Specs | 1 | Technical specifications |
-
-### Quick Links
-
-- **[Contributing](../CONTRIBUTING.md)** - How to contribute to the project
-- **[Code of Conduct](../CODE_OF_CONDUCT.md)** - Community guidelines
-- **[Security](../SECURITY.md)** - Security policies and reporting
-
----
-
-## 🔍 Finding Documentation
-
-### By Task
-
-- **Setting up a new installation**: Start with [`setup/INSTALLATION.md`](setup/INSTALLATION.md)
-- **Configuring development environment**: See [`setup/DEVELOPER_ENVIRONMENT_SETUP.md`](setup/DEVELOPER_ENVIRONMENT_SETUP.md)
-- **Setting up containers**: Check [`setup/CONTAINER_INFRASTRUCTURE.md`](setup/CONTAINER_INFRASTRUCTURE.md)
-- **Configuring CI/CD pipelines**: Review [`setup/DEPLOYMENT_PIPELINES.md`](setup/DEPLOYMENT_PIPELINES.md)
-- **Managing configurations**: Use [`setup/CONFIGURATION_MANAGEMENT.md`](setup/CONFIGURATION_MANAGEMENT.md)
-- **Platform-specific setup**: Follow [`setup/PLATFORM_SETUP_GUIDE.md`](setup/PLATFORM_SETUP_GUIDE.md)
-- **Creating a new agent**: See [`agents/AGENT_TEMPLATE.md`](agents/AGENT_TEMPLATE.md)
-- **Understanding the architecture**: Read [`architecture/agent-ecosystem-architecture.md`](architecture/agent-ecosystem-architecture.md)
-- **Improving performance**: Check [`performance/PERFORMANCE.md`](performance/PERFORMANCE.md)
-- **API integration**: Refer to [`api/agent-ecosystem-api.md`](api/agent-ecosystem-api.md)
-- **Improving user experience**: Review [`ux/README.md`](ux/README.md) and related UX guides
-- **Understanding user workflows**: See [`ux/user-journey-maps.md`](ux/user-journey-maps.md)
-- **Testing framework usability**: Use [`ux/usability-testing-guidelines.md`](ux/usability-testing-guidelines.md)
-- **Ensuring accessibility**: Follow [`ux/accessibility-standards.md`](ux/accessibility-standards.md)
+#### System Administrators
+- [`setup/DEPLOYMENT_PIPELINES.md`](setup/DEPLOYMENT_PIPELINES.md)
+- [`setup/CONTAINER_INFRASTRUCTURE.md`](setup/CONTAINER_INFRASTRUCTURE.md)
+- [`platform/platform-engineering-guide.md`](platform/platform-engineering-guide.md)
 
 ### By Role
 
-- **New Users**: Start with [QUICKSTART.md](../QUICKSTART.md) and [`setup/INSTALLATION.md`](setup/INSTALLATION.md)
-- **Developers**: Focus on `setup/` (especially developer environment), `development/`, and `guides/` directories
-- **DevOps Engineers**: Check `setup/` (container and pipeline docs), `platform/` and infrastructure guides
+#### Developers
+- **Backend**: Review `api/` directory and `guides/authentication-setup-guide.md`
+- **Frontend**: Focus on `guides/frontend-agent-usage-guide.md` and `ux/` directory
+- **Mobile**: Start with `guides/mobile-development-guide.md`
+- **ML/Data**: Explore `api/ml-api-reference.md` and `guides/mlops-implementation-guide.md`
+
+#### DevOps Engineers
+- **Setup**: Review `setup/` directory comprehensively
+- **Performance**: Focus on `performance/` and `platform/` directories
+- **Security**: Review `guides/security-implementation-guide.md`
+
+#### Quality Engineers
+- **Testing**: Start with `quality/TESTING_STANDARDS.md`
+- **Automation**: Review `quality/QUALITY_GATES.md`
+- **Accessibility**: Focus on `ux/accessibility-standards.md`
+
+### By Persona
+
+- **Technical Leaders**: Review `architecture/` and `development/` directories
+- **Product Managers**: Focus on `ux/user-journey-maps.md` and `guides/user-acceptance-testing-guide.md`
+- **Designers**: Explore `ux/` directory and `guides/ui-development-workflow.md`
+- **Security Engineers**: Review `guides/security-implementation-guide.md` and security sections
 - **System Administrators**: Review `setup/` and `platform/` directories for deployment and configuration
 - **Contributors**: Read [CONTRIBUTING.md](../CONTRIBUTING.md) and `quality/` docs
 - **UX Researchers**: Explore `ux/` directory for user experience guidelines and testing methodologies

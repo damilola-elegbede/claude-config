@@ -20,134 +20,78 @@ brew install claude-code
 claude-code --version
 ```
 
-## Step 1: Clone and Setup (2 minutes)
+## One-Command Setup
 
 ```bash
-# Clone the repository
+# 1. Clone the repository
 git clone https://github.com/damilola-elegbede/claude-config.git
 cd claude-config
 
-# Start Claude Code CLI
+# 2. Launch Claude Code CLI
 claude-code
-```
 
-## Step 2: Deploy the Framework (1 minute)
-
-```bash
-# One-command framework deployment
+# 3. Deploy complete framework with one command
 /sync
+
+# 4. Verify installation
+/agent-audit
 ```
 
-This command will:
+**🎉 Complete!** You now have 28 specialized agents ready for action.
 
-- ✅ Backup your existing configurations
-- ✅ Deploy 28 specialized agents to `~/.claude/agents/`
-- ✅ Install 20 essential commands to `~/.claude/commands/`
-- ✅ Configure audio notifications and settings
-- ✅ Validate all configurations for immediate use
+## First Commands to Try
 
-## Step 3: Validate Installation (1 minute)
+Experience the power immediately:
 
 ```bash
-# Verify agent ecosystem health
-/agent-audit
-
-# Test intelligent repository analysis
+# Multi-agent repository analysis (15-20 seconds)
 /prime
 
-# Run comprehensive tests
+# Comprehensive testing with parallel execution (30-40 seconds)
 /test
-```
 
-##### Expected Results:
-
-- `/agent-audit`: All 28 agents validated and ready
-- `/prime`: Repository analysis with actionable insights
-- `/test`: All tests passing with performance metrics
-
-## Step 4: Experience the Framework (1 minute)
-
-Try these commands to see the framework in action:
-
-```bash
-# Multi-agent code review with parallel execution
+# Multi-dimensional code review
 /review
 
-# Intelligent commit generation
-/commit
-
-# Multi-dimensional documentation generation
+# Documentation generation with 6 processors (1-2 minutes)
 /docs
+
+# Smart dependency audit with security scanning
+/deps
 ```
 
-## 🎯 Your First Project: React Component
+## Understanding the Framework
 
-Let's build a React component to see agent coordination in action:
+### What You Just Installed
 
-```bash
-# Start a new task
-Task: "Create a reusable Button component with TypeScript, testing, and Storybook documentation"
-```
+- **28 Specialized Agents** organized in 8 categories
+- **20 Essential Commands** for development workflows  
+- **Smart Orchestration** with parallel execution
+- **Quality Gates** with comprehensive validation
+- **MCP Integration** for enhanced capabilities
 
-##### What happens next:
+### Core Concepts
 
-1. **ui-designer** creates component specifications
-2. **frontend-engineer** implements the component with TypeScript
-3. **test-engineer** creates comprehensive tests
-4. **accessibility-auditor** validates WCAG compliance
-5. **tech-writer** generates documentation
+**Agent Orchestration**: Claude deploys multiple specialists simultaneously for 4-6x performance gains.
 
-**Result:** Production-ready component in 15-20 minutes vs 2-3 hours traditional approach.
+**Wave-Based Execution**: Tasks are organized in dependency-aware parallel waves.
 
-## 🧠 Core Commands You'll Use Daily
+**Quality-First**: Built-in validation ensures production-ready results.
 
-### ⭐⭐⭐⭐⭐ Essential Commands (Use These First)
+## Agent Categories Overview
 
-| Command | Purpose | Performance Gain |
-|---------|---------|------------------|
-| **`/test`** | Run comprehensive tests with auto-discovery | 4-5x faster |
-| **`/prime`** | Analyze repository with multiple specialists | 4-6x faster |
-| **`/review`** | Multi-dimensional code quality analysis | Comprehensive coverage |
-| **`/commit`** | Generate semantic commits with quality gates | Enhanced quality |
-| **`/sync`** | Deploy/update framework configurations | One-command setup |
-
-### 🔧 Development Commands
-
-```bash
-/plan          # Strategic project planning with architecture
-/debug         # Systematic debugging with evidence gathering
-/deps          # Security-first dependency management
-/fix-ci        # Automated CI/CD issue resolution
-/docs          # Multi-agent documentation generation
-```
-
-### 🚀 Deployment Commands
-
-```bash
-/push          # Safe repository operations with validation
-/deploy        # Production deployment with orchestration
-/monitor       # System monitoring with intelligent alerting
-/pr            # Intelligent PR creation with context analysis
-```
-
-## 🎭 Meet Your 28 Specialists
-
-### Core Development Team (8 agents)
+### Development Team (6 agents)
 
 - **backend-engineer** - Server-side development and APIs
-- **frontend-engineer** - React/Vue/Angular implementations
-- **mobile-engineer** - iOS/Android and React Native development
-- **test-engineer** - Comprehensive testing strategies
+- **frontend-engineer** - Client-side development and UX
+- **fullstack-lead** - Full-stack architecture coordination
+- **mobile-engineer** - iOS, Android, React Native development
+- **data-engineer** - Data pipelines and analytics
+- **ml-engineer** - Machine learning and AI systems
 
-### Infrastructure Team (7 agents)
+### Quality Team (4 agents)
 
-- **devops** - CI/CD and deployment automation
-- **platform-engineer** - Infrastructure and scaling
-- **kubernetes-admin** - Container orchestration
-- **database-admin** - Data architecture and optimization
-
-### Quality Assurance Team (5 agents)
-
+- **test-engineer** - Testing strategies and automation
 - **code-reviewer** - Code quality and best practices
 - **security-auditor** - Security validation and compliance
 - **performance-specialist** - Performance optimization
@@ -332,7 +276,7 @@ Track your improvement with these metrics:
 You now have a production-ready Smart Agent Orchestration Framework at your fingertips. The 28 specialists are ready to accelerate your
 development with 4-6x performance improvements and superior quality.
 
-##### Start with a simple task and experience the difference:
+### Start with a simple task and experience the difference
 
 ```bash
 # Your first agent-coordinated task
