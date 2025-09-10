@@ -1,43 +1,64 @@
 {
   // Markdownlint configuration for Claude configuration repository
-  // Updated configuration with http, prometheus, and id support - resolves false violations
+  // Comprehensive configuration for agent YAML front-matter and technical documentation
   "config": {
     "default": true,
-    // MD001: Heading levels should only increment by one level at a time (re-enabled)
+    
+    // MD001: Heading levels should only increment by one level at a time
     "MD001": true,
+    
     // MD009: Trailing spaces (allow up to 2 for line breaks)
     "MD009": { "br_spaces": 2 },
-    // MD013: Line length (set reasonable limit)
-    "MD013": { "line_length": 150, "tables": false, "code_blocks": false },
-    // MD022: Headings should be surrounded by blank lines (re-enabled)
+    
+    // MD013: Line length (set reasonable limit for technical docs)
+    "MD013": { 
+      "line_length": 150, 
+      "tables": false, 
+      "code_blocks": false,
+      "headers": false
+    },
+    
+    // MD022: Headings should be surrounded by blank lines
     "MD022": true,
-    // MD023: Headings must start at beginning of line
+    
+    // MD023: Headings must start at beginning of line (allow indented headings in lists)
     "MD023": false,
+    
     // MD024: No duplicate headings (allow in different sections)
     "MD024": { "siblings_only": true },
-    // MD025: Multiple top level headings (re-enabled with allow_different_nesting)
+    
+    // MD025: Multiple top level headings (allow with front matter)
     "MD025": { "front_matter_title": "" },
-    // MD026: Trailing punctuation in heading (allow colons and question marks)
-    "MD026": { "punctuation": ".,;:!" },
-    // MD031: Fenced code blocks should be surrounded by blank lines (re-enabled)
+    
+    // MD026: Trailing punctuation in heading (allow colons for technical headings)
+    "MD026": { "punctuation": ".,;!" },
+    
+    // MD031: Fenced code blocks should be surrounded by blank lines
     "MD031": true,
-    // MD032: Lists should be surrounded by blank lines (re-enabled)
+    
+    // MD032: Lists should be surrounded by blank lines
     "MD032": true,
-    // MD033: Inline HTML (allow specific elements)
+    
+    // MD033: Inline HTML (allow comprehensive set for technical docs and XML elements)
     "MD033": {
       "allowed_elements": [
-        "br", "kbd", "sub", "sup", "details", "summary", "div", "id", "commentary",
-        // XML-style documentation elements
-        "metadata", "api-version", "specification-standard", "authentication", "base-url",
-        "executive-summary", "api-architecture", "service-endpoints", "category",
-        "authentication-setup", "auth-methods", "method", "rate-limiting", "tier",
-        "api-endpoint", "description", "request-specification", "headers", "request-body",
-        "response-specification", "success-response", "degraded-response", "error-responses", "error",
+        // Standard HTML elements
+        "br", "kbd", "sub", "sup", "details", "summary", "div", "span", "center",
+        "img", "a", "strong", "em", "code", "pre", "blockquote", "p", "h1", "h2", "h3", "h4", "h5", "h6",
+        
+        // Technical documentation elements
+        "id", "commentary", "metadata", "api-version", "specification-standard", 
+        "authentication", "base-url", "executive-summary", "api-architecture", 
+        "service-endpoints", "category", "authentication-setup", "auth-methods", 
+        "method", "rate-limiting", "tier", "api-endpoint", "description", 
+        "request-specification", "headers", "request-body", "response-specification", 
+        "success-response", "degraded-response", "error-responses", "error",
         "query-parameters", "path-parameters", "client-library", "installation",
         "usage-examples", "example", "error-handling", "metrics-format",
         "implementation-notes", "deployment-requirements", "performance-characteristics",
         "security-features",
-        // Phase 3 Intelligence Layer XML elements
+        
+        // Intelligence Layer XML elements
         "version", "status", "last-updated", "complexity", "intelligence-capabilities",
         "predictive-analytics", "adaptive-orchestration", "behavioral-intelligence",
         "architecture-overview", "core-components", "component", "agent-capabilities",
@@ -56,6 +77,7 @@
         "diagnostic-tools", "health-checks", "performance-monitoring", "security-implementation",
         "access-control", "data-protection", "model-security", "roadmap", "phase-4",
         "phase-5", "experimental-features", "success-criteria", "monitoring-kpis",
+        
         // MLOps Guide XML elements
         "guide-type", "target-audience", "mlops-architecture", "pipeline-stages", "stage",
         "infrastructure-stack", "specifications", "resource-requirements", "performance-targets",
@@ -67,6 +89,7 @@
         "resource-optimization", "training-issues", "serving-issues", "maintenance-procedures",
         "routine-maintenance", "disaster-recovery", "operational-runbook", "emergency-procedures",
         "procedure", "steps", "contact-info", "automation", "data-validation",
+        
         // Performance Predictor specific XML elements
         "agent-capabilities", "core-functions", "function", "expertise-domains", "domain",
         "capabilities", "model-specification", "architecture", "input-features", "model-architecture",
@@ -81,57 +104,83 @@
         "operational-practices", "troubleshooting-guide", "root-causes", "solutions",
         "diagnostic-tools", "validation-scripts", "monitoring-queries", "implementation-checklist",
         "deployment-validation",
-        // Additional XML elements from code-analyst report
+        
+        // Additional XML elements
         "agent-name", "capability-level", "specialization", "root-causes", "symptoms",
-        // ANTML elements (hyphenated to avoid colon issues)
+        
+        // ANTML elements (avoid colon conflicts)
         "antml-function-calls", "antml-invoke", "antml-parameter"
       ]
     },
-    // MD036: Emphasis used instead of a heading (re-enabled with punctuation exception)
+    
+    // MD034: Bare URL used (disable for technical docs with many URLs)
+    "MD034": false,
+    
+    // MD036: Emphasis used instead of a heading (allow with punctuation)
     "MD036": { "punctuation": ".,;:!?" },
-    // MD040: Fenced code blocks should have language specified (allow common languages including http)
+    
+    // MD040: Fenced code blocks should have language specified
     "MD040": {
       "allowed_languages": [
         "bash", "javascript", "python", "yaml", "json", "typescript", "shell",
         "text", "markdown", "mermaid", "http", "xml", "html", "css", "sql",
         "dockerfile", "go", "rust", "java", "cpp", "c", "jsonc", "prometheus",
         "hcl", "terraform", "ruby", "php", "swift", "kotlin", "promql", "sh",
-        "powershell", "ps1", "zsh"
+        "powershell", "ps1", "zsh", "diff", "ini", "toml", "properties",
+        "nginx", "apache", "vim", "lua", "r", "scala", "perl", "groovy",
+        "makefile", "cmake", "gradle", "maven"
       ]
     },
-    // MD041: First line in file should be a top level heading
-    "MD041": false,
-    // MD046: Code block style (allow indented blocks for compatibility)
+    
+    // MD041: First line in file should be a top level heading (allow front matter)
+    "MD041": { "front_matter_title": "" },
+    
+    // MD046: Code block style (allow both indented and fenced)
     "MD046": false,
-    // MD047: Files should end with single newline (re-enabled)
+    
+    // MD047: Files should end with single newline
     "MD047": true,
-    // MD050: Strong style should be consistent (standardize on asterisk)
+    
+    // MD050: Strong style should be consistent (use asterisks)
     "MD050": { "style": "asterisk" },
-    // MD051: Link fragments should be valid (disabled for emoji compatibility)
+    
+    // MD051: Link fragments should be valid (disable for complex anchors)
     "MD051": false,
-    // MD058: Tables should be surrounded by blank lines (re-enabled)
+    
+    // MD052: Reference links and images should use a label that is defined
+    "MD052": false,
+    
+    // MD058: Tables should be surrounded by blank lines
     "MD058": true
   },
-  // Ignore patterns
+  
+  // Ignore patterns for files that can't be easily fixed or are auto-generated
   "ignores": [
     "node_modules/**",
     ".git/**",
     "**/.tmp/**",
     "**/CHANGELOG.md",
-    // XML-style documentation with special formatting
-    "docs/ml-api-reference.md",
-    "docs/performance-predictor-guide.md",
-    // Auto-generated quality report
+    
+    // Auto-generated quality reports
     ".tmp/docs/markdown-quality-report.md",
+    ".tmp/reports/**",
+    
     // Auto-generated documentation with complex formatting
     "docs/analysis/**",
     "docs/api/**",
+    
     // Auto-generated agent and documentation reports
     "docs/agent-standardization-report.md",
     "docs/documentation-update-report.md",
+    
     // Symlinked directories (avoid duplicates)
     ".claude/**",
-    // Imported output style templates (external formatting standards)
-    "system-configs/.claude/output-styles/**"
+    
+    // External templates and imports
+    "system-configs/.claude/output-styles/**",
+    
+    // Large auto-generated files that are difficult to maintain
+    "docs/ml-api-reference.md",
+    "docs/performance-predictor-guide.md"
   ]
 }

@@ -2,7 +2,8 @@
 
 ## 🚀 Get Started in 5 Minutes
 
-This guide gets you up and running with the Claude Configuration Framework in minutes. Experience the power of **28 specialized agents** and **20 essential commands** for dramatically faster development workflows.
+This guide gets you up and running with the Claude Configuration Framework in minutes. Experience the power of **28 specialized agents** 
+and **20 essential commands** for dramatically faster development workflows.
 
 ## Prerequisites
 
@@ -38,6 +39,7 @@ claude-code
 ```
 
 This command will:
+
 - ✅ Backup your existing configurations
 - ✅ Deploy 28 specialized agents to `~/.claude/agents/`
 - ✅ Install 20 essential commands to `~/.claude/commands/`
@@ -58,6 +60,7 @@ This command will:
 ```
 
 **Expected Results:**
+
 - `/agent-audit`: All 28 agents validated and ready
 - `/prime`: Repository analysis with actionable insights
 - `/test`: All tests passing with performance metrics
@@ -87,6 +90,7 @@ Task: "Create a reusable Button component with TypeScript, testing, and Storyboo
 ```
 
 **What happens next:**
+
 1. **ui-designer** creates component specifications
 2. **frontend-engineer** implements the component with TypeScript
 3. **test-engineer** creates comprehensive tests
@@ -129,24 +133,28 @@ Task: "Create a reusable Button component with TypeScript, testing, and Storyboo
 ## 🎭 Meet Your 28 Specialists
 
 ### Core Development Team (8 agents)
+
 - **backend-engineer** - Server-side development and APIs
 - **frontend-engineer** - React/Vue/Angular implementations
 - **mobile-engineer** - iOS/Android and React Native development
 - **test-engineer** - Comprehensive testing strategies
 
 ### Infrastructure Team (7 agents)
+
 - **devops** - CI/CD and deployment automation
 - **platform-engineer** - Infrastructure and scaling
 - **kubernetes-admin** - Container orchestration
 - **database-admin** - Data architecture and optimization
 
 ### Quality Assurance Team (5 agents)
+
 - **code-reviewer** - Code quality and best practices
 - **security-auditor** - Security validation and compliance
 - **performance-specialist** - Performance optimization
 - **accessibility-auditor** - WCAG compliance validation
 
 ### Architecture Team (5 agents)
+
 - **principal-architect** - System design and technical leadership
 - **api-architect** - API design and integration patterns
 - **cloud-architect** - Cloud infrastructure design
@@ -219,12 +227,14 @@ Performance: 3-4x faster development
 The framework includes automatic quality enforcement:
 
 ### Pre-commit Quality Gates
+
 - ✅ Markdown linting and formatting
 - ✅ Code quality checks with ESLint/Prettier
 - ✅ Security vulnerability scanning
 - ✅ Basic test execution
 
 ### Pre-push Quality Gates
+
 - ✅ Full test suite execution
 - ✅ YAML validation for agent configurations
 - ✅ Performance regression testing
@@ -297,17 +307,20 @@ Task: "Build e-commerce platform with admin dashboard"
 Track your improvement with these metrics:
 
 ### Development Velocity
+
 - **Feature Delivery**: 4-5x faster with agent coordination
 - **Bug Resolution**: 3-6x faster with systematic debugging
 - **Code Reviews**: 50% faster with automated quality checks
 
 ### Quality Improvements
+
 - **Test Coverage**: 85%+ with comprehensive testing strategies
 - **Security Compliance**: 100% through integrated security validation
 - **Accessibility**: WCAG 2.1 AA compliance through specialist auditing
 - **Performance**: Lighthouse scores 90+ through optimization specialists
 
 ### Team Productivity
+
 - **Context Switching**: Reduced through intelligent agent selection
 - **Knowledge Sharing**: Enhanced through comprehensive documentation
 - **Learning Curve**: Accelerated through guided workflows
@@ -316,7 +329,8 @@ Track your improvement with these metrics:
 
 ## 🚀 Ready to Transform Your Development Workflow?
 
-You now have a production-ready Smart Agent Orchestration Framework at your fingertips. The 28 specialists are ready to accelerate your development with 4-6x performance improvements and superior quality.
+You now have a production-ready Smart Agent Orchestration Framework at your fingertips. The 28 specialists are ready to accelerate your 
+development with 4-6x performance improvements and superior quality.
 
 **Start with a simple task and experience the difference:**
 
@@ -330,4 +344,5 @@ Welcome to the future of intelligent development workflows! 🎯
 
 ---
 
-*Questions or issues? Check the [troubleshooting guide](docs/setup/INSTALLATION.md#troubleshooting) or [open an issue](https://github.com/damilola-elegbede/claude-config/issues).*
+*Questions or issues? Check the [troubleshooting guide](docs/setup/INSTALLATION.md#troubleshooting) or 
+[open an issue](https://github.com/damilola-elegbede/claude-config/issues).*

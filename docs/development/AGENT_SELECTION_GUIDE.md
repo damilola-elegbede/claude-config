@@ -120,7 +120,7 @@ flowchart LR
 
 ## Common Anti-Patterns to Avoid
 
-### ❌ Wrong Agent Selection
+### Wrong Agent Selection
 
 - Using `fullstack-lead` for architecture decisions → Use `principal-architect`
 - Using `ui-designer` for mobile apps → Use `mobile-engineer`
@@ -128,13 +128,13 @@ flowchart LR
 - Using `debugger` for new feature bugs → Use `fullstack-lead` or staff agents
 - Using `devops` for production monitoring → Use `platform-engineer`
 
-### ❌ Missing Parallel Opportunities
+### Missing Parallel Opportunities
 
 - Sequential code review → Run `code-reviewer` + `security-auditor` + `test-engineer` in parallel
 - Single-threaded analysis → Use multiple analysis agents concurrently
 - Independent implementation → Parallel frontend/backend development
 
-### ❌ Incorrect Escalation
+### Incorrect Escalation
 
 - Staff agents for simple tasks → Start with `fullstack-lead`
 - No escalation for complex decisions → Use proper escalation paths

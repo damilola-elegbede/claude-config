@@ -2,42 +2,52 @@
 
 ## Overview
 
-This document establishes comprehensive interface design principles for the Claude Configuration Framework. These guidelines ensure consistent, intuitive, and efficient user interactions across all commands, agents, and system responses.
+This document establishes comprehensive interface design principles for the Claude Configuration Framework.
+These guidelines ensure consistent, intuitive, and efficient user interactions across all commands, agents, and
+system responses.
 
 ## Core Design Principles
 
 ### 1. Clarity Over Cleverness
+
 Every interface element should be immediately understandable:
+
 - Use descriptive command names that clearly indicate functionality
 - Provide unambiguous parameter names and options
 - Offer explicit feedback rather than implicit system state
 
 ### 2. Progressive Enhancement
+
 Support users at all skill levels:
+
 - Simple commands work with sensible defaults
 - Advanced options available through clear parameters
 - Expert features accessible without compromising basic usability
 
 ### 3. Predictable Patterns
+
 Consistent behavior across the framework:
+
 - Similar commands follow identical interaction patterns
 - Error handling and recovery procedures are standardized
 - Success and failure states provide predictable feedback
 
 ### 4. Cognitive Load Minimization
+
 Reduce mental effort required for task completion:
+
 - Group related functionality logically
 - Minimize required memorization through good defaults
 - Provide contextual help and guidance
-
----
 
 ## Command Interface Standards
 
 ### Command Naming Conventions
 
 #### Primary Commands (Core Workflows)
+
 Use action verbs that clearly describe the primary function:
+
 ```bash
 /sync       # Synchronize configurations
 /test       # Execute testing workflows
@@ -48,7 +58,9 @@ Use action verbs that clearly describe the primary function:
 ```
 
 #### Utility Commands (Supporting Functions)
+
 Use descriptive nouns or noun-verb combinations:
+
 ```bash
 /agent-audit    # Validate agent ecosystem health
 /prime         # Repository analysis and preparation
@@ -57,7 +69,9 @@ Use descriptive nouns or noun-verb combinations:
 ```
 
 #### Administrative Commands (System Management)
+
 Use administrative terminology:
+
 ```bash
 /fix-ci        # CI/CD pipeline repair
 /deps          # Dependency management
@@ -67,16 +81,19 @@ Use administrative terminology:
 ### Parameter Design Standards
 
 #### Flag Conventions
+
 - Use `--` for long-form options: `--dry-run`, `--verbose`, `--force`
 - Use `-` for single-character shortcuts: `-v`, `-f`, `-h`
 - Boolean flags don't require values: `--dry-run` not `--dry-run=true`
 
 #### Parameter Naming
+
 - Use descriptive names: `--target-environment` not `--env`
 - Separate words with hyphens: `--max-retry-count` not `--maxRetryCount`
 - Avoid abbreviations unless universally understood: `--config` ok, `--cfg` avoid
 
 #### Example Parameter Patterns
+
 ```bash
 # Good: Clear and descriptive
 /implement "User authentication system" --tests --security-audit --docs
@@ -91,13 +108,16 @@ Use administrative terminology:
 ### Help and Documentation Integration
 
 #### Inline Help Standards
+
 Every command must provide:
+
 - Brief description of primary function
 - Parameter list with explanations
 - Usage examples for common scenarios
 - Related commands for workflow continuity
 
 #### Help Format Template
+
 ```bash
 /command-name --help
 
@@ -122,14 +142,14 @@ Related Commands:
 For detailed documentation: docs/commands/command-name.md
 ```
 
----
-
 ## Response and Feedback Standards
 
 ### Progress Indication
 
 #### Multi-Stage Operations
+
 For operations with multiple distinct phases:
+
 ```text
 🔄 Operation Name Starting...
 
@@ -156,7 +176,9 @@ Phase 3: Finalization
 ```
 
 #### Real-Time Progress
+
 For operations with continuous progress:
+
 ```text
 🔄 Analyzing codebase...
   📁 Files scanned: 1,247 / 1,800 (69%)
@@ -168,6 +190,7 @@ For operations with continuous progress:
 ### Success Feedback
 
 #### Simple Operations
+
 ```text
 ✅ Operation completed successfully
 📊 Results: 5 files processed, 0 errors
@@ -175,6 +198,7 @@ For operations with continuous progress:
 ```
 
 #### Complex Operations
+
 ```text
 ✅ Feature implementation completed successfully
 
@@ -199,6 +223,7 @@ For operations with continuous progress:
 ### Error Communication
 
 #### Error Message Structure
+
 ```text
 ❌ Operation failed: [Specific error description]
 
@@ -221,16 +246,19 @@ For operations with continuous progress:
 #### Error Severity Levels
 
 **Critical Errors (❌)**
+
 - System cannot continue operation
 - Data integrity at risk
 - Immediate action required
 
 **Warnings (⚠️)**
+
 - Operation completed with issues
 - Quality below optimal standards
 - Attention recommended
 
 **Information (💡)**
+
 - Suggestions for improvement
 - Best practice recommendations
 - Optional optimizations
@@ -238,30 +266,33 @@ For operations with continuous progress:
 ### Audio Feedback Integration
 
 #### Audio Cue Standards
+
 Based on the framework's audio hook configuration:
 
 **Operation Completion (Swish sound)**
+
 - Successful command completion
 - Agent task finishing
 - Quality gate passing
 
 **Session Events (Chord sound)**
+
 - Framework startup/shutdown
 - Major workflow transitions
 - Error recovery completion
 
 **Notifications (Aurora sound)**
+
 - Important alerts requiring attention
 - Quality threshold warnings
 - System health notifications
-
----
 
 ## Agent Coordination Interface
 
 ### Agent Selection and Status
 
 #### Agent Health Display
+
 ```text
 🎭 Agent Ecosystem Status:
 
@@ -286,6 +317,7 @@ Infrastructure:
 ```
 
 #### Multi-Agent Coordination Display
+
 ```text
 🌊 Wave 1: Foundation Analysis (Parallel execution)
   🔄 principal-architect: System architecture design
@@ -306,6 +338,7 @@ Infrastructure:
 ### Agent Communication Standards
 
 #### Agent Assignment Messages
+
 ```text
 🎯 Deploying agents for task: "E-commerce platform development"
 
@@ -318,6 +351,7 @@ Starting parallel execution...
 ```
 
 #### Agent Completion Messages
+
 ```text
 ✅ Agent completed: backend-engineer
 
@@ -335,18 +369,18 @@ Starting parallel execution...
 🔄 Next: frontend-engineer starting component implementation
 ```
 
----
-
 ## Accessibility and Inclusion
 
 ### Visual Accessibility
 
 #### Color Usage Standards
+
 - Never rely solely on color to convey information
 - Use icons and text labels alongside color coding
 - Provide high contrast alternatives for status indicators
 
 #### Status Indicators
+
 ```text
 Status indicators use multiple visual cues:
 ✅ Success (green checkmark + "Success" text)
@@ -358,11 +392,13 @@ Status indicators use multiple visual cues:
 ### Cognitive Accessibility
 
 #### Information Architecture
+
 - Present information in logical, scannable hierarchy
 - Use consistent terminology throughout interface
 - Provide clear navigation and orientation cues
 
 #### Language Clarity
+
 - Use plain language, avoid technical jargon when possible
 - Define technical terms when necessary
 - Provide context for complex operations
@@ -370,7 +406,9 @@ Status indicators use multiple visual cues:
 ### Motor Accessibility
 
 #### Command Shortcuts
+
 Provide efficient alternatives for common operations:
+
 ```bash
 # Common shortcuts
 /s      # Alias for /sync
@@ -383,28 +421,30 @@ Provide efficient alternatives for common operations:
 --dry<TAB> → --dry-run
 ```
 
----
-
 ## Performance and Responsiveness
 
 ### Response Time Standards
 
 #### Immediate Feedback (< 100ms)
+
 - Command parsing and validation
 - Help text display
 - Basic status queries
 
 #### Quick Operations (< 1 second)
+
 - File synchronization
 - Simple validation checks
 - Agent health queries
 
 #### Standard Operations (1-5 seconds)
+
 - Repository analysis
 - Single-agent tasks
 - Quality gate validation
 
 #### Complex Operations (5-30 seconds)
+
 - Multi-agent coordination
 - Comprehensive testing
 - Full project implementation
@@ -412,14 +452,18 @@ Provide efficient alternatives for common operations:
 ### Loading State Management
 
 #### Progressive Loading
+
 For operations that take longer than 2 seconds:
+
 1. **Immediate acknowledgment** (< 100ms)
 2. **Activity indication** (animated progress)
 3. **Detailed progress** (stage-by-stage updates)
 4. **Completion confirmation** (results summary)
 
 #### Cancellation Support
+
 All long-running operations should support graceful cancellation:
+
 ```text
 🔄 Processing... (Press Ctrl+C to cancel)
 
@@ -428,18 +472,18 @@ Operation cancelled by user
 ✅ Cleanup completed - system state restored
 ```
 
----
-
 ## Error Prevention and Recovery
 
 ### Proactive Error Prevention
 
 #### Input Validation
+
 - Validate command syntax before execution
 - Check prerequisites and dependencies
 - Warn about potentially destructive operations
 
 #### Smart Defaults
+
 - Provide safe, reversible defaults for all operations
 - Offer confirmation prompts for significant changes
 - Auto-backup before destructive operations
@@ -447,11 +491,13 @@ Operation cancelled by user
 ### Error Recovery Guidance
 
 #### Recovery Action Hierarchy
+
 1. **Automatic Recovery**: System resolves issue without user intervention
 2. **Guided Recovery**: System provides specific steps for user action
 3. **Manual Recovery**: User must investigate and resolve independently
 
 #### Recovery Message Template
+
 ```text
 ❌ Error: [Specific issue description]
 
@@ -469,18 +515,18 @@ If automatic recovery fails:
 🔍 For detailed diagnosis: /debug "[error context]"
 ```
 
----
-
 ## Integration and Extensibility
 
 ### Tool Integration Standards
 
 #### Git Integration
+
 - Honor existing git configuration and workflows
 - Provide clear commit messages with context
 - Respect git hooks and quality gates
 
 #### IDE Integration
+
 - Support common development environment patterns
 - Respect existing file watchers and build processes
 - Provide integration points for popular IDEs
@@ -488,38 +534,43 @@ If automatic recovery fails:
 ### Customization Support
 
 #### User Preferences
+
 Allow customization of:
+
 - Default agent selection preferences
 - Quality threshold settings
 - Verbosity levels and output formats
 - Audio feedback preferences
 
 #### Team Configuration
+
 Support team-wide customization:
+
 - Shared agent selection policies
 - Quality gate configurations
 - Workflow templates and patterns
 - Communication and notification preferences
-
----
 
 ## Testing and Validation
 
 ### Interface Testing Standards
 
 #### Usability Testing Checklist
+
 - [ ] New users can complete basic tasks within 5 minutes
 - [ ] Expert users can efficiently use advanced features
 - [ ] Error states provide clear recovery guidance
 - [ ] Help system answers common questions
 
 #### Accessibility Testing
+
 - [ ] Screen reader compatibility verified
 - [ ] Keyboard navigation fully functional
 - [ ] Color contrast meets WCAG standards
 - [ ] Text scaling works correctly
 
 #### Performance Testing
+
 - [ ] Command response times meet standards
 - [ ] Large repository handling tested
 - [ ] Memory usage within acceptable limits
@@ -528,11 +579,12 @@ Support team-wide customization:
 ### Feedback Collection
 
 #### User Feedback Integration
+
 - Built-in feedback collection for common pain points
 - Usage analytics to identify improvement opportunities
 - Regular usability testing with diverse user groups
 - Community feedback channels and issue tracking
 
----
-
-*These interface guidelines ensure the Claude framework provides a consistent, intuitive, and efficient user experience across all interaction points, supporting users from beginners to experts while maintaining high standards for accessibility and performance.*
+*These interface guidelines ensure the Claude framework provides a consistent, intuitive, and efficient user
+experience across all interaction points, supporting users from beginners to experts while maintaining high
+standards for accessibility and performance.*
