@@ -29,6 +29,30 @@ Deploy multiple agent instances simultaneously for comprehensive analysis:
 
 ```yaml
 # WAVE 1: SIMULTANEOUS PRE-COMMIT ANALYSIS
+codebase-analyst:
+  role: Maintain professional repository standards
+  deployment: 1 instance for repository hygiene analysis
+  responsibilities:
+    - Identify temporary/ephemeral files that should not be committed
+    - Detect auto-generated files that belong in .gitignore
+    - Find development artifacts (logs, dumps, debug files)
+    - Identify IDE-specific files and build artifacts
+    - Check for OS-specific files (.DS_Store, Thumbs.db, etc.)
+  patterns_to_detect:
+    - Temporary directories: .tmp/, tmp/, temp/, cache/, logs/
+    - Log files: *.log, *.debug, *.trace
+    - Build artifacts: dist/, build/, target/, out/
+    - IDE files: .idea/, .vscode/, *.swp, *.swo
+    - OS files: .DS_Store, Thumbs.db, desktop.ini
+    - Debug files: *.dump, *.stackdump, core.*
+    - Package files: node_modules/, vendor/, .env.local
+  input: All staged files, current .gitignore contents
+  parallel_with: [code-reviewer instances, security-auditor instances, test-engineer]
+  output: 
+    - List of files to unstage/remove
+    - Suggested .gitignore additions
+    - Repository cleanliness report
+
 code-reviewer (multi-instance pool):
   deployment: 3-4 instances based on changed file types
   distribution:
@@ -37,7 +61,7 @@ code-reviewer (multi-instance pool):
     - instance_3: Infrastructure changes (Docker, CI/CD, configs)
     - instance_4: Test and documentation changes
   role: Analyze code quality, style, and completeness
-  parallel_with: [security-auditor instances, test-engineer]
+  parallel_with: [codebase-analyst, security-auditor instances, test-engineer]
   output: Quality assessment, blocking issues per domain
 
 security-auditor (multi-instance pool):
@@ -46,13 +70,13 @@ security-auditor (multi-instance pool):
     - instance_1: Secrets scanning (API keys, passwords, tokens)
     - instance_2: Vulnerability patterns (SQL injection, XSS, dependencies)
   role: Identify security vulnerabilities and sensitive data
-  parallel_with: [code-reviewer instances, test-engineer]
+  parallel_with: [codebase-analyst, code-reviewer instances, test-engineer]
   output: Security clearance or blocking security issues
 
 test-engineer:
   role: Verify all tests pass with current changes
   input: Changed files, existing test suites, test coverage
-  parallel_with: [code-reviewer instances, security-auditor instances]
+  parallel_with: [codebase-analyst, code-reviewer instances, security-auditor instances]
   output: Test results, coverage metrics, failing tests identification
 ```
 
@@ -60,6 +84,7 @@ test-engineer:
 
 After Wave 1 completes, Claude analyzes all agent outputs to identify blocking issues:
 
+- **Repository Hygiene Issues**: Temporary files, build artifacts, or files that should be in .gitignore
 - **Security Issues**: Any secrets, vulnerabilities, or security anti-patterns
 - **Quality Issues**: Linting errors, code style violations, complexity issues
 - **Test Failures**: Broken tests, insufficient coverage, missing tests
@@ -70,6 +95,7 @@ After Wave 1 completes, Claude analyzes all agent outputs to identify blocking i
 - ✅ **No Issues Found**: Proceed directly to Wave 3 (Final Commit)
 - ⚠️ **Issues Found**: Deploy Wave 2 (Auto-Fix Issues) with targeted agents
 - 🚫 **Critical Security**: Block commit until manual intervention
+- 🧹 **Temporary Files Found**: Auto-unstage and suggest .gitignore updates
 
 ### Wave 2: Auto-Fix Issues (Conditional Parallel)
 
@@ -77,12 +103,26 @@ Deploy only when Wave 1 identifies fixable issues. Each issue type gets dedicate
 
 ```yaml
 # WAVE 2: TARGETED AUTO-REMEDIATION (CONDITIONAL)
+codebase-analyst (cleanup-focused):
+  condition: Temporary files OR inappropriate files detected
+  role: Clean repository and update .gitignore
+  actions:
+    - Auto-unstage temporary/ephemeral files
+    - Remove development artifacts from staging
+    - Update .gitignore with newly identified patterns
+    - Clean up OS-specific files (.DS_Store, etc.)
+  parallel_with: [code-reviewer instances, test-engineer instances]
+  output: 
+    - Cleaned staging area
+    - Updated .gitignore file
+    - Repository hygiene report
+
 code-reviewer (fix-focused instances):
   condition: Linting errors OR style violations detected
   deployment: N instances where N = number of files with issues
   distribution: One instance per file requiring fixes
   role: Auto-fix linting errors, style issues, complexity problems
-  parallel_with: [test-engineer instances, tech-writer]
+  parallel_with: [codebase-analyst, test-engineer instances, tech-writer]
   output: Fixed files, remaining manual issues
 
 test-engineer (fix-focused instances):
@@ -158,6 +198,7 @@ codebase-analyst:
 🔍 Deploying parallel analysis agents...
 
 📊 Agent Status:
+  - codebase-analyst: Scanning for temporary files... ⚠️ (1.5s)
   - code-reviewer[frontend]: Analyzing React components... ✅ (2.1s)
   - code-reviewer[backend]: Analyzing API endpoints... ✅ (1.8s)
   - code-reviewer[infra]: Analyzing Docker configs... ✅ (1.2s)
@@ -167,6 +208,8 @@ codebase-analyst:
   - test-engineer: Running test suite... ❌ (3.1s)
 
 ⚠️ Issues Identified:
+  - 5 temporary files detected (.tmp/, *.log, .DS_Store)
+  - 2 auto-generated files should be in .gitignore
   - 3 linting errors in src/components/
   - 2 failing unit tests in auth module
   - Missing JSDoc for new API endpoints
@@ -182,6 +225,10 @@ codebase-analyst:
 🔧 Deploying targeted remediation agents...
 
 📊 Fix Status:
+  - codebase-analyst: Cleaning repository... ✅ (1.8s)
+    • Unstaged: .tmp/debug.log, .tmp/cache/, .DS_Store
+    • Updated .gitignore: Added *.log, .DS_Store patterns
+    • Removed: 5 temporary files from staging
   - code-reviewer[src/components/Login.tsx]: Fixed ESLint errors... ✅ (1.2s)
   - code-reviewer[src/components/Form.tsx]: Fixed style violations... ✅ (0.9s)
   - code-reviewer[src/api/auth.ts]: Added missing JSDoc... ✅ (1.5s)
@@ -190,6 +237,7 @@ codebase-analyst:
   - tech-writer: Generated commit message options... ✅ (1.1s)
 
 ✅ All Issues Resolved:
+  - Repository: 5 temp files unstaged, .gitignore updated
   - Linting: 3/3 errors fixed
   - Tests: 2/2 failures resolved
   - Coverage: 85% (target: 80%)
@@ -237,6 +285,15 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ## Auto-Remediation Capabilities
 
 ### Automatic Fix Categories
+
+**Repository Hygiene Issues**:
+
+- Auto-unstage temporary files (`.tmp/`, `*.log`, `*.debug`)
+- Remove OS-specific files (.DS_Store, Thumbs.db)
+- Clean up build artifacts (dist/, build/, node_modules/)
+- Remove IDE configuration files (.idea/, .vscode/)
+- Update .gitignore with newly detected patterns
+- Exclude auto-generated files from commits
 
 **Code Quality Issues**:
 
@@ -364,12 +421,14 @@ Quality Improvements:
 ## Notes
 
 - **Zero-tolerance quality policy**: Issues must be fixed, never bypassed
-- **Automatic cleanup**: Removes temporary files before staging
+- **Professional repository standards**: Maintains clean, professional-level repository without temporary or ephemeral files
+- **Automatic cleanup**: Removes temporary files before staging and updates .gitignore
 - **Smart retry logic**: Handles pre-commit hook modifications gracefully
 - **Comprehensive logging**: Tracks all agent activities and fixes applied
 - **Rollback capability**: Can undo auto-fixes if they introduce problems
 - **Educational output**: Explains what was fixed and why
 - **Integration friendly**: Works with existing CI/CD pipelines and git workflows
+- **Repository hygiene**: Proactively identifies and excludes files that don't belong in version control
 
 The /commit command transforms commit creation from a manual, error-prone process into an automated, quality-assured
 workflow that ensures every commit meets high standards while providing rapid feedback and automatic remediation.
