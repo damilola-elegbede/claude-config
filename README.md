@@ -166,7 +166,7 @@ development lifecycle coverage.
 | **Security** | 1 | security-auditor | Security assessment and compliance |
 | **Architecture** | 4 | principal-architect, api-architect, cloud-architect, frontend-architect | System design and architectural decisions |
 | **Design** | 3 | ui-designer, mobile-ui, ux-researcher | User experience and interface design |
-| **Analysis** | 3 | codebase-analyst, researcher, business-analyst | Research and requirements analysis |
+| **Analysis** | 3 | codebase-analyst, researcher, business-analyst | Research and requirements analysis with Wave 1 capabilities |
 | **Infrastructure** | 4 | devops, platform-engineer, database-admin, debugger | Operations, deployment, and platform management |
 | **Coordination** | 3 | product-strategist, tech-writer, project-orchestrator | Strategy, documentation, and project coordination |
 
@@ -231,7 +231,7 @@ Performance: 5x faster than sequential validation
 
 ### ⭐⭐⭐⭐ Four-Star Commands (Enhanced Operations)
 
-- **`/commit`** - Smart Git operations with semantic commit generation
+- **`/commit`** - Enhanced Git operations with repository hygiene features, automatic temporary file cleanup, and professional repository standards maintenance
 - **`/push`** - Safe repository operations with comprehensive validation
 - **`/branch`** - Context-aware branching with intelligent naming conventions
 - **`/deploy`** - Production deployment with comprehensive orchestration
