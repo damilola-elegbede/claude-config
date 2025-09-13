@@ -2,7 +2,7 @@
 
 Welcome to the comprehensive documentation for the Claude Configuration Repository - a production-ready
 Smart Agent Orchestration Framework that transforms Claude Code CLI into a sophisticated multi-agent
-system with **28 specialized agents** and **20 essential commands**.
+system with **28 specialized agents** and **21 essential commands**.
 
 ## 🚀 Quick Start
 
@@ -63,7 +63,7 @@ Understand the revolutionary performance improvements:
 Practical guides for daily development:
 
 - **[Development Guidelines](development/README.md)** - Best practices and workflows
-- **[Command Reference](../README.md#-core-commands-20-essential-tools)** - All 20 commands explained
+- **[Command Reference](../README.md#-core-commands-21-essential-tools)** - All 21 commands explained
 - **[Quality Gates](quality/QUALITY_GATES.md)** - Quality assurance framework
 
 ### 🔌 Integration & API
@@ -106,7 +106,7 @@ graph TB
     subgraph "Claude Configuration Repository"
         A[Smart Orchestration Framework]
         B[28 Specialized Agents]
-        C[20 Essential Commands]
+        C[21 Essential Commands]
         D[Multi-Instance Parallelization]
         E[Quality Gate System]
     end
@@ -161,7 +161,7 @@ graph TB
 
 ## 🔧 Command Categories
 
-### ⭐⭐⭐⭐⭐ Five-Star Commands (12)
+### ⭐⭐⭐⭐⭐ Five-Star Commands (13)
 
 Core orchestration commands delivering maximum value:
 
@@ -172,6 +172,7 @@ Core orchestration commands delivering maximum value:
 - **`/review`** - Multi-dimensional quality analysis
 - **`/resolve-cr`** - Intelligent PR resolution with comment analysis
 - **`/debug`** - Systematic investigation with evidence gathering
+- **`/implementation-plan`** - Detailed implementation planning without execution
 
 ### ⭐⭐⭐⭐ Four-Star Commands (6)
 

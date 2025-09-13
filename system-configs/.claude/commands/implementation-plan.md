@@ -1,6 +1,6 @@
 ---
 description: Generate detailed implementation plans without execution
-argument-hint: [description] [--no-execute|--verbose|--minimal]
+argument-hint: "[description] [--no-execute|--verbose|--minimal|--compare <approach>]"
 ---
 
 # /implementation-plan Command

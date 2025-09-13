@@ -3,7 +3,7 @@
 ## 🚀 Get Started in 5 Minutes
 
 This guide gets you up and running with the Claude Configuration Framework in minutes. Experience the power of **28 specialized agents**
-and **20 essential commands** for dramatically faster development workflows.
+and **21 essential commands** for dramatically faster development workflows.
 
 ## Prerequisites
 
@@ -65,7 +65,7 @@ Experience the power immediately:
 ### What You Just Installed
 
 - **28 Specialized Agents** organized in 8 categories
-- **20 Essential Commands** for development workflows
+- **21 Essential Commands** for development workflows
 - **Smart Orchestration** with parallel execution
 - **Quality Gates** with comprehensive validation
 - **MCP Integration** for enhanced capabilities

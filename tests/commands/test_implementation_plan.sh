@@ -1,8 +1,10 @@
 #!/bin/bash
 # Test for /implementation-plan command
+set -euo pipefail
 
 # Source test utilities
 source "$(dirname "$0")/../utils.sh"
+: "${ORIGINAL_DIR:=$(cd "$(dirname "$0")"/../.. && pwd)}"
 
 # Test implementation-plan command file exists
 test_implementation_plan_file_exists() {
@@ -109,7 +111,7 @@ test_implementation_plan_output_format() {
         "Should include verification steps section"
 
     # Check for markdown formatting examples
-    assert_file_contains "$plan_file" "\`\`\`markdown" \
+    assert_file_contains "$plan_file" '```markdown' \
         "Should include markdown format examples"
 }
 
