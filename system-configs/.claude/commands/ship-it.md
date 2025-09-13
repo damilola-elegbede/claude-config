@@ -18,13 +18,13 @@ Use `$ARGUMENTS` to determine workflow type (empty for basic, `--full` or `-f` f
 ## Description
 
 Orchestrate development workflows by running multiple `/` commands in sequence with **automatic issue resolution**.
-When commands report problems, deploy specialized agents to fix them and retry until success. Never stop on failures -
-always find a way forward through **continuous wave deployment until successfully shipped**.
+When commands report problems, attempt reasonable fixes but prioritize completing the workflow, especially ensuring
+the PR gets created in full mode.
 
 Execute one of three workflow types:
 
-- **Basic (default)**: `/docs --audit` → `/docs readme` → `/review --quick` → `/commit` → `/push`
-- **Full (--full/-f)**: `/docs --audit` → `/docs` → `/review` → `/test` → `/docs --clean` → `/commit` → `/push` → `/pr`
+- **Basic (default)**: `/review --quick` → `/commit` → `/push`
+- **Full (--full/-f)**: `/review` → `/test` → `/commit` → `/push` → `/pr`
 - **Lite (--lite/-l)**: `/commit` → `/push`
 
 ## Expected Output
@@ -34,66 +34,38 @@ Execute one of three workflow types:
 ```text
 🚀 Starting ship-it workflow: [basic|full|lite]
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-WAVE 1: WORKFLOW EXECUTION
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Step 1/5: /review
+✅ Review completed
 
-Step X/Y: [command]
-[Command execution and results]
+Step 2/5: /test
+⚠️ 2 tests failing - attempting quick fix...
+✅ Fixed 1 test, continuing with workflow
 
-⚠️ Issues detected - initiating Wave 2...
+Step 3/5: /commit
+✅ Commit created successfully
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-WAVE 2: AUTO-REMEDIATION
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Step 4/5: /push
+✅ Pushed to remote
 
-🔧 Deploying parallel specialist instances:
-🤖 [3x] security-auditor instances for security issues
-🤖 [5x] test-engineer instances for test failures
-🤖 [2x] code-reviewer instances for quality issues
-🤖 [4x] performance-specialist instances for performance bottlenecks
+Step 5/5: /pr (full mode only)
+✅ Pull request created: https://github.com/owner/repo/pull/123
 
-✅ Applied fixes from 14 parallel agents
-📝 Committing auto-fixes...
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-WAVE 3: RETRY & CONTINUE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-⏳ Retrying [command]...
-⚠️ New issues detected - initiating Wave 4...
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-WAVE 4: ESCALATED REMEDIATION
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-🔧 Deploying larger remediation army:
-🤖 [6x] security-auditor instances for persistent security issues
-🤖 [10x] test-engineer instances for complex test failures
-🤖 [4x] devops instances for infrastructure problems
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-WAVE N: DEPLOY REMEDIATION ARMIES UNTIL SUCCESSFULLY SHIPPED
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-⚡ Waves continue indefinitely until all commands succeed
-🔄 Each wave doubles specialist deployment for unresolved issues
-✅ Final wave achieves 100% success
-
-🎉 Ship-it workflow completed with auto-remediation after N waves!
+🎉 Ship-it workflow completed!
+  - 4/5 commands succeeded
+  - 1 test still failing (logged for manual review)
+  - PR created successfully
 ```
 
 ## Behavior
 
 ### Core Principles
 
-- **Infinite Wave Execution**: Waves continue until 100% success - literally never gives up
-- **Massive Parallelization**: Deploy multiple agent instances per issue type
-- **Auto-Remediation**: Commands don't fail - they deploy armies of agents to fix issues
-- **Progressive Problem Solving**: Identify → Deploy Specialists → Apply Fixes → Retry → Continue
-- **Resilient Execution**: Handle all failure modes through continuous parallel agent deployment
+- **Limited Remediation**: Max 2 retry attempts per command to avoid getting stuck
+- **Workflow Completion**: Prioritize completing all steps, especially PR creation in full mode
+- **Smart Fixes**: Apply obvious fixes but don't over-engineer solutions
+- **PR Guarantee**: In full mode, always attempt to create PR even if earlier steps had issues
 - **Smart PR Detection**: Create PR only if none exists for current branch
-- **Never Give Up Philosophy**: Wave 3 may trigger Wave 4, 5, 6+ if issues persist until shipped
+- **Time Bounded**: Complete workflow within reasonable time (5-10 minutes max)
 
 ### Wave-Based Orchestration Pattern
 
@@ -160,32 +132,14 @@ After Wave 2 remediation:
 - Verify fixes are comprehensive
 - Prepare retry strategy if needed
 
-#### Wave 3: Retry & Continue
+#### Wave 3: Complete Workflow
 
-Re-execute failed commands with all fixes applied:
+After remediation attempt, continue with remaining commands:
 
-- Commands run with fixed codebase
-- Monitor for successful completion
-- **If issues persist**: Initiate Wave 4 with expanded specialist deployment
-
-#### Wave 4, 5, 6+ (Continuous Until Success)
-
-**The command literally never gives up** - each subsequent wave:
-
-- **Doubles specialist deployment** for unresolved issues
-- **Deploys alternative approaches** through different agent combinations
-- **Escalates remediation strategies** with more aggressive parallel execution
-- **Continues indefinitely** until all commands succeed
-- **Example**: Wave 4 deploys 2x agents, Wave 5 deploys 4x agents, Wave 6 tries completely different approaches
-
-```yaml
-Wave Escalation Pattern:
-  Wave 2: Deploy 10-20 agents for initial remediation
-  Wave 4: Deploy 20-40 agents with alternative strategies
-  Wave 5: Deploy 40-80 agents with advanced techniques
-  Wave 6: Deploy 80+ agents with experimental approaches
-  Wave N: Continue until shipped - no failure acceptance
-```
+- If a command fails after 2 retries, log issue and continue
+- **Priority**: Complete all workflow steps
+- **Full mode**: ALWAYS attempt to create PR as final step
+- Don't let perfect be the enemy of done
 
 ### Enhanced Agent Routing Logic
 
@@ -368,17 +322,14 @@ Never-Fail Examples:
   Wave N → Wave N+1: Continue indefinitely - literally never gives up
 ```
 
-#### Retry Limits (Continuous Wave Philosophy)
+#### Execution Limits
 
 ```yaml
-Wave 1: Single execution attempt per command
-Wave 2: Deploy up to 50 parallel agents for initial remediation
-Wave 3: Retry each command, escalate to Wave 4 if ANY failures
-Wave 4: Deploy up to 100 parallel agents with alternative strategies
-Wave 5: Deploy up to 200 parallel agents with experimental approaches
-Wave N: NO LIMIT - continues until all commands succeed
-Total Workflow: NO TIME LIMIT - waves continue until shipped
-Philosophy: The command literally never gives up until success
+Per Command: Maximum 2 retry attempts
+Remediation: Deploy 5-10 agents for quick fixes only
+Workflow Time: 5-10 minutes maximum
+PR Creation: Always attempt in full mode, even if earlier steps failed
+Philosophy: Complete the workflow and ship it, don't get stuck on perfection
 ```
 
 ### Workflow State Management
@@ -407,23 +358,18 @@ Continuous Wave Metrics:
 
 ```yaml
 Optimal Execution:
-  - Wave 1: Complete in 2-5 minutes
-  - Wave 2: Deploy 20-50 agents in parallel
-  - Wave 3: Achieve 100% success rate OR escalate
-  - Additional Waves: Scale deployment until success
-  - Total Time: NO LIMIT - continues until shipped
+  - Basic workflow: 2-3 minutes
+  - Full workflow: 3-5 minutes (including PR creation)
+  - Lite workflow: 1-2 minutes
 
-Parallelization Targets:
-  - Wave 2: Minimum 10 agents, optimal 20-30 agents
-  - Wave 4: Minimum 20 agents, optimal 40-60 agents
-  - Wave 6: Minimum 40 agents, optimal 80-120 agents
-  - Wave N: Unlimited scaling until success
-  - Zero sequential agent deployment across all waves
+Remediation Approach:
+  - Quick fixes only: 5-10 agents maximum
+  - Max 2 retries per command
+  - Continue workflow even if command fails
 
 Success Indicators:
-  - All commands pass after Wave N (where N ≥ 3)
-  - No manual intervention required across any wave
-  - Complete audit trail maintained for all waves
-  - All issues auto-remediated through continuous deployment
-  - Workflow literally never gives up until shipped
+  - Workflow completes within time limit
+  - PR created successfully in full mode
+  - Most commands succeed (80%+ success rate acceptable)
+  - Clear output showing what was completed
 ```
