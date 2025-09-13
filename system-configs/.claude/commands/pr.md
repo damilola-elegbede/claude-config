@@ -9,7 +9,7 @@ argument-hint: "[target_branch] [--draft]"
 
 ```bash
 /pr                     # Creates PR to main branch
-/pr develop             # Creates PR targeting develop branch  
+/pr develop             # Creates PR targeting develop branch
 /pr --draft             # Creates draft PR for work in progress
 /pr main --draft        # Combined: targets main branch as draft
 ```
@@ -30,7 +30,7 @@ Focuses on core PR creation functionality with minimal overhead.
 
 📝 Generating PR content...
   Title: feat(auth): add OAuth2 integration
-  
+
 ✅ Pull request created:
   https://github.com/owner/repo/pull/123
 ```
@@ -50,7 +50,7 @@ Optional_Agents:
   code-reviewer:
     role: Quick analysis of change type and scope
     usage: Only if changes are complex (>10 files)
-    
+
   tech-writer:
     role: Generate clear PR title and description
     usage: Only if commit messages are unclear
@@ -158,7 +158,7 @@ When `/pr` is invoked:
 ### Execution Time
 
 - **Change analysis**: 1-2 seconds
-- **Content generation**: 1-2 seconds  
+- **Content generation**: 1-2 seconds
 - **PR creation**: 1 second
 - **Total**: 3-5 seconds
 
