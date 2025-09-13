@@ -75,6 +75,7 @@ fi
 echo "Running Command Tests..."
 echo "------------------------"
 run_test "Plan Command" "commands/test_plan.sh"
+run_test "Implementation Plan Command" "commands/test_implementation_plan.sh"
 run_test "Commit Command" "commands/test_commit.sh"
 run_test "Push Command" "commands/test_push.sh"
 run_test "Test Command" "commands/test_test.sh"

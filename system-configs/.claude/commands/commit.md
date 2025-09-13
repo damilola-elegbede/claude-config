@@ -48,7 +48,7 @@ codebase-analyst:
     - Package files: node_modules/, vendor/, .env.local
   input: All staged files, current .gitignore contents
   parallel_with: [code-reviewer instances, security-auditor instances, test-engineer]
-  output: 
+  output:
     - List of files to unstage/remove
     - Suggested .gitignore additions
     - Repository cleanliness report
@@ -112,7 +112,7 @@ codebase-analyst (cleanup-focused):
     - Update .gitignore with newly identified patterns
     - Clean up OS-specific files (.DS_Store, etc.)
   parallel_with: [code-reviewer instances, test-engineer instances]
-  output: 
+  output:
     - Cleaned staging area
     - Updated .gitignore file
     - Repository hygiene report

@@ -65,7 +65,7 @@ Experience the power immediately:
 ### What You Just Installed
 
 - **28 Specialized Agents** organized in 8 categories
-- **20 Essential Commands** for development workflows  
+- **20 Essential Commands** for development workflows
 - **Smart Orchestration** with parallel execution
 - **Quality Gates** with comprehensive validation
 - **MCP Integration** for enhanced capabilities
