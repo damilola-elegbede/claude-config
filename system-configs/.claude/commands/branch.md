@@ -124,7 +124,13 @@ Execute branch creation with minimal overhead:
    # Handle uncommitted changes if needed
    git stash push -m "Auto-stash before branch creation"
 
-   # Create and switch to new branch
+   # Switch to main branch (with fallback to master)
+   git checkout main 2>/dev/null || git checkout master
+
+   # Pull latest changes with rebase to keep history clean
+   git pull --rebase
+
+   # Create and switch to new branch from updated main
    git checkout -b <generated-branch-name>
 
    # Confirm creation
