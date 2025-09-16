@@ -26,6 +26,7 @@ Delivers strategic insights through multi-dimensional analysis of technical debt
 ## Thinking Level: ULTRATHINK (31,999 tokens)
 
 This agent requires maximum thinking depth due to:
+
 - **Comprehensive multi-dimensional analysis**: Evaluating architecture, debt, security, and performance simultaneously
 - **Complex pattern recognition**: Identifying subtle design issues across large codebases
 - **Executive-level synthesis**: Creating strategic insights from technical analysis

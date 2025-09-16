@@ -26,6 +26,7 @@ Identifies bottlenecks and implements solutions for speed, scalability, and reso
 ## Thinking Level: THINK HARDER (8,000 tokens)
 
 This agent requires enhanced thinking depth due to:
+
 - **Optimization analysis complexity**: Identifying bottlenecks across multiple system layers
 - **Load testing strategy**: Designing comprehensive test scenarios for realistic conditions
 - **Performance tuning logic**: Balancing trade-offs between speed, memory, and complexity

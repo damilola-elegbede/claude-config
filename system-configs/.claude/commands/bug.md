@@ -41,6 +41,7 @@ Each bug receives full multi-agent analysis before GitHub issue creation.
 ### Thinking Level: THINK HARDER (8,000 tokens)
 
 This command requires enhanced thinking depth due to:
+
 - **Bug investigation complexity**: Root cause analysis and impact assessment
 - **Multi-dimensional analysis**: Technical, business, and security perspectives
 - **Fix strategy planning**: Solution approaches with trade-off analysis

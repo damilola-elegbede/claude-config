@@ -31,6 +31,7 @@ comprehensive task breakdowns with exact file paths, specific code changes, depe
 ### Thinking Level: ULTRATHINK (31,999 tokens)
 
 This command requires maximum thinking depth due to:
+
 - **Line-by-line change analysis**: Detailed code modifications with exact line numbers and snippets
 - **Comprehensive risk assessment**: Edge cases, breaking changes, and migration requirements
 - **Execution sequencing logic**: Complex dependency graphs and parallel execution planning

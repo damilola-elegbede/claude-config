@@ -26,6 +26,7 @@ Bridges infrastructure and development teams to dramatically accelerate develope
 ## Thinking Level: THINK HARDER (8,000 tokens)
 
 This agent requires enhanced thinking depth due to:
+
 - **Developer experience optimization**: Complex workflow analysis and improvement strategies
 - **Platform abstraction design**: Creating intuitive interfaces for complex infrastructure
 - **Golden path architecture**: Designing standardized yet flexible development patterns

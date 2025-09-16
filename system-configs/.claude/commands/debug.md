@@ -26,6 +26,7 @@ Specializes in hard-to-reproduce issues, race conditions, memory leaks, and prod
 ### Thinking Level: ULTRATHINK (31,999 tokens)
 
 This command requires maximum thinking depth due to:
+
 - **Iterative investigation waves**: 3-7+ waves of progressive forensic analysis
 - **Complex bug pattern recognition**: Race conditions, memory leaks, intermittent failures
 - **Multi-system root cause analysis**: Distributed system failures with cascading effects

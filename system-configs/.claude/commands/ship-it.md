@@ -26,6 +26,7 @@ the PR gets created in full mode.
 ### Thinking Level: MEGATHINK (10,000 tokens)
 
 This command requires substantial thinking depth due to:
+
 - **Full deployment orchestration**: Coordinating review → test → commit → push → PR workflow
 - **Automatic issue resolution**: Complex decision-making for handling workflow failures
 - **Rollback strategy planning**: Determining recovery paths for deployment issues

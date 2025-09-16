@@ -26,6 +26,7 @@ Designs sophisticated React/Vue systems for >100k DAU with Core Web Vitals preci
 ## Thinking Level: MEGATHINK (10,000 tokens)
 
 This agent requires substantial thinking depth due to:
+
 - **Micro-frontend orchestration**: Complex module federation and deployment strategies
 - **Performance optimization depth**: Core Web Vitals analysis for >100k DAU systems
 - **State management complexity**: Advanced patterns for real-time collaborative apps

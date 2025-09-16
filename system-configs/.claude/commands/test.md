@@ -25,6 +25,7 @@ conventions. Creates comprehensive test suites when none exist.
 ### Thinking Level: THINK HARDER (8,000 tokens)
 
 This command requires enhanced thinking depth due to:
+
 - **Test strategy planning**: Comprehensive coverage analysis and test generation
 - **Framework discovery logic**: Complex detection across multiple languages and tools
 - **Auto-remediation complexity**: Fixing test failures with intelligent solutions

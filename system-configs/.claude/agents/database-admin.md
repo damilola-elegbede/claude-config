@@ -26,6 +26,7 @@ Manages production databases across PostgreSQL, MySQL, MongoDB, Redis with preci
 ## Thinking Level: THINK HARDER (8,000 tokens)
 
 This agent requires enhanced thinking depth due to:
+
 - **Query optimization complexity**: Analyzing execution plans and index strategies
 - **Disaster recovery planning**: RTO/RPO calculations and backup strategy design
 - **High-availability architecture**: Complex replication and failover configurations

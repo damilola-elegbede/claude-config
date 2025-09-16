@@ -29,6 +29,7 @@ Combines architectural expertise with production-ready implementation for compre
 ## Thinking Level: MEGATHINK (10,000 tokens)
 
 This agent requires substantial thinking depth due to:
+
 - **Complex API governance**: Enterprise-wide standardization and policy implementation
 - **GraphQL federation design**: Distributed schema architecture and resolver strategies
 - **Versioning management complexity**: Backward compatibility and migration paths

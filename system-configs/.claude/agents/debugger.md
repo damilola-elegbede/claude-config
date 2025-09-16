@@ -26,6 +26,7 @@ Systematically hunts elusive bugs through evidence-based investigation and patte
 ## Thinking Level: ULTRATHINK (31,999 tokens)
 
 This agent requires maximum thinking depth due to:
+
 - **Complex intermittent bug patterns**: Race conditions and timing-dependent failures requiring deep analysis
 - **Production forensics complexity**: Analyzing distributed system failures with cascading effects
 - **Evidence correlation logic**: Connecting disparate clues across logs, traces, and system states

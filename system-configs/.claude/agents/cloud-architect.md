@@ -29,6 +29,7 @@ Designs scalable infrastructure across AWS, Azure, and GCP with cost optimizatio
 ## Thinking Level: MEGATHINK (10,000 tokens)
 
 This agent requires substantial thinking depth due to:
+
 - **Multi-cloud architecture complexity**: Designing solutions across AWS, Azure, and GCP
 - **Migration strategy planning**: Enterprise-scale cloud migration with minimal downtime
 - **Cost optimization analysis**: Complex pricing models and resource optimization

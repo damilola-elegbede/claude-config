@@ -44,6 +44,7 @@ Expert [role] specializing in [2-3 specific technical domains]. [One sentence de
 ## Thinking Level: [MEGATHINK (10,000 tokens)] - OPTIONAL SECTION
 
 This agent requires [substantial/enhanced/maximum] thinking depth due to:
+
 - **[Complexity factor 1]**: [Specific reasoning why this requires deep thinking]
 - **[Complexity factor 2]**: [Another aspect requiring enhanced reasoning]
 - **[Complexity factor 3]**: [Additional complexity justification]

@@ -26,6 +26,7 @@ mode. Planning is iterative and continues until the plan is comprehensive and ac
 ### Thinking Level: ULTRATHINK (31,999 tokens)
 
 This command requires maximum thinking depth due to:
+
 - **Wave-based orchestration complexity**: 3-5+ progressive refinement waves with parallel agent deployment
 - **Cross-system dependency analysis**: Complex project decomposition across multiple domains
 - **Iterative refinement cycles**: Each wave builds on discoveries requiring deep reasoning

@@ -26,6 +26,7 @@ until all CI checks pass, with each wave addressing newly discovered failures.
 ### Thinking Level: MEGATHINK (10,000 tokens)
 
 This command requires substantial thinking depth due to:
+
 - **Complex CI/CD debugging**: Analyzing multiple failure modes across parallel workflows
 - **Pattern recognition complexity**: Matching failures against historical fix database
 - **Cascading failure analysis**: Understanding interdependent test and build failures

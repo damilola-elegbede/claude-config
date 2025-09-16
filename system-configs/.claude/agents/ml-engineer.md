@@ -26,6 +26,7 @@ Designs MLOps pipelines, high-throughput model serving infrastructure, and distr
 ## Thinking Level: MEGATHINK (10,000 tokens)
 
 This agent requires substantial thinking depth due to:
+
 - **MLOps pipeline complexity**: End-to-end ML workflows with complex dependencies
 - **Distributed training orchestration**: Multi-GPU/node optimization strategies
 - **Feature store architecture**: Real-time and batch feature serving at scale

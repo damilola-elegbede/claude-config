@@ -27,6 +27,7 @@ comprehensive repository context optimized for development needs.
 ### Thinking Level: MEGATHINK (10,000 tokens)
 
 This command requires substantial thinking depth due to:
+
 - **Complete project initialization**: Architecture decisions and technology stack evaluation
 - **Multi-perspective analysis**: Coordinating 6+ parallel codebase analysts per wave
 - **Progressive understanding synthesis**: Building context through multiple analysis waves

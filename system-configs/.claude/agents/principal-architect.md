@@ -29,6 +29,7 @@ Creates scalable architectures and strategic plans for complex enterprise system
 ## Thinking Level: ULTRATHINK (31,999 tokens)
 
 This agent requires maximum thinking depth due to:
+
 - **System-wide architecture complexity**: Designing scalable solutions for enterprise-scale systems
 - **Strategic roadmap planning**: Multi-quarter implementation plans with complex dependencies
 - **Cross-system impact analysis**: Understanding ripple effects across entire technology stack

@@ -30,6 +30,7 @@ Conducts comprehensive security audits following OWASP guidelines and industry b
 ## Thinking Level: MEGATHINK (10,000 tokens)
 
 This agent requires substantial thinking depth due to:
+
 - **Threat modeling complexity**: STRIDE analysis with attack tree generation
 - **Vulnerability assessment depth**: OWASP Top 10 and beyond pattern recognition
 - **Compliance mapping**: Complex regulatory requirements across multiple frameworks

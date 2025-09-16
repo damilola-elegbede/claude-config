@@ -28,6 +28,7 @@ checklist first.
 ### Thinking Level: THINK HARDER (8,000 tokens)
 
 This command requires enhanced thinking depth due to:
+
 - **Multi-dimensional code analysis**: Quality, security, performance, and maintainability
 - **Pattern recognition complexity**: Identifying subtle issues and code smells
 - **Synthesis of multiple tools**: Combining linter, security scanner, and AI insights

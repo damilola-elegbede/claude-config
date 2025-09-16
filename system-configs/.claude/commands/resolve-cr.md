@@ -28,6 +28,7 @@ trigger resolution, followed by a detailed summary of the fixes for CodeRabbit.
 ### Thinking Level: MEGATHINK (10,000 tokens)
 
 This command requires substantial thinking depth due to:
+
 - **Comprehensive feedback analysis**: Processing multiple API sources and comment threads
 - **Parallel fix categorization**: Determining auto-fixable vs manual review items
 - **Multi-wave execution strategy**: Coordinating 5-8 parallel agent deployments
