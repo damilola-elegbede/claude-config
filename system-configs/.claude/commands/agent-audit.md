@@ -49,9 +49,9 @@ Total Agents: XX | Categories: X/8 | Compliance: XX% | Issues Fixed: XX
 
 ### YAML Front Matter Validation
 
-| Agent | Parseable | Valid Fields | Description Format | Error Details |
-|-------|-----------|--------------|-------------------|---------------|
-| debugger | ❌ | N/A | Multi-line without quotes | Line 3-4: Invalid YAML syntax |
+| Agent | Parseable | Valid Fields | Description Format | Thinking Keywords | Error Details |
+|-------|-----------|--------------|-------------------|-------------------|---------------|
+| debugger | ❌ | N/A | Multi-line without quotes | N/A | Line 3-4: Invalid YAML syntax |
 
 ### Manual Remediation Required
 
@@ -114,6 +114,7 @@ code-reviewer (8 instances - one per category):
     - YAML parseability: 100%
     - Template adherence: All sections present
     - Required fields validation: name, description, tools, model, category, color
+    - Optional fields validation: thinking-level, thinking-tokens (if present)
 ```
 
 **Claude Analysis Phase**: Review Wave 1 results, identify categories with issues, determine need for Wave 2 deployment.
@@ -235,7 +236,9 @@ Report Generation:
 ✅ **YAML Parseability**: 100% of agent files have valid YAML per AGENT_TEMPLATE.md
 ✅ **Template Adherence**: All 28 agents follow 46-line AGENT_TEMPLATE.md format
 ✅ **Required Fields**: name, description, tools, model, category, color present
+✅ **Optional Fields**: thinking-level and thinking-tokens validated when present (ultrathink: 31999, megathink: 10000, think harder: 8000, think: 4000)
 ✅ **Tool Validation**: No Task tool access, appropriate permissions
 ✅ **Anti-Pattern Free**: "Only Claude has orchestration authority" statement present
 ✅ **Model Appropriateness**: opus for complex reasoning, sonnet for standard, haiku for rapid tasks
+✅ **Thinking Enhancement**: Appropriate thinking levels for complex agents (architecture, forensics, analysis)
 ✅ **Remediation Success**: Auto-fixes applied successfully, manual interventions documented

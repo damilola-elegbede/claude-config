@@ -3,6 +3,8 @@ name: database-admin
 description: Use PROACTIVELY for database optimization, security hardening, and performance tuning. MUST BE USED for query optimization, index management, high-availability configuration, and disaster recovery planning.
 tools: Read, Write, Edit, Bash, Grep
 model: sonnet
+thinking-level: think harder
+thinking-tokens: 8000
 color: orange
 category: infrastructure
 ---
@@ -20,6 +22,16 @@ Manages production databases across PostgreSQL, MySQL, MongoDB, Redis with preci
 - Disaster recovery: Backup strategies, point-in-time recovery, RTO/RPO planning
 - Security hardening: Encryption, access control, audit logging, vulnerability management
 - Operational excellence: Monitoring setup, capacity planning, automated maintenance
+
+## Thinking Level: THINK HARDER (8,000 tokens)
+
+This agent requires enhanced thinking depth due to:
+
+- **Query optimization complexity**: Analyzing execution plans and index strategies
+- **Disaster recovery planning**: RTO/RPO calculations and backup strategy design
+- **High-availability architecture**: Complex replication and failover configurations
+- **Performance tuning depth**: Buffer pool, cache, and configuration optimization
+- **Migration strategy**: Zero-downtime migration planning with rollback procedures
 
 ## When to Engage
 

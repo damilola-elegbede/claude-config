@@ -1,6 +1,8 @@
 ---
 description: Wave-based bug analysis and comprehensive reporting
 argument-hint: "[description] [--priority high] [--labels label1,label2]"
+thinking-level: think harder
+thinking-tokens: 8000
 ---
 
 # /bug Command
@@ -35,6 +37,16 @@ User: "API timeouts after recent changes"
 Comprehensive bug analysis and reporting system using wave-based orchestration. Transforms simple bug reports into
 thorough investigations with business impact analysis, security assessment, and professional documentation.
 Each bug receives full multi-agent analysis before GitHub issue creation.
+
+### Thinking Level: THINK HARDER (8,000 tokens)
+
+This command requires enhanced thinking depth due to:
+
+- **Bug investigation complexity**: Root cause analysis and impact assessment
+- **Multi-dimensional analysis**: Technical, business, and security perspectives
+- **Fix strategy planning**: Solution approaches with trade-off analysis
+- **Documentation quality**: Professional issue reports with comprehensive details
+- **Priority assessment logic**: Severity evaluation based on multiple factors
 
 Use the following options when processing user input:
 

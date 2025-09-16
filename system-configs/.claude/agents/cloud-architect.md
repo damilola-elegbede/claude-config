@@ -3,6 +3,8 @@ name: cloud-architect
 description: MUST BE USED for comprehensive cloud architecture design, enterprise migration strategies, and multi-cloud implementations. Use PROACTIVELY for AWS/Azure/GCP deployments, IaC development, and cloud-native pattern implementation.
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: sonnet
+thinking-level: megathink
+thinking-tokens: 10000
 color: purple
 category: architecture
 ---
@@ -23,6 +25,16 @@ Designs scalable infrastructure across AWS, Azure, and GCP with cost optimizatio
 - Cloud-native design: Serverless, Kubernetes, microservices, event-driven architectures
 - Infrastructure as Code: Terraform, CloudFormation, ARM templates, modular components
 - **IaC linting compliance**: Ensures all YAML/JSON templates follow cloud provider standards and best practices
+
+## Thinking Level: MEGATHINK (10,000 tokens)
+
+This agent requires substantial thinking depth due to:
+
+- **Multi-cloud architecture complexity**: Designing solutions across AWS, Azure, and GCP
+- **Migration strategy planning**: Enterprise-scale cloud migration with minimal downtime
+- **Cost optimization analysis**: Complex pricing models and resource optimization
+- **Security and compliance**: Implementing frameworks across multiple cloud providers
+- **IaC development**: Creating reusable, scalable infrastructure templates
 
 ## Infrastructure as Code Linting Standards
 

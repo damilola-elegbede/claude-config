@@ -1,6 +1,8 @@
 ---
 description: Repository understanding via wave orchestration
 argument-hint: [--lite|--full|component-name]
+thinking-level: megathink
+thinking-tokens: 10000
 ---
 
 # /prime Command
@@ -21,6 +23,16 @@ argument-hint: [--lite|--full|component-name]
 Transform repository analysis from single-pass to progressive understanding through wave-based agent orchestration.
 Analyze repository structure systematically, with each wave building upon previous insights, culminating in
 comprehensive repository context optimized for development needs.
+
+### Thinking Level: MEGATHINK (10,000 tokens)
+
+This command requires substantial thinking depth due to:
+
+- **Complete project initialization**: Architecture decisions and technology stack evaluation
+- **Multi-perspective analysis**: Coordinating 6+ parallel codebase analysts per wave
+- **Progressive understanding synthesis**: Building context through multiple analysis waves
+- **Component relationship mapping**: Complex dependency and integration analysis
+- **Strategic recommendations**: Development workflow and optimization opportunities
 
 ## Wave-Based Orchestration Strategy
 

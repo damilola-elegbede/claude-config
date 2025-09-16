@@ -1,6 +1,8 @@
 ---
 description: Generate detailed implementation plans without execution
 argument-hint: "[description] [--no-execute|--verbose|--minimal|--compare <approach>]"
+thinking-level: ultrathink
+thinking-tokens: 31999
 ---
 
 # /implementation-plan Command
@@ -25,6 +27,16 @@ argument-hint: "[description] [--no-execute|--verbose|--minimal|--compare <appro
 
 Analyze proposed solutions and provide detailed implementation plans without executing any changes. Generates
 comprehensive task breakdowns with exact file paths, specific code changes, dependencies, and verification steps.
+
+### Thinking Level: ULTRATHINK (31,999 tokens)
+
+This command requires maximum thinking depth due to:
+
+- **Line-by-line change analysis**: Detailed code modifications with exact line numbers and snippets
+- **Comprehensive risk assessment**: Edge cases, breaking changes, and migration requirements
+- **Execution sequencing logic**: Complex dependency graphs and parallel execution planning
+- **Multi-file coordination**: Changes across dozens of files with intricate relationships
+- **Verification strategy design**: Test scenarios, validation steps, and rollback procedures
 
 ## Expected Output
 

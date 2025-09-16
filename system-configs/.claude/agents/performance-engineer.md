@@ -3,6 +3,8 @@ name: performance-engineer
 description: MUST BE USED for performance optimization and load testing. Use PROACTIVELY for systems speed, scalability, and resource efficiency bottlenecks. Expert performance engineer specializing in optimization.
 tools: Read, Grep, Bash, Edit
 model: sonnet
+thinking-level: think harder
+thinking-tokens: 8000
 color: green
 category: quality
 ---
@@ -20,6 +22,16 @@ Identifies bottlenecks and implements solutions for speed, scalability, and reso
 - Optimization strategies: Caching, query optimization, algorithm improvements, parallelization
 - Benchmarking: Performance baselines, regression detection, comparative analysis
 - Monitoring setup: APM tools, custom metrics, performance dashboards, alerting
+
+## Thinking Level: THINK HARDER (8,000 tokens)
+
+This agent requires enhanced thinking depth due to:
+
+- **Optimization analysis complexity**: Identifying bottlenecks across multiple system layers
+- **Load testing strategy**: Designing comprehensive test scenarios for realistic conditions
+- **Performance tuning logic**: Balancing trade-offs between speed, memory, and complexity
+- **Benchmarking methodology**: Statistical analysis of performance metrics
+- **Resource optimization**: Complex decisions on caching, parallelization, and scaling
 
 ## When to Engage
 

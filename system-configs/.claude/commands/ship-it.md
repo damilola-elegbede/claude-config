@@ -1,6 +1,8 @@
 ---
 description: Orchestrate development workflows with auto-resolution
 argument-hint: [--full | --lite]
+thinking-level: megathink
+thinking-tokens: 10000
 ---
 
 # /ship-it Command
@@ -20,6 +22,16 @@ Use `$ARGUMENTS` to determine workflow type (empty for basic, `--full` or `-f` f
 Orchestrate development workflows by running multiple `/` commands in sequence with **automatic issue resolution**.
 When commands report problems, attempt reasonable fixes but prioritize completing the workflow, especially ensuring
 the PR gets created in full mode.
+
+### Thinking Level: MEGATHINK (10,000 tokens)
+
+This command requires substantial thinking depth due to:
+
+- **Full deployment orchestration**: Coordinating review → test → commit → push → PR workflow
+- **Automatic issue resolution**: Complex decision-making for handling workflow failures
+- **Rollback strategy planning**: Determining recovery paths for deployment issues
+- **Multi-command coordination**: Sequencing and error handling across 5+ sub-commands
+- **Risk assessment logic**: Evaluating whether to proceed or abort on failures
 
 Execute one of three workflow types:
 

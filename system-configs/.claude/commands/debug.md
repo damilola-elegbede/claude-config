@@ -1,6 +1,8 @@
 ---
 description: Wave-based root cause analysis for complex bugs
 argument-hint: [issue_description]
+thinking-level: ultrathink
+thinking-tokens: 31999
 ---
 
 # /debug Command
@@ -20,6 +22,16 @@ argument-hint: [issue_description]
 Systematic root cause analysis for complex bugs using wave-based multi-agent forensics.
 Progressive investigation with adaptive specialization based on issue classification.
 Specializes in hard-to-reproduce issues, race conditions, memory leaks, and production-only failures.
+
+### Thinking Level: ULTRATHINK (31,999 tokens)
+
+This command requires maximum thinking depth due to:
+
+- **Iterative investigation waves**: 3-7+ waves of progressive forensic analysis
+- **Complex bug pattern recognition**: Race conditions, memory leaks, intermittent failures
+- **Multi-system root cause analysis**: Distributed system failures with cascading effects
+- **Adaptive specialization logic**: Dynamic agent deployment based on issue classification
+- **Production forensics complexity**: Analyzing logs, traces, and system states across environments
 
 **Iterative Investigation Process**: Complex bugs often require multiple investigation waves beyond the standard
 3-wave approach. The debugging process continues with additional waves until the root cause is fully identified and
