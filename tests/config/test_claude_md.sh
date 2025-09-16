@@ -10,44 +10,51 @@ test_claude_md_exists() {
         "System CLAUDE.md should exist in system-configs directory"
 }
 
-# Test that CLAUDE.md is in paragraph form with no markdown headers
-test_claude_md_paragraph_form() {
+# Test that CLAUDE.md has proper structured markdown format
+test_claude_md_structure() {
     local claude_file="$ORIGINAL_DIR/system-configs/CLAUDE.md"
-    local has_markdown_headers=false
-    local has_markdown_lists=false
+    local has_main_header=false
+    local has_core_principle=false
+    local has_excellence_principles=false
+    local has_binary_classification=false
 
-    echo "Validating CLAUDE.md is in paragraph form..."
+    echo "Validating CLAUDE.md structured markdown format..."
 
-    # Check for markdown headers (##, ###, etc.)
-    if grep -q "^##" "$claude_file"; then
-        has_markdown_headers=true
-        echo "❌ Found markdown headers (##) - file must be in paragraph form"
+    # Check for main header
+    if grep -q "^# Claude - Chief of Staff Configuration" "$claude_file"; then
+        has_main_header=true
+    else
+        echo "❌ Missing main header: '# Claude - Chief of Staff Configuration'"
     fi
 
-    if grep -q "^###" "$claude_file"; then
-        has_markdown_headers=true
-        echo "❌ Found markdown headers (###) - file must be in paragraph form"
+    # Check for Core Operating Principle section
+    if grep -q "^## Core Operating Principle" "$claude_file"; then
+        has_core_principle=true
+    else
+        echo "❌ Missing Core Operating Principle section"
     fi
 
-    # Check for markdown bullet lists
-    if grep -q "^- " "$claude_file" || grep -q "^\* " "$claude_file"; then
-        has_markdown_lists=true
-        echo "❌ Found markdown bullet lists - file must be in paragraph form"
+    # Check for Operational Excellence Principles section
+    if grep -q "^## Operational Excellence Principles" "$claude_file"; then
+        has_excellence_principles=true
+    else
+        echo "❌ Missing Operational Excellence Principles section"
     fi
 
-    # Check for numbered lists
-    if grep -q "^[0-9]\+\. " "$claude_file"; then
-        has_markdown_lists=true
-        echo "❌ Found numbered lists - file must be in paragraph form"
+    # Check for Binary Task Classification section
+    if grep -q "^## Binary Task Classification" "$claude_file"; then
+        has_binary_classification=true
+    else
+        echo "❌ Missing Binary Task Classification section"
     fi
 
-    if [ "$has_markdown_headers" = true ] || [ "$has_markdown_lists" = true ]; then
-        echo "❌ CLAUDE.md contains markdown formatting - must be pure paragraph form"
+    if [ "$has_main_header" = true ] && [ "$has_core_principle" = true ] && [ "$has_excellence_principles" = true ] && [ "$has_binary_classification" = true ]; then
+        echo "✅ CLAUDE.md has correct structured markdown format"
+        return 0
+    else
+        echo "❌ CLAUDE.md missing required structural elements"
         return 1
     fi
-
-    echo "✅ CLAUDE.md is in correct paragraph form (no markdown headers or lists)"
-    return 0
 }
 
 # Test CLAUDE.md effectiveness criteria - check system config for orchestration framework
@@ -84,10 +91,10 @@ test_claude_md_effectiveness() {
         reasons+=("Missing chief of staff positioning: Must define coordination role")
     fi
 
-    # Must have delegation principle
-    if ! grep -q -i "delegate everything" "$claude_file"; then
+    # Must have binary delegation framework
+    if ! grep -q -i "binary delegation framework" "$claude_file"; then
         score=$((score - 2))
-        reasons+=("Missing delegation principle: Core orchestration logic absent")
+        reasons+=("Missing binary delegation framework: Core orchestration logic absent")
     fi
 
     # Must have Task tool execution requirement
@@ -102,16 +109,16 @@ test_claude_md_effectiveness() {
         reasons+=("Missing parallel execution strategy")
     fi
 
-    # Must have 1.5K token threshold
-    if ! grep -q "1\.5K" "$claude_file"; then
+    # Must have Level 1/Level 2 classification
+    if ! grep -q "Level 1.*Level 2" "$claude_file"; then
         score=$((score - 1))
-        reasons+=("Missing 1.5K token delegation threshold")
+        reasons+=("Missing Level 1/Level 2 task classification")
     fi
 
-    # Must have wave-based orchestration
-    if ! grep -q -i "wave" "$claude_file"; then
+    # Must have operational excellence principles
+    if ! grep -q -i "Operational Excellence Principles" "$claude_file"; then
         score=$((score - 1))
-        reasons+=("Missing wave-based orchestration pattern")
+        reasons+=("Missing Operational Excellence Principles section")
     fi
 
     # Must have git quality standards
@@ -161,7 +168,7 @@ run_claude_md_tests() {
     echo "Testing CLAUDE.md validation..."
 
     test_claude_md_exists && \
-    test_claude_md_paragraph_form && \
+    test_claude_md_structure && \
     test_claude_md_effectiveness
 }
 
