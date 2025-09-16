@@ -1,6 +1,8 @@
 ---
 description: Diagnoses and fixes GitHub Actions CI failures automatically
 argument-hint: [run-id|--learn]
+thinking-level: megathink
+thinking-tokens: 10000
 ---
 
 # /fix-ci Command
@@ -20,6 +22,15 @@ confident all CI issues are resolved. Tests locally before pushing fixes.
 
 **Important**: Complex CI issues often cascade, requiring multiple remediation waves. The process continues iteratively
 until all CI checks pass, with each wave addressing newly discovered failures.
+
+### Thinking Level: MEGATHINK (10,000 tokens)
+
+This command requires substantial thinking depth due to:
+- **Complex CI/CD debugging**: Analyzing multiple failure modes across parallel workflows
+- **Pattern recognition complexity**: Matching failures against historical fix database
+- **Cascading failure analysis**: Understanding interdependent test and build failures
+- **Pipeline repair orchestration**: Coordinating fixes across multiple configuration files
+- **Confidence calculation logic**: Statistical analysis of fix likelihood and risk assessment
 
 ## Expected Output
 

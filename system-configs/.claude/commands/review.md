@@ -1,6 +1,8 @@
 ---
 description: AI code review with linting and security scanning
 argument-hint: [--full|--fix|--security|file-path]
+thinking-level: think harder
+thinking-tokens: 8000
 ---
 
 # /review Command
@@ -22,6 +24,15 @@ Use arguments: `$ARGUMENTS`
 Deploy comprehensive code review combining linting tools, security scanning, and AI synthesis to generate structured
 reports with "Prompts for AI Agents" sections. Every invocation automatically runs the comprehensive pre-commit
 checklist first.
+
+### Thinking Level: THINK HARDER (8,000 tokens)
+
+This command requires enhanced thinking depth due to:
+- **Multi-dimensional code analysis**: Quality, security, performance, and maintainability
+- **Pattern recognition complexity**: Identifying subtle issues and code smells
+- **Synthesis of multiple tools**: Combining linter, security scanner, and AI insights
+- **Prioritization logic**: Ranking issues by severity and impact
+- **Fix recommendation quality**: Providing actionable and safe auto-fix suggestions
 
 ## Expected Output
 

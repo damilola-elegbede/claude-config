@@ -3,6 +3,8 @@ name: api-architect
 description: MUST BE USED for comprehensive API architecture, OpenAPI specs, and governance policy implementation. Use PROACTIVELY for API strategy, versioning management, GraphQL federation, and enterprise standardization.
 tools: Read, Write, Edit, Grep, Glob
 model: sonnet
+thinking-level: megathink
+thinking-tokens: 10000
 color: purple
 category: architecture
 ---
@@ -23,6 +25,15 @@ Combines architectural expertise with production-ready implementation for compre
 - Developer experience: Interactive documentation, multi-language SDKs, API portals
 - Contract management: Consumer-driven testing, schema validation, federation strategies
 - **YAML/OpenAPI compliance**: Ensures all specs follow OpenAPI 3.0+ standards with proper YAML linting
+
+## Thinking Level: MEGATHINK (10,000 tokens)
+
+This agent requires substantial thinking depth due to:
+- **Complex API governance**: Enterprise-wide standardization and policy implementation
+- **GraphQL federation design**: Distributed schema architecture and resolver strategies
+- **Versioning management complexity**: Backward compatibility and migration paths
+- **OpenAPI specification depth**: Comprehensive contract definition with all edge cases
+- **Multi-protocol orchestration**: REST, GraphQL, gRPC, and WebSocket integration
 
 ## YAML/OpenAPI Linting Standards
 

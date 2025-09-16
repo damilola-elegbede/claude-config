@@ -39,6 +39,8 @@ All commands undergo rigorous Template Compliance analysis against COMMAND_TEMPL
 - **YAML syntax** validation using built-in parsers
 - **Description length** must not exceed 60 char limit for autocomplete compatibility
 - **Argument-hint format** validation using `[bracket]` notation when present
+- **Thinking-level validation** when present (ultrathink, megathink, think harder, think)
+- **Thinking-tokens validation** matches level (31999, 10000, 8000, 4000)
 
 **Frontmatter Valid Categories:**
 
@@ -140,11 +142,12 @@ Autocomplete Compatible: [count] | Argument-hint Format: [count] | Process Valid
 
 **Frontmatter Valid Classification:**
 
-| Command | Template Compliance | Frontmatter Valid | YAML Syntax | Agent Specification | Content Quality | Autocomplete |
-|---------|---------------------|-------------------|-------------|---------------------|------------------|--------------|
-| /commit | ✅ Compliant | ✅ Valid | ✅ Valid | ✅ Valid | ✅ High | ✅ 45 char |
-| /push | ⚠️ Minor Issues | ✅ Valid | ✅ Valid | ✅ Valid | ✅ High | ✅ 38 char |
-| /pr | ❌ Non-compliant | ❌ Invalid | ❌ Syntax Error | ❌ Invalid | ⚠️ Medium | ❌ 78 char |
+| Command | Template Compliance | Frontmatter Valid | YAML Syntax | Agent Specification | Thinking Keywords | Content Quality | Autocomplete |
+|---------|---------------------|-------------------|-------------|---------------------|-------------------|------------------|--------------|
+| /commit | ✅ Compliant | ✅ Valid | ✅ Valid | ✅ Valid | N/A | ✅ High | ✅ 45 char |
+| /push | ⚠️ Minor Issues | ✅ Valid | ✅ Valid | ✅ Valid | N/A | ✅ High | ✅ 38 char |
+| /pr | ❌ Non-compliant | ❌ Invalid | ❌ Syntax Error | ❌ Invalid | N/A | ⚠️ Medium | ❌ 78 char |
+| /plan | ✅ Compliant | ✅ Valid | ✅ Valid | ✅ Valid | ✅ ultrathink:31999 | ✅ High | ✅ 52 char |
 
 #### Wave 2: Process Validation Enhancement Results
 
@@ -156,6 +159,8 @@ Autocomplete Compatible: [count] | Argument-hint Format: [count] | Process Valid
 - Agent Specification updates for deprecated or invalid references
 - Description field optimization for 60 character autocomplete compatibility
 - Argument-hint format standardization using [bracket] notation
+- Thinking-level validation for complex commands requiring enhanced reasoning
+- Thinking-tokens verification matching specified level
 
 **Content Quality Enhancement Matrix:**
 

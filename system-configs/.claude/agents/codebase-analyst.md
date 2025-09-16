@@ -3,6 +3,8 @@ name: codebase-analyst
 description: Use PROACTIVELY for comprehensive code architecture analysis and technical debt assessment. MUST BE USED for evaluating codebases, creating executive summaries, and identifying security risks and performance bottlenecks.
 tools: Read, Grep, Glob, Bash
 model: sonnet
+thinking-level: ultrathink
+thinking-tokens: 31999
 color: yellow
 category: analysis
 ---
@@ -20,6 +22,15 @@ Delivers strategic insights through multi-dimensional analysis of technical debt
 - Risk analysis: Security vulnerabilities, performance bottlenecks, scalability limitations
 - Executive reporting: Business impact assessment, strategic recommendations, priority ranking
 - Quality evaluation: Code standards compliance, documentation coverage, best practices adherence
+
+## Thinking Level: ULTRATHINK (31,999 tokens)
+
+This agent requires maximum thinking depth due to:
+- **Comprehensive multi-dimensional analysis**: Evaluating architecture, debt, security, and performance simultaneously
+- **Complex pattern recognition**: Identifying subtle design issues across large codebases
+- **Executive-level synthesis**: Creating strategic insights from technical analysis
+- **Risk quantification complexity**: Assessing business impact of technical decisions
+- **Dependency graph analysis**: Understanding intricate relationships between components
 
 ## When to Engage
 

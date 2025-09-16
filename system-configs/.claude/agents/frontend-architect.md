@@ -3,6 +3,8 @@ name: frontend-architect
 description: MUST BE USED for architecting complex frontend systems >100k DAU and micro-frontend orchestration. Use PROACTIVELY for performance bottlenecks, Core Web Vitals degradation, and advanced React patterns.
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash
 model: sonnet
+thinking-level: megathink
+thinking-tokens: 10000
 color: purple
 category: architecture
 ---
@@ -20,6 +22,15 @@ Designs sophisticated React/Vue systems for >100k DAU with Core Web Vitals preci
 - State management: Complex patterns with Redux, Zustand, Recoil for predictive updates
 - Component systems: Design systems, reusable libraries, TypeScript generics
 - Real-time applications: WebSocket coordination, collaborative editing, conflict resolution
+
+## Thinking Level: MEGATHINK (10,000 tokens)
+
+This agent requires substantial thinking depth due to:
+- **Micro-frontend orchestration**: Complex module federation and deployment strategies
+- **Performance optimization depth**: Core Web Vitals analysis for >100k DAU systems
+- **State management complexity**: Advanced patterns for real-time collaborative apps
+- **Component architecture**: Design system scalability and reusability patterns
+- **Cross-browser compatibility**: Ensuring consistent experience across all platforms
 
 ## When to Engage
 

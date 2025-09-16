@@ -61,6 +61,32 @@ validate_yaml_frontmatter() {
         return 1
     fi
 
+    # Optional: thinking-level field validation
+    if echo "$yaml_content" | grep -q "^thinking-level:"; then
+        local thinking_level=$(echo "$yaml_content" | grep "^thinking-level:" | sed 's/^thinking-level: *//' | tr -d '"')
+        # Should be one of the valid levels
+        if [[ ! "$thinking_level" =~ ^(ultrathink|megathink|think\ harder|think)$ ]]; then
+            echo "⚠️  Invalid thinking-level '$thinking_level' in $file (should be: ultrathink, megathink, think harder, or think)"
+        fi
+
+        # Check if thinking-tokens matches the level
+        if echo "$yaml_content" | grep -q "^thinking-tokens:"; then
+            local tokens=$(echo "$yaml_content" | grep "^thinking-tokens:" | sed 's/^thinking-tokens: *//' | tr -d '"')
+            case "$thinking_level" in
+                ultrathink)
+                    [[ "$tokens" != "31999" ]] && echo "⚠️  thinking-tokens should be 31999 for ultrathink in $file (found: $tokens)" ;;
+                megathink)
+                    [[ "$tokens" != "10000" ]] && echo "⚠️  thinking-tokens should be 10000 for megathink in $file (found: $tokens)" ;;
+                "think harder")
+                    [[ "$tokens" != "8000" ]] && echo "⚠️  thinking-tokens should be 8000 for 'think harder' in $file (found: $tokens)" ;;
+                think)
+                    [[ "$tokens" != "4000" ]] && echo "⚠️  thinking-tokens should be 4000 for think in $file (found: $tokens)" ;;
+            esac
+        else
+            echo "⚠️  thinking-level specified but missing thinking-tokens in $file"
+        fi
+    fi
+
     echo "✅ Valid YAML front-matter in $file"
     rm "$temp_file"
     return 0

@@ -1,6 +1,8 @@
 ---
 description: Universal test runner with auto-discovery and execution
 argument-hint: [--create|--framework <name>|--coverage]
+thinking-level: think harder
+thinking-tokens: 8000
 ---
 
 # /test Command
@@ -19,6 +21,15 @@ argument-hint: [--create|--framework <name>|--coverage]
 Universal test runner that discovers and runs tests automatically for any repository, and creates a base level test
 suite when none exist. Uses a 3-phase discovery algorithm: README analysis, package manager detection, and framework
 conventions. Creates comprehensive test suites when none exist.
+
+### Thinking Level: THINK HARDER (8,000 tokens)
+
+This command requires enhanced thinking depth due to:
+- **Test strategy planning**: Comprehensive coverage analysis and test generation
+- **Framework discovery logic**: Complex detection across multiple languages and tools
+- **Auto-remediation complexity**: Fixing test failures with intelligent solutions
+- **Coverage optimization**: Identifying gaps and generating meaningful test cases
+- **Multi-language support**: Handling diverse testing ecosystems and conventions
 
 ## Expected Output
 

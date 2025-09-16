@@ -1,6 +1,8 @@
 ---
 description: Generate PRD and task files with wave orchestration
 argument-hint: "[task_description]"
+thinking-level: ultrathink
+thinking-tokens: 31999
 ---
 
 # /plan Command
@@ -20,6 +22,15 @@ argument-hint: "[task_description]"
 Generates Product Requirements Document (PRD) and PR-based task files with agent assignments using an iterative
 wave-based orchestration approach. Never guesses unclear requirements - asks for clarification while staying in plan
 mode. Planning is iterative and continues until the plan is comprehensive and actionable.
+
+### Thinking Level: ULTRATHINK (31,999 tokens)
+
+This command requires maximum thinking depth due to:
+- **Wave-based orchestration complexity**: 3-5+ progressive refinement waves with parallel agent deployment
+- **Cross-system dependency analysis**: Complex project decomposition across multiple domains
+- **Iterative refinement cycles**: Each wave builds on discoveries requiring deep reasoning
+- **Strategic planning depth**: Enterprise-scale implementation planning with risk assessment
+- **Multi-agent coordination**: Orchestrating 4-6 specialized agents per wave in parallel
 
 ## Expected Output
 
