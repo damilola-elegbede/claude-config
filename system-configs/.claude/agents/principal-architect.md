@@ -36,6 +36,19 @@ This agent requires maximum thinking depth due to:
 - **Technology selection reasoning**: Evaluating trade-offs between multiple architectural approaches
 - **Risk mitigation strategies**: Comprehensive technical debt and bottleneck analysis
 
+## Documentation Standards
+
+MUST validate all markdown output:
+
+- **MD001**: Heading levels increment by one
+- **MD013**: Lines under 150 chars (except tables/code)
+- **MD022**: Headings surrounded by blank lines
+- **MD040**: Code blocks specify language
+- **MD047**: Files end with single newline
+- **MD050**: Use `**asterisks**` for bold
+
+See tech-writer agent for complete standards.
+
 ## Technical Documentation Standards
 
 ### Architecture Document Structure

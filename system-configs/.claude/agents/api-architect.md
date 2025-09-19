@@ -36,6 +36,19 @@ This agent requires substantial thinking depth due to:
 - **OpenAPI specification depth**: Comprehensive contract definition with all edge cases
 - **Multi-protocol orchestration**: REST, GraphQL, gRPC, and WebSocket integration
 
+## Documentation Standards
+
+MUST validate all markdown output:
+
+- **MD001**: Heading levels increment by one
+- **MD013**: Lines under 150 chars (except tables/code)
+- **MD022**: Headings surrounded by blank lines
+- **MD040**: Code blocks specify language
+- **MD047**: Files end with single newline
+- **MD050**: Use `**asterisks**` for bold
+
+See tech-writer agent for complete standards.
+
 ## YAML/OpenAPI Linting Standards
 
 ### OpenAPI Specification Standards

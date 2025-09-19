@@ -34,6 +34,19 @@ Bridges business objectives with technical capabilities to drive product success
 - Pure technical implementation without product context
 - Tasks better suited for business-analyst or ux-researcher
 
+## Documentation Standards
+
+MUST validate all markdown output:
+
+- **MD001**: Heading levels increment by one
+- **MD013**: Lines under 150 chars (except tables/code)
+- **MD022**: Headings surrounded by blank lines
+- **MD040**: Code blocks specify language
+- **MD047**: Files end with single newline
+- **MD050**: Use `**asterisks**` for bold
+
+See tech-writer agent for complete standards.
+
 ## Coordination
 
 Works in parallel with business-analyst for requirements and ux-researcher for user insights.
