@@ -2,6 +2,15 @@
 
 # Optimized /resolve-cr command implementation
 # Fetches and processes CodeRabbit review comments with parallel operations
+#
+# Usage:
+#   resolve-cr-optimized.sh [PR_NUMBER] [--auto]
+#
+# Arguments:
+#   PR_NUMBER  - Optional PR number. If not provided, detects from current branch
+#   --auto     - Skip interactive confirmation and proceed automatically
+#
+# Default behavior is interactive mode with user confirmation before proceeding
 
 set -e
 
@@ -13,7 +22,24 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Parse arguments
-PR_NUMBER="${1:-}"
+AUTO_MODE=false
+PR_NUMBER=""
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --auto)
+            AUTO_MODE=true
+            shift
+            ;;
+        *)
+            if [[ -z "$PR_NUMBER" ]]; then
+                PR_NUMBER="$1"
+            fi
+            shift
+            ;;
+    esac
+done
 
 # Get repository info
 REPO_INFO=$(gh repo view --json owner,name)
@@ -49,32 +75,49 @@ echo -e "${BLUE}🔍 Fetching CodeRabbit comments (parallel search)...${NC}"
 
 # Create temp files for parallel results
 TEMP_DIR=$(mktemp -d)
-trap "rm -rf $TEMP_DIR" EXIT
+trap 'rm -rf "$TEMP_DIR"' EXIT
 
 # Pre-compiled search pattern for all CodeRabbit signatures
-CODERABBIT_PATTERN='(@coderabbitai|coderabbitai\[bot\]|Prompts for AI Agents)'
+CODERABBIT_PATTERN='(?i)(@coderabbitai|coderabbitai\[bot\]|Prompts? for AI Agents)'
 
 # Parallel API calls with direct JSON filtering
+# Track PIDs for proper error handling
+PIDS=()
 {
     # Reviews endpoint
     gh api "repos/$OWNER/$REPO/pulls/$PR_NUMBER/reviews" \
         --paginate \
         --jq '.[] | select(.user.login == "coderabbitai[bot]" or (.body | test("'$CODERABBIT_PATTERN'"))) | {type: "review", body, user: .user.login}' \
         > "$TEMP_DIR/reviews.json" 2>/dev/null &
+    PIDS+=($!)
 
     # Comments endpoint (inline review comments)
     gh api "repos/$OWNER/$REPO/pulls/$PR_NUMBER/comments" \
         --paginate \
         --jq '.[] | select(.user.login == "coderabbitai[bot]" or (.body | test("'$CODERABBIT_PATTERN'"))) | {type: "comment", body, path, line, user: .user.login}' \
         > "$TEMP_DIR/comments.json" 2>/dev/null &
+    PIDS+=($!)
 
     # Issue comments endpoint (backup)
     gh api "repos/$OWNER/$REPO/issues/$PR_NUMBER/comments" \
         --paginate \
         --jq '.[] | select(.user.login == "coderabbitai[bot]" or (.body | test("'$CODERABBIT_PATTERN'"))) | {type: "issue", body, user: .user.login}' \
         > "$TEMP_DIR/issue_comments.json" 2>/dev/null &
+    PIDS+=($!)
 
-    wait
+    # Wait for all jobs and check for failures
+    EXIT_CODE=0
+    for pid in "${PIDS[@]}"; do
+        if ! wait "$pid"; then
+            echo -e "${RED}Error: API call failed (PID: $pid)${NC}" >&2
+            EXIT_CODE=1
+        fi
+    done
+    
+    if [ $EXIT_CODE -ne 0 ]; then
+        echo -e "${RED}Error: One or more API calls failed${NC}" >&2
+        exit 1
+    fi
 }
 
 # Combine all results
@@ -83,7 +126,7 @@ cat "$TEMP_DIR"/*.json 2>/dev/null | jq -s 'add // []' > "$TEMP_DIR/all_comments
 # Extract all "Prompts for AI Agents" sections in one pass
 PROMPTS=$(cat "$TEMP_DIR/all_comments.json" | jq -r '
     .[] |
-    select(.body | contains("Prompt for AI Agents")) |
+    select((.body // "") | test("(?i)Prompt(s)? for AI Agents")) |
     {
         file: .path,
         line: .line,
@@ -145,7 +188,7 @@ if [ "$PROMPT_COUNT" -eq 0 ]; then
             {body, path, line}
         ] |
         .[] |
-        select(.body | contains("Prompt for AI Agents")) |
+        select((.body // "") | test("(?i)Prompt(s)? for AI Agents")) |
         {
             file: .path,
             line: .line,
@@ -182,6 +225,19 @@ echo -e "\n📂 Affected Files:"
 echo "$PROMPTS" | jq -r 'group_by(.file) | .[] | "• \(.[0].file) (\(length) issue\(if length > 1 then "s" else "" end))"'
 
 echo "────────────────────────────────────────────────────────────"
+
+# Interactive confirmation (unless in auto mode)
+if [[ "$AUTO_MODE" != "true" ]]; then
+    echo ""
+    echo "Would you like to deploy parallel fix agents? (y/n): "
+    read -r response
+    if [[ "$response" != "y" && "$response" != "Y" ]]; then
+        echo "Wave deployment cancelled. No changes made."
+        exit 0
+    fi
+    echo ""
+fi
+
 echo "Proceeding with automated resolution..."
 echo "────────────────────────────────────────────────────────────"
 
@@ -227,13 +283,13 @@ SUMMARY=$(echo "$PROMPTS" | jq -r '
 
     # Category breakdown
     "### 📊 Issues by Category\n" +
-    (group_by(categorize) |
-     map("- **" + .[0].categorize + "**: " + (length | tostring) + " issue" + (if length > 1 then "s" else "" end)) |
+    (sort_by(categorize) | group_by(categorize) |
+     map("- **" + ((.[0] | categorize)) + "**: " + (length | tostring) + " issue" + (if length > 1 then "s" else "" end)) |
      join("\n")) + "\n\n" +
 
     # File-specific changes
     "### 📁 Changes by File\n" +
-    (group_by(.file) |
+    (sort_by(.file // "") | group_by(.file) |
      map(
          "#### `" + .[0].file + "` (" + (length | tostring) + " change" + (if length > 1 then "s" else "" end) + ")\n" +
          (map("- " + extract_action) | join("\n"))

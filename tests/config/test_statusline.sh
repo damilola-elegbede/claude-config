@@ -428,18 +428,18 @@ test_exit_hook() {
     # Run exit hook from /tmp directory with same version (simulating Claude session end from same dir)
     (cd /tmp && HOME="$TEST_HOME" echo '{"version":"8.0.0"}' | bash "$exit_hook_path" --test)
 
-    # Check file now has flag=0
+    # Check file now has flag=1 (preserved)
     content=$(cat "$terminal_file" 2>/dev/null)
-    if [[ "$content" != "8.0.0:0" ]]; then
-        echo "Exit hook should set flag to 0, got: $content"
+    if [[ "$content" != "8.0.0:1" ]]; then
+        echo "Exit hook should preserve flag=1, got: $content"
         return 1
     fi
 
-    # Run statusline again - should NOT show stars
+    # Run statusline again - should STILL show stars (flag preserved)
     HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
 
-    if [[ "$output" == *"8.0.0 ✨"* ]]; then
-        echo "Should not show stars after exit hook: $output"
+    if [[ "$output" != *"8.0.0 ✨"* ]]; then
+        echo "Should still show stars after exit hook (flag preserved): $output"
         return 1
     fi
 
