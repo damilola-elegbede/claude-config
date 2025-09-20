@@ -2,6 +2,15 @@
 
 # Optimized /resolve-cr command implementation
 # Fetches and processes CodeRabbit review comments with parallel operations
+#
+# Usage:
+#   resolve-cr-optimized.sh [PR_NUMBER] [--auto]
+#
+# Arguments:
+#   PR_NUMBER  - Optional PR number. If not provided, detects from current branch
+#   --auto     - Skip interactive confirmation and proceed automatically
+#
+# Default behavior is interactive mode with user confirmation before proceeding
 
 set -e
 
@@ -13,7 +22,24 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Parse arguments
-PR_NUMBER="${1:-}"
+AUTO_MODE=false
+PR_NUMBER=""
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --auto)
+            AUTO_MODE=true
+            shift
+            ;;
+        *)
+            if [[ -z "$PR_NUMBER" ]]; then
+                PR_NUMBER="$1"
+            fi
+            shift
+            ;;
+    esac
+done
 
 # Get repository info
 REPO_INFO=$(gh repo view --json owner,name)
@@ -182,6 +208,19 @@ echo -e "\n📂 Affected Files:"
 echo "$PROMPTS" | jq -r 'group_by(.file) | .[] | "• \(.[0].file) (\(length) issue\(if length > 1 then "s" else "" end))"'
 
 echo "────────────────────────────────────────────────────────────"
+
+# Interactive confirmation (unless in auto mode)
+if [[ "$AUTO_MODE" != "true" ]]; then
+    echo ""
+    echo "Would you like to deploy parallel fix agents? (y/n): "
+    read -r response
+    if [[ "$response" != "y" && "$response" != "Y" ]]; then
+        echo "Wave deployment cancelled. No changes made."
+        exit 0
+    fi
+    echo ""
+fi
+
 echo "Proceeding with automated resolution..."
 echo "────────────────────────────────────────────────────────────"
 

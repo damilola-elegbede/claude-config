@@ -3,7 +3,7 @@
 # Updates terminal version files when a Claude session ends
 # Compares current version with stored version:
 # - If newer: writes NEW_VERSION:1 (statusline will show stars)
-# - If same: writes VERSION:0 (statusline won't show stars)
+# - If same: preserves existing flag (only 6-hour timer changes flag to 0)
 # Terminal ID is based on grandparent PID only, so tracking persists across directories
 #
 # TEST MODE:
@@ -122,9 +122,11 @@ if [[ -f "$terminal_version_file" ]]; then
     # Parse VERSION:FLAG format
     if [[ "$stored_content" =~ ^([^:]+):([01])$ ]]; then
         stored_version="${BASH_REMATCH[1]}"
+        stored_flag="${BASH_REMATCH[2]}"
     else
-        # Old format or corrupted - treat as version only
+        # Old format or corrupted - treat as version only, preserve flag as 0
         stored_version="$stored_content"
+        stored_flag="0"
     fi
 
     # Compare versions
@@ -132,7 +134,7 @@ if [[ -f "$terminal_version_file" ]]; then
     comparison_result=$?
 
     if [[ $comparison_result -eq 0 ]]; then
-        # Current version is newer - write NEW_VERSION:1
+        # Current version is newer - write NEW_VERSION:1 (only upgrade changes flag)
         tmp_file="$(mktemp "$terminal_versions_dir/.tmp.XXXXXX" 2>/dev/null || printf '%s' "$terminal_versions_dir/.tmp.$$")"
         umask 077
         printf '%s:1' "$semantic_version" > "$tmp_file" 2>/dev/null || true
@@ -140,13 +142,13 @@ if [[ -f "$terminal_version_file" ]]; then
         mv -f "$tmp_file" "$terminal_version_file" 2>/dev/null || true
         log_event "UPDATE" "Version upgraded from $stored_version to $semantic_version, set flag=1 (will show stars next time) from PWD: $PWD"
     else
-        # Same version (or somehow older) - write VERSION:0
+        # Same version - preserve existing flag, only update version
         tmp_file="$(mktemp "$terminal_versions_dir/.tmp.XXXXXX" 2>/dev/null || printf '%s' "$terminal_versions_dir/.tmp.$$")"
         umask 077
-        printf '%s:0' "$semantic_version" > "$tmp_file" 2>/dev/null || true
+        printf '%s:%s' "$semantic_version" "$stored_flag" > "$tmp_file" 2>/dev/null || true
         chmod 600 "$tmp_file" 2>/dev/null || true
         mv -f "$tmp_file" "$terminal_version_file" 2>/dev/null || true
-        log_event "RESET" "Same version $semantic_version, set flag=0 (clear stars for next session) from PWD: $PWD"
+        log_event "VERSION_UPDATE" "Same version $semantic_version, preserved flag=$stored_flag (flag only changes via timer) from PWD: $PWD"
     fi
 else
     # No existing file - just log the event, don't create file
