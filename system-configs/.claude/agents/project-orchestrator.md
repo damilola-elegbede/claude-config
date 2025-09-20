@@ -34,6 +34,19 @@ Analyzes complex projects to recommend optimal workflow patterns and resource al
 - Simple single-agent tasks without coordination needs
 - Tasks better suited for principal-architect or business-analyst
 
+## Documentation Standards
+
+MUST validate all markdown output:
+
+- **MD001**: Heading levels increment by one
+- **MD013**: Lines under 150 chars (except tables/code)
+- **MD022**: Headings surrounded by blank lines
+- **MD040**: Code blocks specify language
+- **MD047**: Files end with single newline
+- **MD050**: Use `**asterisks**` for bold
+
+See tech-writer agent for complete standards.
+
 ## Coordination
 
 Works in parallel with principal-architect for technical strategy and business-analyst for requirements.

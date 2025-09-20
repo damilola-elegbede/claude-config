@@ -34,6 +34,19 @@ Bridges business objectives with technical implementation through comprehensive 
 - Pure technical implementation without business context
 - Tasks better suited for product-strategist or tech-writer
 
+## Documentation Standards
+
+MUST validate all markdown output:
+
+- **MD001**: Heading levels increment by one
+- **MD013**: Lines under 150 chars (except tables/code)
+- **MD022**: Headings surrounded by blank lines
+- **MD040**: Code blocks specify language
+- **MD047**: Files end with single newline
+- **MD050**: Use `**asterisks**` for bold
+
+See tech-writer agent for complete standards.
+
 ## Coordination
 
 Works in parallel with product-strategist for product vision and tech-writer for documentation.
