@@ -1,6 +1,6 @@
 ---
 description: Generate PRD and task files with wave orchestration
-argument-hint: "[task_description]"
+argument-hint: "\"<task_description>\" [--simple|-s|--file <path>|-f <path>]"
 thinking-level: ultrathink
 thinking-tokens: 31999
 ---

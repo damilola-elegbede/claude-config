@@ -1,5 +1,6 @@
 ---
 description: Validate agent ecosystem integrity and compliance
+argument-hint: [--frontmatter|--fix]
 ---
 
 # /agent-audit Command

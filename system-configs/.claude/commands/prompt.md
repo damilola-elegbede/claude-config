@@ -1,6 +1,6 @@
 ---
 description: Optimize prompts using direct execution with SCOPE framework
-argument-hint: "[text-to-optimize]"
+argument-hint: "[\"<text>\"|--file <path>|-f <path>]"
 ---
 
 # /prompt Command

@@ -1,6 +1,6 @@
 ---
 description: Orchestrate development workflows with auto-resolution
-argument-hint: [--full | --lite]
+argument-hint: [--full|--lite]
 thinking-level: megathink
 thinking-tokens: 10000
 ---
