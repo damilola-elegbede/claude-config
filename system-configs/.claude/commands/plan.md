@@ -73,7 +73,7 @@ Ready to proceed to Wave 5? (yes/no/modify)
 
 User: yes
 Claude: ## Wave 5: Final Implementation Strategy
-✅ Comprehensive plan approved! Creating implementation files in .tmp/authentication/:
+✅ Comprehensive plan approved! Creating implementation files in $PLANS_DIR/<repo-name>/authentication/:
 - prd.md
 - phase_1_pr_1_database.md (3 tasks)
 - phase_1_pr_2_services.md (4 tasks)
@@ -110,7 +110,7 @@ Phases: 1 phase, 1 PR, 5 tasks
 Ready to proceed to implementation? (yes/no/modify)
 
 User: yes
-Claude: ✅ Approved! Creating implementation files in .tmp/user-profile/:
+Claude: ✅ Approved! Creating implementation files in $PLANS_DIR/<repo-name>/user-profile/:
 - prd.md
 - phase_1_pr_1_user_profile.md (5 tasks)
 ```
@@ -403,6 +403,8 @@ Technology: React/Vue→frontend-architect, Node/Python→backend-engineer, K8s�
 
 #### Generated Files
 
+All files are created in `$PLANS_DIR/<repo-name>/<feature-name>/`:
+
 - `prd.md` - Product Requirements Document
 - `phase_X_pr_Y_<description>.md` - PR implementation files
 - `rollback.md` - Rollback procedures (if needed)
@@ -527,7 +529,7 @@ Deploy execution-evaluator to verify:
 - ✅ **PRD generated** - Complete Product Requirements Document created
 - ✅ **Tasks broken down** - Granular tasks with proper agent assignments
 - ✅ **Dependencies mapped** - Clear task sequencing and coordination
-- ✅ **Files created** - All phase files generated in .tmp/`feature-name`/
+- ✅ **Files created** - All phase files generated in $PLANS_DIR/`repo-name`/`feature-name`/
 - ✅ **Agent assignments** - Specialized agents properly matched via comprehensive wave analysis
 - ✅ **PRD compliance** - All requirements traceable through task breakdown
 - ✅ **Phase organization** - Clear dependencies and parallel execution plans
