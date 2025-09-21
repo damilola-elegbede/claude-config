@@ -1,6 +1,6 @@
 ---
 description: CodeRabbit feedback resolver with parallel execution
-argument-hint: "[pr-number] [--auto|--dry-run|--skip-tests]"
+argument-hint: [<pr-number>] [--auto|--dry-run|--skip-tests]
 thinking-level: megathink
 thinking-tokens: 10000
 ---

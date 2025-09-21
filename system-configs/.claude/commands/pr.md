@@ -1,6 +1,6 @@
 ---
 description: Create pull requests with smart title and description generation
-argument-hint: "[target_branch] [--draft]"
+argument-hint: [target_branch] [--draft]
 ---
 
 # /pr Command

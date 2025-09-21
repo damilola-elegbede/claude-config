@@ -1,6 +1,6 @@
 ---
 description: Wave-based root cause analysis for complex bugs
-argument-hint: [issue_description]
+argument-hint: [issue_description] [--repro <steps>|--performance]
 thinking-level: ultrathink
 thinking-tokens: 31999
 ---
