@@ -1,6 +1,6 @@
 ---
 description: Generate detailed implementation plans without execution
-argument-hint: "\"<description>\" [--no-execute|--verbose|--minimal|--compare <approach>]"
+argument-hint: ["<description>"] [--no-execute|--verbose|--minimal|--compare <approach>]
 thinking-level: ultrathink
 thinking-tokens: 31999
 ---

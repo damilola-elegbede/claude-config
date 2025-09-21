@@ -1,6 +1,6 @@
 ---
 description: Implement features from markdown specs with multi-agents
-argument-hint: "[spec-file.md] [options]"
+argument-hint: [spec-file.md] [options]
 ---
 
 # /implement Command
