@@ -1,6 +1,6 @@
 ---
 description: Command validation and Template Compliance analysis
-argument-hint: [--wave1|--wave2|--wave3]
+argument-hint: [--wave1|--wave2|--wave3|--apply-fixes]
 ---
 
 # /command-audit Command

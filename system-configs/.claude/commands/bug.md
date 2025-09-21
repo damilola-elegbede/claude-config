@@ -1,6 +1,6 @@
 ---
 description: Wave-based bug analysis and comprehensive reporting
-argument-hint: [description] [--priority high] [--labels label1,label2]
+argument-hint: '[description] [--priority high] [--labels label1,label2]'
 thinking-level: think harder
 thinking-tokens: 8000
 ---

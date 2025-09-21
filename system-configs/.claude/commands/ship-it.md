@@ -1,6 +1,6 @@
 ---
 description: Orchestrate development workflows with auto-resolution
-argument-hint: [--full|--lite]
+argument-hint: [-f|--full|-l|--lite]
 ---
 
 # /ship-it Command
