@@ -1,6 +1,6 @@
 ---
 description: Orchestrate development workflows with inline wave execution
-argument-hint: [--full | --lite]
+argument-hint: [-f|--full|-l|--lite]
 thinking-level: megathink
 thinking-tokens: 10000
 ---
@@ -11,8 +11,9 @@ thinking-tokens: 10000
 
 ```bash
 /ship-it                         # Basic workflow: docs → review → commit → push
-/ship-it --full                  # Full workflow: docs → review → test → commit → push → pr
-/ship-it --lite                  # Lite workflow: commit → push
+/ship-it --full | -f             # Full workflow: docs → review → test → commit → push → pr
+/ship-it --lite | -l             # Lite workflow: commit → push
+# Note: -f/-l are maintained for backward compatibility; prefer long flags
 ```
 
 ## Description
