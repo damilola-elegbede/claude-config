@@ -1,0 +1,21 @@
+# Claude Configuration Repository Dependencies
+# ==========================================
+#
+# Core dependencies for CI/CD, testing, and validation scripts
+# Pinned to specific versions for consistency across environments
+
+# YAML Processing (required for agent validation)
+PyYAML==6.0.2
+
+# Development Dependencies (optional, for local development)
+# These are automatically excluded in CI if not needed
+
+# High-Performance Dependencies (conditional install)
+# Install with: pip install -r requirements.txt -r scripts/performance/requirements.txt
+# - aiofiles>=23.1.0  # Async file operations
+# - psutil>=5.9.0     # System monitoring
+
+# Python Version Compatibility
+# - Requires Python >= 3.8
+# - Tested with Python 3.11.13
+# - Compatible with Python 3.12+

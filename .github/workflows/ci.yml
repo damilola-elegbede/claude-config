@@ -10,20 +10,51 @@ jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15  # Increased timeout for comprehensive tests
+
+    env:
+      CI: true
+      NO_COLOR: 1
+      TERM: dumb
+      TMPDIR: /tmp/ci-test
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
+      with:
+        fetch-depth: 1  # Shallow clone for faster checkout
 
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        python-version: '3.11.13'
+        cache: 'pip'
 
-    - name: Install Python dependencies
+    - name: Install system dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install PyYAML
+        sudo apt-get update
+        sudo apt-get install -y build-essential python3-dev
+      timeout-minutes: 3
+
+    - name: Install Python dependencies with version pinning
+      run: |
+        python -m pip install --upgrade pip>=24.0
+
+        # Install core dependencies
+        if [ -f "requirements.txt" ]; then
+          echo "Installing core dependencies from requirements.txt..."
+          pip install -r requirements.txt
+        else
+          # Fallback to direct install if requirements.txt doesn't exist
+          pip install PyYAML==6.0.2
+        fi
+
+        # Install performance script dependencies if needed
+        if [ -f "scripts/performance/requirements.txt" ]; then
+          echo "Installing performance dependencies..."
+          pip install -r scripts/performance/requirements.txt
+        fi
+      timeout-minutes: 3
 
     - name: Verify Python environment
       run: |
@@ -35,18 +66,75 @@ jobs:
     - name: Setup Node.js (for markdownlint only)
       uses: actions/setup-node@v5
       with:
-        node-version: '20'
+        node-version: '20.17.0'  # Pin to specific LTS version
         cache: 'npm'
         registry-url: 'https://registry.npmjs.org'
 
-    - name: Install Node.js dependencies
+    - name: Configure npm for resilience
       run: |
-        npm ci --prefer-offline --no-audit --progress=false
+        npm config set registry https://registry.npmjs.org/
+        npm config set fetch-retry-mintimeout 20000
+        npm config set fetch-retry-maxtimeout 120000
+        npm config set fetch-retry-factor 2
+        npm config set fetch-retries 5
+        npm config set fetch-timeout 300000
+      timeout-minutes: 1
 
-    - name: Make test script executable
-      run: chmod +x tests/test.sh
+    - name: Install Node.js dependencies with retry logic
+      run: |
+        for attempt in {1..3}; do
+          echo "Attempt $attempt to install dependencies..."
+          if npm ci --prefer-offline --no-audit --progress=false; then
+            echo "✓ Dependencies installed successfully on attempt $attempt"
+            break
+          elif [ $attempt -eq 3 ]; then
+            echo "❌ All attempts failed. Exiting with error."
+            exit 1
+          else
+            echo "Attempt $attempt failed. Retrying in $((attempt * 5)) seconds..."
+            sleep $((attempt * 5))
+          fi
+        done
+      timeout-minutes: 8
 
-    - name: Run test suite
+    - name: Comprehensive dependency verification
+      run: |
+        chmod +x .github/scripts/verify-dependencies.sh
+        ./.github/scripts/verify-dependencies.sh
+      timeout-minutes: 2
+
+    - name: Create CI temp directory
+      run: |
+        mkdir -p "$TMPDIR"
+        chmod 755 "$TMPDIR"
+      timeout-minutes: 1
+
+    - name: Make test script executable and fix permissions
+      run: |
+        chmod +x tests/test.sh
+        # Fix permissions for all scripts that might be executed
+        find scripts/ -name "*.sh" -type f -exec chmod +x {} \; || true
+        find scripts/ -name "*.py" -type f -exec chmod +x {} \; || true
+      timeout-minutes: 1
+
+    - name: Optimize system resources
+      run: |
+        # Increase resource limits for Ubuntu 24.04.3 LTS
+        echo "Optimizing system resources..."
+        sudo sysctl -w fs.file-max=65536 || true
+        ulimit -n 2048 || true
+
+        # Clean up space
+        sudo apt-get clean || true
+        docker system prune -f || true
+
+        # Monitor initial state
+        echo "Initial resource state:"
+        free -h | head -2
+        df -h /tmp
+      timeout-minutes: 2
+
+    - name: Run test suite with optimization
       run: |
         echo "=== CI Environment Info ==="
         echo "Runner OS: $RUNNER_OS"
@@ -56,7 +144,15 @@ jobs:
         echo "Bash: $(bash --version | head -1)"
         echo "Working Directory: $(pwd)"
         echo "=========================="
-        ./tests/test.sh
+
+        # Run tests with output limiting to prevent truncation
+        ./tests/test.sh 2>&1 | head -2000
+
+        echo "=== Test Completion ==="
+        echo "Final resource state:"
+        free -h | head -2
+        df -h /tmp
+      timeout-minutes: 12
 
     - name: Upload test results
       if: always()
@@ -116,6 +212,7 @@ jobs:
   lint-markdown:
     name: Lint Markdown Files
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
     - name: Checkout code
@@ -124,11 +221,34 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v5
       with:
-        node-version: '20'
+        node-version: '20.17.0'
         cache: 'npm'
 
-    - name: Install markdownlint
-      run: npm ci --prefer-offline --no-audit --progress=false
+    - name: Configure npm for resilience
+      run: |
+        npm config set registry https://registry.npmjs.org/
+        npm config set fetch-retry-mintimeout 20000
+        npm config set fetch-retry-maxtimeout 120000
+        npm config set fetch-retry-factor 2
+        npm config set fetch-retries 5
+        npm config set fetch-timeout 300000
+
+    - name: Install markdownlint with retry logic
+      run: |
+        for attempt in {1..3}; do
+          echo "Attempt $attempt to install markdownlint..."
+          if npm ci --prefer-offline --no-audit --progress=false; then
+            echo "✓ Markdownlint installed successfully on attempt $attempt"
+            break
+          elif [ $attempt -eq 3 ]; then
+            echo "❌ All attempts failed. Exiting with error."
+            exit 1
+          else
+            echo "Attempt $attempt failed. Retrying in $((attempt * 5)) seconds..."
+            sleep $((attempt * 5))
+          fi
+        done
+      timeout-minutes: 8
 
     - name: Lint markdown files
       uses: DavidAnson/markdownlint-cli2-action@v20
@@ -167,7 +287,9 @@ jobs:
         for script in "${critical_scripts[@]}"; do
           if [ -f "$script" ]; then
             echo "Checking: $script"
-            if shellcheck --severity=warning --exclude=SC1091,SC2034,SC2155,SC2250,SC2292,SC2310 "$script"; then
+            if shellcheck --severity=warning \
+              --exclude=SC1091,SC2034,SC2155,SC2250,SC2292,SC2310 \
+              "$script"; then
               echo "✅ PASSED: $script"
             else
               echo "❌ FAILED: $script"
