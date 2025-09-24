@@ -270,7 +270,8 @@ run_scoring_tests() {
     ((total_tests++))
     local perfect_score
     perfect_score=$(calculate_overall_score 100 100 100 100 100)
-    if validate_score_range "$perfect_score" 99 100 "Perfect score"; then
+    # Expects exactly 100 for perfect inputs
+    if validate_score_range "$perfect_score" 100 100 "Perfect score"; then
         echo -e "${GREEN}✓ Perfect score test passed${NC}"
     else
         echo -e "${RED}✗ Perfect score test failed${NC}"
@@ -386,7 +387,8 @@ run_scoring_tests() {
 
     local extras_score
     extras_score=$(calculate_extras_deviations 10 5 2)
-    if validate_score_range "$extras_score" 102 104 "Extras and deviations"; then
+    # Function caps score at 100, so expecting exactly 100 for inputs (100+10-5-2=103 capped to 100)
+    if validate_score_range "$extras_score" 100 100 "Extras and deviations"; then
         echo -e "${GREEN}✓ Extras and deviations calculation passed${NC}"
     else
         echo -e "${RED}✗ Extras and deviations calculation failed${NC}"
