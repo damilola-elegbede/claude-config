@@ -127,7 +127,19 @@ cleanup_test_infrastructure() {
 # ====================================
 
 test_verify_file_exists() {
-    [[ -f "$VERIFY_CMD_FILE" ]]
+    if [[ -f "$VERIFY_CMD_FILE" ]]; then
+        return 0
+    else
+        # Enhanced debugging for CI environment
+        if [[ "${CI:-}" == "true" ]]; then
+            echo "DEBUG: File not found at: $VERIFY_CMD_FILE"
+            echo "DEBUG: Working directory: $(pwd)"
+            echo "DEBUG: SCRIPT_DIR: $SCRIPT_DIR"
+            echo "DEBUG: Directory contents:"
+            ls -la "$(dirname "$VERIFY_CMD_FILE")" 2>/dev/null || echo "  Directory not found"
+        fi
+        return 1
+    fi
 }
 
 test_yaml_frontmatter_valid() {

@@ -20,7 +20,7 @@ jobs:
     - name: Checkout PR branch
       uses: actions/checkout@v5
       with:
-        fetch-depth: 0
+        fetch-depth: 1  # Standardize with main CI workflow
 
     - name: Setup Python
       uses: actions/setup-python@v5
