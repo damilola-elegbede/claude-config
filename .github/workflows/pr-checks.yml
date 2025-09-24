@@ -8,6 +8,13 @@ jobs:
   test-changes:
     name: Test Changes
     runs-on: ubuntu-latest
+    timeout-minutes: 10  # Prevent indefinite hangs
+
+    env:
+      CI: true
+      NO_COLOR: 1
+      TERM: dumb
+      TMPDIR: /tmp/pr-test
 
     steps:
     - name: Checkout PR branch
@@ -87,6 +94,20 @@ jobs:
         for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
           echo "  - $file"
         done
+
+    - name: Setup test environment
+      run: |
+        # Create temp directory with proper permissions
+        mkdir -p "$TMPDIR"
+        chmod 755 "$TMPDIR"
+
+        # Set resource limits for tests
+        ulimit -n 2048 || true
+
+        echo "Test environment ready:"
+        echo "  TMPDIR: $TMPDIR"
+        echo "  Available space:"
+        df -h "$TMPDIR"
 
     - name: Run tests
       run: |
