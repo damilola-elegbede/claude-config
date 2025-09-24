@@ -63,7 +63,13 @@ run_test() {
     local test_func=$2
     ((TOTAL_TESTS++))
 
-    if $test_func; then
+    # Temporarily disable set -e to allow test debugging output
+    set +e
+    $test_func
+    local test_result=$?
+    set -e
+
+    if [ $test_result -eq 0 ]; then
         print_pass "$test_name"
         return 0
     else
