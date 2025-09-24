@@ -21,6 +21,48 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Security validation functions
+validate_pr_number() {
+    local pr_num="$1"
+    if [[ ! "$pr_num" =~ ^[0-9]+$ ]] || [ "$pr_num" -lt 1 ] || [ "$pr_num" -gt 99999 ]; then
+        echo -e "${RED}Error: Invalid PR number format. Must be a positive integer 1-99999${NC}" >&2
+        return 1
+    fi
+}
+
+validate_json_input() {
+    local json_input="$1"
+    # Validate JSON syntax
+    if ! echo "$json_input" | jq empty 2>/dev/null; then
+        echo -e "${RED}Error: Invalid JSON format detected${NC}" >&2
+        return 1
+    fi
+
+    # Check for suspicious patterns in JSON
+    if echo "$json_input" | grep -qE '(\$\(|`|eval|exec|system|shell|import\s+os|subprocess|__import__)'; then
+        echo -e "${RED}Error: Suspicious code patterns detected in JSON input${NC}" >&2
+        return 1
+    fi
+
+    # Validate file paths don't contain path traversal
+    if echo "$json_input" | jq -r '.. | strings?' 2>/dev/null | grep -qE '\.\./|^/|~/'; then
+        echo -e "${RED}Error: Invalid file paths detected (path traversal attempt)${NC}" >&2
+        return 1
+    fi
+}
+
+sanitize_file_path() {
+    local file_path="$1"
+    # Remove any path traversal attempts and ensure relative path within agents directory
+    file_path=$(echo "$file_path" | sed 's|\.\.||g' | sed 's|^/||' | sed 's|^~/||')
+    # Ensure it starts with expected directory structure
+    if [[ ! "$file_path" =~ ^[a-zA-Z0-9_/.-]+\.md$ ]]; then
+        echo -e "${RED}Error: Invalid file path format: $file_path${NC}" >&2
+        return 1
+    fi
+    echo "$file_path"
+}
+
 # Parse arguments
 AUTO_MODE=false
 PR_NUMBER=""
@@ -62,6 +104,11 @@ if [ -z "$PR_NUMBER" ]; then
     fi
 fi
 
+# Validate PR number format
+if ! validate_pr_number "$PR_NUMBER"; then
+    exit 1
+fi
+
 # Verify PR exists
 PR_STATE=$(gh pr view "$PR_NUMBER" --json state --jq '.state' 2>/dev/null || echo "NOT_FOUND")
 if [ "$PR_STATE" == "NOT_FOUND" ]; then
@@ -77,8 +124,9 @@ echo -e "${BLUE}🔍 Fetching CodeRabbit comments (parallel search)...${NC}"
 TEMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TEMP_DIR"' EXIT
 
-# Pre-compiled search pattern for all CodeRabbit signatures
-CODERABBIT_PATTERN='(?i)(@coderabbitai|coderabbitai\[bot\]|Prompts? for AI Agents)'
+# Pre-compiled search pattern for all CodeRabbit signatures (sanitized)
+# Use fixed pattern to prevent injection
+CODERABBIT_PATTERN='(?i)(@coderabbitai|coderabbitai\\[bot\\]|Prompts? for AI Agents)'
 
 # Parallel API calls with direct JSON filtering
 # Track PIDs for proper error handling
@@ -146,9 +194,13 @@ if [ "$PROMPT_COUNT" -eq 0 ]; then
     echo -e "${YELLOW}⚠️ No CodeRabbit comments found on first attempt. Retrying with GraphQL...${NC}"
 
     # GraphQL query for comprehensive search (single request)
+    # Escape values to prevent injection
+    OWNER_ESCAPED=$(printf '%s' "$OWNER" | sed 's/"/\\"/g')
+    REPO_ESCAPED=$(printf '%s' "$REPO" | sed 's/"/\\"/g')
+
     GRAPHQL_QUERY='{
         "query": "query {
-            repository(owner: \"'$OWNER'\", name: \"'$REPO'\") {
+            repository(owner: \"'"$OWNER_ESCAPED"'\", name: \"'"$REPO_ESCAPED"'\") {
                 pullRequest(number: '$PR_NUMBER') {
                     reviews(first: 100) {
                         nodes {
@@ -308,7 +360,13 @@ echo -e "${GREEN}✓ Posted @coderabbitai resolve comment with change summary${N
 # Step 5: Prepare batch updates
 echo -e "\n${BLUE}🔧 Preparing batch file updates...${NC}"
 
-# Create a JSON structure for all edits
+# Validate JSON input before processing
+if ! validate_json_input "$PROMPTS"; then
+    echo -e "${RED}Error: Security validation failed for prompt data${NC}"
+    exit 1
+fi
+
+# Create a JSON structure for all edits with path sanitization
 BATCH_EDITS=$(echo "$PROMPTS" | jq -s '
     group_by(.file) |
     map({
@@ -328,6 +386,39 @@ cat > "$TEMP_DIR/batch_update.py" << 'EOF'
 import json
 import sys
 import re
+import os
+
+def validate_agent_path(filename):
+    """
+    Securely validate and construct path for agent files.
+    Prevents path traversal attacks by ensuring file stays within .claude/agents/ directory.
+    """
+    if not filename:
+        raise ValueError("Filename cannot be empty")
+
+    # Remove any path separators and use only the basename
+    safe_filename = os.path.basename(filename)
+
+    # Additional validation: ensure filename doesn't contain suspicious patterns
+    if '..' in safe_filename or safe_filename.startswith('.'):
+        raise ValueError(f"Invalid filename pattern: {safe_filename}")
+
+    # Ensure it's a markdown file for agents
+    if not safe_filename.endswith('.md'):
+        raise ValueError(f"Agent files must be .md files: {safe_filename}")
+
+    # Construct the path using os.path.join for proper path handling
+    agents_dir = ".claude/agents"
+    candidate_path = os.path.join(agents_dir, safe_filename)
+
+    # Resolve any remaining path components and verify it's within the agents directory
+    resolved_path = os.path.abspath(candidate_path)
+    agents_abs_path = os.path.abspath(agents_dir)
+
+    if not resolved_path.startswith(agents_abs_path + os.sep):
+        raise ValueError(f"Path traversal attempt detected: {filename}")
+
+    return candidate_path
 
 def apply_batch_updates(edits_json):
     edits = json.loads(edits_json)
@@ -336,7 +427,11 @@ def apply_batch_updates(edits_json):
         if not file_edit['file']:
             continue
 
-        file_path = f".claude/agents/{file_edit['file']}"
+        try:
+            file_path = validate_agent_path(file_edit['file'])
+        except ValueError as e:
+            print(f"✗ Security error for {file_edit['file']}: {e}")
+            continue
 
         try:
             with open(file_path, 'r') as f:
@@ -349,17 +444,65 @@ def apply_batch_updates(edits_json):
                 # This is a simplified version - real implementation would parse the prompt
                 # and apply the specific change requested
 
-                # For now, just append suggested content to the file
+                # Sanitize and process prompt content safely
                 if prompt and len(prompt) > 0:
-                    # Parse out the suggestion from the prompt
-                    lines = prompt.split('\n')
+                    # Sanitize prompt to prevent code injection
+                    sanitized_prompt = sanitize_prompt_content(prompt)
+
+                    # Parse out the suggestion from the sanitized prompt
+                    lines = sanitized_prompt.split('\n')
                     for line in lines:
                         if 'append' in line.lower() or 'add' in line.lower():
-                            # Extract the text to add
+                            # Extract quoted text safely
                             match = re.search(r'"([^"]+)"', line)
                             if match:
                                 addition = match.group(1)
-                                content += f"\n\n{addition}"
+                                # Additional safety checks on addition
+                                if is_safe_content(addition):
+                                    content += f"\n\n{addition}"
+
+def sanitize_prompt_content(prompt):
+    """Sanitize prompt content to prevent code injection."""
+    if not isinstance(prompt, str):
+        return ""
+
+    # Remove dangerous patterns
+    dangerous_patterns = [
+        r'\$\(',  # Command substitution
+        r'`',     # Backticks
+        r'eval\s*\(',  # eval calls
+        r'exec\s*\(',  # exec calls
+        r'__import__',  # Import tricks
+        r'subprocess',  # Subprocess module
+        r'import\s+os', # OS module import
+    ]
+
+    sanitized = prompt
+    for pattern in dangerous_patterns:
+        sanitized = re.sub(pattern, '', sanitized, flags=re.IGNORECASE)
+
+    return sanitized
+
+def is_safe_content(content):
+    """Check if content is safe to add to files."""
+    if not content or len(content) > 1000:  # Size limit
+        return False
+
+    # Check for dangerous patterns
+    dangerous_patterns = [
+        r'\$\(',  # Command substitution
+        r'`',     # Backticks
+        r'eval\s*\(',  # eval calls
+        r'exec\s*\(',  # exec calls
+        r'rm\s+-rf',   # Dangerous rm commands
+        r'sudo',       # Privilege escalation
+    ]
+
+    for pattern in dangerous_patterns:
+        if re.search(pattern, content, flags=re.IGNORECASE):
+            return False
+
+    return True
 
             with open(file_path, 'w') as f:
                 f.write(content)
@@ -370,19 +513,66 @@ def apply_batch_updates(edits_json):
             print(f"✗ Error updating {file_path}: {e}")
 
 if __name__ == "__main__":
-    edits_json = sys.stdin.read()
-    apply_batch_updates(edits_json)
+    # Read from stdin with size limit and validation
+    try:
+        edits_json = sys.stdin.read(1024 * 1024)  # 1MB limit
+        if len(edits_json.strip()) == 0:
+            print("✗ No input provided", file=sys.stderr)
+            sys.exit(1)
+
+        # Additional JSON validation before processing
+        try:
+            test_parse = json.loads(edits_json)
+            if not isinstance(test_parse, list):
+                print("✗ Input must be a JSON array", file=sys.stderr)
+                sys.exit(1)
+        except json.JSONDecodeError as e:
+            print(f"✗ Invalid JSON input: {e}", file=sys.stderr)
+            sys.exit(1)
+
+        apply_batch_updates(edits_json)
+
+    except Exception as e:
+        print(f"✗ Unexpected error: {e}", file=sys.stderr)
+        sys.exit(1)
 EOF
 
-# Apply batch updates
-echo "$BATCH_EDITS" | python3 "$TEMP_DIR/batch_update.py"
+# Validate JSON input before processing
+echo -e "\n${BLUE}🔒 Validating input security...${NC}"
+if ! validate_json_input "$BATCH_EDITS"; then
+    echo -e "${RED}✗ Security validation failed. Aborting batch updates.${NC}"
+    exit 1
+fi
+
+# Apply batch updates with validated input
+echo -e "${GREEN}✓ Input validation passed${NC}"
+if ! echo "$BATCH_EDITS" | python3 "$TEMP_DIR/batch_update.py"; then
+    echo -e "${RED}✗ Batch update process failed${NC}"
+    exit 1
+fi
 
 # Step 7: Stage changes
 echo -e "\n${BLUE}📦 Staging changes...${NC}"
-CHANGED_FILES=$(echo "$PROMPTS" | jq -r '[.[].file] | unique | .[]' | sed 's|^|.claude/agents/|')
-if [ -n "$CHANGED_FILES" ]; then
-    echo "$CHANGED_FILES" | xargs git add
-    echo -e "${GREEN}✓ Staged all modified files${NC}"
+# Use safer approach for staging files - validate each file path
+CHANGED_FILES_LIST=()
+while IFS= read -r file_name; do
+    if [ -n "$file_name" ]; then
+        # Sanitize file path using our existing function
+        safe_path=$(sanitize_file_path "$file_name")
+        if [ $? -eq 0 ] && [ -n "$safe_path" ]; then
+            full_path=".claude/agents/$safe_path"
+            if [ -f "$full_path" ]; then
+                CHANGED_FILES_LIST+=("$full_path")
+            fi
+        else
+            echo -e "${YELLOW}⚠️ Skipping invalid file path: $file_name${NC}"
+        fi
+    fi
+done < <(echo "$PROMPTS" | jq -r '[.[].file] | unique | .[]')
+
+if [ ${#CHANGED_FILES_LIST[@]} -gt 0 ]; then
+    git add "${CHANGED_FILES_LIST[@]}"
+    echo -e "${GREEN}✓ Staged ${#CHANGED_FILES_LIST[@]} modified files${NC}"
 fi
 
 # Step 8: Create commit
