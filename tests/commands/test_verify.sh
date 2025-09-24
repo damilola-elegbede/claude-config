@@ -126,7 +126,10 @@ try:
 except yaml.YAMLError as e:
     print(f'YAML parsing error: {e}')
     sys.exit(1)
-" 2>/dev/null
+except ImportError:
+    print('PyYAML not available for validation')
+    sys.exit(1)
+"
 }
 
 test_required_sections() {
