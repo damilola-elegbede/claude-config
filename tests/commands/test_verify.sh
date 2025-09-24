@@ -17,8 +17,48 @@ readonly YELLOW='\033[1;33m'
 readonly BLUE='\033[0;34m'
 readonly NC='\033[0m'
 
+# Enhanced path resolution with fallback detection
+resolve_verify_cmd_path() {
+    local script_dir="$1"
+    
+    # Primary path calculation
+    local primary_path="$script_dir/../../system-configs/.claude/commands/verify.md"
+    
+    # Fallback 1: Try to find repository root
+    local repo_root
+    repo_root=$(cd "$script_dir" && git rev-parse --show-toplevel 2>/dev/null || echo "")
+    local fallback1_path=""
+    if [[ -n "$repo_root" ]]; then
+        fallback1_path="$repo_root/system-configs/.claude/commands/verify.md"
+    fi
+    
+    # Fallback 2: Working directory relative
+    local fallback2_path="system-configs/.claude/commands/verify.md"
+    
+    # Fallback 3: Absolute current directory
+    local current_dir
+    current_dir=$(pwd)
+    local fallback3_path="$current_dir/system-configs/.claude/commands/verify.md"
+    
+    # Test paths in order and return the first valid one
+    local paths=("$primary_path" "$fallback1_path" "$fallback2_path" "$fallback3_path")
+    
+    for path in "${paths[@]}"; do
+        if [[ -n "$path" && -f "$path" ]]; then
+            echo "$path"
+            return 0
+        fi
+    done
+    
+    # If none found, return primary path for error reporting
+    echo "$primary_path"
+    return 1
+}
+
 # Test constants
-readonly VERIFY_CMD_FILE="$SCRIPT_DIR/../../system-configs/.claude/commands/verify.md"
+# Test constants with enhanced path resolution
+VERIFY_CMD_FILE=$(resolve_verify_cmd_path "$SCRIPT_DIR")
+readonly VERIFY_CMD_FILE
 readonly TEST_RESULTS_DIR="/tmp/verify-test-results-$$"
 
 # CI environment detection and optimization
@@ -133,20 +173,83 @@ cleanup_test_infrastructure() {
 # ====================================
 
 test_verify_file_exists() {
+    # Enhanced debugging output visible even with set -e
+    if [[ "${CI:-}" == "true" ]] || [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
+        echo "DEBUG PATH RESOLUTION:"
+        echo "  SCRIPT_DIR: '"$SCRIPT_DIR"'"
+        echo "  Computed absolute SCRIPT_DIR: '$(cd "$SCRIPT_DIR" 2>/dev/null && pwd || echo 'FAILED')'"
+        echo "  VERIFY_CMD_FILE: '"$VERIFY_CMD_FILE"'"
+        echo "  File exists check: $(test -f "$VERIFY_CMD_FILE" && echo 'YES' || echo 'NO')"
+        echo "  Current working directory: '$(pwd)'"
+        
+        # Show what we can find in the expected directory structure
+        local verify_dir
+        verify_dir=$(dirname "$VERIFY_CMD_FILE")
+        echo "  Verify command directory: '"$verify_dir"'"
+        echo "  Directory exists: $(test -d "$verify_dir" && echo 'YES' || echo 'NO')"
+        
+        if [[ -d "$verify_dir" ]]; then
+            echo "  Directory contents:"
+            ls -la "$verify_dir" 2>/dev/null | sed 's/^/    /' || echo "    (ls failed)"
+        fi
+        
+        # Try to find the repository root and show structure
+        local repo_root
+        repo_root=$(cd "$SCRIPT_DIR" && git rev-parse --show-toplevel 2>/dev/null || echo "")
+        if [[ -n "$repo_root" ]]; then
+            echo "  Repository root: '"$repo_root"'"
+            echo "  Repository root exists: $(test -d "$repo_root" && echo 'YES' || echo 'NO')"
+            if [[ -d "$repo_root/system-configs" ]]; then
+                echo "  system-configs directory structure:"
+                find "$repo_root/system-configs" -name "*.md" 2>/dev/null | head -10 | sed 's/^/    /' || echo "    (find failed)"
+            else
+                echo "  system-configs directory: NOT FOUND"
+            fi
+        else
+            echo "  Repository root: NOT DETECTED"
+        fi
+        
+        # Show alternative path attempts
+        echo "  Alternative paths attempted:"
+        local script_dir_abs
+        script_dir_abs=$(cd "$SCRIPT_DIR" 2>/dev/null && pwd || echo "FAILED")
+        local alt_paths=(
+            "$script_dir_abs/../../system-configs/.claude/commands/verify.md"
+            "$(pwd)/system-configs/.claude/commands/verify.md"
+            "$repo_root/system-configs/.claude/commands/verify.md"
+        )
+        
+        for alt_path in "${alt_paths[@]}"; do
+            if [[ -n "$alt_path" ]]; then
+                echo "    '"$alt_path"' -> $(test -f "$alt_path" && echo 'EXISTS' || echo 'NOT FOUND')"
+            fi
+        done
+        echo ""
+    fi
+    
     if [[ -f "$VERIFY_CMD_FILE" ]]; then
+        # Additional success validation
+        if [[ "${CI:-}" == "true" ]]; then
+            echo "SUCCESS: File found and accessible"
+            echo "  Final path: '"$VERIFY_CMD_FILE"'"
+            echo "  File size: $(wc -c < "$VERIFY_CMD_FILE" 2>/dev/null || echo 'unknown') bytes"
+            echo "  File permissions: $(ls -l "$VERIFY_CMD_FILE" 2>/dev/null | awk '{print $1}' || echo 'unknown')"
+        fi
         return 0
     else
-        # Enhanced debugging for CI environment
+        # Enhanced failure reporting
         if [[ "${CI:-}" == "true" ]]; then
-            echo "DEBUG: File not found at: $VERIFY_CMD_FILE"
-            echo "DEBUG: Working directory: $(pwd)"
-            echo "DEBUG: SCRIPT_DIR: $SCRIPT_DIR"
-            echo "DEBUG: Directory contents:"
-            ls -la "$(dirname "$VERIFY_CMD_FILE")" 2>/dev/null || echo "  Directory not found"
+            echo "FAILURE: Could not locate verify.md file"
+            echo "  This usually indicates a CI path resolution issue"
+            echo "  The test expects the file at: '"$VERIFY_CMD_FILE"'"
+            echo "  Current working directory: '$(pwd)'"
+            echo "  Available files in current directory:"
+            ls -la 2>/dev/null | head -20 | sed 's/^/    /' || echo "    (ls failed)"
         fi
         return 1
     fi
 }
+
 
 test_yaml_frontmatter_valid() {
     if ! command -v python3 > /dev/null; then
