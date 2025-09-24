@@ -71,9 +71,11 @@ run_test() {
             timer=$((timer + 2))
         done
 
-        # Wait for test to complete and get exit code
+        # Wait for test to complete and get exit code (disable set -e temporarily)
+        set +e
         wait "$test_pid"
         local test_exit_code=$?
+        set -e
 
         if [ $test_exit_code -eq 0 ]; then
             TESTS_PASSED=$((TESTS_PASSED + 1))
