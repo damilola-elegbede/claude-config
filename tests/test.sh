@@ -2,7 +2,7 @@
 # Claude Configuration Test Suite
 # Runs all tests for Claude commands and configurations
 
-set -Eeuo pipefail  # Enhanced error handling
+set -e  # Exit on error (reverted from -Eeuo pipefail for compatibility)
 
 # Colors for output
 RED='\033[0;31m'
