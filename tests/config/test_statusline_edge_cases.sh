@@ -298,11 +298,8 @@ test_cleanup_functionality() {
     echo "old_version" > ".tmp/terminal_versions/old_terminal_1"
     echo "old_version" > ".tmp/terminal_versions/old_terminal_2"
 
-    # Use touch to set modification time to 8 days ago
-    touch -t $(date -v-8d +%Y%m%d%H%M.%S) ".tmp/terminal_versions/old_terminal_1" 2>/dev/null || \
+    # Use touch to set modification time to 8 days ago (portable version)
     touch -d "8 days ago" ".tmp/terminal_versions/old_terminal_1" 2>/dev/null || true
-
-    touch -t $(date -v-8d +%Y%m%d%H%M.%S) ".tmp/terminal_versions/old_terminal_2" 2>/dev/null || \
     touch -d "8 days ago" ".tmp/terminal_versions/old_terminal_2" 2>/dev/null || true
 
     # Run statusline - should trigger cleanup

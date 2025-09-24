@@ -8,9 +8,10 @@ expertise domain.
 
 ## The 8 Official Categories
 
-### 1. **Development** (blue) - 6 agents
+### 1. **Development** (Category Color: Blue, Icon: ⚡) - 6 agents
 
 **Purpose**: Core programming, implementation, and application building
+**Visual Indicator**: Blue color coding with lightning bolt icon
 **Agents**:
 
 - backend-engineer
@@ -20,9 +21,10 @@ expertise domain.
 - data-engineer
 - ml-engineer
 
-### 2. **Quality** (green) - 4 agents
+### 2. **Quality** (Category Color: Green, Icon: ✅) - 4 agents
 
 **Purpose**: Testing, code review, validation, and quality assurance
+**Visual Indicator**: Green color coding with checkmark icon
 **Agents**:
 
 - test-engineer
@@ -30,9 +32,10 @@ expertise domain.
 - performance-engineer
 - accessibility-auditor
 
-### 3. **Security** (red) - 1 agent
+### 3. **Security** (Category Color: Red, Icon: 🛡️) - 1 agent
 
 **Purpose**: Security assessment, vulnerability detection, and compliance
+**Visual Indicator**: Red color coding with shield icon
 **Agents**:
 
 - security-auditor

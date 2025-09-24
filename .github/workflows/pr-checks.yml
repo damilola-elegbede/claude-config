@@ -8,17 +8,54 @@ jobs:
   test-changes:
     name: Test Changes
     runs-on: ubuntu-latest
+    timeout-minutes: 10  # Prevent indefinite hangs
+
+    env:
+      CI: true
+      NO_COLOR: 1
+      TERM: dumb
+      TMPDIR: /tmp/pr-test
 
     steps:
     - name: Checkout PR branch
       uses: actions/checkout@v5
       with:
-        fetch-depth: 0
+        fetch-depth: 1  # Standardize with main CI workflow
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.13.5'
+        cache: 'pip'
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential python3-dev
+
+    - name: Install Python dependencies with version pinning
+      run: |
+        python -m pip install --upgrade pip>=24.0
+
+        # Install core dependencies
+        if [ -f "requirements.txt" ]; then
+          echo "Installing core dependencies from requirements.txt..."
+          pip install -r requirements.txt
+        else
+          # Fallback to direct install if requirements.txt doesn't exist
+          pip install PyYAML==6.0.2
+        fi
+
+        # Install performance script dependencies if needed
+        if [ -f "scripts/performance/requirements.txt" ]; then
+          echo "Installing performance dependencies..."
+          pip install -r scripts/performance/requirements.txt
+        fi
 
     - name: Setup Node.js
       uses: actions/setup-node@v5
       with:
-        node-version: '20'
+        node-version: '20.18.0'
         cache: 'npm'
         registry-url: 'https://registry.npmjs.org'
 
@@ -57,6 +94,20 @@ jobs:
         for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
           echo "  - $file"
         done
+
+    - name: Setup test environment
+      run: |
+        # Create temp directory with proper permissions
+        mkdir -p "$TMPDIR"
+        chmod 755 "$TMPDIR"
+
+        # Set resource limits for tests
+        ulimit -n 2048 || true
+
+        echo "Test environment ready:"
+        echo "  TMPDIR: $TMPDIR"
+        echo "  Available space:"
+        df -h "$TMPDIR"
 
     - name: Run tests
       run: |

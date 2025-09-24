@@ -483,9 +483,9 @@ test_cleanup_old_files() {
     echo "old_version" > ".tmp/terminal_versions/old_terminal_1"
     echo "old_version" > ".tmp/terminal_versions/old_terminal_2"
 
-    # Try to set modification time to 8 days ago
-    touch -t $(date -v-8d +%Y%m%d%H%M.%S 2>/dev/null || date -d "8 days ago" +%Y%m%d%H%M.%S) ".tmp/terminal_versions/old_terminal_1" 2>/dev/null || true
-    touch -t $(date -v-8d +%Y%m%d%H%M.%S 2>/dev/null || date -d "8 days ago" +%Y%m%d%H%M.%S) ".tmp/terminal_versions/old_terminal_2" 2>/dev/null || true
+    # Try to set modification time to 8 days ago (portable version)
+    touch -d "8 days ago" ".tmp/terminal_versions/old_terminal_1" 2>/dev/null || true
+    touch -d "8 days ago" ".tmp/terminal_versions/old_terminal_2" 2>/dev/null || true
 
     HOME="$TEST_HOME" bash "$statusline_path" --test <<< "$test_input" >/dev/null 2>&1
 

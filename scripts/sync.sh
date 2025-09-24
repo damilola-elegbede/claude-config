@@ -1,7 +1,7 @@
 #!/bin/bash
 # Sync script for Claude configuration
 
-set -e
+set -Eeuo pipefail
 
 # Colors for output
 RED='\033[0;31m'

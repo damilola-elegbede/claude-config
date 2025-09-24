@@ -3,7 +3,7 @@
 # Setup script for Git hooks
 # This script installs pre-commit and pre-push hooks for the Claude Configuration repository
 
-set -e
+set -Eeuo pipefail
 
 echo "🔧 Setting up Git hooks for Claude Configuration..."
 
@@ -37,7 +37,7 @@ cat > .git/hooks/pre-commit << 'EOF'
 # Runs fast checks that should pass before any commit
 # These checks are designed to be quick (<5 seconds)
 
-set -e
+set -Eeuo pipefail
 
 echo "🔍 Running pre-commit checks..."
 
@@ -173,7 +173,7 @@ cat > .git/hooks/pre-push << 'EOF'
 # Runs comprehensive checks before pushing to remote
 # These are more thorough than pre-commit but may take longer
 
-set -e
+set -Eeuo pipefail
 
 echo "🚀 Running pre-push checks..."
 
