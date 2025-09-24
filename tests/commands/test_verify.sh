@@ -103,11 +103,32 @@ run_test() {
     local test_func=$2
     ((TOTAL_TESTS++))
 
+    # Enhanced debugging for CI environments
+    if [[ "${CI:-}" == "true" ]] || [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
+        echo "=== RUNNING TEST: $test_name ==="
+        echo "Function: $test_func"
+        echo "Testing if function exists: $(type -t "$test_func" 2>/dev/null || echo 'NOT FOUND')"
+    fi
+
     # Temporarily disable set -e to allow test debugging output
     set +e
-    $test_func
-    local test_result=$?
+    
+    # Use different function call method for better compatibility
+    if type -t "$test_func" >/dev/null 2>&1; then
+        "$test_func"
+        local test_result=$?
+    else
+        echo "ERROR: Test function '$test_func' not found or not executable"
+        local test_result=1
+    fi
+    
     set -e
+
+    if [[ "${CI:-}" == "true" ]] || [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
+        echo "Test result: $test_result"
+        echo "=== END TEST: $test_name ==="
+        echo ""
+    fi
 
     if [ $test_result -eq 0 ]; then
         print_pass "$test_name"
@@ -173,6 +194,8 @@ cleanup_test_infrastructure() {
 # ====================================
 
 test_verify_file_exists() {
+    # IMMEDIATE debugging - first thing in function
+    echo "ENTERED test_verify_file_exists() FUNCTION"
     # Enhanced debugging output visible even with set -e
     if [[ "${CI:-}" == "true" ]] || [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
         echo "DEBUG PATH RESOLUTION:"
