@@ -25,7 +25,7 @@ jobs:
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11.13'
+        python-version: '3.13.5'
         cache: 'pip'
 
     - name: Install system dependencies
@@ -55,7 +55,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v5
       with:
-        node-version: '20.17.0'
+        node-version: '20.18.0'
         cache: 'npm'
         registry-url: 'https://registry.npmjs.org'
 

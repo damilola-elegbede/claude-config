@@ -17,7 +17,9 @@ echo "WAVE9-DEBUG: SCRIPT_DIR resolved to: '$SCRIPT_DIR'" >&2
 
 if [[ -f "$SCRIPT_DIR/../utils.sh" ]]; then
     echo "WAVE9-DEBUG: Found utils.sh, attempting to source..." >&2
-    source "$SCRIPT_DIR/../utils.sh"
+    source "$SCRIPT_DIR/../utils.sh" || {
+        echo "Warning: Failed to source utils.sh - continuing with built-in functions" >&2
+    }
     echo "WAVE9-DEBUG: utils.sh sourced successfully" >&2
 else
     echo "WAVE9-DEBUG: utils.sh not found at '$SCRIPT_DIR/../utils.sh'" >&2
