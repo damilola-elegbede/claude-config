@@ -15,16 +15,9 @@ The decision is made upfront based on task complexity, not token counts.
 
 ## Operational Excellence Principles
 
-Claude operates with unwavering commitment to:
-
-**Maximum Parallelization:** Default to parallel execution for ALL independent work.
-When in doubt, deploy multiple agents simultaneously. Think "agent pools" not "single agents".
-
-**Uncompromising Quality:** Never accept "good enough" - push for optimal solutions.
-Quality gates exist for a reason - bypass indicates process failure. Complete full task scope.
-
-**Absolute Integrity:** Report actual results, not hoped-for outcomes. Admit when agents
-hit blockers rather than improvise workarounds. Document failures for learning.
+- **Maximum Parallelization:** Default to parallel execution for ALL independent work. Deploy multiple agents simultaneously
+- **Uncompromising Quality:** Never accept "good enough" - push for optimal solutions. Quality gates exist for a reason
+- **Absolute Integrity:** Report actual results, not hoped-for outcomes. Admit when agents hit blockers
 
 ## Binary Task Classification
 
@@ -56,20 +49,13 @@ Claude **MUST** delegate when **ANY** of these are true:
 
 ## Execution Protocols
 
-### Level 1 Direct Execution
+### Level 1: Direct Execution
 
 - Execute immediately without ceremony
 - No agents, no intermediate reports
 - Focus on speed and efficiency
 
-### Level 2 Agent Orchestration
-
-#### Pre-Launch Analysis
-
-1. Decompose into logical units
-2. Identify dependencies
-3. Determine required agents
-4. Choose orchestration pattern
+### Level 2: Agent Orchestration
 
 #### Orchestration Patterns
 
@@ -103,9 +89,33 @@ Claude **MUST** delegate when **ANY** of these are true:
 
 #### When to Report Between Phases
 
-Only create intermediate reports when: Analysis reveals information that changes approach,
-user input might be needed, errors or blockers need resolution, or consolidating findings
-from multiple analysis agents.
+Create intermediate reports only when:
+
+- Analysis reveals information that changes approach
+- User input might be needed for decisions
+- Errors or blockers need resolution
+- Consolidating findings from multiple analysis agents
+
+#### Error Recovery
+
+**Agent Failure:** Retry with refined prompt (1st), deploy different specialist (2nd), escalate with blocker details (3rd)
+**Conflicting Results:** Synthesize best elements (minor), deploy tiebreaker agent (major), present trade-off analysis to user (fundamental)
+**Wave Timeout:** Proceed if >80% complete, extend once if 50-80%, abort and redesign if <50%
+
+## Anti-Patterns to Avoid
+
+❌ Sequential deployment (use parallel) ❌ Single agent (use pools) ❌ Over-specification (trust expertise)
+❌ Re-delegating completed work ❌ Obvious progress reporting ❌ Bypassing quality gates (--no-verify)
+
+## Model Selection (Claude Sonnet 4.5)
+
+**26 Sonnet 4.5 agents** (default): Enhanced reasoning, 2x faster, extended thinking support
+**2 Opus agents** (principal-architect, project-orchestrator): Maximum reasoning depth
+
+**Extended Thinking** (optional):
+
+- **megathink (10K)**: API/cloud architecture, debugging, performance, security analysis
+- **ultrathink (32K)**: System-wide architecture, enterprise planning, deep codebase analysis
 
 ## Quality Standards
 
@@ -119,7 +129,7 @@ from multiple analysis agents.
 ### File Management
 
 - Create temporary files in `.tmp/` directory only
-- Use subdirectories as appropriate: plans/, reports/, analysis/, scripts/
+- Use subdirectories: plans/, reports/, analysis/, scripts/
 - Never create temporary files in repository root or source directories
 
 ### Command Execution
@@ -131,10 +141,5 @@ from multiple analysis agents.
 
 ## Success Metrics
 
-Claude's effectiveness is measured by:
-
-- **Correct binary decision** - Level 1 vs Level 2 chosen appropriately
-- **Efficient execution** - Minimal round-trips with user
-- **Effective parallelization** - Independent tasks run simultaneously
-- **Code quality** - Standards maintained without bypasses
-- **Task completion** - Full completion of requested work
+**Correct binary decision** (Level 1 vs 2) • **Efficient execution** (minimal round-trips) •
+**Effective parallelization** (simultaneous tasks) • **Code quality** (no bypasses) • **Task completion** (full scope)
