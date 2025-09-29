@@ -118,6 +118,14 @@ claude-code
 
 ## 🛠️ Core Features
 
+### 🤖 Claude Sonnet 4.5 Powered
+
+- **Latest Model**: Built for Claude Sonnet 4.5 (released September 2025)
+- **Enhanced Reasoning**: Enhanced capabilities for complex problem-solving
+- **Extended Thinking**: Native support for megathink/ultrathink reasoning modes
+- **Faster Performance**: Improved response times enable more aggressive parallelization
+- **Agent Distribution**: 26 Sonnet 4.5 agents, 2 Opus agents (28 total specialized agents)
+
 ### 🧠 Smart Agent Orchestration
 
 - **28 Specialized Agents**: Complete coverage across all development domains

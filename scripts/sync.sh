@@ -132,9 +132,9 @@ main() {
     echo
 
     # Parse arguments
-    if [ "$1" == "--backup" ]; then
+    if [ "${1:-}" == "--backup" ]; then
         create_backup
-    elif [ "$1" == "--dry-run" ]; then
+    elif [ "${1:-}" == "--dry-run" ]; then
         echo "Dry run mode - no files will be copied"
         find "$SOURCE_DIR" -type f \( -name "*.md" -o -name "*.json" -o -name "*.sh" \) -not -path "*/output-styles/*" -not -name "*TEMPLATE*" -not -name "README.md" | wc -l | xargs echo "Would sync files:"
         exit 0
