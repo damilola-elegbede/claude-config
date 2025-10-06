@@ -1,5 +1,5 @@
 ---
-description: Create git commits with wave-based orchestration
+description: Create git commits with intelligent message generation
 argument-hint: [--amend]
 ---
 
@@ -8,427 +8,259 @@ argument-hint: [--amend]
 ## Usage
 
 ```bash
-/commit                         # Create commit with wave-based analysis and auto-fix
+/commit                         # Analyze changes and create commit
 /commit --amend                 # Amend last commit with staged changes
 ```
 
 ## Description
 
-Creates a git commit using wave-based orchestration with parallel analysis, auto-remediation, and quality gate
-enforcement. This command implements a three-wave approach: pre-commit analysis, auto-fix issues, and final commit
-creation.
+Creates git commits with intelligently generated conventional commit messages. Analyzes staged and unstaged changes,
+maintains repository commit style consistency, and leverages git's built-in pre-commit hooks for quality validation.
 
 **CRITICAL**: This command NEVER uses `--no-verify`. Quality gates exist to protect code integrity and must always be
-respected. When pre-commit hooks fail, the command automatically deploys remediation agents to fix issues.
+respected. If pre-commit hooks fail, the error is reported for manual resolution.
 
-## Wave-Based Orchestration Strategy
+## Behavior
 
-### Wave 1: Pre-commit Analysis (Parallel)
+### Default Mode - Intelligent Commit Creation
 
-Deploy multiple agent instances simultaneously for comprehensive analysis:
+**What it does:** Analyzes changes, generates commit message, creates commit
 
-```yaml
-# WAVE 1: SIMULTANEOUS PRE-COMMIT ANALYSIS
-codebase-analyst:
-  role: Maintain professional repository standards
-  deployment: 1 instance for repository hygiene analysis
-  responsibilities:
-    - Identify temporary/ephemeral files that should not be committed
-    - Detect auto-generated files that belong in .gitignore
-    - Find development artifacts (logs, dumps, debug files)
-    - Identify IDE-specific files and build artifacts
-    - Check for OS-specific files (.DS_Store, Thumbs.db, etc.)
-  patterns_to_detect:
-    - Temporary directories: .tmp/, tmp/, temp/, cache/, logs/
-    - Log files: *.log, *.debug, *.trace
-    - Build artifacts: dist/, build/, target/, out/
-    - IDE files: .idea/, .vscode/, *.swp, *.swo
-    - OS files: .DS_Store, Thumbs.db, desktop.ini
-    - Debug files: *.dump, *.stackdump, core.*
-    - Package files: node_modules/, vendor/, .env.local
-  input: All staged files, current .gitignore contents
-  parallel_with: [code-reviewer instances, security-auditor instances, test-engineer]
-  output:
-    - List of files to unstage/remove
-    - Suggested .gitignore additions
-    - Repository cleanliness report
+1. **Check Repository State**
+   - Run `git status` to identify changes
+   - Run `git diff` for staged changes
+   - Run `git diff HEAD` for unstaged changes
+   - Check for files that shouldn't be committed (.tmp/, .DS_Store, etc.)
 
-code-reviewer (multi-instance pool):
-  deployment: 3-4 instances based on changed file types
-  distribution:
-    - instance_1: Frontend/UI changes (React, Vue, Angular files)
-    - instance_2: Backend/API changes (Node.js, Python, Go files)
-    - instance_3: Infrastructure changes (Docker, CI/CD, configs)
-    - instance_4: Test and documentation changes
-  role: Analyze code quality, style, and completeness
-  parallel_with: [codebase-analyst, security-auditor instances, test-engineer]
-  output: Quality assessment, blocking issues per domain
+2. **Repository Hygiene**
+   - Warn about temporary files in staging (.tmp/, *.log, build artifacts)
+   - Suggest .gitignore additions for common patterns
+   - Identify OS-specific files (.DS_Store, Thumbs.db)
+   - Note auto-generated files that may need exclusion
 
-security-auditor (multi-instance pool):
-  deployment: 2 instances for thorough security scanning
-  distribution:
-    - instance_1: Secrets scanning (API keys, passwords, tokens)
-    - instance_2: Vulnerability patterns (SQL injection, XSS, dependencies)
-  role: Identify security vulnerabilities and sensitive data
-  parallel_with: [codebase-analyst, code-reviewer instances, test-engineer]
-  output: Security clearance or blocking security issues
+3. **Generate Commit Message**
+   - Analyze changed files and diff content
+   - Follow conventional commit format
+   - Match repository's existing commit style
+   - Include clear, concise description
+   - Add Claude Code attribution footer
 
-test-engineer:
-  role: Verify all tests pass with current changes
-  input: Changed files, existing test suites, test coverage
-  parallel_with: [codebase-analyst, code-reviewer instances, security-auditor instances]
-  output: Test results, coverage metrics, failing tests identification
-```
+4. **Create Commit**
+   - Stage relevant files if needed
+   - Execute `git commit` with generated message
+   - Let pre-commit hooks validate changes
+   - Report commit hash and status
 
-### Claude Decision Point: Issue Identification
+### Amend Mode (--amend)
 
-After Wave 1 completes, Claude analyzes all agent outputs to identify blocking issues:
+**What it does:** Amends the last commit with current staged changes
 
-- **Repository Hygiene Issues**: Temporary files, build artifacts, or files that should be in .gitignore
-- **Security Issues**: Any secrets, vulnerabilities, or security anti-patterns
-- **Quality Issues**: Linting errors, code style violations, complexity issues
-- **Test Failures**: Broken tests, insufficient coverage, missing tests
-- **Documentation**: Missing docs for new features or APIs
-
-**Decision Logic**:
-
-- ✅ **No Issues Found**: Proceed directly to Wave 3 (Final Commit)
-- ⚠️ **Issues Found**: Deploy Wave 2 (Auto-Fix Issues) with targeted agents
-- 🚫 **Critical Security**: Block commit until manual intervention
-- 🧹 **Temporary Files Found**: Auto-unstage and suggest .gitignore updates
-
-### Wave 2: Auto-Fix Issues (Conditional Parallel)
-
-Deploy only when Wave 1 identifies fixable issues. Each issue type gets dedicated agent instances:
-
-```yaml
-# WAVE 2: TARGETED AUTO-REMEDIATION (CONDITIONAL)
-codebase-analyst (cleanup-focused):
-  condition: Temporary files OR inappropriate files detected
-  role: Clean repository and update .gitignore
-  actions:
-    - Auto-unstage temporary/ephemeral files
-    - Remove development artifacts from staging
-    - Update .gitignore with newly identified patterns
-    - Clean up OS-specific files (.DS_Store, etc.)
-  parallel_with: [code-reviewer instances, test-engineer instances]
-  output:
-    - Cleaned staging area
-    - Updated .gitignore file
-    - Repository hygiene report
-
-code-reviewer (fix-focused instances):
-  condition: Linting errors OR style violations detected
-  deployment: N instances where N = number of files with issues
-  distribution: One instance per file requiring fixes
-  role: Auto-fix linting errors, style issues, complexity problems
-  parallel_with: [codebase-analyst, test-engineer instances, tech-writer]
-  output: Fixed files, remaining manual issues
-
-test-engineer (fix-focused instances):
-  condition: Test failures OR coverage gaps detected
-  deployment: 2-3 instances based on test failure types
-  distribution:
-    - instance_1: Fix broken unit tests
-    - instance_2: Fix integration test failures
-    - instance_3: Add missing test coverage
-  role: Repair failing tests and improve coverage
-  parallel_with: [code-reviewer instances, tech-writer]
-  output: Fixed tests, new test files, coverage reports
-
-tech-writer:
-  condition: Missing documentation OR unclear commit scope
-  role: Generate missing documentation and refine commit messages
-  input: All changes, fixed issues, repository conventions
-  parallel_with: [code-reviewer instances, test-engineer instances]
-  output: Documentation updates, conventional commit messages
-
-security-auditor:
-  condition: Non-critical security issues detected
-  role: Auto-remediate security anti-patterns and vulnerabilities
-  deployment: 1 instance for pattern fixes
-  parallel_with: [other fix agents]
-  output: Secured code, security improvements
-```
-
-### Claude Verification: Confirm Fixes Applied
-
-After Wave 2 completes, Claude verifies that all issues have been resolved:
-
-- **Re-run Quality Checks**: Validate that fixes actually resolved issues
-- **Test All Fixes**: Ensure auto-fixes didn't introduce new problems
-- **Security Re-scan**: Confirm security issues were properly addressed
-- **Prepare Final Staging**: Ready all fixed files for commit
-
-**Verification Logic**:
-
-- ✅ **All Issues Resolved**: Proceed to Wave 3 (Final Commit)
-- ⚠️ **Partial Resolution**: Deploy additional targeted agents
-- 🚫 **New Issues Introduced**: Rollback fixes and report to user
-
-### Wave 3: Final Commit (Always Executed)
-
-Generate comprehensive commit message and create commit with all fixes included:
-
-```yaml
-# WAVE 3: FINAL COMMIT CREATION
-tech-writer:
-  role: Generate final conventional commit message using conventional commit format
-  input: All changes, fixes applied, repository commit style
-  output: Polished commit message with fix descriptions
-
-execution-evaluator:
-  role: Create git commit and verify success
-  input: Staged files, commit message, pre-commit hook results
-  output: Commit hash, verification of clean state
-
-codebase-analyst:
-  role: Post-commit impact analysis
-  input: Final committed changes
-  parallel_with: [execution-evaluator]
-  output: Impact summary, related areas to monitor
-```
+1. Check last commit authorship (ensure it's safe to amend)
+2. Verify commit hasn't been pushed to remote
+3. Add staged changes to previous commit
+4. Preserve or update commit message as appropriate
 
 ## Expected Output
 
-### Wave 1: Pre-commit Analysis Output
+### Successful Commit
 
 ```text
-🌊 WAVE 1: Pre-commit Analysis
-🔍 Deploying parallel analysis agents...
+User: /commit
+Claude: Analyzing repository changes...
 
-📊 Agent Status:
-  - codebase-analyst: Scanning for temporary files... ⚠️ (1.5s)
-  - code-reviewer[frontend]: Analyzing React components... ✅ (2.1s)
-  - code-reviewer[backend]: Analyzing API endpoints... ✅ (1.8s)
-  - code-reviewer[infra]: Analyzing Docker configs... ✅ (1.2s)
-  - code-reviewer[tests]: Analyzing test coverage... ⚠️ (2.0s)
-  - security-auditor[secrets]: Scanning for credentials... ✅ (1.5s)
-  - security-auditor[vulns]: Vulnerability assessment... ✅ (2.3s)
-  - test-engineer: Running test suite... ❌ (3.1s)
-
-⚠️ Issues Identified:
-  - 5 temporary files detected (.tmp/, *.log, .DS_Store)
-  - 2 auto-generated files should be in .gitignore
-  - 3 linting errors in src/components/
-  - 2 failing unit tests in auth module
-  - Missing JSDoc for new API endpoints
-  - Test coverage below 80% threshold
-
-🎯 Decision: Deploy Wave 2 auto-remediation
-```
-
-### Wave 2: Auto-Fix Issues Output (Conditional)
-
-```text
-🌊 WAVE 2: Auto-Fix Issues
-🔧 Deploying targeted remediation agents...
-
-📊 Fix Status:
-  - codebase-analyst: Cleaning repository... ✅ (1.8s)
-    • Unstaged: .tmp/debug.log, .tmp/cache/, .DS_Store
-    • Updated .gitignore: Added *.log, .DS_Store patterns
-    • Removed: 5 temporary files from staging
-  - code-reviewer[src/components/Login.tsx]: Fixed ESLint errors... ✅ (1.2s)
-  - code-reviewer[src/components/Form.tsx]: Fixed style violations... ✅ (0.9s)
-  - code-reviewer[src/api/auth.ts]: Added missing JSDoc... ✅ (1.5s)
-  - test-engineer[auth-unit]: Fixed authentication tests... ✅ (2.8s)
-  - test-engineer[coverage]: Added missing test cases... ✅ (3.2s)
-  - tech-writer: Generated commit message options... ✅ (1.1s)
-
-✅ All Issues Resolved:
-  - Repository: 5 temp files unstaged, .gitignore updated
-  - Linting: 3/3 errors fixed
-  - Tests: 2/2 failures resolved
-  - Coverage: 85% (target: 80%)
-  - Documentation: JSDoc added
-
-🎯 Decision: Proceed to Wave 3 final commit
-```
-
-### Wave 3: Final Commit Output
-
-```text
-🌊 WAVE 3: Final Commit
-📝 Staging all changes and fixes...
-
-📋 Final Commit Summary:
-Files Changed: 8 files
-  - src/components/Login.tsx (fixed linting)
-  - src/components/Form.tsx (fixed style)
-  - src/api/auth.ts (added docs)
-  - tests/auth.test.ts (fixed tests)
-  - tests/coverage.test.ts (new coverage)
-  + 3 additional files
+📋 Changes Summary:
+  Modified: 3 files
+    - src/auth/login.ts (authentication improvements)
+    - tests/auth.test.ts (test coverage additions)
+    - README.md (updated installation steps)
 
 📝 Commit Message:
-feat(auth): implement user authentication with JWT tokens
+feat(auth): implement JWT token refresh mechanism
 
-- Add login component with form validation and error handling
-- Integrate JWT authentication service with refresh logic
-- Include comprehensive test coverage (85%)
-- Add JSDoc documentation for all public APIs
-- Fix ESLint violations and style inconsistencies
-
-Auto-fixes applied:
-- Resolved 3 linting errors in components
-- Fixed 2 failing authentication tests
-- Added missing test coverage for edge cases
+- Add automatic token refresh before expiration
+- Include comprehensive test coverage for auth flows
+- Update README with new authentication setup steps
 
 🤖 Generated with Claude Code
 Co-Authored-By: Claude <noreply@anthropic.com>
 
 ✅ Commit created: a1b2c3d
-🔍 Post-commit verification: All quality gates passed
 ```
 
-## Auto-Remediation Capabilities
+### Pre-commit Hook Failure
 
-### Automatic Fix Categories
+```text
+User: /commit
+Claude: Analyzing repository changes...
 
-**Repository Hygiene Issues**:
+📝 Commit Message: fix(api): resolve validation error handling
 
-- Auto-unstage temporary files (`.tmp/`, `*.log`, `*.debug`)
-- Remove OS-specific files (.DS_Store, Thumbs.db)
-- Clean up build artifacts (dist/, build/, node_modules/)
-- Remove IDE configuration files (.idea/, .vscode/)
-- Update .gitignore with newly detected patterns
-- Exclude auto-generated files from commits
+❌ Pre-commit hook failed:
+  - ESLint: 3 errors in src/api/validator.ts
+    • Line 45: Unexpected console.log statement
+    • Line 67: Missing return type annotation
+    • Line 89: Unused variable 'result'
 
-**Code Quality Issues**:
+  - Tests: 1 failing test
+    • tests/api.test.ts: Validation should reject invalid input
 
-- ESLint/TSLint errors and warnings
-- Prettier formatting violations
-- Import statement organization
-- Unused variable removal
-- Code complexity reduction
+⚠️ Please fix these issues and try again:
+  1. Fix ESLint errors in src/api/validator.ts
+  2. Repair failing test in tests/api.test.ts
+  3. Run `/commit` again once resolved
 
-**Test Issues**:
-
-- Broken unit test repairs
-- Missing test case generation
-- Test coverage improvements
-- Snapshot updates
-- Mock configuration fixes
-
-**Documentation Issues**:
-
-- Missing JSDoc/docstring generation
-- README updates for new features
-- API documentation generation
-- Inline comment improvements
-- Type definition documentation
-
-**Security Issues**:
-
-- Remove accidental credential commits
-- Fix security anti-patterns
-- Update vulnerable dependencies
-- Add security headers
-- Input validation improvements
-
-### Pre-commit Hook Failure Handling
-
-When pre-commit hooks fail, the command automatically:
-
-1. **Parse Hook Output**: Identify specific failure types and affected files
-2. **Deploy Fix Agents**: Launch appropriate agents based on failure types
-3. **Apply Fixes**: Auto-remediate all fixable issues in parallel
-4. **Re-run Hooks**: Verify fixes resolved the hook failures
-5. **Retry Commit**: Attempt commit again with fixes applied
-
-**Hook Failure Types**:
-
-- **Linting Failures**: Deploy code-reviewer for style fixes
-- **Test Failures**: Deploy test-engineer for test repairs
-- **Security Scan Failures**: Deploy security-auditor for vulnerability fixes
-- **Format Failures**: Deploy code-reviewer for formatting corrections
-- **Documentation Failures**: Deploy tech-writer for missing docs
-
-### Quality Gate Enforcement
-
-```yaml
-Non-Negotiable Rules:
-  - NEVER use: git commit --no-verify
-  - NEVER bypass: pre-commit hooks
-  - NEVER skip: security scanning
-  - NEVER ignore: test failures
-
-Auto-Remediation Strategy:
-  - Attempt automated fixes first
-  - Deploy multiple agent instances for parallel remediation
-  - Verify fixes don't introduce new issues
-  - Only escalate to user when auto-fix impossible
-
-Escalation Triggers:
-  - Critical security vulnerabilities requiring manual review
-  - Complex logic errors in tests that need human analysis
-  - Architecture changes affecting multiple systems
-  - Merge conflicts requiring human resolution
+💡 Tip: Run `/review --fix` to auto-fix linting issues
 ```
 
-## Performance Metrics
+### Repository Hygiene Warning
 
-### Execution Time Comparison
+```text
+User: /commit
+Claude: Analyzing repository changes...
 
-**Traditional Sequential Approach**: 45-60 seconds
+⚠️ Repository Hygiene Issues:
+  Temporary files detected in staging:
+    - .tmp/debug.log
+    - .DS_Store
+    - node_modules/.cache/
 
-- Code review: 15s
-- Security scan: 10s
-- Test execution: 20s
-- Fix issues: 15s (if needed)
+  Recommendations:
+    1. Unstage temporary files: git reset .tmp/ .DS_Store
+    2. Add to .gitignore: *.log, .DS_Store, node_modules/
+    3. Clean staging area before committing
 
-**Wave-Based Parallel Approach**: 8-12 seconds
-
-- Wave 1 (parallel analysis): 3-4s
-- Wave 2 (parallel fixes): 3-5s (conditional)
-- Wave 3 (final commit): 2-3s
-
-**Performance Benefits**:
-
-- 75-80% faster execution
-- More thorough analysis with multiple instances
-- Automatic issue remediation
-- Higher code quality through comprehensive checks
-
-### Agent Coordination Efficiency
-
-```yaml
-Parallelization Strategy:
-  Wave 1: 6-8 agents running simultaneously
-  Wave 2: 3-5 agents fixing issues in parallel (conditional)
-  Wave 3: 2-3 agents for final commit coordination
-
-Resource Optimization:
-  - Intelligent file distribution among instances
-  - Non-overlapping agent responsibilities
-  - Conditional deployment based on actual issues
-  - Parallel execution within each wave
-
-Quality Improvements:
-  - Multiple specialized reviews vs single general review
-  - Targeted fixes by domain experts
-  - Comprehensive security coverage
-  - Automatic test coverage verification
+Continue with commit? (These files will be included if not removed)
 ```
 
-## Prerequisites
+## Commit Message Format
 
-- Git repository must be initialized
-- Changes must exist (staged or unstaged)
-- Pre-commit hooks properly configured (if present)
+### Conventional Commit Structure
+
+```text
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+**Types:** feat, fix, docs, style, refactor, test, chore, perf, ci
+
+**Example:**
+
+```text
+feat(auth): add OAuth2 authentication support
+
+- Implement OAuth2 authorization code flow
+- Add token management and refresh logic
+- Include provider configuration for Google and GitHub
+- Add comprehensive integration tests
+
+🤖 Generated with Claude Code
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
+
+## Quality Standards
+
+### Repository Hygiene
+
+**Auto-detected issues:**
+
+- Temporary files: .tmp/, *.log,*.debug
+- Build artifacts: dist/, build/, target/, out/
+- IDE files: .idea/, .vscode/, *.swp
+- OS files: .DS_Store, Thumbs.db, desktop.ini
+- Package files: node_modules/, vendor/, .env.local
+
+### Commit Message Quality
+
+**Standards enforced:**
+
+- Conventional commit format adherence
+- Clear, concise subject line (<72 characters)
+- Detailed body for complex changes
+- Consistent tense and style with repository
+- Proper scope identification
+
+### Pre-commit Hook Respect
+
+**Never bypass hooks:**
+
+- Linting checks (ESLint, Prettier, Ruff, etc.)
+- Test execution requirements
+- Security scanning (if configured)
+- Custom validation scripts
+
+**If hooks fail:** Report errors clearly and halt commit process
+
+## Implementation Strategy
+
+### Change Analysis
+
+Claude directly analyzes:
+
+- Git status output for file changes
+- Git diff for staged content
+- Git log for commit style patterns
+- Repository structure for scope determination
+
+### Message Generation
+
+Claude generates messages considering:
+
+- Type of changes (feature, fix, refactor, etc.)
+- Affected areas (scope identification)
+- Change magnitude (subject and body detail)
+- Repository conventions (existing commit patterns)
+
+### Commit Execution
+
+```bash
+# Stage files if needed
+git add <relevant-files>
+
+# Create commit with generated message
+git commit -m "$(cat <<'EOF'
+<generated-commit-message>
+
+🤖 Generated with Claude Code
+Co-Authored-By: Claude <noreply@anthropic.com>
+EOF
+)"
+
+# Report result
+git log -1 --oneline
+```
+
+## Error Handling
+
+### Pre-commit Hook Failures
+
+- Parse hook output to identify specific issues
+- Report errors with file locations and descriptions
+- Suggest remediation steps or commands
+- Halt commit process (never bypass with --no-verify)
+
+### No Changes to Commit
+
+```text
+✅ Working tree clean - no changes to commit
+```
+
+### Amend Safety Checks
+
+```text
+❌ Cannot amend: Last commit authored by different user
+❌ Cannot amend: Commit already pushed to remote
+```
 
 ## Notes
 
-- **Zero-tolerance quality policy**: Issues must be fixed, never bypassed
-- **Professional repository standards**: Maintains clean, professional-level repository without temporary or ephemeral files
-- **Automatic cleanup**: Removes temporary files before staging and updates .gitignore
-- **Smart retry logic**: Handles pre-commit hook modifications gracefully
-- **Comprehensive logging**: Tracks all agent activities and fixes applied
-- **Rollback capability**: Can undo auto-fixes if they introduce problems
-- **Educational output**: Explains what was fixed and why
-- **Integration friendly**: Works with existing CI/CD pipelines and git workflows
-- **Repository hygiene**: Proactively identifies and excludes files that don't belong in version control
-
-The /commit command transforms commit creation from a manual, error-prone process into an automated, quality-assured
-workflow that ensures every commit meets high standards while providing rapid feedback and automatic remediation.
+- Streamlined design focuses on commit creation, not complex orchestration
+- Trusts git's pre-commit hooks for quality validation
+- Reports errors clearly without auto-remediation waves
+- Fast execution: typically <5 seconds
+- Repository hygiene warnings help maintain clean git history
+- Conventional commit format ensures consistency
+- Claude Code attribution maintains transparency
+- Safe amend mode with authorship and push checks
