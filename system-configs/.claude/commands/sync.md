@@ -180,7 +180,7 @@ Post-sync Validation:
 ### Core Sync Logic
 
 ```bash
-#!/bin/bash
+#!/bin/sh
 
 # Parse command line arguments
 DRY_RUN=false
@@ -212,6 +212,9 @@ done
 validate_configs() {
   echo "✅ Pre-sync validation:"
 
+  # Use explicit HOME or fallback to ~
+  HOME_DIR="${HOME:-$( cd ~ && pwd )}"
+
   # Check source directory
   if [ ! -d "system-configs/.claude" ]; then
     echo "❌ Source directory not found: system-configs/.claude"
@@ -222,7 +225,7 @@ validate_configs() {
   echo "  - Configuration syntax: Valid ($(find system-configs/.claude/agents -name "*.md" | wc -l | tr -d ' ') agents, $(find system-configs/.claude/commands -name "*.md" | wc -l | tr -d ' ') commands)"
 
   # Check target directory permissions
-  if [ ! -w "$HOME" ]; then
+  if [ ! -w "$HOME_DIR" ]; then
     echo "❌ Cannot write to home directory"
     return 1
   fi
@@ -234,10 +237,13 @@ validate_configs() {
 
 # Create backup
 create_backup() {
-  if [ "$CREATE_BACKUP" = "true" ] && [ -d "$HOME/.claude" ]; then
+  # Use explicit HOME or fallback to ~
+  HOME_DIR="${HOME:-$( cd ~ && pwd )}"
+
+  if [ "$CREATE_BACKUP" = "true" ] && [ -d "$HOME_DIR/.claude" ]; then
     local timestamp=$(date +%Y%m%d_%H%M%S)
-    local backup_path="$HOME/.claude.backup.$timestamp"
-    cp -r "$HOME/.claude" "$backup_path"
+    local backup_path="$HOME_DIR/.claude.backup.$timestamp"
+    cp -r "$HOME_DIR/.claude" "$backup_path"
     echo "💾 Creating backup: $backup_path"
     echo "$backup_path" > /tmp/claude_sync_backup_path
   fi
@@ -247,14 +253,17 @@ create_backup() {
 sync_files() {
   echo "🔄 Synchronizing files:"
 
+  # Use explicit HOME or fallback to ~
+  HOME_DIR="${HOME:-$( cd ~ && pwd )}"
+
   # Ensure target directories exist
-  mkdir -p "$HOME/.claude/agents"
-  mkdir -p "$HOME/.claude/commands"
-  mkdir -p "$HOME/.claude/output-styles"
+  mkdir -p "$HOME_DIR/.claude/agents"
+  mkdir -p "$HOME_DIR/.claude/commands"
+  mkdir -p "$HOME_DIR/.claude/output-styles"
 
   # Sync agents
   if rsync -av --exclude="README.md" --exclude="*TEMPLATE*" --exclude="*CATEGORIES*" \
-     system-configs/.claude/agents/ "$HOME/.claude/agents/"; then
+     system-configs/.claude/agents/ "$HOME_DIR/.claude/agents/"; then
     echo "  ✅ Agents: $(find system-configs/.claude/agents -name "*.md" | wc -l | tr -d ' ') files → ~/.claude/agents/"
   else
     echo "  ❌ Failed to sync agents"
@@ -262,7 +271,7 @@ sync_files() {
   fi
 
   # Sync commands
-  if rsync -av system-configs/.claude/commands/ "$HOME/.claude/commands/"; then
+  if rsync -av system-configs/.claude/commands/ "$HOME_DIR/.claude/commands/"; then
     echo "  ✅ Commands: $(find system-configs/.claude/commands -name "*.md" | wc -l | tr -d ' ') files → ~/.claude/commands/"
   else
     echo "  ❌ Failed to sync commands"
@@ -271,18 +280,18 @@ sync_files() {
 
   # Sync output styles if they exist
   if [ -d "system-configs/.claude/output-styles" ]; then
-    rsync -av system-configs/.claude/output-styles/ "$HOME/.claude/output-styles/"
+    rsync -av system-configs/.claude/output-styles/ "$HOME_DIR/.claude/output-styles/"
     echo "  ✅ Output styles: $(find system-configs/.claude/output-styles -name "*.md" 2>/dev/null | wc -l | tr -d ' ') files → ~/.claude/output-styles/"
   fi
 
   # Sync individual files
   if [ -f "system-configs/.claude/settings.json" ]; then
-    cp system-configs/.claude/settings.json "$HOME/.claude/"
+    cp system-configs/.claude/settings.json "$HOME_DIR/.claude/"
   fi
 
   if [ -f "system-configs/.claude/statusline.sh" ]; then
-    cp system-configs/.claude/statusline.sh "$HOME/.claude/"
-    chmod +x "$HOME/.claude/statusline.sh"
+    cp system-configs/.claude/statusline.sh "$HOME_DIR/.claude/"
+    chmod +x "$HOME_DIR/.claude/statusline.sh"
   fi
 
   echo "  ✅ Settings: settings.json, statusline.sh"
@@ -294,8 +303,11 @@ sync_files() {
 deploy_mcp_servers() {
   echo "📡 MCP Server Configuration:"
 
+  # Use explicit HOME or fallback to ~
+  HOME_DIR="${HOME:-$( cd ~ && pwd )}"
+
   if [ -f ".mcp.json" ]; then
-    local claude_config="$HOME/Library/Application Support/Claude/claude_desktop_config.json"
+    local claude_config="$HOME_DIR/Library/Application Support/Claude/claude_desktop_config.json"
 
     # Create backup of existing config
     if [ -f "$claude_config" ]; then
@@ -326,17 +338,28 @@ deploy_mcp_servers() {
 post_sync_validation() {
   echo "✅ Post-sync validation:"
 
-  # Check file integrity
-  local agent_count=$(find "$HOME/.claude/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-  local command_count=$(find "$HOME/.claude/commands" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+  # Use explicit HOME or fallback to ~
+  HOME_DIR="${HOME:-$( cd ~ && pwd )}"
+
+  # Check file integrity - simplify to avoid nested command substitution issues
+  agent_count=0
+  command_count=0
+
+  if [ -d "$HOME_DIR/.claude/agents" ]; then
+    agent_count=$(find "$HOME_DIR/.claude/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+  fi
+
+  if [ -d "$HOME_DIR/.claude/commands" ]; then
+    command_count=$(find "$HOME_DIR/.claude/commands" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+  fi
 
   echo "  - File integrity: All files copied successfully"
   echo "  - Agent configs: $agent_count/$agent_count valid"
   echo "  - Commands: $command_count/$command_count functional"
 
   # Test MCP connectivity (basic check)
-  if [ -f "$HOME/Library/Application Support/Claude/claude_desktop_config.json" ]; then
-    local mcp_count=$(jq -r '.mcpServers | length' "$HOME/Library/Application Support/Claude/claude_desktop_config.json" 2>/dev/null || echo "0")
+  if [ -f "$HOME_DIR/Library/Application Support/Claude/claude_desktop_config.json" ]; then
+    mcp_count=$(jq -r '.mcpServers | length' "$HOME_DIR/Library/Application Support/Claude/claude_desktop_config.json" 2>/dev/null || echo "0")
     echo "  - MCP integration: $mcp_count/6 configured"
   fi
 
@@ -345,16 +368,19 @@ post_sync_validation() {
 
 # Rollback function
 rollback_changes() {
+  # Use explicit HOME or fallback to ~
+  HOME_DIR="${HOME:-$( cd ~ && pwd )}"
+
   if [ -f /tmp/claude_sync_backup_path ]; then
-    local backup_path=$(cat /tmp/claude_sync_backup_path)
+    backup_path=$(cat /tmp/claude_sync_backup_path)
     if [ -d "$backup_path" ]; then
       echo "🔄 Rolling back changes:"
-      rm -rf "$HOME/.claude"
-      mv "$backup_path" "$HOME/.claude"
+      rm -rf "$HOME_DIR/.claude"
+      mv "$backup_path" "$HOME_DIR/.claude"
       echo "  ✅ Files restored from: $backup_path"
 
       # Restore MCP config if backup exists
-      local claude_config="$HOME/Library/Application Support/Claude/claude_desktop_config.json"
+      claude_config="$HOME_DIR/Library/Application Support/Claude/claude_desktop_config.json"
       if [ -f "${claude_config}.backup" ]; then
         mv "${claude_config}.backup" "$claude_config"
         echo "  ✅ MCP config reverted to previous state"
