@@ -187,7 +187,7 @@ DRY_RUN=false
 CREATE_BACKUP=true
 FORCE=false
 
-while [[ $# -gt 0 ]]; do
+while [ $# -gt 0 ]; do
   case $1 in
     --dry-run)
       DRY_RUN=true
@@ -213,7 +213,7 @@ validate_configs() {
   echo "✅ Pre-sync validation:"
 
   # Check source directory
-  if [[ ! -d "system-configs/.claude" ]]; then
+  if [ ! -d "system-configs/.claude" ]; then
     echo "❌ Source directory not found: system-configs/.claude"
     return 1
   fi
@@ -222,7 +222,7 @@ validate_configs() {
   echo "  - Configuration syntax: Valid ($(find system-configs/.claude/agents -name "*.md" | wc -l | tr -d ' ') agents, $(find system-configs/.claude/commands -name "*.md" | wc -l | tr -d ' ') commands)"
 
   # Check target directory permissions
-  if [[ ! -w "$HOME" ]]; then
+  if [ ! -w "$HOME" ]; then
     echo "❌ Cannot write to home directory"
     return 1
   fi
@@ -234,7 +234,7 @@ validate_configs() {
 
 # Create backup
 create_backup() {
-  if [[ "$CREATE_BACKUP" == true && -d "$HOME/.claude" ]]; then
+  if [ "$CREATE_BACKUP" = "true" ] && [ -d "$HOME/.claude" ]; then
     local timestamp=$(date +%Y%m%d_%H%M%S)
     local backup_path="$HOME/.claude.backup.$timestamp"
     cp -r "$HOME/.claude" "$backup_path"
@@ -270,17 +270,17 @@ sync_files() {
   fi
 
   # Sync output styles if they exist
-  if [[ -d "system-configs/.claude/output-styles" ]]; then
+  if [ -d "system-configs/.claude/output-styles" ]; then
     rsync -av system-configs/.claude/output-styles/ "$HOME/.claude/output-styles/"
     echo "  ✅ Output styles: $(find system-configs/.claude/output-styles -name "*.md" 2>/dev/null | wc -l | tr -d ' ') files → ~/.claude/output-styles/"
   fi
 
   # Sync individual files
-  if [[ -f "system-configs/.claude/settings.json" ]]; then
+  if [ -f "system-configs/.claude/settings.json" ]; then
     cp system-configs/.claude/settings.json "$HOME/.claude/"
   fi
 
-  if [[ -f "system-configs/.claude/statusline.sh" ]]; then
+  if [ -f "system-configs/.claude/statusline.sh" ]; then
     cp system-configs/.claude/statusline.sh "$HOME/.claude/"
     chmod +x "$HOME/.claude/statusline.sh"
   fi
@@ -294,11 +294,11 @@ sync_files() {
 deploy_mcp_servers() {
   echo "📡 MCP Server Configuration:"
 
-  if [[ -f ".mcp.json" ]]; then
+  if [ -f ".mcp.json" ]; then
     local claude_config="$HOME/Library/Application Support/Claude/claude_desktop_config.json"
 
     # Create backup of existing config
-    if [[ -f "$claude_config" ]]; then
+    if [ -f "$claude_config" ]; then
       cp "$claude_config" "${claude_config}.backup"
       echo "  💾 Backup: ${claude_config}.backup"
     fi
@@ -335,7 +335,7 @@ post_sync_validation() {
   echo "  - Commands: $command_count/$command_count functional"
 
   # Test MCP connectivity (basic check)
-  if [[ -f "$HOME/Library/Application Support/Claude/claude_desktop_config.json" ]]; then
+  if [ -f "$HOME/Library/Application Support/Claude/claude_desktop_config.json" ]; then
     local mcp_count=$(jq -r '.mcpServers | length' "$HOME/Library/Application Support/Claude/claude_desktop_config.json" 2>/dev/null || echo "0")
     echo "  - MCP integration: $mcp_count/6 configured"
   fi
@@ -345,9 +345,9 @@ post_sync_validation() {
 
 # Rollback function
 rollback_changes() {
-  if [[ -f /tmp/claude_sync_backup_path ]]; then
+  if [ -f /tmp/claude_sync_backup_path ]; then
     local backup_path=$(cat /tmp/claude_sync_backup_path)
-    if [[ -d "$backup_path" ]]; then
+    if [ -d "$backup_path" ]; then
       echo "🔄 Rolling back changes:"
       rm -rf "$HOME/.claude"
       mv "$backup_path" "$HOME/.claude"
@@ -355,7 +355,7 @@ rollback_changes() {
 
       # Restore MCP config if backup exists
       local claude_config="$HOME/Library/Application Support/Claude/claude_desktop_config.json"
-      if [[ -f "${claude_config}.backup" ]]; then
+      if [ -f "${claude_config}.backup" ]; then
         mv "${claude_config}.backup" "$claude_config"
         echo "  ✅ MCP config reverted to previous state"
       fi
@@ -370,7 +370,7 @@ rollback_changes() {
 main() {
   local start_time=$(date +%s)
 
-  if [[ "$DRY_RUN" == true ]]; then
+  if [ "$DRY_RUN" = "true" ]; then
     echo "📖 Preview mode - no changes will be made"
     echo ""
     echo "🔍 Analyzing configurations:"
@@ -449,7 +449,7 @@ main() {
   echo ""
   echo "📊 Sync completed successfully:"
   echo "  Files synced: $(find system-configs/.claude -name "*.md" -o -name "*.json" -o -name "*.sh" 2>/dev/null | wc -l | tr -d ' ') total"
-  if [[ -f /tmp/claude_sync_backup_path ]]; then
+  if [ -f /tmp/claude_sync_backup_path ]; then
     echo "  Backup location: $(cat /tmp/claude_sync_backup_path)"
     rm -f /tmp/claude_sync_backup_path
   fi
