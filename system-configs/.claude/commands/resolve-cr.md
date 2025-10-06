@@ -37,9 +37,9 @@ Collect all unresolved comments from the PR:
 # Get PR number (current branch or argument)
 pr="${1:-$(gh pr view --json number -q .number)}"
 
-# Fetch only unresolved CodeRabbit comments
-gh pr view "$pr" --json comments --jq '
-  .comments[] |
+# Fetch only unresolved CodeRabbit review comments
+gh pr view "$pr" --json reviewThreads --jq '
+  .reviewThreads[].comments[] |
   select(.author.login == "coderabbitai[bot]") |
   select(.isResolved == false) |
   {

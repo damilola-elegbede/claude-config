@@ -90,8 +90,8 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 Execute push with basic validation:
 
 ```bash
-# Check branch tracking
-git rev-parse --abbrev-ref --symbolic-full-name @{u}
+# Check branch tracking (ignore if upstream not yet set)
+git rev-parse --abbrev-ref --symbolic-full-name @{u} >/dev/null 2>&1 || true
 
 # Push to remote
 git push -u origin <branch-name>
