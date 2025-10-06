@@ -152,9 +152,9 @@ Claude: 🔒 Security-focused review...
 1. **SQL Injection Risk** - src/database/queries.ts:34
    - Raw user input used in query: `SELECT * FROM users WHERE id = ${userId}`
    - Fix: Use parameterized queries
-   ```typescript
-   db.query('SELECT * FROM users WHERE id = ?', [userId])
-   ```
+     ```typescript
+     db.query('SELECT * FROM users WHERE id = ?', [userId])
+     ```
 
 🟡 Medium (1)
 
