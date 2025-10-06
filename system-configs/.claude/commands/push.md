@@ -1,6 +1,6 @@
 ---
-description: Safely push changes with wave-based orchestration
-argument-hint: [--simple|--force|--dry-run]
+description: Push changes to remote repository
+argument-hint: [--force|--dry-run]
 ---
 
 # /push Command
@@ -8,452 +8,341 @@ argument-hint: [--simple|--force|--dry-run]
 ## Usage
 
 ```bash
-/push                   # Wave-based orchestration push
-/push --simple          # Quick push without quality checks
-/push --force           # Force push (use carefully)
+/push                   # Push current branch to remote
+/push --force           # Force push (use with caution)
 /push --dry-run         # Preview what would be pushed
 ```
 
 ## Description
 
-Safely pushes changes to remote repository using advanced wave-based orchestration for comprehensive
-quality gates, auto-recovery, and CI/CD monitoring. Automatically handles branch management, remote
-tracking, and deploys specialized agents in three coordinated waves with automatic issue resolution
-between phases.
+Safely pushes changes to remote repository with basic validation checks. Runs tests if configured, executes git push,
+and reports results. Leverages git's pre-push hooks for quality validation.
 
-**CRITICAL**: This command NEVER uses `--no-verify`. Pre-push hooks are the last line of
-defense before code reaches the remote repository. If pre-push hooks fail, the issues must
-be fixed immediately, never bypassed.
-
-## Wave-Based Orchestration
-
-### Wave 1: Pre-Push Validation (Parallel)
-
-Simultaneous quality gate validation with three specialized agents:
-
-```yaml
-Parallel Agent Deployment:
-  - test-engineer: Complete test suite execution and coverage analysis
-  - devops: CI/CD readiness check and pipeline validation
-  - security-auditor: Security vulnerability scanning and compliance check
-
-Execution: All agents run simultaneously for maximum efficiency
-Duration: 15-30 seconds (parallel execution)
-```
-
-**Claude Analysis Phase**: Identifies blocking issues and determines if Wave 2 is needed
-
-### Wave 2: Issue Resolution (Conditional)
-
-Deployed only when Wave 1 identifies blocking issues:
-
-```yaml
-Conditional Agent Deployment:
-  - test-engineer: Fix failing tests and coverage issues
-  - devops: Resolve CI/CD configuration issues and pipeline problems
-  - security-auditor: Fix security vulnerabilities and compliance issues
-  - platform-engineer: Fix environment setup and dependency conflicts
-
-Auto-Recovery Logic:
-  - Pre-push hook failures → Deploy appropriate fix agents
-  - Test failures → Deploy test-engineer for fixes
-  - Security issues → Deploy security-auditor for remediation
-  - Build failures → Deploy devops for pipeline fixes
-
-Execution: Targeted parallel deployment based on issue types
-Duration: 20-45 seconds (varies by issue complexity)
-```
-
-**Claude Verification Phase**: Confirms all issues resolved and system ready to push
-
-### Wave 3: Push & Monitor
-
-Execute push operation with real-time monitoring:
-
-```yaml
-Push Execution:
-  - Execute git push with quality gate enforcement
-  - Real-time CI/CD pipeline monitoring
-  - Automatic failure detection and classification
-
-Auto-Recovery for Push Failures:
-  - Pipeline failures → Deploy devops for immediate fixes
-  - Build failures → Deploy platform-engineer for environment issues
-  - Test failures → Deploy test-engineer for fix and retry
-
-Monitoring Duration: Until CI/CD pipeline completes or fails
-```
-
-## Expected Output
-
-### Wave-Based Push Report
-
-```markdown
-# Push Wave-Based Orchestration Report
-
-## Wave 1: Pre-Push Validation ✅
-- **test-engineer**: All 127 tests passing, coverage at 94.2%
-- **devops**: CI/CD pipeline ready, all checks configured properly
-- **security-auditor**: No vulnerabilities detected, dependencies secure
-
-**Claude Analysis**: No blocking issues detected, proceeding to Wave 3
-
-## Wave 3: Push & Monitor ✅
-- **Branch**: feature/user-authentication
-- **Commits**: 4 commits pushed successfully
-- **CI/CD Pipeline**: ✅ Build passing, tests completed
-- **Deployment**: Successfully deployed to staging environment
-
-## Summary
-✅ **Push Successful** - All quality gates passed
-🚀 **CI/CD Status**: Pipeline completed successfully
-💡 **Next Steps**: Ready for PR creation and merge
-```
-
-### Wave 2 Auto-Recovery Example
-
-```markdown
-# Push Auto-Recovery Report
-
-## Wave 1: Pre-Push Validation ⚠️
-- **test-engineer**: 2 test failures in authentication module
-- **devops**: Missing environment variables in CI config
-- **security-auditor**: 1 dependency vulnerability found
-
-**Claude Analysis**: Blocking issues detected, deploying Wave 2 resolution
-
-## Wave 2: Issue Resolution ✅
-- **test-engineer**: Resolved authentication test race conditions
-- **devops**: Added missing env vars to CI/CD configuration
-- **security-auditor**: Updated vulnerable dependency to v2.1.4
-
-**Claude Verification**: All issues resolved, system ready to push
-
-## Wave 3: Push & Monitor ✅
-- **Push Status**: Successful after auto-recovery
-- **CI/CD Pipeline**: All checks passing
-- **Total Resolution Time**: 2 minutes 34 seconds
-```
+**CRITICAL**: This command NEVER uses `--no-verify`. Pre-push hooks are the last line of defense before code reaches
+the remote repository. If hooks fail, issues must be fixed, not bypassed.
 
 ## Behavior
 
-### Wave-Based Execution Strategy
+### Default Mode - Safe Push
 
-#### Default Mode - Full Wave Orchestration
+**What it does:** Validates and pushes current branch to remote
 
-**What it does**: Three-wave orchestration with auto-recovery
+1. **Check Repository State**
 
-```yaml
-Wave 1 - Pre-Push Validation (Always):
-  Parallel Agents: test-engineer + devops + security-auditor
-  Purpose: Comprehensive quality gate validation
-  Duration: 15-30 seconds
+   ```bash
+   git status
+   git branch --show-current
+   git rev-list @{u}.. # commits ahead of remote
+   ```
 
-Wave 2 - Issue Resolution (Conditional):
-  Triggered: When Wave 1 detects blocking issues
-  Parallel Agents: test-engineer + devops + security-auditor + platform-engineer
-  Purpose: Auto-resolve all detected issues
-  Duration: 20-45 seconds
+2. **Run Tests** (if test command configured)
+   - Check for test script in package.json, Makefile, etc.
+   - Run tests before pushing
+   - Report test results
 
-Wave 3 - Push & Monitor (Always):
-  Purpose: Execute push with real-time CI/CD monitoring
-  Auto-Recovery: Deploy fix agents for pipeline failures
-  Duration: Until pipeline completion
+3. **Execute Push**
+
+   ```bash
+   git push origin <current-branch>
+   ```
+
+   - Pre-push hooks run automatically
+   - Report push result
+   - Show pushed commits
+
+4. **Confirm Success**
+   - Verify push completed
+   - Display remote URL and branch
+   - Note any warnings or messages
+
+### Force Push (--force)
+
+**What it does:** Force pushes to remote (dangerous operation)
+
+1. **Safety Checks**
+   - Verify not on main/master branch
+   - Confirm user understands risks
+   - Check for uncommitted changes
+
+2. **Execute Force Push**
+
+   ```bash
+   git push --force-with-lease origin <current-branch>
+   ```
+
+   - Uses --force-with-lease for safety
+   - Reports result
+
+**Warning:** Force push rewrites remote history. Only use when necessary and coordinated with team.
+
+### Dry Run (--dry-run)
+
+**What it does:** Shows what would be pushed without actually pushing
+
+```bash
+git push --dry-run origin <current-branch>
 ```
 
-#### Simple Mode (--simple) - Direct Push
+Reports:
 
-**What it does**: Skip orchestration, direct push with basic checks
+- Commits that would be pushed
+- Remote branch status
+- Any potential issues
 
-```yaml
-Operations:
-  - Basic safety validation only
-  - No agent deployment
-  - Direct git push execution
-  - No auto-recovery mechanisms
+## Expected Output
 
-Duration: 10-15 seconds
-Use Case: Hot fixes, emergency pushes
-```
-
-### Auto-Recovery Mechanisms
-
-#### Pre-Push Hook Failure Recovery
-
-```yaml
-Failure Detection:
-  - Parse pre-push hook error output
-  - Classify issue type (testing, security, build, CI/CD)
-  - Deploy appropriate specialist agents
-
-Recovery Agents:
-  - Test failures → test-engineer with debugging capability
-  - Security issues → security-auditor with remediation
-  - Build/CI issues → devops with pipeline expertise
-  - Environment issues → platform-engineer with config fixes
-
-Recovery Process:
-  1. Identify root cause of pre-push failure
-  2. Deploy targeted agent(s) for resolution
-  3. Re-validate with original failing checks
-  4. Retry push operation automatically
-```
-
-#### CI/CD Pipeline Failure Recovery
-
-```yaml
-Pipeline Monitoring:
-  - Real-time status checking every 30 seconds
-  - Automatic failure classification when detected
-  - Immediate deployment of recovery agents
-
-Recovery Types:
-  - Build failures → platform-engineer for environment fixes
-  - Test failures → test-engineer for flaky test resolution
-  - Deployment failures → devops for infrastructure issues
-  - Security gate failures → security-auditor for compliance fixes
-
-Recovery Timeline:
-  - Detection: Within 30 seconds of failure
-  - Agent deployment: Immediate parallel execution
-  - Resolution attempt: 2-5 minutes depending on complexity
-  - Retry mechanism: Automatic with exponential backoff
-```
-
-### Quality Gate Enforcement
-
-#### Never Bypass Philosophy
-
-```yaml
-Prohibited Practices:
-  - NEVER use: git push --no-verify
-  - NEVER bypass: pre-push hooks without resolution
-  - NEVER skip: security or quality validations
-  - NEVER force push: without explicit team coordination
-
-Wave-Based Approach Instead:
-  - Fix issues through agent deployment
-  - Auto-resolve wherever possible
-  - Escalate complex issues with detailed reports
-  - Maintain audit trail of all resolution attempts
-```
-
-#### Issue Resolution Priority
-
-```yaml
-Priority 1 - Security Issues:
-  - Immediate deployment of security-auditor
-  - Block push until resolved
-  - Require explicit confirmation for overrides
-
-Priority 2 - Test Failures:
-  - Deploy test-engineer for investigation
-  - Attempt automated fixes for known patterns
-  - Provide detailed failure analysis
-
-Priority 3 - CI/CD Issues:
-  - Deploy devops for pipeline diagnostics
-  - Fix configuration and dependency issues
-  - Update CI/CD definitions as needed
-
-Priority 4 - Build/Environment Issues:
-  - Deploy platform-engineer for system fixes
-  - Fix dependency and environment conflicts
-  - Update build configurations as needed
-```
-
-### Error Handling & Escalation
-
-#### Automatic Retry Logic
-
-```yaml
-Retry Strategy:
-  - Failed pre-push hooks: 2 retries with agent fixes
-  - CI/CD pipeline failures: 3 retries with increasing delays
-  - Network/connectivity issues: 5 retries with exponential backoff
-  - Agent deployment failures: 2 retries with alternative agents
-
-Escalation Triggers:
-  - 3 consecutive push failures
-  - Agent resolution failures across all retry attempts
-  - Critical security issues requiring manual intervention
-  - Infrastructure problems beyond agent capability
-```
-
-#### Failure Reporting
-
-```yaml
-Comprehensive Failure Reports:
-  - Root cause analysis from deployed agents
-  - Step-by-step resolution attempts
-  - Remaining manual intervention requirements
-  - Recommended next steps for developer
-
-Report Delivery:
-  - Immediate terminal output with actionable steps
-  - Detailed log files in .tmp/logs/push-failures/
-  - Integration with team notification systems
-  - Automated issue creation for recurring problems
-```
-
-### Performance Optimization
-
-#### Parallel Execution
-
-```yaml
-Wave 1 Parallelization:
-  - All 3 validation agents run simultaneously
-  - Shared result caching between agents
-  - Early termination on critical failures
-  - Resource-aware execution to prevent system overload
-
-Wave 2 Efficiency:
-  - Targeted agent deployment based on specific issues
-  - Parallel execution of non-conflicting fixes
-  - Incremental validation to avoid re-running successful checks
-  - Smart dependency resolution between fix types
-```
-
-#### Resource Management
-
-```yaml
-System Considerations:
-  - Maximum 5 concurrent agents to prevent overload
-  - Intelligent queuing for resource-intensive operations
-  - Memory and CPU usage monitoring during execution
-  - Automatic scaling based on system capabilities
-```
-
-### Integration Points
-
-#### CI/CD Pipeline Integration
-
-```yaml
-Supported Platforms:
-  - GitHub Actions: Real-time status via GitHub API
-  - GitLab CI: Pipeline monitoring via GitLab API
-  - Jenkins: Build status checking via Jenkins API
-  - Azure DevOps: Pipeline tracking via Azure REST API
-
-Monitoring Capabilities:
-  - Real-time build status updates
-  - Test result streaming and analysis
-  - Deployment status tracking
-  - Security scan result integration
-```
-
-#### Team Collaboration Features
-
-```yaml
-Notification Integration:
-  - Slack/Teams integration for push status updates
-  - Email notifications for critical failures
-  - Dashboard updates for team visibility
-  - Automated PR status updates
-
-Documentation Generation:
-  - Automatic push reports for team records
-  - Issue resolution documentation
-  - Performance metrics and trends
-  - Quality gate compliance reporting
-```
-
-### Examples
-
-#### Successful Wave-Based Push
+### Successful Push
 
 ```text
 User: /push
-Claude: 🚀 Starting wave-based push orchestration...
+Claude: 📤 Pushing changes to remote...
 
-📋 Wave 1: Pre-Push Validation
-   Deploying: test-engineer + devops + security-auditor (parallel)
+📋 Repository Status:
+  Current branch: feature/auth-improvements
+  Remote: origin/feature/auth-improvements
+  Commits ahead: 3
 
-   ✅ test-engineer: All 89 tests passing, coverage 92.1%
-   ✅ devops: CI/CD pipeline ready, all configurations valid
-   ✅ security-auditor: No vulnerabilities, dependencies secure
+🧪 Running tests...
+  ✅ All 127 tests passing
+  ✅ Coverage: 94.2%
 
-📊 Claude Analysis: No blocking issues detected
+📤 Pushing to origin/feature/auth-improvements...
+  ✅ Push successful
 
-📤 Wave 3: Push & Monitor
-   🔗 Pushing 3 commits to origin/feature/auth-improvements
-   ✅ Push successful
-   🎯 Monitoring CI/CD pipeline...
-   ✅ Pipeline completed successfully (2m 14s)
+🎉 Pushed 3 commits:
+  - a1b2c3d feat(auth): add JWT refresh token
+  - b2c3d4e fix(auth): handle expired tokens
+  - c3d4e5f test(auth): add token expiry tests
 
-🎉 Push orchestration completed successfully!
+Next steps:
+  • Create PR: /pr main
+  • Or continue development on this branch
 ```
 
-#### Auto-Recovery Push Example
+### Pre-Push Hook Failure
 
 ```text
 User: /push
-Claude: 🚀 Starting wave-based push orchestration...
+Claude: 📤 Preparing to push...
 
-📋 Wave 1: Pre-Push Validation
-   Deploying: test-engineer + devops + security-auditor (parallel)
+🧪 Running tests...
+  ✅ Tests passing
 
-   ❌ test-engineer: 2 tests failing in auth module
-   ⚠️ devops: Missing environment variables in CI config
-   ✅ security-auditor: No security issues
+📤 Executing push...
+❌ Pre-push hook failed:
 
-📊 Claude Analysis: Blocking issues detected, deploying resolution wave
+  Hook: .git/hooks/pre-push
+  Error: Branch protection check failed
+    - Branch 'main' requires pull request
+    - Direct pushes to 'main' are not allowed
 
-🔧 Wave 2: Issue Resolution
-   Deploying: test-engineer (fix mode) + devops (config mode)
+⚠️ Resolution:
+  1. Push to feature branch instead:
+     git checkout -b feature/my-changes
+     /push
 
-   ✅ test-engineer: Resolved race condition in auth tests
-   ✅ devops: Added missing env vars to CI configuration
-   📝 Committed auto-fixes (2 additional commits)
-
-🔍 Claude Verification: All issues resolved, ready to push
-
-📤 Wave 3: Push & Monitor
-   🔗 Pushing 5 commits to origin/feature/auth-improvements
-   ✅ Push successful after auto-recovery
-   🎯 Monitoring CI/CD pipeline...
-   ✅ Pipeline completed successfully (3m 42s)
-
-🎉 Push orchestration with auto-recovery completed!
+  2. Or create PR from current branch:
+     /pr main
 ```
 
-#### CI/CD Failure Recovery
+### Test Failure
 
 ```text
 User: /push
-Claude: 🚀 Wave-based push orchestration...
+Claude: 📤 Preparing to push...
 
-[Wave 1 & 3 successful, pipeline monitoring detects failure]
+🧪 Running tests...
+❌ Test failures detected:
 
-❌ CI/CD Pipeline Failure Detected
-   Build step failed: Docker image build error
+  Failed Tests (2):
+    • tests/auth.test.ts: Token refresh should handle network errors
+    • tests/auth.test.ts: Expired tokens should redirect to login
 
-🚨 Auto-Recovery: Deploying devops agent
-   🔧 devops: Analyzing Docker build failure...
-   ✅ devops: Fixed Dockerfile layer caching issue
-   📝 Committed pipeline fix
-   🔄 Triggering pipeline rebuild...
-   ✅ Pipeline rebuild successful (1m 28s)
+⚠️ Cannot push with failing tests
 
-🎉 Push with CI/CD auto-recovery completed!
+Fix these issues first:
+  1. Run tests locally: npm test
+  2. Fix failing tests
+  3. Commit fixes: /commit
+  4. Try push again: /push
+
+💡 Tip: Run `/review` to check for other issues
 ```
 
-### Execution Verification
+### Force Push Warning
 
-Deploy execution-evaluator to verify:
+```text
+User: /push --force
+Claude: ⚠️  Force Push Warning
 
-- ✅ **Wave orchestration executed** - All three waves deployed appropriately
-- ✅ **Parallel agent deployment** - Wave 1 agents ran simultaneously
-- ✅ **Auto-recovery functional** - Wave 2 deployed when issues detected
-- ✅ **CI/CD monitoring active** - Pipeline status tracked until completion
-- ✅ **Quality gates enforced** - No bypassing of validation steps
+This will rewrite remote history on: origin/feature/experiment
+
+Are you sure? Force push can cause issues for collaborators.
+
+✅ Safe to force push because:
+  - Not on main/master branch
+  - Using --force-with-lease (won't overwrite others' work)
+
+❌ Risks:
+  - Collaborators may have pulled old commits
+  - Requires team coordination
+
+Proceed with force push? (yes/no)
+```
+
+### Dry Run Output
+
+```text
+User: /push --dry-run
+Claude: 🔍 Dry run - showing what would be pushed...
+
+📋 Push Preview:
+  From: feature/auth-improvements
+  To: origin/feature/auth-improvements
+  Status: Would push 3 new commits
+
+Commits to push:
+  a1b2c3d feat(auth): add JWT refresh token
+  b2c3d4e fix(auth): handle expired tokens
+  c3d4e5f test(auth): add token expiry tests
+
+✅ No issues detected
+✅ Pre-push hooks would pass
+✅ Safe to push
+
+Run '/push' to execute actual push
+```
+
+## Validation Checks
+
+### Pre-Push Validation
+
+Automatic checks before pushing:
+
+1. **Repository State**
+   - Working tree clean or changes committed
+   - Current branch identified
+   - Remote tracking configured
+
+2. **Test Execution** (if configured)
+   - Detect test command (package.json, Makefile, etc.)
+   - Run test suite
+   - Verify all tests pass
+
+3. **Branch Protection**
+   - Check if pushing to protected branch
+   - Validate branch naming conventions
+   - Ensure proper workflow followed
+
+### Pre-Push Hooks
+
+Git's pre-push hooks run automatically:
+
+- Linting validation
+- Security scanning
+- Build verification
+- Custom validation scripts
+
+**If hooks fail:** Report error, halt push, suggest fixes
+
+## Error Handling
+
+### Common Errors and Solutions
+
+**Authentication Failed:**
+
+```text
+❌ Authentication failed
+Fix: Update git credentials or SSH key
+  - SSH: Check ~/.ssh/ keys and GitHub settings
+  - HTTPS: Run: git credential-cache exit
+```
+
+**Branch Diverged:**
+
+```text
+❌ Branch diverged from remote
+Fix: Pull and rebase before pushing
+  - git pull --rebase origin <branch>
+  - Resolve any conflicts
+  - /push
+```
+
+**No Upstream Branch:**
+
+```text
+ℹ️  No upstream branch configured
+Setting upstream: git push -u origin <branch>
+✅ Upstream configured, pushing...
+```
+
+**Protected Branch:**
+
+```text
+❌ Cannot push to protected branch 'main'
+Fix: Create feature branch and PR instead
+  - git checkout -b feature/my-changes
+  - /push
+  - /pr main
+```
+
+## Test Command Detection
+
+Automatically detects and runs tests:
+
+```yaml
+JavaScript/TypeScript:
+  - package.json: npm test, npm run test
+  - Look for test script in package.json
+
+Python:
+  - pytest, python -m pytest
+  - Look for pytest.ini, pyproject.toml
+
+Go:
+  - go test ./...
+  - Check for go.mod
+
+Rust:
+  - cargo test
+  - Check for Cargo.toml
+
+Generic:
+  - Makefile: make test
+  - test.sh script
+```
+
+If no test command detected, skip test phase and proceed to push.
+
+## Safety Features
+
+### Branch Protection
+
+- Warns when pushing to main/master
+- Suggests PR workflow instead
+- Prevents accidental overwrites
+
+### Force Push Safety
+
+- Uses --force-with-lease instead of --force
+- Prevents overwriting others' work
+- Requires confirmation
+- Blocks force push to main/master
+
+### Pre-Push Hooks
+
+- Always runs pre-push hooks (never --no-verify)
+- Reports hook failures clearly
+- Suggests fixes for common issues
 
 ## Notes
 
-- Wave-based orchestration provides comprehensive quality assurance
-- Auto-recovery minimizes manual intervention for common issues
-- Parallel execution optimizes performance while maintaining thoroughness
-- Real-time CI/CD monitoring ensures end-to-end push success
-- Simple mode available for emergency situations and hot fixes
-- All resolution attempts are logged for audit and improvement purposes
-- Integration with team notification systems keeps everyone informed
+- Streamlined design focuses on push operation essentials
+- Trusts git's pre-push hooks for validation
+- Runs tests if configured, skips if not
+- Fast execution: typically 10-30 seconds (depends on tests)
+- CI/CD monitoring handled by CI system, not this command
+- Reports errors clearly without auto-recovery complexity
+- Safe defaults with --force-with-lease for force pushes
+- Automatic upstream branch configuration when needed
+- Clear next steps guidance after successful push
