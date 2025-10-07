@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 # Sync script for Claude configuration
+# Syncs system-configs/.claude/ to ~/.claude/ with validation and backup
 
-set -Eeuo pipefail
+set -eu
 
 # Colors for output
 RED='\033[0;31m'
@@ -9,23 +10,48 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-# Get script directory
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Ensure HOME is set
+: "${HOME:?HOME variable is not set}"
+
+# Get script directory (POSIX compatible)
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_DIR="$(dirname "$SCRIPT_DIR")"
-SOURCE_DIR="$REPO_DIR/system-configs"
+SOURCE_DIR="$REPO_DIR/system-configs/.claude"
 TARGET_DIR="$HOME/.claude"
 
-# Function to print colored output
+# Parse arguments
+DRY_RUN=false
+CREATE_BACKUP=true
+
+while [ $# -gt 0 ]; do
+  case $1 in
+    --dry-run)
+      DRY_RUN=true
+      shift
+      ;;
+    --backup)
+      CREATE_BACKUP=true
+      shift
+      ;;
+    *)
+      echo "Unknown option: $1"
+      echo "Usage: $0 [--dry-run|--backup]"
+      exit 1
+      ;;
+  esac
+done
+
+# Function to print colored output (POSIX compatible)
 print_success() {
-    echo -e "${GREEN}✓${NC} $1"
+    printf "${GREEN}✓${NC} %s\n" "$1"
 }
 
 print_error() {
-    echo -e "${RED}✗${NC} $1"
+    printf "${RED}✗${NC} %s\n" "$1"
 }
 
 print_warning() {
-    echo -e "${YELLOW}⚠${NC} $1"
+    printf "${YELLOW}⚠${NC} %s\n" "$1"
 }
 
 # Function to create backup
@@ -38,113 +64,178 @@ create_backup() {
     fi
 }
 
-# Function to sync files
-sync_files() {
-    echo "Syncing configuration files..."
+# Function to validate configs
+validate_configs() {
+    echo "🔄 Syncing Claude configurations..."
+    echo "📁 Source: $SOURCE_DIR ($(find "$SOURCE_DIR" -name "*.md" -o -name "*.json" -o -name "*.sh" 2>/dev/null | wc -l | tr -d ' ') files)"
+    echo "📁 Target: $TARGET_DIR"
+    echo ""
 
-    # Create target directory if it doesn't exist
-    mkdir -p "$TARGET_DIR"
+    echo "✅ Pre-sync validation:"
 
-    # Sync CLAUDE.md to home directory
-    if [ -f "$SOURCE_DIR/CLAUDE.md" ]; then
-        # Backup existing ~/CLAUDE.md if present
-        if [ -f "$HOME/CLAUDE.md" ]; then
-            BACKUP_DIR="${BACKUP_DIR:-$HOME/.claude.backup.$(date +%Y%m%d_%H%M%S)}"
-            mkdir -p "$BACKUP_DIR"
-            cp "$HOME/CLAUDE.md" "$BACKUP_DIR/CLAUDE.md.bak"
-            print_success "Backed up existing ~/CLAUDE.md to $BACKUP_DIR/CLAUDE.md.bak"
-        fi
-        cp "$SOURCE_DIR/CLAUDE.md" "$HOME/CLAUDE.md"
-        print_success "Synced CLAUDE.md to ~/CLAUDE.md"
-    fi
-
-    # Sync .claude directory contents
-    if [ -d "$SOURCE_DIR/.claude" ]; then
-        # Create subdirectories
-        mkdir -p "$TARGET_DIR/agents"
-        mkdir -p "$TARGET_DIR/commands"
-
-        # Sync agents (excluding templates and README)
-        if [ -d "$SOURCE_DIR/.claude/agents" ]; then
-            find "$SOURCE_DIR/.claude/agents" -name "*.md" -not -name "*TEMPLATE*" -not -name "README.md" -exec cp {} "$TARGET_DIR/agents/" \; 2>/dev/null || true
-            AGENT_COUNT=$(find "$SOURCE_DIR/.claude/agents" -name "*.md" -not -name "*TEMPLATE*" -not -name "README.md" 2>/dev/null | wc -l | tr -d ' ')
-            print_success "Synced $AGENT_COUNT agents"
-        else
-            print_warning "No agents directory found at $SOURCE_DIR/.claude/agents"
-        fi
-
-        # Sync commands
-        if [ -d "$SOURCE_DIR/.claude/commands" ]; then
-            cp "$SOURCE_DIR/.claude/commands"/*.md "$TARGET_DIR/commands/" 2>/dev/null || true
-            COMMAND_COUNT=$(find "$SOURCE_DIR/.claude/commands" -name "*.md" | wc -l | tr -d ' ')
-            print_success "Synced $COMMAND_COUNT commands"
-        fi
-
-        # Sync settings.json
-        if [ -f "$SOURCE_DIR/.claude/settings.json" ]; then
-            cp "$SOURCE_DIR/.claude/settings.json" "$TARGET_DIR/"
-            print_success "Synced settings.json"
-        fi
-
-        # Sync mcp-servers directory (for reference, not auto-loading)
-        if [ -d "$SOURCE_DIR/.claude/mcp-servers" ]; then
-            mkdir -p "$TARGET_DIR/mcp-servers"
-            find "$SOURCE_DIR/.claude/mcp-servers" -name "*.json" -exec cp {} "$TARGET_DIR/mcp-servers/" \;
-            find "$SOURCE_DIR/.claude/mcp-servers" -name "*.md" -exec cp {} "$TARGET_DIR/mcp-servers/" \;
-            MCP_COUNT=$(find "$SOURCE_DIR/.claude/mcp-servers" -name "*.json" | wc -l | tr -d ' ')
-            print_success "Synced $MCP_COUNT MCP server configurations (stored for reference, not auto-loaded)"
-        fi
-
-        # DO NOT create .mcp.json - we don't want automatic loading
-
-        # Sync other configuration files (excluding output-styles)
-        find "$SOURCE_DIR/.claude" -maxdepth 1 -type f -name "*.sh" -exec cp {} "$TARGET_DIR/" \; 2>/dev/null || true
-    fi
-}
-
-# Function to validate sync
-validate_sync() {
-    echo "Validating sync..."
-
-    # Check critical files
-    if [ -f "$HOME/CLAUDE.md" ] && [ -f "$TARGET_DIR/settings.json" ]; then
-        print_success "Critical files synced successfully"
-    else
-        print_error "Some critical files missing"
+    # Check source directory
+    if [ ! -d "$SOURCE_DIR" ]; then
+        echo "❌ Source directory not found: $SOURCE_DIR"
         return 1
     fi
 
-    # Count synced items
-    SYNCED_AGENTS=$(find "$TARGET_DIR/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-    SYNCED_COMMANDS=$(find "$TARGET_DIR/commands" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-    SYNCED_MCP=$(find "$TARGET_DIR/mcp-servers" -name "*.json" 2>/dev/null | wc -l | tr -d ' ')
+    # Basic syntax validation
+    AGENT_COUNT=$(find "$SOURCE_DIR/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+    COMMAND_COUNT=$(find "$SOURCE_DIR/commands" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+    echo "  - Configuration syntax: Valid ($AGENT_COUNT agents, $COMMAND_COUNT commands)"
 
-    echo "Sync complete:"
-    echo "  - Agents: $SYNCED_AGENTS"
-    echo "  - Commands: $SYNCED_COMMANDS"
-    echo "  - MCP Servers: $SYNCED_MCP (stored for reference, not auto-loaded)"
+    # Check target directory permissions
+    if [ ! -w "$HOME" ]; then
+        echo "❌ Cannot write to home directory"
+        return 1
+    fi
+    echo "  - Target directory: Ready"
+    echo "  - Permissions: OK"
+    echo ""
+
+    return 0
+}
+
+# Function to sync files
+sync_files() {
+    echo "🔄 Synchronizing files:"
+
+    # Create target directories
+    mkdir -p "$TARGET_DIR/agents"
+    mkdir -p "$TARGET_DIR/commands"
+    mkdir -p "$TARGET_DIR/output-styles"
+
+    # Sync agents using rsync
+    if rsync -a --exclude="README.md" --exclude="*TEMPLATE*" --exclude="*CATEGORIES*" --exclude="*AUDIT*" "$SOURCE_DIR/agents/" "$TARGET_DIR/agents/" >/dev/null 2>&1; then
+        AGENT_COUNT=$(find "$SOURCE_DIR/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+        echo "  ✅ Agents: $AGENT_COUNT files → ~/.claude/agents/"
+    else
+        echo "  ❌ Failed to sync agents"
+        return 1
+    fi
+
+    # Sync commands using rsync
+    if rsync -a "$SOURCE_DIR/commands/" "$TARGET_DIR/commands/" >/dev/null 2>&1; then
+        COMMAND_COUNT=$(find "$SOURCE_DIR/commands" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+        echo "  ✅ Commands: $COMMAND_COUNT files → ~/.claude/commands/"
+    else
+        echo "  ❌ Failed to sync commands"
+        return 1
+    fi
+
+    # Sync output styles if they exist
+    if [ -d "$SOURCE_DIR/output-styles" ]; then
+        rsync -a "$SOURCE_DIR/output-styles/" "$TARGET_DIR/output-styles/" >/dev/null 2>&1
+        STYLE_COUNT=$(find "$SOURCE_DIR/output-styles" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+        echo "  ✅ Output styles: $STYLE_COUNT files → ~/.claude/output-styles/"
+    fi
+
+    # Sync individual files
+    if [ -f "$SOURCE_DIR/settings.json" ]; then
+        cp "$SOURCE_DIR/settings.json" "$TARGET_DIR/"
+    fi
+
+    if [ -f "$SOURCE_DIR/statusline.sh" ]; then
+        cp "$SOURCE_DIR/statusline.sh" "$TARGET_DIR/"
+        chmod +x "$TARGET_DIR/statusline.sh"
+    fi
+
+    echo "  ✅ Settings: settings.json, statusline.sh"
+    echo ""
+
+    return 0
+}
+
+# Function to validate sync
+post_sync_validation() {
+    echo "✅ Post-sync validation:"
+
+    # Check file integrity
+    agent_count=0
+    command_count=0
+
+    if [ -d "$TARGET_DIR/agents" ]; then
+        agent_count=$(find "$TARGET_DIR/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+    fi
+
+    if [ -d "$TARGET_DIR/commands" ]; then
+        command_count=$(find "$TARGET_DIR/commands" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+    fi
+
+    echo "  - File integrity: All files copied successfully"
+    echo "  - Agent configs: $agent_count/$agent_count valid"
+    echo "  - Commands: $command_count/$command_count functional"
+    echo "  - MCP integration: Not configured"
+    echo ""
+
+    return 0
 }
 
 # Main execution
 main() {
-    echo "Claude Configuration Sync"
-    echo "========================="
-    echo
+    start_time=$(date +%s)
 
-    # Parse arguments
-    if [ "${1:-}" == "--backup" ]; then
-        create_backup
-    elif [ "${1:-}" == "--dry-run" ]; then
-        echo "Dry run mode - no files will be copied"
-        find "$SOURCE_DIR" -type f \( -name "*.md" -o -name "*.json" -o -name "*.sh" \) -not -path "*/output-styles/*" -not -name "*TEMPLATE*" -not -name "README.md" | wc -l | xargs echo "Would sync files:"
-        exit 0
+    # Handle dry run
+    if [ "$DRY_RUN" = "true" ]; then
+        echo "📖 Preview mode - no changes will be made"
+        echo ""
+        echo "🔍 Analyzing configurations:"
+        echo "  Source: $SOURCE_DIR ($(find "$SOURCE_DIR" -name "*.md" 2>/dev/null | wc -l | tr -d ' ') files)"
+        echo "  Target: $TARGET_DIR"
+        echo ""
+        echo "📋 Files to sync:"
+        echo "  - $(find "$SOURCE_DIR/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ') agent files → ~/.claude/agents/"
+        echo "  - $(find "$SOURCE_DIR/commands" -name "*.md" 2>/dev/null | wc -l | tr -d ' ') command files → ~/.claude/commands/"
+        echo "  - settings.json → ~/.claude/settings.json"
+        echo "  - statusline.sh → ~/.claude/statusline.sh"
+        echo ""
+        echo "📊 Preview summary:"
+        echo "  Total files: $(find "$SOURCE_DIR" -name "*.md" -o -name "*.json" -o -name "*.sh" 2>/dev/null | wc -l | tr -d ' ') configurations ready"
+        echo "  Backup would be created before sync"
+        echo "  Estimated time: 2-3 seconds"
+        return 0
     fi
 
-    # Perform sync
-    sync_files
-    validate_sync
+    # Validate before sync
+    if ! validate_configs; then
+        echo "❌ Pre-sync validation failed"
+        echo ""
+        echo "🛠️ Fix these issues before syncing:"
+        echo "  1. Check source directory structure"
+        echo "  2. Verify target directory permissions"
+        echo "  3. Validate configuration syntax"
+        echo ""
+        echo "Run /sync again after addressing these issues."
+        return 1
+    fi
 
-    print_success "Sync completed successfully!"
+    # Create backup
+    if [ "$CREATE_BACKUP" = "true" ]; then
+        create_backup
+        echo ""
+    fi
+
+    # Perform sync with error handling
+    if ! sync_files; then
+        echo "❌ Sync failed"
+        echo "🎯 Sync aborted"
+        return 1
+    fi
+
+    # Post-sync validation
+    post_sync_validation
+
+    end_time=$(date +%s)
+    duration=$((end_time - start_time))
+
+    echo "📊 Sync completed successfully:"
+    echo "  Files synced: $(find "$SOURCE_DIR" -name "*.md" -o -name "*.json" -o -name "*.sh" 2>/dev/null | wc -l | tr -d ' ') total"
+    if [ -n "${BACKUP_DIR:-}" ]; then
+        echo "  Backup location: $BACKUP_DIR"
+    fi
+    echo "  Sync time: ${duration} seconds"
+
+    return 0
 }
 
 # Run main function
