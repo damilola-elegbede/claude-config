@@ -198,10 +198,10 @@ fetch_all_ci_failures() {
   local total_failures
   total_failures=$(echo "$all_failures" | jq 'length')
 
-  echo "📊 CI Failure Discovery Results:"
-  echo "  • Job failures: $job_count"
-  echo "  • Check failures: $check_count"
-  echo "  • Total unique: $total_failures failures"
+  echo "📊 CI Failure Discovery Results:" >&2
+  echo "  • Job failures: $job_count" >&2
+  echo "  • Check failures: $check_count" >&2
+  echo "  • Total unique: $total_failures failures" >&2
 
   # Return the merged failures for use by caller
   echo "$all_failures"
@@ -213,7 +213,7 @@ execution_id="fix-ci-$(date +%s)-$$"
 echo "🆔 Execution: $execution_id"
 
 # Get run ID (corrected to use valid gh flags)
-run_id="${1:-$(gh run list --status completed --limit 1 --jq '.[0].databaseId | select(. != null)')}"
+run_id="${1:-$(gh run list --status completed --limit 10 --json databaseId,conclusion,createdAt --jq '[.[] | select(.conclusion == "failure")] | sort_by(.createdAt) | reverse | .[0].databaseId // empty')}"
 
 echo "🔍 Fetching CI failures from GitHub Actions API..."
 
@@ -288,7 +288,7 @@ monitor_ci_after_push() {
     # Filter by created date and exclude previous run_id
     new_run_id=$(gh run list --branch "$branch" --limit 5 \
       --json databaseId,status,createdAt --jq --arg prev "$previous_run_id" --arg start "$start_time" \
-      '[.[] | select(.createdAt >= $start and (.status == "in_progress" or .status == "queued" or .status == "completed") and (.databaseId | tostring) != $prev)] | .[0].databaseId')
+      '[.[] | select((.status == "in_progress" or .status == "queued" or .status == "completed") and (.databaseId | tostring) != $prev)] | sort_by(.createdAt) | reverse | .[0].databaseId // empty')
 
     if [ -n "$new_run_id" ]; then
       echo "✅ New CI run detected: #$new_run_id"
@@ -671,7 +671,7 @@ fix_ci_enhanced() {
   init_enhanced_history
   validate_prerequisites || return 1
 
-  local run_id="${1:-$(gh run list --status completed --limit 1 --jq '.[0].databaseId | select(. != null)')}"
+  local run_id="${1:-$(gh run list --status completed --limit 10 --json databaseId,conclusion,createdAt --jq '[.[] | select(.conclusion == "failure")] | sort_by(.createdAt) | reverse | .[0].databaseId // empty')}"
   [[ -z "$run_id" || "$run_id" == "null" ]] && { echo "ℹ️ No failed runs found."; return 1; }
 
   echo "🔍 Initial run ID: #$run_id"

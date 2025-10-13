@@ -102,7 +102,20 @@ Execute rebase with minimal overhead:
      # Restore stashed changes if any were created
      if [ "$stashed" = true ]; then
        echo "💾 Restoring stashed changes..."
-       git stash pop
+       if ! git stash pop; then
+         echo ""
+         echo "⚠️  WARNING: Stash restoration failed!"
+         echo "📝 This usually means there are conflicts between your stashed changes and the rebased commits."
+         echo ""
+         echo "Next steps:"
+         echo "  1. Review conflicts: git status"
+         echo "  2. Resolve conflicts in affected files"
+         echo "  3. Stage resolved files: git add <file>"
+         echo "  4. Complete restoration: git stash drop (if conflicts resolved)"
+         echo "     OR manually reapply: git stash apply"
+         echo ""
+         exit 1
+       fi
      fi
 
      echo ""
