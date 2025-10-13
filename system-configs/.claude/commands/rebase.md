@@ -47,10 +47,11 @@ Execute rebase with minimal overhead:
      exit 1
    fi
 
-   # Check for uncommitted changes
+   # Check for uncommitted changes and stash if needed
+   stashed=false
    if ! git diff --quiet || ! git diff --cached --quiet; then
      echo "💾 Stashing uncommitted changes..."
-     git stash push -m "Auto-stash before rebase on $(date +%Y%m%d-%H%M%S)"
+     git stash push -u -m "Auto-stash before rebase on $(date +%Y%m%d-%H%M%S)"
      stashed=true
    fi
    ```
@@ -58,14 +59,31 @@ Execute rebase with minimal overhead:
 2. **Update Target Branch**
 
    ```bash
-   # Switch to target branch (default: main, fallback to master)
-   target_branch="${1:-main}"
+   # Determine target branch (default: main, with master fallback for user convenience)
+   if [ -z "$1" ]; then
+     # No argument provided, resolve which default branch exists
+     if git show-ref --verify --quiet refs/heads/main; then
+       target_branch="main"
+     elif git show-ref --verify --quiet refs/heads/master; then
+       target_branch="master"
+     else
+       echo "❌ Neither main nor master branch exists"
+       exit 1
+     fi
+   else
+     # User specified a branch, verify it exists
+     target_branch="$1"
+     if ! git show-ref --verify --quiet "refs/heads/$target_branch"; then
+       echo "❌ Branch '$target_branch' does not exist"
+       exit 1
+     fi
+   fi
+
    echo "🔄 Updating $target_branch..."
+   git switch "$target_branch"
 
-   git checkout "$target_branch" 2>/dev/null || git checkout master
-
-   # Pull latest changes with rebase to keep history clean
-   git pull --rebase
+   # Pull latest changes with fast-forward only for safety
+   git pull --ff-only
 
    echo "✅ $target_branch updated to latest"
    ```
@@ -75,13 +93,13 @@ Execute rebase with minimal overhead:
    ```bash
    # Switch back to feature branch
    echo "🔄 Rebasing $current_branch on $target_branch..."
-   git checkout "$current_branch"
+   git switch "$current_branch"
 
    # Rebase on updated target
    if git rebase "$target_branch"; then
      echo "✅ Rebase successful!"
 
-     # Restore stashed changes if any
+     # Restore stashed changes if any were created
      if [ "$stashed" = true ]; then
        echo "💾 Restoring stashed changes..."
        git stash pop
@@ -100,6 +118,43 @@ Execute rebase with minimal overhead:
    - Display rebase status
    - Show commits on feature branch
    - Provide next steps guidance
+
+### Conflict Handling Function
+
+Define the conflict handler before it's called:
+
+```bash
+handle_conflicts() {
+  # Detect conflicted files
+  conflicted_files=$(git diff --name-only --diff-filter=U)
+
+  if [ -z "$conflicted_files" ]; then
+    echo "⚠️ Rebase failed but no conflicts detected"
+    echo "Run: git status"
+    exit 1
+  fi
+
+  # Count conflicts
+  conflict_count=$(echo "$conflicted_files" | wc -l | tr -d ' ')
+
+  echo ""
+  echo "⚠️ Rebase conflicts in $conflict_count file(s):"
+  echo "$conflicted_files" | while read -r file; do
+    echo "  • $file"
+  done
+
+  echo ""
+  echo "📝 Next steps:"
+  echo "  1. Open conflicting files and resolve conflicts (look for <<<<<<< markers)"
+  echo "  2. Stage resolved files: git add <file>"
+  echo "  3. Continue rebase: /rebase --continue"
+  echo ""
+  echo "Or abort the rebase: /rebase --abort"
+  echo ""
+
+  exit 1
+}
+```
 
 ### Continue Mode (--continue)
 
@@ -245,9 +300,9 @@ Direct Execution Benefits:
   - Predictable behavior
 
 Key Safety Features:
-  - Auto-stash uncommitted changes
+  - Auto-stash uncommitted changes (including untracked files)
   - Verify not rebasing main on itself
-  - Clean target branch update with rebase
+  - Clean target branch update with fast-forward only
   - Clear error messages and guidance
   - Easy abort mechanism
 ```
@@ -257,24 +312,54 @@ Key Safety Features:
 ### Git Operations Sequence
 
 ```bash
-# Complete rebase workflow
+# Complete rebase workflow with all safety improvements
 current_branch=$(git branch --show-current)
-target_branch="${1:-main}"
 
-# Safety checks
-[[ "$current_branch" == "main" || "$current_branch" == "master" ]] && exit 1
-[[ -n "$(git status --porcelain)" ]] && git stash push -m "Auto-stash before rebase"
+# Safety check - cannot rebase base branch on itself
+if [[ "$current_branch" == "main" || "$current_branch" == "master" ]]; then
+  echo "❌ Cannot rebase base branch on itself"
+  exit 1
+fi
 
-# Update target
-git checkout "$target_branch"
-git pull --rebase
+# Determine target branch with proper resolution
+if [ -z "$1" ]; then
+  # No argument provided, resolve which default branch exists
+  if git show-ref --verify --quiet refs/heads/main; then
+    target_branch="main"
+  elif git show-ref --verify --quiet refs/heads/master; then
+    target_branch="master"
+  else
+    echo "❌ Neither main nor master branch exists"
+    exit 1
+  fi
+else
+  # User specified a branch
+  target_branch="$1"
+  if ! git show-ref --verify --quiet "refs/heads/$target_branch"; then
+    echo "❌ Branch '$target_branch' does not exist"
+    exit 1
+  fi
+fi
+
+# Stash uncommitted changes including untracked files
+stashed=false
+if [[ -n "$(git status --porcelain)" ]]; then
+  git stash push -u -m "Auto-stash before rebase on $(date +%Y%m%d-%H%M%S)"
+  stashed=true
+fi
+
+# Update target branch with fast-forward only
+git switch "$target_branch"
+git pull --ff-only
 
 # Rebase feature branch
-git checkout "$current_branch"
+git switch "$current_branch"
 git rebase "$target_branch"
 
-# Restore stash if exists
-[[ -n "$(git stash list | grep 'Auto-stash before rebase')" ]] && git stash pop
+# Restore stash only if one was created
+if [ "$stashed" = true ]; then
+  git stash pop
+fi
 ```
 
 ### Conflict Detection

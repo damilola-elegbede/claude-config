@@ -152,50 +152,74 @@ Following the `/resolve-cr` pattern of comprehensive data collection, `/fix-ci` 
 GitHub Actions API endpoints:
 
 ```bash
-# Generate unique execution ID (like /resolve-cr)
+# Function to fetch all CI failures from multiple sources
+fetch_all_ci_failures() {
+  local run_id="$1"
+
+  # Fetch the run's head SHA from run metadata (not git rev-parse)
+  local head_sha
+  head_sha=$(gh run view "$run_id" --json headSha --jq '.headSha')
+
+  # SOURCE 1: Job-level failures (main source)
+  local job_failures
+  job_failures=$(gh run view "$run_id" --json jobs --jq '[
+    .jobs[] |
+    select(.conclusion == "failure") |
+    {
+      id: .id,
+      name: .name,
+      conclusion: .conclusion,
+      steps: [.steps[] | select(.conclusion == "failure") | {name: .name, conclusion: .conclusion}]
+    }
+  ]')
+
+  # SOURCE 2: Check-level failures (using run's head SHA, not git HEAD)
+  local check_failures
+  check_failures=$(gh api "repos/{owner}/{repo}/commits/$head_sha/check-runs" --jq '[
+    .check_runs[] |
+    select(.conclusion == "failure") |
+    {
+      id: .id,
+      name: .name,
+      conclusion: .conclusion,
+      output: .output.summary
+    }
+  ]')
+
+  # Merge and deduplicate failures (wrap streams in arrays first)
+  local all_failures
+  all_failures=$(jq -n --argjson job "$job_failures" --argjson check "$check_failures" \
+    '[$job, $check] | flatten | unique_by(.id)')
+
+  local job_count
+  job_count=$(echo "$job_failures" | jq 'length')
+  local check_count
+  check_count=$(echo "$check_failures" | jq 'length')
+  local total_failures
+  total_failures=$(echo "$all_failures" | jq 'length')
+
+  echo "📊 CI Failure Discovery Results:"
+  echo "  • Job failures: $job_count"
+  echo "  • Check failures: $check_count"
+  echo "  • Total unique: $total_failures failures"
+
+  # Return the merged failures for use by caller
+  echo "$all_failures"
+}
+
+# Usage in main flow:
+# Generate unique execution ID
 execution_id="fix-ci-$(date +%s)-$$"
 echo "🆔 Execution: $execution_id"
 
-# Get run ID
-run_id="${1:-$(gh run list --status=failure --limit=1 --jq '.[0].databaseId')}"
+# Get run ID (corrected to use valid gh flags)
+run_id="${1:-$(gh run list --status completed --limit 1 --jq '.[0].databaseId | select(. != null)')}"
 
 echo "🔍 Fetching CI failures from GitHub Actions API..."
 
-# SOURCE 1: Job-level failures (main source)
-job_failures=$(gh run view "$run_id" --json jobs --jq '
-  .jobs[] |
-  select(.conclusion == "failure") |
-  {
-    id: .id,
-    name: .name,
-    conclusion: .conclusion,
-    steps: [.steps[] | select(.conclusion == "failure") | {name: .name, conclusion: .conclusion}]
-  }
-')
-
-# SOURCE 2: Full run logs (detailed error messages)
-run_logs=$(gh run view "$run_id" --log 2>&1)
-
-# SOURCE 3: Check-level failures (additional validation)
-check_failures=$(gh api "repos/{owner}/{repo}/commits/$(git rev-parse HEAD)/check-runs" --jq '
-  .check_runs[] |
-  select(.conclusion == "failure") |
-  {
-    id: .id,
-    name: .name,
-    conclusion: .conclusion,
-    output: .output.summary
-  }
-')
-
-# Merge and deduplicate failures
-all_failures=$(echo "$job_failures"; echo "$check_failures" | jq -s 'flatten | unique_by(.id)')
-total_failures=$(echo "$all_failures" | jq length)
-
-echo "📊 CI Failure Discovery Results:"
-echo "  • Job failures: $(echo "$job_failures" | jq length)"
-echo "  • Check failures: $(echo "$check_failures" | jq length)"
-echo "  • Total unique: $total_failures failures"
+# Call the fetch function
+all_failures=$(fetch_all_ci_failures "$run_id")
+total_failures=$(echo "$all_failures" | jq 'length')
 ```
 
 ### CATASTROPHIC FAILURE: No Failures Found
@@ -203,29 +227,39 @@ echo "  • Total unique: $total_failures failures"
 Like `/resolve-cr`, if no failures are found in Wave 1, this is a FAILURE, not success:
 
 ```bash
-if [ "$total_failures" -eq 0 ] && [ "$wave" -eq 1 ]; then
-  echo ""
-  echo "❌ CATASTROPHIC FAILURE: No CI failures found"
-  echo ""
-  echo "🔍 Diagnostic Information:"
-  echo "  Execution ID: $execution_id"
-  echo "  Run ID: $run_id"
-  echo "  Searched 3 different API sources"
-  echo "  All sources returned 0 failures"
-  echo ""
-  echo "⚠️  Possible Issues:"
-  echo "  1. CI run hasn't completed yet"
-  echo "  2. All failures already fixed (check CI status)"
-  echo "  3. API permissions issue preventing access"
-  echo "  4. Wrong run ID provided"
-  echo ""
-  echo "🔧 Troubleshooting:"
-  echo "  1. Check CI status: gh run view $run_id"
-  echo "  2. List recent runs: gh run list --limit 5"
-  echo "  3. Verify GitHub CLI auth: gh auth status"
-  echo ""
-  exit 1
-fi
+# Check for catastrophic failure (requires wave parameter)
+check_catastrophic_failure() {
+  local total_failures="$1"
+  local wave="$2"  # Declare wave as function parameter to avoid undefined variable
+  local execution_id="$3"
+  local run_id="$4"
+
+  if [ "$total_failures" -eq 0 ] && [ "$wave" -eq 1 ]; then
+    echo ""
+    echo "❌ CATASTROPHIC FAILURE: No CI failures found"
+    echo ""
+    echo "🔍 Diagnostic Information:"
+    echo "  Execution ID: $execution_id"
+    echo "  Run ID: $run_id"
+    echo "  Searched 3 different API sources"
+    echo "  All sources returned 0 failures"
+    echo ""
+    echo "⚠️  Possible Issues:"
+    echo "  1. CI run hasn't completed yet"
+    echo "  2. All failures already fixed (check CI status)"
+    echo "  3. API permissions issue preventing access"
+    echo "  4. Wrong run ID provided"
+    echo ""
+    echo "🔧 Troubleshooting:"
+    echo "  1. Check CI status: gh run view $run_id"
+    echo "  2. List recent runs: gh run list --limit 5"
+    echo "  3. Verify GitHub CLI auth: gh auth status"
+    echo ""
+    return 1  # Use return instead of exit for library-style function
+  fi
+
+  return 0
+}
 ```
 
 ### Real-Time CI Monitoring Loop
@@ -235,6 +269,7 @@ After pushing fixes, monitor the actual CI run to verify success:
 ```bash
 monitor_ci_after_push() {
   local wave=$1
+  local previous_run_id="${2:-}"  # Accept previous run ID to filter out
   local branch=$(git branch --show-current)
 
   echo "📊 Wave $wave: Waiting for CI run to start..."
@@ -244,9 +279,16 @@ monitor_ci_after_push() {
   local elapsed=0
   local new_run_id=""
 
+  # Get current time for filtering (only check runs created after this point)
+  local start_time
+  start_time=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
   while [ $elapsed -lt $timeout ]; do
-    new_run_id=$(gh run list --branch "$branch" --limit 1 --json databaseId,status,createdAt \
-      --jq 'select(.[0].status == "in_progress" or .[0].status == "queued") | .[0].databaseId')
+    # Fetch runs with completed status included (fast runs might finish quickly)
+    # Filter by created date and exclude previous run_id
+    new_run_id=$(gh run list --branch "$branch" --limit 5 \
+      --json databaseId,status,createdAt --jq --arg prev "$previous_run_id" --arg start "$start_time" \
+      '[.[] | select(.createdAt >= $start and (.status == "in_progress" or .status == "queued" or .status == "completed") and (.databaseId | tostring) != $prev)] | .[0].databaseId')
 
     if [ -n "$new_run_id" ]; then
       echo "✅ New CI run detected: #$new_run_id"
@@ -285,7 +327,7 @@ monitor_ci_after_push() {
     echo "⚠️ Wave $wave: CI still has failures"
     echo "🔍 Fetching new failure data for next wave..."
 
-    # Fetch NEW failures for next iteration
+    # Fetch NEW failures for next iteration (function is now defined above)
     fetch_all_ci_failures "$new_run_id"
     return 1
   fi
@@ -297,12 +339,21 @@ monitor_ci_after_push() {
 Track execution state across waves (like /resolve-cr):
 
 ```bash
-# State tracking file
-state_file=".tmp/fix-ci/execution-$execution_id.json"
-mkdir -p .tmp/fix-ci
+# Initialize state paths function (called AFTER execution_id is set)
+init_state_paths() {
+  local execution_id="$1"
+
+  # State tracking file - now properly scoped after execution_id is defined
+  state_file=".tmp/fix-ci/execution-$execution_id.json"
+  mkdir -p .tmp/fix-ci
+}
 
 # Initialize state
 init_execution_state() {
+  local execution_id="$1"
+  local run_id="$2"
+  local total_failures="$3"
+
   cat > "$state_file" <<EOF
 {
   "execution_id": "$execution_id",
@@ -614,14 +665,25 @@ fix_ci_enhanced() {
   local execution_id="fix-ci-$(date +%s)-$$"
   echo "🆔 Execution: $execution_id"
 
+  # Initialize state paths AFTER execution_id is defined (fixes Issue #4)
+  init_state_paths "$execution_id"
+
   init_enhanced_history
-  init_execution_state
   validate_prerequisites || return 1
 
-  local run_id="${1:-$(gh run list --status=failure --limit=1 --jq '.[0].databaseId')}"
+  local run_id="${1:-$(gh run list --status completed --limit 1 --jq '.[0].databaseId | select(. != null)')}"
   [[ -z "$run_id" || "$run_id" == "null" ]] && { echo "ℹ️ No failed runs found."; return 1; }
 
   echo "🔍 Initial run ID: #$run_id"
+
+  # Fetch initial failures
+  local all_failures
+  all_failures=$(fetch_all_ci_failures "$run_id")
+  local total_failures
+  total_failures=$(echo "$all_failures" | jq 'length')
+
+  # Initialize execution state with proper data
+  init_execution_state "$execution_id" "$run_id" "$total_failures"
 
   local wave_count=1
   local max_waves=8
@@ -638,21 +700,14 @@ fix_ci_enhanced() {
 
     # FETCH REAL FAILURES from GitHub Actions API
     echo "🔍 Wave $wave_count: Fetching failures from GitHub Actions API..."
-    local all_failures
     all_failures=$(fetch_all_ci_failures "$current_run_id")
-    local total_failures
-    total_failures=$(echo "$all_failures" | jq length)
+    total_failures=$(echo "$all_failures" | jq 'length')
 
     echo "📊 Wave $wave_count: Found $total_failures failures in run #$current_run_id"
 
-    # CATASTROPHIC FAILURE check (Wave 1 only)
-    if [[ $total_failures -eq 0 ]] && [[ $wave_count -eq 1 ]]; then
-      echo ""
-      echo "❌ CATASTROPHIC FAILURE: No CI failures found"
-      echo "🔍 Execution ID: $execution_id"
-      echo "🔍 Run ID: #$current_run_id"
-      echo ""
-      exit 1
+    # CATASTROPHIC FAILURE check (Wave 1 only) - now using function
+    if ! check_catastrophic_failure "$total_failures" "$wave_count" "$execution_id" "$current_run_id"; then
+      return 1
     fi
 
     # If no failures in later waves, CI passed!
@@ -724,8 +779,8 @@ fix_ci_enhanced() {
       echo ""
       echo "📊 Wave $wave_count: Monitoring real CI run on GitHub Actions..."
 
-      # Monitor CI and get results
-      if monitor_ci_after_push "$wave_count"; then
+      # Monitor CI and get results (pass previous run ID to filter)
+      if monitor_ci_after_push "$wave_count" "$current_run_id"; then
         # CI PASSED! All checks green
         all_ci_passed=true
         echo ""
@@ -778,7 +833,7 @@ fix_ci_enhanced() {
     echo "📊 Final run: #$current_run_id"
     echo "✅ All GitHub Actions checks: PASSING"
     echo ""
-    exit 0
+    return 0
   else
     echo "⚠️ Maximum waves ($max_waves) reached without full CI resolution"
     echo "🆔 Execution ID: $execution_id"
@@ -786,7 +841,7 @@ fix_ci_enhanced() {
     echo "❌ Some checks still failing - manual intervention needed"
     record_enhanced_outcome "$pattern" "$enhanced_confidence" "false" "$consensus_factor" "$complexity_score" "$fix_duration" "$max_waves"
     echo ""
-    exit 1
+    return 1
   fi
 }
 ```
