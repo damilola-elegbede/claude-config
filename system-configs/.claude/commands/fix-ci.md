@@ -801,7 +801,9 @@ fix_ci_enhanced() {
         current_run_id=$(gh run list --branch $(git branch --show-current) --limit 1 --json databaseId --jq '.[0].databaseId')
         echo "🔄 Next wave will analyze run #$current_run_id"
 
-        # Record wave with failures
+        # Record wave with failures - fetch NEW failure counts for the new run
+        all_failures=$(fetch_all_ci_failures "$current_run_id")
+        total_failures=$(echo "$all_failures" | jq 'length')
         record_wave_result "$wave_count" "$current_run_id" "failure" "$total_failures"
 
         # Continue to next wave
