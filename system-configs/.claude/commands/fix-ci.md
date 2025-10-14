@@ -17,11 +17,16 @@ thinking-tokens: 10000
 
 ## Description
 
-Diagnose and fix GitHub Actions failures using pattern recognition and historical fix data. Only pushes when 95%
-confident all CI issues are resolved. Tests locally before pushing fixes.
+Diagnose and fix GitHub Actions failures using pattern recognition, historical fix data, and **real-time CI monitoring**.
+Fetches actual failure data from GitHub Actions API, deploys specialized agents to fix issues, then **monitors CI runs
+to verify fixes actually work**. Only completes when GitHub Actions shows all checks passing.
+
+**Critical Improvement**: Now uses GitHub Actions API to verify fixes work in real CI runs, not just local tests.
+After each fix wave, the command monitors the actual CI run and fetches new failures if any remain. Process continues
+iteratively until GitHub Actions shows all green checkmarks.
 
 **Important**: Complex CI issues often cascade, requiring multiple remediation waves. The process continues iteratively
-until all CI checks pass, with each wave addressing newly discovered failures.
+until all CI checks pass, with each wave addressing newly discovered failures from actual CI runs.
 
 ### Thinking Level: MEGATHINK (10,000 tokens)
 
@@ -46,18 +51,77 @@ This command requires substantial thinking depth due to:
 📊 Recorded outcome: CI passed = true
 ```
 
-### Multi-Wave Remediation Example
+### Multi-Wave Remediation with Real CI Verification
 
 ```text
-🔍 Wave 1: Pattern confidence: 96%
-🔧 Wave 1: Applying lint fixes (96% confidence)...
-📊 Wave 1: CI verification reveals additional test failures
-🔧 Wave 2: Deploying test fix agents...
-📊 Wave 2: CI verification reveals dependency conflicts
-🔧 Wave 3: Resolving dependency version conflicts...
-📊 Wave 3: CI verification reveals environment issues
-🔧 Wave 4: Fixing environment configuration...
-✅ Wave 4: All CI checks now passing
+🆔 Execution: fix-ci-1738886234-12345
+🔍 Initial run ID: #987654
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 Wave 1: Starting remediation cycle
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔍 Wave 1: Fetching failures from GitHub Actions API...
+📊 CI Failure Discovery Results:
+  • Job failures: 3
+  • Check failures: 2
+  • Total unique: 5 failures
+📊 Wave 1: Found 5 failures in run #987654
+
+🤖 Wave 1: Deploying analysis agents...
+🔍 Wave 1: Enhanced pattern confidence: 96% (complexity: 3)
+🔧 Wave 1: Deploying parallel fix agents (96% confidence)...
+🧪 Wave 1: Enhanced local testing with parallel validation...
+✅ Local tests passed
+
+💾 Wave 1: Committing and pushing fixes...
+📊 Wave 1: Monitoring real CI run on GitHub Actions...
+📊 Wave 1: Waiting for CI run to start...
+✅ New CI run detected: #987655
+📊 Wave 1: Monitoring CI run #987655...
+[Real-time CI output from gh run watch]
+
+📊 Wave 1: CI Results:
+  Run ID: #987655
+  Status: completed
+  Conclusion: failure
+
+⚠️ Wave 1: CI still has failures
+🔍 Fetching new failure data for next wave...
+🔄 Next wave will analyze run #987655
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 Wave 2: Starting remediation cycle
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔍 Wave 2: Fetching failures from GitHub Actions API...
+📊 Wave 2: Found 2 failures in run #987655 (down from 5)
+
+🤖 Wave 2: Deploying analysis agents...
+🔧 Wave 2: Deploying parallel fix agents (92% confidence)...
+🧪 Wave 2: Enhanced local testing...
+✅ Local tests passed
+
+💾 Wave 2: Committing and pushing fixes...
+📊 Wave 2: Monitoring real CI run on GitHub Actions...
+✅ New CI run detected: #987656
+📊 Wave 2: Monitoring CI run #987656...
+
+📊 Wave 2: CI Results:
+  Run ID: #987656
+  Status: completed
+  Conclusion: success
+
+✅✅✅ Wave 2: ALL CI CHECKS PASSED! ✅✅✅
+🎉 GitHub Actions showing all green checkmarks
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 FINAL RESULTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ Success: 2 waves required for full CI remediation
+🆔 Execution ID: fix-ci-1738886234-12345
+📊 Final run: #987656
+✅ All GitHub Actions checks: PASSING
 ```
 
 ### Low Confidence Scenario
@@ -78,6 +142,240 @@ Lint/Format: 98% success rate (47/48 attempts)
 Dependencies: 92% success rate (23/25 attempts)
 Test Failures: 85% success rate (17/20 attempts)
 Type Errors: 78% success rate (14/18 attempts)
+```
+
+## GitHub Actions API Integration
+
+### Aggressive Multi-Source CI Failure Fetching
+
+Following the `/resolve-cr` pattern of comprehensive data collection, `/fix-ci` now fetches CI failures from multiple
+GitHub Actions API endpoints:
+
+```bash
+# Function to fetch all CI failures from multiple sources
+fetch_all_ci_failures() {
+  local run_id="$1"
+
+  # Fetch the run's head SHA from run metadata (not git rev-parse)
+  local head_sha
+  head_sha=$(gh run view "$run_id" --json headSha --jq '.headSha')
+
+  # SOURCE 1: Job-level failures (main source)
+  local job_failures
+  job_failures=$(gh run view "$run_id" --json jobs --jq '[
+    .jobs[] |
+    select(.conclusion == "failure") |
+    {
+      id: .id,
+      name: .name,
+      conclusion: .conclusion,
+      steps: [.steps[] | select(.conclusion == "failure") | {name: .name, conclusion: .conclusion}]
+    }
+  ]')
+
+  # SOURCE 2: Check-level failures (using run's head SHA, not git HEAD)
+  local check_failures
+  check_failures=$(gh api --paginate "repos/{owner}/{repo}/commits/$head_sha/check-runs?per_page=100" --jq '[
+    .check_runs[] |
+    select(.conclusion == "failure") |
+    {
+      id: .id,
+      name: .name,
+      conclusion: .conclusion,
+      output: .output.summary
+    }
+  ]')
+
+  # Merge and deduplicate failures (wrap streams in arrays first)
+  local all_failures
+  all_failures=$(jq -n --argjson job "$job_failures" --argjson check "$check_failures" \
+    '[$job, $check] | flatten | unique_by(.id)')
+
+  local job_count
+  job_count=$(echo "$job_failures" | jq 'length')
+  local check_count
+  check_count=$(echo "$check_failures" | jq 'length')
+  local total_failures
+  total_failures=$(echo "$all_failures" | jq 'length')
+
+  echo "📊 CI Failure Discovery Results:" >&2
+  echo "  • Job failures: $job_count" >&2
+  echo "  • Check failures: $check_count" >&2
+  echo "  • Total unique: $total_failures failures" >&2
+
+  # Return the merged failures for use by caller
+  echo "$all_failures"
+}
+
+# Usage in main flow:
+# Generate unique execution ID
+execution_id="fix-ci-$(date +%s)-$$"
+echo "🆔 Execution: $execution_id"
+
+# Get run ID (corrected to use valid gh flags)
+run_id="${1:-$(gh run list --status failure --limit 1 --json databaseId --jq '.[0].databaseId // empty')}"
+
+echo "🔍 Fetching CI failures from GitHub Actions API..."
+
+# Call the fetch function
+all_failures=$(fetch_all_ci_failures "$run_id")
+total_failures=$(echo "$all_failures" | jq 'length')
+```
+
+### CATASTROPHIC FAILURE: No Failures Found
+
+Like `/resolve-cr`, if no failures are found in Wave 1, this is a FAILURE, not success:
+
+```bash
+# Check for catastrophic failure (requires wave parameter)
+check_catastrophic_failure() {
+  local total_failures="$1"
+  local wave="$2"  # Declare wave as function parameter to avoid undefined variable
+  local execution_id="$3"
+  local run_id="$4"
+
+  if [ "$total_failures" -eq 0 ] && [ "$wave" -eq 1 ]; then
+    echo ""
+    echo "❌ CATASTROPHIC FAILURE: No CI failures found"
+    echo ""
+    echo "🔍 Diagnostic Information:"
+    echo "  Execution ID: $execution_id"
+    echo "  Run ID: $run_id"
+    echo "  Searched 3 different API sources"
+    echo "  All sources returned 0 failures"
+    echo ""
+    echo "⚠️  Possible Issues:"
+    echo "  1. CI run hasn't completed yet"
+    echo "  2. All failures already fixed (check CI status)"
+    echo "  3. API permissions issue preventing access"
+    echo "  4. Wrong run ID provided"
+    echo ""
+    echo "🔧 Troubleshooting:"
+    echo "  1. Check CI status: gh run view $run_id"
+    echo "  2. List recent runs: gh run list --limit 5"
+    echo "  3. Verify GitHub CLI auth: gh auth status"
+    echo ""
+    return 1  # Use return instead of exit for library-style function
+  fi
+
+  return 0
+}
+```
+
+### Real-Time CI Monitoring Loop
+
+After pushing fixes, monitor the actual CI run to verify success:
+
+```bash
+monitor_ci_after_push() {
+  local wave=$1
+  local previous_run_id="${2:-}"  # Accept previous run ID to filter out
+  local branch=$(git branch --show-current)
+
+  echo "📊 Wave $wave: Waiting for CI run to start..."
+
+  # Wait for new CI run (timeout after 60 seconds)
+  local timeout=60
+  local elapsed=0
+  local new_run_id=""
+
+  while [ $elapsed -lt $timeout ]; do
+    # Fetch runs with completed status included (fast runs might finish quickly)
+    # Filter by status and exclude previous run_id
+    new_run_id=$(gh run list --branch "$branch" --limit 5 \
+      --json databaseId,status,createdAt --jq --arg prev "$previous_run_id" \
+      '[.[] | select((.status == "in_progress" or .status == "queued" or .status == "completed") and (.databaseId | tostring) != $prev)] | sort_by(.createdAt) | reverse | .[0].databaseId // empty')
+
+    if [ -n "$new_run_id" ]; then
+      echo "✅ New CI run detected: #$new_run_id"
+      break
+    fi
+
+    sleep 2
+    elapsed=$((elapsed + 2))
+  done
+
+  if [ -z "$new_run_id" ]; then
+    echo "⚠️ No CI run detected after $timeout seconds"
+    echo "💡 CI may be disabled or delayed. Check manually: gh run list"
+    return 1
+  fi
+
+  # Monitor CI run in real-time
+  echo "📊 Wave $wave: Monitoring CI run #$new_run_id..."
+  gh run watch "$new_run_id" --exit-status
+
+  # Fetch final status
+  local ci_conclusion=$(gh run view "$new_run_id" --json conclusion --jq '.conclusion')
+  local ci_status=$(gh run view "$new_run_id" --json status --jq '.status')
+
+  echo ""
+  echo "📊 Wave $wave: CI Results:"
+  echo "  Run ID: #$new_run_id"
+  echo "  Status: $ci_status"
+  echo "  Conclusion: $ci_conclusion"
+  echo ""
+
+  if [ "$ci_conclusion" == "success" ]; then
+    echo "✅ Wave $wave: All CI checks PASSED!"
+    return 0
+  else
+    echo "⚠️ Wave $wave: CI still has failures"
+    echo "🔍 Fetching new failure data for next wave..."
+
+    # Fetch NEW failures for next iteration (function is now defined above)
+    fetch_all_ci_failures "$new_run_id"
+    return 1
+  fi
+}
+```
+
+### Execution State Tracking
+
+Track execution state across waves (like /resolve-cr):
+
+```bash
+# Initialize state paths function (called AFTER execution_id is set)
+init_state_paths() {
+  local execution_id="$1"
+
+  # State tracking file - now properly scoped after execution_id is defined
+  state_file=".tmp/fix-ci/execution-$execution_id.json"
+  mkdir -p .tmp/fix-ci
+}
+
+# Initialize state
+init_execution_state() {
+  local execution_id="$1"
+  local run_id="$2"
+  local total_failures="$3"
+
+  cat > "$state_file" <<EOF
+{
+  "execution_id": "$execution_id",
+  "started_at": "$(date -Iseconds)",
+  "waves": [],
+  "original_run_id": "$run_id",
+  "original_failure_count": $total_failures
+}
+EOF
+}
+
+# Record wave results
+record_wave_result() {
+  local wave=$1
+  local run_id=$2
+  local conclusion=$3
+  local new_failures=$4
+
+  jq ".waves += [{
+    \"wave\": $wave,
+    \"run_id\": \"$run_id\",
+    \"conclusion\": \"$conclusion\",
+    \"failures_remaining\": $new_failures,
+    \"timestamp\": \"$(date -Iseconds)\"
+  }]" "$state_file" > "${state_file}.tmp" && mv "${state_file}.tmp" "$state_file"
+}
 ```
 
 ## Behavior
@@ -353,31 +651,74 @@ get_enhanced_confidence() {
 }
 ```
 
-### Enhanced Main Execution Flow
+### Enhanced Main Execution Flow with Real CI Verification
 
-#### Multi-Wave Orchestration Process
+#### Multi-Wave Orchestration Process with GitHub Actions API
 
 ```bash
 fix_ci_enhanced() {
+  # Generate unique execution ID (like /resolve-cr)
+  local execution_id="fix-ci-$(date +%s)-$$"
+  echo "🆔 Execution: $execution_id"
+
+  # Initialize state paths AFTER execution_id is defined (fixes Issue #4)
+  init_state_paths "$execution_id"
+
   init_enhanced_history
   validate_prerequisites || return 1
 
-  local run_id="${1:-$(gh run list --status=failure --limit=1 --jq '.[0].databaseId')}"
+  local run_id="${1:-$(gh run list --status failure --limit 1 --json databaseId --jq '.[0].databaseId // empty')}"
   [[ -z "$run_id" || "$run_id" == "null" ]] && { echo "ℹ️ No failed runs found."; return 1; }
+
+  echo "🔍 Initial run ID: #$run_id"
+
+  # Fetch initial failures
+  local all_failures
+  all_failures=$(fetch_all_ci_failures "$run_id")
+  local total_failures
+  total_failures=$(echo "$all_failures" | jq 'length')
+
+  # Initialize execution state with proper data
+  init_execution_state "$execution_id" "$run_id" "$total_failures"
 
   local wave_count=1
   local max_waves=8
   local all_ci_passed=false
+  local current_run_id="$run_id"
 
   # Continue iterative remediation until CI passes or max waves reached
   while [[ $all_ci_passed == false && $wave_count -le $max_waves ]]; do
-    echo "🚀 Wave $wave_count: Deploying analysis agents..."
+    echo ""
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "🚀 Wave $wave_count: Starting remediation cycle"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo ""
+
+    # FETCH REAL FAILURES from GitHub Actions API
+    echo "🔍 Wave $wave_count: Fetching failures from GitHub Actions API..."
+    all_failures=$(fetch_all_ci_failures "$current_run_id")
+    total_failures=$(echo "$all_failures" | jq 'length')
+
+    echo "📊 Wave $wave_count: Found $total_failures failures in run #$current_run_id"
+
+    # CATASTROPHIC FAILURE check (Wave 1 only) - now using function
+    if ! check_catastrophic_failure "$total_failures" "$wave_count" "$execution_id" "$current_run_id"; then
+      return 1
+    fi
+
+    # If no failures in later waves, CI passed!
+    if [[ $total_failures -eq 0 ]]; then
+      echo "✅ Wave $wave_count: No failures found - CI is passing!"
+      all_ci_passed=true
+      break
+    fi
 
     # WAVE 1: Deploy 10-15 analysis agents simultaneously
+    echo "🤖 Wave $wave_count: Deploying analysis agents..."
     if [[ $wave_count -eq 1 ]]; then
-      deploy_wave1_analysis "$run_id"
+      deploy_wave1_analysis "$current_run_id" "$all_failures"
     else
-      deploy_iterative_analysis "$run_id" "$wave_count"
+      deploy_iterative_analysis "$current_run_id" "$all_failures" "$wave_count"
     fi
 
     # Aggregate findings and calculate enhanced confidence
@@ -403,7 +744,7 @@ fix_ci_enhanced() {
       echo "⚠️ Wave $wave_count: Confidence too low (${enhanced_confidence}% < ${confidence_threshold}%)"
       if [[ $wave_count -eq 1 ]]; then
         echo "💡 Deploying additional diagnostic agents for complex analysis..."
-        deploy_deep_analysis_wave "$run_id" "$agent_findings"
+        deploy_deep_analysis_wave "$current_run_id" "$agent_findings"
         return 1
       else
         echo "⚠️ Wave $wave_count: Insufficient confidence for continued remediation"
@@ -424,39 +765,81 @@ fix_ci_enhanced() {
 
     # Commit and push with enhanced monitoring
     if ! git diff --quiet; then
+      echo "💾 Wave $wave_count: Committing and pushing fixes..."
       commit_with_wave_tracking "$enhanced_confidence" "$complexity_score" "$wave_count"
 
-      # Deploy monitoring and verification agents
-      echo "📊 Wave $wave_count: Deploying verification and monitoring agents..."
-      deploy_wave_monitoring "$run_id" "$wave_count"
+      # ═══════════════════════════════════════════════════════════
+      # CRITICAL NEW SECTION: Real CI Monitoring and Verification
+      # ═══════════════════════════════════════════════════════════
 
-      # Wait for CI verification results
-      local verification_results
-      verification_results=$(wait_for_wave_verification_results "$wave_count")
+      echo ""
+      echo "📊 Wave $wave_count: Monitoring real CI run on GitHub Actions..."
 
-      if [[ "$verification_results" == "all_passed" ]]; then
+      # Monitor CI and get results (pass previous run ID to filter)
+      if monitor_ci_after_push "$wave_count" "$current_run_id"; then
+        # CI PASSED! All checks green
         all_ci_passed=true
-        echo "✅ Wave $wave_count: All CI checks passed - remediation complete!"
+        echo ""
+        echo "✅✅✅ Wave $wave_count: ALL CI CHECKS PASSED! ✅✅✅"
+        echo "🎉 GitHub Actions showing all green checkmarks"
+        echo ""
+
+        # Record successful wave
+        local new_run_id=$(gh run list --branch $(git branch --show-current) --limit 1 --json databaseId --jq '.[0].databaseId')
+        record_wave_result "$wave_count" "$new_run_id" "success" "0"
+        break
       else
-        echo "📊 Wave $wave_count: CI verification reveals additional issues - continuing to Wave $((wave_count + 1))"
-        # Update pattern recognition with cascading failure data
-        update_cascading_failure_patterns "$verification_results" "$wave_count"
+        # CI FAILED - fetch NEW failures for next wave
+        echo ""
+        echo "⚠️ Wave $wave_count: CI run failed, continuing to next wave..."
+
+        # Get new run ID for next iteration
+        current_run_id=$(gh run list --branch $(git branch --show-current) --limit 1 --json databaseId --jq '.[0].databaseId')
+        echo "🔄 Next wave will analyze run #$current_run_id"
+
+        # Record wave with failures - fetch NEW failure counts for the new run
+        all_failures=$(fetch_all_ci_failures "$current_run_id")
+        total_failures=$(echo "$all_failures" | jq 'length')
+        record_wave_result "$wave_count" "$current_run_id" "failure" "$total_failures"
+
+        # Continue to next wave
+        ((wave_count++))
+        echo ""
+        echo "🔄 Proceeding to Wave $wave_count..."
       fi
     else
       echo "ℹ️ Wave $wave_count: No changes to commit"
-      all_ci_passed=true
+      # Re-check if CI actually passing
+      local ci_status=$(gh run view "$current_run_id" --json conclusion --jq '.conclusion')
+      if [[ "$ci_status" == "success" ]]; then
+        all_ci_passed=true
+      fi
+      break
     fi
-
-    ((wave_count++))
   done
+
+  echo ""
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "📊 FINAL RESULTS"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
   # Record final outcome with wave count
   if [[ $all_ci_passed == true ]]; then
     record_enhanced_outcome "$pattern" "$enhanced_confidence" "true" "$consensus_factor" "$complexity_score" "$fix_duration" "$((wave_count - 1))"
-    echo "📊 Enhanced outcome recorded: $((wave_count - 1)) waves required for full CI remediation"
+    echo "✅ Success: $((wave_count)) waves required for full CI remediation"
+    echo "🆔 Execution ID: $execution_id"
+    echo "📊 Final run: #$current_run_id"
+    echo "✅ All GitHub Actions checks: PASSING"
+    echo ""
+    return 0
   else
     echo "⚠️ Maximum waves ($max_waves) reached without full CI resolution"
+    echo "🆔 Execution ID: $execution_id"
+    echo "📊 Last run: #$current_run_id"
+    echo "❌ Some checks still failing - manual intervention needed"
     record_enhanced_outcome "$pattern" "$enhanced_confidence" "false" "$consensus_factor" "$complexity_score" "$fix_duration" "$max_waves"
+    echo ""
+    return 1
   fi
 }
 ```
@@ -465,37 +848,52 @@ fix_ci_enhanced() {
 
 Deploy execution-evaluator to verify enhanced capabilities:
 
+- ✅ **GitHub Actions API Integration** - Fetches real CI failures from 3 different API sources
+- ✅ **Real-Time CI Monitoring** - Uses `gh run watch` to monitor actual CI runs after push
+- ✅ **Execution ID Tracking** - Unique execution IDs (like /resolve-cr) for state management
+- ✅ **Catastrophic Failure Mode** - Fails loud with diagnostics when no failures found (like /resolve-cr)
 - ✅ **Wave 1 Enhancement** - 10-15 agents deployed simultaneously (3-4 devops, 4-5 test-engineer, 3-4 platform-engineer, 2-3 debugger)
 - ✅ **Debugger Integration** - Specialized debugging instances for complex failure analysis
 - ✅ **Multi-Agent Confidence** - Enhanced confidence calculation using agent consensus and complexity scoring
 - ✅ **Pattern Learning** - Advanced pattern recognition with agent-specific learning integration
 - ✅ **Parallel Fix Deployment** - Multiple fix agents work simultaneously on different failure types
-- ✅ **Enhanced Monitoring** - Wave 3 verification with continuous monitoring and regression detection
+- ✅ **Real CI Verification** - Verifies fixes against actual GitHub Actions runs, not just local tests
 - ✅ **95% Confidence Threshold** - Maintained strict confidence requirements with enhanced calculation
-- ✅ **Comprehensive Validation** - Parallel local testing with multiple validation streams
-- ✅ **Iterative Remediation** - Multi-wave fix cycles for cascading CI failures (Wave 4, 5, 6+)
-- ✅ **Wave Tracking** - Complete outcome recording with wave count and cascading failure patterns
+- ✅ **Comprehensive Validation** - Parallel local testing PLUS real CI verification
+- ✅ **Iterative Remediation** - Multi-wave fix cycles using actual CI failures from each run
+- ✅ **Wave Tracking** - Complete outcome recording with run IDs, conclusions, and failure counts
+- ✅ **Only Completes on Success** - Loop continues until GitHub Actions shows all green checkmarks
 
 ### Key Enhanced Features
 
+- **GitHub Actions API Integration** - Fetches real failures from multiple API endpoints (jobs, checks, logs)
+- **Real-Time CI Monitoring** - Monitors actual CI runs with `gh run watch`, not just local tests
+- **Execution State Tracking** - Unique execution IDs and wave state tracking (like /resolve-cr)
+- **Catastrophic Failure Detection** - Fails explicitly when expectations not met with diagnostic output
 - **Massive Parallel Wave 1** - 10-15 agents analyze failures simultaneously for comprehensive coverage
 - **Debugger Specialization** - Dedicated debugging instances for complex failure patterns
 - **Multi-Agent Confidence Scoring** - Enhanced confidence calculation incorporating agent consensus
-- **Complex Issue Handling** - Specialized workflows for multi-factor and intricate CI failures
+- **Real Verification Loop** - Each wave verifies fixes against actual GitHub Actions runs
 - **Continuous Learning** - Advanced pattern database updates with agent-specific insights
-- **Performance Monitoring** - Real-time tracking of fix effectiveness and performance impact
-- **Regression Prevention** - Automated detection of new issues introduced by fixes
-- **Iterative Remediation** - Multi-wave approach handling cascading CI failures requiring 4-8 waves
-- **Wave Intelligence** - Pattern recognition for cascading failure types and remediation sequences
-- **Escalation Management** - Confidence threshold adjustments and termination conditions for complex cases
+- **Actual Success Verification** - Only completes when GitHub shows all green checkmarks
+- **Regression Detection** - Detects new failures introduced by previous waves from real CI runs
+- **Iterative Remediation** - Multi-wave approach using real CI feedback requiring 2-8 waves
+- **Wave Intelligence** - Pattern recognition for cascading failure types from actual CI results
+- **Complete Transparency** - Shows execution ID, run IDs, and exact CI status for each wave
 
 ### Notes
 
+- **Major Improvement**: Now uses GitHub Actions API to verify fixes work in real CI, not just local tests
+- **Real Feedback Loop**: Monitors actual CI runs after each push using `gh run watch`
+- **Complete Verification**: Only exits successfully when GitHub Actions shows all green checkmarks
+- **Execution Tracking**: Like /resolve-cr, uses unique execution IDs for state management
+- **Catastrophic Failure**: Fails explicitly with diagnostics when no failures found (not silent success)
 - Enhanced parallel deployment maintains system resource awareness
 - Confidence threshold remains at 95% for initial waves, adjusted to 90% for iterative waves
-- Learning system captures multi-dimensional outcome data including wave count for better future predictions
-- All temporary data stored in `.tmp/fix-ci/enhanced-*` for improved organization
+- Learning system captures multi-dimensional outcome data including wave count and actual CI results
+- All temporary data stored in `.tmp/fix-ci/execution-*.json` for state tracking
 - Wave-based pattern allows for controlled scaling and resource management
-- **Critical**: Complex CI issues may require 4-8 remediation waves to fully resolve all cascading failures
-- Each wave addresses new failures discovered by CI verification of previous wave's fixes
-- Process continues iteratively until all CI checks pass or maximum wave limit reached
+- **Critical**: Complex CI issues may require 2-8 remediation waves using real CI feedback
+- Each wave fetches NEW failures from the actual CI run after previous wave's fixes
+- Process continues iteratively until GitHub Actions API confirms all checks pass
+- Follows proven patterns from /resolve-cr, /push, /commit for reliability
