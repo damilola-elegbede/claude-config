@@ -53,77 +53,86 @@ repo=$(echo "$repo_info" | jq -r .name)
 
 echo "🔍 Fetching unresolved CodeRabbit comments from multiple sources..."
 
-# SOURCE 1: PR Review Threads (most reliable for inline comments)
-source1=$(gh pr view "$pr" --json reviewThreads --jq '
-  .reviewThreads[] |
-  select(.isResolved == false) |
-  .comments[] |
-  select(.author.login == "coderabbitai" or .author.login == "coderabbitai[bot]") |
-  {
-    id: .id,
-    body: .body,
-    path: .path,
-    line: (.line // .originalLine),
-    source: "review_thread",
-    createdAt: .createdAt
-  }
-' 2>/dev/null)
+# Function: Fetch CodeRabbit comments from all GitHub API sources
+fetch_coderabbit_comments() {
+  local pr="$1"
+  local owner="$2"
+  local repo="$3"
 
-# SOURCE 2: PR Review Comments (catches comments in reviews)
-source2=$(gh api "repos/$owner/$repo/pulls/$pr/comments" --jq '
-  .[] |
-  select(.user.login == "coderabbitai" or .user.login == "coderabbitai[bot]") |
-  select(.in_reply_to_id == null or .in_reply_to_id == .id) |
-  {
-    id: .id,
-    body: .body,
-    path: .path,
-    line: (.line // .original_line),
-    source: "review_comment",
-    createdAt: .created_at
-  }
-' 2>/dev/null)
+  # SOURCE 1: PR Review Threads (most reliable for inline comments)
+  local source1=$(gh pr view "$pr" --json reviewThreads --jq '
+    .reviewThreads[] |
+    select(.isResolved == false) |
+    .comments[] |
+    select(.author.login == "coderabbitai" or .author.login == "coderabbitai[bot]") |
+    {
+      id: .id,
+      body: .body,
+      path: .path,
+      line: (.line // .originalLine),
+      source: "review_thread",
+      createdAt: .createdAt
+    }
+  ' 2>/dev/null)
 
-# SOURCE 3: Issue Comments (for general PR feedback)
-source3=$(gh api "repos/$owner/$repo/issues/$pr/comments" --jq '
-  .[] |
-  select(.user.login == "coderabbitai" or .user.login == "coderabbitai[bot]") |
-  {
-    id: .id,
-    body: .body,
-    path: null,
-    line: null,
-    source: "issue_comment",
-    createdAt: .created_at
-  }
-' 2>/dev/null)
+  # SOURCE 2: PR Review Comments (catches comments in reviews)
+  local source2=$(gh api "repos/$owner/$repo/pulls/$pr/comments" --jq '
+    .[] |
+    select(.user.login == "coderabbitai" or .user.login == "coderabbitai[bot]") |
+    select(.in_reply_to_id == null or .in_reply_to_id == .id) |
+    {
+      id: .id,
+      body: .body,
+      path: .path,
+      line: (.line // .original_line),
+      source: "review_comment",
+      createdAt: .created_at
+    }
+  ' 2>/dev/null)
 
-# SOURCE 4: Review Submissions (top-level review comments)
-source4=$(gh api "repos/$owner/$repo/pulls/$pr/reviews" --jq '
-  .[] |
-  select(.user.login == "coderabbitai" or .user.login == "coderabbitai[bot]") |
-  select(.state == "COMMENTED" or .state == "CHANGES_REQUESTED") |
-  select(.body != null and .body != "") |
-  {
-    id: .id,
-    body: .body,
-    path: null,
-    line: null,
-    source: "review_submission",
-    createdAt: .submitted_at
-  }
-' 2>/dev/null)
+  # SOURCE 3: Issue Comments (for general PR feedback)
+  local source3=$(gh api "repos/$owner/$repo/issues/$pr/comments" --jq '
+    .[] |
+    select(.user.login == "coderabbitai" or .user.login == "coderabbitai[bot]") |
+    {
+      id: .id,
+      body: .body,
+      path: null,
+      line: null,
+      source: "issue_comment",
+      createdAt: .created_at
+    }
+  ' 2>/dev/null)
 
-# Merge all sources and deduplicate by ID
-all_comments=$(echo "$source1"; echo "$source2"; echo "$source3"; echo "$source4" | \
-  jq -s 'flatten | unique_by(.id)')
+  # SOURCE 4: Review Submissions (top-level review comments)
+  local source4=$(gh api "repos/$owner/$repo/pulls/$pr/reviews" --jq '
+    .[] |
+    select(.user.login == "coderabbitai" or .user.login == "coderabbitai[bot]") |
+    select(.state == "COMMENTED" or .state == "CHANGES_REQUESTED") |
+    select(.body != null and .body != "") |
+    {
+      id: .id,
+      body: .body,
+      path: null,
+      line: null,
+      source: "review_submission",
+      createdAt: .submitted_at
+    }
+  ' 2>/dev/null)
 
-# Count comments per source for diagnostics
-count1=$(echo "$source1" | jq -s length)
-count2=$(echo "$source2" | jq -s length)
-count3=$(echo "$source3" | jq -s length)
-count4=$(echo "$source4" | jq -s length)
+  # Merge all sources and deduplicate by ID
+  echo "$source1" "$source2" "$source3" "$source4" | jq -s 'flatten | unique_by(.id)'
+}
+
+# Fetch all comments using the reusable function
+all_comments=$(fetch_coderabbit_comments "$pr" "$owner" "$repo")
 total_count=$(echo "$all_comments" | jq length)
+
+# Count per-source for diagnostics (extract from merged results)
+count1=$(echo "$all_comments" | jq '[.[] | select(.source == "review_thread")] | length')
+count2=$(echo "$all_comments" | jq '[.[] | select(.source == "review_comment")] | length')
+count3=$(echo "$all_comments" | jq '[.[] | select(.source == "issue_comment")] | length')
+count4=$(echo "$all_comments" | jq '[.[] | select(.source == "review_submission")] | length')
 
 echo "📊 Comment Discovery Results:"
 echo "  • Review threads: $count1 comments"

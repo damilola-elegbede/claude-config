@@ -97,7 +97,7 @@ Execute rebase with minimal overhead:
 
    # Rebase on updated target
    if git rebase "$target_branch"; then
-     echo "✅ Rebase successful!"
+     echo "✅ Rebase complete: ${current_branch} → ${target_branch}"
 
      # Restore stashed changes if any were created
      if [ "$stashed" = true ]; then
@@ -138,7 +138,11 @@ Define the conflict handler before it's called:
 
 ```bash
 handle_conflicts() {
-  # Detect conflicted files
+  # Create temp directory for conflict tracking
+  TMP_DIR=".tmp/rebase"
+  mkdir -p "$TMP_DIR"
+
+  # Detect conflicted files programmatically
   conflicted_files=$(git diff --name-only --diff-filter=U)
 
   if [ -z "$conflicted_files" ]; then
@@ -146,6 +150,10 @@ handle_conflicts() {
     echo "Run: git status"
     exit 1
   fi
+
+  # Store conflicted files list for potential agent deployment
+  # This prevents blind parallel edits and provides a clear list for resolution
+  echo "$conflicted_files" > "${TMP_DIR}/conflicted_files.txt"
 
   # Count conflicts
   conflict_count=$(echo "$conflicted_files" | wc -l | tr -d ' ')
@@ -156,6 +164,34 @@ handle_conflicts() {
     echo "  • $file"
   done
 
+  # Store conflict metadata for documentation/resolution
+  cat > "${TMP_DIR}/conflict_metadata.txt" <<EOF
+Rebase Conflict Summary
+=======================
+Date: $(date '+%Y-%m-%d %H:%M:%S')
+Branch: $(git branch --show-current)
+Target: $target_branch
+Conflicted Files: $conflict_count
+
+Files requiring resolution:
+$conflicted_files
+
+Conflict Details:
+EOF
+
+  # Append conflict details for each file
+  echo "$conflicted_files" | while read -r file; do
+    if [ -f "$file" ]; then
+      echo "" >> "${TMP_DIR}/conflict_metadata.txt"
+      echo "=== $file ===" >> "${TMP_DIR}/conflict_metadata.txt"
+      grep -n "^<<<<<<< \|^======= \|^>>>>>>> " "$file" | head -20 >> "${TMP_DIR}/conflict_metadata.txt" 2>/dev/null || true
+    fi
+  done
+
+  echo ""
+  echo "📂 Conflict data saved to: ${TMP_DIR}/"
+  echo "   • conflicted_files.txt (list of files)"
+  echo "   • conflict_metadata.txt (detailed conflict info)"
   echo ""
   echo "📝 Next steps:"
   echo "  1. Open conflicting files and resolve conflicts (look for <<<<<<< markers)"
@@ -167,6 +203,30 @@ handle_conflicts() {
 
   exit 1
 }
+```
+
+### Conflict File Capture Strategy
+
+The conflict handling system captures conflicted files programmatically to enable systematic resolution:
+
+```bash
+# Identify conflicted files using Git's internal state
+# --diff-filter=U specifically targets "unmerged" (conflicted) files
+conflicted_files=$(git diff --name-only --diff-filter=U)
+
+# Store in temporary file for agent deployment or manual review
+echo "$conflicted_files" > "${TMP_DIR}/conflicted_files.txt"
+
+# This approach prevents:
+# - Blind parallel edits without conflict awareness
+# - Manual file discovery via git status parsing
+# - Losing track of which files need resolution
+
+# Example usage for agent deployment:
+# while read -r file; do
+#   # Deploy editor agent per file with conflict context
+#   echo "Resolving conflicts in: $file"
+# done < "${TMP_DIR}/conflicted_files.txt"
 ```
 
 ### Continue Mode (--continue)
@@ -205,14 +265,27 @@ When conflicts occur during rebase:
 
 ```yaml
 Conflict Detection:
-  - Identify conflicting files
-  - Show conflict markers
-  - Provide resolution guidance
+  - Identify conflicting files programmatically using git diff --diff-filter=U
+  - Store conflict list in .tmp/rebase/conflicted_files.txt
+  - Capture conflict metadata with line numbers and markers
+  - Show conflict markers and provide resolution guidance
+
+Conflict File Capture:
+  Purpose: Enable systematic conflict resolution and prevent blind edits
+  Method: |
+    conflicted_files=$(git diff --name-only --diff-filter=U)
+    echo "$conflicted_files" > .tmp/rebase/conflicted_files.txt
+  Benefits:
+    - Programmatic identification of conflicted files
+    - Storage for agent deployment or manual review
+    - Prevention of blind parallel edits
+    - Clear tracking of resolution progress
 
 User Guidance:
-  1. List conflicting files
-  2. Suggest: "Resolve conflicts in these files"
-  3. Provide commands:
+  1. List conflicting files with conflict count
+  2. Save conflict data to .tmp/rebase/ directory
+  3. Suggest: "Resolve conflicts in these files"
+  4. Provide commands:
      - git status (see conflicts)
      - git diff (view conflicts)
      - /rebase --continue (after resolving)
@@ -223,6 +296,10 @@ Example Output:
     • src/auth/login.ts
     • src/api/routes.ts
     • tests/integration.test.ts
+
+  📂 Conflict data saved to: .tmp/rebase/
+     • conflicted_files.txt (list of files)
+     • conflict_metadata.txt (detailed conflict info)
 
   📝 Next steps:
     1. Open conflicting files and resolve conflicts
@@ -318,6 +395,7 @@ Key Safety Features:
   - Clean target branch update with fast-forward only
   - Clear error messages and guidance
   - Easy abort mechanism
+  - Programmatic conflict file capture for systematic resolution
 ```
 
 ## Implementation Notes
@@ -402,3 +480,4 @@ fi
 - Clear guidance for conflict resolution
 - Fast and predictable execution
 - Safe defaults with force-with-lease for subsequent push
+- Programmatic conflict file capture enables systematic resolution
