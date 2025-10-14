@@ -71,27 +71,29 @@ fetch_coderabbit_comments() {
       path: .path,
       line: (.line // .originalLine),
       source: "review_thread",
+      isResolved: false,
       createdAt: .createdAt
     }
   ' 2>/dev/null)
 
   # SOURCE 2: PR Review Comments (catches comments in reviews)
-  local source2=$(gh api "repos/$owner/$repo/pulls/$pr/comments" --jq '
+  local source2=$(gh api "repos/$owner/$repo/pulls/$pr/comments" --paginate --jq '
     .[] |
     select(.user.login == "coderabbitai" or .user.login == "coderabbitai[bot]") |
-    select(.in_reply_to_id == null or .in_reply_to_id == .id) |
+    select(.in_reply_to_id == null) |
     {
       id: .id,
       body: .body,
       path: .path,
       line: (.line // .original_line),
       source: "review_comment",
+      isResolved: "unknown",
       createdAt: .created_at
     }
   ' 2>/dev/null)
 
   # SOURCE 3: Issue Comments (for general PR feedback)
-  local source3=$(gh api "repos/$owner/$repo/issues/$pr/comments" --jq '
+  local source3=$(gh api "repos/$owner/$repo/issues/$pr/comments" --paginate --jq '
     .[] |
     select(.user.login == "coderabbitai" or .user.login == "coderabbitai[bot]") |
     {
@@ -100,12 +102,13 @@ fetch_coderabbit_comments() {
       path: null,
       line: null,
       source: "issue_comment",
+      isResolved: "unknown",
       createdAt: .created_at
     }
   ' 2>/dev/null)
 
   # SOURCE 4: Review Submissions (top-level review comments)
-  local source4=$(gh api "repos/$owner/$repo/pulls/$pr/reviews" --jq '
+  local source4=$(gh api "repos/$owner/$repo/pulls/$pr/reviews" --paginate --jq '
     .[] |
     select(.user.login == "coderabbitai" or .user.login == "coderabbitai[bot]") |
     select(.state == "COMMENTED" or .state == "CHANGES_REQUESTED") |
@@ -116,6 +119,7 @@ fetch_coderabbit_comments() {
       path: null,
       line: null,
       source: "review_submission",
+      isResolved: "unknown",
       createdAt: .submitted_at
     }
   ' 2>/dev/null)
@@ -198,8 +202,15 @@ For EACH of the {total_count} comments, evaluate:
 1. **Alignment**: Does this align with our coding standards and codebase conventions?
 2. **Value**: Does this add real value or is it pedantic preference?
 3. **Severity**: How important is this? (Critical/High/Medium/Low/Info)
-4. **Recommendation**: Should we address it? (Yes/No/Maybe)
-5. **Agent Assignment**: Which agent fixes this? (code-reviewer/tech-writer/test-engineer/manual)
+4. **Resolution Status**: Consider the isResolved field when prioritizing
+5. **Recommendation**: Should we address it? (Yes/No/Maybe)
+6. **Agent Assignment**: Which agent fixes this? (code-reviewer/tech-writer/test-engineer/manual)
+
+Resolution Status Guidelines:
+- **isResolved: false** - Confirmed unresolved (from reviewThreads), highest priority
+- **isResolved: "unknown"** - May be resolved already (from REST API sources), verify before implementing
+- Prioritize `isResolved: false` comments over `isResolved: "unknown"` comments
+- If a comment with `isResolved: "unknown"` appears valuable, note that resolution status should be verified
 
 Severity Criteria:
 - **Critical**: Security vulnerabilities, data loss risks, breaking bugs
@@ -229,7 +240,7 @@ CODEBASE CONTEXT:
 ALL {total_count} UNRESOLVED CODERABBIT COMMENTS:
 
 {for each comment in all_comments}
-Comment #{index} (Source: {source}):
+Comment #{index} (Source: {source}, Resolution: {isResolved}):
   File: {path}:{line}
   Posted: {createdAt}
   CodeRabbit ID: {id}
@@ -250,9 +261,10 @@ For each comment, provide structured evaluation:
 ## Comment #{index}
 - **Issue**: [One-line summary]
 - **Location**: {path}:{line}
+- **Resolution Status**: {isResolved}
 - **Severity**: [Critical/High/Medium/Low/Info]
 - **Recommendation**: [Yes ✓ / No ✗ / Maybe ?]
-- **Reasoning**: [Brief explanation]
+- **Reasoning**: [Brief explanation, note if resolution should be verified]
 - **Assigned Agent**: [code-reviewer/tech-writer/test-engineer/manual]
 
 VERIFICATION: Ensure you provide evaluation for ALL {total_count} comments.
@@ -561,3 +573,6 @@ Exit code: 1
 - **Verification Built-in**: Validates that agent analyzed every single comment
 - **Fast Execution**: Parallel agent deployment, typically 10-20 seconds total
 - **Safe Defaults**: Interactive approval prevents unwanted changes
+- **Pagination Support**: All API sources use `--paginate` to fetch complete comment history (no 30-item limits)
+- **Resolution Tracking**: SOURCE 1 (reviewThreads) is authoritative for resolution status (`isResolved: false`);
+  other sources marked as `isResolved: "unknown"` for agent consideration
