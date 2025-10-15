@@ -441,12 +441,6 @@ security-auditor:
     - instance_2: Vulnerability scanning and dependency security
   parallel_with: [all other Wave 1 agents]
   output: Security violations, compliance issues
-
-execution-evaluator:
-  deployment: 1 instance - coordination and confidence aggregation
-  role: Synthesize findings from all Wave 1 agents
-  parallel_with: [all other Wave 1 agents]
-  output: Consolidated analysis, confidence scoring recommendations
 ```
 
 #### WAVE 2: Conditional Fix Application (Only if 95%+ confident)
@@ -571,9 +565,8 @@ pattern_confidence_matrix:
   Lint/Format:
     base_confidence: 98%
     agent_weights:
-      code-reviewer: 0.4
-      devops: 0.3
-      execution-evaluator: 0.3
+      code-reviewer: 0.5
+      devops: 0.5
     consensus_multiplier: 1.0-1.2 (higher when agents agree)
 
   Dependencies:
@@ -595,10 +588,9 @@ pattern_confidence_matrix:
   Complex Issues:
     base_confidence: 60%
     agent_weights:
-      debugger: 0.4
-      execution-evaluator: 0.3
-      platform-engineer: 0.2
-      devops: 0.1
+      debugger: 0.5
+      platform-engineer: 0.3
+      devops: 0.2
     consensus_multiplier: 1.0-1.3 (critical for complex issues)
 ```
 
@@ -846,7 +838,7 @@ fix_ci_enhanced() {
 
 ### Execution Verification
 
-Deploy execution-evaluator to verify enhanced capabilities:
+Claude validates that enhanced capabilities are working correctly:
 
 - ✅ **GitHub Actions API Integration** - Fetches real CI failures from 3 different API sources
 - ✅ **Real-Time CI Monitoring** - Uses `gh run watch` to monitor actual CI runs after push

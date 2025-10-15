@@ -536,7 +536,7 @@ Limits simultaneous agent deployment for resource-constrained environments while
 
 ### Execution Verification
 
-Deploy execution-evaluator to verify:
+Claude validates implementation progress and quality:
 
 - ✅ **Specification analyzed** - Implementation specification fully understood and parsed
 - ✅ **Agent deployment** - Appropriate specialists selected and deployed in parallel

@@ -508,7 +508,7 @@ Low Risk Indicators:
 
 ### Execution Verification
 
-Deploy execution-evaluator to verify:
+Claude validates dependency management progress and results:
 
 - ✅ **Package managers detected** - All present ecosystems identified
 - ✅ **Vulnerabilities scanned** - Security databases queried successfully

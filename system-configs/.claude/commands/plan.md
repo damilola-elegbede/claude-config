@@ -517,7 +517,7 @@ Phase_3: E2E testing (Depends on implementation), docs (Concurrent with testing)
 
 ### Execution Verification
 
-Deploy execution-evaluator to verify:
+Claude validates planning progress and completeness:
 
 - ✅ **Progressive Wave Analysis** - Iterative refinement through multiple waves as needed
 - ✅ **Wave 1 completed** - Business analysis, requirements gathering, documentation

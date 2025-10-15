@@ -411,7 +411,7 @@ simulate_production() {
 
 ### Progressive Verification & Follow-up
 
-Deploy execution-evaluator after each wave to verify:
+After each wave, Claude validates investigation progress and determines next steps:
 
 #### Wave 1 Verification
 
