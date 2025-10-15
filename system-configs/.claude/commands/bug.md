@@ -559,7 +559,7 @@ error_handling:
 
 ### Progressive Verification & Quality Assurance
 
-Deploy execution-evaluator after each wave to verify comprehensive analysis:
+After each wave, Claude validates comprehensive analysis and readiness to proceed:
 
 #### Wave 1 Verification
 
