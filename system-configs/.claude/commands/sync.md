@@ -26,11 +26,11 @@ deploying multiple agents for a straightforward rsync operation.
 
 ```text
 🔄 Syncing Claude configurations...
-📁 Source: system-configs/.claude/ (56 files)
+📁 Source: system-configs/.claude/ (61 files)
 📁 Target: ~/.claude/
 
 ✅ Pre-sync validation:
-  - Configuration syntax: Valid (28 agents, 20 commands)
+  - Configuration syntax: Valid (28 agents, 22 commands, 5 skills)
   - Target directory: Ready
   - Permissions: OK
 
@@ -38,7 +38,8 @@ deploying multiple agents for a straightforward rsync operation.
 
 🔄 Synchronizing files:
   ✅ Agents: 28 files → ~/.claude/agents/
-  ✅ Commands: 20 files → ~/.claude/commands/
+  ✅ Commands: 22 files → ~/.claude/commands/
+  ✅ Skills: 5 files → ~/.claude/skills/
   ✅ Output styles: 8 files → ~/.claude/output-styles/
   ✅ Settings: settings.json, statusline.sh
 
@@ -55,11 +56,12 @@ deploying multiple agents for a straightforward rsync operation.
 ✅ Post-sync validation:
   - File integrity: All files copied successfully
   - Agent configs: 28/28 valid
-  - Commands: 20/20 functional
+  - Commands: 22/22 functional
+  - Skills: 5/5 valid
   - MCP integration: 6/6 connected
 
 📊 Sync completed successfully:
-  Files synced: 56 total
+  Files synced: 61 total
   Backup location: ~/.claude.backup.20250909_143022
   Sync time: 2.3 seconds
 ```
@@ -70,12 +72,13 @@ deploying multiple agents for a straightforward rsync operation.
 📖 Preview mode - no changes will be made
 
 🔍 Analyzing configurations:
-  Source: system-configs/.claude/ (56 files)
+  Source: system-configs/.claude/ (61 files)
   Target: ~/.claude/
 
 📋 Files to sync:
   - 28 agent files → ~/.claude/agents/
-  - 20 command files → ~/.claude/commands/
+  - 22 command files → ~/.claude/commands/
+  - 5 skill files → ~/.claude/skills/
   - 8 output style files → ~/.claude/output-styles/
   - settings.json → ~/.claude/settings.json
   - statusline.sh → ~/.claude/statusline.sh
@@ -85,7 +88,7 @@ deploying multiple agents for a straightforward rsync operation.
   - context7, elevenlabs, notionApi
 
 📊 Preview summary:
-  Total files: 56 configurations ready
+  Total files: 61 configurations ready
   Backup would be created before sync
   Estimated time: 2-3 seconds
 ```
@@ -142,6 +145,7 @@ Destination: ~/.claude/
 Files Synced:
   - agents/*.md           → ~/.claude/agents/
   - commands/*.md         → ~/.claude/commands/
+  - skills/*.md           → ~/.claude/skills/
   - output-styles/*.md    → ~/.claude/output-styles/
   - settings.json         → ~/.claude/settings.json
   - statusline.sh         → ~/.claude/statusline.sh
@@ -155,6 +159,7 @@ Excluded:
   - README.md files
   - AGENT_TEMPLATE.md
   - AGENT_CATEGORIES.md
+  - SKILL_TEMPLATE.md (in docs/skills/)
   - AUDIT_VERIFICATION_PROTOCOL.md
   - *.tmp, *.backup files
 ```

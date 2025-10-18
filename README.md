@@ -8,6 +8,7 @@
 [![Version 2.1 - Current software release version](https://img.shields.io/badge/Version-2.1-blue.svg)](https://github.com/damilola-elegbede/claude-config/releases)
 [![28 Specialized Agents - Complete agent ecosystem coverage](https://img.shields.io/badge/Agents-28-green.svg)](#-agent-ecosystem-28-specialists)
 [![22 Essential Commands - Comprehensive command toolkit](https://img.shields.io/badge/Commands-22-orange.svg)](#-essential-commands)
+[![5 Lightweight Skills - Focused domain expertise](https://img.shields.io/badge/Skills-5-cyan.svg)](#-skills-lightweight-expertise)
 [![42 Documentation Files - Comprehensive documentation coverage](https://img.shields.io/badge/Documentation-42_files-purple.svg)](docs/DOCUMENTATION_INDEX.md)
 
 ## Production-Ready Smart Agent Orchestration Framework for Claude Code CLI
@@ -21,18 +22,19 @@
 ## 🎯 Overview
 
 This repository provides a **comprehensive Smart Agent Orchestration Framework** for Claude Code CLI,
-featuring **28 specialized agents** organized across 8 functional domains with **multi-instance parallelization**
-delivering **4-6x performance improvements**. The system includes **22 essential commands** with advanced
-orchestration capabilities that enable intelligent task delegation and massive parallel execution.
-Built from the ground up after extensive cleanup and optimization, this production-ready framework transforms
-development workflows through intelligent task decomposition, coordinated parallel execution, and continuous
+featuring **28 specialized agents** organized across 8 functional domains, **22 essential commands**, and
+**5 lightweight skills** forming a three-tier execution model. With **multi-instance parallelization**
+delivering **4-6x performance improvements** and intelligent task delegation, the framework transforms
+development workflows through smart orchestration, coordinated parallel execution, and continuous
 quality validation.
 
 ### 🌟 What Makes This Special
 
+- **Three-Tier Execution**: Direct execution, Skills (lightweight expertise), and Agents (complex specialists)
 - **28 Specialized Agents**: Complete coverage across Development, Quality, Security, Architecture, Design,
   Analysis, Infrastructure, and Coordination domains
 - **22 Essential Commands**: Comprehensive toolset for development, testing, deployment, and quality assurance
+- **5 Lightweight Skills**: Focused domain expertise (YAML, Markdown, Python, Bash, Git workflows)
 - **Multi-Instance Parallelization**: Deploy 3-8 instances of the same agent type for massive performance gains
 - **One-Command Deployment**: Complete framework setup with `/sync` command
 - **Production-Ready Quality**: Comprehensive testing, validation, and security boundaries
@@ -161,6 +163,46 @@ claude-code
 - **Security-First Design**: Principle of least privilege with role-based access control
 - **Comprehensive Testing**: Full test coverage across all components
 - **Audit Logging**: Complete tracking of all agent actions and decisions
+
+## 💡 Skills: Lightweight Expertise
+
+The framework includes **5 lightweight skills** that provide focused domain expertise without orchestration overhead,
+filling the gap between direct execution and full agent delegation.
+
+### Three-Tier Execution Model
+
+```text
+Level 1: Direct Execution        → Simple, deterministic tasks (< 5 min)
+Level 2: Skills                 → Lightweight expertise (YAML, Markdown, Python)
+Level 3: Agents                 → Complex specialists (backend-engineer, ml-engineer)
+```
+
+### Core Skills (Tier 1)
+
+| Skill | Category | Focus | Use When |
+|-------|----------|-------|----------|
+| **yaml** | format | YAML syntax, frontmatter validation | Creating/editing agents and commands |
+| **markdown** | format | Markdown linting, documentation | Writing/fixing documentation |
+| **python** | language | Python patterns, validation scripts | Writing automation tools |
+| **bash** | workflow | Shell scripting, git hooks | Building workflows and hooks |
+| **git-workflows** | workflow | Git operations, branching, commits | Managing version control |
+
+### Skills vs Agents
+
+- **Skills**: Quick reference, format-specific, no orchestration (seconds)
+- **Agents**: Multi-step tasks, strategic decisions, tool orchestration (minutes)
+
+**Example:**
+
+```text
+User: "Validate this YAML frontmatter"
+→ Uses yaml skill (seconds)
+
+User: "Implement a new backend API"
+→ Uses backend-engineer agent (minutes, multi-step)
+```
+
+See [Skills Guide](docs/skills/SKILLS_GUIDE.md) for detailed documentation and usage patterns.
 
 ## 🎭 Agent Ecosystem: 28 Specialists
 

@@ -6,12 +6,13 @@ through parallel execution, always preferring MCP servers when available.
 
 ## Core Operating Principle
 
-Claude uses a **binary delegation framework** for all tasks:
+Claude uses a **three-tier delegation framework** for all tasks:
 
 - **Level 1: Direct Implementation** - Claude handles directly
-- **Level 2: Agent Delegation** - Claude delegates to specialist agents
+- **Level 2: Skills** - Lightweight domain expertise (YAML, Markdown, Python, Bash, Git)
+- **Level 3: Agent Delegation** - Claude delegates to specialist agents
 
-The decision is made upfront based on task complexity, not token counts.
+The decision is made upfront based on task complexity and domain expertise needs, not token counts.
 
 ## Operational Excellence Principles
 
@@ -19,7 +20,7 @@ The decision is made upfront based on task complexity, not token counts.
 - **Uncompromising Quality:** Never accept "good enough" - push for optimal solutions. Quality gates exist for a reason
 - **Absolute Integrity:** Report actual results, not hoped-for outcomes. Admit when agents hit blockers
 
-## Binary Task Classification
+## Three-Tier Task Classification
 
 ### Level 1: Direct Implementation
 
@@ -33,17 +34,32 @@ Claude handles directly when **ALL** of these are true:
 
 **Examples:** Fix typos, add imports, update config values, add comments, run commands, simple file reads, answer documentation questions
 
-### Level 2: Agent Delegation Required
+### Level 2: Skills (Lightweight Expertise)
+
+Use skills when task requires **focused domain knowledge** without orchestration:
+
+- Format-specific operations (YAML validation, Markdown linting)
+- Language idioms and patterns (Python best practices, Bash scripting)
+- Workflow conventions (Git branching, commit messages)
+- Quick reference and validation
+- No multi-step orchestration needed
+
+**Examples:** Validate YAML frontmatter, fix markdown linting, Python script patterns, Git workflow guidance, shell script best practices
+
+**Available Skills:** yaml (frontmatter), markdown (linting), python (patterns), bash (scripting), git-workflows (branching/commits)
+
+### Level 3: Agent Delegation Required
 
 Claude **MUST** delegate when **ANY** of these are true:
 
 - Task requires exploration or discovery
 - Involves security, performance, or architecture decisions
 - Spans 3 or more files
-- Needs specialized domain expertise
+- Needs complex specialized domain expertise
 - Requires debugging complex issues
 - Involves design or strategic decisions
 - Contains multiple independent subtasks
+- Requires tool orchestration
 
 **Examples:** Feature implementation, debugging complex issues, API design, comprehensive testing, multi-file refactoring, performance optimization
 
@@ -52,33 +68,20 @@ Claude **MUST** delegate when **ANY** of these are true:
 ### Level 1: Direct Execution
 
 - Execute immediately without ceremony
-- No agents, no intermediate reports
+- No agents or skills, no intermediate reports
 - Focus on speed and efficiency
 
-### Level 2: Agent Orchestration
+### Level 2: Skill Application
+
+Apply focused domain expertise • No orchestration • Quick reference and validation • Escalate to agents if complexity increases
+
+### Level 3: Agent Orchestration
 
 #### Orchestration Patterns
 
-**Pattern A: Fully Parallel**
-
-- Use when: Tasks are completely independent
-- Execution: Single message with N parallel Task invocations
-- Reporting: One final consolidation
-- Example: Update 5 independent components = 5 Task calls in one message
-
-**Pattern B: Pipeline Flow**
-
-- Use when: Tasks have sequential dependencies
-- Execution: Launch next agent immediately when dependency completes
-- Reporting: Only at decision points
-- Example: Backend API → Frontend UI → Tests
-
-**Pattern C: Analyze-Then-Execute**
-
-- Use when: Discovery determines implementation
-- Execution: Analysis agents → Consolidation → Implementation agents
-- Reporting: After analysis phase to synthesize findings
-- Example: 3 debuggers investigate → consolidate → 2 engineers fix
+**Fully Parallel:** Independent tasks → Single message with N Task calls → Example: 5 components = 5 parallel agents
+**Pipeline Flow:** Sequential dependencies → Launch next when previous completes → Example: Backend API → Frontend → Tests
+**Analyze-Execute:** Discovery-driven → Analysis agents → Consolidate → Implementation → Example: 3 debuggers → synthesize → 2 engineers fix
 
 #### Task Tool Requirements
 
@@ -89,12 +92,7 @@ Claude **MUST** delegate when **ANY** of these are true:
 
 #### When to Report Between Phases
 
-Create intermediate reports only when:
-
-- Analysis reveals information that changes approach
-- User input might be needed for decisions
-- Errors or blockers need resolution
-- Consolidating findings from multiple analysis agents
+Analysis changes approach • User input needed • Errors/blockers found • Consolidating multi-agent findings
 
 #### Error Recovery
 
@@ -109,37 +107,17 @@ Create intermediate reports only when:
 
 ## Model Selection (Claude Sonnet 4.5)
 
-**26 Sonnet 4.5 agents** (default): Enhanced reasoning, 2x faster, extended thinking support
-**2 Opus agents** (principal-architect, project-orchestrator): Maximum reasoning depth
-
-**Extended Thinking** (optional):
-
-- **megathink (10K)**: API/cloud architecture, debugging, performance, security analysis
-- **ultrathink (32K)**: System-wide architecture, enterprise planning, deep codebase analysis
+**26 Sonnet 4.5 agents** (default): Enhanced reasoning, 2x faster • **2 Opus agents** (principal-architect, project-orchestrator): Maximum depth
+**Extended Thinking:** megathink (10K) for API/cloud/debugging • ultrathink (32K) for system-wide architecture
 
 ## Quality Standards
 
-### Git and Testing
-
-- **NEVER** use --no-verify to bypass quality gates
-- When hooks fail, delegate to agents to fix issues
-- Run appropriate test commands when provided
-- Maintain code quality standards
-
-### File Management
-
-- Create temporary files in `.tmp/` directory only
-- Use subdirectories: plans/, reports/, analysis/, scripts/
-- Never create temporary files in repository root or source directories
-
-### Command Execution
-
-- Execute user commands precisely as specified
-- Maintain focus on command requirements
-- Complete commands fully before moving to other tasks
-- Use appropriate delegation for command implementation
+**Git/Testing:** NEVER use --no-verify • Delegate to fix hook failures • Run tests as specified • Maintain quality
+**Files:** Use `.tmp/` for temporary files (plans/, reports/, analysis/, scripts/) • Never in repo root
+**Commands:** Execute precisely • Complete fully • Delegate appropriately
 
 ## Success Metrics
 
-**Correct binary decision** (Level 1 vs 2) • **Efficient execution** (minimal round-trips) •
-**Effective parallelization** (simultaneous tasks) • **Code quality** (no bypasses) • **Task completion** (full scope)
+**Correct tier decision** (Level 1/2/3) • **Efficient execution** (minimal round-trips) •
+**Effective parallelization** (simultaneous tasks) • **Appropriate delegation** (skills vs agents) •
+**Code quality** (no bypasses) • **Task completion** (full scope)
