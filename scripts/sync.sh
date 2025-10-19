@@ -127,9 +127,13 @@ sync_files() {
 
     # Sync skills if they exist
     if [ -d "$SOURCE_DIR/skills" ]; then
-        rsync -a "$SOURCE_DIR/skills/" "$TARGET_DIR/skills/" >/dev/null 2>&1
-        SKILL_COUNT=$(find "$SOURCE_DIR/skills" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-        echo "  ✅ Skills: $SKILL_COUNT files → ~/.claude/skills/"
+        if rsync -a --exclude="README.md" --exclude="*TEMPLATE*" "$SOURCE_DIR/skills/" "$TARGET_DIR/skills/" >/dev/null 2>&1; then
+            SKILL_COUNT=$(find "$SOURCE_DIR/skills" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+            echo "  ✅ Skills: $SKILL_COUNT files → ~/.claude/skills/"
+        else
+            echo "  ❌ Failed to sync skills"
+            return 1
+        fi
     fi
 
     # Sync output styles if they exist
