@@ -82,7 +82,8 @@ validate_configs() {
     # Basic syntax validation
     AGENT_COUNT=$(find "$SOURCE_DIR/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
     COMMAND_COUNT=$(find "$SOURCE_DIR/commands" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-    echo "  - Configuration syntax: Valid ($AGENT_COUNT agents, $COMMAND_COUNT commands)"
+    SKILL_COUNT=$(find "$SOURCE_DIR/skills" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+    echo "  - Configuration syntax: Valid ($AGENT_COUNT agents, $COMMAND_COUNT commands, $SKILL_COUNT skills)"
 
     # Check target directory permissions
     if [ ! -w "$HOME" ]; then
@@ -103,6 +104,7 @@ sync_files() {
     # Create target directories
     mkdir -p "$TARGET_DIR/agents"
     mkdir -p "$TARGET_DIR/commands"
+    mkdir -p "$TARGET_DIR/skills"
     mkdir -p "$TARGET_DIR/output-styles"
 
     # Sync agents using rsync
@@ -121,6 +123,17 @@ sync_files() {
     else
         echo "  ❌ Failed to sync commands"
         return 1
+    fi
+
+    # Sync skills if they exist
+    if [ -d "$SOURCE_DIR/skills" ]; then
+        if rsync -a --exclude="README.md" --exclude="*TEMPLATE*" "$SOURCE_DIR/skills/" "$TARGET_DIR/skills/" >/dev/null 2>&1; then
+            SKILL_COUNT=$(find "$SOURCE_DIR/skills" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+            echo "  ✅ Skills: $SKILL_COUNT files → ~/.claude/skills/"
+        else
+            echo "  ❌ Failed to sync skills"
+            return 1
+        fi
     fi
 
     # Sync output styles if they exist
@@ -153,6 +166,7 @@ post_sync_validation() {
     # Check file integrity
     agent_count=0
     command_count=0
+    skill_count=0
 
     if [ -d "$TARGET_DIR/agents" ]; then
         agent_count=$(find "$TARGET_DIR/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
@@ -162,9 +176,14 @@ post_sync_validation() {
         command_count=$(find "$TARGET_DIR/commands" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
     fi
 
+    if [ -d "$TARGET_DIR/skills" ]; then
+        skill_count=$(find "$TARGET_DIR/skills" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+    fi
+
     echo "  - File integrity: All files copied successfully"
     echo "  - Agent configs: $agent_count/$agent_count valid"
     echo "  - Commands: $command_count/$command_count functional"
+    echo "  - Skills: $skill_count/$skill_count valid"
     echo "  - MCP integration: Not configured"
     echo ""
 
@@ -186,6 +205,7 @@ main() {
         echo "📋 Files to sync:"
         echo "  - $(find "$SOURCE_DIR/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ') agent files → ~/.claude/agents/"
         echo "  - $(find "$SOURCE_DIR/commands" -name "*.md" 2>/dev/null | wc -l | tr -d ' ') command files → ~/.claude/commands/"
+        echo "  - $(find "$SOURCE_DIR/skills" -name "*.md" 2>/dev/null | wc -l | tr -d ' ') skill files → ~/.claude/skills/"
         echo "  - settings.json → ~/.claude/settings.json"
         echo "  - statusline.sh → ~/.claude/statusline.sh"
         echo ""

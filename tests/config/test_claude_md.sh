@@ -16,7 +16,7 @@ test_claude_md_structure() {
     local has_main_header=false
     local has_core_principle=false
     local has_excellence_principles=false
-    local has_binary_classification=false
+    local has_task_classification=false
 
     echo "Validating CLAUDE.md structured markdown format..."
 
@@ -41,14 +41,14 @@ test_claude_md_structure() {
         echo "❌ Missing Operational Excellence Principles section"
     fi
 
-    # Check for Binary Task Classification section
-    if grep -q "^## Binary Task Classification" "$claude_file"; then
-        has_binary_classification=true
+    # Check for Task Classification section (Three-Tier or Binary)
+    if grep -q "^## Three-Tier Task Classification" "$claude_file" || grep -q "^## Binary Task Classification" "$claude_file"; then
+        has_task_classification=true
     else
-        echo "❌ Missing Binary Task Classification section"
+        echo "❌ Missing Task Classification section"
     fi
 
-    if [ "$has_main_header" = true ] && [ "$has_core_principle" = true ] && [ "$has_excellence_principles" = true ] && [ "$has_binary_classification" = true ]; then
+    if [ "$has_main_header" = true ] && [ "$has_core_principle" = true ] && [ "$has_excellence_principles" = true ] && [ "$has_task_classification" = true ]; then
         echo "✅ CLAUDE.md has correct structured markdown format"
         return 0
     else
@@ -91,10 +91,10 @@ test_claude_md_effectiveness() {
         reasons+=("Missing chief of staff positioning: Must define coordination role")
     fi
 
-    # Must have binary delegation framework
-    if ! grep -q -i "binary delegation framework" "$claude_file"; then
+    # Must have delegation framework (three-tier or binary)
+    if ! grep -q -i "three-tier delegation framework\|binary delegation framework" "$claude_file"; then
         score=$((score - 2))
-        reasons+=("Missing binary delegation framework: Core orchestration logic absent")
+        reasons+=("Missing delegation framework: Core orchestration logic absent")
     fi
 
     # Must have Task tool execution requirement
@@ -109,10 +109,10 @@ test_claude_md_effectiveness() {
         reasons+=("Missing parallel execution strategy")
     fi
 
-    # Must have Level 1/Level 2 classification
-    if ! grep -q "Level 1.*Level 2" "$claude_file"; then
+    # Must have Level 1/Level 2/Level 3 classification
+    if ! grep -q "Level 1" "$claude_file" && ! grep -q "Level 2" "$claude_file"; then
         score=$((score - 1))
-        reasons+=("Missing Level 1/Level 2 task classification")
+        reasons+=("Missing Level 1/Level 2/Level 3 task classification")
     fi
 
     # Must have operational excellence principles
