@@ -85,9 +85,10 @@ generation, and data-driven insights.
 Applied → Screening → Interview → Offer
                   ↓         ↓
               Rejected   Rejected
-```yaml
+```
 
 **Stage Definitions:**
+
 - **Applied:** Application submitted, awaiting response
 - **Screening:** Recruiter phone screen scheduled/completed
 - **Interview:** Technical/behavioral interviews in progress
@@ -98,27 +99,32 @@ Applied → Screening → Interview → Offer
 ## Tracked Metrics
 
 ### Pipeline Summary
+
 - Total applications
 - Applications by status (count and percentage)
 - Active vs. completed applications
 
 ### Success Rates
+
 - Response rate (got response / total applied)
 - Screening rate (reached screening / total)
 - Interview rate (reached interview / total)
 - Offer rate (received offer / total)
 
 ### Conversion Rates
+
 - Applied → Screening conversion
 - Screening → Interview conversion
 - Interview → Offer conversion
 
 ### Timeline Metrics
+
 - Average response time (application to first response)
 - Average time to offer
 - Longest time without update (for follow-ups)
 
 ### Keyword Effectiveness
+
 - Keywords by application count
 - Keywords by response rate
 - Keywords by interview conversion
@@ -128,6 +134,7 @@ Applied → Screening → Interview → Offer
 ## Output Examples
 
 ### Pipeline Dashboard
+
 ```text
 Application Pipeline Dashboard
 ================================
@@ -153,9 +160,10 @@ Top Performing Keywords:
 1. distributed systems (80% response rate)
 2. team leadership (75% response rate)
 3. kubernetes (70% response rate)
-```text
+```
 
 ### Follow-Up Reminders
+
 ```text
 Follow-Ups Due:
 ===============
@@ -169,11 +177,12 @@ Follow-Ups Due:
    Interview: 5 days ago
    Action: Thank you note sent, follow up on decision
    Status: Awaiting feedback
-```text
+```
 
 ## Data Storage
 
 ### Application Record
+
 ```yaml
 application_id: app-2025-01-15-001
 company: TechCorp Inc.
@@ -193,7 +202,7 @@ cover_letter_used: true
 ats_score: 92
 next_action: Second round interview scheduled
 next_action_date: 2025-01-28
-```text
+```
 
 ## Best Practices
 
@@ -210,6 +219,7 @@ next_action_date: 2025-01-28
 ## Analytics Insights
 
 Provides data-driven insights such as:
+
 - Which keywords correlate with higher success rates
 - Which resume versions perform best
 - Optimal time to follow up after application

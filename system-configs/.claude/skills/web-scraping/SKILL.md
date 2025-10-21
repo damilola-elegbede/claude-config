@@ -22,6 +22,24 @@ Expert knowledge in extracting job descriptions from job boards, company career 
 - Ethical scraping practices
 - Error handling and retry logic
 
+## Legal Compliance & Ethical Considerations
+
+**IMPORTANT**: Web scraping must comply with legal and ethical requirements:
+
+- **Terms of Service**: Always review and respect site ToS. Many job boards and company sites explicitly
+  prohibit automated scraping.
+- **robots.txt**: Check and honor robots.txt directives before scraping any domain.
+- **CFAA Compliance**: Bypassing technical anti-scraping measures (CAPTCHAs, rate limits) may violate the
+  Computer Fraud and Abuse Act (US) and similar laws internationally.
+- **GDPR & Privacy**: Scraping personal data (employee reviews, candidate information) requires lawful basis
+  under GDPR, CCPA, and other privacy regulations.
+- **Rate Limiting**: Respect rate limits to avoid DoS-like behavior that could harm target servers.
+- **API First**: Always prefer official APIs when available (LinkedIn API, Indeed API, Greenhouse API,
+  Glassdoor Employer API).
+
+**Disclaimer**: This skill provides technical capabilities only. Users are solely responsible for ensuring
+legal compliance with all applicable laws and website terms of service in their jurisdiction.
+
 ## When to Use This Skill
 
 Invoke this skill when:
@@ -205,35 +223,28 @@ def scrape_company_website(company_url):
     }
 ```
 
-### Glassdoor Reviews (Simplified)
+### Glassdoor Company Data
 
-```python
-def scrape_glassdoor_overview(company_name):
-    """Scrape Glassdoor company overview"""
-    # Note: Glassdoor has strong anti-scraping measures
-    # Consider using their API if available
+**Recommended Approach: Use Official APIs**
 
-    search_url = f"https://www.glassdoor.com/Search/results.htm?keyword={company_name}"
+Glassdoor has strong anti-scraping measures and actively blocks automated scrapers. Direct scraping
+violates their Terms of Service and poses legal risks.
 
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
-        page.goto(search_url)
+**Official Options**:
 
-        # Wait and extract
-        page.wait_for_selector('.eiCell', timeout=10000)
+- **Glassdoor Employer API**: Paid API for company ratings, reviews, and salary data
+- **Glassdoor Community API**: Limited public data access for verified partners
+- **Manual Research**: For sensitive or one-off needs, manual data collection respects ToS
 
-        rating = page.query_selector('.rating').inner_text()
-        reviews_count = page.query_selector('.count').inner_text()
+**Why Not Scrape Glassdoor**:
 
-        browser.close()
+- Strong anti-scraping (CAPTCHA, IP blocking, behavioral analysis)
+- Terms of Service explicitly prohibit automated access
+- GDPR risks: Employee reviews contain personal opinions/data
+- Legal liability: Violates CFAA (Computer Fraud and Abuse Act)
+- Account bans: Glassdoor aggressively bans scraping attempts
 
-        return {
-            'company': company_name,
-            'rating': rating,
-            'reviews_count': reviews_count
-        }
-```
+**Alternative**: For company research, use company-research skill with official APIs and public sources.
 
 ## Ethical Scraping Practices
 
