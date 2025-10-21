@@ -78,14 +78,25 @@ expertise domain.
 - database-admin
 - debugger
 
-### 8. **Coordination** (cyan) - 3 agents
+### 8. **Coordination** (cyan) - 11 agents
 
-**Purpose**: Strategy, documentation, and project coordination
+**Purpose**: Strategy, documentation, project coordination, and career development
 **Agents**:
 
 - product-strategist
 - tech-writer
 - project-orchestrator
+
+**Resume Toolkit (Subcategory):**
+
+- career-strategist (opus model)
+- resume-parser
+- resume-optimizer
+- jd-analyzer
+- content-writer
+- company-researcher
+- ats-auditor
+- application-tracker
 
 ## Color Assignment Rules
 
@@ -136,6 +147,6 @@ color: blue           # Must match category's color
 | Design | pink | 3 | UI/UX |
 | Analysis | yellow | 3 | Research & Investigation |
 | Infrastructure | orange | 4 | Operations & Platform |
-| Coordination | cyan | 3 | Strategy & Documentation |
+| Coordination | cyan | 11 | Strategy, Documentation & Career |
 
-**Total**: 28 agents across 8 categories
+**Total**: 36 agents across 8 categories (includes 8-agent resume-toolkit subcategory)
