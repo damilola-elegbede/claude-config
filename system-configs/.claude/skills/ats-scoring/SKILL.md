@@ -7,7 +7,8 @@ description: Expertise in calculating and improving ATS compatibility scores
 
 ## Domain Focus
 
-Expert knowledge in Applicant Tracking System (ATS) algorithms, scoring methodologies, and optimization strategies to maximize resume compatibility and pass-through rates.
+Expert knowledge in Applicant Tracking System (ATS) algorithms, scoring methodologies, and optimization
+strategies to maximize resume compatibility and pass-through rates.
 
 ## Core Capabilities
 

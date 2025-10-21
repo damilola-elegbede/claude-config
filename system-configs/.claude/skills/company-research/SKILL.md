@@ -7,7 +7,8 @@ description: Expertise in comprehensive company research from multiple sources
 
 ## Domain Focus
 
-Expert knowledge in gathering comprehensive company intelligence from multiple sources to inform job applications, interview preparation, and strategic decision-making.
+Expert knowledge in gathering comprehensive company intelligence from multiple sources to inform job
+applications, interview preparation, and strategic decision-making.
 
 ## Core Capabilities
 
@@ -279,7 +280,7 @@ def extract_common_interview_questions(company_name):
 
 ### Interview Preparation Insights
 
-```
+```text
 Common Interview Flow for TechCorp:
 ========================================
 

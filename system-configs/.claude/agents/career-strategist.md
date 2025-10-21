@@ -3,7 +3,7 @@ name: career-strategist
 description: Expert career strategist for Software Engineering Leadership (EM to Director level). Provides strategic guidance, positioning, and career development insights.
 tools: Read, Write, Bash, Grep
 model: opus
-color: gold
+color: cyan
 category: resume-toolkit
 ---
 

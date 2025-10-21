@@ -65,7 +65,8 @@ pandoc resume.md -o resume.pdf \
 ```
 
 **Custom LaTeX Template:**
-```latex
+
+```text
 % custom-resume.tex
 \documentclass[11pt,letterpaper]{article}
 

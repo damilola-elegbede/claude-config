@@ -7,7 +7,8 @@ description: Expertise in job description parsing, requirement extraction, and k
 
 ## Domain Focus
 
-Expert knowledge in analyzing job descriptions to extract requirements, skills, keywords, and hidden insights for effective resume optimization and interview preparation.
+Expert knowledge in analyzing job descriptions to extract requirements, skills, keywords, and hidden
+insights for effective resume optimization and interview preparation.
 
 ## Core Capabilities
 

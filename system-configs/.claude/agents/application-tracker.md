@@ -3,7 +3,7 @@ name: application-tracker
 description: Expert in application pipeline management and success analytics. Tracks applications, interviews, and provides insights.
 tools: Read, Write, Edit, Bash, Grep
 model: sonnet
-color: teal
+color: cyan
 category: resume-toolkit
 ---
 

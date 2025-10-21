@@ -3,7 +3,7 @@ name: ats-auditor
 description: Expert in ATS compatibility scoring and resume auditing. Calculates scores and provides actionable improvement recommendations.
 tools: Read, Write, Bash, Grep
 model: sonnet
-color: red
+color: cyan
 category: resume-toolkit
 ---
 

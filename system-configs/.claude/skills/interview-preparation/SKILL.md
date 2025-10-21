@@ -7,7 +7,8 @@ description: Expertise in interview preparation materials and strategy
 
 ## Domain Focus
 
-Expert knowledge in generating comprehensive interview preparation materials, including likely questions, STAR-format answers, company-specific talking points, and strategic interview approaches.
+Expert knowledge in generating comprehensive interview preparation materials, including likely questions,
+STAR-format answers, company-specific talking points, and strategic interview approaches.
 
 ## Core Capabilities
 
@@ -133,7 +134,7 @@ COMMON_BEHAVIORAL_QUESTIONS = {
 
 ### STAR Framework
 
-```
+```text
 S - Situation: Set the context
 T - Task: Describe your responsibility
 A - Action: Explain what you did (specifics!)

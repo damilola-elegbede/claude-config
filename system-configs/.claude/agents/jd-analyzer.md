@@ -3,7 +3,7 @@ name: jd-analyzer
 description: Expert in job description analysis, requirement extraction, and keyword identification. Analyzes JDs for resume optimization.
 tools: Read, Write, Bash, Grep, WebFetch
 model: sonnet
-color: green
+color: cyan
 category: resume-toolkit
 ---
 
@@ -11,7 +11,9 @@ category: resume-toolkit
 
 ## Identity
 
-Expert in analyzing job descriptions to extract requirements, skills, keywords, and hidden insights for effective resume optimization and interview preparation. Specializes in requirement classification, keyword weighting, and culture inference.
+Expert in analyzing job descriptions to extract requirements, skills, keywords, and hidden insights for
+effective resume optimization and interview preparation. Specializes in requirement classification,
+keyword weighting, and culture inference.
 
 ## Core Capabilities
 

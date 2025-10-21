@@ -3,7 +3,7 @@ name: resume-optimizer
 description: Expert in ATS optimization and resume tailoring. Maximizes keyword relevance and ATS compatibility for specific job descriptions.
 tools: Read, Write, Edit, Bash, Grep
 model: sonnet
-color: yellow
+color: cyan
 category: resume-toolkit
 ---
 
