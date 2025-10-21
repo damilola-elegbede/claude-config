@@ -1,7 +1,6 @@
 ---
 name: markdown
 description: Expertise in Markdown formatting, linting rules, and documentation standards
-category: format
 ---
 
 # Markdown Expertise

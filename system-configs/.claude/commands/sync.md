@@ -39,7 +39,7 @@ deploying multiple agents for a straightforward rsync operation.
 🔄 Synchronizing files:
   ✅ Agents: 28 files → ~/.claude/agents/
   ✅ Commands: 22 files → ~/.claude/commands/
-  ✅ Skills: 5 files → ~/.claude/skills/
+  ✅ Skills: 5 skills → ~/.claude/skills/
   ✅ Output styles: 8 files → ~/.claude/output-styles/
   ✅ Settings: settings.json, statusline.sh
 
@@ -78,7 +78,7 @@ deploying multiple agents for a straightforward rsync operation.
 📋 Files to sync:
   - 28 agent files → ~/.claude/agents/
   - 22 command files → ~/.claude/commands/
-  - 5 skill files → ~/.claude/skills/
+  - 5 skills → ~/.claude/skills/
   - 8 output style files → ~/.claude/output-styles/
   - settings.json → ~/.claude/settings.json
   - statusline.sh → ~/.claude/statusline.sh
@@ -145,7 +145,8 @@ Destination: ~/.claude/
 Files Synced:
   - agents/*.md           → ~/.claude/agents/
   - commands/*.md         → ~/.claude/commands/
-  - skills/*.md           → ~/.claude/skills/
+  - skills/*/             → ~/.claude/skills/*/ (entire skill directories)
+    - Includes: SKILL.md, references/, scripts/, assets/, etc.
   - output-styles/*.md    → ~/.claude/output-styles/
   - settings.json         → ~/.claude/settings.json
   - statusline.sh         → ~/.claude/statusline.sh
@@ -162,6 +163,22 @@ Excluded:
   - SKILL_TEMPLATE.md (in docs/skills/)
   - AUDIT_VERIFICATION_PROTOCOL.md
   - *.tmp, *.backup files
+
+Skills Directory Structure (Anthropic Format):
+  Each skill is a directory containing:
+  - SKILL.md (required) - Main skill instructions
+  - references/ (optional) - API docs, workflow guides
+  - scripts/ (optional) - Executable scripts
+  - assets/ (optional) - Supporting files
+  - examples/ (optional) - Example outputs
+
+  Example:
+    skills/code-review/
+    ├── SKILL.md
+    ├── SECURITY.md
+    ├── PERFORMANCE.md
+    └── scripts/
+        └── run-linters.sh
 ```
 
 ### Validation Strategy

@@ -1,7 +1,6 @@
 ---
 name: yaml
 description: Expertise in YAML syntax, validation, and frontmatter patterns for agents and commands
-category: format
 ---
 
 # YAML Expertise

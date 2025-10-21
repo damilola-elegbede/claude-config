@@ -1,7 +1,6 @@
 ---
 name: git-workflows
 description: Expertise in Git operations, branching strategies, and commit conventions
-category: workflow
 ---
 
 # Git Workflows Expertise
