@@ -1,7 +1,6 @@
 ---
 name: bash
 description: Expertise in shell scripting, git hooks, and automation workflows
-category: workflow
 ---
 
 # Bash Expertise

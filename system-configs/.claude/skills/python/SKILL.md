@@ -1,7 +1,6 @@
 ---
 name: python
 description: Expertise in Python best practices, validation scripts, and testing patterns
-category: language
 ---
 
 # Python Expertise
