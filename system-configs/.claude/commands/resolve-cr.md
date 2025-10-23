@@ -84,7 +84,8 @@ Applying approved fixes...
 🧪 All tests passing
 📦 Committed: fix: resolve CodeRabbit feedback (5 issues)
 ⬆️  Pushed to remote
-📢 Notified CodeRabbit to update review status
+📢 Posted '@coderabbitai resolve' to PR #228
+   CodeRabbit will re-scan and update comment resolution status
 
 🎉 Successfully resolved 5 of 7 issues in 8.3 seconds
 ```
@@ -282,11 +283,35 @@ Skipped: 1 issue (style preference)
 Manual review: 1 issue (architecture decision)
 ```
 
-**Push and Notify:**
+**Push Changes:**
 
-- Push changes to remote branch
-- Post "@coderabbitai resolve" comment to trigger status update
-- CodeRabbit will re-scan and update resolution status
+```bash
+# Push changes to remote branch
+git push origin "$(git branch --show-current)"
+
+echo "✅ Changes pushed to remote"
+```
+
+**Post Resolution Comment (MANDATORY):**
+
+After pushing changes, you MUST post a comment to trigger CodeRabbit's resolution update:
+
+```bash
+# Get PR number from current branch or command argument
+PR_NUMBER="$pr"  # Use the PR number identified earlier in the workflow
+
+# Post resolution comment to CodeRabbit
+gh pr comment "$PR_NUMBER" --body "@coderabbitai resolve"
+
+echo "✅ Posted '@coderabbitai resolve' to PR #$PR_NUMBER"
+echo "   CodeRabbit will re-scan and update comment resolution status"
+```
+
+**Why This Step is Critical:**
+
+- CodeRabbit needs to be explicitly notified to re-scan the PR
+- Without this comment, resolved issues may still appear as unresolved
+- This triggers CodeRabbit to update its review status automatically
 
 ## Behavior
 
@@ -399,6 +424,7 @@ Effective CodeRabbit feedback resolution:
 - Handle JSON parsing errors gracefully with retry logic
 - Store intermediate state in `.tmp/resolve-cr-<timestamp>/` directory
 - Execute phases sequentially with clear progress indicators
+- **CRITICAL**: After pushing changes, you MUST post `@coderabbitai resolve` comment using `gh pr comment`
 - Hide tool orchestration details (Bash calls, retries, agent deployment)
 - Show only user-facing progress and outcomes
 - Never display execution IDs in normal operation
