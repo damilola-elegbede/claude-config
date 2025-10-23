@@ -126,14 +126,13 @@ Fetch all unresolved CodeRabbit comments from multiple GitHub API sources:
 **Discovery Process:**
 
 - Identify target PR (from argument or current branch)
-- Query 4 different GitHub API endpoints:
-  - **Review Threads**: Most reliable for inline comments with resolution status
-  - **Review Comments**: Catches comments in review submissions
-  - **Issue Comments**: General PR feedback and discussions
-  - **Review Submissions**: Top-level review comments
+- Query 3 different GitHub API endpoints:
+  - **Inline Review Comments** (via REST API): Line-by-line code review feedback
+  - **Review Submissions** (via gh pr view): Top-level review comments and approvals
+  - **PR Discussion Comments** (via gh pr view): General PR feedback and discussions
 - Merge results and deduplicate by comment ID
 - Filter for CodeRabbit-authored content
-- Track resolution status (authoritative from review threads)
+- Note: GitHub API doesn't expose resolution status directly; comments are treated as active unless explicitly dismissed
 
 **Implementation Reference:**
 
@@ -144,17 +143,26 @@ fetch_coderabbit_comments() {
   local owner="$2"
   local repo="$3"
 
-  # SOURCE 1: PR Review Threads (authoritative for resolution status)
-  gh pr view "$pr" --json reviewThreads --jq '
-    .reviewThreads[] |
-    select(.isResolved == false) |
-    .comments[] |
-    select(.author.login == "coderabbitai" or .author.login == "coderabbitai[bot]") |
-    {id, body, path, line, source: "review_thread", isResolved: false}
+  # SOURCE 1: Inline review comments (via GitHub REST API)
+  gh api "repos/${owner}/${repo}/pulls/${pr}/comments" --paginate --jq '
+    .[] |
+    select(.user.login == "coderabbitai" or .user.login == "coderabbitai[bot]") |
+    {id, body, path, line, source: "review_comments"}
   '
 
-  # SOURCE 2-4: Additional sources marked as "unknown" resolution status
-  # [Review comments, issue comments, review submissions]
+  # SOURCE 2: Review submissions (top-level review comments)
+  gh pr view "$pr" --json reviews --jq '
+    .reviews[] |
+    select(.author.login == "coderabbitai" or .author.login == "coderabbitai[bot]") |
+    {id, body, source: "review_submission"}
+  '
+
+  # SOURCE 3: PR discussion comments
+  gh pr view "$pr" --json comments --jq '
+    .comments[] |
+    select(.author.login == "coderabbitai" or .author.login == "coderabbitai[bot]") |
+    {id, body, source: "issue_comments"}
+  '
 
   # Merge and deduplicate by ID with --paginate for complete history
 }
@@ -171,20 +179,20 @@ For each comment, evaluate:
 - **Alignment**: Does it match our coding standards and conventions?
 - **Value**: Does it add real value or is it pedantic preference?
 - **Severity**: How important is this fix? (Critical/High/Medium/Low/Info)
-- **Resolution Status**: Consider whether status is confirmed or unknown
+- **Actionability**: Is this actionable feedback or informational observation?
 - **Recommendation**: Should we address it? (Yes/No/Maybe)
 - **Agent Assignment**: Which agent should fix this? (code-reviewer/tech-writer/test-engineer/manual)
 
 **Agent Prompt Structure:**
 
 ```text
-Analyze ALL {count} unresolved CodeRabbit comments below.
+Analyze ALL {count} CodeRabbit comments below.
 
 For EACH comment, evaluate:
 1. Alignment with codebase conventions
 2. Value vs. pedantry balance
 3. Severity level (Critical to Info)
-4. Resolution status reliability
+4. Actionability (can this be fixed automatically?)
 5. Implementation recommendation
 6. Agent assignment for fixes
 
@@ -284,20 +292,20 @@ Manual review: 1 issue (architecture decision)
 
 ### Multi-Source Comment Fetching
 
-The command queries 4 different GitHub API endpoints to ensure comprehensive coverage:
+The command queries 3 different GitHub API endpoints to ensure comprehensive coverage:
 
 **Source Priority:**
 
-1. **Review Threads** (authoritative): Most reliable source with confirmed resolution status
-2. **Review Comments**: Catches comments in review submissions
-3. **Issue Comments**: General PR feedback and discussions
-4. **Review Submissions**: Top-level review comments
+1. **Inline Review Comments** (via REST API): Line-by-line code review feedback with file/line context
+2. **Review Submissions** (via gh pr view): Top-level review comments and approval status
+3. **PR Discussion Comments** (via gh pr view): General PR feedback and discussions
 
 **Resolution Status Tracking:**
 
-- `isResolved: false` - Confirmed unresolved (from review threads)
-- `isResolved: "unknown"` - May be resolved (from REST API sources)
-- Agent prioritizes `false` status over `unknown` when recommending fixes
+- GitHub API does not expose comment resolution status directly
+- All fetched comments are treated as active feedback to address
+- Comments can be dismissed/resolved manually in GitHub UI if not applicable
+- Agent evaluates each comment for relevance and actionability regardless of API status
 
 **Pagination Support:**
 
@@ -372,8 +380,8 @@ If test suite fails after fixes:
 
 Effective CodeRabbit feedback resolution:
 
-- ✅ Fetches comments from 4 different GitHub API sources
-- ✅ Finds ALL unresolved comments, not just some
+- ✅ Fetches comments from 3 different GitHub API sources
+- ✅ Finds ALL CodeRabbit comments, not just some
 - ✅ Provides clear diagnostics when no comments found
 - ✅ Each execution is independent with fresh data
 - ✅ Single code-reviewer agent analyzes ALL comments
@@ -427,7 +435,7 @@ jq -s 'flatten | unique_by(.id)' \
 
 ## Notes
 
-- Aggressive discovery from 4 different API endpoints
+- Comprehensive discovery from 3 different API endpoints
 - Always fetches fresh data (never cached)
 - Fails explicitly with diagnostics when expectations not met
 - Idempotent - can run multiple times safely
@@ -436,5 +444,5 @@ jq -s 'flatten | unique_by(.id)' \
 - Fast execution through parallel agent deployment
 - Safe defaults with interactive approval
 - Pagination support for complete comment history
-- Resolution tracking prioritizes authoritative sources
+- Treats all fetched comments as actionable unless agent determines otherwise
 - Clean, user-friendly output with no verbose implementation details
