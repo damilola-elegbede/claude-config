@@ -87,7 +87,7 @@ jobs:
 
     - name: Upload quality report
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: markdown-quality-report
         path: .tmp/docs/markdown-quality-report.md
