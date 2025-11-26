@@ -106,7 +106,7 @@ code-reviewer (8 instances - one per category):
     - instance_3: security category (1 agent) - red
     - instance_4: architecture category (4 agents) - purple
     - instance_5: design category (3 agents) - pink
-    - instance_6: analysis category (3 agents) - yellow
+    - instance_6: analysis category (4 agents) - yellow
     - instance_7: infrastructure category (4 agents) - orange
     - instance_8: coordination category (3 agents) - cyan
   role: YAML validation, template compliance, required sections
@@ -233,13 +233,15 @@ Report Generation:
 
 ### Success Criteria
 
-✅ **Agent Count**: Exactly 28 production agents
+✅ **Agent Count**: Exactly 37 production agents
 ✅ **YAML Parseability**: 100% of agent files have valid YAML per AGENT_TEMPLATE.md
-✅ **Template Adherence**: All 28 agents follow 46-line AGENT_TEMPLATE.md format
+✅ **Template Adherence**: All 37 agents follow 46-line AGENT_TEMPLATE.md format
 ✅ **Required Fields**: name, description, tools, model, category, color present
 ✅ **Optional Fields**: thinking-level and thinking-tokens validated when present (ultrathink: 31999, megathink: 10000, think harder: 8000, think: 4000)
+✅ **Natural Language Triggers**: Agent descriptions contain "Triggers on" keyword patterns for routing
+✅ **Thinking Consistency**: thinking-level value matches thinking-tokens count
 ✅ **Tool Validation**: No Task tool access, appropriate permissions
 ✅ **Anti-Pattern Free**: "Only Claude has orchestration authority" statement present
-✅ **Model Appropriateness**: opus for complex reasoning, sonnet for standard, haiku for rapid tasks
+✅ **Model Appropriateness**: opus for complex reasoning (4 agents), sonnet for standard (33 agents)
 ✅ **Thinking Enhancement**: Appropriate thinking levels for complex agents (architecture, forensics, analysis)
 ✅ **Remediation Success**: Auto-fixes applied successfully, manual interventions documented

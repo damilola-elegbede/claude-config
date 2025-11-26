@@ -1,6 +1,6 @@
 ---
 name: product-strategist
-description: Expert product strategist specializing in product guidance and prioritization. MUST BE USED for aligning technical development with business objectives.
+description: MUST BE USED for product direction, prioritization, or aligning tech with business goals. Triggers on "product", "prioritize", "roadmap", "what should we build", "feature priority".
 tools: Read, Write
 model: sonnet
 color: cyan

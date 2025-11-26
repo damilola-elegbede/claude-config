@@ -1,6 +1,6 @@
 ---
 name: test-engineer
-description: MUST BE USED for comprehensive test strategy design and intelligent test implementation across frameworks. Use PROACTIVELY for untested code paths, CI/CD pipeline changes, and quality gate failures.
+description: MUST BE USED when writing tests, improving coverage, or validating code works correctly. Use for ANY testing task. Triggers on "test", "spec", "coverage", "unit test", "integration test".
 tools: Read, Write, Edit, Bash, Grep
 model: sonnet
 color: green

@@ -1,6 +1,6 @@
 ---
 name: mobile-engineer
-description: Expert mobile engineer specializing in native and cross-platform development. MUST BE USED for iOS, Android, React Native, and Flutter applications.
+description: MUST BE USED for mobile app development on iOS, Android, or cross-platform. Use for ANY mobile task. Triggers on "mobile", "ios", "android", "app", "react native", "flutter", "swift", "kotlin".
 tools: Read, Write, Edit, Bash, Grep
 model: sonnet
 color: blue

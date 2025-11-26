@@ -1,30 +1,33 @@
 ---
 # AGENT TEMPLATE - PRODUCTION READY
 #
-# This template matches the pattern used by 28+ production agents
+# This template matches the pattern used by 37 production agents
 # Target length: 30-50 lines (not 180+)
 #
-# Model selection (Claude Sonnet 4.5 - September 2025):
+# Model selection (Claude Sonnet 4.5 / Opus 4.5 - November 2025):
 # - sonnet: Claude Sonnet 4.5 - Standard development, enhanced reasoning (DEFAULT)
 #   * 2x improvement in complex problem-solving
 #   * Native extended thinking support
 #   * Faster response times for better parallelization
-#   * 26/28 agents use Sonnet 4.5
-# - opus: Complex architecture requiring maximum reasoning depth (2/28 agents)
-#   * principal-architect, project-orchestrator
+#   * 33/37 agents use Sonnet 4.5
+# - opus: Complex architecture requiring maximum reasoning depth (4/37 agents)
+#   * principal-architect, project-orchestrator, result-arbitrator, career-strategist
 # - haiku: Rapid validation, simple operations (currently unused)
 #
-# Thinking level selection (optional - Sonnet 4.5 native support):
+# Thinking level selection (optional - Sonnet 4.5/Opus 4.5 native support):
 # - ultrathink (31,999 tokens): System-wide architecture, complex forensics, enterprise planning
+#   * Used by: principal-architect, project-orchestrator, result-arbitrator
 # - megathink (10,000 tokens): Domain expertise, multi-system coordination, complex optimization
 #   * Recommended for: API design, cloud architecture, debugging, performance, security
+#   * Used by: backend-engineer, cloud-architect, api-architect
 # - think harder (8,000 tokens): Focused analysis, moderate complexity, specific optimizations
+#   * Used by: devops, code-reviewer
 # - think (4,000 tokens): Basic enhanced reasoning (rarely needed - most agents work without)
 #
 # Fill in ALL placeholders. Delete these comments before use.
 #
 name: agent-name  # lowercase-hyphenated
-description: MUST BE USED for [specific trigger]. Specializes in [core capability].
+description: MUST BE USED for [specific trigger]. Use for ANY [domain] task. Triggers on "[keyword1]", "[keyword2]", "[keyword3]".
 tools: Read, Write, Edit, Grep, Glob, Bash  # Only include what's needed
 model: sonnet  # opus/sonnet/haiku - see guide above
 thinking-level: megathink  # OPTIONAL: ultrathink/megathink/think harder/think - only if needed

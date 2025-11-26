@@ -1,6 +1,6 @@
 ---
 name: api-architect
-description: MUST BE USED for comprehensive API architecture, OpenAPI specs, and governance policy implementation. Use PROACTIVELY for API strategy, versioning management, GraphQL federation, and enterprise standardization.
+description: MUST BE USED when designing APIs, creating endpoints, or working with GraphQL/REST. Use for ANY API design task. Triggers on "api", "endpoint", "graphql", "rest", "openapi", "swagger".
 tools: Read, Write, Edit, Grep, Glob
 model: sonnet
 thinking-level: megathink

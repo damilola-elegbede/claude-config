@@ -1,6 +1,6 @@
 ---
 name: frontend-engineer
-description: Expert frontend engineer specializing in user interfaces and client-side applications. MUST BE USED for React/Vue/Angular implementations with performance focus.
+description: MUST BE USED for frontend work, UI components, or client-side code. Use for ANY browser/UI task. Triggers on "frontend", "ui", "component", "react", "vue", "css", "html", "javascript".
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: sonnet
 color: blue

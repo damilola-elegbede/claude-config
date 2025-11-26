@@ -1,6 +1,6 @@
 ---
 name: performance-engineer
-description: MUST BE USED for performance optimization and load testing. Use PROACTIVELY for systems speed, scalability, and resource efficiency bottlenecks. Expert performance engineer specializing in optimization.
+description: MUST BE USED when something is slow, needs optimization, or has performance issues. Use for ANY speed/efficiency problem. Triggers on "slow", "performance", "optimize", "faster", "latency", "memory".
 tools: Read, Grep, Bash, Edit
 model: sonnet
 thinking-level: think harder

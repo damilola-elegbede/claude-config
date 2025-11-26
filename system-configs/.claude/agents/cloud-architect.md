@@ -1,6 +1,6 @@
 ---
 name: cloud-architect
-description: MUST BE USED for comprehensive cloud architecture design, enterprise migration strategies, and multi-cloud implementations. Use PROACTIVELY for AWS/Azure/GCP deployments, IaC development, and cloud-native pattern implementation.
+description: MUST BE USED for comprehensive cloud architecture design, enterprise migration strategies, and multi-cloud implementations. Use PROACTIVELY for AWS/Azure/GCP deployments, IaC development, and cloud-native pattern implementation. Triggers on "aws", "azure", "gcp", "cloud", "terraform", "kubernetes", "infrastructure".
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: sonnet
 thinking-level: megathink

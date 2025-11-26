@@ -250,8 +250,8 @@ class StdlibAsyncValidator:
         desc_match = self.patterns['description_field'].search(yaml_section)
         if desc_match:
             description = desc_match.group(1).strip()
-            if len(description) > 250:
-                issues.append(f"Description too long ({len(description)} chars). Should be under 250.")
+            if len(description) > 350:
+                issues.append(f"Description too long ({len(description)} chars). Should be under 350.")
 
         return issues
 

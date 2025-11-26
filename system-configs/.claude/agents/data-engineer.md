@@ -1,6 +1,6 @@
 ---
 name: data-engineer
-description: Expert data engineer specializing in data pipelines and ETL/ELT systems. MUST BE USED for big data processing and analytics infrastructure.
+description: MUST BE USED for data pipelines, ETL, or data processing tasks. Use for ANY data engineering work. Triggers on "pipeline", "etl", "data processing", "spark", "airflow", "data warehouse", "analytics".
 tools: Read, Write, Edit, Bash, Grep
 model: sonnet
 color: blue

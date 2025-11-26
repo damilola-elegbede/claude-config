@@ -1,6 +1,6 @@
 ---
 name: security-auditor
-description: MUST BE USED for OWASP Top 10 checks, threat modeling, and vulnerability detection. Use PROACTIVELY for security audits, vulnerability assessments, compliance reviews, and threat detection.
+description: MUST BE USED when checking for security issues, vulnerabilities, or auth problems. Use for ANY security concern. Triggers on "security", "vulnerability", "auth", "hack", "secure", "password", "injection".
 tools: Read, Grep, Bash, Edit
 model: sonnet
 thinking-level: megathink

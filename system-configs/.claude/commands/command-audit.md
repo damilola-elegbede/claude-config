@@ -56,7 +56,7 @@ All commands undergo rigorous Template Compliance analysis against COMMAND_TEMPL
 
 1. **Syntax YAML Validation**: Parse and validate YAML frontmatter structure
 2. **Template Structure**: Compare against COMMAND_TEMPLATE.md requirements
-3. **Agent Specification**: Verify referenced agents exist in the 28-agent ecosystem
+3. **Agent Specification**: Verify referenced agents exist in the 37-agent ecosystem
 4. **Autocomplete Compatibility**: Ensure description field supports CLI autocomplete (60 character limit)
 
 ## Wave-Based Orchestration Architecture
@@ -113,7 +113,7 @@ Generate actionable Template Compliance optimization roadmap with Process Valida
 
 - **Template Compliance Audit**: Multi-dimensional analysis against COMMAND_TEMPLATE.md standards
 - **Frontmatter Valid Report**: YAML syntax validation, delimiter compliance, required description field analysis
-- **Agent Specification Analysis**: Verification of all agent references against 28-agent ecosystem
+- **Agent Specification Analysis**: Verification of all agent references against 37-agent ecosystem
 - **Content Quality Assessment**: Documentation completeness, autocomplete compatibility, argument-hint format validation
 
 ## Expected Output
@@ -219,7 +219,7 @@ TASK: code-reviewer-autocomplete "Ensure description fields meet 60 character au
 TASK: code-reviewer-argument-hint "Validate argument-hint format compliance using [bracket] notation standards"
 
 # Deploy security-auditor for Agent Specification validation
-TASK: security-auditor-agent-refs "Validate all Agent Specification references against 28-agent ecosystem"
+TASK: security-auditor-agent-refs "Validate all Agent Specification references against 37-agent ecosystem"
 TASK: security-auditor-template-security "Analyze COMMAND_TEMPLATE.md compliance for security pattern adherence"
 
 # Deploy test-engineer for Process Validation assessment
@@ -257,7 +257,7 @@ TASK: project-orchestrator-validation-workflows "Enhance Process Validation work
 
 - **Template Compliance Score** (1-10): COMMAND_TEMPLATE.md adherence × structure quality × frontmatter completeness
 - **Frontmatter Valid Score** (1-10): YAML syntax correctness × delimiter usage × required description field presence
-- **Agent Specification Score** (1-10): Valid references × coordination patterns × 28-agent ecosystem alignment
+- **Agent Specification Score** (1-10): Valid references × coordination patterns × 37-agent ecosystem alignment
 - **Process Validation Score** (1-10): Validation workflow completeness × testing coverage × automation quality
 
 ### Wave 3: Template Compliance Report Generation & Recommendations
@@ -286,7 +286,7 @@ Claude validates comprehensive Template Compliance optimization progress:
 - ✅ **Wave 3 Complete** - Template Compliance report generated with actionable YAML syntax recommendations
 - ✅ **Frontmatter Valid** - All commands have proper YAML frontmatter delimiter usage and required description field
 - ✅ **COMMAND_TEMPLATE.md Compliance** - Full structure alignment with template standards documented
-- ✅ **Agent Specification Validated** - All agent references verified against 28-agent ecosystem
+- ✅ **Agent Specification Validated** - All agent references verified against 37-agent ecosystem
 - ✅ **Autocomplete Compatible** - Description fields optimized for 60 character CLI autocomplete limit
 - ✅ **Content Quality Enhanced** - Documentation completeness and argument-hint format standardized
 - ✅ **Process Validation Optimized** - YAML syntax validation and delimiter checking workflows implemented
@@ -296,7 +296,7 @@ Claude validates comprehensive Template Compliance optimization progress:
 
 ### Dynamic Agent Specification Validation
 
-Based on current 28-agent ecosystem and COMMAND_TEMPLATE.md requirements:
+Based on current 37-agent ecosystem and COMMAND_TEMPLATE.md requirements:
 
 - **Small command sets (<10 commands)**: 3-5 Template Compliance agents per wave
 - **Medium command sets (10-25 commands)**: 5-10 frontmatter validation agents per wave

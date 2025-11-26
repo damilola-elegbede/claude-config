@@ -35,7 +35,7 @@ VALID_COLORS = ['blue', 'green', 'red', 'purple', 'yellow', 'orange', 'white', '
 # Non-agent documentation files to skip
 NON_AGENT_FILES = [
     'README.md', 'AGENT_CATEGORIES.md', 'AGENT_TEMPLATE.md',
-    'AUDIT_VERIFICATION_PROTOCOL.md', 'development/AGENT_SELECTION_GUIDE.md',
+    'AUDIT_VERIFICATION_PROTOCOL.md', 'AGENT_SELECTION_GUIDE.md',
     'ENHANCEMENT_SUMMARY.md', 'performance/PARALLEL_EXECUTION_GUIDE.md',
     'development/SECURITY_ACCESS_PATTERNS.md', 'development/TOOL_ACCESS_GUIDE.md',
     'TOOL_ACCESS_STANDARDIZATION_SUMMARY.md'
@@ -51,10 +51,20 @@ def extract_yaml_section(file_path):
         return match.group(1)
     return None
 
+# Thinking level to token count mapping
+THINKING_TOKEN_MAP = {
+    'ultrathink': 31999,
+    'megathink': 10000,
+    'think harder': 8000,
+    'think': 4000
+}
+
+
 def parse_yaml_structure(yaml_text):
     """Parse YAML structure to check for required fields."""
     issues = []
     fields_found = set()
+    field_values = {}
 
     lines = yaml_text.split('\n')
     current_section = None
@@ -70,21 +80,27 @@ def parse_yaml_structure(yaml_text):
         if not line.startswith(' '):
             if ':' in line:
                 field = line.split(':')[0].strip()
+                value = line.split(':', 1)[1].strip()
                 fields_found.add(field)
+                field_values[field] = value
                 current_section = field
 
                 # Validate specific field values
                 if field == 'color':
-                    value = line.split(':', 1)[1].strip()
                     if value and value not in VALID_COLORS:
                         issues.append(f"Invalid color '{value}'. Must be one of: {', '.join(VALID_COLORS)}")
 
                 # Check for valid model values
                 if field == 'model':
-                    value = line.split(':', 1)[1].strip()
                     valid_models = ['opus', 'sonnet', 'haiku']
                     if value and value not in valid_models:
                         issues.append(f"Invalid model '{value}'. Must be one of: {', '.join(valid_models)}")
+
+                # Check for valid thinking-level values
+                if field == 'thinking-level':
+                    valid_thinking = ['ultrathink', 'megathink', 'think harder', 'think']
+                    if value and value not in valid_thinking:
+                        issues.append(f"Invalid thinking-level '{value}'. Must be one of: {', '.join(valid_thinking)}")
 
         # Tools can be a simple list or have subfields - both are valid
 
@@ -92,6 +108,21 @@ def parse_yaml_structure(yaml_text):
     for field in REQUIRED_FIELDS:
         if field not in fields_found:
             issues.append(f"Missing required field: {field}")
+
+    # Validate thinking-level and thinking-tokens consistency
+    if 'thinking-level' in field_values and 'thinking-tokens' in field_values:
+        level = field_values['thinking-level']
+        try:
+            tokens = int(field_values['thinking-tokens'])
+            expected = THINKING_TOKEN_MAP.get(level)
+            if expected and tokens != expected:
+                issues.append(f"thinking-tokens mismatch: '{level}' expects {expected}, got {tokens}")
+        except ValueError:
+            issues.append(f"Invalid thinking-tokens value: '{field_values['thinking-tokens']}' (must be integer)")
+    elif 'thinking-level' in field_values and 'thinking-tokens' not in field_values:
+        issues.append("thinking-level specified but thinking-tokens is missing")
+    elif 'thinking-tokens' in field_values and 'thinking-level' not in field_values:
+        issues.append("thinking-tokens specified but thinking-level is missing")
 
     return fields_found, issues
 
@@ -130,11 +161,15 @@ def validate_agent_file(file_path):
     desc_match = re.search(r'^description:\s*(.+)$', yaml_section, re.MULTILINE)
     if desc_match:
         description = desc_match.group(1).strip()
-        if len(description) > 300:
-            issues.append(f"Description too long ({len(description)} chars). Should be under 300.")
+        if len(description) > 350:
+            issues.append(f"Description too long ({len(description)} chars). Should be under 350.")
         # Check for proper trigger phrases as per AGENT_TEMPLATE.md
         if not any(phrase in description for phrase in ['MUST BE USED', 'Use PROACTIVELY', 'Expert', 'Specializes']):
             issues.append("Description should include trigger phrase (MUST BE USED, Use PROACTIVELY, Expert, Specializes)")
+
+        # Check for natural language trigger pattern
+        if 'Triggers on' not in description and 'MUST BE USED' in description:
+            issues.append("Description should include 'Triggers on' keyword pattern for routing")
 
     # Check for deprecated fields that should not exist in new format
     deprecated_fields = ['specialization_level:', 'domain_expertise:', 'coordination_protocols:',

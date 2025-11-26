@@ -1,6 +1,6 @@
 ---
 name: database-admin
-description: Use PROACTIVELY for database optimization, security hardening, and performance tuning. MUST BE USED for query optimization, index management, high-availability configuration, and disaster recovery planning.
+description: MUST BE USED for database work, queries, migrations, or schema changes. Use for ANY database task. Triggers on "database", "query", "sql", "migration", "schema", "postgres", "mysql", "mongodb".
 tools: Read, Write, Edit, Bash, Grep
 model: sonnet
 thinking-level: think harder

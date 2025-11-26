@@ -1,6 +1,6 @@
 ---
 name: platform-engineer
-description: Use PROACTIVELY for platform engineering and developer experience optimization. MUST BE USED for building comprehensive platforms that empower development teams, implementing developer portals, and standardized workflows.
+description: MUST BE USED for internal tools, developer experience, or platform infrastructure. Use for ANY internal tooling task. Triggers on "platform", "internal tools", "developer experience", "dx", "tooling", "developer portal".
 tools: Read, Write, Edit, Bash, Grep
 model: sonnet
 thinking-level: think harder
