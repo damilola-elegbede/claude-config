@@ -1,6 +1,6 @@
 ---
 name: yaml
-description: Expertise in YAML syntax, validation, and frontmatter patterns for agents and commands
+description: Quick YAML/frontmatter reference. Use for syntax lookup, single-file fixes. Triggers on "yaml syntax", "frontmatter format". For multi-file validation, use code-reviewer agent.
 ---
 
 # YAML Expertise

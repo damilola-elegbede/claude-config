@@ -1,6 +1,6 @@
 ---
 name: git-workflows
-description: Expertise in Git operations, branching strategies, and commit conventions
+description: Quick git workflow reference. Use for commit format, branch naming. Triggers on "commit format", "branch name", "git convention". For strategy decisions, use principal-architect agent.
 ---
 
 # Git Workflows Expertise

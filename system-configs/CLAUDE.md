@@ -55,6 +55,41 @@ Claude uses a **three-tier delegation framework**:
 | docs, readme | tech-writer |
 | ml, model, training | ml-engineer + data-engineer |
 
+## Skill Routing Table
+
+Skills are for **quick pattern lookup and single-file fixes**. Use agents for multi-file or complex tasks.
+
+| Task Type | Use Skill | Use Agent Instead |
+|-----------|-----------|-------------------|
+| Fix MD001 error on line 42 | markdown | - |
+| Write new API documentation | - | tech-writer |
+| Look up YAML frontmatter syntax | yaml | - |
+| Validate all agent files | - | code-reviewer |
+| Fix a shell script error | bash | - |
+| Design CI/CD pipeline | - | devops |
+| Check commit message format | git-workflows | - |
+| Implement git branching strategy | - | principal-architect |
+| Python syntax/idiom question | python | - |
+| Build validation script | - | backend-engineer |
+
+**Decision Rule:** Creation, multi-file validation, or architectural decisions → agent. Quick lookup or single-file fix → skill.
+
+## Level 2 vs Level 3 Decision
+
+**Use Skill (Level 2) when:**
+
+- Quick pattern/syntax lookup needed
+- Single file fix or edit
+- No exploration required
+- Answer is deterministic
+
+**Use Agent (Level 3) when:**
+
+- Multiple files involved
+- Creation or validation task
+- Exploration/analysis required
+- Decision-making needed
+
 ## Auto-Triggers
 
 - **After code change**: code-reviewer
