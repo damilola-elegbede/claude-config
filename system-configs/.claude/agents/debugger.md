@@ -1,6 +1,6 @@
 ---
 name: debugger
-description: MUST BE USED for investigating complex intermittent bugs, race conditions, and production-only failures. Use PROACTIVELY for distributed system failures, timing-dependent bugs, and concurrency issues requiring forensic analysis.
+description: MUST BE USED when something is broken, buggy, crashing, or not working. Use for ANY debugging task from simple errors to complex race conditions. Triggers on "fix", "broken", "bug", "error", "crash", "not working".
 tools: Read, Grep, Bash, Glob
 model: sonnet
 thinking-level: ultrathink

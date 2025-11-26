@@ -1,8 +1,10 @@
 ---
 name: devops
-description: MUST BE USED for complex CI/CD pipeline orchestration, enterprise Kubernetes clusters, and Infrastructure as Code at scale. Use PROACTIVELY for deployment bottlenecks, reliability issues, and multi-cloud Terraform deployments.
+description: MUST BE USED for complex CI/CD pipeline orchestration, enterprise Kubernetes clusters, and Infrastructure as Code at scale. Use PROACTIVELY for deployment bottlenecks, reliability issues, and multi-cloud Terraform deployments. Triggers on "deploy", "ci/cd", "pipeline", "docker", "kubernetes", "k8s".
 tools: Read, Write, Bash
 model: sonnet
+thinking-level: think harder
+thinking-tokens: 8000
 color: orange
 category: infrastructure
 ---

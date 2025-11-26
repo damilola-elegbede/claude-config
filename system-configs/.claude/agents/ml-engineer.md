@@ -1,6 +1,6 @@
 ---
 name: ml-engineer
-description: MUST BE USED for enterprise ML model deployment and advanced MLOps pipelines. Use PROACTIVELY for complex model serving architectures, feature store design, and distributed training infrastructure.
+description: MUST BE USED for machine learning, model training, or AI/ML infrastructure. Use for ANY ML task. Triggers on "ml", "machine learning", "model", "training", "inference", "ai", "neural network", "pytorch", "tensorflow".
 tools: Read, Write, Edit, Bash, Grep
 model: sonnet
 thinking-level: megathink

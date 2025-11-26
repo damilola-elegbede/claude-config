@@ -3,7 +3,7 @@
 ## Overview
 
 This document defines the official 8 agent categories and their corresponding color assignments for the Claude Code
-agent ecosystem. All 28 production agents are organized into these categories based on their primary function and
+agent ecosystem. All 37 production agents are organized into these categories based on their primary function and
 expertise domain.
 
 ## The 8 Official Categories
@@ -59,14 +59,15 @@ expertise domain.
 - mobile-ui
 - ux-researcher
 
-### 6. **Analysis** (yellow) - 3 agents
+### 6. **Analysis** (yellow) - 4 agents
 
-**Purpose**: Research, codebase analysis, and requirements gathering
+**Purpose**: Research, codebase analysis, requirements gathering, and result synthesis
 **Agents**:
 
 - codebase-analyst
 - researcher
 - business-analyst
+- result-arbitrator
 
 ### 7. **Infrastructure** (orange) - 4 agents
 
@@ -145,8 +146,8 @@ color: blue           # Must match category's color
 | Security | red | 1 | Security & Compliance |
 | Architecture | purple | 4 | System Design |
 | Design | pink | 3 | UI/UX |
-| Analysis | yellow | 3 | Research & Investigation |
+| Analysis | yellow | 4 | Research & Investigation |
 | Infrastructure | orange | 4 | Operations & Platform |
 | Coordination | cyan | 11 | Strategy, Documentation & Career |
 
-**Total**: 36 agents across 8 categories (includes 8-agent resume-toolkit subcategory)
+**Total**: 37 agents across 8 categories (includes 8-agent resume-toolkit subcategory)

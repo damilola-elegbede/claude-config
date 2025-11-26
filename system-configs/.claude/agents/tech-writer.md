@@ -1,6 +1,6 @@
 ---
 name: tech-writer
-description: Use PROACTIVELY for docs, READMEs, API docs. MUST BE USED after multi-step tasks (3+ ops) or multi-file changes (5+ files).
+description: MUST BE USED for writing documentation, READMEs, or API docs. Use for ANY documentation task. Triggers on "docs", "documentation", "readme", "write up", "explain".
 tools: Read, Write
 model: sonnet
 color: cyan

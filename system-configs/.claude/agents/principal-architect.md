@@ -1,6 +1,6 @@
 ---
 name: principal-architect
-description: Use PROACTIVELY for system-wide architecture design and comprehensive technical roadmaps. MUST BE USED for complex architectural decisions, enterprise-scale implementation planning, and technical strategy development.
+description: MUST BE USED for system architecture, technical roadmaps, or major design decisions. Use for ANY architecture task. Triggers on "architecture", "system design", "roadmap", "how should we build", "scale", "enterprise".
 tools: Read, Write
 model: opus
 thinking-level: ultrathink

@@ -1,6 +1,6 @@
 ---
 name: mobile-ui
-description: MUST BE USED for native mobile app UI/UX design and platform-specific patterns. Expert mobile UI/UX specialist for iOS/Android design patterns following platform guidelines.
+description: MUST BE USED for mobile app UI design, iOS/Android patterns, or mobile UX. Use for mobile-specific design. Triggers on "mobile ui", "ios design", "android design", "mobile ux", "app design".
 tools: Read, Write
 model: sonnet
 color: pink

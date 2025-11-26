@@ -1,6 +1,6 @@
 ---
 name: frontend-architect
-description: MUST BE USED for architecting complex frontend systems >100k DAU and micro-frontend orchestration. Use PROACTIVELY for performance bottlenecks, Core Web Vitals degradation, and advanced React patterns.
+description: MUST BE USED for complex frontend architecture, micro-frontends, or state management design. Use for frontend system design. Triggers on "frontend architecture", "micro-frontend", "state management", "web vitals", "large scale frontend".
 tools: Read, Write, Edit, MultiEdit, Grep, Glob, LS, Bash
 model: sonnet
 thinking-level: megathink

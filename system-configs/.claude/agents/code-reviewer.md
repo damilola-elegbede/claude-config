@@ -1,8 +1,10 @@
 ---
 name: code-reviewer
-description: MUST BE USED for pre-commit reviews, vulnerability detection, and production readiness assessment. Use PROACTIVELY after code changes for quality review, security checks, best practices validation, and comprehensive code analysis.
+description: MUST BE USED for pre-commit reviews, vulnerability detection, and production readiness assessment. Use PROACTIVELY after code changes for quality review, security checks, best practices validation, and comprehensive code analysis. Triggers on "review", "check", "audit", "quality", "best practices".
 tools: Read, Grep, Bash
 model: sonnet
+thinking-level: think harder
+thinking-tokens: 8000
 color: green
 category: quality
 ---

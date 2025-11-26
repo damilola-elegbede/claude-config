@@ -1,8 +1,10 @@
 ---
 name: backend-engineer
-description: MUST BE USED for server-side architecture, microservices, distributed systems, and database engineering. Use PROACTIVELY for high-performance optimization (>10k RPS), event-driven architecture, and complex backend infrastructure.
+description: MUST BE USED for server-side architecture, microservices, distributed systems, and database engineering. Use PROACTIVELY for high-performance optimization (>10k RPS), event-driven architecture, and complex backend infrastructure. Triggers on "backend", "server", "api", "microservice", "database", "distributed".
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: sonnet
+thinking-level: megathink
+thinking-tokens: 10000
 color: blue
 category: development
 ---

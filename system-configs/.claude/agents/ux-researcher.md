@@ -1,6 +1,6 @@
 ---
 name: ux-researcher
-description: MUST BE USED for comprehensive user research strategy and advanced usability testing methodologies. Use PROACTIVELY for user experience friction, conversion optimization opportunities, and user feedback patterns.
+description: MUST BE USED for user research, usability testing, or understanding user needs. Use for ANY user research task. Triggers on "user research", "usability", "user feedback", "user testing", "conversion", "user behavior".
 tools: Read, Write, Edit, Grep, Glob, LS, WebFetch
 model: sonnet
 color: pink

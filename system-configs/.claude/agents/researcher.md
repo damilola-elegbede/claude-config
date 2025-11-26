@@ -1,6 +1,6 @@
 ---
 name: researcher
-description: Expert researcher specializing in technology evaluation and industry analysis. MUST BE USED for comprehensive research insights and best practices.
+description: MUST BE USED when researching technologies, comparing options, or finding best practices. Use for ANY research task. Triggers on "research", "compare", "what's best", "options", "evaluate", "which should I use".
 tools: Read, Grep, WebSearch, WebFetch
 model: sonnet
 color: yellow

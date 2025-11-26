@@ -1,6 +1,6 @@
 ---
 name: ui-designer
-description: MUST BE USED for comprehensive UI/UX design optimization and advanced design system architecture. Use PROACTIVELY for design inconsistencies, accessibility violations, and user experience friction points.
+description: MUST BE USED for UI/UX design, design systems, or improving user experience. Use for ANY design task. Triggers on "design", "ux", "user experience", "ui", "layout", "colors", "design system".
 tools: Read, Write, Edit
 model: sonnet
 color: pink

@@ -1,8 +1,10 @@
 ---
 name: project-orchestrator
-description: MUST BE USED for project timeline analysis, resource planning, and workflow optimization. Use PROACTIVELY for complex project coordination without agent orchestration.
+description: MUST BE USED for project planning, timelines, or resource coordination. Use for ANY project management task. Triggers on "timeline", "planning", "schedule", "coordination", "project plan", "milestones".
 tools: Read, Write
 model: opus
+thinking-level: ultrathink
+thinking-tokens: 31999
 color: cyan
 category: coordination
 ---

@@ -1,6 +1,6 @@
 ---
 name: accessibility-auditor
-description: MUST BE USED for WCAG compliance audits and accessibility violations remediation. Use PROACTIVELY for inclusive design validation, screen reader testing, keyboard navigation, and color contrast issues.
+description: MUST BE USED for accessibility checks, WCAG compliance, or inclusive design. Use for ANY a11y task. Triggers on "accessibility", "a11y", "wcag", "screen reader", "keyboard navigation", "color contrast".
 tools: Read, Write, Edit, Grep, Glob
 model: sonnet
 color: green

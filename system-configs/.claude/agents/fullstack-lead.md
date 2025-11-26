@@ -1,6 +1,6 @@
 ---
 name: fullstack-lead
-description: Expert full-stack developer specializing in end-to-end development. MUST BE USED for coordinating frontend and backend implementation with technical leadership.
+description: MUST BE USED for end-to-end features spanning frontend and backend. Use when task touches both sides. Triggers on "fullstack", "full stack", "end to end", "frontend and backend", "whole feature".
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: sonnet
 color: blue

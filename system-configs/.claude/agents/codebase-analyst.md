@@ -1,6 +1,6 @@
 ---
 name: codebase-analyst
-description: Use PROACTIVELY for comprehensive code architecture analysis and technical debt assessment. MUST BE USED for evaluating codebases, creating executive summaries, and identifying security risks and performance bottlenecks.
+description: MUST BE USED to understand how code works, analyze architecture, or assess technical debt. Use when exploring unfamiliar codebases. Triggers on "how does this work", "understand", "analyze", "what does this do".
 tools: Read, Grep, Glob, Bash
 model: sonnet
 thinking-level: ultrathink
