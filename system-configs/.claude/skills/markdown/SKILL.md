@@ -1,6 +1,6 @@
 ---
 name: markdown
-description: Expertise in Markdown formatting, linting rules, and documentation standards
+description: Quick markdown linting reference. Use for single-file fixes, rule lookups. Triggers on "MD001", "md lint rule", "markdown syntax". For documentation creation, use tech-writer agent.
 ---
 
 # Markdown Expertise

@@ -1,6 +1,6 @@
 ---
 name: python
-description: Expertise in Python best practices, validation scripts, and testing patterns
+description: Quick Python pattern reference. Use for syntax lookup, single-file fixes. Triggers on "python idiom", "pathlib", "argparse". For complex scripts, use backend-engineer agent.
 ---
 
 # Python Expertise

@@ -1,6 +1,6 @@
 ---
 name: bash
-description: Expertise in shell scripting, git hooks, and automation workflows
+description: Quick shell script reference. Use for syntax lookup, single-file hooks. Triggers on "bash syntax", "set -e", "shell script". For CI/CD pipelines, use devops agent.
 ---
 
 # Bash Expertise
