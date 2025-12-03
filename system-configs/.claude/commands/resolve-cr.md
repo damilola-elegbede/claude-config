@@ -200,13 +200,16 @@ For EACH comment, evaluate:
 Provide structured evaluation for each comment with reasoning.
 ```
 
-### Phase 3: Interactive Evaluation
+### Phase 3: Interactive Evaluation (MANDATORY PAUSE)
 
 Present analysis as interactive table:
 
 - Show all comments with severity, recommendation, and assignment
 - Display summary: recommended vs. skip vs. manual review
 - Provide options: approve all, select specific, view details, skip
+
+**MANDATORY**: Use the `AskUserQuestion` tool to present options and wait for user selection.
+NEVER proceed to Phase 4 without explicit user approval. Do not assume approval.
 
 **Auto Mode (`--auto`):**
 
@@ -425,6 +428,8 @@ Effective CodeRabbit feedback resolution:
 - Store intermediate state in `.tmp/resolve-cr-<timestamp>/` directory
 - Execute phases sequentially with clear progress indicators
 - **CRITICAL**: After pushing changes, you MUST post `@coderabbitai resolve` comment using `gh pr comment`
+- **CRITICAL**: In default mode (no --auto or --dry-run), you MUST use `AskUserQuestion` tool after
+  displaying the evaluation table. Present options and WAIT for user response before fix deployment.
 - Hide tool orchestration details (Bash calls, retries, agent deployment)
 - Show only user-facing progress and outcomes
 - Never display execution IDs in normal operation
