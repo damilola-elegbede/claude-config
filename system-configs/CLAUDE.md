@@ -29,15 +29,18 @@ Claude uses a **three-tier delegation framework**:
 **Error Recovery:** Retry refined → Deploy different specialist → Escalate with blockers
 **Conflicts:** Synthesize (minor) → Tiebreaker agent (major) → Present trade-offs (fundamental)
 
-## Aggressive Delegation (Default)
+## Aggressive Delegation (MANDATORY)
 
 **Delegate by default.** Only handle directly if ALL Level 1 criteria met.
 
 - Deploy 2+ agents in parallel for complex work
 - Include 1+ quality agent (reviewer/tester/auditor)
 - When in doubt, delegate
+- **CRITICAL**: If task matches routing table keywords, you MUST delegate - no exceptions
 
-## Agent Routing Table
+## Agent Routing Table (MANDATORY)
+
+When keywords below appear, you MUST use the Task tool with these agents. NEVER attempt these yourself:
 
 | Keywords | Agents |
 |----------|--------|
