@@ -149,11 +149,12 @@ Deploy multiple agents for comprehensive documentation overhaul:
 - Each researcher focuses on specific documentation domain
 - Consolidate findings into categorized gap report
 
-**Approval Checkpoint:**
+**Approval Checkpoint (MANDATORY PAUSE):**
 
 - Present comprehensive findings to user
 - Show planned tech-writer deployment strategy
-- Get explicit approval before proceeding
+- **MANDATORY**: Use the `AskUserQuestion` tool to ask "Proceed with parallel tech-writer deployment?"
+- NEVER proceed to Implementation Phase without explicit user approval
 
 **Implementation Phase:**
 

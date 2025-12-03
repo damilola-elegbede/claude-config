@@ -156,9 +156,11 @@ When no arguments provided:
    - Provide naming templates for common patterns
    - Offer guided branch creation
 
-3. **User Selection**
+3. **User Selection (MANDATORY PAUSE)**
    - Present categorized options
+   - **MANDATORY**: Use the `AskUserQuestion` tool to present branch type options
    - Allow custom input with pattern assistance
+   - WAIT for user selection before creating branch
    - Apply selected pattern and create branch
 
 ### Error Handling
