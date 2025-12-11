@@ -6,8 +6,8 @@
 ![Pull Request Checks Status: Passing](https://github.com/damilola-elegbede/claude-config/workflows/PR%20Checks/badge.svg)
 [![License: MIT License - Open source software license](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Version 2.1 - Current software release version](https://img.shields.io/badge/Version-2.1-blue.svg)](https://github.com/damilola-elegbede/claude-config/releases)
-[![28 Specialized Agents - Complete agent ecosystem coverage](https://img.shields.io/badge/Agents-28-green.svg)](#-agent-ecosystem-28-specialists)
-[![22 Essential Commands - Comprehensive command toolkit](https://img.shields.io/badge/Commands-22-orange.svg)](#-essential-commands)
+[![31 Specialized Agents - Complete agent ecosystem coverage](https://img.shields.io/badge/Agents-31-green.svg)](#-agent-ecosystem-31-specialists)
+[![21 Essential Commands - Comprehensive command toolkit](https://img.shields.io/badge/Commands-21-orange.svg)](#-essential-commands)
 [![5 Lightweight Skills - Focused domain expertise](https://img.shields.io/badge/Skills-5-cyan.svg)](#-skills-lightweight-expertise)
 [![42 Documentation Files - Comprehensive documentation coverage](https://img.shields.io/badge/Documentation-42_files-purple.svg)](docs/DOCUMENTATION_INDEX.md)
 
@@ -22,7 +22,7 @@
 ## 🎯 Overview
 
 This repository provides a **comprehensive Smart Agent Orchestration Framework** for Claude Code CLI,
-featuring **28 specialized agents** organized across 8 functional domains, **22 essential commands**, and
+featuring **31 specialized agents** organized across 8 functional domains, **21 essential commands**, and
 **5 lightweight skills** forming a three-tier execution model. With **multi-instance parallelization**
 delivering **4-6x performance improvements** and intelligent task delegation, the framework transforms
 development workflows through smart orchestration, coordinated parallel execution, and continuous
@@ -31,9 +31,9 @@ quality validation.
 ### 🌟 What Makes This Special
 
 - **Three-Tier Execution**: Direct execution, Skills (lightweight expertise), and Agents (complex specialists)
-- **28 Specialized Agents**: Complete coverage across Development, Quality, Security, Architecture, Design,
+- **31 Specialized Agents**: Complete coverage across Development, Quality, Security, Architecture, Design,
   Analysis, Infrastructure, and Coordination domains
-- **22 Essential Commands**: Comprehensive toolset for development, testing, deployment, and quality assurance
+- **21 Essential Commands**: Comprehensive toolset for development, testing, deployment, and quality assurance
 - **5 Lightweight Skills**: Focused domain expertise (YAML, Markdown, Python, Bash, Git workflows)
 - **Multi-Instance Parallelization**: Deploy 3-8 instances of the same agent type for massive performance gains
 - **One-Command Deployment**: Complete framework setup with `/sync` command
@@ -47,7 +47,7 @@ Experience the power of parallel agent orchestration:
 ```bash
 # Traditional approach: 3-5 minutes
 # Framework approach: 30-45 seconds (5-6x faster)
-/agent-audit
+/audit --scope agents
 
 # Traditional approach: 2-3 minutes
 # Framework approach: 30-40 seconds (4-5x faster)
@@ -88,8 +88,8 @@ claude-code
 # 3. Deploy complete framework with one command
 /sync
 
-# 4. Verify installation with agent ecosystem health check
-/agent-audit
+# 4. Verify installation with ecosystem health check
+/audit --scope all
 
 # 5. Experience the power - try these commands
 /prime      # Repository analysis with 5 parallel specialists
@@ -97,7 +97,7 @@ claude-code
 /review     # Multi-dimensional code review
 ```
 
-**🎉 You're ready!** You now have access to 28 specialized agents and 22 essential commands.
+**🎉 You're ready!** You now have access to 31 specialized agents and 21 essential commands.
 
 ### First Commands to Try
 
@@ -126,11 +126,11 @@ claude-code
 - **Enhanced Reasoning**: Enhanced capabilities for complex problem-solving
 - **Extended Thinking**: Native support for megathink/ultrathink reasoning modes
 - **Faster Performance**: Improved response times enable more aggressive parallelization
-- **Agent Distribution**: 26 Sonnet 4.5 agents, 2 Opus agents (28 total specialized agents)
+- **Agent Distribution**: 29 Sonnet 4.5 agents, 2 Opus agents (31 total specialized agents)
 
 ### 🧠 Smart Agent Orchestration
 
-- **28 Specialized Agents**: Complete coverage across all development domains
+- **31 Specialized Agents**: Complete coverage across all development domains
 - **Multi-Instance Parallelization**: Deploy multiple instances of the same agent type
 - **Intelligent Task Delegation**: Automatic specialist selection based on task complexity
 - **Coordinated Wave Execution**: Dependency-aware parallel execution patterns
@@ -204,23 +204,24 @@ User: "Implement a new backend API"
 
 See [Skills Guide](docs/skills/SKILLS_GUIDE.md) for detailed documentation and usage patterns.
 
-## 🎭 Agent Ecosystem: 28 Specialists
+## 🎭 Agent Ecosystem: 31 Specialists
 
-The framework features **28 specialized agents** organized across 8 functional domains for complete
+The framework features **31 specialized agents** organized across 9 functional domains for complete
 development lifecycle coverage.
 
 ### 📊 Agent Categories Overview
 
 | Category | Count | Key Specialists | Purpose |
 |----------|-------|-----------------|---------|
-| **Development** | 6 | backend-engineer, frontend-engineer, fullstack-lead, mobile-engineer, data-engineer, ml-engineer | Core programming and implementation |
-| **Quality** | 4 | test-engineer, code-reviewer, performance-engineer, accessibility-auditor | Testing, validation, and quality assurance |
-| **Security** | 1 | security-auditor | Security assessment and compliance |
+| **Development** | 7 | backend-engineer, frontend-engineer, fullstack-lead, mobile-engineer, data-engineer, ml-engineer, test-engineer | Core programming and implementation |
 | **Architecture** | 4 | principal-architect, api-architect, cloud-architect, frontend-architect | System design and architectural decisions |
-| **Design** | 3 | ui-designer, mobile-ui, ux-researcher | User experience and interface design |
-| **Analysis** | 3 | codebase-analyst, researcher, business-analyst | Research and requirements analysis with Wave 1 capabilities |
-| **Infrastructure** | 4 | devops, platform-engineer, database-admin, debugger | Operations, deployment, and platform management |
-| **Coordination** | 3 | product-strategist, tech-writer, project-orchestrator | Strategy, documentation, and project coordination |
+| **Quality** | 4 | code-reviewer, accessibility-auditor, performance-engineer, debugger | Testing, validation, and quality assurance |
+| **Infrastructure** | 4 | devops, platform-engineer, database-admin, security-auditor | Operations, deployment, and platform management |
+| **Design** | 2 | ui-designer, ux-researcher | User experience and interface design |
+| **Analysis** | 4 | codebase-analyst, researcher, business-analyst, result-arbitrator | Research, analysis, and conflict resolution |
+| **Resume/Career** | 3 | resume-optimizer, jd-analyzer, career-assistant | Job applications and career support |
+| **Coordination** | 2 | project-orchestrator, product-strategist | Project planning and product strategy |
+| **Documentation** | 1 | tech-writer | Technical documentation and READMEs |
 
 ### 🚀 Smart Orchestration Examples
 
@@ -271,7 +272,7 @@ Performance: 5x faster than sequential validation
 | **`/sync`** | Deploy complete framework configurations | N/A | One-command setup, validation, backup |
 | **`/test`** | Multi-agent test execution with auto-discovery | 4-5x faster | 5 test suite instances, framework detection |
 | **`/prime`** | Parallel repository analysis and insights | 4-6x faster | 5 analyzer instances, comprehensive profiling |
-| **`/agent-audit`** | Ecosystem health validation across all categories | 5-6x faster | 8 parallel instances, complete validation |
+| **`/audit`** | Unified ecosystem validation (agents/commands/all) | 5-6x faster | Parallel validation, comprehensive coverage |
 | **`/review`** | Multi-dimensional quality analysis | Enhanced coverage | Parallel specialists, comprehensive assessment |
 | **`/docs`** | Documentation orchestration with parallel processors | 3-4x faster | 6 document instances, automated generation |
 | **`/plan`** | Strategic project planning with principal-architect | Enhanced quality | TDD methodology, architectural guidance |
@@ -290,7 +291,7 @@ Performance: 5x faster than sequential validation
 - **`/branch`** - Context-aware branching with intelligent naming conventions
 - **`/deploy`** - Production deployment with comprehensive orchestration
 - **`/monitor`** - System monitoring with intelligent alerting and analysis
-- **`/command-audit`** - Command quality assurance and ecosystem validation
+- **`/audit --scope commands`** - Command quality assurance and ecosystem validation
 
 ### ⭐⭐⭐ Three-Star Commands (Utility & Support)
 
@@ -315,7 +316,7 @@ claude-code
 /sync
 
 # Verify installation
-/agent-audit
+/audit --scope agents
 /prime --lite
 ```
 
@@ -344,7 +345,7 @@ cp system-configs/.claude/settings.json ~/.claude/settings.json
 
 # Verify installation
 claude-code
-/agent-audit
+/audit --scope agents
 ```
 
 ### Option 3: Development Installation
@@ -367,8 +368,8 @@ git remote add upstream https://github.com/damilola-elegbede/claude-config.git
 /sync
 
 # Run full ecosystem validation
-/agent-audit
-/command-audit
+/audit --scope agents
+/audit --scope commands
 ```
 
 ### System Requirements
@@ -402,8 +403,8 @@ comprehensive validation and rollback capabilities.
 
 The sync process deploys the complete framework configuration:
 
-- **28 Agent Definitions**: All specialist agents to `~/.claude/agents/`
-- **22 Command Definitions**: Essential commands to `~/.claude/commands/`
+- **31 Agent Definitions**: All specialist agents to `~/.claude/agents/`
+- **21 Command Definitions**: Essential commands to `~/.claude/commands/`
 - **Output Styles**: Formatting configurations to `~/.claude/output-styles/`
 - **System Settings**: Audio notifications and preferences to `~/.claude/settings.json`
 - **MCP Server Configuration**: Model Context Protocol server integration
@@ -426,28 +427,28 @@ The sync process deploys the complete framework configuration:
 📁 Target: ~/.claude/
 
 ✅ Pre-sync validation:
-  - Configuration syntax: Valid (28 agents, 22 commands)
+  - Configuration syntax: Valid (31 agents, 21 commands)
   - Target directory: Ready
   - Permissions: OK
 
 💾 Creating backup: ~/.claude.backup.20250909_143022
 
 🔄 Synchronizing files:
-  ✅ Agents: 28 files → ~/.claude/agents/
-  ✅ Commands: 22 files → ~/.claude/commands/
+  ✅ Agents: 31 files → ~/.claude/agents/
+  ✅ Commands: 21 files → ~/.claude/commands/
   ✅ Output styles: 8 files → ~/.claude/output-styles/
   ✅ Settings: settings.json, statusline.sh
 
 📡 MCP Server Configuration:
   ✅ Updated Claude Desktop config with MCP servers:
     - filesystem, github, shadcn-ui
-    - context7, elevenlabs, notionApi
+    - context7, notionApi
 
 ✅ Post-sync validation:
   - File integrity: All files copied successfully
-  - Agent configs: 28/28 valid
-  - Commands: 22/22 functional
-  - MCP integration: 6/6 connected
+  - Agent configs: 31/31 valid
+  - Commands: 21/21 functional
+  - MCP integration: 5/5 connected
 
 📊 Sync completed successfully:
   Files synced: 56 total
@@ -473,7 +474,7 @@ The sync process deploys the complete framework configuration:
 ./scripts/validate-agent-yaml.py
 
 # Command behavioral validation
-/command-audit
+/audit --scope commands
 ```
 
 ### Test Coverage Areas
@@ -575,7 +576,7 @@ claude-code
 /sync
 
 # Validate agent ecosystem
-/agent-audit
+/audit --scope agents
 
 # Check specific agent availability
 ls ~/.claude/agents/ | grep agent-name
@@ -616,12 +617,12 @@ chmod 644 ~/.claude/commands/*
 
 ```bash
 # Monitor system performance
-time /agent-audit    # Should be ~30-45 seconds
+time /audit --scope agents    # Should be ~30-45 seconds
 time /test          # Should be ~30-40 seconds
 time /docs          # Should be ~1-2 minutes
 
 # Run performance diagnostics
-/agent-audit --debug
+/audit --scope agents --debug
 /test --verbose --performance
 ```
 
@@ -634,7 +635,7 @@ time /docs          # Should be ~1-2 minutes
 
 # Re-run comprehensive validation
 /test
-/agent-audit
+/audit --scope agents
 
 # NEVER bypass quality gates with --no-verify
 ```
@@ -755,7 +756,7 @@ production-ready configurations from `system-configs/.claude/` to your `~/.claud
 ### Q: How do I know which agent to use for my specific task?
 
 **A:** Check the [Agent Selection Guide](docs/development/AGENT_SELECTION_GUIDE.md) for detailed guidance, or
-use `/agent-audit` to see all 28 available specialists with their capabilities and categories.
+use `/audit --scope agents` to see all 28 available specialists with their capabilities and categories.
 
 ### Q: Why did my agent task fail with "SYSTEM BOUNDARY" error?
 
@@ -769,7 +770,7 @@ SYSTEM BOUNDARY protection, validate with `./scripts/validate-agent-yaml.py`, th
 
 ### Q: What performance improvements should I expect after installation?
 
-**A:** Expect 4-6x performance improvements: `/agent-audit` (30-45 sec), `/test` (30-40 sec), `/docs` (1-2 min),
+**A:** Expect 4-6x performance improvements: `/audit --scope agents` (30-45 sec), `/test` (30-40 sec), `/docs` (1-2 min),
 `/prime` (15-20 sec) through intelligent parallel execution and multi-instance orchestration.
 
 ### Q: Can I use this with my existing Claude Code CLI setup?
@@ -796,18 +797,18 @@ commands you need from `system-configs/.claude/`.
 
 ### Quality & Coverage Metrics
 
-- **Agent Coverage**: 28 specialists across 8 functional domains (100% development lifecycle coverage)
-- **Command Quality**: 22 essential commands with 4.8/5.0 average effectiveness rating
+- **Agent Coverage**: 31 specialists across 9 functional domains (100% development lifecycle coverage)
+- **Command Quality**: 21 essential commands with 4.8/5.0 average effectiveness rating
 - **Documentation Coverage**: 42 comprehensive files organized across 12 categories
 - **Test Coverage**: Comprehensive validation across commands, agents, integration, and performance
-- **Security Compliance**: 100% SYSTEM BOUNDARY protection across all 28 agents
+- **Security Compliance**: 100% SYSTEM BOUNDARY protection across all 31 agents
 - **Quality Gate Compliance**: Zero-tolerance quality standards with comprehensive validation
 
 ### System Health Indicators
 
 - **Configuration Integrity**: 100% YAML compliance across all agent definitions
-- **Command Functionality**: 100% behavioral validation across all 22 commands
-- **Integration Health**: Seamless MCP server integration with 6 external systems
+- **Command Functionality**: 100% behavioral validation across all 21 commands
+- **Integration Health**: Seamless MCP server integration with 5 external systems
 - **Performance Consistency**: Stable performance gains across multiple execution environments
 - **Security Posture**: Zero security violations with comprehensive audit logging
 

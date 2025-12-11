@@ -18,17 +18,10 @@
       "env": {}
     },
     "context7": {
-      "command": "npx", 
+      "command": "npx",
       "args": ["-y", "context7-mcp-server"],
       "env": {
         "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
-      }
-    },
-    "elevenlabs": {
-      "command": "npx",
-      "args": ["-y", "elevenlabs-streaming-mcp-server"], 
-      "env": {
-        "ELEVENLABS_API_KEY": "${ELEVENLABS_API_KEY}"
       }
     },
     "notionApi": {

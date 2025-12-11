@@ -45,6 +45,40 @@ repos:
         exclude: ^(node_modules/|\.git/)
         args: [--config, .markdownlint-cli2.jsonc]
 
+  # Claude Code configuration validation
+  - repo: local
+    hooks:
+      - id: validate-agent-yaml
+        name: Validate Agent YAML
+        entry: python scripts/validate-agent-yaml.py
+        language: python
+        files: ^system-configs/\.claude/agents/.*\.md$
+        pass_filenames: false
+        additional_dependencies: [PyYAML]
+
+      - id: validate-skill-yaml
+        name: Validate Skill YAML
+        entry: python scripts/validate-skills.py
+        language: python
+        files: ^system-configs/\.claude/skills/.*\.md$
+        pass_filenames: false
+        additional_dependencies: [PyYAML]
+
+      - id: check-orphan-references
+        name: Check Orphan References
+        entry: python scripts/check-orphans.py
+        language: python
+        files: ^system-configs/
+        pass_filenames: false
+
+      - id: config-integrity-tests
+        name: Config Integrity Tests
+        entry: python scripts/test-config-integrity.py
+        language: python
+        files: ^system-configs/
+        pass_filenames: false
+        stages: [pre-push]
+
 # Configuration for pre-commit
 default_language_version:
   python: python3

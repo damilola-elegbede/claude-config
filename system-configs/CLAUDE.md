@@ -54,7 +54,7 @@ When keywords below appear, you MUST use the Task tool with these agents. NEVER 
 | security, vulnerability, auth | security-auditor + code-reviewer |
 | architecture, design, scale | principal-architect + codebase-analyst |
 | frontend, ui, react, vue, css | frontend-engineer + frontend-architect |
-| mobile, ios, android | mobile-engineer + mobile-ui |
+| mobile, ios, android | mobile-engineer + ui-designer |
 | docs, readme | tech-writer |
 | ml, model, training | ml-engineer + data-engineer |
 
@@ -106,8 +106,39 @@ See `docs/agents/AGENT_SELECTION_GUIDE.md` for complex routing decisions.
 
 ## Model Distribution
 
-**33 Sonnet 4.5** (default) • **4 Opus** (principal-architect, project-orchestrator, result-arbitrator, career-strategist)
+**26 Sonnet 4.5** (default) • **4 Opus** (principal-architect, project-orchestrator, result-arbitrator, career-assistant)
 **Thinking:** megathink (10K) for API/cloud/debugging • ultrathink (32K) for architecture
+**Total Agents:** 30 (optimized from 37)
+
+## Architect Hierarchy
+
+Domain architects report to principal-architect for strategic alignment:
+
+```text
+principal-architect (Strategic, cross-system)
+├── api-architect (API design, OpenAPI specs)
+├── cloud-architect (Infrastructure as Code, multi-cloud)
+└── frontend-architect (Micro-frontends, state management)
+```
+
+**Delegation Rule:** Strategic decisions → principal-architect first, then delegate to domain specialists.
+
+## Plugin Strategy
+
+**Kept Plugins (5):** Unique capabilities, no overlap with custom implementations
+
+- `frontend-design` - Distinctive UI generation
+- `agent-sdk-dev` - Agent development tooling
+- `security-guidance` - Complements security-auditor
+- `explanatory-output-style` - Output formatting
+- `claude-opus-4-5-migration` - Migration guidance
+
+**Removed Plugins (4):** Redundant with custom commands/agents
+
+- ~~code-review~~ → Use `/review` command + code-reviewer agent
+- ~~commit-commands~~ → Use `/commit` command
+- ~~pr-review-toolkit~~ → Use `/pr` command
+- ~~feature-dev~~ → Use `/implement` command
 
 ## Quality Standards
 

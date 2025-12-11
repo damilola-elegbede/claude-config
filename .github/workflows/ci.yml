@@ -257,6 +257,34 @@ jobs:
         config: '.markdownlint-cli2.jsonc'
         globs: '**/*.md'
 
+  config-integrity:
+    name: Configuration Integrity
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+
+    - name: Setup Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: pip install PyYAML pytest
+
+    - name: Run Agent YAML Validation
+      run: python scripts/validate-agent-yaml.py --legacy
+
+    - name: Run Skill YAML Validation
+      run: python scripts/validate-skills.py
+
+    - name: Check Orphan References
+      run: python scripts/check-orphans.py
+
+    - name: Run Integrity Tests
+      run: python scripts/test-config-integrity.py
+
   shellcheck-validation:
     name: Shell Script Validation
     runs-on: ubuntu-latest
