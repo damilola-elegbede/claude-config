@@ -188,8 +188,9 @@ test_parallelization_patterns() {
     local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
 
     # Commands that should leverage parallelization
+    # NOTE: agent-audit and command-audit merged into unified audit.md
     local parallel_commands=("implement" "docs" "ship-it" "review" "prime"
-                            "agent-audit" "command-audit" "fix-ci" "test")
+                            "audit" "fix-ci" "test")
 
     for cmd in "${parallel_commands[@]}"; do
         local cmd_file="$commands_dir/${cmd}.md"
@@ -325,40 +326,34 @@ test_template_format_compliance() {
     return 0
 }
 
-# Test command-audit specific functionality
+# Test unified audit command functionality (replaced command-audit)
 test_command_audit_requirements() {
     local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
-    local audit_file="$commands_dir/command-audit.md"
+    local audit_file="$commands_dir/audit.md"
 
-    echo "  Testing command-audit specific requirements..."
+    echo "  Testing unified audit command requirements..."
 
-    # Ensure command-audit exists
+    # Ensure audit.md exists (replaces agent-audit.md and command-audit.md)
     if [ ! -f "$audit_file" ]; then
-        echo "    Error: command-audit.md not found"
+        echo "    Error: audit.md not found"
         return 1
     fi
 
-    # Check that command-audit references the template
-    if ! grep -q "COMMAND_TEMPLATE.md" "$audit_file"; then
-        echo "    Error: command-audit should reference COMMAND_TEMPLATE.md"
+    # Check that audit supports --scope flag for agents/commands
+    if ! grep -q "scope" "$audit_file"; then
+        echo "    Error: audit.md should support --scope flag"
         return 1
     fi
 
-    # Check for frontmatter validation logic
-    if ! grep -q "frontmatter\|YAML" "$audit_file"; then
-        echo "    Error: command-audit should include frontmatter validation"
+    # Check for YAML validation capability
+    if ! grep -q "YAML\|yaml" "$audit_file"; then
+        echo "    Error: audit.md should include YAML validation"
         return 1
     fi
 
-    # Check for template compliance validation
-    if ! grep -q "Template Compliance\|template compliance" "$audit_file"; then
-        echo "    Error: command-audit should validate template compliance"
-        return 1
-    fi
-
-    # Check for description field validation
-    if ! grep -q "description.*field\|required.*description" "$audit_file"; then
-        echo "    Error: command-audit should validate required description field"
+    # Check for validation modes
+    if ! grep -qE "agents|commands|all" "$audit_file"; then
+        echo "    Error: audit.md should support agents/commands/all scopes"
         return 1
     fi
 

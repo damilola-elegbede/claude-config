@@ -1,6 +1,6 @@
 ---
 description: Generate PRD and task files with wave orchestration
-argument-hint: ["<task_description>"] [--simple|-s|--file <path>|-f <path>]
+argument-hint: ["<task_description>"] [--simple|-s|--file <path>|-f <path>|--no-execute]
 thinking-level: ultrathink
 thinking-tokens: 31999
 ---
@@ -15,6 +15,7 @@ thinking-tokens: 31999
 /plan --simple <task_description>    # Simple mode (single PR)
 /plan -f <file_path>                 # Read from file
 /plan --file <file_path>             # Read from file
+/plan --no-execute <description>     # Plan only, no file generation (replaces /implementation-plan)
 ```
 
 ## Description
@@ -96,6 +97,49 @@ User: modify
 Claude: What would you like me to adjust in the Wave 1 analysis?
 [Stays in plan mode awaiting modifications]
 ```
+
+### No-Execute Mode (Replaces /implementation-plan)
+
+```text
+User: /plan --no-execute "Add user authentication system"
+Claude: 📋 Entering plan mode (no-execute) with iterative wave-based orchestration...
+
+## Wave 1: Initial Analysis (Parallel Execution)
+Launching: product-strategist, business-analyst, tech-writer
+
+## Implementation Plan Preview: Authentication System
+
+### Overview
+- Objective: JWT-based auth with registration/login
+- Files to Modify: 12 files
+- Risk Assessment: Medium
+- Dependencies: bcrypt, jsonwebtoken
+
+### File Modifications
+[Detailed file-by-file changes with line numbers]
+
+### Task Groups
+[Organized implementation tasks]
+
+### Execution Sequence
+[Dependencies and ordering]
+
+### Verification Steps
+[Testing and validation approach]
+
+---
+Plan complete. No files generated (--no-execute mode).
+To generate implementation files, run: /plan "Add user authentication system"
+```
+
+**--no-execute Behavior:**
+
+- Performs full wave-based analysis (Waves 1-N as needed)
+- Generates comprehensive implementation plan
+- Shows file modifications with specific code changes
+- Documents execution sequence and verification steps
+- Does NOT create PRD or task files
+- Ideal for review before committing to implementation
 
 ### Simple Mode Planning
 

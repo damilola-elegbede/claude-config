@@ -13,6 +13,7 @@ thinking-tokens: 31999
 /debug [issue_description]      # Progressive multi-wave investigation with adaptive specialization
 /debug --repro <steps>          # Focus on reproduction step creation
 /debug --performance            # Performance-specific debugging analysis
+/debug --save                   # Save analysis for /bug --from-debug workflow
 /debug "memory leak crashes"    # Memory issue investigation
 /debug "race condition"         # Concurrent access debugging
 ```
@@ -488,6 +489,37 @@ Wave 3: backend-engineer + database-admin + test-engineer-4 (12 min)
 Result: Database transactions + idempotency keys + comprehensive testing
 ```
 
+### Bug Workflow Integration
+
+When using `--save` flag, debug analysis is saved for seamless handoff to `/bug`:
+
+```text
+User: /debug --save Payment processing timeout
+
+[Wave 1-3 analysis completes...]
+
+Debug Analysis Saved: .tmp/debug/payment-timeout-2025-01-20.json
+
+To create GitHub issue from this analysis:
+  /bug --from-debug payment-timeout-2025-01-20
+```
+
+**Saved Analysis Format:**
+
+```json
+{
+  "id": "payment-timeout-2025-01-20",
+  "issue": "Payment processing timeout",
+  "root_cause": "Database connection pool exhaustion under load",
+  "severity": "high",
+  "reproduction_steps": ["Step 1...", "Step 2..."],
+  "fix_approach": "Implement connection pooling with proper limits",
+  "waves_completed": 3,
+  "confidence": 92,
+  "timestamp": "2025-01-20T15:30:00Z"
+}
+```
+
 ### Notes
 
 - **Adaptive Wave Approach**: Investigation continues with additional waves until complete resolution
@@ -499,3 +531,4 @@ Result: Database transactions + idempotency keys + comprehensive testing
 - **Resource Optimization**: Parallel execution within waves maximizes efficiency
 - **Complete Resolution Goal**: Process continues until all symptoms eliminated and prevention measures in place
 - **Documentation**: Each wave documents findings for knowledge transfer and future prevention
+- **Bug Integration**: Use `--save` to enable seamless handoff to `/bug --from-debug`

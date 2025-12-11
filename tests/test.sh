@@ -160,14 +160,16 @@ fi
 echo "Running Command Tests..."
 echo "------------------------"
 run_test "Plan Command" "commands/test_plan.sh"
-run_test "Implementation Plan Command" "commands/test_implementation_plan.sh"
+# NOTE: implementation-plan.md merged into plan.md with --no-execute flag
+# run_test "Implementation Plan Command" "commands/test_implementation_plan.sh"
 run_test "Commit Command" "commands/test_commit.sh"
 run_test "Push Command" "commands/test_push.sh"
 run_test "Test Command" "commands/test_test.sh"
 run_test "Prime Command" "commands/test_prime.sh"
 run_test "Sync Command" "commands/test_sync.sh"
 run_test "Verify Command" "commands/test_verify.sh"
-run_test "Command Audit" "commands/test_command_audit.sh"
+# NOTE: command-audit.md merged into audit.md with --scope flag
+# run_test "Command Audit" "commands/test_command_audit.sh"
 
 # Run configuration tests
 echo "Running Configuration Tests..."
@@ -206,7 +208,8 @@ run_test "System Health" "comprehensive/test_system_health.sh"
 # Run MCP tests
 echo "Running MCP Tests..."
 echo "------------------"
-run_test "ElevenLabs MCP Integration" "mcp/test_elevenlabs_integration.sh"
+# NOTE: ElevenLabs MCP removed during optimization (unused)
+# run_test "ElevenLabs MCP Integration" "mcp/test_elevenlabs_integration.sh"
 
 # Run integration tests
 echo "Running Integration Tests..."

@@ -30,6 +30,11 @@ User: "API timeouts after recent changes"
 /bug --comprehensive Authentication intermittently fails on mobile devices
 → Full 3-wave orchestration: analysis, impact assessment, reporting
 → Returns: "Created issue #250 with complete impact analysis and recommendations"
+
+# From /debug analysis (workflow integration)
+/bug --from-debug payment-timeout-2025-01-20
+→ Imports saved debug analysis, skips Wave 1, proceeds to impact assessment
+→ Returns: "Created issue #251 from debug analysis with comprehensive report"
 ```
 
 ## Description
@@ -55,6 +60,7 @@ Use the following options when processing user input:
 - Add specific labels: `/bug --labels <label1,label2>`
 - Auto-assign: `/bug --assign <username>`
 - Comprehensive mode: `/bug --comprehensive` (enables extended analysis)
+- From debug: `/bug --from-debug <analysis-id>` (import from /debug --save)
 
 ## Expected Output
 
@@ -683,6 +689,40 @@ Wave 3 (4 min): tech-writer
 → SLA: Fix within 48 hours, mobile team priority
 ```
 
+### Debug Workflow Integration
+
+When using `--from-debug`, the command imports a saved debug analysis:
+
+```text
+User: /bug --from-debug payment-timeout-2025-01-20
+
+📋 Importing Debug Analysis: payment-timeout-2025-01-20
+Root Cause: Database connection pool exhaustion under load
+Confidence: 92%
+Waves Completed: 3
+
+Skipping Wave 1 (technical analysis already complete)...
+
+Wave 2 (5 min): business-analyst + ux-researcher + security-auditor + mobile-engineer
+→ Business: $12K/day revenue at risk
+→ UX: 15% of checkout users affected
+→ Security: No direct security risk
+→ Mobile: Higher failure rate on mobile
+
+Wave 3 (4 min): tech-writer
+→ GitHub Issue #251 created with comprehensive analysis
+→ Priority: HIGH (revenue impact)
+→ Debug reference linked in issue
+```
+
+**--from-debug Behavior:**
+
+- Reads saved analysis from `.tmp/debug/<analysis-id>.json`
+- Skips Wave 1 (uses pre-computed technical analysis)
+- Proceeds directly to Wave 2 impact assessment
+- Links debug analysis in generated GitHub issue
+- Preserves reproduction steps and fix recommendations from debug session
+
 ### Notes
 
 - Wave-based approach ensures comprehensive analysis before issue creation
@@ -694,3 +734,4 @@ Wave 3 (4 min): tech-writer
 - Progressive verification ensures quality and completeness at each stage
 - Integration with project management tools streamlines workflow
 - Comprehensive tracking enables continuous improvement of bug analysis processes
+- **Debug Integration**: Use `/debug --save` then `/bug --from-debug` for seamless workflow
