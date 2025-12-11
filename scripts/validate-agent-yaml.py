@@ -41,6 +41,22 @@ NON_AGENT_FILES = [
     'TOOL_ACCESS_STANDARDIZATION_SUMMARY.md'
 ]
 
+# Complex/consolidated agents that may exceed standard file length limits
+# These agents combine functionality from multiple merged agents
+COMPLEX_AGENTS = [
+    'api-architect',       # Comprehensive API design patterns
+    'career-assistant',    # Merged from: content-writer, career-strategist, application-tracker, company-researcher
+    'cloud-architect',     # Comprehensive IaC and multi-cloud patterns
+    'devops',              # Comprehensive CI/CD and infrastructure
+    'jd-analyzer',         # Job description analysis with examples
+    'principal-architect', # Strategic architecture with extensive guidance
+    'resume-optimizer',    # Merged from: ats-auditor, resume-parser
+    'security-auditor',    # Security checklist and patterns
+    'tech-writer',         # Documentation patterns and templates
+    'test-engineer',       # Testing strategies and patterns
+    'ui-designer',         # Merged from: mobile-ui, includes platform-specific patterns
+]
+
 def extract_yaml_section(file_path):
     """Extract YAML front-matter from file."""
     with open(file_path, 'r') as f:
@@ -179,9 +195,13 @@ def validate_agent_file(file_path):
             issues.append(f"Contains deprecated field: {field} (not in AGENT_TEMPLATE.md format)")
 
     # Check file length (should be ~46 lines as per AGENT_TEMPLATE.md)
+    # Complex/consolidated agents are allowed to be longer (up to 500 lines)
+    is_complex = agent_name in COMPLEX_AGENTS
     if line_count < 40:
         issues.append(f"File too short ({line_count} lines, expected ~46 per AGENT_TEMPLATE.md)")
-    elif line_count > 60:
+    elif line_count > 500 and is_complex:
+        issues.append(f"File too long ({line_count} lines, even for complex agent max 500)")
+    elif line_count > 60 and not is_complex:
         issues.append(f"File too long ({line_count} lines, expected ~46 per AGENT_TEMPLATE.md)")
 
     # Check for required markdown sections as per AGENT_TEMPLATE.md

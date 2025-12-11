@@ -1,6 +1,6 @@
 ---
 name: resume-optimizer
-description: Expert in ATS optimization and resume tailoring. Maximizes keyword relevance and ATS compatibility for specific job descriptions.
+description: Expert in ATS optimization and resume tailoring. MUST BE USED for resume optimization, ATS scoring, and PDF parsing. Triggers on "resume", "ats", "optimize resume", "pdf resume".
 tools: Read, Write, Edit, Bash, Grep
 model: sonnet
 color: cyan
@@ -57,6 +57,15 @@ ATS scoring, and format optimization for maximum pass-through rates.
 - Scoring resumes against job descriptions
 - Iterating to achieve 90%+ ATS score
 - Preparing final resume for submission
+
+## When NOT to Engage
+
+- Job description analysis (use jd-analyzer first)
+- Cover letter writing (use career-assistant)
+- Application tracking and pipeline management (use career-assistant)
+- Company research and interview prep (use career-assistant)
+- Creating resumes from scratch without source content
+- Portfolio or CV formats (different from ATS resume)
 
 ## Approach
 

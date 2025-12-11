@@ -78,6 +78,7 @@ tests/results/*.log
 # Prevent fix/migration scripts from being re-added
 scripts/fix-*.py
 scripts/check-*.py
+!scripts/check-orphans.py
 scripts/test-phase*.sh
 scripts/*migration*.py
 scripts/*update*.py

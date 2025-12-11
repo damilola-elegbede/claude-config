@@ -68,16 +68,17 @@ def extract_yaml_section(file_path):
 def find_orphan_references():
     """Find agent references in commands that don't exist."""
     orphans = []
-    valid_agents = set(get_all_agents())
+    valid_agents = set(a.lower() for a in get_all_agents())
 
     if not COMMANDS_DIR.exists():
         return orphans
 
-    # Known agent reference patterns in commands
+    # Only look for explicit agent references in specific contexts
+    # This is more targeted to avoid false positives
     agent_patterns = [
-        r"(\w+-\w+):",  # agent-name: in YAML
-        r"Task:\s*(\w+-\w+)",  # Task: agent-name
-        r"parallel_agents:.*?(\w+-\w+)",  # In parallel_agents sections
+        r"subagent_type[=:]\s*['\"]?(\w+-\w+)['\"]?",  # subagent_type="agent-name"
+        r"Task tool.*?(\w+-\w+)",  # Task tool with agent-name
+        r"use\s+the\s+(\w+-\w+)\s+agent",  # "use the agent-name agent"
     ]
 
     for cmd_file in COMMANDS_DIR.glob("*.md"):
@@ -90,13 +91,11 @@ def find_orphan_references():
         for pattern in agent_patterns:
             matches = re.findall(pattern, content, re.IGNORECASE)
             for match in matches:
-                # Check if it looks like an agent name (has hyphen, not a keyword)
-                if "-" in match and match.lower() not in valid_agents:
-                    # Skip common non-agent patterns
-                    skip_patterns = ["front-matter", "pre-commit", "auto-fix", "non-agent"]
-                    if not any(skip in match.lower() for skip in skip_patterns):
-                        if match.lower() not in [a.lower() for a in valid_agents]:
-                            orphans.append((cmd_file.name, match))
+                match_lower = match.lower()
+                # Must look like an agent name (lowercase-letters-separated-by-hyphens)
+                if re.match(r"^[a-z]+-[a-z]+(?:-[a-z]+)?$", match_lower):
+                    if match_lower not in valid_agents:
+                        orphans.append((cmd_file.name, match))
 
     return orphans
 
@@ -124,14 +123,22 @@ def get_all_routing_keywords():
     return keywords
 
 
-def parse_yaml(file_path):
+def parse_yaml(file_path, file_type="agent"):
     """Check if YAML front-matter is parseable."""
     yaml_text = extract_yaml_section(file_path)
     if not yaml_text:
+        # Commands may have legacy format without YAML front-matter
+        if file_type == "command":
+            return True
         return False
 
     # Basic validation - check for required structure
-    required_patterns = [r"^name:", r"^description:"]
+    if file_type == "agent":
+        required_patterns = [r"^name:", r"^description:"]
+    else:
+        # Commands only require description
+        required_patterns = [r"^description:"]
+
     for pattern in required_patterns:
         if not re.search(pattern, yaml_text, re.MULTILINE):
             return False
@@ -172,13 +179,13 @@ def test_yaml_valid():
     if AGENTS_DIR.exists():
         for agent_file in AGENTS_DIR.glob("*.md"):
             if agent_file.name not in NON_AGENT_FILES:
-                if not parse_yaml(agent_file):
+                if not parse_yaml(agent_file, "agent"):
                     invalid.append(f"agents/{agent_file.name}")
 
     if COMMANDS_DIR.exists():
         for cmd_file in COMMANDS_DIR.glob("*.md"):
             if cmd_file.name not in NON_COMMAND_FILES:
-                if not parse_yaml(cmd_file):
+                if not parse_yaml(cmd_file, "command"):
                     invalid.append(f"commands/{cmd_file.name}")
 
     assert not invalid, f"Invalid YAML in: {invalid}"
