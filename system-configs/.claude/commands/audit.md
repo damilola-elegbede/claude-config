@@ -183,7 +183,7 @@ Optional Fields:
 
 Agent Reference Checks:
   - All referenced agents must exist
-  - Agent names match current ecosystem (30 agents)
+  - Agent names match current ecosystem (31 agents)
 ```
 
 ### Output Modes

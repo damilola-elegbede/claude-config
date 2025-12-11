@@ -169,7 +169,7 @@ def test_no_orphan_references():
     orphans = find_orphan_references()
     if orphans:
         orphan_list = [f"{cmd}: {ref}" for cmd, ref in orphans]
-        assert False, f"Found orphaned agent references: {orphan_list}"
+        raise AssertionError(f"Found orphaned agent references: {orphan_list}")
 
 
 def test_yaml_valid():

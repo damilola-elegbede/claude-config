@@ -10,7 +10,7 @@ Post-optimization inventory of 21 commands (reduced from 23).
 | Development | 4 | Wave-based |
 | Quality | 3 | Hybrid |
 | Orchestration | 3 | Wave-based |
-| Utilities | 6 | Direct/Hybrid |
+| Utilities | 5 | Direct/Hybrid |
 | **Total** | **21** | |
 
 ## Git Operations (5)

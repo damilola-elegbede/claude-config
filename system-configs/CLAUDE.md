@@ -106,9 +106,9 @@ See `docs/agents/AGENT_SELECTION_GUIDE.md` for complex routing decisions.
 
 ## Model Distribution
 
-**26 Sonnet 4.5** (default) • **4 Opus** (principal-architect, project-orchestrator, result-arbitrator, career-assistant)
+**27 Sonnet 4.5** (default) • **4 Opus** (principal-architect, project-orchestrator, result-arbitrator, career-assistant)
 **Thinking:** megathink (10K) for API/cloud/debugging • ultrathink (32K) for architecture
-**Total Agents:** 30 (optimized from 37)
+**Total Agents:** 31 (optimized from 37)
 
 ## Architect Hierarchy
 

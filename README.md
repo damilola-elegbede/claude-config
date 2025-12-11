@@ -14,7 +14,7 @@
 ## Production-Ready Smart Agent Orchestration Framework for Claude Code CLI
 
 [Quick Start Guide](#-quick-start) • [Installation Instructions](#-installation) • [Core Features](#-core-features) •
-[Agent Ecosystem Overview](#-agent-ecosystem-28-specialists) • [Command Reference](#-essential-commands) •
+[Agent Ecosystem Overview](#-agent-ecosystem-31-specialists) • [Command Reference](#-essential-commands) •
 [Documentation Index](#-documentation) • [Contributing Guidelines](#-contributing)
 
 </div>
@@ -499,13 +499,13 @@ claude-config/
 ├── LICENSE                         # MIT license
 ├── system-configs/                 # Source-of-truth configurations
 │   ├── .claude/                   # Claude Code configuration
-│   │   ├── agents/                # 28 agent definitions
+│   │   ├── agents/                # 31 agent definitions
 │   │   │   ├── backend-engineer.md
 │   │   │   ├── frontend-engineer.md
 │   │   │   ├── security-auditor.md
 │   │   │   ├── test-engineer.md
 │   │   │   └── ... (24 more agents)
-│   │   ├── commands/              # 22 command definitions
+│   │   ├── commands/              # 21 command definitions
 │   │   │   ├── sync.md
 │   │   │   ├── test.md
 │   │   │   ├── prime.md
@@ -547,8 +547,8 @@ graph TB
     B --> C{Pre-deployment Validation}
     C --> D[Create Automatic Backup]
     D --> E[Deploy to ~/.claude/]
-    E --> F[28 Agents Available]
-    E --> G[22 Commands Available]
+    E --> F[31 Agents Available]
+    E --> G[21 Commands Available]
     E --> H[MCP Server Integration]
     F --> I[Enhanced Claude CLI]
     G --> I
@@ -756,7 +756,7 @@ production-ready configurations from `system-configs/.claude/` to your `~/.claud
 ### Q: How do I know which agent to use for my specific task?
 
 **A:** Check the [Agent Selection Guide](docs/development/AGENT_SELECTION_GUIDE.md) for detailed guidance, or
-use `/audit --scope agents` to see all 28 available specialists with their capabilities and categories.
+use `/audit --scope agents` to see all 31 available specialists with their capabilities and categories.
 
 ### Q: Why did my agent task fail with "SYSTEM BOUNDARY" error?
 
