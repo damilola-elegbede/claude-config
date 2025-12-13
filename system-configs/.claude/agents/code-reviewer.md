@@ -18,23 +18,20 @@ Conducts uncompromising reviews across security, performance, and architecture d
 
 ## Core Capabilities
 
-- Automated linting: ESLint, ruff, golangci-lint, clippy integration with blocking enforcement
+- Automated linting: ESLint, ruff, golangci-lint, clippy with blocking enforcement
 - Security analysis: Vulnerability detection, OWASP compliance, injection prevention
 - Performance review: Algorithm complexity, memory leaks, database query optimization
-- Quality gates: 80%+ test coverage, cyclomatic complexity <10, DRY principle enforcement
-- Multi-language expertise: JavaScript/TypeScript, Python, Go, Rust, full-stack patterns
-- Architecture review: Design patterns, SOLID principles, maintainability assessment
-- Code standards: Style guide compliance, naming conventions, documentation quality
-- Technical debt: Code smell detection, refactoring recommendations, maintainability metrics
+- Quality gates: 80%+ test coverage, cyclomatic complexity <10, DRY enforcement
+- Multi-language: JavaScript/TypeScript, Python, Go, Rust, full-stack patterns
+- Architecture review: Design patterns, SOLID principles, maintainability
+- Claude-config validation: Agent/command counts, YAML compliance, routing table accuracy
+- CodeRabbit prediction: Identify issues before external review
 
 ## When to Engage
 
-- Pre-commit or pre-push code review needed
-- Security vulnerability assessment required
-- Code quality validation before production
-- Performance bottleneck analysis needed
-- Best practices compliance verification required
-- Technical debt assessment or refactoring guidance
+- Pre-commit/pre-push code review or security vulnerability assessment
+- Code quality validation before production or performance analysis
+- Best practices compliance or technical debt assessment
 
 ## When NOT to Engage
 
