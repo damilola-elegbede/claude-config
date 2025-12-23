@@ -117,7 +117,7 @@ sync_files() {
     fi
 
     # Sync commands using rsync
-    if rsync -a "$SOURCE_DIR/commands/" "$TARGET_DIR/commands/" >/dev/null 2>&1; then
+    if rsync -a --exclude="README.md" --exclude="*TEMPLATE*" --exclude="*CATEGORIES*" --exclude="*AUDIT*" --exclude="sync.md" --exclude="*.bak" --exclude="*.backup" --exclude="*.tmp" "$SOURCE_DIR/commands/" "$TARGET_DIR/commands/" >/dev/null 2>&1; then
         COMMAND_COUNT=$(find "$SOURCE_DIR/commands" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
         echo "  ✅ Commands: $COMMAND_COUNT files → ~/.claude/commands/"
     else
