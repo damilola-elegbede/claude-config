@@ -81,7 +81,7 @@ validate_configs() {
 
     # Basic syntax validation
     AGENT_COUNT=$(find "$SOURCE_DIR/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-    COMMAND_COUNT=$(find "$SOURCE_DIR/commands" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+    COMMAND_COUNT=$(find "$SOURCE_DIR/commands" -name "*.md" ! -name "README.md" ! -name "*TEMPLATE*" ! -name "*CATEGORIES*" ! -name "*AUDIT*" ! -name "sync.md" 2>/dev/null | wc -l | tr -d ' ')
     SKILL_COUNT=$(find "$SOURCE_DIR/skills" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
     echo "  - Configuration syntax: Valid ($AGENT_COUNT agents, $COMMAND_COUNT commands, $SKILL_COUNT skills)"
 
@@ -118,7 +118,7 @@ sync_files() {
 
     # Sync commands using rsync
     if rsync -a --exclude="README.md" --exclude="*TEMPLATE*" --exclude="*CATEGORIES*" --exclude="*AUDIT*" --exclude="sync.md" --exclude="*.bak" --exclude="*.backup" --exclude="*.tmp" "$SOURCE_DIR/commands/" "$TARGET_DIR/commands/" >/dev/null 2>&1; then
-        COMMAND_COUNT=$(find "$SOURCE_DIR/commands" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+        COMMAND_COUNT=$(find "$SOURCE_DIR/commands" -name "*.md" ! -name "README.md" ! -name "*TEMPLATE*" ! -name "*CATEGORIES*" ! -name "*AUDIT*" ! -name "sync.md" 2>/dev/null | wc -l | tr -d ' ')
         echo "  ✅ Commands: $COMMAND_COUNT files → ~/.claude/commands/"
     else
         echo "  ❌ Failed to sync commands"
@@ -204,7 +204,7 @@ main() {
         echo ""
         echo "📋 Files to sync:"
         echo "  - $(find "$SOURCE_DIR/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ') agent files → ~/.claude/agents/"
-        echo "  - $(find "$SOURCE_DIR/commands" -name "*.md" 2>/dev/null | wc -l | tr -d ' ') command files → ~/.claude/commands/"
+        echo "  - $(find "$SOURCE_DIR/commands" -name "*.md" ! -name "README.md" ! -name "*TEMPLATE*" ! -name "*CATEGORIES*" ! -name "*AUDIT*" ! -name "sync.md" 2>/dev/null | wc -l | tr -d ' ') command files → ~/.claude/commands/"
         echo "  - $(find "$SOURCE_DIR/skills" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ') skills → ~/.claude/skills/"
         echo "  - settings.json → ~/.claude/settings.json"
         echo "  - statusline.sh → ~/.claude/statusline.sh"
