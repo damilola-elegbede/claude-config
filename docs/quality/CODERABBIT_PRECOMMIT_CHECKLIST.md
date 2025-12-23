@@ -1,7 +1,7 @@
 # CodeRabbit Pre-Commit Self-Review Checklist
 
 This checklist catches 80-90% of issues typically flagged in code reviews.
-The `/review` command **programmatically implements** this entire checklist through its 6-phase review pipeline.
+The `/review` command **programmatically implements** this entire checklist through its 9-phase review pipeline.
 
 ## How `/review` Implements This Checklist
 
@@ -13,6 +13,9 @@ The `/review` command runs this checklist automatically through:
 | Phase 2: Path-Based Validation | File-specific rules, template compliance |
 | Phase 4: AI Deep Analysis | Documentation sync, pattern violations, architectural issues |
 | Phase 5: Checklist Verification | Explicit pass/fail for each item below |
+| Phase 7: Issue Evaluation | Categorize issues, assign agents, recommend fixes |
+| Phase 8: Interactive Resolution | User approves which issues to fix |
+| Phase 9: Parallel Fix Deployment | Deploy agents to fix approved issues |
 
 ## Documentation & Consistency
 
@@ -121,7 +124,7 @@ grep -L "NO Task tool access\|Only Claude has orchestration" system-configs/.cla
 The `/review` command provides multiple modes for this checklist:
 
 ```bash
-/review              # Full 6-phase review with AI analysis (2-5 min)
+/review              # Full 9-phase review with interactive resolution (3-8 min)
 /review --quick      # Linter-only, no AI (30-60 sec)
 /review --full       # Repository-wide analysis
 /review --security   # Security-focused with security-auditor agent
@@ -132,10 +135,12 @@ The `/review` command provides multiple modes for this checklist:
 
 | Mode | Phases Run | Checklist Coverage |
 |------|------------|-------------------|
-| Default | All 6 phases | 100% of checklist |
+| Default | All 9 phases | 100% + interactive fix |
+| --report-only | Phases 0-6 | 100% (no resolution) |
+| --fix | All 9 (auto) | 100% + auto-fix |
 | --quick | Phase 3 only | Linting only (~30%) |
-| --full | All 6 phases, all files | 100% + repo-wide |
-| --security | All 6 + security-auditor | 100% + deep security |
+| --full | All 9 phases, all files | 100% + repo-wide |
+| --security | All 9 + security-auditor | 100% + deep security |
 
 ## Checklist Pass Criteria
 
