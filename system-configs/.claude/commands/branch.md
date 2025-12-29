@@ -127,8 +127,8 @@ Execute branch creation with minimal overhead:
    # Switch to main branch (with fallback to master)
    git checkout main 2>/dev/null || git checkout master
 
-   # Pull latest changes with rebase to keep history clean
-   git pull --rebase
+   # Pull latest changes with rebase to keep history clean (FAIL if unable)
+   git pull --rebase || { echo "ERROR: Cannot fetch latest main. Branch creation aborted."; exit 1; }
 
    # Create and switch to new branch from updated main
    git checkout -b <generated-branch-name>
@@ -180,14 +180,16 @@ Naming Conflicts:
   - Confirm with user before proceeding
 
 Network Issues:
-  - Create branch locally
-  - Note that remote operations may be needed later
-  - Provide commands for future remote setup
+  - FAIL with clear error message
+  - Explain that branch must be based on latest remote main
+  - Suggest checking network connectivity
+  - Provide manual commands to retry when network is available
 
 Permission Issues:
+  - FAIL with clear error message
   - Report specific permission problems
   - Suggest solutions (SSH key, authentication)
-  - Provide fallback local-only workflow
+  - Do NOT provide fallback local-only workflow
 ```
 
 ### Branch Name Sanitization
