@@ -20,16 +20,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "prettier --write \"$CLAUDE_FILE_PATH\" 2>/dev/null || true"
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
+            "command": "if [[ \"$CLAUDE_FILE_PATHS\" =~ \\.(js|jsx|ts|tsx|json|css|scss|html|md)$ ]]; then prettier --write \"$CLAUDE_FILE_PATHS\" 2>/dev/null || true; fi"
+          },
           {
             "type": "command",
-            "command": "eslint --fix \"$CLAUDE_FILE_PATH\" 2>/dev/null || true"
+            "command": "if [[ \"$CLAUDE_FILE_PATHS\" =~ \\.(js|jsx|ts|tsx)$ ]]; then eslint --fix \"$CLAUDE_FILE_PATHS\" 2>/dev/null || true; fi"
           }
         ]
       }

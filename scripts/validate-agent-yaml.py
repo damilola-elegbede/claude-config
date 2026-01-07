@@ -46,6 +46,7 @@ NON_AGENT_FILES = [
 # Total agents: 12 (consolidated from 31)
 COMPLEX_AGENTS = [
     'architect',           # Consolidated from: principal-architect, api-architect, cloud-architect, frontend-architect
+    'backend-engineer',    # Server-side architecture and microservices
     'career-assistant',    # Consolidated from: jd-analyzer, resume-optimizer, content-writer, career-strategist
     'code-reviewer',       # Includes accessibility auditing
     'data-engineer',       # Consolidated from: data-engineer, database-admin
