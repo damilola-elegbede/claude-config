@@ -50,6 +50,23 @@ combine flags to build custom workflows. With no flags, runs the full workflow.
 - **Smart skipping**: Commands skip gracefully (e.g., no changes to commit, PR exists)
 - **Dry run**: With `--dry-run`, print steps that would execute without running them
 
+### Validation
+
+Before executing steps, perform these checks:
+
+1. **Branch validation** (for `-p` and `-pr`):
+   - Warn and halt if current branch is `main` or `master`
+   - Suggest creating a feature branch first
+
+2. **Remote tracking** (for `-p`):
+   - If branch has no upstream, run `git push -u origin <branch>` to set it
+   - If push fails due to no remote, halt with clear error
+
+3. **PR exists check** (for `-pr`):
+   - Check if PR already exists for current branch: `gh pr view --json url`
+   - If PR exists → skip creation, display existing PR URL
+   - Only create new PR if none exists
+
 ## Expected Output
 
 ### Full Workflow (default)
