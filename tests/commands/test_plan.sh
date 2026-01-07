@@ -1,5 +1,5 @@
 #!/bin/bash
-# Test for /plan command
+# Test for /plan command (Altoid style - simplified)
 
 # Source test utilities
 source "$(dirname "$0")/../utils.sh"
@@ -36,15 +36,15 @@ test_plan_structure() {
 test_plan_content() {
     local plan_file="$ORIGINAL_DIR/system-configs/.claude/commands/plan.md"
 
-    # Check for key behavior descriptions
-    assert_file_contains "$plan_file" "phases" \
-        "Should mention phases"
+    # Check for key behavior descriptions (Altoid style)
+    assert_file_contains "$plan_file" "PRD" \
+        "Should mention PRD"
 
-    assert_file_contains "$plan_file" "Phase Organization" \
-        "Should have Phase Organization section"
+    assert_file_contains "$plan_file" "architect" \
+        "Should mention architect agent"
 
-    assert_file_contains "$plan_file" "dependencies" \
-        "Should mention dependencies"
+    assert_file_contains "$plan_file" "task" \
+        "Should mention tasks"
 }
 
 # Run all tests

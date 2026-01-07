@@ -63,12 +63,12 @@ for agent_file in "$AGENTS_DIR"/*.md; do
     fi
 done
 
-# Test 3: Verify agent count is reasonable (should be around 41)
-if [ $AGENT_COUNT -lt 20 ]; then
-    echo -e "${RED}✗${NC} Too few agents found: $AGENT_COUNT (expected at least 20)"
+# Test 3: Verify agent count is reasonable (should be around 12 after consolidation)
+if [ $AGENT_COUNT -lt 10 ]; then
+    echo -e "${RED}✗${NC} Too few agents found: $AGENT_COUNT (expected at least 10)"
     exit 1
-elif [ $AGENT_COUNT -gt 60 ]; then
-    echo -e "${RED}✗${NC} Too many agents found: $AGENT_COUNT (expected less than 60)"
+elif [ $AGENT_COUNT -gt 20 ]; then
+    echo -e "${RED}✗${NC} Too many agents found: $AGENT_COUNT (expected less than 20)"
     exit 1
 else
     echo -e "${GREEN}✓${NC} Agent count validation passed: $AGENT_COUNT agents"

@@ -43,18 +43,19 @@ NON_AGENT_FILES = [
 
 # Complex/consolidated agents that may exceed standard file length limits
 # These agents combine functionality from multiple merged agents
+# Total agents: 12 (consolidated from 31)
 COMPLEX_AGENTS = [
-    'api-architect',       # Comprehensive API design patterns
-    'career-assistant',    # Merged from: content-writer, career-strategist, application-tracker, company-researcher
-    'cloud-architect',     # Comprehensive IaC and multi-cloud patterns
-    'devops',              # Comprehensive CI/CD and infrastructure
-    'jd-analyzer',         # Job description analysis with examples
-    'principal-architect', # Strategic architecture with extensive guidance
-    'resume-optimizer',    # Merged from: ats-auditor, resume-parser
-    'security-auditor',    # Security checklist and patterns
+    'architect',           # Consolidated from: principal-architect, api-architect, cloud-architect, frontend-architect
+    'career-assistant',    # Consolidated from: jd-analyzer, resume-optimizer, content-writer, career-strategist
+    'code-reviewer',       # Includes accessibility auditing
+    'data-engineer',       # Consolidated from: data-engineer, database-admin
+    'debugger',            # Consolidated from: debugger, performance-engineer
+    'devops',              # Consolidated from: devops, platform-engineer
+    'frontend-engineer',   # Consolidated from: frontend-engineer, ui-designer
+    'researcher',          # Consolidated from: researcher, codebase-analyst, ux-researcher, business-analyst, product-strategist
+    'security-auditor',    # Comprehensive security patterns and checklists
     'tech-writer',         # Documentation patterns and templates
     'test-engineer',       # Testing strategies and patterns
-    'ui-designer',         # Merged from: mobile-ui, includes platform-specific patterns
 ]
 
 def extract_yaml_section(file_path):
