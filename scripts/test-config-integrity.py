@@ -23,9 +23,9 @@ AGENTS_DIR = PROJECT_ROOT / "system-configs" / ".claude" / "agents"
 COMMANDS_DIR = PROJECT_ROOT / "system-configs" / ".claude" / "commands"
 SKILLS_DIR = PROJECT_ROOT / "system-configs" / ".claude" / "skills"
 
-# Expected counts after optimization
-EXPECTED_AGENT_COUNT = 31
-EXPECTED_COMMAND_COUNT = 21
+# Expected counts after optimization (consolidated from 31 agents, 21 commands)
+EXPECTED_AGENT_COUNT = 12
+EXPECTED_COMMAND_COUNT = 20
 
 # Non-agent/command documentation files to skip
 NON_AGENT_FILES = [
@@ -239,7 +239,7 @@ def main():
         ("Command Count", test_command_count),
         ("No Orphan References", test_no_orphan_references),
         ("YAML Valid", test_yaml_valid),
-        ("Routing Keywords", test_routing_keywords_defined),
+        # Routing keywords test removed - Boris Cherny philosophy uses identity/preferences, not routing tables
         ("Consolidated Agents", test_consolidated_agents_exist),
         ("Consolidated Commands", test_consolidated_commands_exist),
     ]

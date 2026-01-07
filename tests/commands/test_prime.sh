@@ -1,5 +1,5 @@
 #!/bin/bash
-# Test for /prime command
+# Test for /prime command (Altoid style - simplified)
 
 # Source test utilities
 source "$(dirname "$0")/../utils.sh"
@@ -36,18 +36,15 @@ test_prime_structure() {
 test_prime_content() {
     local prime_file="$ORIGINAL_DIR/system-configs/.claude/commands/prime.md"
 
-    # Check for key behavior descriptions
-    assert_file_contains "$prime_file" "Analyze repository structure" \
+    # Check for key behavior descriptions (Altoid style)
+    assert_file_contains "$prime_file" "repository" \
         "Should mention repository analysis"
 
-    assert_file_contains "$prime_file" "technology stack" \
-        "Should mention tech stack detection"
+    assert_file_contains "$prime_file" "researcher" \
+        "Should mention researcher agent"
 
     assert_file_contains "$prime_file" "Lite Mode" \
         "Should mention lite mode"
-
-    assert_file_contains "$prime_file" "package.json" \
-        "Should include config file examples"
 }
 
 # Run all tests

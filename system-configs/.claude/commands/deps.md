@@ -65,7 +65,7 @@ pip install --upgrade-strategy eager
 
 ### Wave 2: Remediation Planning (12s)
 🎯 Deploying specialized security-auditor instances for critical vulnerabilities...
-🔧 platform-engineer analyzing dependency conflicts...
+🔧 devops analyzing dependency conflicts...
 🚀 devops assessing CI/CD pipeline impact...
 
 ### Wave 2 Results:
@@ -197,7 +197,7 @@ security-auditor (critical vulnerability focus):
   role: Deep analysis of critical vulnerabilities
   output: Detailed remediation plans with risk assessment
 
-platform-engineer:
+devops:
   role: Dependency conflict analysis and compatibility assessment
   parallel_with: [security-auditor critical instances]
   input: Proposed updates from vulnerability analysis
@@ -205,7 +205,7 @@ platform-engineer:
 
 devops:
   role: CI/CD pipeline impact assessment
-  parallel_with: [security-auditor, platform-engineer]
+  parallel_with: [security-auditor, devops]
   input: Proposed dependency changes
   output: Deployment risk analysis, rollback strategies
 
@@ -317,7 +317,7 @@ Wave 3 - Auto-Fix Implementation (5-10 seconds):
 
 Agent Usage:
   - security-auditor instances: 5-15 per wave (dynamic scaling)
-  - platform-engineer: Compatibility analysis
+  - devops: Compatibility analysis
   - devops: CI/CD impact and verification
   - Coordinated multi-wave deployment
 
@@ -418,7 +418,7 @@ Wave 2: Remediation Planning (10-15 seconds)
     role: "Deep analysis of critical vulnerabilities"
     output: "Detailed remediation plans with risk assessment"
 
-  platform-engineer:
+  devops:
     role: "Dependency conflict analysis and compatibility assessment"
     input: "Proposed updates from vulnerability analysis"
     output: "Breaking change assessment, compatibility matrix"
@@ -555,7 +555,7 @@ Claude: 🚀 Initiating wave-based dependency security audit...
 🎯 Deploying specialized remediation instances:
   - security-auditor[critical-1]: RCE vulnerability (express@4.16.1)
   - security-auditor[critical-2]: Auth bypass (jsonwebtoken@8.5.0)
-  - platform-engineer: Dependency conflict analysis
+  - devops: Dependency conflict analysis
   - devops: CI/CD impact assessment
 
 🧠 Claude Decision: Update execution plan ready

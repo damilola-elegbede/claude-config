@@ -1,57 +1,22 @@
 [
   {
-    "name": "accessibility-auditor",
-    "file": "accessibility-auditor.md",
+    "name": "architect",
+    "file": "architect.md",
     "capabilities": [
-      "WCAG compliance: Level AA/AAA standards, automated and manual testing methodologies",
-      "Screen reader validation: NVDA, JAWS, VoiceOver testing across critical user journeys",
-      "Keyboard navigation: Tab flow, focus management, and keyboard-only operation",
-      "Color contrast analysis: Precise verification against WCAG ratios and visual clarity",
-      "Remediation strategies: Context-aware fixes balancing compliance with user experience",
-      "Audio accessibility: Uses mcp__elevenlabs for creating audio alternatives and voice content for enhanced accessibility"
+      "System architecture design: Scalable, maintainable, robust architectures following FAANG standards",
+      "API design: REST/GraphQL patterns, OpenAPI specs, resource modeling, versioning strategies",
+      "Cloud infrastructure: Multi-cloud architecture (AWS, GCP, Azure), IaC, migration strategies",
+      "Frontend architecture: Micro-frontend design, state management, component systems",
+      "Technical roadmaps: Breaking complex initiatives into clear phases with dependencies"
     ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
     "when_to_use": [
-      "WCAG compliance audit or accessibility review requested",
-      "Screen reader or keyboard navigation issues detected",
-      "Color contrast or visual accessibility concerns raised",
-      "Form validation or error handling accessibility needed",
-      "Legal compliance requirements or ADA concerns identified"
+      "System-wide architecture design or redesign needed",
+      "API design or OpenAPI specification creation",
+      "Cloud architecture or migration planning",
+      "Frontend architecture for complex applications",
+      "Technical roadmap or implementation planning"
     ],
-    "orchestration_notes": [],
-    "description": "MUST BE USED for WCAG compliance audits and accessibility violations remediation. Use PROACTIVELY for inclusive design validation, screen reader testing, keyboard navigation, and color contrast issues.",
-    "color": "green"
-  },
-  {
-    "name": "api-architect",
-    "file": "api-architect.md",
-    "capabilities": [
-      "API design: REST/GraphQL patterns, OpenAPI 3.0 specs, resource modeling, versioning strategies",
-      "Implementation: Production endpoints, authentication flows, middleware, SDK generation",
-      "Governance: Enterprise standards, review processes, lifecycle management, compliance policies",
-      "Developer experience: Interactive documentation, multi-language SDKs, API portals",
-      "Contract management: Consumer-driven testing, schema validation, federation strategies",
-      "**YAML/OpenAPI compliance**: Ensures all specs follow OpenAPI 3.0+ standards with proper YAML linting"
-    ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
-    "when_to_use": [
-      "API design or OpenAPI specification creation needed",
-      "GraphQL schema or federation implementation required",
-      "API governance framework or standards development",
-      "SDK generation or developer portal setup",
-      "API versioning strategy or migration planning needed",
-      "**Any API specification requiring strict linting compliance**"
-    ],
-    "orchestration_notes": [],
-    "description": "MUST BE USED for comprehensive API architecture, OpenAPI specs, and governance policy implementation. Use PROACTIVELY for API strategy, versioning management, GraphQL federation, and enterprise standardization.",
+    "description": "MUST BE USED for system architecture, API design, cloud infrastructure, and technical roadmaps. Consolidated from principal-architect, api-architect, cloud-architect, and frontend-architect.",
     "color": "purple"
   },
   {
@@ -62,697 +27,216 @@
       "Performance optimization: Sub-100ms latency, 100k+ RPS handling, horizontal scaling patterns",
       "Database engineering: SQL/NoSQL optimization, sharding, replication, query optimization",
       "Event-driven architecture: Kafka, RabbitMQ, event streaming, async processing patterns",
-      "Cloud-native development: AWS/GCP/Azure services, serverless, containerization, multi-region"
+      "Cloud-native development: AWS/GCP/Azure services, serverless, containerization"
     ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
     "when_to_use": [
       "Backend service or API development needed",
-      "Microservices architecture design or implementation",
-      "Database schema design or optimization required",
+      "Microservices architecture implementation",
+      "Database schema design or optimization",
       "Performance issues requiring >10k RPS handling",
-      "Event-driven or message queue implementation needed"
+      "Event-driven or message queue implementation"
     ],
-    "orchestration_notes": [],
-    "description": "MUST BE USED for server-side architecture, microservices, distributed systems, and database engineering. Use PROACTIVELY for high-performance optimization (>10k RPS), event-driven architecture, and complex backend infrastructure.",
+    "description": "MUST BE USED for server-side architecture, microservices, distributed systems, and database engineering.",
     "color": "blue"
   },
   {
-    "name": "business-analyst",
-    "file": "business-analyst.md",
+    "name": "career-assistant",
+    "file": "career-assistant.md",
     "capabilities": [
-      "Requirements analysis: User story creation, acceptance criteria, requirement prioritization",
-      "Process mapping: Business workflow analysis, optimization opportunities, gap analysis",
-      "Stakeholder management: Communication strategies, expectation alignment, feedback synthesis",
-      "Documentation: Business requirements documents (BRDs), functional specifications, use cases",
-      "Impact analysis: Change assessment, risk identification, dependency mapping"
+      "Job description analysis: Requirement extraction, keyword identification, gap analysis",
+      "Resume optimization: ATS scoring, keyword placement, tailoring for specific roles",
+      "Company research: Multi-source research, interview process, culture assessment",
+      "Content writing: Cover letters, follow-up emails, networking messages",
+      "Career strategy: Path planning, leadership narrative, interview preparation"
     ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
     "when_to_use": [
-      "Business requirements gathering or analysis needed",
-      "User stories or acceptance criteria creation required",
-      "Process workflow mapping or optimization",
-      "Stakeholder communication or alignment issues",
-      "Business impact analysis for technical changes"
+      "Job description analysis or requirement extraction",
+      "Resume optimization or ATS scoring",
+      "Company research for applications",
+      "Cover letter or follow-up writing",
+      "Career strategy or interview preparation"
     ],
-    "orchestration_notes": [],
-    "description": "Expert business analyst specializing in requirements gathering and stakeholder alignment. MUST BE USED for translating business needs into technical specifications.",
-    "color": "yellow"
-  },
-  {
-    "name": "cloud-architect",
-    "file": "cloud-architect.md",
-    "capabilities": [
-      "Multi-cloud architecture: AWS/Azure/GCP service selection, vendor lock-in mitigation, portability",
-      "Migration planning: 6Rs framework, cloud readiness assessment, data synchronization strategies",
-      "Cost optimization: FinOps practices, reserved instances, spot usage, resource management",
-      "Cloud-native design: Serverless, Kubernetes, microservices, event-driven architectures",
-      "Infrastructure as Code: Terraform, CloudFormation, ARM templates, modular components",
-      "**IaC linting compliance**: Ensures all YAML/JSON templates follow cloud provider standards and best practices"
-    ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
-    "when_to_use": [
-      "Cloud architecture design or redesign needed",
-      "Enterprise cloud migration planning required",
-      "Multi-cloud or hybrid cloud strategy development",
-      "Cost optimization analysis and implementation",
-      "Infrastructure as Code template creation needed",
-      "**Any IaC templates requiring linting compliance**"
-    ],
-    "orchestration_notes": [],
-    "description": "MUST BE USED for comprehensive cloud architecture design, enterprise migration strategies, and multi-cloud implementations. Use PROACTIVELY for AWS/Azure/GCP deployments, IaC development, and cloud-native pattern implementation.",
-    "color": "purple"
+    "description": "Expert in unified career support including job description analysis, resume optimization, company research, content writing, and career strategy.",
+    "color": "cyan"
   },
   {
     "name": "code-reviewer",
     "file": "code-reviewer.md",
     "capabilities": [
-      "Automated linting: ESLint, ruff, golangci-lint, clippy integration with blocking enforcement",
+      "Automated linting: ESLint, ruff, golangci-lint, clippy with blocking enforcement",
       "Security analysis: Vulnerability detection, OWASP compliance, injection prevention",
       "Performance review: Algorithm complexity, memory leaks, database query optimization",
-      "Quality gates: 80%+ test coverage, cyclomatic complexity <10, DRY principle enforcement",
-      "Multi-language expertise: JavaScript/TypeScript, Python, Go, Rust, full-stack patterns"
+      "Quality gates: 80%+ test coverage, cyclomatic complexity <10, DRY enforcement",
+      "Accessibility: WCAG 2.1 compliance, screen reader compatibility, keyboard navigation"
     ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
     "when_to_use": [
       "Pre-commit or pre-push code review needed",
       "Security vulnerability assessment required",
       "Code quality validation before production",
-      "Performance bottleneck analysis needed",
-      "Best practices compliance verification required"
+      "Accessibility compliance checks needed",
+      "Best practices compliance verification"
     ],
-    "orchestration_notes": [],
-    "description": "MUST BE USED for pre-commit reviews, vulnerability detection, and production readiness assessment. Use PROACTIVELY after code changes for quality review, security checks, best practices validation, and comprehensive code analysis.",
+    "description": "MUST BE USED for pre-commit reviews, vulnerability detection, accessibility checks, and production readiness assessment.",
     "color": "green"
-  },
-  {
-    "name": "codebase-analyst",
-    "file": "codebase-analyst.md",
-    "capabilities": [
-      "Architecture assessment: Design patterns, system boundaries, dependency mapping, coupling analysis",
-      "Technical debt quantification: Complexity metrics, test coverage, maintainability scoring",
-      "Risk analysis: Security vulnerabilities, performance bottlenecks, scalability limitations",
-      "Executive reporting: Business impact assessment, strategic recommendations, priority ranking",
-      "Quality evaluation: Code standards compliance, documentation coverage, best practices adherence"
-    ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
-    "when_to_use": [
-      "Codebase evaluation or audit required",
-      "Technical debt assessment needed",
-      "Architecture documentation or analysis requested",
-      "Security or performance risk assessment",
-      "Executive summary of technical state needed"
-    ],
-    "orchestration_notes": [],
-    "description": "Use PROACTIVELY for comprehensive code architecture analysis and technical debt assessment. MUST BE USED for evaluating codebases, creating executive summaries, and identifying security risks and performance bottlenecks.",
-    "color": "yellow"
   },
   {
     "name": "data-engineer",
     "file": "data-engineer.md",
     "capabilities": [
       "ETL/ELT pipelines: Apache Airflow, dbt, Spark, batch and streaming processing",
-      "Data warehousing: Snowflake, BigQuery, Redshift, dimensional modeling, data marts",
-      "Big data processing: Spark, Hadoop, distributed computing, partitioning strategies",
-      "Streaming systems: Kafka, Kinesis, real-time processing, event-driven architectures",
-      "Data quality: Schema validation, data profiling, anomaly detection, monitoring"
+      "Data warehousing: Snowflake, BigQuery, Redshift, dimensional modeling",
+      "Database administration: Query optimization, index strategies, replication, HA",
+      "Big data processing: Spark, Hadoop, distributed computing, partitioning",
+      "Data quality: Schema validation, data profiling, anomaly detection"
     ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
     "when_to_use": [
-      "Data pipeline design or implementation needed",
-      "ETL/ELT workflow development required",
-      "Data warehouse architecture or optimization",
-      "Streaming data processing implementation",
-      "Data quality framework or monitoring setup"
+      "Data pipeline design or implementation",
+      "Database performance or query optimization",
+      "Data warehouse architecture",
+      "Schema design or migration planning",
+      "Data quality framework setup"
     ],
-    "orchestration_notes": [],
-    "description": "Expert data engineer specializing in data pipelines and ETL/ELT systems. MUST BE USED for big data processing and analytics infrastructure.",
+    "description": "Expert in data pipelines, ETL/ELT systems, and database administration. Consolidated from data-engineer and database-admin.",
     "color": "blue"
-  },
-  {
-    "name": "database-admin",
-    "file": "database-admin.md",
-    "capabilities": [
-      "Performance optimization: Query tuning, explain plans, index strategies, buffer pool management",
-      "High availability: Replication, clustering, failover procedures, zero-downtime migrations",
-      "Disaster recovery: Backup strategies, point-in-time recovery, RTO/RPO planning",
-      "Security hardening: Encryption, access control, audit logging, vulnerability management",
-      "Operational excellence: Monitoring setup, capacity planning, automated maintenance"
-    ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
-    "when_to_use": [
-      "Database performance issues or slow queries detected",
-      "Index optimization or schema design needed",
-      "High-availability or disaster recovery setup required",
-      "Database security hardening or compliance needs",
-      "Migration planning or capacity forecasting required"
-    ],
-    "orchestration_notes": [],
-    "description": "Use PROACTIVELY for database optimization, security hardening, and performance tuning. MUST BE USED for query optimization, index management, high-availability configuration, and disaster recovery planning.",
-    "color": "orange"
   },
   {
     "name": "debugger",
     "file": "debugger.md",
     "capabilities": [
-      "Intermittent bug investigation: Race conditions, timing issues, heisenbug tracking",
+      "Bug investigation: Race conditions, timing issues, heisenbug tracking",
       "Production forensics: Log analysis, distributed tracing, failure cascade investigation",
-      "Memory leak detection: Heap analysis, garbage collection patterns, allocation tracking",
-      "Performance degradation: Bottleneck identification, profiling, resource exhaustion",
-      "Root cause analysis: Systematic investigation, evidence correlation, failure timeline"
+      "Memory leak detection: Heap analysis, garbage collection, allocation tracking",
+      "Performance engineering: Profiling, bottleneck identification, optimization",
+      "Root cause analysis: Systematic investigation, evidence correlation"
     ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
     "when_to_use": [
-      "Intermittent or hard-to-reproduce bugs encountered",
-      "Production-only failures that can't be replicated locally",
-      "Memory leaks or performance degradation over time",
-      "Distributed system failures with cascading effects",
-      "Critical production emergencies requiring investigation"
+      "Intermittent or hard-to-reproduce bugs",
+      "Production-only failures",
+      "Memory leaks or performance degradation",
+      "Performance optimization needed",
+      "Distributed system failures"
     ],
-    "orchestration_notes": [],
-    "description": "MUST BE USED for investigating complex intermittent bugs, race conditions, and production-only failures. Use PROACTIVELY for distributed system failures, timing-dependent bugs, and concurrency issues requiring forensic analysis.",
+    "description": "MUST BE USED for debugging complex bugs and performance optimization. Consolidated from debugger and performance-engineer.",
     "color": "orange"
   },
   {
     "name": "devops",
     "file": "devops.md",
     "capabilities": [
-      "CI/CD excellence: GitHub Actions, GitLab CI, Jenkins with build optimization and GitOps",
-      "Infrastructure as Code: Terraform, CloudFormation, Ansible for multi-cloud environments",
-      "Container orchestration: Kubernetes, Docker, Helm with security scanning and service mesh",
-      "Site reliability: SLO/SLI/SLA definition, error budgets, incident response, observability",
-      "Production operations: Monitoring (Prometheus/Grafana), logging (ELK), tracing (Jaeger)",
-      "**Pipeline linting compliance**: Ensures all CI/CD YAML files follow platform-specific standards"
+      "CI/CD excellence: GitHub Actions, GitLab CI, Jenkins with optimization and GitOps",
+      "Infrastructure as Code: Terraform, CloudFormation, Ansible for multi-cloud",
+      "Container orchestration: Kubernetes, Docker, Helm with security scanning",
+      "Site reliability: SLO/SLI/SLA definition, error budgets, incident response",
+      "Platform engineering: Developer portals, self-service infrastructure, golden paths"
     ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
     "when_to_use": [
-      "Complex CI/CD pipeline design or optimization required",
-      "Kubernetes cluster setup, configuration, or troubleshooting",
-      "Infrastructure as Code implementation for AWS/GCP/Azure",
-      "Deployment strategy implementation (blue-green, canary, rolling)",
-      "Production reliability issues or incident response needed",
-      "**Any CI/CD pipeline requiring linting compliance**"
+      "CI/CD pipeline design or optimization",
+      "Kubernetes cluster setup or troubleshooting",
+      "Infrastructure as Code implementation",
+      "Developer platform or tooling development",
+      "Production reliability or incident response"
     ],
-    "orchestration_notes": [],
-    "description": "MUST BE USED for complex CI/CD pipeline orchestration, enterprise Kubernetes clusters, and Infrastructure as Code at scale. Use PROACTIVELY for deployment bottlenecks, reliability issues, and multi-cloud Terraform deployments.",
+    "description": "MUST BE USED for CI/CD, Kubernetes, IaC, and platform engineering. Consolidated from devops and platform-engineer.",
     "color": "orange"
-  },
-  {
-    "name": "frontend-architect",
-    "file": "frontend-architect.md",
-    "capabilities": [
-      "Micro-frontend architecture: Module federation, independent deployments, shared dependencies",
-      "Performance optimization: Core Web Vitals, bundle splitting, lazy loading, 60fps animations",
-      "State management: Complex patterns with Redux, Zustand, Recoil for predictive updates",
-      "Component systems: Design systems, reusable libraries, TypeScript generics",
-      "Real-time applications: WebSocket coordination, collaborative editing, conflict resolution"
-    ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
-    "when_to_use": [
-      "Complex frontend architecture for >100k DAU systems",
-      "Micro-frontend design and orchestration needed",
-      "Core Web Vitals optimization or performance issues",
-      "Design system or component library architecture",
-      "Real-time collaborative features implementation"
-    ],
-    "orchestration_notes": [],
-    "description": "MUST BE USED for architecting complex frontend systems >100k DAU and micro-frontend orchestration. Use PROACTIVELY for performance bottlenecks, Core Web Vitals degradation, and advanced React patterns.",
-    "color": "purple"
   },
   {
     "name": "frontend-engineer",
     "file": "frontend-engineer.md",
     "capabilities": [
-      "UI development: React, Vue, Angular component implementation with hooks and composition API",
-      "Client-side state: Redux, Context API, Vuex for application state management",
-      "Performance optimization: Bundle size reduction, lazy loading, code splitting, caching",
-      "Responsive design: Mobile-first development, CSS Grid, Flexbox, Tailwind CSS",
-      "Testing: Jest, Testing Library, Cypress for unit and integration testing"
+      "UI development: React, Vue, Angular with hooks and composition API",
+      "Client-side state: Redux, Context API, Vuex, Zustand",
+      "Performance optimization: Bundle size, lazy loading, code splitting",
+      "Design systems: Component libraries, design tokens, style guides",
+      "Accessibility: WCAG compliance, semantic HTML, keyboard navigation"
     ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
     "when_to_use": [
-      "Frontend component or feature implementation needed",
-      "UI performance optimization required",
+      "Frontend component or feature implementation",
+      "UI performance optimization",
+      "Design system creation or updates",
       "Responsive design or mobile adaptation",
-      "Client-side state management implementation",
-      "Frontend testing or debugging needed"
+      "Frontend testing or debugging"
     ],
-    "orchestration_notes": [],
-    "description": "Expert frontend engineer specializing in user interfaces and client-side applications. MUST BE USED for React/Vue/Angular implementations with performance focus.",
+    "description": "MUST BE USED for frontend work, UI components, and design systems. Consolidated from frontend-engineer and ui-designer.",
     "color": "blue"
-  },
-  {
-    "name": "fullstack-lead",
-    "file": "fullstack-lead.md",
-    "capabilities": [
-      "Full-stack development: React/Vue frontend with Node.js/Python/Java backend integration",
-      "System integration: API design, database modeling, authentication flows, deployment",
-      "Technical leadership: Code reviews, architecture decisions, team coordination",
-      "DevOps practices: CI/CD setup, containerization, monitoring, deployment strategies",
-      "Performance optimization: Full-stack performance tuning, caching strategies, load balancing"
-    ],
-    "tools": [],
-    "coordination_patterns": [
-      "DevOps practices: CI/CD setup, containerization, monitoring, deployment strategies",
-      "Performance optimization: Full-stack performance tuning, caching strategies, load balancing"
-    ],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
-    "when_to_use": [
-      "End-to-end feature development needed",
-      "Full-stack application prototyping or POCs",
-      "System integration across frontend and backend",
-      "Technical leadership for development teams",
-      "Complex features requiring coordinated implementation"
-    ],
-    "orchestration_notes": [],
-    "description": "Expert full-stack developer specializing in end-to-end development. MUST BE USED for coordinating frontend and backend implementation with technical leadership.",
-    "color": "blue"
-  },
-  {
-    "name": "ml-engineer",
-    "file": "ml-engineer.md",
-    "capabilities": [
-      "Model development: PyTorch, TensorFlow, JAX for deep learning; classical ML algorithms",
-      "MLOps pipelines: Kubeflow, Airflow, MLflow for end-to-end ML workflows",
-      "Model serving: High-throughput inference, A/B testing, canary deployments, edge deployment",
-      "Feature engineering: Feature stores, real-time features, data pipelines for ML",
-      "Distributed training: Multi-GPU, multi-node training optimization, hyperparameter tuning"
-    ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
-    "when_to_use": [
-      "ML model deployment to production needed",
-      "MLOps pipeline design or implementation",
-      "Feature store architecture or setup",
-      "Model serving infrastructure optimization",
-      "Distributed training or hyperparameter tuning"
-    ],
-    "orchestration_notes": [],
-    "description": "MUST BE USED for enterprise ML model deployment and advanced MLOps pipelines. Use PROACTIVELY for complex model serving architectures, feature store design, and distributed training infrastructure.",
-    "color": "blue"
-  },
-  {
-    "name": "mobile-engineer",
-    "file": "mobile-engineer.md",
-    "capabilities": [
-      "Native development: Swift/SwiftUI for iOS, Kotlin/Jetpack Compose for Android",
-      "Cross-platform: React Native, Flutter, Expo for unified mobile development",
-      "Mobile optimization: Battery efficiency, offline functionality, push notifications",
-      "Platform integration: Native APIs, device features, biometrics, camera, location",
-      "App deployment: App Store/Play Store submission, CI/CD, code signing, beta testing"
-    ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
-    "when_to_use": [
-      "Native iOS or Android development needed",
-      "Cross-platform mobile app implementation",
-      "Mobile performance optimization required",
-      "App store deployment or distribution setup",
-      "Platform-specific feature integration needed"
-    ],
-    "orchestration_notes": [],
-    "description": "Expert mobile engineer specializing in native and cross-platform development. MUST BE USED for iOS, Android, React Native, and Flutter applications.",
-    "color": "blue"
-  },
-  {
-    "name": "mobile-ui",
-    "file": "mobile-ui.md",
-    "capabilities": [
-      "iOS design: Human Interface Guidelines, SF Symbols, native iOS patterns, SwiftUI design",
-      "Android design: Material Design 3, Material You, adaptive layouts, Jetpack Compose UI",
-      "Mobile UX patterns: Gesture navigation, thumb-friendly zones, offline states, onboarding",
-      "Cross-platform consistency: Design systems for React Native and Flutter apps",
-      "Accessibility: Mobile screen readers, Dynamic Type, color contrast for small screens"
-    ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
-    "when_to_use": [
-      "Mobile app UI/UX design needed",
-      "Platform-specific design patterns required",
-      "Mobile design system creation or updates",
-      "Touch interaction and gesture design",
-      "Mobile accessibility improvements needed"
-    ],
-    "orchestration_notes": [],
-    "description": "MUST BE USED for native mobile app UI/UX design and platform-specific patterns. Expert mobile UI/UX specialist for iOS/Android design patterns following platform guidelines.",
-    "color": "pink"
-  },
-  {
-    "name": "performance-engineer",
-    "file": "performance-engineer.md",
-    "capabilities": [
-      "Performance profiling: CPU, memory, I/O analysis, flame graphs, bottleneck identification",
-      "Load testing: JMeter, K6, Artillery for stress testing and capacity planning",
-      "Optimization strategies: Caching, query optimization, algorithm improvements, parallelization",
-      "Benchmarking: Performance baselines, regression detection, comparative analysis",
-      "Monitoring setup: APM tools, custom metrics, performance dashboards, alerting"
-    ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
-    "when_to_use": [
-      "Performance issues or slow response times detected",
-      "Load testing or stress testing needed",
-      "Performance optimization required for scale",
-      "Benchmarking or performance regression analysis",
-      "Resource utilization optimization needed"
-    ],
-    "orchestration_notes": [],
-    "description": "MUST BE USED for performance optimization and load testing. Use PROACTIVELY for systems speed, scalability, and resource efficiency bottlenecks. Expert performance engineer specializing in optimization.",
-    "color": "green"
-  },
-  {
-    "name": "platform-engineer",
-    "file": "platform-engineer.md",
-    "capabilities": [
-      "Developer platforms: Internal portals, self-service infrastructure, golden paths",
-      "Tooling development: CLI tools, automation scripts, developer workflows, CI/CD templates",
-      "Observability: Monitoring, logging, tracing infrastructure for development teams",
-      "Platform APIs: Service catalogs, provisioning APIs, configuration management",
-      "Developer experience: Documentation, onboarding, productivity metrics, feedback loops"
-    ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
-    "when_to_use": [
-      "Internal developer platform creation or improvement",
-      "Developer portal or self-service infrastructure needed",
-      "Tooling or automation for development teams",
-      "Standardized workflows or golden paths required",
-      "Developer experience optimization needed"
-    ],
-    "orchestration_notes": [],
-    "description": "Use PROACTIVELY for platform engineering and developer experience optimization. MUST BE USED for building comprehensive platforms that empower development teams, implementing developer portals, and standardized workflows.",
-    "color": "orange"
-  },
-  {
-    "name": "principal-architect",
-    "file": "principal-architect.md",
-    "capabilities": [
-      "System architecture design: Scalable, maintainable, robust architectures following FAANG standards",
-      "Technical roadmaps: Breaking complex initiatives into clear phases with dependencies and milestones",
-      "Strategic planning: Cross-team implementation recommendations with efficient execution priority",
-      "Technology evaluation: Architecture decisions, technology selection, and migration strategies",
-      "Risk assessment: Technical debt analysis, bottleneck identification, and mitigation planning",
-      "**Documentation compliance**: Ensures all technical docs follow markdown linting and diagramming standards"
-    ],
-    "tools": [],
-    "coordination_patterns": [
-      "Major refactoring or architectural transformation initiatives",
-      "**Any architecture documentation requiring linting compliance**"
-    ],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
-    "when_to_use": [
-      "System-wide architecture design or redesign needed",
-      "Complex technical roadmap or implementation plan required",
-      "Enterprise-scale technology decisions or evaluations",
-      "Cross-team technical strategy and coordination planning",
-      "Major refactoring or architectural transformation initiatives",
-      "**Any architecture documentation requiring linting compliance**"
-    ],
-    "orchestration_notes": [],
-    "description": "Use PROACTIVELY for system-wide architecture design and comprehensive technical roadmaps. MUST BE USED for complex architectural decisions, enterprise-scale implementation planning, and technical strategy development.",
-    "color": "purple"
-  },
-  {
-    "name": "product-strategist",
-    "file": "product-strategist.md",
-    "capabilities": [
-      "Product strategy: Vision definition, roadmap planning, OKR alignment, success metrics",
-      "Feature prioritization: Value/effort analysis, user impact assessment, technical feasibility",
-      "Market analysis: Competitive research, user feedback synthesis, trend identification",
-      "Stakeholder alignment: Cross-functional coordination, expectation management, communication",
-      "Product metrics: KPI definition, analytics implementation, growth strategies"
-    ],
-    "tools": [],
-    "coordination_patterns": [
-      "Product metrics: KPI definition, analytics implementation, growth strategies"
-    ],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
-    "when_to_use": [
-      "Product strategy or roadmap development needed",
-      "Feature prioritization or trade-off decisions required",
-      "Market analysis or competitive research",
-      "User feedback synthesis and action planning",
-      "Product metrics or success criteria definition"
-    ],
-    "orchestration_notes": [],
-    "description": "Expert product strategist specializing in product guidance and prioritization. MUST BE USED for aligning technical development with business objectives.",
-    "color": "cyan"
-  },
-  {
-    "name": "project-orchestrator",
-    "file": "project-orchestrator.md",
-    "capabilities": [
-      "Project planning: Timeline estimation, milestone definition, dependency analysis, bottleneck identification",
-      "Resource optimization: Capacity planning, workload analysis, efficiency recommendations",
-      "Workflow coordination: Task sequencing, handoff optimization, integration planning",
-      "Execution analysis: Timeline estimation, risk assessment, critical path identification",
-      "Team efficiency: Collaboration patterns, communication optimization, productivity metrics"
-    ],
-    "tools": [],
-    "coordination_patterns": [
-      "Execution analysis: Timeline estimation, risk assessment, critical path identification",
-      "Team efficiency: Collaboration patterns, communication optimization, productivity metrics",
-      "Project timeline analysis and milestone planning needed",
-      "Workflow optimization or efficiency improvements required",
-      "Resource allocation or capacity planning decisions",
-      "Project timeline or dependency analysis needed",
-      "Tasks better suited for principal-architect or business-analyst"
-    ],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
-    "when_to_use": [
-      "Complex multi-component projects requiring coordination",
-      "Project timeline analysis and milestone planning needed",
-      "Workflow optimization or efficiency improvements required",
-      "Resource allocation or capacity planning decisions",
-      "Project timeline or dependency analysis needed"
-    ],
-    "orchestration_notes": [],
-    "description": "MUST BE USED for project timeline analysis, resource planning, and workflow optimization. Use PROACTIVELY for complex project coordination without agent orchestration.",
-    "color": "cyan"
   },
   {
     "name": "researcher",
     "file": "researcher.md",
     "capabilities": [
-      "Technology research: Framework evaluation, tool comparison, technology selection criteria",
-      "Industry analysis: Market trends, competitive landscape, emerging technologies",
-      "Best practices: Industry standards, patterns, anti-patterns, case studies",
-      "Documentation synthesis: Technical research, white papers, architecture decisions",
-      "Evidence gathering: Benchmarks, performance data, community feedback, adoption metrics"
+      "Technology research: Framework evaluation, tool comparison, selection criteria",
+      "Codebase analysis: Architecture assessment, technical debt, dependency mapping",
+      "User research: Usability testing, user feedback, conversion optimization",
+      "Business analysis: Requirements gathering, stakeholder alignment, process mapping",
+      "Product strategy: Roadmap planning, feature prioritization, market analysis"
     ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
     "when_to_use": [
-      "Technology evaluation or selection needed",
-      "Industry best practices research required",
-      "Framework or library comparison analysis",
-      "Market trends or competitive analysis",
-      "Technical feasibility research needed"
+      "Technology evaluation or comparison",
+      "Codebase assessment or architecture analysis",
+      "User research or usability testing",
+      "Requirements gathering or business analysis",
+      "Product strategy or prioritization"
     ],
-    "orchestration_notes": [],
-    "description": "Expert researcher specializing in technology evaluation and industry analysis. MUST BE USED for comprehensive research insights and best practices.",
+    "description": "MUST BE USED for research, analysis, and strategy. Consolidated from researcher, codebase-analyst, ux-researcher, business-analyst, and product-strategist.",
     "color": "yellow"
   },
   {
     "name": "security-auditor",
     "file": "security-auditor.md",
     "capabilities": [
-      "Vulnerability assessment: OWASP Top 10, injection attacks, XSS, CSRF, security misconfigurations",
-      "Threat modeling: STRIDE, attack surface analysis, risk assessment, mitigation strategies",
-      "Security testing: Penetration testing, static/dynamic analysis, dependency scanning",
-      "Compliance review: GDPR, HIPAA, SOC2, PCI-DSS requirements verification",
-      "Security hardening: Authentication, authorization, encryption, secure coding practices"
+      "Vulnerability assessment: OWASP Top 10, injection attacks, XSS, CSRF",
+      "Threat modeling: STRIDE, attack surface analysis, risk assessment",
+      "Security testing: Penetration testing, static/dynamic analysis",
+      "Compliance review: GDPR, HIPAA, SOC2, PCI-DSS verification",
+      "Security hardening: Authentication, authorization, encryption"
     ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
     "when_to_use": [
-      "Security audit or vulnerability assessment needed",
-      "Authentication/authorization code review required",
+      "Security audit or vulnerability assessment",
+      "Authentication/authorization code review",
       "Threat modeling or risk assessment",
       "Compliance verification or security hardening",
-      "Sensitive data handling or encryption implementation"
+      "Sensitive data handling implementation"
     ],
-    "orchestration_notes": [],
-    "description": "MUST BE USED for OWASP Top 10 checks, threat modeling, and vulnerability detection. Use PROACTIVELY for security audits, vulnerability assessments, compliance reviews, and threat detection.",
+    "description": "MUST BE USED for security audits, vulnerability detection, and compliance reviews.",
     "color": "red"
   },
   {
     "name": "tech-writer",
     "file": "tech-writer.md",
     "capabilities": [
-      "Documentation creation: READMEs, API docs, architecture guides, migration paths with **MANDATORY markdown linting compliance**",
-      "Work summaries: Multi-step task documentation with clear outcomes and next steps",
-      "XML-enhanced structures: PRDs, SPECs, and complex technical specifications",
-      "Knowledge transfer: Transforming complex code into accessible documentation",
-      "Content architecture: Information hierarchy, cross-references, and navigation",
-      "Audio content generation: Leverages mcp__elevenlabs for converting documentation to professional audio formats",
-      "**Linting enforcement**: MUST ensure all markdown follows proper heading hierarchy, list formatting, code block specifications, and link formatting"
+      "Documentation creation: READMEs, API docs, architecture guides",
+      "Work summaries: Multi-step task documentation with outcomes",
+      "Knowledge transfer: Complex code to accessible documentation",
+      "Content architecture: Information hierarchy, cross-references",
+      "Markdown linting: Proper heading hierarchy, formatting compliance"
     ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
     "when_to_use": [
-      "README creation or updates requested",
-      "API documentation for endpoints, parameters, or responses needed",
-      "After completing 3+ operation tasks or 5+ file changes",
-      "Architecture documentation, ADRs, or technical specs required",
-      "Migration guides, setup instructions, or troubleshooting docs needed",
-      "**Any markdown or YAML documentation requiring linting compliance**"
+      "README creation or updates",
+      "API documentation needed",
+      "After completing 3+ operation tasks",
+      "Architecture documentation or ADRs required",
+      "Migration guides or setup instructions"
     ],
-    "orchestration_notes": [],
-    "description": "Use PROACTIVELY for docs, READMEs, API docs. MUST BE USED after multi-step tasks (3+ ops) or multi-file changes (5+ files).",
+    "description": "MUST BE USED for documentation, READMEs, and API docs.",
     "color": "cyan"
   },
   {
     "name": "test-engineer",
     "file": "test-engineer.md",
     "capabilities": [
-      "Test strategy: Unit, integration, E2E, performance, security test planning and coverage",
-      "Test automation: Jest, Pytest, Mocha, Cypress, Playwright across multiple frameworks",
+      "Test strategy: Unit, integration, E2E, performance test planning",
+      "Test automation: Jest, Pytest, Mocha, Cypress, Playwright",
       "Quality assurance: Test coverage analysis, quality gates, CI/CD integration",
-      "Test implementation: TDD/BDD approaches, mocking, fixtures, test data management",
-      "Continuous testing: Pipeline integration, parallel execution, flaky test detection"
+      "Test implementation: TDD/BDD, mocking, fixtures, test data",
+      "Continuous testing: Pipeline integration, parallel execution"
     ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
     "when_to_use": [
-      "Test strategy or framework setup needed",
-      "Test implementation for new features required",
-      "Test coverage improvement or gaps identified",
+      "Test strategy or framework setup",
+      "Test implementation for features",
+      "Test coverage improvement",
       "CI/CD test pipeline configuration",
-      "Quality gate failures or flaky test issues"
+      "Quality gate failures or flaky tests"
     ],
-    "orchestration_notes": [],
-    "description": "MUST BE USED for comprehensive test strategy design and intelligent test implementation across frameworks. Use PROACTIVELY for untested code paths, CI/CD pipeline changes, and quality gate failures.",
+    "description": "MUST BE USED for test strategy and implementation across frameworks.",
     "color": "green"
-  },
-  {
-    "name": "ui-designer",
-    "file": "ui-designer.md",
-    "capabilities": [
-      "Visual design: Typography, color theory, layout principles, visual hierarchy, brand consistency",
-      "UX patterns: Information architecture, user flows, interaction design, micro-interactions",
-      "Design systems: Component libraries, design tokens, style guides, pattern libraries",
-      "Responsive design: Breakpoint strategies, fluid layouts, adaptive components",
-      "Accessibility: WCAG compliance, inclusive design, color contrast, focus states"
-    ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
-    "when_to_use": [
-      "UI/UX design or redesign needed",
-      "Design system creation or maintenance",
-      "Visual consistency issues identified",
-      "User experience optimization required",
-      "Design accessibility improvements needed"
-    ],
-    "orchestration_notes": [],
-    "description": "MUST BE USED for comprehensive UI/UX design optimization and advanced design system architecture. Use PROACTIVELY for design inconsistencies, accessibility violations, and user experience friction points.",
-    "color": "pink"
-  },
-  {
-    "name": "ux-researcher",
-    "file": "ux-researcher.md",
-    "capabilities": [
-      "User research: Interviews, surveys, personas, journey mapping, behavioral analysis",
-      "Usability testing: A/B testing, heuristic evaluation, task analysis, think-aloud protocols",
-      "Data analysis: Quantitative metrics, qualitative insights, pattern identification, synthesis",
-      "Conversion optimization: Funnel analysis, friction points, drop-off investigation, improvements",
-      "Research strategy: Study design, methodology selection, participant recruitment, insights delivery"
-    ],
-    "tools": [],
-    "coordination_patterns": [],
-    "parallel_compatible": [],
-    "handoff_patterns": [],
-    "unique_expertise": [],
-    "when_to_use": [
-      "User research or usability testing needed",
-      "Conversion optimization opportunities identified",
-      "User feedback analysis and synthesis required",
-      "Persona or journey mapping development",
-      "UX friction points or pain points investigation"
-    ],
-    "orchestration_notes": [],
-    "description": "MUST BE USED for comprehensive user research strategy and advanced usability testing methodologies. Use PROACTIVELY for user experience friction, conversion optimization opportunities, and user feedback patterns.",
-    "color": "pink"
   }
 ]

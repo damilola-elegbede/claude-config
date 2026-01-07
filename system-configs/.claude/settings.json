@@ -14,6 +14,19 @@
             "command": "afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r' 2>/dev/null &"
           }
         ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [[ \"$CLAUDE_FILE_PATHS\" =~ \\.(js|jsx|ts|tsx|json|css|scss|html|md)$ ]]; then prettier --write \"$CLAUDE_FILE_PATHS\" 2>/dev/null || true; fi"
+          },
+          {
+            "type": "command",
+            "command": "if [[ \"$CLAUDE_FILE_PATHS\" =~ \\.(js|jsx|ts|tsx)$ ]]; then eslint --fix \"$CLAUDE_FILE_PATHS\" 2>/dev/null || true; fi"
+          }
+        ]
       }
     ],
     "Stop": [

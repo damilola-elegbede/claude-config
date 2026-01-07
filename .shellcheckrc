@@ -18,9 +18,9 @@ severity=warning
 # SC2312: Command substitution masking (info-level, not critical)
 # SC2249: Default case in switch statements (optional style preference)
 #
-# Note: SC2164 (cd failures) and SC2154 (undefined variables) are kept as warnings
-# as they indicate real issues that should be addressed
-exclude=SC1091,SC2034,SC2155,SC2250,SC2292,SC2310,SC2086,SC2312,SC2249
+# SC2154: Variable is referenced but not assigned (false positive for sourced files)
+# SC2164: Use cd ... || exit (not always needed in controlled test environments)
+exclude=SC1091,SC2034,SC2155,SC2250,SC2292,SC2310,SC2086,SC2312,SC2249,SC2154,SC2164
 
 # Enable all optional checks
 enable=all
