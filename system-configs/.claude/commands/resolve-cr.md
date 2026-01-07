@@ -1,6 +1,8 @@
 ---
 description: Resolve CodeRabbit review comments
 argument-hint: [pr-number] [--auto|--dry-run]
+thinking-level: megathink
+thinking-tokens: 10000
 ---
 
 # /resolve-cr Command
@@ -20,11 +22,23 @@ Fetches CodeRabbit review comments from GitHub, evaluates each against project s
 
 ## Behavior
 
-1. **Fetch**: Get comments from GitHub API
-2. **Evaluate**: Analyze each comment with code-reviewer
-3. **Approve**: Present findings for user approval
-4. **Fix**: Apply approved fixes
-5. **Notify**: Post `@coderabbitai resolve` to PR
+1. **Fetch**: Multi-source discovery from 3 GitHub API endpoints
+   - Inline review comments: `gh api repos/{owner}/{repo}/pulls/{pr}/comments`
+   - Review submissions: `gh pr view --json reviews`
+   - PR discussion comments: `gh pr view --json comments`
+   - Merge results and deduplicate by comment ID
+
+2. **Evaluate**: Analyze each comment against project standards
+
+3. **Approve**: Present evaluation table with options (MANDATORY in default mode)
+   - `[a]` Approve all recommended fixes
+   - `[s]` Select specific issues to fix
+   - `[v]` View detailed analysis for a comment
+   - `[n]` Skip all fixes
+
+4. **Fix**: Apply approved fixes (delegate as needed)
+
+5. **Notify**: Post `@coderabbitai resolve` to PR, push changes
 
 ## Expected Output
 
@@ -48,9 +62,13 @@ Evaluating against project standards...
 
 Summary: 4 recommended, 1 skip (style preference)
 
-Options: [a]pprove all, [s]elect, [n]o fixes
+Options:
+  [a] Approve all recommended fixes (4 issues)
+  [s] Select specific issues to fix
+  [v] View detailed analysis
+  [n] Skip all fixes
 
-Your choice: a
+Your choice:
 
 Applying fixes...
   ✅ Fixed error handling in auth.ts
@@ -79,6 +97,15 @@ User: /resolve-cr --auto
 
 🎉 Auto-resolved 4 issues
 ```
+
+## Implementation Notes
+
+**CRITICAL**: In default mode (no `--auto`), you MUST use the `AskUserQuestion` tool after
+displaying the evaluation table. Present the options and WAIT for user response before
+applying any fixes. Never proceed without explicit approval.
+
+**Multi-Source Fetching**: Query all 3 GitHub API endpoints to ensure comprehensive
+coverage. Filter for CodeRabbit-authored comments. Merge and deduplicate by comment ID.
 
 ## Notes
 
