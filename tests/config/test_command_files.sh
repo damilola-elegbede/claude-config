@@ -389,7 +389,8 @@ EOF
         return 0
     else
         echo "    Edge case validation counts unexpected"
-        return 0  # Don't fail on edge case differences
+        echo "    Expected: 2 valid, 2 invalid; Got: $valid_count valid, $invalid_count invalid"
+        return 1
     fi
 }
 
