@@ -23,13 +23,23 @@ Comprehensive code review combining CodeRabbit CLI, automated linting, and AI an
 
 ## Behavior
 
+### Flag Semantics
+
+| Flag | Phase 0 (CodeRabbit) | Phases 1-3 (Lint/Analyze/Report) |
+|------|----------------------|----------------------------------|
+| (default) | Runs if CLI available | All run |
+| `--coderabbit` | Runs | Skipped (CodeRabbit-only) |
+| `--no-coderabbit` | Skipped | All run (internal agent only) |
+
+### Phases
+
 0. **CodeRabbit Analysis** (when CLI available and not --no-coderabbit):
    - Delegate to `/resolve-cr --local` for interactive triage
-   - This runs CodeRabbit CLI, evaluates issues, and tracks ignored issues
-   - Ignored issues are stored in `.tmp/coderabbit-ignored.json` for PR acknowledgment
+   - Uses interactive approval flow (never auto-commits without consent)
+   - Ignored issues stored in `.tmp/coderabbit-ignored.json` for PR acknowledgment via `/ship-it`
 
 1. **Lint**: Run automated linters (ESLint, Prettier, ruff, etc.)
-2. **Analyze**: Deploy code-reviewer agent for deep analysis (skip if --coderabbit)
+2. **Analyze**: Deploy code-reviewer agent for deep analysis (skipped if `--coderabbit` flag used)
 3. **Report**: Present combined findings with actionable recommendations
 4. **Fix** (with --fix): Auto-apply safe fixes and commit
 
@@ -53,6 +63,7 @@ Phase 0: CodeRabbit Analysis
   Delegating to /resolve-cr --local...
   [Interactive triage - see /resolve-cr for details]
   ✅ Fixed 2 issues, documented 1 for PR acknowledgment
+     (Saved to .tmp/coderabbit-ignored.json → posted by /ship-it)
 
 Phase 1: Automated Linting
   ✅ ESLint: 0 issues

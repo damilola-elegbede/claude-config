@@ -65,8 +65,8 @@ Both modes use the same interactive triage flow for fix/skip decisions.
    - `[a]` Approve all recommended fixes
    - `[s]` Select specific issues to fix
    - `[v]` View detailed analysis
-   - `[n]` Skip all - document as ignored for PR
-   - `[c]` Continue without action (no tracking)
+   - `[n]` Skip all - document as ignored (creates `.tmp/coderabbit-ignored.json` for PR acknowledgment)
+   - `[c]` Continue without action - dismiss issues without tracking (use when re-running after prior review or when you explicitly don't want PR acknowledgment)
 
 4. **Track Ignored Issues**: For skipped issues, prompt for reason:
    - `nitpick` - Style preference, not a real issue
@@ -208,6 +208,8 @@ Applying fixes...
 
 ### Ignored Issues File Format
 
+**Location**: `.tmp/coderabbit-ignored.json`
+
 ```json
 {
   "branch": "feature/my-feature",
@@ -224,6 +226,11 @@ Applying fixes...
   ]
 }
 ```
+
+**Field Semantics**:
+
+- **`branch`**: Git branch name - used by `/ship-it` to validate the file matches current branch (prevents posting stale acknowledgments from old branches)
+- **`created_at`**: RFC3339 timestamp - audit trail and staleness detection (files older than 7 days trigger warnings)
 
 ## Implementation Notes
 
@@ -251,3 +258,11 @@ coverage. Filter for CodeRabbit-authored comments. Merge and deduplicate by comm
 - Ignored issues file is consumed by `/ship-it` when creating PR
 - Does NOT post to GitHub (no PR exists yet)
 - Typical execution: 1-3 minutes
+
+### File Lifecycle
+
+- `.tmp/` directory is gitignored and ephemeral
+- Each `/resolve-cr --local` run **overwrites** the ignored issues file (not appending)
+- `/ship-it` validates `branch` field matches current branch before posting
+- Cross-branch isolation: switching branches won't accidentally post old acknowledgments
+- File is deleted after `/ship-it` posts acknowledgment to PR

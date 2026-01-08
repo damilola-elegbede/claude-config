@@ -73,22 +73,40 @@ After PR creation (or if PR already exists), perform these actions:
 
 1. **CodeRabbit Acknowledgments** (automatic):
    - Check if `.tmp/coderabbit-ignored.json` exists
-   - Validate branch matches current branch
-   - Generate acknowledgment comment from ignored issues
+   - **Skip silently** if file doesn't exist (no ignored issues to acknowledge)
+   - **Validate branch** matches current branch - abort with warning if mismatch
+   - **Validate structure** - skip posting with error log if file is malformed
+   - Generate acknowledgment comment, grouped by `category` field
    - Post to PR via `gh pr comment <pr-number> --body "..."`
-   - Delete tracking file after posting
+   - Delete tracking file after successful posting
 
-   Comment format:
+   **Edge Cases**:
+
+   | Condition | Action |
+   |-----------|--------|
+   | File doesn't exist | Skip silently (no issues to acknowledge) |
+   | File exists, 0 issues | Skip silently (empty array) |
+   | Branch mismatch | Abort with warning, don't delete file |
+   | Malformed JSON | Log error, skip posting, don't delete file |
+
+   **Comment format** (grouped by category):
 
    ```markdown
    ## CodeRabbit Issue Acknowledgments
 
    The following issues were reviewed locally and intentionally not addressed:
 
-   ### [Category Name]
+   ### False Positives
+
    | Location | Issue | Reason |
    |----------|-------|--------|
-   | `file.ts:12` | Issue description | User explanation |
+   | `utils.ts:8` | Use const vs let | Variable is reassigned |
+
+   ### Intentional Design Decisions
+
+   | Location | Issue | Reason |
+   |----------|-------|--------|
+   | `SKILL.md:90` | Informal phrasing | Matches project voice |
 
    ---
    @coderabbitai These issues were reviewed during local development. No action needed.
