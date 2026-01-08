@@ -1,6 +1,6 @@
 ---
 description: Code review with linting and security scanning
-argument-hint: [--full|--fix|--quick|file-path]
+argument-hint: [--full|--fix|--quick|--coderabbit|--no-coderabbit|file-path]
 ---
 
 # /review Command
@@ -12,18 +12,26 @@ argument-hint: [--full|--fix|--quick|file-path]
 /review --full             # Review entire codebase
 /review --fix              # Auto-fix issues and commit
 /review --quick            # Linter-only mode (fast)
+/review --coderabbit       # CodeRabbit only (skip internal agent)
+/review --no-coderabbit    # Internal agent only (skip CodeRabbit)
 /review <file|directory>   # Review specific target
 ```
 
 ## Description
 
-Comprehensive code review combining automated linting and AI analysis. Catches issues before external review.
+Comprehensive code review combining CodeRabbit CLI, automated linting, and AI analysis. Catches issues before external review.
 
 ## Behavior
 
+0. **CodeRabbit Analysis** (when CLI available and not --no-coderabbit):
+   - Run `coderabbit --prompt-only --type uncommitted` for working changes
+   - Run `coderabbit --prompt-only --type committed` if no uncommitted changes
+   - Parse output for issues with file locations and severity
+   - Present CodeRabbit findings first
+
 1. **Lint**: Run automated linters (ESLint, Prettier, ruff, etc.)
-2. **Analyze**: Deploy code-reviewer agent for deep analysis
-3. **Report**: Present findings with actionable recommendations
+2. **Analyze**: Deploy code-reviewer agent for deep analysis (skip if --coderabbit)
+3. **Report**: Present combined findings with actionable recommendations
 4. **Fix** (with --fix): Auto-apply safe fixes and commit
 
 ### Review Modes
@@ -41,6 +49,12 @@ Comprehensive code review combining automated linting and AI analysis. Catches i
 User: /review
 
 🔍 Reviewing changed files...
+
+Phase 0: CodeRabbit Analysis
+  Running coderabbit --prompt-only --type uncommitted...
+  ⚠️ 2 issues found:
+    - src/auth.ts:45 [HIGH] Missing error handling for network failures
+    - src/utils.ts:12 [LOW] Consider using const instead of let
 
 Phase 1: Automated Linting
   ✅ ESLint: 0 issues
@@ -78,8 +92,24 @@ User: /review --fix
 
 ## Notes
 
-- Uses code-reviewer agent for AI analysis
+- **CodeRabbit**: Runs first when CLI is installed (`coderabbit auth login` to set up)
+- Uses code-reviewer agent for deeper AI analysis after CodeRabbit
 - Includes accessibility checks (WCAG compliance)
 - Default mode requires approval before fixes
 - `--fix` auto-applies safe recommendations
-- Typical execution: 2-5 minutes
+- Typical execution: 2-5 minutes (longer with CodeRabbit)
+
+### CodeRabbit Setup
+
+```bash
+# Install CLI
+curl -fsSL https://cli.coderabbit.ai/install.sh | sh
+
+# Authenticate
+coderabbit auth login
+
+# Verify
+coderabbit auth status
+```
+
+Free tier: 1 review/hour. Pro tier: 5 reviews/hour with enhanced analysis.

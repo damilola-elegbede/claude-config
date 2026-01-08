@@ -1,0 +1,61 @@
+language: "en-US"
+tone_instructions: "Be direct and technical. Focus on actionable feedback."
+
+reviews:
+  profile: "assertive"
+  high_level_summary: true
+  auto_review:
+    enabled: true
+    drafts: false
+  path_filters:
+    - "!.tmp/**"
+    - "!.git/**"
+    - "!*.lock"
+  path_instructions:
+    - path: "system-configs/.claude/commands/*.md"
+      instructions: |
+        Review command files for:
+        - Clear usage examples
+        - Consistent formatting with other commands
+        - Valid YAML front-matter
+        - Actionable behavior descriptions
+    - path: "system-configs/.claude/agents/*.md"
+      instructions: |
+        Review agent files for:
+        - Valid YAML front-matter (allowed_tools, description)
+        - SYSTEM BOUNDARY protection
+        - Clear role definition
+        - No recursive agent invocation
+    - path: "scripts/*.py"
+      instructions: |
+        Review Python scripts for:
+        - Proper error handling and exit codes
+        - argparse usage for CLI scripts
+        - Type hints where beneficial
+    - path: "scripts/*.sh"
+      instructions: |
+        Review shell scripts for:
+        - ShellCheck compliance
+        - Proper quoting and variable handling
+        - Error handling with set -e or explicit checks
+    - path: "tests/**/*.sh"
+      instructions: |
+        Review test scripts for:
+        - Meaningful assertions
+        - Clean test isolation
+        - Descriptive test names
+
+tools:
+  shellcheck:
+    enabled: true
+  ruff:
+    enabled: true
+  markdownlint:
+    enabled: true
+  yamllint:
+    enabled: true
+  gitleaks:
+    enabled: true
+
+chat:
+  auto_reply: true
