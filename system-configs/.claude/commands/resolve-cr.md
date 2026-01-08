@@ -1,6 +1,6 @@
 ---
 description: Resolve CodeRabbit review comments
-argument-hint: [pr-number] [--local|--auto|--dry-run]
+argument-hint: "[pr-number] [--local|--auto|--dry-run]"
 thinking-level: megathink
 thinking-tokens: 10000
 ---

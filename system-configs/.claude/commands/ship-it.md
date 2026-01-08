@@ -1,6 +1,6 @@
 ---
 description: Orchestrate development workflows with composable flags
-argument-hint: [-d] [-r] [-t] [-c] [-p] [-pr] [--dry-run]
+argument-hint: "[-d] [-r] [-t] [-c] [-p] [-pr] [--dry-run]"
 ---
 
 # /ship-it Command
