@@ -24,10 +24,9 @@ Comprehensive code review combining CodeRabbit CLI, automated linting, and AI an
 ## Behavior
 
 0. **CodeRabbit Analysis** (when CLI available and not --no-coderabbit):
-   - Run `coderabbit --prompt-only --type uncommitted` for working changes
-   - Run `coderabbit --prompt-only --type committed` if no uncommitted changes
-   - Parse output for issues with file locations and severity
-   - Present CodeRabbit findings first
+   - Delegate to `/resolve-cr --local` for interactive triage
+   - This runs CodeRabbit CLI, evaluates issues, and tracks ignored issues
+   - Ignored issues are stored in `.tmp/coderabbit-ignored.json` for PR acknowledgment
 
 1. **Lint**: Run automated linters (ESLint, Prettier, ruff, etc.)
 2. **Analyze**: Deploy code-reviewer agent for deep analysis (skip if --coderabbit)
@@ -51,10 +50,9 @@ User: /review
 🔍 Reviewing changed files...
 
 Phase 0: CodeRabbit Analysis
-  Running coderabbit --prompt-only --type uncommitted...
-  ⚠️ 2 issues found:
-    - src/auth.ts:45 [HIGH] Missing error handling for network failures
-    - src/utils.ts:12 [LOW] Consider using const instead of let
+  Delegating to /resolve-cr --local...
+  [Interactive triage - see /resolve-cr for details]
+  ✅ Fixed 2 issues, documented 1 for PR acknowledgment
 
 Phase 1: Automated Linting
   ✅ ESLint: 0 issues

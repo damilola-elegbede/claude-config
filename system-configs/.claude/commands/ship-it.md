@@ -67,6 +67,33 @@ Before executing steps, perform these checks:
    - If PR exists → skip creation, display existing PR URL
    - Only create new PR if none exists
 
+### Post-PR Actions
+
+After PR creation (or if PR already exists), perform these actions:
+
+1. **CodeRabbit Acknowledgments** (automatic):
+   - Check if `.tmp/coderabbit-ignored.json` exists
+   - Validate branch matches current branch
+   - Generate acknowledgment comment from ignored issues
+   - Post to PR via `gh pr comment <pr-number> --body "..."`
+   - Delete tracking file after posting
+
+   Comment format:
+
+   ```markdown
+   ## CodeRabbit Issue Acknowledgments
+
+   The following issues were reviewed locally and intentionally not addressed:
+
+   ### [Category Name]
+   | Location | Issue | Reason |
+   |----------|-------|--------|
+   | `file.ts:12` | Issue description | User explanation |
+
+   ---
+   @coderabbitai These issues were reviewed during local development. No action needed.
+   ```
+
 ## Expected Output
 
 ### Full Workflow (default)
@@ -78,7 +105,7 @@ Before executing steps, perform these checks:
   ✅ Documentation updated
 
 📋 Step 2/6: review
-  ✅ Code review passed
+  ✅ Code review passed (2 issues fixed, 1 documented for PR)
 
 📋 Step 3/6: test
   ✅ All tests passed (45/45)
@@ -91,6 +118,11 @@ Before executing steps, perform these checks:
 
 📋 Step 6/6: pr
   ✅ PR created: https://github.com/org/repo/pull/123
+
+📋 Post-PR: acknowledgments
+  📄 Found 1 ignored CodeRabbit issue
+  📝 Posted acknowledgment comment to PR
+  🧹 Cleaned up tracking file
 
 🎉 Complete (6/6 steps)
 ```
@@ -130,3 +162,4 @@ No changes made.
 - Pure orchestrator: delegates to `/docs`, `/review`, `/test`, `/commit`, `/push`, `/pr`
 - Never bypasses quality gates (no `--no-verify`)
 - Step dependencies are your responsibility: `-p` alone fails if nothing committed
+- **CodeRabbit integration**: After PR creation, automatically posts acknowledgment comment for any ignored issues tracked during `/review`
