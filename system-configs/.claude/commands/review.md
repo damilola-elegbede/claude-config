@@ -1,6 +1,6 @@
 ---
 description: Code review with linting and security scanning
-argument-hint: [--full|--fix|--quick|file-path]
+argument-hint: [--full|--fix|--quick|--coderabbit|--no-coderabbit|file-path]
 ---
 
 # /review Command
@@ -12,19 +12,66 @@ argument-hint: [--full|--fix|--quick|file-path]
 /review --full             # Review entire codebase
 /review --fix              # Auto-fix issues and commit
 /review --quick            # Linter-only mode (fast)
+/review --coderabbit       # CodeRabbit only (skip internal agent)
+/review --no-coderabbit    # Internal agent only (skip CodeRabbit)
 /review <file|directory>   # Review specific target
 ```
 
 ## Description
 
-Comprehensive code review combining automated linting and AI analysis. Catches issues before external review.
+Comprehensive code review combining CodeRabbit CLI, automated linting, and AI analysis. Catches issues before external review.
 
 ## Behavior
 
+### Flag Semantics
+
+| Flag | Phase 0 (CodeRabbit) | Phases 1-3 (Lint/Analyze/Report) |
+|------|----------------------|----------------------------------|
+| (default) | Runs if CLI available | All run |
+| `--coderabbit` | Runs | Skipped (CodeRabbit-only) |
+| `--no-coderabbit` | Skipped | All run (internal agent only) |
+
+### Phases
+
+0. **CodeRabbit Analysis** (when CLI available and not --no-coderabbit):
+   - Delegate to `/resolve-cr --local` for interactive triage
+   - Uses interactive approval flow (never auto-commits without consent)
+   - Ignored issues stored in `.tmp/coderabbit-ignored.json` for PR acknowledgment via `/ship-it`
+
 1. **Lint**: Run automated linters (ESLint, Prettier, ruff, etc.)
-2. **Analyze**: Deploy code-reviewer agent for deep analysis
-3. **Report**: Present findings with actionable recommendations
+2. **Analyze**: Deploy code-reviewer agent for thorough analysis (skipped if `--coderabbit` flag used)
+3. **Report**: Present combined findings with actionable recommendations
 4. **Fix** (with --fix): Auto-apply safe fixes and commit
+
+### Phase 0 Execution (MANDATORY when CLI available)
+
+**CRITICAL**: Phase 0 is not optional. When CodeRabbit CLI is available, you MUST execute it.
+
+1. **Check CLI availability**: Run `which coderabbit`
+2. **If available**: Delegate to `/resolve-cr --local`
+   - This runs `coderabbit review --prompt-only --type all --config .coderabbit.yaml --base <default-branch>`
+   - Presents interactive triage for each issue
+   - Creates `.tmp/coderabbit-ignored.json` for any skipped issues
+   - Does NOT post to GitHub (no PR exists yet)
+3. **After /resolve-cr completes**: Continue to Phases 1-3 (unless `--coderabbit` flag used)
+
+### Contract Validation (Phase 2)
+
+When reviewing command/skill markdown files, the code-reviewer agent MUST perform cross-file contract validation:
+
+1. **Enum Consistency**: If File A defines enum values, File B that consumes them must handle ALL values
+   - Example: `resolve-cr.md` defines 5 ignore categories → `ship-it.md` must template all 5
+
+2. **Command References**: All `/command` references must be accurate
+   - Check which command creates files vs which consumes them
+   - Verify referenced command names exist
+
+3. **JSON Schema Contracts**: If File A defines a JSON schema, File B that reads it must handle all fields
+   - Check required vs optional fields
+   - Check enum field values are exhaustively handled
+
+4. **Hardcoded Values**: Flag hardcoded branch names, paths, or configs that should be dynamic
+   - Example: `--base main` should be `--base <default-branch>` with a note
 
 ### Review Modes
 
@@ -41,6 +88,12 @@ Comprehensive code review combining automated linting and AI analysis. Catches i
 User: /review
 
 🔍 Reviewing changed files...
+
+Phase 0: CodeRabbit Analysis
+  Delegating to /resolve-cr --local...
+  [Interactive triage - see /resolve-cr for details]
+  ✅ Fixed 2 issues, documented 1 for PR acknowledgment
+     (Saved to .tmp/coderabbit-ignored.json → posted by /ship-it)
 
 Phase 1: Automated Linting
   ✅ ESLint: 0 issues
@@ -78,8 +131,26 @@ User: /review --fix
 
 ## Notes
 
-- Uses code-reviewer agent for AI analysis
+- **CodeRabbit**: Runs first when CLI is installed (`coderabbit auth login` to set up)
+- Uses code-reviewer agent for thorough AI analysis after CodeRabbit
 - Includes accessibility checks (WCAG compliance)
 - Default mode requires approval before fixes
 - `--fix` auto-applies safe recommendations
-- Typical execution: 2-5 minutes
+- Typical execution: 2-5 minutes (longer with CodeRabbit)
+
+### CodeRabbit Setup
+
+```bash
+# Install CLI
+curl -fsSL https://cli.coderabbit.ai/install.sh | sh
+
+# Authenticate (opens browser for OAuth)
+coderabbit auth login
+
+# Verify
+coderabbit auth status
+```
+
+**Authentication**: `coderabbit auth login` opens browser for OAuth. Credentials stored locally in `~/.config/coderabbit/`.
+
+**Rate Limits**: Free tier: 1 review/hour. Pro tier: 5 reviews/hour. When limit hit, `/review` continues with Phases 1-3 only (skips Phase 0).
