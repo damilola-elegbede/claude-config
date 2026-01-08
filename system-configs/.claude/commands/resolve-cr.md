@@ -53,11 +53,12 @@ Both modes use the same interactive triage flow for fix/skip decisions.
 1. **Run**: Execute CodeRabbit CLI with local config
 
    ```bash
-   coderabbit review --prompt-only --type all --config .coderabbit.yaml
+   coderabbit review --prompt-only --type all --config .coderabbit.yaml --base main
    ```
 
    - `--type all`: Reviews both uncommitted and committed changes
    - `--config .coderabbit.yaml`: Uses repository-specific settings
+   - `--base main`: Analyzes full branch diff from main, matching PR review scope
 
 2. **Evaluate**: Same as PR mode - analyze against project standards
 
@@ -143,7 +144,7 @@ User: /resolve-cr --auto
 User: /resolve-cr --local
 
 🔍 Running CodeRabbit local analysis...
-  coderabbit review --prompt-only --type all --config .coderabbit.yaml
+  coderabbit review --prompt-only --type all --config .coderabbit.yaml --base main
 
 📊 Found 5 issues
 
@@ -254,6 +255,7 @@ coverage. Filter for CodeRabbit-authored comments. Merge and deduplicate by comm
 
 - Runs CodeRabbit CLI locally (requires `coderabbit` installed and authenticated)
 - Uses `.coderabbit.yaml` for path instructions and tool configuration
+- Uses `--base main` to analyze full branch diff, matching what PR review sees
 - Stores ignored issues in `.tmp/coderabbit-ignored.json`
 - Ignored issues file is consumed by `/ship-it` when creating PR
 - Does NOT post to GitHub (no PR exists yet)

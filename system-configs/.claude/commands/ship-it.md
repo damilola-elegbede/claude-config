@@ -8,11 +8,11 @@ argument-hint: [-d] [-r] [-t] [-c] [-p] [-pr] [--dry-run]
 ## Usage
 
 ```bash
-/ship-it                    # Full: docs → review → test → commit → push → pr
+/ship-it                    # Full: docs → test → commit → review → push → pr
 /ship-it -c -p              # Quick: commit → push
 /ship-it -t -c -p           # Test first: test → commit → push
-/ship-it -r -t              # Quality check only: review → test
-/ship-it -d -r -t -c -p     # Everything except PR
+/ship-it -r -c -p           # Review gate: commit → review → push
+/ship-it -d -t -c -r -p     # Everything except PR
 /ship-it -pr                # Just create PR
 /ship-it --dry-run          # Preview full workflow
 /ship-it -c -p --dry-run    # Preview what would run
@@ -41,14 +41,17 @@ combine flags to build custom workflows. With no flags, runs the full workflow.
 
 1. Parse `$ARGUMENTS` for flags: `-d`, `-r`, `-t`, `-c`, `-p`, `-pr`, `--dry-run`
 2. If no step flags provided, enable ALL steps (full workflow)
-3. Execute enabled steps in fixed order: `d → r → t → c → p → pr`
+3. Execute enabled steps in fixed order: `d → t → c → r → p → pr`
 4. Flag order in command doesn't matter: `-p -c` runs as `commit → push`
+5. Review (`-r`) runs AFTER commit to analyze full branch diff before push
 
 ### Execution
 
 - **Halt-on-failure**: Any step fails → workflow stops immediately
 - **Smart skipping**: Commands skip gracefully (e.g., no changes to commit, PR exists)
 - **Dry run**: With `--dry-run`, print steps that would execute without running them
+- **Review gate**: When `-r` runs after commit, it analyzes the full branch diff (all changes from main).
+  If issues are found and fixed, create an additional commit before push
 
 ### Validation
 
@@ -117,19 +120,20 @@ After PR creation (or if PR already exists), perform these actions:
 ### Full Workflow (default)
 
 ```text
-🚀 ship-it: docs → review → test → commit → push → pr
+🚀 ship-it: docs → test → commit → review → push → pr
 
 📋 Step 1/6: docs
   ✅ Documentation updated
 
-📋 Step 2/6: review
-  ✅ Code review passed (2 issues fixed, 1 documented for PR)
-
-📋 Step 3/6: test
+📋 Step 2/6: test
   ✅ All tests passed (45/45)
 
-📋 Step 4/6: commit
+📋 Step 3/6: commit
   ✅ Commit created: a1b2c3d
+
+📋 Step 4/6: review
+  ✅ Code review passed (2 issues fixed)
+  📦 Fix commit: b2c3d4e
 
 📋 Step 5/6: push
   ✅ Pushed to origin/feature-branch
@@ -166,9 +170,9 @@ After PR creation (or if PR already exists), perform these actions:
 
 Would execute:
   1. /docs
-  2. /review
-  3. /test
-  4. /commit
+  2. /test
+  3. /commit
+  4. /review (+ fix commit if issues found)
   5. /push
   6. /pr
 
@@ -180,4 +184,6 @@ No changes made.
 - Pure orchestrator: delegates to `/docs`, `/review`, `/test`, `/commit`, `/push`, `/pr`
 - Never bypasses quality gates (no `--no-verify`)
 - Step dependencies are your responsibility: `-p` alone fails if nothing committed
+- **Review gate timing**: Review runs AFTER commit but BEFORE push to analyze full branch diff.
+  This ensures local review catches the same issues as PR review
 - **CodeRabbit integration**: After PR creation, automatically posts acknowledgment comment for any ignored issues tracked during `/review`
