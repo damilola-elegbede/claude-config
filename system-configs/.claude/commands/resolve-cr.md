@@ -53,12 +53,12 @@ Both modes use the same interactive triage flow for fix/skip decisions.
 1. **Run**: Execute CodeRabbit CLI with local config
 
    ```bash
-   coderabbit review --prompt-only --type all --config .coderabbit.yaml --base main
+   coderabbit review --prompt-only --type all --config .coderabbit.yaml --base <default-branch>
    ```
 
    - `--type all`: Reviews both uncommitted and committed changes
    - `--config .coderabbit.yaml`: Uses repository-specific settings
-   - `--base main`: Analyzes full branch diff from main, matching PR review scope
+   - `--base <default-branch>`: Analyzes full branch diff from default branch (use `main`, `master`, or your repo's default)
 
 2. **Evaluate**: Same as PR mode - analyze against project standards
 
@@ -213,6 +213,7 @@ Applying fixes...
 
 ```json
 {
+  "schema_version": "1.0",
   "branch": "feature/my-feature",
   "created_at": "2025-01-08T15:30:00Z",
   "ignored_issues": [
@@ -227,6 +228,12 @@ Applying fixes...
   ]
 }
 ```
+
+**Field Validation**:
+
+- **`schema_version`**: Format version (current: "1.0") for backward compatibility
+- **`severity`**: Must be one of: `LOW`, `MEDIUM`, `HIGH`, `CRITICAL`
+- **`category`**: Must be one of: `nitpick`, `false-positive`, `intentional`, `out-of-scope`, `will-fix-later`
 
 **Field Semantics**:
 
@@ -255,7 +262,7 @@ coverage. Filter for CodeRabbit-authored comments. Merge and deduplicate by comm
 
 - Runs CodeRabbit CLI locally (requires `coderabbit` installed and authenticated)
 - Uses `.coderabbit.yaml` for path instructions and tool configuration
-- Uses `--base main` to analyze full branch diff, matching what PR review sees
+- Uses `--base <default-branch>` to analyze full branch diff, matching what PR review sees (substitute your repo's default: `main`, `master`, etc.)
 - Stores ignored issues in `.tmp/coderabbit-ignored.json`
 - Ignored issues file is consumed by `/ship-it` when creating PR
 - Does NOT post to GitHub (no PR exists yet)
