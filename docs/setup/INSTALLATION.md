@@ -216,7 +216,7 @@ After installation, your configuration structure will be:
 │   ├── plan.md
 │   ├── prime.md
 │   ├── push.md
-│   ├── resolve-cr.md
+│   ├── resolve-comments.md
 │   ├── review.md
 │   ├── sync.md
 │   ├── test.md
@@ -465,7 +465,7 @@ echo 'export GITHUB_TOKEN="your-token"' >> ~/.bashrc
 
 # Test integration
 /pr --help  # Enhanced PR capabilities
-/resolve-cr 123  # PR comment resolution
+/resolve-comments 123  # PR comment resolution
 ```
 
 ## Updating and Maintenance

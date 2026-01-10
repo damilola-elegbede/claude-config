@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Optimized /resolve-cr command implementation
+# Optimized /resolve-comments command implementation
 # Fetches and processes CodeRabbit review comments with parallel operations
 #
 # Usage:
-#   resolve-cr-optimized.sh [PR_NUMBER] [--auto]
+#   resolve-comments-optimized.sh [PR_NUMBER] [--auto]
 #
 # Arguments:
 #   PR_NUMBER  - Optional PR number. If not provided, detects from current branch
@@ -38,8 +38,16 @@ validate_json_input() {
         return 1
     fi
 
-    # Check for suspicious patterns in JSON
-    if echo "$json_input" | grep -qE '(\$\(|`|eval|exec|system|shell|import\s+os|subprocess|__import__)'; then
+    # Check for suspicious patterns in JSON using fixed-string matching for security
+    # Using -F (fixed string) instead of -E (regex) to prevent pattern injection
+    if echo "$json_input" | grep -qF '$(' || \
+       echo "$json_input" | grep -qF '`' || \
+       echo "$json_input" | grep -qF 'eval(' || \
+       echo "$json_input" | grep -qF 'exec(' || \
+       echo "$json_input" | grep -qF 'system(' || \
+       echo "$json_input" | grep -qF 'subprocess' || \
+       echo "$json_input" | grep -qF '__import__' || \
+       echo "$json_input" | grep -qF 'import os'; then
         echo -e "${RED}Error: Suspicious code patterns detected in JSON input${NC}" >&2
         return 1
     fi
@@ -193,40 +201,41 @@ PROMPT_COUNT=$(echo "$PROMPTS" | jq 'length')
 if [ "$PROMPT_COUNT" -eq 0 ]; then
     echo -e "${YELLOW}⚠️ No CodeRabbit comments found on first attempt. Retrying with GraphQL...${NC}"
 
-    # GraphQL query for comprehensive search (single request)
-    # Escape values to prevent injection
-    OWNER_ESCAPED=$(printf '%s' "$OWNER" | sed 's/"/\\"/g')
-    REPO_ESCAPED=$(printf '%s' "$REPO" | sed 's/"/\\"/g')
-
-    GRAPHQL_QUERY='{
-        "query": "query {
-            repository(owner: \"'"$OWNER_ESCAPED"'\", name: \"'"$REPO_ESCAPED"'\") {
-                pullRequest(number: '$PR_NUMBER') {
-                    reviews(first: 100) {
-                        nodes {
-                            body
-                            author { login }
-                        }
-                    }
-                    reviewThreads(first: 100) {
-                        nodes {
-                            comments(first: 100) {
-                                nodes {
-                                    body
-                                    path
-                                    line
-                                    author { login }
-                                }
-                            }
-                        }
-                    }
-                }
+    # GraphQL query for comprehensive search using proper variable passing
+    # Use gh api graphql -F to pass variables safely (prevents injection)
+    GRAPHQL_QUERY='
+      query($owner: String!, $name: String!, $number: Int!) {
+        repository(owner: $owner, name: $name) {
+          pullRequest(number: $number) {
+            reviews(first: 100) {
+              nodes {
+                body
+                author { login }
+              }
             }
-        }"
-    }'
+            reviewThreads(first: 100) {
+              nodes {
+                comments(first: 100) {
+                  nodes {
+                    body
+                    path
+                    line
+                    author { login }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    '
 
-    # Execute GraphQL query
-    GRAPHQL_RESULT=$(gh api graphql -f query="$(echo "$GRAPHQL_QUERY" | jq -r .query)")
+    # Execute GraphQL query with proper variable passing via -F
+    GRAPHQL_RESULT=$(gh api graphql \
+      -f query="$GRAPHQL_QUERY" \
+      -F owner="$OWNER" \
+      -F name="$REPO" \
+      -F number="$PR_NUMBER")
 
     # Parse GraphQL results
     PROMPTS=$(echo "$GRAPHQL_RESULT" | jq -r '
@@ -420,8 +429,81 @@ def validate_agent_path(filename):
 
     return candidate_path
 
+def sanitize_prompt_content(prompt):
+    """Sanitize prompt content to prevent code injection."""
+    if not isinstance(prompt, str):
+        return ""
+
+    # Remove dangerous patterns
+    dangerous_patterns = [
+        r'\$\(',  # Command substitution
+        r'`',     # Backticks
+        r'eval\s*\(',  # eval calls
+        r'exec\s*\(',  # exec calls
+        r'__import__',  # Import tricks
+        r'subprocess',  # Subprocess module
+        r'import\s+os', # OS module import
+    ]
+
+    sanitized = prompt
+    for pattern in dangerous_patterns:
+        sanitized = re.sub(pattern, '', sanitized, flags=re.IGNORECASE)
+
+    return sanitized
+
+def is_safe_content(content):
+    """Check if content is safe to add to files."""
+    if not content or len(content) > 1000:  # Size limit
+        return False
+
+    # Check for dangerous patterns including shell metacharacters
+    dangerous_patterns = [
+        r'\$\(',  # Command substitution
+        r'`',     # Backticks
+        r'eval\s*\(',  # eval calls
+        r'exec\s*\(',  # exec calls
+        r'rm\s+-rf',   # Dangerous rm commands
+        r'sudo',       # Privilege escalation
+        r'[;&|]',      # Shell command separators
+        r'[<>]',       # Redirections
+        r'\(\s*\)',    # Subshell
+        r'\{\s*\}',    # Brace expansion
+    ]
+
+    for pattern in dangerous_patterns:
+        if re.search(pattern, content, flags=re.IGNORECASE):
+            return False
+
+    return True
+
+def validate_json_schema(data):
+    """Validate JSON structure before processing to prevent malformed input attacks."""
+    if not isinstance(data, list):
+        raise ValueError("Expected array of file edits")
+    for item in data:
+        if not isinstance(item, dict):
+            raise ValueError("Each edit must be an object")
+        if 'file' not in item or not isinstance(item.get('file'), str):
+            raise ValueError("Each edit must have a 'file' string field")
+        if 'edits' not in item or not isinstance(item.get('edits'), list):
+            raise ValueError("Each edit must have an 'edits' array field")
+        for edit in item['edits']:
+            if not isinstance(edit, dict) or 'prompt' not in edit:
+                raise ValueError("Each edit entry must have a 'prompt' field")
+    return True
+
 def apply_batch_updates(edits_json):
     edits = json.loads(edits_json)
+
+    # Validate JSON schema before processing
+    try:
+        validate_json_schema(edits)
+    except ValueError as e:
+        print(f"✗ Schema validation failed: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    updated_count = 0
+    error_count = 0
 
     for file_edit in edits:
         if not file_edit['file']:
@@ -430,7 +512,8 @@ def apply_batch_updates(edits_json):
         try:
             file_path = validate_agent_path(file_edit['file'])
         except ValueError as e:
-            print(f"✗ Security error for {file_edit['file']}: {e}")
+            print(f"✗ Security error for {file_edit['file']}: {e}", file=sys.stderr)
+            error_count += 1
             continue
 
         try:
@@ -461,56 +544,22 @@ def apply_batch_updates(edits_json):
                                 if is_safe_content(addition):
                                     content += f"\n\n{addition}"
 
-def sanitize_prompt_content(prompt):
-    """Sanitize prompt content to prevent code injection."""
-    if not isinstance(prompt, str):
-        return ""
-
-    # Remove dangerous patterns
-    dangerous_patterns = [
-        r'\$\(',  # Command substitution
-        r'`',     # Backticks
-        r'eval\s*\(',  # eval calls
-        r'exec\s*\(',  # exec calls
-        r'__import__',  # Import tricks
-        r'subprocess',  # Subprocess module
-        r'import\s+os', # OS module import
-    ]
-
-    sanitized = prompt
-    for pattern in dangerous_patterns:
-        sanitized = re.sub(pattern, '', sanitized, flags=re.IGNORECASE)
-
-    return sanitized
-
-def is_safe_content(content):
-    """Check if content is safe to add to files."""
-    if not content or len(content) > 1000:  # Size limit
-        return False
-
-    # Check for dangerous patterns
-    dangerous_patterns = [
-        r'\$\(',  # Command substitution
-        r'`',     # Backticks
-        r'eval\s*\(',  # eval calls
-        r'exec\s*\(',  # exec calls
-        r'rm\s+-rf',   # Dangerous rm commands
-        r'sudo',       # Privilege escalation
-    ]
-
-    for pattern in dangerous_patterns:
-        if re.search(pattern, content, flags=re.IGNORECASE):
-            return False
-
-    return True
-
             with open(file_path, 'w') as f:
                 f.write(content)
 
             print(f"✓ Updated {file_path}")
+            updated_count += 1
 
         except Exception as e:
-            print(f"✗ Error updating {file_path}: {e}")
+            print(f"✗ Error updating {file_path}: {e}", file=sys.stderr)
+            error_count += 1
+
+    # Exit with appropriate code based on results
+    if error_count > 0:
+        sys.exit(1)
+    if updated_count == 0:
+        print("✗ No files updated (nothing to commit)", file=sys.stderr)
+        sys.exit(2)
 
 if __name__ == "__main__":
     # Read from stdin with size limit and validation
@@ -546,15 +595,24 @@ fi
 
 # Apply batch updates with validated input
 echo -e "${GREEN}✓ Input validation passed${NC}"
-if ! echo "$BATCH_EDITS" | python3 "$TEMP_DIR/batch_update.py"; then
-    echo -e "${RED}✗ Batch update process failed${NC}"
+# Temporarily disable errexit to capture exit code reliably
+set +e
+BATCH_OUTPUT=$(printf '%s' "$BATCH_EDITS" | python3 "$TEMP_DIR/batch_update.py" 2>&1)
+BATCH_EXIT_CODE=$?
+set -e
+if [ $BATCH_EXIT_CODE -ne 0 ]; then
+    echo -e "${RED}✗ Batch update process failed (exit code: $BATCH_EXIT_CODE)${NC}"
+    echo -e "${RED}  Error details: $BATCH_OUTPUT${NC}"
     exit 1
 fi
+echo "$BATCH_OUTPUT"
 
 # Step 7: Stage changes
 echo -e "\n${BLUE}📦 Staging changes...${NC}"
 # Use safer approach for staging files - validate each file path
+# Accumulate all errors before proceeding to provide complete feedback
 CHANGED_FILES_LIST=()
+INVALID_FILES_LIST=()
 while IFS= read -r file_name; do
     if [ -n "$file_name" ]; then
         # Sanitize file path using our existing function
@@ -565,10 +623,18 @@ while IFS= read -r file_name; do
                 CHANGED_FILES_LIST+=("$full_path")
             fi
         else
-            echo -e "${YELLOW}⚠️ Skipping invalid file path: $file_name${NC}"
+            INVALID_FILES_LIST+=("$file_name")
         fi
     fi
 done < <(echo "$PROMPTS" | jq -r '[.[].file] | unique | .[]')
+
+# Report all invalid files before proceeding
+if [ ${#INVALID_FILES_LIST[@]} -gt 0 ]; then
+    echo -e "${YELLOW}⚠️ Skipped ${#INVALID_FILES_LIST[@]} invalid file path(s):${NC}"
+    for invalid_file in "${INVALID_FILES_LIST[@]}"; do
+        echo -e "${YELLOW}  - $invalid_file${NC}"
+    done
+fi
 
 if [ ${#CHANGED_FILES_LIST[@]} -gt 0 ]; then
     git add "${CHANGED_FILES_LIST[@]}"
@@ -577,7 +643,7 @@ fi
 
 # Step 8: Create commit
 echo -e "\n${BLUE}💾 Creating commit...${NC}"
-git commit -m "fix: address CodeRabbit review comments
+git commit -m "fix(review): address CodeRabbit feedback
 
 Applied fixes from $PROMPT_COUNT CodeRabbit review suggestions:
 $(echo "$PROMPTS" | jq -r 'group_by(.file) | .[] | "- \(.[0].file): \(length) fix\(if length > 1 then "es" else "" end)"')

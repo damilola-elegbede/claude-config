@@ -46,18 +46,17 @@ reviews:
         - Meaningful assertions
         - Clean test isolation
         - Descriptive test names
-
-tools:
-  shellcheck:
-    enabled: true
-  ruff:
-    enabled: true
-  markdownlint:
-    enabled: true
-  yamllint:
-    enabled: true
-  gitleaks:
-    enabled: true
+  tools:
+    shellcheck:
+      enabled: true
+    ruff:
+      enabled: true
+    markdownlint:
+      enabled: true
+    yamllint:
+      enabled: true
+    gitleaks:
+      enabled: true
 
 chat:
   auto_reply: true

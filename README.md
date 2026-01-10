@@ -285,7 +285,7 @@ Performance: 5x faster than sequential validation
 | **`/docs`**                | Documentation orchestration with parallel processors              | 3-4x faster            | 6 document instances, automated generation                              |
 | **`/plan`**                | Strategic project planning with principal-architect               | Enhanced quality       | TDD methodology, architectural guidance                                 |
 | **`/debug`**               | Systematic investigation with evidence gathering                  | Improved accuracy      | Hypothesis testing, systematic debugging                                |
-| **`/resolve-cr`**          | Intelligent PR resolution based on comment analysis               | Context-aware          | Multi-agent deployment, automated fixes                                 |
+| **`/resolve-comments`**          | Intelligent PR resolution based on comment analysis               | Context-aware          | Multi-agent deployment, automated fixes                                 |
 | **`/deps`**                | Security-first dependency management                              | Vulnerability scanning | Multi-language support, security assessment                             |
 | **`/fix-ci`**              | Automated CI/CD failure resolution                                | Pattern recognition    | DevOps expertise, automated remediation                                 |
 | **`/pr`**                  | Intelligent PR creation with tech-writer collaboration            | Enhanced descriptions  | Context-aware analysis, professional documentation                      |

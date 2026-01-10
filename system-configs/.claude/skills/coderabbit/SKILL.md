@@ -115,7 +115,6 @@ CodeRabbit reads `.coderabbit.yaml` from repository root for:
 
 ## Integration Notes
 
-- Works alongside: /review command (runs CodeRabbit first)
-- Escalate to: code-reviewer agent for deeper analysis
+- Works alongside: /review command (runs CodeRabbit + AI reviewer in parallel)
 - Complements: /ship-it -r for full workflow
 - Config: .coderabbit.yaml in repository root

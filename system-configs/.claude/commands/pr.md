@@ -1,6 +1,6 @@
 ---
 description: Create pull requests with smart title and description generation
-argument-hint: [target_branch] [--draft]
+argument-hint: "[target_branch] [--draft] [--force]"
 ---
 
 # /pr Command
@@ -12,6 +12,7 @@ argument-hint: [target_branch] [--draft]
 /pr develop             # Creates PR targeting develop branch
 /pr --draft             # Creates draft PR for work in progress
 /pr main --draft        # Combined: targets main branch as draft
+/pr --force             # Create PR even if one already exists
 ```
 
 ## Description
@@ -33,15 +34,29 @@ Focuses on core PR creation functionality with minimal overhead.
 
 ✅ Pull request created:
   https://github.com/owner/repo/pull/123
+
+📢 Posted acknowledgment for 2 skipped review issues
+```
+
+### PR Already Exists
+
+```text
+ℹ️ PR already exists: https://github.com/owner/repo/pull/123
+💡 Use --force to create another PR
 ```
 
 ## Behavior
 
-### Simple Execution Flow
+### Execution Flow
 
-1. **Analyze Changes**: Get diff between current branch and target branch
-2. **Generate Content**: Create title and description based on commits and changes
-3. **Create PR**: Submit to GitHub with generated content
+1. **Check for Existing PR**: Query GitHub for existing PR from current branch
+   - If PR exists and `--force` not set: Output PR URL and exit (success)
+   - If PR exists and `--force` set: Continue to create new PR
+   - If no PR exists: Continue
+2. **Analyze Changes**: Get diff between current branch and target branch
+3. **Generate Content**: Create title and description based on commits and changes
+4. **Create PR**: Submit to GitHub with generated content
+5. **Post Review Acknowledgments**: If `.tmp/coderabbit-ignored.json` exists, post skipped issues as PR comment
 
 ### Agent Usage (Minimal)
 
@@ -142,16 +157,61 @@ Closes #456
 
 When `/pr` is invoked:
 
-1. **Check for existing PR**: `gh pr list --head $(git branch --show-current)`
-2. **Get changes**: `git diff main...HEAD` and `git log main..HEAD`
-3. **Generate title**: Analyze commits for conventional commit pattern
-4. **Generate description**: Summarize changes clearly
-5. **Create PR**: `gh pr create --title "..." --body "..."`
+```text
+STEP 1: Check for existing PR
+  RUN: gh pr view --json url 2>/dev/null
+  IF: success AND NOT --force flag
+    PARSE: url from output
+    OUTPUT: "ℹ️ PR already exists: {url}"
+    OUTPUT: "💡 Use --force to create another PR"
+    END (success)
+
+STEP 2: Analyze and create PR
+  RUN: git diff main...HEAD
+  RUN: git log main..HEAD
+  GENERATE: title using conventional commit pattern
+  GENERATE: description summarizing changes
+  RUN: gh pr create --title "..." --body "..."
+  SET: pr_url = created PR URL
+
+STEP 3: Post review acknowledgments
+  READ: .tmp/coderabbit-ignored.json
+  IF: file exists AND has ignored_issues
+    RUN: git branch --show-current
+    SET: current_branch = output
+    VALIDATE: current_branch matches pattern ^[a-zA-Z0-9._/-]+$ (prevent path traversal)
+    IF: validation fails
+      OUTPUT: "⚠️ Invalid branch name format, skipping acknowledgments"
+      SKIP: to STEP 4
+    VALIDATE: branch field in JSON matches current_branch
+    IF: matches
+      BUILD: comment from ignored_issues grouped by category:
+        ## Review Issue Acknowledgments
+
+        The following issues were reviewed locally and intentionally not addressed:
+
+        ### {category}
+        | Location | Issue | Reason |
+        |----------|-------|--------|
+        | {foreach issue in category} |
+
+        ---
+        @coderabbitai These issues were reviewed during local development. No action needed.
+
+      RUN: gh pr comment {pr_url} --body "{comment}"
+      DELETE: .tmp/coderabbit-ignored.json
+      OUTPUT: "📢 Posted acknowledgment for {count} skipped issues"
+
+STEP 4: Report success
+  OUTPUT: "✅ Pull request created: {pr_url}"
+  END
+```
 
 ## Arguments
 
 - `target_branch` (optional): Target branch for PR (default: main/master)
 - `--draft`: Create as draft PR
+- `--force`: Create PR even if one already exists for this branch
 
 ## Performance
 
@@ -171,7 +231,8 @@ When `/pr` is invoked:
 
 ## Notes
 
-- Focuses on essential PR creation functionality
+- Checks for existing PR before creation (skips gracefully unless --force)
+- Posts skipped review issues from `/review` as PR comment
 - Generates clear, conventional commit style titles
 - Creates concise, informative descriptions
-- Avoids unnecessary complexity and analysis
+- Cleans up `.tmp/coderabbit-ignored.json` after posting acknowledgments

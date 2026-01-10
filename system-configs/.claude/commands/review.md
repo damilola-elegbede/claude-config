@@ -1,6 +1,6 @@
 ---
-description: Code review with linting and security scanning
-argument-hint: [--full|--fix|--quick|--coderabbit|--no-coderabbit|file-path]
+description: Code review with dual-reviewer parallel analysis
+argument-hint: "[--full]"
 ---
 
 # /review Command
@@ -8,149 +8,209 @@ argument-hint: [--full|--fix|--quick|--coderabbit|--no-coderabbit|file-path]
 ## Usage
 
 ```bash
-/review                    # Review changed files (default)
-/review --full             # Review entire codebase
-/review --fix              # Auto-fix issues and commit
-/review --quick            # Linter-only mode (fast)
-/review --coderabbit       # CodeRabbit only (skip internal agent)
-/review --no-coderabbit    # Internal agent only (skip CodeRabbit)
-/review <file|directory>   # Review specific target
+/review           # Review current branch changes vs main
+/review --full    # Review entire codebase
 ```
 
 ## Description
 
-Comprehensive code review combining CodeRabbit CLI, automated linting, and AI analysis. Catches issues before external review.
+Comprehensive code review that runs two reviewers in parallel:
 
-## Behavior
+1. **CodeRabbit CLI** - External AI review via `coderabbit review`
+2. **code-reviewer agent** - Internal AI analysis for security, performance, accessibility
 
-### Flag Semantics
+Both reviewers are mandatory. Results are passed to `/resolve-comments` for interactive triage.
 
-| Flag | Phase 0 (CodeRabbit) | Phases 1-3 (Lint/Analyze/Report) |
-|------|----------------------|----------------------------------|
-| (default) | Runs if CLI available | All run |
-| `--coderabbit` | Runs | Skipped (CodeRabbit-only) |
-| `--no-coderabbit` | Skipped | All run (internal agent only) |
+## Prerequisites
 
-### Phases
-
-0. **CodeRabbit Analysis** (when CLI available and not --no-coderabbit):
-   - Delegate to `/resolve-cr --local` for interactive triage
-   - Uses interactive approval flow (never auto-commits without consent)
-   - Ignored issues stored in `.tmp/coderabbit-ignored.json` for PR acknowledgment via `/ship-it`
-
-1. **Lint**: Run automated linters (ESLint, Prettier, ruff, etc.)
-2. **Analyze**: Deploy code-reviewer agent for thorough analysis (skipped if `--coderabbit` flag used)
-3. **Report**: Present combined findings with actionable recommendations
-4. **Fix** (with --fix): Auto-apply safe fixes and commit
-
-### Phase 0 Execution (MANDATORY when CLI available)
-
-**CRITICAL**: Phase 0 is not optional. When CodeRabbit CLI is available, you MUST execute it.
-
-1. **Check CLI availability**: Run `which coderabbit`
-2. **If available**: Delegate to `/resolve-cr --local`
-   - This runs `coderabbit review --prompt-only --type all --config .coderabbit.yaml --base <default-branch>`
-   - Presents interactive triage for each issue
-   - Creates `.tmp/coderabbit-ignored.json` for any skipped issues
-   - Does NOT post to GitHub (no PR exists yet)
-3. **After /resolve-cr completes**: Continue to Phases 1-3 (unless `--coderabbit` flag used)
-
-### Contract Validation (Phase 2)
-
-When reviewing command/skill markdown files, the code-reviewer agent MUST perform cross-file contract validation:
-
-1. **Enum Consistency**: If File A defines enum values, File B that consumes them must handle ALL values
-   - Example: `resolve-cr.md` defines 5 ignore categories → `ship-it.md` must template all 5
-
-2. **Command References**: All `/command` references must be accurate
-   - Check which command creates files vs which consumes them
-   - Verify referenced command names exist
-
-3. **JSON Schema Contracts**: If File A defines a JSON schema, File B that reads it must handle all fields
-   - Check required vs optional fields
-   - Check enum field values are exhaustively handled
-
-4. **Hardcoded Values**: Flag hardcoded branch names, paths, or configs that should be dynamic
-   - Example: `--base main` should be `--base <default-branch>` with a note
-
-### Review Modes
-
-| Mode | Duration | Scope |
-|------|----------|-------|
-| Default | 2-5 min | Changed files |
-| `--full` | 5-15 min | All files |
-| `--fix` | 2-5 min | Auto-fix + commit |
-| `--quick` | 30-60s | Linting only |
-
-## Expected Output
-
-```text
-User: /review
-
-🔍 Reviewing changed files...
-
-Phase 0: CodeRabbit Analysis
-  Delegating to /resolve-cr --local...
-  [Interactive triage - see /resolve-cr for details]
-  ✅ Fixed 2 issues, documented 1 for PR acknowledgment
-     (Saved to .tmp/coderabbit-ignored.json → posted by /ship-it)
-
-Phase 1: Automated Linting
-  ✅ ESLint: 0 issues
-  ✅ Prettier: formatted
-  ⚠️ TypeScript: 2 warnings
-
-Phase 2: AI Analysis (code-reviewer)
-  Analyzing 3 files...
-
-📊 Review Results:
-
-| Issue | Severity | Location | Recommendation |
-|-------|----------|----------|----------------|
-| Missing error handling | High | auth.ts:45 | Yes ✓ |
-| Unused import | Low | utils.ts:3 | Yes ✓ |
-
-Summary: 2 issues found (1 High, 1 Low)
-
-💡 Run `/review --fix` to auto-apply recommended fixes
-```
-
-### Auto-Fix Mode
-
-```text
-User: /review --fix
-
-[Review runs...]
-
-✅ Applied 2 fixes:
-  - Added error handling in auth.ts
-  - Removed unused import in utils.ts
-
-📦 Committed: fix: resolve review issues (2 fixes)
-```
-
-## Notes
-
-- **CodeRabbit**: Runs first when CLI is installed (`coderabbit auth login` to set up)
-- Uses code-reviewer agent for thorough AI analysis after CodeRabbit
-- Includes accessibility checks (WCAG compliance)
-- Default mode requires approval before fixes
-- `--fix` auto-applies safe recommendations
-- Typical execution: 2-5 minutes (longer with CodeRabbit)
-
-### CodeRabbit Setup
+CodeRabbit CLI must be installed and authenticated:
 
 ```bash
-# Install CLI
+# Install
 curl -fsSL https://cli.coderabbit.ai/install.sh | sh
 
-# Authenticate (opens browser for OAuth)
+# Authenticate
 coderabbit auth login
 
 # Verify
 coderabbit auth status
 ```
 
-**Authentication**: `coderabbit auth login` opens browser for OAuth. Credentials stored locally in `~/.config/coderabbit/`.
+## Execution
 
-**Rate Limits**: Free tier: 1 review/hour. Pro tier: 5 reviews/hour. When limit hit, `/review` continues with Phases 1-3 only (skips Phase 0).
+### Step 1: Validate Environment
+
+```text
+CHECK: which coderabbit
+IF: not found
+  OUTPUT: "CodeRabbit CLI required. Install: curl -fsSL https://cli.coderabbit.ai/install.sh | sh"
+  END with error
+
+OUTPUT: "Starting dual-reviewer analysis..."
+```
+
+### Step 2: Determine Scope
+
+```text
+IF: --full flag
+  SCOPE: all files in repository (use git ls-files)
+  OUTPUT: "Mode: Full codebase review"
+ELSE:
+  SCOPE: git diff $(git merge-base main HEAD)..HEAD + uncommitted changes
+  RUN: git diff --name-only $(git merge-base main HEAD)..HEAD
+  RUN: git diff --name-only (uncommitted)
+  MERGE: both file lists (deduplicated)
+  OUTPUT: "Mode: Branch delta review ({count} files)"
+
+IF: no files to review
+  OUTPUT: "No changes to review"
+  END
+```
+
+### Step 3: Launch Parallel Reviewers
+
+**CRITICAL**: Launch BOTH reviewers in a SINGLE message with TWO Task tool calls.
+
+```yaml
+# Task 1: CodeRabbit CLI Review
+Task tool:
+  subagent_type: "general-purpose"
+  description: "Run CodeRabbit CLI review"
+  prompt: |
+    Run CodeRabbit CLI review and output results to .tmp/review-coderabbit.json
+
+    1. Create .tmp/ directory if needed: mkdir -p .tmp
+
+    2. Determine default branch:
+       DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo "main")
+
+    3. Run CodeRabbit CLI:
+       coderabbit review --prompt-only --type all --config .coderabbit.yaml --base $DEFAULT_BRANCH
+
+    Note: The --prompt-only flag produces AI-optimized text output, not JSON.
+    Parse the text output by extracting structured sections (file paths, line numbers,
+    issue descriptions) and transforming them into the JSON schema below.
+    Handle edge cases: missing sections, malformed lines, or empty output.
+
+    4. Parse the output and write to .tmp/review-coderabbit.json with this schema:
+       {
+         "schema_version": "1.0",
+         "branch": "{current_branch}",
+         "created_at": "{ISO timestamp}",
+         "source": "coderabbit",
+         "issues": [
+           {
+             "id": {sequential number},
+             "file": "path/to/file",
+             "line": {line number or null},
+             "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+             "description": "Issue description",
+             "suggestion": "Fix suggestion"
+           }
+         ]
+       }
+
+    4. Report: "CodeRabbit found {count} issues"
+
+    If CodeRabbit returns no issues, write empty issues array.
+
+# Task 2: AI Code Review
+Task tool:
+  subagent_type: "code-reviewer"
+  description: "Run AI code review"
+  prompt: |
+    Review the following files and output results to .tmp/review-local.json
+
+    Files to review:
+    {file_list from Step 2}
+
+    Review for:
+    - Security vulnerabilities (injection, auth issues, data exposure)
+    - Performance problems (N+1 queries, memory leaks, algorithm complexity)
+    - Accessibility issues (WCAG compliance, keyboard navigation, screen readers)
+    - Code quality (error handling, edge cases, maintainability)
+
+    Write results to .tmp/review-local.json with this schema:
+    {
+      "schema_version": "1.0",
+      "branch": "{current_branch}",
+      "created_at": "{ISO timestamp}",
+      "source": "code-reviewer",
+      "issues": [
+        {
+          "id": {sequential number},
+          "file": "path/to/file",
+          "line": {line number},
+          "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+          "type": "security|performance|accessibility|quality",
+          "description": "Issue description",
+          "suggestion": "Fix suggestion"
+        }
+      ]
+    }
+
+    Report: "AI reviewer found {count} issues"
+
+    If no issues found, write empty issues array.
+```
+
+### Step 4: Report Results
+
+```text
+WAIT: for both Task agents to complete
+
+READ: .tmp/review-coderabbit.json
+READ: .tmp/review-local.json
+
+OUTPUT:
+  Dual-Review Complete
+
+  | Reviewer | Issues Found |
+  |----------|--------------|
+  | CodeRabbit | {coderabbit_count} |
+  | AI Reviewer | {local_count} |
+
+  Total: {total} issues
+```
+
+### Step 5: Hand Off to Triage
+
+```text
+IF: total issues > 0
+  OUTPUT: "Launching interactive triage..."
+  Skill tool: skill="resolve-comments", args="--code-rabbit --local"
+ELSE:
+  OUTPUT: "No issues found. Code looks good!"
+  END
+```
+
+## Expected Output
+
+```text
+User: /review
+
+Starting dual-reviewer analysis...
+Mode: Branch delta review (5 files)
+
+[Launching parallel reviewers...]
+
+Dual-Review Complete
+
+| Reviewer | Issues Found |
+|----------|--------------|
+| CodeRabbit | 3 |
+| AI Reviewer | 2 |
+
+Total: 5 issues
+
+Launching interactive triage...
+[/resolve-comments --code-rabbit --local takes over]
+```
+
+## Notes
+
+- Both reviewers run in parallel for speed
+- CodeRabbit CLI is required (command fails without it)
+- Results stored in `.tmp/` for `/resolve-comments` consumption
+- No auto-fix - all changes require user approval via triage
+- `--full` mode may take longer depending on codebase size

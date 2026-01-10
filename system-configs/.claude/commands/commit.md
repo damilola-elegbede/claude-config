@@ -109,7 +109,7 @@ Claude: Analyzing repository changes...
   2. Repair failing test in tests/api.test.ts
   3. Run `/commit` again once resolved
 
-💡 Tip: Run `/review --fix` to auto-fix linting issues
+💡 Tip: Run `/review` to catch issues before committing
 ```
 
 ### Repository Hygiene Warning

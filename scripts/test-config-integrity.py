@@ -35,29 +35,35 @@ NON_AGENT_FILES = [
 ]
 NON_COMMAND_FILES = ["README.md", "COMMAND_TEMPLATE.md"]
 
+# Built-in Claude Code Task tool agent types (not custom agents)
+# These are part of the Task tool's available subagent_types
+BUILTIN_AGENT_TYPES = {
+    "general-purpose", "bash", "explore", "plan", "statusline-setup"
+}
 
-def count_agents():
+
+def count_agents() -> int:
     """Count agent files excluding documentation."""
     if not AGENTS_DIR.exists():
         return 0
     return len([f for f in AGENTS_DIR.glob("*.md") if f.name not in NON_AGENT_FILES])
 
 
-def count_commands():
+def count_commands() -> int:
     """Count command files excluding documentation."""
     if not COMMANDS_DIR.exists():
         return 0
     return len([f for f in COMMANDS_DIR.glob("*.md") if f.name not in NON_COMMAND_FILES])
 
 
-def get_all_agents():
+def get_all_agents() -> list[str]:
     """Get list of all agent names."""
     if not AGENTS_DIR.exists():
         return []
     return [f.stem for f in AGENTS_DIR.glob("*.md") if f.name not in NON_AGENT_FILES]
 
 
-def extract_yaml_section(file_path):
+def extract_yaml_section(file_path: Path) -> str | None:
     """Extract YAML front-matter from file."""
     with open(file_path, "r") as f:
         content = f.read()
@@ -65,9 +71,9 @@ def extract_yaml_section(file_path):
     return match.group(1) if match else None
 
 
-def find_orphan_references():
+def find_orphan_references() -> list[tuple[str, str]]:
     """Find agent references in commands that don't exist."""
-    orphans = []
+    orphans: list[tuple[str, str]] = []
     valid_agents = set(a.lower() for a in get_all_agents())
 
     if not COMMANDS_DIR.exists():
@@ -94,20 +100,23 @@ def find_orphan_references():
                 match_lower = match.lower()
                 # Must look like an agent name (lowercase-letters-separated-by-hyphens)
                 if re.match(r"^[a-z]+-[a-z]+(?:-[a-z]+)?$", match_lower):
+                    # Skip built-in Task tool agent types
+                    if match_lower in BUILTIN_AGENT_TYPES:
+                        continue
                     if match_lower not in valid_agents:
                         orphans.append((cmd_file.name, match))
 
     return orphans
 
 
-def get_all_routing_keywords():
+def get_all_routing_keywords() -> list[str]:
     """Extract routing keywords from CLAUDE.md."""
     claude_md = PROJECT_ROOT / "system-configs" / "CLAUDE.md"
     if not claude_md.exists():
         return []
 
     content = claude_md.read_text()
-    keywords = []
+    keywords: list[str] = []
 
     # Extract keywords from routing table
     keyword_pattern = r"\|\s*([^|]+)\s*\|\s*([^|]+)\s*\|"
@@ -123,7 +132,7 @@ def get_all_routing_keywords():
     return keywords
 
 
-def parse_yaml(file_path, file_type="agent"):
+def parse_yaml(file_path: Path, file_type: str = "agent") -> bool:
     """Check if YAML front-matter is parseable."""
     yaml_text = extract_yaml_section(file_path)
     if not yaml_text:

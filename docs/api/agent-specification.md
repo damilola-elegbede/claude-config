@@ -426,7 +426,7 @@ complex_commands:
         distribution: by_category
     aggregation: comprehensive_report
 
-  "/resolve-cr":
+  "/resolve-comments":
     pattern: sequential
     pipeline:
       - codebase-analyst: analyze_pr_context
