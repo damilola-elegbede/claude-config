@@ -1,6 +1,6 @@
 ---
 description: Resolve review comments from any source
-argument-hint: "[pr-number] [--local|--from-file <path>|--auto|--dry-run]"
+argument-hint: "[pr-number] [--local | --from-file <path>] [--auto] [--dry-run]"
 ---
 
 # /resolve-comments Command
