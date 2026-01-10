@@ -1,6 +1,6 @@
 ---
 description: Documentation generation and updates
-argument-hint: [scope|--audit|--clean]
+argument-hint: "[scope|--audit|--full|--clean]"
 ---
 
 # /docs Command
@@ -10,6 +10,7 @@ argument-hint: [scope|--audit|--clean]
 ```bash
 /docs                    # Update docs based on recent changes
 /docs --audit            # Analyze documentation gaps
+/docs --full             # Comprehensive scan and update of all docs
 /docs --clean            # Organize temp docs to .tmp/
 /docs api                # API documentation only
 /docs readme             # README.md refresh
@@ -27,9 +28,26 @@ Generate and update documentation using tech-writer agent. Simple updates handle
 
 ## Behavior
 
-1. **Analyze**: Check git diff and identify doc needs
-2. **Generate**: Create/update documentation
+### Analysis Phase
+
+1. **Branch Comparison**: Run `git diff main..HEAD` to identify all changes on this branch
+2. **Include Staged/Unstaged**: Also check `git diff` and `git diff --staged` for uncommitted work
+3. **Cross-Reference Docs**: Compare changes against existing documentation to identify gaps
+4. **Determine Scope**: Prioritize undocumented new functionality, API changes, and configuration updates
+
+### Generation Phase
+
+1. **Generate**: Create new documentation for gaps identified
+2. **Update**: Refresh existing docs affected by changes
 3. **Organize**: Place docs in appropriate locations
+
+### Skip Conditions
+
+Documentation is skipped when ALL of these are true:
+
+- No changes detected on branch vs main
+- No uncommitted changes
+- Existing documentation covers current functionality
 
 ### Modes
 
@@ -37,8 +55,19 @@ Generate and update documentation using tech-writer agent. Simple updates handle
 |------|--------|
 | Default | Update docs for recent changes |
 | `--audit` | Report gaps without changes |
+| `--full` | Comprehensive scan - generate/update all documentation |
 | `--clean` | Move temp docs to .tmp/ |
 | Focused | Update specific scope only |
+
+## When Docs Are Skipped
+
+| Condition | Result |
+|-----------|--------|
+| No branch changes AND no uncommitted changes | Skip - nothing to document |
+| Changes exist but all are already documented | Skip - docs are current |
+| `--audit` mode | Never skips - always reports |
+| `--full` mode | Never skips - scans entire codebase |
+| Focused scope (e.g., `/docs readme`) | Runs for that scope regardless |
 
 ## Expected Output
 
@@ -72,6 +101,31 @@ Outdated:
   - API auth docs reference old OAuth flow
 
 Run `/docs api` or `/docs readme` to fix
+```
+
+### Full Scan Mode
+
+```text
+User: /docs --full
+
+🔍 Comprehensive documentation scan...
+
+Deploying tech-writer agent...
+
+📊 Analysis complete:
+  - 12 source files scanned
+  - 3 new docs to create
+  - 5 existing docs to update
+
+✅ Documentation updated:
+  - Created docs/api/endpoints.md
+  - Created docs/architecture/overview.md
+  - Created docs/setup/configuration.md
+  - Updated README.md
+  - Updated docs/api/authentication.md
+  - Updated CONTRIBUTING.md
+  - Updated docs/commands/overview.md
+  - Updated docs/agents/overview.md
 ```
 
 ### Comprehensive Update
