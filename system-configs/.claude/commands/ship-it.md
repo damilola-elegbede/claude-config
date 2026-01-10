@@ -20,170 +20,133 @@ argument-hint: "[-d] [-r] [-t] [-c] [-p] [-pr] [--dry-run]"
 
 ## Description
 
-Orchestrates development workflows by composing individual command flags. Each flag enables a step;
-combine flags to build custom workflows. With no flags, runs the full workflow.
+Pure orchestrator that composes workflow steps. Each flag enables a step; combine flags to build custom workflows.
+With no flags, runs the full workflow.
 
 ## Flags
 
-| Flag | Step | Command |
-|------|------|---------|
-| `-d` | docs | `/docs` |
-| `-r` | review | `/review` |
-| `-t` | test | `/test` |
-| `-c` | commit | `/commit` |
-| `-p` | push | `/push` |
-| `-pr` | pull request | `/pr` |
-| `--dry-run` | preview | Shows steps without executing |
+| Flag | Command to Invoke |
+|------|-------------------|
+| `-d` | `/docs` |
+| `-t` | `/test` |
+| `-c` | `/commit` |
+| `-r` | `/review` |
+| `-p` | `/push` |
+| `-pr` | `/pr` |
+| `--dry-run` | Preview only (no execution) |
 
-## Behavior
+## Execution Rules
+
+**CRITICAL**: This command is a pure orchestrator. You MUST use the Skill tool to invoke each command.
+Never implement command logic directly - always delegate via the Skill tool.
+
+### Mandatory Skill Tool Invocation
+
+For each enabled step, use the Skill tool to invoke the corresponding command:
+
+| Flag | Action |
+|------|--------|
+| `-d` | `Skill tool: skill="docs"` |
+| `-t` | `Skill tool: skill="test"` |
+| `-c` | `Skill tool: skill="commit"` |
+| `-r` | `Skill tool: skill="review"` |
+| `-p` | `Skill tool: skill="push"` |
+| `-pr` | `Skill tool: skill="pr"` |
+
+### Execution Order
+
+Steps always execute in this fixed order regardless of flag order in command:
+
+```text
+docs → test → commit → review → push → pr
+```
+
+Example: `/ship-it -p -c` executes as `commit → push`
 
 ### Flag Parsing
 
 1. Parse `$ARGUMENTS` for flags: `-d`, `-r`, `-t`, `-c`, `-p`, `-pr`, `--dry-run`
-2. If no step flags provided, enable ALL steps (full workflow)
-3. Execute enabled steps in fixed order: `d → t → c → r → p → pr`
-4. Flag order in command doesn't matter: `-p -c` runs as `commit → push`
-5. Review (`-r`) runs AFTER commit to analyze full branch diff before push
+2. If no step flags provided → enable ALL steps (full workflow)
+3. If `--dry-run` → print steps that would execute, then stop
 
-### Execution
+### Halt on Failure
 
-- **Halt-on-failure**: Any step fails → workflow stops immediately
-- **Smart skipping**: Commands skip gracefully (e.g., no changes to commit, PR exists)
-- **Dry run**: With `--dry-run`, print steps that would execute without running them
-- **Review gate**: When `-r` runs after commit, it analyzes the full branch diff (all changes from main).
-  If issues are found and fixed, create an additional commit before push
+If any Skill tool invocation fails → stop immediately. Do not continue to subsequent steps.
 
-### Validation
+## Pre-Execution Validation
 
-Before executing steps, perform these checks:
+Before invoking any commands:
 
-1. **Branch validation** (for `-p` and `-pr`):
-   - Warn and halt if current branch is `main` or `master`
-   - Suggest creating a feature branch first
+1. **Branch check** (when `-p` or `-pr` enabled):
+   - If on `main` or `master` → halt with error, suggest creating feature branch
 
-2. **Remote tracking** (for `-p`):
-   - If branch has no upstream, run `git push -u origin <branch>` to set it
-   - If push fails due to no remote, halt with clear error
+2. **Remote tracking** (when `-p` enabled):
+   - If no upstream → the `/push` command will handle setting it
 
-3. **PR exists check** (for `-pr`):
-   - Check if PR already exists for current branch: `gh pr view --json url`
-   - If PR exists → skip creation, display existing PR URL
-   - Only create new PR if none exists
+3. **PR exists** (when `-pr` enabled):
+   - Check via `gh pr view --json url`
+   - If PR exists → skip `/pr` invocation, display existing URL
 
-### Post-PR Actions
+## Post-PR Actions
 
-After PR creation (or if PR already exists), perform these actions:
+After `/pr` completes (or PR already exists):
 
-1. **CodeRabbit Acknowledgments** (automatic):
-   - Check if `.tmp/coderabbit-ignored.json` exists
-   - **Skip silently** if file doesn't exist (no ignored issues to acknowledge)
-   - **Validate branch** matches current branch - abort with warning if mismatch
-   - **Validate structure** - skip posting with error log if file is malformed
-   - Generate acknowledgment comment, grouped by `category` field
-   - Post to PR via `gh pr comment <pr-number> --body "..."`
-   - Delete tracking file after successful posting
+1. Check if `.tmp/coderabbit-ignored.json` exists
+2. If missing or empty → skip silently
+3. If present → post acknowledgment comment to PR via `gh pr comment`
+4. Delete tracking file after successful posting
 
-   **Edge Cases**:
+**Comment format:**
 
-   | Condition | Action |
-   |-----------|--------|
-   | File doesn't exist | Skip silently (no issues to acknowledge) |
-   | File exists, 0 issues | Skip silently (empty array) |
-   | Branch mismatch | Abort with warning, don't delete file |
-   | Malformed JSON | Log error, skip posting, don't delete file |
+```markdown
+## CodeRabbit Issue Acknowledgments
 
-   **Comment format** (grouped by category):
+The following issues were reviewed locally and intentionally not addressed:
 
-   ```markdown
-   ## CodeRabbit Issue Acknowledgments
+### [Category Name]
 
-   The following issues were reviewed locally and intentionally not addressed:
+| Location | Issue | Reason |
+|----------|-------|--------|
+| `file:line` | Issue description | Reason provided |
 
-   ### False Positives
-
-   | Location | Issue | Reason |
-   |----------|-------|--------|
-   | `utils.ts:8` | Use const vs let | Variable is reassigned |
-
-   ### Intentional Design Decisions
-
-   | Location | Issue | Reason |
-   |----------|-------|--------|
-   | `SKILL.md:90` | Informal phrasing | Matches project voice |
-
-   ---
-   @coderabbitai These issues were reviewed during local development. No action needed.
-   ```
+---
+@coderabbitai These issues were reviewed during local development. No action needed.
+```
 
 ## Expected Output
-
-### Full Workflow (default)
 
 ```text
 🚀 ship-it: docs → test → commit → review → push → pr
 
 📋 Step 1/6: docs
+  [Skill tool invokes /docs]
   ✅ Documentation updated
 
 📋 Step 2/6: test
-  ✅ All tests passed (45/45)
+  [Skill tool invokes /test]
+  ✅ All tests passed
 
 📋 Step 3/6: commit
+  [Skill tool invokes /commit]
   ✅ Commit created: a1b2c3d
 
 📋 Step 4/6: review
-  ✅ Code review passed (2 issues fixed)
-  📦 Fix commit: b2c3d4e
+  [Skill tool invokes /review]
+  ✅ Code review passed
 
 📋 Step 5/6: push
+  [Skill tool invokes /push]
   ✅ Pushed to origin/feature-branch
 
 📋 Step 6/6: pr
+  [Skill tool invokes /pr]
   ✅ PR created: https://github.com/org/repo/pull/123
-
-📋 Post-PR: acknowledgments
-  📄 Found 1 ignored CodeRabbit issue
-  📝 Posted acknowledgment comment to PR
-  🧹 Cleaned up tracking file
 
 🎉 Complete (6/6 steps)
 ```
 
-### Quick Commit (-c -p)
-
-```text
-🚀 ship-it: commit → push
-
-📋 Step 1/2: commit
-  ✅ Commit created: d4e5f6a
-
-📋 Step 2/2: push
-  ✅ Pushed to origin/main
-
-🎉 Complete (2/2 steps)
-```
-
-### Dry Run (--dry-run)
-
-```text
-🚀 ship-it --dry-run
-
-Would execute:
-  1. /docs
-  2. /test
-  3. /commit
-  4. /review (+ fix commit if issues found)
-  5. /push
-  6. /pr
-
-No changes made.
-```
-
 ## Notes
 
-- Pure orchestrator: delegates to `/docs`, `/review`, `/test`, `/commit`, `/push`, `/pr`
-- Never bypasses quality gates (no `--no-verify`)
-- Step dependencies are your responsibility: `-p` alone fails if nothing committed
-- **Review gate timing**: Review runs AFTER commit but BEFORE push to analyze full branch diff.
-  This ensures local review catches the same issues as PR review
-- **CodeRabbit integration**: After PR creation, automatically posts acknowledgment comment for any ignored issues tracked during `/review`
+- Pure orchestrator: MUST use Skill tool to invoke `/docs`, `/test`, `/commit`, `/review`, `/push`, `/pr`
+- Never bypass quality gates (no `--no-verify`)
+- Review (`-r`) runs AFTER commit to analyze full branch diff before push

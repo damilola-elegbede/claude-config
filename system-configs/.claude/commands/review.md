@@ -48,12 +48,15 @@ Comprehensive code review combining CodeRabbit CLI, automated linting, and AI an
 **CRITICAL**: Phase 0 is not optional. When CodeRabbit CLI is available, you MUST execute it.
 
 1. **Check CLI availability**: Run `which coderabbit`
-2. **If available**: Delegate to `/resolve-cr --local`
+2. **If available**: Use the Skill tool to invoke `/resolve-cr --local`
+   - `Skill tool: skill="resolve-cr", args="--local"`
    - This runs `coderabbit review --prompt-only --type all --config .coderabbit.yaml --base <default-branch>`
    - Presents interactive triage for each issue
    - Creates `.tmp/coderabbit-ignored.json` for any skipped issues
    - Does NOT post to GitHub (no PR exists yet)
 3. **After /resolve-cr completes**: Continue to Phases 1-3 (unless `--coderabbit` flag used)
+
+**IMPORTANT**: Never implement CodeRabbit logic directly. Always use the Skill tool to invoke `/resolve-cr --local`.
 
 ### Contract Validation (Phase 2)
 
@@ -90,7 +93,7 @@ User: /review
 🔍 Reviewing changed files...
 
 Phase 0: CodeRabbit Analysis
-  Delegating to /resolve-cr --local...
+  [Skill tool invokes /resolve-cr --local]
   [Interactive triage - see /resolve-cr for details]
   ✅ Fixed 2 issues, documented 1 for PR acknowledgment
      (Saved to .tmp/coderabbit-ignored.json → posted by /ship-it)
@@ -131,7 +134,7 @@ User: /review --fix
 
 ## Notes
 
-- **CodeRabbit**: Runs first when CLI is installed (`coderabbit auth login` to set up)
+- **CodeRabbit**: MUST use Skill tool to invoke `/resolve-cr --local` when CLI is available
 - Uses code-reviewer agent for thorough AI analysis after CodeRabbit
 - Includes accessibility checks (WCAG compliance)
 - Default mode requires approval before fixes
