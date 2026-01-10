@@ -42,10 +42,13 @@ to execute each command in complete isolation. Never implement command logic dir
 
 ### Why Task Tool (Not Skill Tool)
 
-- **Skill tool** only loads markdown instructions into your session - no isolation, no completion guarantee
-- **Task tool** spawns an isolated agent subprocess that runs to completion
+- **Skill tool** only loads markdown instructions into your session - no isolation
+- **Task tool** spawns an isolated agent subprocess with separate context window
 - The agent uses Skill tool internally to load command instructions
-- This ensures each command executes COMPLETELY per its specification
+- Task agents run until they complete or hit iteration limits (safeguards against infinite loops)
+
+**Note**: Task tool provides isolation and bounded execution, but completion depends on the agent
+following instructions correctly. Verify Skill tool availability in the agent context.
 
 ### Mandatory Task Tool Delegation
 
@@ -161,6 +164,6 @@ The following issues were reviewed locally and intentionally not addressed:
 
 - Pure orchestrator: MUST use Task tool with `general-purpose` agent for each command
 - Agent uses Skill tool internally to load command instructions
-- Each command runs in isolated subprocess with complete execution guarantee
+- Each command runs in isolated subprocess with bounded execution (iteration limits apply)
 - Never bypass quality gates (no `--no-verify`)
 - Review (`-r`) runs AFTER commit to analyze full branch diff before push
