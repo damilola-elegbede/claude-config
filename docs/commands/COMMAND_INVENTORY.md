@@ -45,7 +45,7 @@ Post-optimization inventory of 21 commands (reduced from 23).
 | Command | Description | Execution Model | Flags |
 |---------|-------------|-----------------|-------|
 | `/prime` | Repository understanding | Wave-based | `--lite`, `--full` |
-| `/ship-it` | Release workflow orchestration | Orchestrator | `-f`, `-l` |
+| `/ship-it` | Release workflow orchestration | Orchestrator | `-d`, `-t`, `-c`, `-r`, `-p`, `-pr`, `--dry-run` |
 | `/fix-ci` | CI failure diagnosis | Wave-based | `--learn` |
 
 ## Utility Commands (5)

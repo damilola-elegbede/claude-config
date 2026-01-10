@@ -53,24 +53,7 @@ STEP 2: Dry-run check
     OUTPUT: "Steps that would execute:\n{foreach step: '  📋 /{step}'}"
     END
 
-STEP 3: Pre-execution validation
-  RUN: git branch --show-current
-  SET: current_branch = output
-
-  IF: -p or -pr in enabled_steps
-    IF: current_branch == "main" OR current_branch == "master"
-      OUTPUT: "❌ Cannot push/PR from {current_branch}. Create a feature branch first."
-      END
-
-  IF: -pr in enabled_steps
-    RUN: gh pr view --json url 2>/dev/null
-    IF: success
-      PARSE: url from output
-      SET: existing_pr = url
-      OUTPUT: "ℹ️ PR already exists: {existing_pr}"
-      REMOVE: pr from enabled_steps
-
-STEP 4: Execute enabled steps
+STEP 3: Execute enabled steps
   SET: step_number = 1
   SET: total_steps = count(enabled_steps)
 
@@ -87,46 +70,8 @@ STEP 4: Execute enabled steps
     OUTPUT: "✅ {step} complete"
     INCREMENT: step_number
 
-STEP 5: Post-PR actions
-  IF: pr was in original enabled_steps (before existing PR check)
-    READ: .tmp/coderabbit-ignored.json
-
-    IF: file exists and has ignored_issues
-      VALIDATE: branch field matches current_branch
-
-      IF: branch matches
-        BUILD: comment from ignored_issues grouped by category:
-          ## Review Issue Acknowledgments
-
-          The following issues were reviewed locally and intentionally not addressed:
-
-          ### {category}
-          | Location | Issue | Reason |
-          |----------|-------|--------|
-          | {foreach issue in category} |
-
-          ---
-          @coderabbitai These issues were reviewed during local development. No action needed.
-
-        IF: existing_pr
-          RUN: gh pr comment --body "{comment}"
-        ELSE:
-          RUN: gh pr view --json url
-          PARSE: pr_url
-          RUN: gh pr comment --body "{comment}"
-
-        DELETE: .tmp/coderabbit-ignored.json
-        OUTPUT: "📢 Posted acknowledgment for {count} skipped issues"
-
-STEP 6: Summary
+STEP 4: Summary
   OUTPUT: "🎉 Complete ({total_steps}/{total_steps} steps)"
-
-  IF: existing_pr
-    OUTPUT: "PR: {existing_pr}"
-  ELSE IF: pr was executed
-    RUN: gh pr view --json url
-    OUTPUT: "PR: {url}"
-
   END
 ```
 
@@ -159,8 +104,7 @@ PR: https://github.com/org/repo/pull/123
 
 ## Notes
 
+- Pure orchestrator: invokes commands and halts on failure
 - Steps always execute in fixed order: docs → test → commit → review → push → pr
-- Uses INVOKE_SKILL for each step (interactive, same context)
+- Each command handles its own validation (main/master checks, existing PR, etc.)
 - Halts immediately on any step failure
-- Never bypass quality gates (no `--no-verify`)
-- Skipped review issues from `/review` are posted to PR as acknowledgment
