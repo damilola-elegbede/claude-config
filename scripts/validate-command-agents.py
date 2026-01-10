@@ -41,6 +41,9 @@ CATEGORY_AGENT_REQUIREMENTS = {
 }
 
 # Security-critical commands that must have security-auditor
+# Note: This is an explicit allowlist approach - commands are added here when they
+# handle credentials, push code, or modify dependencies. New security-sensitive
+# commands should be added to this list during code review.
 SECURITY_CRITICAL_COMMANDS = ['commit', 'push', 'sync', 'deps', 'fix-ci']
 
 # Commands that should leverage parallelization

@@ -38,8 +38,11 @@ validate_json_input() {
         return 1
     fi
 
-    # Check for suspicious patterns in JSON
-    if echo "$json_input" | grep -qE '(\$\(|`|eval|exec|system|shell|import\s+os|subprocess|__import__)'; then
+    # Check for suspicious patterns in JSON using fixed-string matching for literals
+    if echo "$json_input" | grep -qF '$(' || \
+       echo "$json_input" | grep -qF '`' || \
+       echo "$json_input" | grep -qE '(eval|exec|system|shell|subprocess|__import__)' || \
+       echo "$json_input" | grep -qE 'import\s+os'; then
         echo -e "${RED}Error: Suspicious code patterns detected in JSON input${NC}" >&2
         return 1
     fi
@@ -420,47 +423,6 @@ def validate_agent_path(filename):
 
     return candidate_path
 
-def apply_batch_updates(edits_json):
-    edits = json.loads(edits_json)
-
-    for file_edit in edits:
-        if not file_edit['file']:
-            continue
-
-        try:
-            file_path = validate_agent_path(file_edit['file'])
-        except ValueError as e:
-            print(f"✗ Security error for {file_edit['file']}: {e}")
-            continue
-
-        try:
-            with open(file_path, 'r') as f:
-                content = f.read()
-
-            # Apply all edits for this file
-            for edit in file_edit['edits']:
-                prompt = edit['prompt']
-                # Extract the actual change instruction from prompt
-                # This is a simplified version - real implementation would parse the prompt
-                # and apply the specific change requested
-
-                # Sanitize and process prompt content safely
-                if prompt and len(prompt) > 0:
-                    # Sanitize prompt to prevent code injection
-                    sanitized_prompt = sanitize_prompt_content(prompt)
-
-                    # Parse out the suggestion from the sanitized prompt
-                    lines = sanitized_prompt.split('\n')
-                    for line in lines:
-                        if 'append' in line.lower() or 'add' in line.lower():
-                            # Extract quoted text safely
-                            match = re.search(r'"([^"]+)"', line)
-                            if match:
-                                addition = match.group(1)
-                                # Additional safety checks on addition
-                                if is_safe_content(addition):
-                                    content += f"\n\n{addition}"
-
 def sanitize_prompt_content(prompt):
     """Sanitize prompt content to prevent code injection."""
     if not isinstance(prompt, str):
@@ -504,6 +466,47 @@ def is_safe_content(content):
 
     return True
 
+def apply_batch_updates(edits_json):
+    edits = json.loads(edits_json)
+
+    for file_edit in edits:
+        if not file_edit['file']:
+            continue
+
+        try:
+            file_path = validate_agent_path(file_edit['file'])
+        except ValueError as e:
+            print(f"✗ Security error for {file_edit['file']}: {e}")
+            continue
+
+        try:
+            with open(file_path, 'r') as f:
+                content = f.read()
+
+            # Apply all edits for this file
+            for edit in file_edit['edits']:
+                prompt = edit['prompt']
+                # Extract the actual change instruction from prompt
+                # This is a simplified version - real implementation would parse the prompt
+                # and apply the specific change requested
+
+                # Sanitize and process prompt content safely
+                if prompt and len(prompt) > 0:
+                    # Sanitize prompt to prevent code injection
+                    sanitized_prompt = sanitize_prompt_content(prompt)
+
+                    # Parse out the suggestion from the sanitized prompt
+                    lines = sanitized_prompt.split('\n')
+                    for line in lines:
+                        if 'append' in line.lower() or 'add' in line.lower():
+                            # Extract quoted text safely
+                            match = re.search(r'"([^"]+)"', line)
+                            if match:
+                                addition = match.group(1)
+                                # Additional safety checks on addition
+                                if is_safe_content(addition):
+                                    content += f"\n\n{addition}"
+
             with open(file_path, 'w') as f:
                 f.write(content)
 
@@ -546,10 +549,14 @@ fi
 
 # Apply batch updates with validated input
 echo -e "${GREEN}✓ Input validation passed${NC}"
-if ! echo "$BATCH_EDITS" | python3 "$TEMP_DIR/batch_update.py"; then
-    echo -e "${RED}✗ Batch update process failed${NC}"
+BATCH_OUTPUT=$(echo "$BATCH_EDITS" | python3 "$TEMP_DIR/batch_update.py" 2>&1)
+BATCH_EXIT_CODE=$?
+if [ $BATCH_EXIT_CODE -ne 0 ]; then
+    echo -e "${RED}✗ Batch update process failed (exit code: $BATCH_EXIT_CODE)${NC}"
+    echo -e "${RED}  Error details: $BATCH_OUTPUT${NC}"
     exit 1
 fi
+echo "$BATCH_OUTPUT"
 
 # Step 7: Stage changes
 echo -e "\n${BLUE}📦 Staging changes...${NC}"
@@ -577,7 +584,7 @@ fi
 
 # Step 8: Create commit
 echo -e "\n${BLUE}💾 Creating commit...${NC}"
-git commit -m "fix: address CodeRabbit review comments
+git commit -m "fix(review): address CodeRabbit feedback
 
 Applied fixes from $PROMPT_COUNT CodeRabbit review suggestions:
 $(echo "$PROMPTS" | jq -r 'group_by(.file) | .[] | "- \(.[0].file): \(length) fix\(if length > 1 then "es" else "" end)"')

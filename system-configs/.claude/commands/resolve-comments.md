@@ -1,6 +1,6 @@
 ---
 description: Resolve review comments from any source
-argument-hint: "[pr-number] [--local | --from-file <path>] [--auto] [--dry-run]"
+argument-hint: "[pr-number] [--code-rabbit] [--local] [--auto] [--dry-run]"
 ---
 
 # /resolve-comments Command
@@ -8,30 +8,41 @@ argument-hint: "[pr-number] [--local | --from-file <path>] [--auto] [--dry-run]"
 ## Usage
 
 ```bash
-/resolve-comments                      # Interactive - fetch from PR (default)
-/resolve-comments <pr-number>          # Specific PR
-/resolve-comments --local              # Run CodeRabbit CLI on local changes
-/resolve-comments --from-file <path>   # Triage issues from unified review file
-/resolve-comments --auto               # Auto-fix all recommended
-/resolve-comments --dry-run            # Analysis only
+/resolve-comments                     # Fetch and resolve PR comments (default)
+/resolve-comments <pr-number>         # Specific PR
+/resolve-comments --code-rabbit       # Triage CodeRabbit issues from .tmp/
+/resolve-comments --local             # Triage AI reviewer issues from .tmp/
+/resolve-comments --code-rabbit --local  # Triage both (used by /review)
+/resolve-comments --auto              # Auto-apply all recommended fixes
+/resolve-comments --dry-run           # Analysis only, no changes
 ```
 
 ## Description
 
-Handles review feedback from multiple sources:
+Resolves review comments from multiple sources with interactive triage.
 
-- **PR mode** (default): Fetches UNRESOLVED comments from existing GitHub PR via GraphQL
-- **Local mode** (`--local`): Runs CodeRabbit CLI on local changes
-- **From-file mode** (`--from-file`): Triages pre-collected issues from `/review`
+**Modes:**
 
-All modes use the same interactive triage flow.
+- **PR mode** (default): Fetch unresolved CodeRabbit comments from GitHub PR
+- **File mode** (`--code-rabbit` and/or `--local`): Triage issues from `/review` output files
 
-## Execution Script
+## Mode: PR (Default)
 
-### Mode: PR (default)
+When no `--code-rabbit` or `--local` flags are provided.
+
+### Execution
 
 ```text
-STEP 1: Fetch UNRESOLVED PR comments via GraphQL
+STEP 1: Determine PR number
+  IF: pr-number argument provided
+    USE: provided number
+  ELSE:
+    RUN: gh pr view --json number -q '.number'
+    IF: fails
+      OUTPUT: "No PR found for current branch. Create one with: gh pr create"
+      END
+
+STEP 2: Fetch unresolved CodeRabbit comments
   RUN: gh api graphql -f query='
     query($owner: String!, $repo: String!, $pr: Int!) {
       repository(owner: $owner, name: $repo) {
@@ -53,180 +64,146 @@ STEP 1: Fetch UNRESOLVED PR comments via GraphQL
         }
       }
     }' -f owner={owner} -f repo={repo} -F pr={pr}
-  PARSE: filter for isResolved == false
-  PARSE: filter for CodeRabbit-authored comments (author.login contains "coderabbit")
-  STORE: issues in memory
-  OUTPUT: "🔍 Fetching unresolved comments on PR #{pr}...\n📊 Found {count} unresolved threads"
 
-STEP 2: Evaluate issues
-  FOR_EACH: issue in issues
-    ANALYZE: against project standards
-    ASSIGN: recommendation (fix|skip) based on severity and type
-  OUTPUT: "Evaluating against project standards..."
+  FILTER: isResolved == false AND author.login contains "coderabbit"
+  STORE: issues in memory
+  OUTPUT: "Fetched {count} unresolved CodeRabbit comments from PR #{pr}"
 
 STEP 3: Present triage table
-  DISPLAY:
-    📊 Review Comments:
+  (See Common Triage Flow below)
 
-    | ID | Source | Issue | Severity | Location | Rec |
-    |----|--------|-------|----------|----------|-----|
-    | {foreach issue} |
+STEP 4: Apply fixes
+  (See Common Triage Flow below)
 
-    Summary: {fix_count} recommended fixes, {skip_count} skips
+STEP 5: Finalize
+  IF: fixes applied
+    RUN: git add -A && git commit -m "fix: resolve CodeRabbit feedback ({fix_count} issues)"
+    RUN: git push
+    RUN: gh pr comment {pr} --body "@coderabbitai resolve"
+    OUTPUT: "Posted @coderabbitai resolve to PR #{pr}"
 
+  IF: skipped_issues not empty
+    WRITE: .tmp/coderabbit-ignored.json
+    OUTPUT: "Saved {count} skipped issues for /ship-it acknowledgment"
+
+  OUTPUT: "Resolved {fix_count} of {total} comments"
+  END
+```
+
+## Mode: File (--code-rabbit and/or --local)
+
+When `--code-rabbit` and/or `--local` flags are provided.
+
+### Execution
+
+```text
+STEP 1: Load issues from files
+  issues = []
+
+  IF: --code-rabbit flag
+    READ: .tmp/review-coderabbit.json
+    IF: file not found
+      OUTPUT: "No CodeRabbit issues file. Run /review first."
+      END
+    APPEND: issues from file with source="coderabbit"
+    OUTPUT: "Loaded {count} CodeRabbit issues"
+
+  IF: --local flag
+    READ: .tmp/review-local.json
+    IF: file not found
+      OUTPUT: "No AI reviewer issues file. Run /review first."
+      END
+    APPEND: issues from file with source="code-reviewer"
+    OUTPUT: "Loaded {count} AI reviewer issues"
+
+  IF: issues empty
+    OUTPUT: "No issues to triage"
+    END
+
+STEP 2: Present triage table
+  (See Common Triage Flow below)
+
+STEP 3: Apply fixes
+  (See Common Triage Flow below)
+
+STEP 4: Finalize
+  IF: fixes applied
+    RUN: git add -A && git commit -m "fix: resolve review feedback ({fix_count} issues)"
+    OUTPUT: "Committed {fix_count} fixes"
+
+  IF: skipped_issues not empty
+    WRITE: .tmp/coderabbit-ignored.json
+    OUTPUT: "Saved {count} skipped issues (will be posted to PR via /ship-it)"
+
+  OUTPUT: "Fixed {fix_count} issues, skipped {skip_count}"
+  END
+```
+
+## Common Triage Flow
+
+Used by both PR mode and File mode.
+
+### Evaluate Issues
+
+```text
+FOR_EACH: issue in issues
+  ANALYZE: severity, type, fix complexity
+  ASSIGN: recommendation = "Fix" if severity >= MEDIUM or security/accessibility issue
+  ASSIGN: recommendation = "Skip" if severity == LOW and type == "nitpick"
+```
+
+### Present Triage Table
+
+```text
+DISPLAY:
+  Review Issues:
+
+  | # | Source | Severity | Location | Issue | Rec |
+  |---|--------|----------|----------|-------|-----|
+  | 1 | coderabbit | HIGH | auth.ts:45 | Missing error handling | Fix |
+  | 2 | code-reviewer | MEDIUM | api.ts:12 | Input validation needed | Fix |
+  | 3 | coderabbit | LOW | utils.ts:8 | Use const vs let | Skip |
+
+  Summary: {fix_count} recommended fixes, {skip_count} recommended skips
+
+IF: --dry-run flag
+  OUTPUT: "Dry run complete. No changes made."
+  END
+
+IF: --auto flag
+  PROCEED: with all recommended fixes
+ELSE:
   ASK_USER:
     question: "How would you like to proceed?"
     options:
-      - "Approve all recommended ({fix_count} issues)"
+      - "Approve all recommended ({fix_count} fixes)"
       - "Select specific issues"
       - "View detailed analysis"
       - "Skip all"
   WAIT: for user response
-
-STEP 4: Apply fixes
-  IF: user selected "Approve all" or specific issues
-    FOR_EACH: approved issue
-      IF: issue.ai_prompt exists
-        APPLY: fix using ai_prompt as guidance
-      ELSE:
-        DELEGATE: to appropriate agent based on issue.type
-      OUTPUT: "✅ Fixed: {issue.description}"
-
-  FOR_EACH: skipped issue
-    ASK_USER:
-      question: "Reason for skipping '{issue.description}'?"
-      options:
-        - "nitpick"
-        - "false-positive"
-        - "intentional"
-        - "out-of-scope"
-        - "will-fix-later"
-    WAIT: for user response
-    STORE: in skipped_issues with reason
-
-STEP 5: Save and notify
-  IF: skipped_issues not empty
-    WRITE: .tmp/coderabbit-ignored.json with schema:
-      {
-        "schema_version": "1.0",
-        "branch": "{current_branch}",
-        "created_at": "{timestamp}",
-        "ignored_issues": [{skipped_issues with reasons}]
-      }
-    OUTPUT: "📄 Saved {count} skipped issues to .tmp/coderabbit-ignored.json"
-
-  IF: fixes applied
-    RUN: git add -A && git commit -m "fix: resolve review comments ({fix_count} issues)"
-    RUN: git push
-    RUN: gh pr comment {pr} --body "@coderabbitai resolve"
-    OUTPUT: "📢 Posted resolution to PR #{pr}"
-
-  OUTPUT: "🎉 Resolved {fix_count} of {total} issues"
-  END
 ```
 
-### Mode: --local
+### Apply Fixes
 
 ```text
-STEP 1: Run CodeRabbit CLI
-  IF: which coderabbit fails
-    OUTPUT: "❌ CodeRabbit CLI not installed. Run: curl -fsSL https://cli.coderabbit.ai/install.sh | sh"
-    END
+FOR_EACH: approved issue
+  IF: issue.suggestion or issue.recommendation exists
+    APPLY: fix using provided guidance
+  ELSE:
+    DELEGATE: to appropriate agent based on issue.type
+  OUTPUT: "Fixed: {issue.description}"
 
-  RUN: coderabbit review --prompt-only --type all --config .coderabbit.yaml --base main
-  PARSE: output to unified issue format, source="coderabbit"
-  STORE: issues in memory
-  OUTPUT: "🔍 Running CodeRabbit local analysis...\n📊 Found {count} issues"
-
-STEP 2-4: (Same as PR mode - Evaluate, Present, Apply)
-
-STEP 5: Save skipped issues (no PR posting)
-  IF: skipped_issues not empty
-    WRITE: .tmp/coderabbit-ignored.json
-    OUTPUT: "📄 Saved skipped issues (will be posted when PR created via /ship-it)"
-
-  IF: fixes applied
-    RUN: git add -A && git commit -m "fix: resolve CodeRabbit feedback ({fix_count} issues)"
-    OUTPUT: "📦 Committed fixes"
-
-  OUTPUT: "🎉 Fixed {fix_count} issues, documented {skip_count} for PR acknowledgment"
-  END
-```
-
-### Mode: --from-file <path>
-
-```text
-STEP 1: Load issues from file
-  READ: {path}
-  VALIDATE: schema_version, branch matches current
-  STORE: issues in memory
-  OUTPUT: "🔍 Loading issues from {path}...\n📊 Found {count} issues from {unique_sources}"
-
-STEP 2-4: (Same as PR mode - Evaluate, Present, Apply)
-
-STEP 5: Save skipped issues
-  IF: skipped_issues not empty
-    WRITE: .tmp/coderabbit-ignored.json
-    OUTPUT: "📄 Saved skipped issues"
-
-  OUTPUT: "🎉 Fixed {fix_count} issues, skipped {skip_count}"
-  RETURN: { fix_count, skip_count } to caller
-  END
-```
-
-## Expected Output
-
-```text
-🔍 Fetching unresolved comments on PR #123...
-📊 Found 3 unresolved threads
-
-Evaluating against project standards...
-
-📊 Review Comments:
-
-| ID | Source | Issue | Severity | Location | Rec |
-|----|--------|-------|----------|----------|-----|
-| 1 | coderabbit | Missing error handling | HIGH | auth.ts:45 | Fix |
-| 2 | coderabbit | Add input validation | MEDIUM | api.ts:12 | Fix |
-| 3 | coderabbit | Use const vs let | LOW | utils.ts:8 | Skip |
-
-Summary: 2 recommended fixes, 1 skip
-
-[User selects option via AskUserQuestion]
-
-✅ Fixed: Missing error handling
-✅ Fixed: Add input validation
-
-📄 Saved 1 skipped issue to .tmp/coderabbit-ignored.json
-📦 Committed: fix: resolve review comments (2 issues)
-📢 Posted resolution to PR #123
-
-🎉 Resolved 2 of 3 issues
-```
-
-## Unified Issue Schema
-
-Input format for `--from-file` mode (`.tmp/review-issues.json`):
-
-```json
-{
-  "schema_version": "1.0",
-  "branch": "feature/my-feature",
-  "created_at": "2025-01-10T12:00:00Z",
-  "issues": [
-    {
-      "id": 1,
-      "source": "coderabbit|code-reviewer|eslint|markdownlint|ruff",
-      "file": "path/to/file.ts",
-      "line": 45,
-      "type": "nitpick|potential_issue|error|security|contract_violation",
-      "severity": "LOW|MEDIUM|HIGH|CRITICAL",
-      "description": "Issue description",
-      "ai_prompt": "Fix instructions (optional)",
-      "rule": "Linter rule ID (optional)"
-    }
-  ]
-}
+FOR_EACH: skipped issue
+  ASK_USER:
+    question: "Reason for skipping '{issue.description}'?"
+    options:
+      - "nitpick" - Style preference, not worth changing
+      - "false-positive" - Incorrectly identified as issue
+      - "intentional" - Code is correct as-is by design
+      - "out-of-scope" - Valid but not part of this PR
+      - "will-fix-later" - Acknowledged, will address separately
+  WAIT: for user response
+  STORE: issue with category in skipped_issues
 ```
 
 ## Ignored Issues Schema
@@ -241,7 +218,7 @@ Output format (`.tmp/coderabbit-ignored.json`):
   "ignored_issues": [
     {
       "id": 1,
-      "source": "coderabbit",
+      "source": "coderabbit|code-reviewer",
       "location": "file.ts:45",
       "description": "Issue description",
       "severity": "LOW",
@@ -252,11 +229,68 @@ Output format (`.tmp/coderabbit-ignored.json`):
 }
 ```
 
+## Expected Output
+
+### PR Mode
+
+```text
+User: /resolve-comments
+
+Fetched 3 unresolved CodeRabbit comments from PR #42
+
+Review Issues:
+
+| # | Source | Severity | Location | Issue | Rec |
+|---|--------|----------|----------|-------|-----|
+| 1 | coderabbit | HIGH | auth.ts:45 | Missing error handling | Fix |
+| 2 | coderabbit | MEDIUM | api.ts:12 | Add input validation | Fix |
+| 3 | coderabbit | LOW | utils.ts:8 | Use const vs let | Skip |
+
+Summary: 2 recommended fixes, 1 recommended skip
+
+[User selects "Approve all recommended"]
+
+Fixed: Missing error handling
+Fixed: Add input validation
+
+[User categorizes skip as "nitpick"]
+
+Committed: fix: resolve CodeRabbit feedback (2 issues)
+Pushed to origin
+Posted @coderabbitai resolve to PR #42
+Saved 1 skipped issue for /ship-it acknowledgment
+
+Resolved 2 of 3 comments
+```
+
+### File Mode
+
+```text
+User: /resolve-comments --code-rabbit --local
+
+Loaded 3 CodeRabbit issues
+Loaded 2 AI reviewer issues
+
+Review Issues:
+
+| # | Source | Severity | Location | Issue | Rec |
+|---|--------|----------|----------|-------|-----|
+| 1 | coderabbit | HIGH | auth.ts:45 | Missing error handling | Fix |
+| 2 | coderabbit | MEDIUM | api.ts:12 | Add input validation | Fix |
+| 3 | code-reviewer | HIGH | db.ts:78 | SQL injection risk | Fix |
+| 4 | code-reviewer | MEDIUM | perf.ts:23 | N+1 query detected | Fix |
+| 5 | coderabbit | LOW | utils.ts:8 | Use const vs let | Skip |
+
+Summary: 4 recommended fixes, 1 recommended skip
+
+[Interactive triage continues...]
+```
+
 ## Notes
 
-- **CRITICAL**: Use `AskUserQuestion` tool for triage. WAIT for response. Never auto-apply without consent.
-- All modes use identical triage flow (Steps 2-4)
-- `--from-file` mode returns `{fix_count, skip_count}` for caller integration
-- Skipped issues are always saved to `.tmp/coderabbit-ignored.json`
-- PR mode uses GraphQL to fetch only UNRESOLVED threads (REST API lacks this field)
-- Local mode requires `coderabbit` CLI installed and authenticated
+- **CRITICAL**: Present triage options to user and WAIT for response. Never auto-apply without consent (unless --auto flag).
+- PR mode posts `@coderabbitai resolve` to acknowledge resolution
+- File mode commits but does not push or post to PR (no PR exists yet)
+- Skipped issues always saved to `.tmp/coderabbit-ignored.json` for `/ship-it`
+- `--auto` skips user interaction and applies all recommended fixes
+- `--dry-run` shows analysis without making any changes
