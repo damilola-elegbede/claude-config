@@ -70,6 +70,12 @@ def find_orphan_references():
     orphans = []
     valid_agents = set(a.lower() for a in get_all_agents())
 
+    # Built-in Claude Code Task tool agent types (not custom agents)
+    # These are part of the Task tool's available subagent_types
+    builtin_agent_types = {
+        "general-purpose", "bash", "explore", "plan", "statusline-setup"
+    }
+
     if not COMMANDS_DIR.exists():
         return orphans
 
@@ -94,6 +100,9 @@ def find_orphan_references():
                 match_lower = match.lower()
                 # Must look like an agent name (lowercase-letters-separated-by-hyphens)
                 if re.match(r"^[a-z]+-[a-z]+(?:-[a-z]+)?$", match_lower):
+                    # Skip built-in Task tool agent types
+                    if match_lower in builtin_agent_types:
+                        continue
                     if match_lower not in valid_agents:
                         orphans.append((cmd_file.name, match))
 
