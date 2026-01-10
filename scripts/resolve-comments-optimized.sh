@@ -38,11 +38,16 @@ validate_json_input() {
         return 1
     fi
 
-    # Check for suspicious patterns in JSON using fixed-string matching for literals
+    # Check for suspicious patterns in JSON using fixed-string matching for security
+    # Using -F (fixed string) instead of -E (regex) to prevent pattern injection
     if echo "$json_input" | grep -qF '$(' || \
        echo "$json_input" | grep -qF '`' || \
-       echo "$json_input" | grep -qE '(eval|exec|system|shell|subprocess|__import__)' || \
-       echo "$json_input" | grep -qE 'import\s+os'; then
+       echo "$json_input" | grep -qF 'eval(' || \
+       echo "$json_input" | grep -qF 'exec(' || \
+       echo "$json_input" | grep -qF 'system(' || \
+       echo "$json_input" | grep -qF 'subprocess' || \
+       echo "$json_input" | grep -qF '__import__' || \
+       echo "$json_input" | grep -qF 'import os'; then
         echo -e "${RED}Error: Suspicious code patterns detected in JSON input${NC}" >&2
         return 1
     fi
@@ -197,9 +202,10 @@ if [ "$PROMPT_COUNT" -eq 0 ]; then
     echo -e "${YELLOW}⚠️ No CodeRabbit comments found on first attempt. Retrying with GraphQL...${NC}"
 
     # GraphQL query for comprehensive search (single request)
-    # Escape values to prevent injection
-    OWNER_ESCAPED=$(printf '%s' "$OWNER" | sed 's/"/\\"/g')
-    REPO_ESCAPED=$(printf '%s' "$REPO" | sed 's/"/\\"/g')
+    # Escape values using jq for proper JSON encoding (prevents injection)
+    # jq -Rs produces quoted JSON string, then we strip outer quotes for template interpolation
+    OWNER_ESCAPED=$(printf '%s' "$OWNER" | jq -Rs . | sed 's/^"//;s/"$//')
+    REPO_ESCAPED=$(printf '%s' "$REPO" | jq -Rs . | sed 's/^"//;s/"$//')
 
     GRAPHQL_QUERY='{
         "query": "query {
@@ -450,7 +456,7 @@ def is_safe_content(content):
     if not content or len(content) > 1000:  # Size limit
         return False
 
-    # Check for dangerous patterns
+    # Check for dangerous patterns including shell metacharacters
     dangerous_patterns = [
         r'\$\(',  # Command substitution
         r'`',     # Backticks
@@ -458,6 +464,10 @@ def is_safe_content(content):
         r'exec\s*\(',  # exec calls
         r'rm\s+-rf',   # Dangerous rm commands
         r'sudo',       # Privilege escalation
+        r'[;&|]',      # Shell command separators
+        r'[<>]',       # Redirections
+        r'\(\s*\)',    # Subshell
+        r'\{\s*\}',    # Brace expansion
     ]
 
     for pattern in dangerous_patterns:
@@ -466,8 +476,31 @@ def is_safe_content(content):
 
     return True
 
+def validate_json_schema(data):
+    """Validate JSON structure before processing to prevent malformed input attacks."""
+    if not isinstance(data, list):
+        raise ValueError("Expected array of file edits")
+    for item in data:
+        if not isinstance(item, dict):
+            raise ValueError("Each edit must be an object")
+        if 'file' not in item or not isinstance(item.get('file'), str):
+            raise ValueError("Each edit must have a 'file' string field")
+        if 'edits' not in item or not isinstance(item.get('edits'), list):
+            raise ValueError("Each edit must have an 'edits' array field")
+        for edit in item['edits']:
+            if not isinstance(edit, dict) or 'prompt' not in edit:
+                raise ValueError("Each edit entry must have a 'prompt' field")
+    return True
+
 def apply_batch_updates(edits_json):
     edits = json.loads(edits_json)
+
+    # Validate JSON schema before processing
+    try:
+        validate_json_schema(edits)
+    except ValueError as e:
+        print(f"✗ Schema validation failed: {e}")
+        return
 
     for file_edit in edits:
         if not file_edit['file']:
@@ -561,7 +594,9 @@ echo "$BATCH_OUTPUT"
 # Step 7: Stage changes
 echo -e "\n${BLUE}📦 Staging changes...${NC}"
 # Use safer approach for staging files - validate each file path
+# Accumulate all errors before proceeding to provide complete feedback
 CHANGED_FILES_LIST=()
+INVALID_FILES_LIST=()
 while IFS= read -r file_name; do
     if [ -n "$file_name" ]; then
         # Sanitize file path using our existing function
@@ -572,10 +607,18 @@ while IFS= read -r file_name; do
                 CHANGED_FILES_LIST+=("$full_path")
             fi
         else
-            echo -e "${YELLOW}⚠️ Skipping invalid file path: $file_name${NC}"
+            INVALID_FILES_LIST+=("$file_name")
         fi
     fi
 done < <(echo "$PROMPTS" | jq -r '[.[].file] | unique | .[]')
+
+# Report all invalid files before proceeding
+if [ ${#INVALID_FILES_LIST[@]} -gt 0 ]; then
+    echo -e "${YELLOW}⚠️ Skipped ${#INVALID_FILES_LIST[@]} invalid file path(s):${NC}"
+    for invalid_file in "${INVALID_FILES_LIST[@]}"; do
+        echo -e "${YELLOW}  - $invalid_file${NC}"
+    done
+fi
 
 if [ ${#CHANGED_FILES_LIST[@]} -gt 0 ]; then
     git add "${CHANGED_FILES_LIST[@]}"

@@ -178,7 +178,12 @@ STEP 3: Post review acknowledgments
   READ: .tmp/coderabbit-ignored.json
   IF: file exists AND has ignored_issues
     RUN: git branch --show-current
-    VALIDATE: branch field matches current branch
+    SET: current_branch = output
+    VALIDATE: current_branch matches pattern ^[a-zA-Z0-9._/-]+$ (prevent path traversal)
+    IF: validation fails
+      OUTPUT: "⚠️ Invalid branch name format, skipping acknowledgments"
+      SKIP: to STEP 4
+    VALIDATE: branch field in JSON matches current_branch
     IF: matches
       BUILD: comment from ignored_issues grouped by category:
         ## Review Issue Acknowledgments
