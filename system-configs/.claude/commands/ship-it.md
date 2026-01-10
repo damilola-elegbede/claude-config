@@ -25,7 +25,7 @@ With no flags, runs the full workflow.
 
 ## Flags
 
-| Flag | Command to Invoke |
+| Flag | Command to Execute |
 |------|-------------------|
 | `-d` | `/docs` |
 | `-t` | `/test` |
@@ -37,21 +37,33 @@ With no flags, runs the full workflow.
 
 ## Execution Rules
 
-**CRITICAL**: This command is a pure orchestrator. You MUST use the Skill tool to invoke each command.
-Never implement command logic directly - always delegate via the Skill tool.
+**CRITICAL**: This command is a pure orchestrator. You MUST use the Task tool with `general-purpose` agent
+to execute each command in complete isolation. Never implement command logic directly.
 
-### Mandatory Skill Tool Invocation
+### Why Task Tool (Not Skill Tool)
 
-For each enabled step, use the Skill tool to invoke the corresponding command:
+- **Skill tool** only loads markdown instructions into your session - no isolation, no completion guarantee
+- **Task tool** spawns an isolated agent subprocess that runs to completion
+- The agent uses Skill tool internally to load command instructions
+- This ensures each command executes COMPLETELY per its specification
 
-| Flag | Action |
-|------|--------|
-| `-d` | `Skill tool: skill="docs"` |
-| `-t` | `Skill tool: skill="test"` |
-| `-c` | `Skill tool: skill="commit"` |
-| `-r` | `Skill tool: skill="review"` |
-| `-p` | `Skill tool: skill="push"` |
-| `-pr` | `Skill tool: skill="pr"` |
+### Mandatory Task Tool Delegation
+
+For each enabled step:
+
+1. Spawn a `general-purpose` agent via Task tool
+2. Agent uses Skill tool to load the command instructions
+3. Agent executes the command completely - all steps, no skipping
+4. Wait for agent completion before proceeding to next step
+
+| Flag | Task Tool Invocation |
+|------|---------------------|
+| `-d` | `Task: subagent_type="general-purpose", description="Execute /docs", prompt="Execute /docs completely. Use Skill tool: skill='docs'. Follow ALL instructions."` |
+| `-t` | `Task: subagent_type="general-purpose", description="Execute /test", prompt="Execute /test completely. Use Skill tool: skill='test'. Follow ALL instructions."` |
+| `-c` | `Task: subagent_type="general-purpose", description="Execute /commit", prompt="Execute /commit completely. Use Skill tool: skill='commit'. Follow ALL instructions."` |
+| `-r` | `Task: subagent_type="general-purpose", description="Execute /review", prompt="Execute /review completely. Use Skill tool: skill='review'. Follow ALL instructions."` |
+| `-p` | `Task: subagent_type="general-purpose", description="Execute /push", prompt="Execute /push completely. Use Skill tool: skill='push'. Follow ALL instructions."` |
+| `-pr` | `Task: subagent_type="general-purpose", description="Execute /pr", prompt="Execute /pr completely. Use Skill tool: skill='pr'. Follow ALL instructions."` |
 
 ### Execution Order
 
@@ -71,7 +83,7 @@ Example: `/ship-it -p -c` executes as `commit → push`
 
 ### Halt on Failure
 
-If any Skill tool invocation fails → stop immediately. Do not continue to subsequent steps.
+If any Task agent returns failure → stop immediately. Do not continue to subsequent steps.
 
 ## Pre-Execution Validation
 
@@ -119,27 +131,27 @@ The following issues were reviewed locally and intentionally not addressed:
 🚀 ship-it: docs → test → commit → review → push → pr
 
 📋 Step 1/6: docs
-  [Skill tool invokes /docs]
+  [Task agent executing /docs...]
   ✅ Documentation updated
 
 📋 Step 2/6: test
-  [Skill tool invokes /test]
+  [Task agent executing /test...]
   ✅ All tests passed
 
 📋 Step 3/6: commit
-  [Skill tool invokes /commit]
+  [Task agent executing /commit...]
   ✅ Commit created: a1b2c3d
 
 📋 Step 4/6: review
-  [Skill tool invokes /review]
+  [Task agent executing /review...]
   ✅ Code review passed
 
 📋 Step 5/6: push
-  [Skill tool invokes /push]
+  [Task agent executing /push...]
   ✅ Pushed to origin/feature-branch
 
 📋 Step 6/6: pr
-  [Skill tool invokes /pr]
+  [Task agent executing /pr...]
   ✅ PR created: https://github.com/org/repo/pull/123
 
 🎉 Complete (6/6 steps)
@@ -147,6 +159,8 @@ The following issues were reviewed locally and intentionally not addressed:
 
 ## Notes
 
-- Pure orchestrator: MUST use Skill tool to invoke `/docs`, `/test`, `/commit`, `/review`, `/push`, `/pr`
+- Pure orchestrator: MUST use Task tool with `general-purpose` agent for each command
+- Agent uses Skill tool internally to load command instructions
+- Each command runs in isolated subprocess with complete execution guarantee
 - Never bypass quality gates (no `--no-verify`)
 - Review (`-r`) runs AFTER commit to analyze full branch diff before push

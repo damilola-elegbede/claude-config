@@ -48,15 +48,28 @@ Comprehensive code review combining CodeRabbit CLI, automated linting, and AI an
 **CRITICAL**: Phase 0 is not optional. When CodeRabbit CLI is available, you MUST execute it.
 
 1. **Check CLI availability**: Run `which coderabbit`
-2. **If available**: Use the Skill tool to invoke `/resolve-cr --local`
-   - `Skill tool: skill="resolve-cr", args="--local"`
-   - This runs `coderabbit review --prompt-only --type all --config .coderabbit.yaml --base <default-branch>`
+2. **If available**: Use Task tool with `general-purpose` agent to execute `/resolve-cr --local` in isolation:
+
+   ```yaml
+   Task tool:
+     subagent_type: "general-purpose"
+     description: "Execute CodeRabbit local review"
+     prompt: |
+       Execute the /resolve-cr command with --local flag completely.
+       Use Skill tool: skill="resolve-cr", args="--local" to load instructions.
+       Follow EVERY step in the command. Do not skip any instructions.
+       Report results when complete.
+   ```
+
+   - Agent runs `coderabbit review --prompt-only --type all --config .coderabbit.yaml --base <default-branch>`
    - Presents interactive triage for each issue
    - Creates `.tmp/coderabbit-ignored.json` for any skipped issues
    - Does NOT post to GitHub (no PR exists yet)
-3. **After /resolve-cr completes**: Continue to Phases 1-3 (unless `--coderabbit` flag used)
 
-**IMPORTANT**: Never implement CodeRabbit logic directly. Always use the Skill tool to invoke `/resolve-cr --local`.
+3. **After Task agent completes**: Continue to Phases 1-3 (unless `--coderabbit` flag used)
+
+**IMPORTANT**: Never implement CodeRabbit logic directly. Always use Task tool with `general-purpose` agent.
+The agent uses Skill tool internally to load /resolve-cr instructions, ensuring complete execution.
 
 ### Contract Validation (Phase 2)
 
@@ -93,7 +106,7 @@ User: /review
 🔍 Reviewing changed files...
 
 Phase 0: CodeRabbit Analysis
-  [Skill tool invokes /resolve-cr --local]
+  [Task agent executing /resolve-cr --local...]
   [Interactive triage - see /resolve-cr for details]
   ✅ Fixed 2 issues, documented 1 for PR acknowledgment
      (Saved to .tmp/coderabbit-ignored.json → posted by /ship-it)
@@ -134,7 +147,8 @@ User: /review --fix
 
 ## Notes
 
-- **CodeRabbit**: MUST use Skill tool to invoke `/resolve-cr --local` when CLI is available
+- **CodeRabbit**: MUST use Task tool with `general-purpose` agent to execute `/resolve-cr --local` in isolation
+- Agent uses Skill tool internally to load command instructions, ensuring complete execution
 - Uses code-reviewer agent for thorough AI analysis after CodeRabbit
 - Includes accessibility checks (WCAG compliance)
 - Default mode requires approval before fixes
