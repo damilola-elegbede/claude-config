@@ -162,8 +162,7 @@ The following issues were reviewed locally and intentionally not addressed:
 
 ## Notes
 
-- Pure orchestrator: MUST use Task tool with `general-purpose` agent for each command
-- Agent uses Skill tool internally to load command instructions
+- See **Execution Rules** above for mandatory Task tool delegation pattern
 - Each command runs in isolated subprocess with bounded execution (iteration limits apply)
 - Never bypass quality gates (no `--no-verify`)
 - Review (`-r`) runs AFTER commit to analyze full branch diff before push
