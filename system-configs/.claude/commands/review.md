@@ -81,10 +81,18 @@ Task tool:
 
     1. Create .tmp/ directory if needed: mkdir -p .tmp
 
-    2. Run CodeRabbit CLI:
-       coderabbit review --prompt-only --type all --config .coderabbit.yaml --base main
+    2. Determine default branch:
+       DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo "main")
 
-    3. Parse the output and write to .tmp/review-coderabbit.json with this schema:
+    3. Run CodeRabbit CLI:
+       coderabbit review --prompt-only --type all --config .coderabbit.yaml --base $DEFAULT_BRANCH
+
+    Note: The --prompt-only flag produces AI-optimized text output, not JSON.
+    Parse the text output by extracting structured sections (file paths, line numbers,
+    issue descriptions) and transforming them into the JSON schema below.
+    Handle edge cases: missing sections, malformed lines, or empty output.
+
+    4. Parse the output and write to .tmp/review-coderabbit.json with this schema:
        {
          "schema_version": "1.0",
          "branch": "{current_branch}",
@@ -170,7 +178,7 @@ OUTPUT:
 ```text
 IF: total issues > 0
   OUTPUT: "Launching interactive triage..."
-  USE: Skill tool to invoke resolve-comments with args "--code-rabbit --local"
+  Skill tool: skill="resolve-comments", args="--code-rabbit --local"
 ELSE:
   OUTPUT: "No issues found. Code looks good!"
   END

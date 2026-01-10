@@ -201,41 +201,41 @@ PROMPT_COUNT=$(echo "$PROMPTS" | jq 'length')
 if [ "$PROMPT_COUNT" -eq 0 ]; then
     echo -e "${YELLOW}⚠️ No CodeRabbit comments found on first attempt. Retrying with GraphQL...${NC}"
 
-    # GraphQL query for comprehensive search (single request)
-    # Escape values using jq for proper JSON encoding (prevents injection)
-    # jq -Rs produces quoted JSON string, then we strip outer quotes for template interpolation
-    OWNER_ESCAPED=$(printf '%s' "$OWNER" | jq -Rs . | sed 's/^"//;s/"$//')
-    REPO_ESCAPED=$(printf '%s' "$REPO" | jq -Rs . | sed 's/^"//;s/"$//')
-
-    GRAPHQL_QUERY='{
-        "query": "query {
-            repository(owner: \"'"$OWNER_ESCAPED"'\", name: \"'"$REPO_ESCAPED"'\") {
-                pullRequest(number: '$PR_NUMBER') {
-                    reviews(first: 100) {
-                        nodes {
-                            body
-                            author { login }
-                        }
-                    }
-                    reviewThreads(first: 100) {
-                        nodes {
-                            comments(first: 100) {
-                                nodes {
-                                    body
-                                    path
-                                    line
-                                    author { login }
-                                }
-                            }
-                        }
-                    }
-                }
+    # GraphQL query for comprehensive search using proper variable passing
+    # Use gh api graphql -F to pass variables safely (prevents injection)
+    GRAPHQL_QUERY='
+      query($owner: String!, $name: String!, $number: Int!) {
+        repository(owner: $owner, name: $name) {
+          pullRequest(number: $number) {
+            reviews(first: 100) {
+              nodes {
+                body
+                author { login }
+              }
             }
-        }"
-    }'
+            reviewThreads(first: 100) {
+              nodes {
+                comments(first: 100) {
+                  nodes {
+                    body
+                    path
+                    line
+                    author { login }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    '
 
-    # Execute GraphQL query
-    GRAPHQL_RESULT=$(gh api graphql -f query="$(echo "$GRAPHQL_QUERY" | jq -r .query)")
+    # Execute GraphQL query with proper variable passing via -F
+    GRAPHQL_RESULT=$(gh api graphql \
+      -f query="$GRAPHQL_QUERY" \
+      -F owner="$OWNER" \
+      -F name="$REPO" \
+      -F number="$PR_NUMBER")
 
     # Parse GraphQL results
     PROMPTS=$(echo "$GRAPHQL_RESULT" | jq -r '
@@ -499,8 +499,11 @@ def apply_batch_updates(edits_json):
     try:
         validate_json_schema(edits)
     except ValueError as e:
-        print(f"✗ Schema validation failed: {e}")
-        return
+        print(f"✗ Schema validation failed: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    updated_count = 0
+    error_count = 0
 
     for file_edit in edits:
         if not file_edit['file']:
@@ -509,7 +512,8 @@ def apply_batch_updates(edits_json):
         try:
             file_path = validate_agent_path(file_edit['file'])
         except ValueError as e:
-            print(f"✗ Security error for {file_edit['file']}: {e}")
+            print(f"✗ Security error for {file_edit['file']}: {e}", file=sys.stderr)
+            error_count += 1
             continue
 
         try:
@@ -544,9 +548,18 @@ def apply_batch_updates(edits_json):
                 f.write(content)
 
             print(f"✓ Updated {file_path}")
+            updated_count += 1
 
         except Exception as e:
-            print(f"✗ Error updating {file_path}: {e}")
+            print(f"✗ Error updating {file_path}: {e}", file=sys.stderr)
+            error_count += 1
+
+    # Exit with appropriate code based on results
+    if error_count > 0:
+        sys.exit(1)
+    if updated_count == 0:
+        print("✗ No files updated (nothing to commit)", file=sys.stderr)
+        sys.exit(2)
 
 if __name__ == "__main__":
     # Read from stdin with size limit and validation
@@ -582,8 +595,11 @@ fi
 
 # Apply batch updates with validated input
 echo -e "${GREEN}✓ Input validation passed${NC}"
-BATCH_OUTPUT=$(echo "$BATCH_EDITS" | python3 "$TEMP_DIR/batch_update.py" 2>&1)
+# Temporarily disable errexit to capture exit code reliably
+set +e
+BATCH_OUTPUT=$(printf '%s' "$BATCH_EDITS" | python3 "$TEMP_DIR/batch_update.py" 2>&1)
 BATCH_EXIT_CODE=$?
+set -e
 if [ $BATCH_EXIT_CODE -ne 0 ]; then
     echo -e "${RED}✗ Batch update process failed (exit code: $BATCH_EXIT_CODE)${NC}"
     echo -e "${RED}  Error details: $BATCH_OUTPUT${NC}"

@@ -17,6 +17,8 @@ argument-hint: "[pr-number] [--code-rabbit] [--local] [--auto] [--dry-run]"
 /resolve-comments --dry-run           # Analysis only, no changes
 ```
 
+**Note:** The `--local` and `--from-file <path>` flags are mutually exclusive. Do not use them together.
+
 ## Description
 
 Resolves review comments from multiple sources with interactive triage.
@@ -42,31 +44,45 @@ STEP 1: Determine PR number
       OUTPUT: "No PR found for current branch. Create one with: gh pr create"
       END
 
-STEP 2: Fetch unresolved CodeRabbit comments
-  RUN: gh api graphql -f query='
-    query($owner: String!, $repo: String!, $pr: Int!) {
-      repository(owner: $owner, name: $repo) {
-        pullRequest(number: $pr) {
-          reviewThreads(first: 100) {
-            nodes {
-              isResolved
-              comments(first: 10) {
-                nodes {
-                  id
-                  path
-                  line
-                  body
-                  author { login }
+STEP 2: Fetch unresolved CodeRabbit comments (with pagination)
+  INITIALIZE: all_issues = [], threads_cursor = null, has_more_threads = true
+
+  WHILE: has_more_threads
+    RUN: gh api graphql -f query='
+      query($owner: String!, $repo: String!, $pr: Int!, $after: String) {
+        repository(owner: $owner, name: $repo) {
+          pullRequest(number: $pr) {
+            reviewThreads(first: 100, after: $after) {
+              pageInfo { endCursor hasNextPage }
+              nodes {
+                isResolved
+                comments(first: 100) {
+                  pageInfo { endCursor hasNextPage }
+                  nodes {
+                    id
+                    path
+                    line
+                    body
+                    author { login }
+                  }
                 }
               }
             }
           }
         }
-      }
-    }' -f owner={owner} -f repo={repo} -F pr={pr}
+      }' -F owner={owner} -F repo={repo} -F pr={pr} -F after={threads_cursor}
 
-  FILTER: isResolved == false AND author.login contains "coderabbit"
-  STORE: issues in memory
+    FOR_EACH: thread in reviewThreads.nodes
+      IF: thread has >100 comments (thread.comments.pageInfo.hasNextPage)
+        PAGINATE: fetch remaining comments for this thread using comments cursor
+      APPEND: all comments to thread.comments.nodes
+
+    FILTER: isResolved == false AND author.login contains "coderabbit"
+    APPEND: filtered issues to all_issues
+    SET: threads_cursor = reviewThreads.pageInfo.endCursor
+    SET: has_more_threads = reviewThreads.pageInfo.hasNextPage
+
+  STORE: all_issues in memory
   OUTPUT: "Fetched {count} unresolved CodeRabbit comments from PR #{pr}"
 
 STEP 3: Present triage table
@@ -76,15 +92,25 @@ STEP 4: Apply fixes
   (See Common Triage Flow below)
 
 STEP 5: Finalize
-  IF: fixes applied
-    RUN: git add -A && git commit -m "fix: resolve CodeRabbit feedback ({fix_count} issues)"
-    RUN: git push
-    RUN: gh pr comment {pr} --body "@coderabbitai resolve"
-    OUTPUT: "Posted @coderabbitai resolve to PR #{pr}"
-
   IF: skipped_issues not empty
     WRITE: .tmp/coderabbit-ignored.json
     OUTPUT: "Saved {count} skipped issues for /ship-it acknowledgment"
+
+  IF: fixes applied
+    ASK_USER:
+      question: "Commit, push, and post resolution to PR #{pr}? ({fix_count} fixes on {current_branch})"
+      options:
+        - "Yes - commit, push, and post @coderabbitai resolve"
+        - "No - stop after local changes only"
+    WAIT: for user response
+
+    IF: user selected "Yes"
+      RUN: git add -A && git commit -m "fix: resolve CodeRabbit feedback ({fix_count} issues)"
+      RUN: git push
+      RUN: gh pr comment {pr} --body "@coderabbitai resolve"
+      OUTPUT: "Posted @coderabbitai resolve to PR #{pr}"
+    ELSE:
+      OUTPUT: "Skipped commit/push/comment. Local changes preserved."
 
   OUTPUT: "Resolved {fix_count} of {total} comments"
   END
