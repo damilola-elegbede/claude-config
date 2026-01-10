@@ -161,7 +161,7 @@ Five-Star Commands (13):
   - /plan: Strategic orchestration
   - /debug: Systematic investigation
   - /review: Multi-dimensional quality analysis
-  - /resolve-cr: Intelligent PR resolution
+  - /resolve-comments: Intelligent PR resolution
   - /pr: Collaborative PR creation
   - /command-audit: Quality assurance
   - /deps: Security-first dependency management

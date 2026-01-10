@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Optimized /resolve-cr command implementation
+# Optimized /resolve-comments command implementation
 # Fetches and processes CodeRabbit review comments with parallel operations
 #
 # Usage:
-#   resolve-cr-optimized.sh [PR_NUMBER] [--auto]
+#   resolve-comments-optimized.sh [PR_NUMBER] [--auto]
 #
 # Arguments:
 #   PR_NUMBER  - Optional PR number. If not provided, detects from current branch

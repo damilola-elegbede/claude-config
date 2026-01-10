@@ -13,7 +13,7 @@ test_all_commands_exist() {
 
     # Check each expected command file (20 commands after consolidation)
     local expected_commands=("plan" "commit" "push" "test" "prime" "sync" "review"
-                            "debug" "fix-ci" "implement" "verify" "resolve-cr"
+                            "debug" "fix-ci" "implement" "verify" "resolve-comments"
                             "docs" "audit" "branch" "pr" "rebase" "prompt"
                             "deps" "ship-it")
 

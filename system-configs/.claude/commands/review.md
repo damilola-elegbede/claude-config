@@ -34,7 +34,7 @@ Comprehensive code review combining CodeRabbit CLI, automated linting, and AI an
 ### Phases
 
 0. **CodeRabbit Analysis** (when CLI available and not --no-coderabbit):
-   - Delegate to `/resolve-cr --local` for interactive triage
+   - Delegate to `/resolve-comments --local` for interactive triage
    - Uses interactive approval flow (never auto-commits without consent)
    - Ignored issues stored in `.tmp/coderabbit-ignored.json` for PR acknowledgment via `/ship-it`
 
@@ -48,15 +48,15 @@ Comprehensive code review combining CodeRabbit CLI, automated linting, and AI an
 **CRITICAL**: Phase 0 is not optional. When CodeRabbit CLI is available, you MUST execute it.
 
 1. **Check CLI availability**: Run `which coderabbit`
-2. **If available**: Use Task tool with `general-purpose` agent to execute `/resolve-cr --local` in isolation:
+2. **If available**: Use Task tool with `general-purpose` agent to execute `/resolve-comments --local` in isolation:
 
    ```yaml
    Task tool:
      subagent_type: "general-purpose"
      description: "Execute CodeRabbit local review"
      prompt: |
-       Execute the /resolve-cr command with --local flag completely.
-       Use Skill tool: skill="resolve-cr", args="--local" to load instructions.
+       Execute the /resolve-comments command with --local flag completely.
+       Use Skill tool: skill="resolve-comments", args="--local" to load instructions.
        Follow EVERY step in the command. Do not skip any instructions.
        Report results when complete.
    ```
@@ -69,14 +69,14 @@ Comprehensive code review combining CodeRabbit CLI, automated linting, and AI an
 3. **After Task agent completes**: Continue to Phases 1-3 (unless `--coderabbit` flag used)
 
 **IMPORTANT**: Never implement CodeRabbit logic directly. Always use Task tool with `general-purpose` agent.
-The agent uses Skill tool internally to load /resolve-cr instructions, ensuring complete execution.
+The agent uses Skill tool internally to load /resolve-comments instructions, ensuring complete execution.
 
 ### Contract Validation (Phase 2)
 
 When reviewing command/skill markdown files, the code-reviewer agent MUST perform cross-file contract validation:
 
 1. **Enum Consistency**: If File A defines enum values, File B that consumes them must handle ALL values
-   - Example: `resolve-cr.md` defines 5 ignore categories → `ship-it.md` must template all 5
+   - Example: `resolve-comments.md` defines 5 ignore categories → `ship-it.md` must template all 5
 
 2. **Command References**: All `/command` references must be accurate
    - Check which command creates files vs which consumes them
@@ -106,8 +106,8 @@ User: /review
 🔍 Reviewing changed files...
 
 Phase 0: CodeRabbit Analysis
-  [Task agent executing /resolve-cr --local...]
-  [Interactive triage - see /resolve-cr for details]
+  [Task agent executing /resolve-comments --local...]
+  [Interactive triage - see /resolve-comments for details]
   ✅ Fixed 2 issues, documented 1 for PR acknowledgment
      (Saved to .tmp/coderabbit-ignored.json → posted by /ship-it)
 
@@ -147,7 +147,7 @@ User: /review --fix
 
 ## Notes
 
-- **CodeRabbit**: MUST use Task tool with `general-purpose` agent to execute `/resolve-cr --local` in isolation
+- **CodeRabbit**: MUST use Task tool with `general-purpose` agent to execute `/resolve-comments --local` in isolation
 - Agent uses Skill tool internally to load command instructions, ensuring complete execution
 - Uses code-reviewer agent for thorough AI analysis after CodeRabbit
 - Includes accessibility checks (WCAG compliance)

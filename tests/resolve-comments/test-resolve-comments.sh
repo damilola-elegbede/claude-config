@@ -1,5 +1,5 @@
 #!/bin/bash
-# Behavioral test suite for /resolve-cr command
+# Behavioral test suite for /resolve-comments command
 # Tests happy path, error path, and timeout scenarios
 
 set -e
@@ -134,9 +134,9 @@ test_happy_path() {
     export MOCK_SCENARIO="happy"
     export PATH="${MOCK_BIN}:$PATH"
 
-    # Source the resolve-cr implementation (simplified for testing)
+    # Source the resolve-comments implementation (simplified for testing)
     output=$(bash -c '
-        source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
+        source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-comments-testable.sh"
         # Mock git commands
         git() {
             case "$*" in
@@ -178,7 +178,7 @@ test_no_comments() {
     export PATH="${MOCK_BIN}:$PATH"
 
     output=$(bash -c '
-        source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
+        source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-comments-testable.sh"
         resolve_cr 62 2>&1
     ' 2>&1)
 
@@ -197,7 +197,7 @@ test_push_and_comment() {
     export PATH="${MOCK_BIN}:$PATH"
 
     output=$(bash -c '
-        source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
+        source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-comments-testable.sh"
         # Mock git commands
         git() {
             case "$*" in
@@ -240,7 +240,7 @@ test_split_comments() {
     comment_count=0
 
     output=$(bash -c '
-        source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
+        source "${TEST_DIR}/../../system-configs/.claude/commands/resolve-comments-testable.sh"
         # Mock git commands
         git() {
             case "$*" in
@@ -272,17 +272,17 @@ test_split_comments() {
     return 1
 }
 
-# Create testable version of resolve-cr (without full implementation)
+# Create testable version of resolve-comments (without full implementation)
 create_testable_resolve_cr() {
     # Extract just the function from the markdown file
     sed -n '/^resolve_cr() {/,/^}/p' \
-        "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr.md" \
-        > "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
+        "${TEST_DIR}/../../system-configs/.claude/commands/resolve-comments.md" \
+        > "${TEST_DIR}/../../system-configs/.claude/commands/resolve-comments-testable.sh"
 }
 
 # Main test execution
 main() {
-    echo "=== /resolve-cr Behavioral Test Suite ==="
+    echo "=== /resolve-comments Behavioral Test Suite ==="
     echo
 
     # Setup
@@ -306,7 +306,7 @@ main() {
 
     # Cleanup
     rm -rf "${MOCK_BIN}" "${FIXTURES_DIR}"
-    rm -f "${TEST_DIR}/../../system-configs/.claude/commands/resolve-cr-testable.sh"
+    rm -f "${TEST_DIR}/../../system-configs/.claude/commands/resolve-comments-testable.sh"
 
     # Exit with appropriate code
     if [[ ${TESTS_FAILED} -gt 0 ]]; then

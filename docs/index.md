@@ -170,7 +170,7 @@ Core orchestration commands delivering maximum value:
 - **`/agent-audit`** - Ecosystem health validation in 30-45 seconds
 - **`/plan`** - Strategic orchestration with principal-architect
 - **`/review`** - Multi-dimensional quality analysis
-- **`/resolve-cr`** - Intelligent PR resolution with comment analysis
+- **`/resolve-comments`** - Intelligent PR resolution with comment analysis
 - **`/debug`** - Systematic investigation with evidence gathering
 - **`/implementation-plan`** - Detailed implementation planning without execution
 

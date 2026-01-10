@@ -62,7 +62,7 @@ Post-optimization inventory of 21 commands (reduced from 23).
 
 | Command | Description | Execution Model | Flags |
 |---------|-------------|-----------------|-------|
-| `/resolve-cr` | CodeRabbit comment resolution | Wave-based | `--auto`, `--dry-run` |
+| `/resolve-comments` | CodeRabbit comment resolution | Wave-based | `--auto`, `--dry-run` |
 
 ## Removed Commands (3)
 

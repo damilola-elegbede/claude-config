@@ -1,6 +1,6 @@
 ---
 description: Orchestrate development workflows with composable flags
-argument-hint: "[-d] [-r] [-t] [-c] [-p] [-pr] [--dry-run]"
+argument-hint: "[-d] [-t] [-c] [-r] [-p] [-pr] [--dry-run]"
 ---
 
 # /ship-it Command
@@ -15,117 +15,119 @@ argument-hint: "[-d] [-r] [-t] [-c] [-p] [-pr] [--dry-run]"
 /ship-it -d -t -c -r -p     # Everything except PR
 /ship-it -pr                # Just create PR
 /ship-it --dry-run          # Preview full workflow
-/ship-it -c -p --dry-run    # Preview what would run
 ```
 
 ## Description
 
-Pure orchestrator that composes workflow steps. Each flag enables a step; combine flags to build custom workflows.
+Pure orchestrator that composes workflow steps. Each flag enables a step.
 With no flags, runs the full workflow.
 
 ## Flags
 
-| Flag | Command to Execute |
-|------|-------------------|
+| Flag | Command |
+|------|---------|
 | `-d` | `/docs` |
 | `-t` | `/test` |
 | `-c` | `/commit` |
 | `-r` | `/review` |
 | `-p` | `/push` |
 | `-pr` | `/pr` |
-| `--dry-run` | Preview only (no execution) |
+| `--dry-run` | Preview only |
 
-## Execution Rules
-
-**CRITICAL**: This command is a pure orchestrator. You MUST use the Task tool with `general-purpose` agent
-to execute each command in complete isolation. Never implement command logic directly.
-
-### Why Task Tool (Not Skill Tool)
-
-- **Skill tool** only loads markdown instructions into your session - no isolation
-- **Task tool** spawns an isolated agent subprocess with separate context window
-- The agent uses Skill tool internally to load command instructions
-- Task agents run until they complete or hit iteration limits (safeguards against infinite loops)
-
-**Note**: Task tool provides isolation and bounded execution, but completion depends on the agent
-following instructions correctly. Verify Skill tool availability in the agent context.
-
-### Mandatory Task Tool Delegation
-
-For each enabled step:
-
-1. Spawn a `general-purpose` agent via Task tool
-2. Agent uses Skill tool to load the command instructions
-3. Agent executes the command completely - all steps, no skipping
-4. Wait for agent completion before proceeding to next step
-
-| Flag | Task Tool Invocation |
-|------|---------------------|
-| `-d` | `Task: subagent_type="general-purpose", description="Execute /docs", prompt="Execute /docs completely. Use Skill tool: skill='docs'. Follow ALL instructions."` |
-| `-t` | `Task: subagent_type="general-purpose", description="Execute /test", prompt="Execute /test completely. Use Skill tool: skill='test'. Follow ALL instructions."` |
-| `-c` | `Task: subagent_type="general-purpose", description="Execute /commit", prompt="Execute /commit completely. Use Skill tool: skill='commit'. Follow ALL instructions."` |
-| `-r` | `Task: subagent_type="general-purpose", description="Execute /review", prompt="Execute /review completely. Use Skill tool: skill='review'. Follow ALL instructions."` |
-| `-p` | `Task: subagent_type="general-purpose", description="Execute /push", prompt="Execute /push completely. Use Skill tool: skill='push'. Follow ALL instructions."` |
-| `-pr` | `Task: subagent_type="general-purpose", description="Execute /pr", prompt="Execute /pr completely. Use Skill tool: skill='pr'. Follow ALL instructions."` |
-
-### Execution Order
-
-Steps always execute in this fixed order regardless of flag order in command:
+## Execution Script
 
 ```text
-docs → test → commit → review → push → pr
-```
+STEP 1: Parse flags
+  PARSE: $ARGUMENTS for flags: -d, -t, -c, -r, -p, -pr, --dry-run
 
-Example: `/ship-it -p -c` executes as `commit → push`
+  IF: no step flags provided
+    SET: enabled_steps = [docs, test, commit, review, push, pr]
+  ELSE:
+    SET: enabled_steps = [flags that were provided]
 
-### Flag Parsing
+  SORT: enabled_steps by fixed order: docs → test → commit → review → push → pr
+  OUTPUT: "🚀 ship-it: {enabled_steps joined by ' → '}"
 
-1. Parse `$ARGUMENTS` for flags: `-d`, `-r`, `-t`, `-c`, `-p`, `-pr`, `--dry-run`
-2. If no step flags provided → enable ALL steps (full workflow)
-3. If `--dry-run` → print steps that would execute, then stop
+STEP 2: Dry-run check
+  IF: --dry-run flag set
+    OUTPUT: "Steps that would execute:\n{foreach step: '  📋 /{step}'}"
+    END
 
-### Halt on Failure
+STEP 3: Pre-execution validation
+  RUN: git branch --show-current
+  SET: current_branch = output
 
-If any Task agent returns failure → stop immediately. Do not continue to subsequent steps.
+  IF: -p or -pr in enabled_steps
+    IF: current_branch == "main" OR current_branch == "master"
+      OUTPUT: "❌ Cannot push/PR from {current_branch}. Create a feature branch first."
+      END
 
-## Pre-Execution Validation
+  IF: -pr in enabled_steps
+    RUN: gh pr view --json url 2>/dev/null
+    IF: success
+      PARSE: url from output
+      SET: existing_pr = url
+      OUTPUT: "ℹ️ PR already exists: {existing_pr}"
+      REMOVE: pr from enabled_steps
 
-Before invoking any commands:
+STEP 4: Execute enabled steps
+  SET: step_number = 1
+  SET: total_steps = count(enabled_steps)
 
-1. **Branch check** (when `-p` or `-pr` enabled):
-   - If on `main` or `master` → halt with error, suggest creating feature branch
+  FOR_EACH: step in enabled_steps
+    OUTPUT: "📋 Step {step_number}/{total_steps}: {step}"
 
-2. **Remote tracking** (when `-p` enabled):
-   - If no upstream → the `/push` command will handle setting it
+    INVOKE_SKILL: {step}
+    WAIT: Skill execution completes
 
-3. **PR exists** (when `-pr` enabled):
-   - Check via `gh pr view --json url`
-   - If PR exists → skip `/pr` invocation, display existing URL
+    IF: skill returned failure
+      OUTPUT: "❌ Step '{step}' failed. Halting."
+      END
 
-## Post-PR Actions
+    OUTPUT: "✅ {step} complete"
+    INCREMENT: step_number
 
-After `/pr` completes (or PR already exists):
+STEP 5: Post-PR actions
+  IF: pr was in original enabled_steps (before existing PR check)
+    READ: .tmp/coderabbit-ignored.json
 
-1. Check if `.tmp/coderabbit-ignored.json` exists
-2. If missing or empty → skip silently
-3. If present → post acknowledgment comment to PR via `gh pr comment`
-4. Delete tracking file after successful posting
+    IF: file exists and has ignored_issues
+      VALIDATE: branch field matches current_branch
 
-**Comment format:**
+      IF: branch matches
+        BUILD: comment from ignored_issues grouped by category:
+          ## Review Issue Acknowledgments
 
-```markdown
-## CodeRabbit Issue Acknowledgments
+          The following issues were reviewed locally and intentionally not addressed:
 
-The following issues were reviewed locally and intentionally not addressed:
+          ### {category}
+          | Location | Issue | Reason |
+          |----------|-------|--------|
+          | {foreach issue in category} |
 
-### [Category Name]
+          ---
+          @coderabbitai These issues were reviewed during local development. No action needed.
 
-| Location | Issue | Reason |
-|----------|-------|--------|
-| `file:line` | Issue description | Reason provided |
+        IF: existing_pr
+          RUN: gh pr comment --body "{comment}"
+        ELSE:
+          RUN: gh pr view --json url
+          PARSE: pr_url
+          RUN: gh pr comment --body "{comment}"
 
----
-@coderabbitai These issues were reviewed during local development. No action needed.
+        DELETE: .tmp/coderabbit-ignored.json
+        OUTPUT: "📢 Posted acknowledgment for {count} skipped issues"
+
+STEP 6: Summary
+  OUTPUT: "🎉 Complete ({total_steps}/{total_steps} steps)"
+
+  IF: existing_pr
+    OUTPUT: "PR: {existing_pr}"
+  ELSE IF: pr was executed
+    RUN: gh pr view --json url
+    OUTPUT: "PR: {url}"
+
+  END
 ```
 
 ## Expected Output
@@ -134,35 +136,31 @@ The following issues were reviewed locally and intentionally not addressed:
 🚀 ship-it: docs → test → commit → review → push → pr
 
 📋 Step 1/6: docs
-  [Task agent executing /docs...]
-  ✅ Documentation updated
+  ✅ docs complete
 
 📋 Step 2/6: test
-  [Task agent executing /test...]
-  ✅ All tests passed
+  ✅ test complete
 
 📋 Step 3/6: commit
-  [Task agent executing /commit...]
-  ✅ Commit created: a1b2c3d
+  ✅ commit complete
 
 📋 Step 4/6: review
-  [Task agent executing /review...]
-  ✅ Code review passed
+  ✅ review complete
 
 📋 Step 5/6: push
-  [Task agent executing /push...]
-  ✅ Pushed to origin/feature-branch
+  ✅ push complete
 
 📋 Step 6/6: pr
-  [Task agent executing /pr...]
-  ✅ PR created: https://github.com/org/repo/pull/123
+  ✅ pr complete
 
 🎉 Complete (6/6 steps)
+PR: https://github.com/org/repo/pull/123
 ```
 
 ## Notes
 
-- See **Execution Rules** above for mandatory Task tool delegation pattern
-- Each command runs in isolated subprocess with bounded execution (iteration limits apply)
+- Steps always execute in fixed order: docs → test → commit → review → push → pr
+- Uses INVOKE_SKILL for each step (interactive, same context)
+- Halts immediately on any step failure
 - Never bypass quality gates (no `--no-verify`)
-- Review (`-r`) runs AFTER commit to analyze full branch diff before push
+- Skipped review issues from `/review` are posted to PR as acknowledgment

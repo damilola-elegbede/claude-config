@@ -34,7 +34,7 @@ CATEGORY_AGENT_REQUIREMENTS = {
         'parallelization': ['parallel tool execution', 'multiple reviewers']
     },
     'development_support': {
-        'commands': ['plan', 'resolve-cr', 'prompt', 'implement', 'docs', 'ship-it', 'bug'],
+        'commands': ['plan', 'resolve-comments', 'prompt', 'implement', 'docs', 'ship-it', 'bug'],
         'required_agents': ['tech-writer', 'project-orchestrator'],
         'parallelization': ['parallel phases', 'multiple agents per phase']
     }

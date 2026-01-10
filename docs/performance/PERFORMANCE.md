@@ -25,7 +25,7 @@ execution through intelligent agent instance pooling and concurrent processing.
 | `/prime focused` | 1-2 minutes | 15-20 seconds | **4-6x** | 3-5 codebase-analyst instances |
 | `/review` | 3-4 minutes | 45-60 seconds | **3-4x** | 3-5 code-reviewer instances |
 | `/fix-ci` | 2-3 minutes | 30-45 seconds | **4x** | 2-3 devops instances |
-| `/resolve-cr` | 5-10 minutes | 1-2 minutes | **5x** | Up to 10 parallel instances |
+| `/resolve-comments` | 5-10 minutes | 1-2 minutes | **5x** | Up to 10 parallel instances |
 | `/pr` | 2-3 minutes | 30-45 seconds | **4x** | Multiple parallel instances |
 | `/commit` | 1-2 minutes | 20-30 seconds | **3x** | 2-3 parallel validators |
 
