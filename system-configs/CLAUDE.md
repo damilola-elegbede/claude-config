@@ -27,6 +27,26 @@ maintaining consistent standards.
 - Security-sensitive code requires extra scrutiny
 - Don't skip steps to save time - quality over speed
 
+## Command Execution
+
+When invoking a command (slash command, skill, or orchestrated step):
+
+**Execute the command in its entirety.** Do not preemptively skip, shortcut, or modify
+the command's behavior based on your own judgment. The command's instructions define
+how to handle all cases - including edge cases, empty states, and "nothing to do" scenarios.
+
+If a command has skip conditions, those conditions are evaluated BY the command during
+execution, not by you before execution.
+
+Wrong: "Skipping /docs because config files don't need documentation"
+Right: Execute /docs, let its analysis phase determine if documentation is needed
+
+This applies to:
+
+- Individual commands (/docs, /test, /commit, etc.)
+- Steps within orchestrators (/ship-it, /review, etc.)
+- Any skill or agent invocation
+
 ## File Organization
 
 All temporary files, reports, and working documents go in `.tmp/`:
