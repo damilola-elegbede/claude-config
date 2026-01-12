@@ -153,7 +153,12 @@ sync_files() {
         chmod +x "$TARGET_DIR/statusline.sh"
     fi
 
-    echo "  ✅ Settings: settings.json, statusline.sh"
+    if [ -f "$SOURCE_DIR/exit_hook.sh" ]; then
+        cp "$SOURCE_DIR/exit_hook.sh" "$TARGET_DIR/"
+        chmod +x "$TARGET_DIR/exit_hook.sh"
+    fi
+
+    echo "  ✅ Settings: settings.json, statusline.sh, exit_hook.sh"
     echo ""
 
     return 0
@@ -208,6 +213,7 @@ main() {
         echo "  - $(find "$SOURCE_DIR/skills" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ') skills → ~/.claude/skills/"
         echo "  - settings.json → ~/.claude/settings.json"
         echo "  - statusline.sh → ~/.claude/statusline.sh"
+        echo "  - exit_hook.sh → ~/.claude/exit_hook.sh"
         echo ""
         echo "📊 Preview summary:"
         echo "  Total files: $(find "$SOURCE_DIR" -name "*.md" -o -name "*.json" -o -name "*.sh" 2>/dev/null | wc -l | tr -d ' ') configurations ready"
