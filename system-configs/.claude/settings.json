@@ -40,17 +40,6 @@
         ]
       }
     ],
-    "SubagentStop": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Hello.m4r' 2>/dev/null &"
-          }
-        ]
-      }
-    ],
     "Notification": [
       {
         "matcher": "*",
@@ -73,17 +62,6 @@
           {
             "type": "command",
             "command": "${HOME}/.claude/exit_hook.sh"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Input.m4r' 2>/dev/null &"
           }
         ]
       }

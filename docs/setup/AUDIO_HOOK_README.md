@@ -14,14 +14,10 @@ manual intervention.
 `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r`
 - **Stop Sound** (Stop):
 `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r`
-- **Subagent Stop Sound** (SubagentStop):
-`/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Hello.m4r`
 - **Session End Sound** (SessionEnd):
 `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Choo Choo.m4r`
 - **Notification Sound** (Notification):
 `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r`
-- **Prompt Submit Sound** (UserPromptSubmit):
-`/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Input.m4r`
 - **Permission Request Sound** (PermissionRequest):
 `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Keys.m4r`
 - **Implementation**: Direct afplay commands in Claude Code hooks
@@ -45,17 +41,6 @@ Add to `$HOME/.claude/settings.json`:
       }
     ],
     "Stop": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r' 2>/dev/null &"
-          }
-        ]
-      }
-    ],
-    "SubagentStop": [
       {
         "matcher": "*",
         "hooks": [
@@ -92,17 +77,6 @@ Add to `$HOME/.claude/settings.json`:
         ]
       }
     ],
-    "UserPromptSubmit": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Input.m4r' 2>/dev/null &"
-          }
-        ]
-      }
-    ],
     "PermissionRequest": [
       {
         "matcher": "*",
@@ -130,11 +104,6 @@ Add to `$HOME/.claude/settings.json`:
 - **Stop**: When Claude stops execution
 - Plays Modern Chord sound for completion
 
-### SubagentStop Hooks (Hello.m4r)
-
-- **SubagentStop**: When subagents stop execution
-- Plays Modern Hello sound for subagent completion
-
 ### SessionEnd Hooks (Choo Choo.m4r)
 
 - **SessionEnd**: When session ends
@@ -145,11 +114,6 @@ Add to `$HOME/.claude/settings.json`:
 
 - Triggers when prompt input has been idle for 60+ seconds
 - Plays Modern Aurora sound for attention
-
-### UserPromptSubmit Hooks (Input.m4r)
-
-- Triggers when the user submits a prompt
-- Plays Modern Input sound for confirmation
 
 ### PermissionRequest Hooks (Keys.m4r)
 
@@ -171,10 +135,8 @@ Add to `$HOME/.claude/settings.json`:
    ```bash
    ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r"
    ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r"
-   ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Hello.m4r"
    ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Choo Choo.m4r"
    ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r"
-   ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Input.m4r"
    ls -la "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Keys.m4r"
    ```
 
@@ -183,10 +145,8 @@ Add to `$HOME/.claude/settings.json`:
    ```bash
    afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r"
    afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r"
-   afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Hello.m4r"
    afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Choo Choo.m4r"
    afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r"
-   afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Input.m4r"
    afplay -v 1.0 "/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Keys.m4r"
    ```
 
@@ -207,8 +167,8 @@ you're still getting too many notifications, you can:
 
 To temporarily disable:
 
-1. Comment out the hooks section in settings.json
-2. Or remove the PostToolUse, Stop, and SubagentStop hooks entirely
+1. Comment out the entire hooks section in settings.json
+2. Or remove specific hooks (PostToolUse, Stop, Notification, SessionEnd, PermissionRequest)
 
 ## Testing
 
@@ -247,17 +207,11 @@ afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/
 # Test Stop hooks (Chord.m4r)
 afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r' 2>/dev/null &
 
-# Test SubagentStop hooks (Hello.m4r)
-afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Hello.m4r' 2>/dev/null &
-
 # Test SessionEnd hooks (Choo Choo.m4r)
 afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Choo Choo.m4r' 2>/dev/null &
 
 # Test Notification hooks (Aurora.m4r)
 afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r' 2>/dev/null &
-
-# Test UserPromptSubmit hooks (Input.m4r)
-afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Input.m4r' 2>/dev/null &
 
 # Test PermissionRequest hooks (Keys.m4r)
 afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Keys.m4r' 2>/dev/null &
@@ -267,10 +221,8 @@ afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/
 
 - **Swish sound**: Plays after each tool operation (matcher: "*")
 - **Chord sound**: Plays when Claude stops execution
-- **Hello sound**: Plays when subagents stop execution
 - **Choo Choo sound**: Plays when session ends
 - **Aurora sound**: Plays when prompt input has been idle
-- **Input sound**: Plays when user submits a prompt
 - **Keys sound**: Plays when Claude needs permission to use a tool
 - All tools trigger audio feedback (universal matcher)
 - Audio playback runs in background (non-blocking)
@@ -280,9 +232,7 @@ afplay -v 1.0 '/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/
 
 - PostToolUse hooks trigger Swish.m4r audio notifications (matcher: "*")
 - Stop hooks trigger Chord.m4r audio notifications
-- SubagentStop hooks trigger Hello.m4r audio notifications
 - SessionEnd hooks trigger Choo Choo.m4r audio notifications
 - Notification hooks trigger Aurora.m4r for idle events
-- UserPromptSubmit hooks trigger Input.m4r when user submits prompts
 - PermissionRequest hooks trigger Keys.m4r when permission is needed
 - Direct afplay commands handle missing audio files gracefully

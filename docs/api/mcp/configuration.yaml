@@ -415,10 +415,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/HookDefinition'
-            SubagentStop:
-              type: array
-              items:
-                $ref: '#/components/schemas/HookDefinition'
             Notification:
               type: array
               items:
@@ -618,7 +614,7 @@ components:
           type: array
           items:
             type: string
-            enum: [PostToolUse, Stop, SubagentStop, Notification]
+            enum: [PostToolUse, Stop, Notification, SessionEnd, PermissionRequest]
           description: Specific hooks to test
         volume:
           type: number
