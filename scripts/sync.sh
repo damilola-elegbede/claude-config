@@ -154,8 +154,13 @@ sync_files() {
     fi
 
     if [ -f "$SOURCE_DIR/exit_hook.sh" ]; then
-        cp "$SOURCE_DIR/exit_hook.sh" "$TARGET_DIR/"
-        chmod +x "$TARGET_DIR/exit_hook.sh"
+        if sh -n "$SOURCE_DIR/exit_hook.sh" 2>/dev/null; then
+            cp "$SOURCE_DIR/exit_hook.sh" "$TARGET_DIR/"
+            chmod +x "$TARGET_DIR/exit_hook.sh"
+        else
+            print_error "Invalid shell script: exit_hook.sh"
+            return 1
+        fi
     fi
 
     echo "  ✅ Settings: settings.json, statusline.sh, exit_hook.sh"
