@@ -41,7 +41,7 @@ deploying multiple agents for a straightforward rsync operation.
   ✅ Commands: 22 files → ~/.claude/commands/
   ✅ Skills: 5 skills → ~/.claude/skills/
   ✅ Output styles: 8 files → ~/.claude/output-styles/
-  ✅ Settings: settings.json, statusline.sh
+  ✅ Settings: settings.json, statusline.sh, exit_hook.sh
 
 📡 MCP Server Configuration:
   💾 Backup: ~/Library/Application Support/Claude/claude_desktop_config.json.backup
@@ -82,6 +82,7 @@ deploying multiple agents for a straightforward rsync operation.
   - 8 output style files → ~/.claude/output-styles/
   - settings.json → ~/.claude/settings.json
   - statusline.sh → ~/.claude/statusline.sh
+  - exit_hook.sh → ~/.claude/exit_hook.sh
 
 📡 MCP servers to configure:
   - filesystem, github, shadcn-ui
@@ -150,6 +151,7 @@ Files Synced:
   - output-styles/*.md    → ~/.claude/output-styles/
   - settings.json         → ~/.claude/settings.json
   - statusline.sh         → ~/.claude/statusline.sh
+  - exit_hook.sh          → ~/.claude/exit_hook.sh (optional, validated with sh -n)
 
 MCP Servers Synced:
   - From: .mcp.json
@@ -187,6 +189,7 @@ Skills Directory Structure (Anthropic Format):
 Pre-sync Validation:
   - Basic syntax check for YAML front-matter
   - JSON validation for settings.json
+  - POSIX shell syntax check for exit_hook.sh (if present)
   - Directory permissions and access
   - MCP configuration syntax
 

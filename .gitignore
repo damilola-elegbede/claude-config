@@ -44,6 +44,9 @@ coverage/
 .env.local
 .env.*.local
 
+# Local configuration overrides (machine-specific)
+*.local.json
+
 # Private keys and certificates
 *.pem
 *.key

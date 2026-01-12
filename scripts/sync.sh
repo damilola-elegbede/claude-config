@@ -153,7 +153,21 @@ sync_files() {
         chmod +x "$TARGET_DIR/statusline.sh"
     fi
 
-    echo "  ✅ Settings: settings.json, statusline.sh"
+    if [ -f "$SOURCE_DIR/exit_hook.sh" ]; then
+        validation_errors=$(sh -n "$SOURCE_DIR/exit_hook.sh" 2>&1) || {
+            print_error "Invalid shell script: exit_hook.sh"
+            printf "    %s\n" "$validation_errors"
+            return 1
+        }
+        cp "$SOURCE_DIR/exit_hook.sh" "$TARGET_DIR/"
+        chmod +x "$TARGET_DIR/exit_hook.sh"
+    fi
+
+    # Build synced settings list dynamically
+    synced_settings="settings.json"
+    [ -f "$SOURCE_DIR/statusline.sh" ] && synced_settings="$synced_settings, statusline.sh"
+    [ -f "$SOURCE_DIR/exit_hook.sh" ] && synced_settings="$synced_settings, exit_hook.sh"
+    echo "  ✅ Settings: $synced_settings"
     echo ""
 
     return 0
@@ -207,7 +221,8 @@ main() {
         echo "  - $(find "$SOURCE_DIR/commands" -name "*.md" ! -name "README.md" ! -name "*TEMPLATE*" ! -name "*CATEGORIES*" ! -name "*AUDIT*" ! -name "sync.md" 2>/dev/null | wc -l | tr -d ' ') command files → ~/.claude/commands/"
         echo "  - $(find "$SOURCE_DIR/skills" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ') skills → ~/.claude/skills/"
         echo "  - settings.json → ~/.claude/settings.json"
-        echo "  - statusline.sh → ~/.claude/statusline.sh"
+        [ -f "$SOURCE_DIR/statusline.sh" ] && echo "  - statusline.sh → ~/.claude/statusline.sh"
+        [ -f "$SOURCE_DIR/exit_hook.sh" ] && echo "  - exit_hook.sh → ~/.claude/exit_hook.sh"
         echo ""
         echo "📊 Preview summary:"
         echo "  Total files: $(find "$SOURCE_DIR" -name "*.md" -o -name "*.json" -o -name "*.sh" 2>/dev/null | wc -l | tr -d ' ') configurations ready"

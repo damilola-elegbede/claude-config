@@ -60,8 +60,8 @@ STEP 3: Execute enabled steps
   FOR_EACH: step in enabled_steps
     OUTPUT: "📋 Step {step_number}/{total_steps}: {step}"
 
-    INVOKE_SKILL: {step}
-    WAIT: Skill execution completes
+    Skill tool: skill="{step}"
+    WAIT: for Skill tool completion
 
     IF: skill returned failure
       OUTPUT: "❌ Step '{step}' failed. Halting."
