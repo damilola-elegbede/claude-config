@@ -151,7 +151,7 @@ Files Synced:
   - output-styles/*.md    → ~/.claude/output-styles/
   - settings.json         → ~/.claude/settings.json
   - statusline.sh         → ~/.claude/statusline.sh
-  - exit_hook.sh          → ~/.claude/exit_hook.sh
+  - exit_hook.sh          → ~/.claude/exit_hook.sh (optional, validated with sh -n)
 
 MCP Servers Synced:
   - From: .mcp.json
@@ -189,6 +189,7 @@ Skills Directory Structure (Anthropic Format):
 Pre-sync Validation:
   - Basic syntax check for YAML front-matter
   - JSON validation for settings.json
+  - POSIX shell syntax check for exit_hook.sh (if present)
   - Directory permissions and access
   - MCP configuration syntax
 
