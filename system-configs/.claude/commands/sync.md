@@ -42,6 +42,7 @@ deploying multiple agents for a straightforward rsync operation.
   ✅ Skills: 5 skills → ~/.claude/skills/
   ✅ Output styles: 8 files → ~/.claude/output-styles/
   ✅ Settings: settings.json, statusline.sh, exit_hook.sh
+  ✅ CLAUDE.md → ~/CLAUDE.md
 
 📡 MCP Server Configuration:
   💾 Backup: ~/Library/Application Support/Claude/claude_desktop_config.json.backup
@@ -152,6 +153,9 @@ Files Synced:
   - settings.json         → ~/.claude/settings.json
   - statusline.sh         → ~/.claude/statusline.sh
   - exit_hook.sh          → ~/.claude/exit_hook.sh (optional, validated with sh -n)
+
+Also Synced (from system-configs/):
+  - CLAUDE.md             → ~/CLAUDE.md (main Claude configuration)
 
 MCP Servers Synced:
   - From: .mcp.json

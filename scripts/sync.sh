@@ -168,6 +168,13 @@ sync_files() {
     [ -f "$SOURCE_DIR/statusline.sh" ] && synced_settings="$synced_settings, statusline.sh"
     [ -f "$SOURCE_DIR/exit_hook.sh" ] && synced_settings="$synced_settings, exit_hook.sh"
     echo "  ✅ Settings: $synced_settings"
+
+    # Sync main CLAUDE.md to home directory
+    CLAUDE_MD_SOURCE="$REPO_DIR/system-configs/CLAUDE.md"
+    if [ -f "$CLAUDE_MD_SOURCE" ]; then
+        cp "$CLAUDE_MD_SOURCE" "$HOME/CLAUDE.md"
+        echo "  ✅ CLAUDE.md → ~/CLAUDE.md"
+    fi
     echo ""
 
     return 0
