@@ -110,9 +110,9 @@ sync_files() {
     mkdir -p "$TARGET_DIR/skills"
     mkdir -p "$TARGET_DIR/output-styles"
 
-    # Sync agents using rsync
-    rsync_output=$(rsync -a --exclude="README.md" --exclude="*TEMPLATE*" --exclude="*CATEGORIES*" --exclude="*AUDIT*" "$SOURCE_DIR/agents/" "$TARGET_DIR/agents/" 2>&1)
-    if [ $? -eq 0 ]; then
+    # Sync agents using rsync (use if-then pattern to work with set -e)
+    rsync_output=""
+    if rsync_output=$(rsync -a --exclude="README.md" --exclude="*TEMPLATE*" --exclude="*CATEGORIES*" --exclude="*AUDIT*" "$SOURCE_DIR/agents/" "$TARGET_DIR/agents/" 2>&1); then
         AGENT_COUNT=$(find "$SOURCE_DIR/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
         echo "  ✅ Agents: $AGENT_COUNT files → ~/.claude/agents/"
     else
@@ -122,8 +122,8 @@ sync_files() {
     fi
 
     # Sync commands using rsync
-    rsync_output=$(rsync -a --exclude="README.md" --exclude="*TEMPLATE*" --exclude="*CATEGORIES*" --exclude="*AUDIT*" --exclude="sync.md" --exclude="*.bak" --exclude="*.backup" --exclude="*.tmp" "$SOURCE_DIR/commands/" "$TARGET_DIR/commands/" 2>&1)
-    if [ $? -eq 0 ]; then
+    rsync_output=""
+    if rsync_output=$(rsync -a --exclude="README.md" --exclude="*TEMPLATE*" --exclude="*CATEGORIES*" --exclude="*AUDIT*" --exclude="sync.md" --exclude="*.bak" --exclude="*.backup" --exclude="*.tmp" "$SOURCE_DIR/commands/" "$TARGET_DIR/commands/" 2>&1); then
         COMMAND_COUNT=$(find "$SOURCE_DIR/commands" -name "*.md" ! -name "README.md" ! -name "*TEMPLATE*" ! -name "*CATEGORIES*" ! -name "*AUDIT*" ! -name "sync.md" 2>/dev/null | wc -l | tr -d ' ')
         echo "  ✅ Commands: $COMMAND_COUNT files → ~/.claude/commands/"
     else
@@ -134,8 +134,8 @@ sync_files() {
 
     # Sync skills if they exist
     if [ -d "$SOURCE_DIR/skills" ]; then
-        rsync_output=$(rsync -a --exclude="README.md" --exclude="*TEMPLATE*" "$SOURCE_DIR/skills/" "$TARGET_DIR/skills/" 2>&1)
-        if [ $? -eq 0 ]; then
+        rsync_output=""
+        if rsync_output=$(rsync -a --exclude="README.md" --exclude="*TEMPLATE*" "$SOURCE_DIR/skills/" "$TARGET_DIR/skills/" 2>&1); then
             SKILL_COUNT=$(find "$SOURCE_DIR/skills" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
             echo "  ✅ Skills: $SKILL_COUNT skills → ~/.claude/skills/"
         else
@@ -147,8 +147,8 @@ sync_files() {
 
     # Sync output styles if they exist
     if [ -d "$SOURCE_DIR/output-styles" ]; then
-        rsync_output=$(rsync -a "$SOURCE_DIR/output-styles/" "$TARGET_DIR/output-styles/" 2>&1)
-        if [ $? -eq 0 ]; then
+        rsync_output=""
+        if rsync_output=$(rsync -a "$SOURCE_DIR/output-styles/" "$TARGET_DIR/output-styles/" 2>&1); then
             STYLE_COUNT=$(find "$SOURCE_DIR/output-styles" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
             echo "  ✅ Output styles: $STYLE_COUNT files → ~/.claude/output-styles/"
         else
