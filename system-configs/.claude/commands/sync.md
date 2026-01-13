@@ -1,6 +1,6 @@
 ---
-description: Sync Claude configs with validation and rollback
-argument-hint: [--dry-run|--backup|--force]
+description: Sync Claude configs with validation and backup
+argument-hint: [--dry-run|--backup]
 ---
 
 # /sync Command
@@ -10,8 +10,7 @@ argument-hint: [--dry-run|--backup|--force]
 ```bash
 /sync                           # Sync system-configs/.claude/ to ~/.claude/
 /sync --dry-run                 # Preview changes without syncing
-/sync --backup                  # Create backup before syncing
-/sync --force                   # Overwrite existing files without prompting
+/sync --backup                  # Create backup before syncing (default behavior)
 ```
 
 ## Description
@@ -44,22 +43,11 @@ deploying multiple agents for a straightforward rsync operation.
   ✅ Settings: settings.json, statusline.sh, exit_hook.sh
   ✅ CLAUDE.md → ~/CLAUDE.md
 
-📡 MCP Server Configuration:
-  💾 Backup: ~/Library/Application Support/Claude/claude_desktop_config.json.backup
-  ✅ Updated Claude Desktop config with MCP servers:
-    - filesystem
-    - github
-    - shadcn-ui
-    - context7
-    - elevenlabs
-    - notionApi
-
 ✅ Post-sync validation:
   - File integrity: All files copied successfully
   - Agent configs: 28/28 valid
   - Commands: 22/22 functional
   - Skills: 5/5 valid
-  - MCP integration: 6/6 connected
 
 📊 Sync completed successfully:
   Files synced: 61 total
@@ -84,10 +72,7 @@ deploying multiple agents for a straightforward rsync operation.
   - settings.json → ~/.claude/settings.json
   - statusline.sh → ~/.claude/statusline.sh
   - exit_hook.sh → ~/.claude/exit_hook.sh
-
-📡 MCP servers to configure:
-  - filesystem, github, shadcn-ui
-  - context7, elevenlabs, notionApi
+  - CLAUDE.md → ~/CLAUDE.md
 
 📊 Preview summary:
   Total files: 61 configurations ready
@@ -103,37 +88,12 @@ deploying multiple agents for a straightforward rsync operation.
 🔍 Issues found:
   - Agent syntax error: mobile-engineer.md (line 15: invalid YAML)
   - Permission denied: ~/.claude/ directory not writable
-  - MCP config invalid: .mcp.json contains malformed JSON
 
 🛠️ Fix these issues before syncing:
   1. Repair YAML syntax in mobile-engineer.md
   2. Check ~/.claude directory permissions
-  3. Validate .mcp.json syntax
 
 Run /sync again after addressing these issues.
-```
-
-### Rollback Scenario Output
-
-```text
-⚠️ Sync issue detected during MCP deployment...
-
-❌ Error: Claude Desktop config update failed
-  - Invalid MCP server configuration
-  - Backup restore initiated
-
-🔄 Rolling back changes:
-  ✅ Files restored from: ~/.claude.backup.20250909_143022
-  ✅ MCP config reverted to previous state
-  ✅ Permissions reset
-
-🎯 Sync aborted - configurations restored
-
-🔧 Action required:
-  1. Check MCP server definitions in .mcp.json
-  2. Verify Claude Desktop config permissions
-
-Run /sync again after fixing the configuration.
 ```
 
 ## Behavior
@@ -156,11 +116,6 @@ Files Synced:
 
 Also Synced (from system-configs/):
   - CLAUDE.md             → ~/CLAUDE.md (main Claude configuration)
-
-MCP Servers Synced:
-  - From: .mcp.json
-  - To: Claude Desktop config (~/Library/Application Support/Claude/claude_desktop_config.json)
-  - Method: JSON merge with backup
 
 Excluded:
   - README.md files
@@ -193,14 +148,12 @@ Skills Directory Structure (Anthropic Format):
 Pre-sync Validation:
   - Basic syntax check for YAML front-matter
   - JSON validation for settings.json
-  - POSIX shell syntax check for exit_hook.sh (if present)
+  - POSIX shell syntax check for shell scripts (statusline.sh, exit_hook.sh)
   - Directory permissions and access
-  - MCP configuration syntax
 
 Post-sync Validation:
   - File integrity verification
   - Basic configuration syntax check
-  - MCP server connectivity test
   - Permissions verification
 ```
 
@@ -222,32 +175,29 @@ The `/sync` command executes the standalone `scripts/sync.sh` script, which hand
 - **File validation**: <1 second
 - **Backup creation**: <1 second
 - **File synchronization**: 1-2 seconds
-- **MCP deployment**: <1 second
 
 ### Benefits of Direct Execution
 
 - **Simplified process**: No complex agent orchestration for file copying
 - **Faster execution**: Direct operations without agent startup overhead
-- **Clear output**: Simple progress indication without wave complexity
-- **Reliable rollback**: Straightforward backup and restore process
+- **Clear output**: Simple progress indication
+- **Automatic backup**: Creates backup before changes for manual recovery if needed
 - **Resource efficient**: Minimal system resource usage
 
 ## Prerequisites
 
 - Source directory `system-configs/.claude/` must exist and contain valid configurations
 - Target directory permissions must allow read/write access
-- `jq` command-line JSON processor recommended for MCP operations
 - `rsync` must be available for efficient file synchronization
 
 ## Notes
 
 - **Direct execution**: Performs file operations directly without agent deployment
-- **Automatic backup**: Creates backup before any changes for rollback capability
+- **Automatic backup**: Creates backup before any changes (restore manually if needed)
 - **Basic validation**: Essential checks without complex multi-agent validation
-- **Simple rollback**: Straightforward restore from backup on failure
 - **Clear logging**: Direct progress indication and error reporting
 - **Integration friendly**: Compatible with existing workflows and CI/CD pipelines
 - **Performance optimized**: Fast execution through direct file operations
 
 The /sync command provides reliable configuration deployment through direct execution, focusing on the essential
-task of copying files efficiently with basic validation and rollback capabilities.
+task of copying files efficiently with basic validation and backup capabilities.
