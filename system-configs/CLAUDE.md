@@ -31,9 +31,13 @@ maintaining consistent standards.
 
 When invoking a command (slash command, skill, or orchestrated step):
 
-**Execute the command in its entirety.** Do not preemptively skip, shortcut, or modify
-the command's behavior based on your own judgment. The command's instructions define
-how to handle all cases - including edge cases, empty states, and "nothing to do" scenarios.
+**Execute ALL steps defined in command specifications - never skip, abbreviate, or take
+shortcuts unless the user explicitly requests it via flags. Command definitions are
+contracts, not suggestions.**
+
+Do not preemptively skip, shortcut, or modify the command's behavior based on your own
+judgment. The command's instructions define how to handle all cases - including edge
+cases, empty states, and "nothing to do" scenarios.
 
 If a command has skip conditions, those conditions are evaluated BY the command during
 execution, not by you before execution.
