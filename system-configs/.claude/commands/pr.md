@@ -180,10 +180,15 @@ STEP 3: Post review acknowledgments
   IF: file exists AND has skipped_issues
     RUN: git branch --show-current
     SET: current_branch = output
-    VALIDATE: current_branch matches pattern ^[a-zA-Z0-9._/-]+$ (prevent path traversal)
+    VALIDATE: current_branch matches pattern ^[a-zA-Z0-9._-]+(/[a-zA-Z0-9._-]+)*$
+    VALIDATE: current_branch does not contain '..' (prevent path traversal)
     IF: validation fails
       OUTPUT: "⚠️ Invalid branch name format, skipping acknowledgments"
       SKIP: to STEP 4
+    SANITIZE: each issue field before table insertion:
+      - Escape pipe characters (|) with \|
+      - Replace newlines with spaces
+      - Truncate descriptions to 100 chars
     BUILD: comment from skipped_issues grouped by category:
       ## Review Issue Acknowledgments
 
@@ -193,16 +198,19 @@ STEP 3: Post review acknowledgments
       IF: category == "will-fix-later"
         | Location | Issue | Tracking |
         |----------|-------|----------|
-        | {issue.location} | {issue.description} | #{issue.gh_issue_number} |
+        | {sanitized issue.location} | {sanitized issue.description} | #{issue.gh_issue_number} |
       ELSE:
         | Location | Issue | Reason |
         |----------|-------|--------|
-        | {issue.location} | {issue.description} | {issue.reason} |
+        | {sanitized issue.location} | {sanitized issue.description} | {sanitized issue.reason} |
 
       ---
       @coderabbitai These issues were reviewed during local development. No action needed.
 
     RUN: gh pr comment {pr_url} --body "{comment}"
+    IF: gh command fails
+      OUTPUT: "⚠️ Failed to post acknowledgment comment (PR created successfully)"
+      SKIP: to STEP 4
     CLEAR: skipped_issues array in .tmp/review-tickets.json (keep tickets map)
     OUTPUT: "📢 Posted acknowledgment for {count} skipped issues"
 
