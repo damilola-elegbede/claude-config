@@ -93,8 +93,8 @@ STEP 4: Apply fixes
 
 STEP 5: Finalize
   IF: skipped_issues not empty
-    WRITE: .tmp/coderabbit-ignored.json
-    OUTPUT: "Saved {count} skipped issues for /ship-it acknowledgment"
+    WRITE: .tmp/review-tickets.json (merge with existing tickets map)
+    OUTPUT: "Saved {count} skipped issues for /pr acknowledgment"
 
   IF: fixes applied
     ASK_USER:
@@ -158,8 +158,8 @@ STEP 4: Finalize
     OUTPUT: "Committed {fix_count} fixes"
 
   IF: skipped_issues not empty
-    WRITE: .tmp/coderabbit-ignored.json
-    OUTPUT: "Saved {count} skipped issues (will be posted to PR via /ship-it)"
+    WRITE: .tmp/review-tickets.json (merge with existing tickets map)
+    OUTPUT: "Saved {count} skipped issues (will be posted to PR via /pr)"
 
   OUTPUT: "Fixed {fix_count} issues, skipped {skip_count}"
   END
@@ -168,6 +168,28 @@ STEP 4: Finalize
 ## Common Triage Flow
 
 Used by both PR mode and File mode.
+
+### Sync Ticket Cache with GitHub
+
+```text
+STEP 0: Sync ticket cache (runs before triage)
+  READ: .tmp/review-tickets.json (if exists)
+  IF: tickets map has entries where resolved == false
+    SET: unresolved_count = count of tickets where resolved == false
+    OUTPUT: "Checking {unresolved_count} cached tickets against GitHub..."
+
+    FOR_EACH: ticket in tickets where resolved == false
+      RUN: gh issue view {ticket.gh_issue_number} --json state -q '.state'
+      IF: state == "CLOSED"
+        SET: ticket.resolved = true
+        SET: ticket.resolved_at = current ISO timestamp
+        OUTPUT: "  #{ticket.gh_issue_number} now resolved"
+
+    WRITE: updated .tmp/review-tickets.json
+    SET: newly_resolved = count of tickets marked resolved this run
+    IF: newly_resolved > 0
+      OUTPUT: "Synced: {newly_resolved} ticket(s) marked as resolved"
+```
 
 ### Evaluate Issues
 
@@ -229,19 +251,90 @@ FOR_EACH: skipped issue
       - "out-of-scope" - Valid but not part of this PR
       - "will-fix-later" - Acknowledged, will address separately
   WAIT: for user response
+
+  IF: category == "will-fix-later"
+    # Check ticket cache for existing issue
+    READ: .tmp/review-tickets.json (if exists)
+    HASH: issue_key = hash(source + location + description)
+    SET: should_create_ticket = true
+
+    IF: issue_key exists in tickets map AND tickets[issue_key].resolved == false
+      OUTPUT: "Issue already filed: #{tickets[issue_key].gh_issue_number}"
+      SET: issue.gh_issue_number = cached value
+      SET: issue.gh_issue_url = cached value
+      SET: should_create_ticket = false
+    ELSE IF: issue_key exists in tickets map AND tickets[issue_key].resolved == true
+      OUTPUT: "Previous issue #{tickets[issue_key].gh_issue_number} was resolved - creating new ticket"
+
+    IF: should_create_ticket
+      ASK_USER:
+        question: "Add context for the GitHub issue? (optional)"
+      WAIT: for user response (allow empty)
+
+      RUN: gh issue create \
+           --title "Review feedback: {truncate(issue.description, 60)}" \
+           --body "{formatted_issue_body}" \
+           --label "tech-debt,review-feedback"
+      PARSE: issue number and URL from output
+
+      STORE: in .tmp/review-tickets.json tickets map:
+        tickets[issue_key] = {
+          gh_issue_number, gh_issue_url, source, location,
+          description, severity, created_at, branch,
+          resolved: false, resolved_at: null
+        }
+      OUTPUT: "Filed GitHub issue #{number}: {url}"
+
+      SET: issue.gh_issue_number = created number
+      SET: issue.gh_issue_url = created url
+
   STORE: issue with category in skipped_issues
 ```
 
-## Ignored Issues Schema
+### GitHub Issue Body Format
 
-Output format (`.tmp/coderabbit-ignored.json`):
+```markdown
+## Review Feedback: {issue.description}
+
+**Source**: {source}
+**Severity**: {severity}
+**Location**: `{location}`
+
+### Details
+{issue.description}
+
+{issue.suggestion if available}
+
+### Context
+- Branch: `{branch}`
+- Deferred during review triage
+
+---
+*Auto-created by /resolve-comments*
+```
+
+## Review Tickets Schema
+
+Output format (`.tmp/review-tickets.json`):
 
 ```json
 {
   "schema_version": "1.0",
-  "branch": "feature/my-feature",
-  "created_at": "2025-01-10T12:00:00Z",
-  "ignored_issues": [
+  "tickets": {
+    "{issue_key_hash}": {
+      "gh_issue_number": 123,
+      "gh_issue_url": "https://github.com/owner/repo/issues/123",
+      "source": "coderabbit",
+      "location": "file.ts:45",
+      "description": "Issue description",
+      "severity": "MEDIUM",
+      "created_at": "2025-01-13T10:00:00Z",
+      "branch": "feature/my-feature",
+      "resolved": false,
+      "resolved_at": null
+    }
+  },
+  "skipped_issues": [
     {
       "id": 1,
       "source": "coderabbit|code-reviewer",
@@ -249,11 +342,19 @@ Output format (`.tmp/coderabbit-ignored.json`):
       "description": "Issue description",
       "severity": "LOW",
       "category": "nitpick|false-positive|intentional|out-of-scope|will-fix-later",
-      "reason": "User explanation (optional)"
+      "reason": "User explanation (optional)",
+      "gh_issue_number": 123,
+      "gh_issue_url": "https://github.com/owner/repo/issues/123"
     }
   ]
 }
 ```
+
+**Key design**:
+
+- `tickets` map: Keyed by hash of (source + location + description), persists across triage runs to prevent duplicate issue creation
+- `skipped_issues` array: Current PR's skipped items for acknowledgment, cleared after PR creation
+- `resolved` field: Tracks whether GitHub issue has been closed; if resolved, a new ticket will be created if the same issue reappears
 
 ## Expected Output
 
@@ -317,6 +418,10 @@ Summary: 4 recommended fixes, 1 recommended skip
 - **CRITICAL**: Present triage options to user and WAIT for response. Never auto-apply without consent (unless --auto flag).
 - PR mode posts `@coderabbitai resolve` to acknowledge resolution
 - File mode commits but does not push or post to PR (no PR exists yet)
-- Skipped issues always saved to `.tmp/coderabbit-ignored.json` for `/ship-it`
+- Skipped issues saved to `.tmp/review-tickets.json` for `/pr` acknowledgment
+- "will-fix-later" items automatically file a GitHub issue with `tech-debt,review-feedback` labels
+- Ticket cache prevents duplicate issue creation when running triage multiple times
+- Cache syncs with GitHub at start of triage: closed issues are marked `resolved: true`
+- Resolved tickets allow new issue creation if the same problem reappears
 - `--auto` skips user interaction and applies all recommended fixes
 - `--dry-run` shows analysis without making any changes
