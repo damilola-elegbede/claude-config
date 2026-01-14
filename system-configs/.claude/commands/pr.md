@@ -56,7 +56,8 @@ Focuses on core PR creation functionality with minimal overhead.
 2. **Analyze Changes**: Get diff between current branch and target branch
 3. **Generate Content**: Create title and description based on commits and changes
 4. **Create PR**: Submit to GitHub with generated content
-5. **Post Review Acknowledgments**: If `.tmp/coderabbit-ignored.json` exists, post skipped issues as PR comment
+5. **Post Review Acknowledgments**: If `.tmp/review-tickets.json` exists, post skipped issues as PR comment
+   (includes GitHub issue links for "will-fix-later" items)
 
 ### Agent Usage (Minimal)
 
@@ -175,32 +176,43 @@ STEP 2: Analyze and create PR
   SET: pr_url = created PR URL
 
 STEP 3: Post review acknowledgments
-  READ: .tmp/coderabbit-ignored.json
-  IF: file exists AND has ignored_issues
+  READ: .tmp/review-tickets.json
+  IF: file exists AND has skipped_issues
     RUN: git branch --show-current
     SET: current_branch = output
-    VALIDATE: current_branch matches pattern ^[a-zA-Z0-9._/-]+$ (prevent path traversal)
+    VALIDATE: current_branch matches pattern ^[a-zA-Z0-9._-]+(/[a-zA-Z0-9._-]+)*$
+    VALIDATE: current_branch does not contain '..' (prevent path traversal)
     IF: validation fails
       OUTPUT: "⚠️ Invalid branch name format, skipping acknowledgments"
       SKIP: to STEP 4
-    VALIDATE: branch field in JSON matches current_branch
-    IF: matches
-      BUILD: comment from ignored_issues grouped by category:
-        ## Review Issue Acknowledgments
+    SANITIZE: each issue field before table insertion:
+      - Escape pipe characters (|) with \|
+      - Replace newlines with spaces
+      - Truncate descriptions to 100 chars
+    BUILD: comment from skipped_issues grouped by category:
+      ## Review Issue Acknowledgments
 
-        The following issues were reviewed locally and intentionally not addressed:
+      The following issues were reviewed locally and intentionally not addressed:
 
-        ### {category}
+      ### {category}
+      IF: category == "will-fix-later"
+        | Location | Issue | Tracking |
+        |----------|-------|----------|
+        | {sanitized issue.location} | {sanitized issue.description} | #{issue.gh_issue_number} |
+      ELSE:
         | Location | Issue | Reason |
         |----------|-------|--------|
-        | {foreach issue in category} |
+        | {sanitized issue.location} | {sanitized issue.description} | {sanitized issue.reason} |
 
-        ---
-        @coderabbitai These issues were reviewed during local development. No action needed.
+      ---
+      @coderabbitai These issues were reviewed during local development. No action needed.
 
-      RUN: gh pr comment {pr_url} --body "{comment}"
-      DELETE: .tmp/coderabbit-ignored.json
-      OUTPUT: "📢 Posted acknowledgment for {count} skipped issues"
+    RUN: gh pr comment {pr_url} --body "{comment}"
+    IF: gh command fails
+      OUTPUT: "⚠️ Failed to post acknowledgment comment (PR created successfully)"
+      SKIP: to STEP 4
+    CLEAR: skipped_issues array in .tmp/review-tickets.json (keep tickets map)
+    OUTPUT: "📢 Posted acknowledgment for {count} skipped issues"
 
 STEP 4: Report success
   OUTPUT: "✅ Pull request created: {pr_url}"
@@ -232,7 +244,8 @@ STEP 4: Report success
 ## Notes
 
 - Checks for existing PR before creation (skips gracefully unless --force)
-- Posts skipped review issues from `/review` as PR comment
+- Posts skipped review issues from `/resolve-comments` as PR comment
+- "will-fix-later" items include GitHub issue links in acknowledgment
 - Generates clear, conventional commit style titles
 - Creates concise, informative descriptions
-- Cleans up `.tmp/coderabbit-ignored.json` after posting acknowledgments
+- Clears `skipped_issues` array after posting (keeps `tickets` cache for deduplication)

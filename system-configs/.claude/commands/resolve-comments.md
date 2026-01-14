@@ -45,8 +45,15 @@ STEP 1: Determine PR number
       END
 
 STEP 2: Fetch unresolved CodeRabbit comments (with pagination)
-  INITIALIZE: all_issues = [], threads_cursor = null, has_more_threads = true
+  # Variables are extracted from gh CLI context (validated by GitHub)
+  RUN: gh repo view --json owner,name -q '.owner.login + "/" + .name'
+  PARSE: owner and repo from output (validated format: ^[a-zA-Z0-9._-]+$)
+  VALIDATE: pr matches ^[0-9]+$
 
+  INITIALIZE: all_issues = [], threads_cursor = null, has_more_threads = true
+  INITIALIZE: threads_needing_pagination = []
+
+  # Phase 1: Fetch all threads
   WHILE: has_more_threads
     RUN: gh api graphql -f query='
       query($owner: String!, $repo: String!, $pr: Int!, $after: String) {
@@ -55,6 +62,7 @@ STEP 2: Fetch unresolved CodeRabbit comments (with pagination)
             reviewThreads(first: 100, after: $after) {
               pageInfo { endCursor hasNextPage }
               nodes {
+                id
                 isResolved
                 comments(first: 100) {
                   pageInfo { endCursor hasNextPage }
@@ -74,14 +82,20 @@ STEP 2: Fetch unresolved CodeRabbit comments (with pagination)
 
     FOR_EACH: thread in reviewThreads.nodes
       IF: thread has >100 comments (thread.comments.pageInfo.hasNextPage)
-        PAGINATE: fetch remaining comments for this thread using comments cursor
-      APPEND: all comments to thread.comments.nodes
+        APPEND: thread.id to threads_needing_pagination
+      APPEND: thread to all_threads
 
-    FILTER: isResolved == false AND author.login contains "coderabbit"
-    APPEND: filtered issues to all_issues
     SET: threads_cursor = reviewThreads.pageInfo.endCursor
     SET: has_more_threads = reviewThreads.pageInfo.hasNextPage
 
+  # Phase 2: Batch fetch remaining comments for threads with >100 (parallel)
+  IF: threads_needing_pagination not empty
+    FOR_EACH: thread_id in threads_needing_pagination (parallel batch)
+      PAGINATE: fetch remaining comments using thread-specific cursor
+      MERGE: into corresponding thread.comments
+
+  FILTER: isResolved == false AND author.login contains "coderabbit"
+  APPEND: filtered issues to all_issues
   STORE: all_issues in memory
   OUTPUT: "Fetched {count} unresolved CodeRabbit comments from PR #{pr}"
 
@@ -93,8 +107,8 @@ STEP 4: Apply fixes
 
 STEP 5: Finalize
   IF: skipped_issues not empty
-    WRITE: .tmp/coderabbit-ignored.json
-    OUTPUT: "Saved {count} skipped issues for /ship-it acknowledgment"
+    WRITE: .tmp/review-tickets.json (merge with existing tickets map)
+    OUTPUT: "Saved {count} skipped issues for /pr acknowledgment"
 
   IF: fixes applied
     ASK_USER:
@@ -105,10 +119,21 @@ STEP 5: Finalize
     WAIT: for user response
 
     IF: user selected "Yes"
-      RUN: git add -A && git commit -m "fix: resolve CodeRabbit feedback ({fix_count} issues)"
+      VALIDATE: fix_count > 0 (skip commit if no actual fixes)
+      RUN: git add -A
+      RUN: git commit -m "fix: resolve CodeRabbit feedback ({fix_count} issues)"
+      IF: commit fails
+        OUTPUT: "⚠️ Commit failed - changes staged but not committed"
+        END
       RUN: git push
+      IF: push fails
+        OUTPUT: "⚠️ Push failed - commit created locally but not pushed"
+        END
       RUN: gh pr comment {pr} --body "@coderabbitai resolve"
-      OUTPUT: "Posted @coderabbitai resolve to PR #{pr}"
+      IF: comment fails
+        OUTPUT: "⚠️ Failed to post comment (changes pushed successfully)"
+      ELSE:
+        OUTPUT: "Posted @coderabbitai resolve to PR #{pr}"
     ELSE:
       OUTPUT: "Skipped commit/push/comment. Local changes preserved."
 
@@ -154,12 +179,17 @@ STEP 3: Apply fixes
 
 STEP 4: Finalize
   IF: fixes applied
-    RUN: git add -A && git commit -m "fix: resolve review feedback ({fix_count} issues)"
-    OUTPUT: "Committed {fix_count} fixes"
+    VALIDATE: fix_count > 0 (skip commit if no actual fixes)
+    RUN: git add -A
+    RUN: git commit -m "fix: resolve review feedback ({fix_count} issues)"
+    IF: commit fails
+      OUTPUT: "⚠️ Commit failed - changes staged but not committed"
+    ELSE:
+      OUTPUT: "Committed {fix_count} fixes"
 
   IF: skipped_issues not empty
-    WRITE: .tmp/coderabbit-ignored.json
-    OUTPUT: "Saved {count} skipped issues (will be posted to PR via /ship-it)"
+    WRITE: .tmp/review-tickets.json (merge with existing tickets map)
+    OUTPUT: "Saved {count} skipped issues (will be posted to PR via /pr)"
 
   OUTPUT: "Fixed {fix_count} issues, skipped {skip_count}"
   END
@@ -168,6 +198,39 @@ STEP 4: Finalize
 ## Common Triage Flow
 
 Used by both PR mode and File mode.
+
+### Sync Ticket Cache with GitHub
+
+```text
+STEP 0: Sync ticket cache (runs before triage)
+  READ: .tmp/review-tickets.json (if exists)
+  IF: tickets map has entries where resolved == false
+    SET: unresolved_tickets = tickets where resolved == false
+    SET: unresolved_count = count of unresolved_tickets
+    OUTPUT: "Checking {unresolved_count} cached tickets against GitHub..."
+
+    # Batch fetch issue states using GraphQL nodes query (single API call)
+    SET: issue_numbers = [ticket.gh_issue_number for ticket in unresolved_tickets]
+    RUN: gh api graphql -f query='
+      query($owner: String!, $repo: String!, $numbers: [Int!]!) {
+        repository(owner: $owner, name: $repo) {
+          issues: nodes(ids: $numbers) {
+            ... on Issue { number state }
+          }
+        }
+      }' -F owner={owner} -F repo={repo} -F numbers={issue_numbers}
+
+    FOR_EACH: issue in response.issues
+      IF: issue.state == "CLOSED"
+        SET: tickets[matching_key].resolved = true
+        SET: tickets[matching_key].resolved_at = current ISO timestamp
+        OUTPUT: "  #{issue.number} now resolved"
+
+    WRITE: updated .tmp/review-tickets.json
+    SET: newly_resolved = count of tickets marked resolved this run
+    IF: newly_resolved > 0
+      OUTPUT: "Synced: {newly_resolved} ticket(s) marked as resolved"
+```
 
 ### Evaluate Issues
 
@@ -229,19 +292,100 @@ FOR_EACH: skipped issue
       - "out-of-scope" - Valid but not part of this PR
       - "will-fix-later" - Acknowledged, will address separately
   WAIT: for user response
+
+  IF: category == "will-fix-later"
+    # Check ticket cache for existing issue
+    READ: .tmp/review-tickets.json (if exists)
+    # Generate deterministic key using SHA-256 hash
+    NORMALIZE: input = lowercase(source) + "|" + lowercase(location) + "|" + normalize_whitespace(description)
+    HASH: issue_key = SHA256(input).substring(0, 16)  # First 16 hex chars
+    SET: should_create_ticket = true
+
+    IF: issue_key exists in tickets map AND tickets[issue_key].resolved == false
+      OUTPUT: "Issue already filed: #{tickets[issue_key].gh_issue_number}"
+      SET: issue.gh_issue_number = cached value
+      SET: issue.gh_issue_url = cached value
+      SET: should_create_ticket = false
+    ELSE IF: issue_key exists in tickets map AND tickets[issue_key].resolved == true
+      OUTPUT: "Previous issue #{tickets[issue_key].gh_issue_number} was resolved - creating new ticket"
+
+    IF: should_create_ticket
+      ASK_USER:
+        question: "Add context for the GitHub issue? (optional)"
+      WAIT: for user response (allow empty)
+
+      # Sanitize issue fields before creating GitHub issue
+      SANITIZE: title = truncate(strip_markdown(issue.description), 60)
+      SANITIZE: body = escape_markdown_injection(formatted_issue_body)
+
+      RUN: gh issue create \
+           --title "Review feedback: {sanitized_title}" \
+           --body "{sanitized_body}" \
+           --label "tech-debt,review-feedback"
+      IF: gh command fails
+        OUTPUT: "⚠️ Failed to create GitHub issue - continuing without tracking"
+        SET: should_create_ticket = false
+      ELSE:
+        PARSE: issue number and URL from output
+
+        STORE: in .tmp/review-tickets.json tickets map:
+          tickets[issue_key] = {
+            gh_issue_number, gh_issue_url, source, location,
+            description, severity, created_at, branch,
+            resolved: false, resolved_at: null
+          }
+        OUTPUT: "Filed GitHub issue #{number}: {url}"
+
+        SET: issue.gh_issue_number = created number
+        SET: issue.gh_issue_url = created url
+
   STORE: issue with category in skipped_issues
 ```
 
-## Ignored Issues Schema
+### GitHub Issue Body Format
 
-Output format (`.tmp/coderabbit-ignored.json`):
+```markdown
+## Review Feedback: {issue.description}
+
+**Source**: {source}
+**Severity**: {severity}
+**Location**: `{location}`
+
+### Details
+{issue.description}
+
+{issue.suggestion if available}
+
+### Context
+- Branch: `{branch}`
+- Deferred during review triage
+
+---
+*Auto-created by /resolve-comments*
+```
+
+## Review Tickets Schema
+
+Output format (`.tmp/review-tickets.json`):
 
 ```json
 {
   "schema_version": "1.0",
-  "branch": "feature/my-feature",
-  "created_at": "2025-01-10T12:00:00Z",
-  "ignored_issues": [
+  "tickets": {
+    "{issue_key_hash}": {
+      "gh_issue_number": 123,
+      "gh_issue_url": "https://github.com/owner/repo/issues/123",
+      "source": "coderabbit",
+      "location": "file.ts:45",
+      "description": "Issue description",
+      "severity": "MEDIUM",
+      "created_at": "2025-01-13T10:00:00Z",
+      "branch": "feature/my-feature",
+      "resolved": false,
+      "resolved_at": null
+    }
+  },
+  "skipped_issues": [
     {
       "id": 1,
       "source": "coderabbit|code-reviewer",
@@ -249,11 +393,19 @@ Output format (`.tmp/coderabbit-ignored.json`):
       "description": "Issue description",
       "severity": "LOW",
       "category": "nitpick|false-positive|intentional|out-of-scope|will-fix-later",
-      "reason": "User explanation (optional)"
+      "reason": "User explanation (optional)",
+      "gh_issue_number": 123,
+      "gh_issue_url": "https://github.com/owner/repo/issues/123"
     }
   ]
 }
 ```
+
+**Key design**:
+
+- `tickets` map: Keyed by hash of (source + location + description), persists across triage runs to prevent duplicate issue creation
+- `skipped_issues` array: Current PR's skipped items for acknowledgment, cleared after PR creation
+- `resolved` field: Tracks whether GitHub issue has been closed; if resolved, a new ticket will be created if the same issue reappears
 
 ## Expected Output
 
@@ -317,6 +469,10 @@ Summary: 4 recommended fixes, 1 recommended skip
 - **CRITICAL**: Present triage options to user and WAIT for response. Never auto-apply without consent (unless --auto flag).
 - PR mode posts `@coderabbitai resolve` to acknowledge resolution
 - File mode commits but does not push or post to PR (no PR exists yet)
-- Skipped issues always saved to `.tmp/coderabbit-ignored.json` for `/ship-it`
+- Skipped issues saved to `.tmp/review-tickets.json` for `/pr` acknowledgment
+- "will-fix-later" items automatically file a GitHub issue with `tech-debt,review-feedback` labels
+- Ticket cache prevents duplicate issue creation when running triage multiple times
+- Cache syncs with GitHub at start of triage: closed issues are marked `resolved: true`
+- Resolved tickets allow new issue creation if the same problem reappears
 - `--auto` skips user interaction and applies all recommended fixes
 - `--dry-run` shows analysis without making any changes
