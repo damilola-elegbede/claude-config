@@ -109,17 +109,29 @@ STEP 5: Finalize
       RUN: git push
 
       GENERATE: summary of changes
-        - Group fixed issues by category (Security, Error Handling, Performance, Documentation, Testing, Code Quality)
-        - Group by file with specific actions taken
-        - Format as markdown with:
+        DATA_SOURCE: fixed_issues list from triage (issues marked for fix with applied changes)
+        CATEGORIZATION:
+          - Map issue.type to categories: security→Security, error→Error Handling, performance→Performance,
+            docs→Documentation, test→Testing, quality/other→Code Quality
+          - Issues without type or unknown type: group under "Code Quality"
+          - If issue spans multiple categories: use primary category based on severity
+        FORMAT: markdown with:
           - Heading: "## Addressed CodeRabbit Feedback"
           - Total count: "**Resolved {fix_count} review comments**"
-          - Category breakdown with counts
-          - File-by-file changes with brief descriptions
+          - Category breakdown (omit categories with zero issues)
+          - File-by-file changes with brief descriptions (max 100 chars per description)
+        EDGE_CASES:
+          - Empty categories: omit from output
+          - Issues without file association: group under "General" section
+          - Duplicate file paths: consolidate actions into single bullet
+          - Summary exceeds 2000 chars: truncate file details, keep category counts
+        VALIDATION:
+          - Verify summary is non-empty
+          - Verify markdown is well-formed
+          - IF generation fails: use fallback "@coderabbitai resolve" without summary
+        WRITE: summary to .tmp/pr-comment.md
 
-      RUN: gh pr comment {pr} --body "@coderabbitai resolve
-
-{summary}"
+      RUN: gh pr comment {pr} --body-file .tmp/pr-comment.md
       OUTPUT: "Posted @coderabbitai resolve with change summary to PR #{pr}"
     ELSE:
       OUTPUT: "Skipped commit/push/comment. Local changes preserved."
