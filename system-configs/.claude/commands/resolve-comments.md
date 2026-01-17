@@ -107,8 +107,20 @@ STEP 5: Finalize
     IF: user selected "Yes"
       RUN: git add -A && git commit -m "fix: resolve CodeRabbit feedback ({fix_count} issues)"
       RUN: git push
-      RUN: gh pr comment {pr} --body "@coderabbitai resolve"
-      OUTPUT: "Posted @coderabbitai resolve to PR #{pr}"
+
+      GENERATE: summary of changes
+        - Group fixed issues by category (Security, Error Handling, Performance, Documentation, Testing, Code Quality)
+        - Group by file with specific actions taken
+        - Format as markdown with:
+          - Heading: "## Addressed CodeRabbit Feedback"
+          - Total count: "**Resolved {fix_count} review comments**"
+          - Category breakdown with counts
+          - File-by-file changes with brief descriptions
+
+      RUN: gh pr comment {pr} --body "@coderabbitai resolve
+
+{summary}"
+      OUTPUT: "Posted @coderabbitai resolve with change summary to PR #{pr}"
     ELSE:
       OUTPUT: "Skipped commit/push/comment. Local changes preserved."
 
@@ -283,7 +295,7 @@ Fixed: Add input validation
 
 Committed: fix: resolve CodeRabbit feedback (2 issues)
 Pushed to origin
-Posted @coderabbitai resolve to PR #42
+Posted @coderabbitai resolve with change summary to PR #42
 Saved 1 skipped issue for /ship-it acknowledgment
 
 Resolved 2 of 3 comments
