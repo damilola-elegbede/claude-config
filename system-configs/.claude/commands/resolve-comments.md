@@ -128,7 +128,8 @@ STEP 5: Finalize
         VALIDATION:
           - Verify summary is non-empty
           - Verify markdown is well-formed
-          - IF generation fails: use fallback "@coderabbitai resolve" without summary
+          - IF generation fails (empty fixed_issues, markdown validation error, or file write error):
+            use fallback "@coderabbitai resolve" without summary
         WRITE: summary to .tmp/pr-comment.md
 
       RUN: gh pr comment {pr} --body-file .tmp/pr-comment.md
