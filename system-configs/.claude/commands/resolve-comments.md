@@ -107,8 +107,33 @@ STEP 5: Finalize
     IF: user selected "Yes"
       RUN: git add -A && git commit -m "fix: resolve CodeRabbit feedback ({fix_count} issues)"
       RUN: git push
-      RUN: gh pr comment {pr} --body "@coderabbitai resolve"
-      OUTPUT: "Posted @coderabbitai resolve to PR #{pr}"
+
+      GENERATE: summary of changes
+        DATA_SOURCE: fixed_issues list from triage (issues marked for fix with applied changes)
+        CATEGORIZATION:
+          - Map issue.type to categories: security→Security, error→Error Handling, performance→Performance,
+            docs→Documentation, test→Testing, quality/other→Code Quality
+          - Issues without type or unknown type: group under "Code Quality"
+          - If issue spans multiple categories: use primary category based on severity
+        FORMAT: markdown with:
+          - Heading: "## Addressed CodeRabbit Feedback"
+          - Total count: "**Resolved {fix_count} review comments**"
+          - Category breakdown (omit categories with zero issues)
+          - File-by-file changes with brief descriptions (max 100 chars per description)
+        EDGE_CASES:
+          - Empty categories: omit from output
+          - Issues without file association: group under "General" section
+          - Duplicate file paths: consolidate actions into single bullet
+          - Summary exceeds 2000 chars: truncate file details, keep category counts
+        VALIDATION:
+          - Verify summary is non-empty
+          - Verify markdown is well-formed
+          - IF generation fails (empty fixed_issues, markdown validation error, or file write error):
+            use fallback "@coderabbitai resolve" without summary
+        WRITE: summary to .tmp/pr-comment.md
+
+      RUN: gh pr comment {pr} --body-file .tmp/pr-comment.md
+      OUTPUT: "Posted @coderabbitai resolve with change summary to PR #{pr}"
     ELSE:
       OUTPUT: "Skipped commit/push/comment. Local changes preserved."
 
@@ -283,7 +308,7 @@ Fixed: Add input validation
 
 Committed: fix: resolve CodeRabbit feedback (2 issues)
 Pushed to origin
-Posted @coderabbitai resolve to PR #42
+Posted @coderabbitai resolve with change summary to PR #42
 Saved 1 skipped issue for /ship-it acknowledgment
 
 Resolved 2 of 3 comments
