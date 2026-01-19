@@ -4,7 +4,7 @@ language: "en-US"
 tone_instructions: "Be direct and technical. Focus on actionable feedback."
 
 reviews:
-  profile: "assertive"
+  profile: "chill"
   high_level_summary: true
   auto_review:
     enabled: true

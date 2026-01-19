@@ -85,7 +85,7 @@ Task tool:
        DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo "main")
 
     3. Run CodeRabbit CLI:
-       coderabbit review --prompt-only --type all --config .coderabbit.yaml --base $DEFAULT_BRANCH
+       coderabbit review --prompt-only --type all --base $DEFAULT_BRANCH
 
     Note: The --prompt-only flag produces AI-optimized text output, not JSON.
     Parse the text output by extracting structured sections (file paths, line numbers,
