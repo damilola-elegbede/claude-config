@@ -207,6 +207,9 @@ FOR_EACH: issue in issues
   ANALYZE: severity, type, fix complexity
   ASSIGN: recommendation = "Fix" if severity >= MEDIUM or security/accessibility issue
   ASSIGN: recommendation = "Skip" if severity == LOW and type == "nitpick"
+
+ASSIGN: fix_count = count of issues where recommendation == "Fix"
+ASSIGN: skip_count = count of issues where recommendation == "Skip"
 ```
 
 ### Present Triage Table
