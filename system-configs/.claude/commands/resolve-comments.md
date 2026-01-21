@@ -47,6 +47,8 @@ STEP 1: Determine PR number
 STEP 2: Fetch unresolved CodeRabbit comments (with pagination)
   INITIALIZE: all_issues = [], threads_cursor = null, has_more_threads = true
 
+  VALIDATE: owner/repo from gh repo view --json owner,name (trusted source)
+
   WHILE: has_more_threads
     RUN: gh api graphql -f query='
       query($owner: String!, $repo: String!, $pr: Int!, $after: String) {
@@ -75,6 +77,7 @@ STEP 2: Fetch unresolved CodeRabbit comments (with pagination)
     FOR_EACH: thread in reviewThreads.nodes
       IF: thread has >100 comments (thread.comments.pageInfo.hasNextPage)
         PAGINATE: fetch remaining comments for this thread using comments cursor
+        RATE_LIMIT: pause 100ms between pagination requests to avoid API throttling
       APPEND: all comments to thread.comments.nodes
 
     FILTER: isResolved == false AND author.login contains "coderabbit"
@@ -105,6 +108,7 @@ STEP 5: Finalize
     WAIT: for user response
 
     IF: user selected "Yes"
+      VALIDATE: fix_count is numeric integer
       RUN: git add -A && git commit -m "fix: resolve CodeRabbit feedback ({fix_count} issues)"
       RUN: git push
 
@@ -128,6 +132,8 @@ STEP 5: Finalize
         VALIDATION:
           - Verify summary is non-empty
           - Verify markdown is well-formed
+          - Sanitize issue descriptions: strip HTML tags, escape special characters
+          - Limit summary to 2000 chars with structure-aware truncation
           - IF generation fails (empty fixed_issues, markdown validation error, or file write error):
             use fallback "@coderabbitai resolve" without summary
         WRITE: summary to .tmp/pr-comment.md
@@ -201,11 +207,17 @@ FOR_EACH: issue in issues
   ANALYZE: severity, type, fix complexity
   ASSIGN: recommendation = "Fix" if severity >= MEDIUM or security/accessibility issue
   ASSIGN: recommendation = "Skip" if severity == LOW and type == "nitpick"
+
+ASSIGN: fix_count = count of issues where recommendation == "Fix"
+ASSIGN: skip_count = count of issues where recommendation == "Skip"
 ```
 
 ### Present Triage Table
 
 ```text
+FORMAT: Markdown table (REQUIRED - never use bullet lists or other formats)
+COLUMNS: #, Source, Severity, Location, Issue, Rec
+
 DISPLAY:
   Review Issues:
 
