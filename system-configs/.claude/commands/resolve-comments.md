@@ -206,6 +206,9 @@ FOR_EACH: issue in issues
 ### Present Triage Table
 
 ```text
+FORMAT: Markdown table (REQUIRED - never use bullet lists or other formats)
+COLUMNS: #, Source, Severity, Location, Issue, Rec
+
 DISPLAY:
   Review Issues:
 
