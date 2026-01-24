@@ -101,20 +101,29 @@ STEP 2: Fetch unresolved CodeRabbit comments (with pagination)
         - "🚨 Critical | 🔴 Critical" → type=critical, severity=HIGH
 
       Mapping:
-        Trivial → LOW
-        Minor → LOW
-        Major → MEDIUM
-        Critical → HIGH
+        Type (normalize to lowercase, strip emoji/punctuation):
+          Nitpick → nitpick
+          Potential issue → issue
+          Issue → issue
+          Critical → critical
+          Unknown → other
+
+        Severity:
+          Trivial → LOW
+          Minor → LOW
+          Major → MEDIUM
+          Critical → HIGH
 
     AI PROMPT EXTRACTION:
       Look for section starting with "🤖 Prompt for AI Agents" or "🤖 Fix all issues with AI agents"
       Extract the text block content following this header
       Store as issue.ai_prompt
+      SET: issue.requires_analysis = false
 
     FALLBACK:
       IF: ai_prompt not found
         SET: issue.ai_prompt = null
-        MARK: issue.requires_analysis = true
+        SET: issue.requires_analysis = true
 
   STORE: all_issues in memory
   OUTPUT: "Fetched {count} unresolved CodeRabbit comments from PR #{pr}"
@@ -247,12 +256,12 @@ Used by both PR mode and File mode.
 
 ```text
 FOR_EACH: issue in issues
-  IF: issue has parsed severity from header
+  IF: issue has parsed severity from header AND mapping is recognized (LOW|MEDIUM|HIGH|CRITICAL)
     USE: parsed severity
   ELSE:
     ANALYZE: comment body to determine severity
 
-  IF: issue has parsed type from header
+  IF: issue has parsed type from header AND type is recognized (nitpick|issue|critical|security|performance|quality)
     USE: parsed type
   ELSE:
     ANALYZE: comment body to determine type
@@ -305,7 +314,14 @@ ELSE:
 ```text
 FOR_EACH: approved issue
   IF: issue.ai_prompt exists
-    VALIDATE: ai_prompt does not contain destructive operations (file deletion, system commands)
+    VALIDATE: ai_prompt does not contain destructive operations
+      Prohibited patterns (regex scan):
+        - File operations: rm, unlink, rmdir, delete, shutil.rmtree
+        - System execution: exec, system, eval, subprocess, popen, os.system
+        - Permission changes: chmod, chown
+        - Network/shell: curl, wget, nc, telnet, |, &&, ;, `
+      On match: SKIP issue, LOG warning "Skipped issue #{id}: ai_prompt contains prohibited pattern '{match}'"
+      On pass: continue to APPLY
     APPLY: fix using issue.ai_prompt as the instruction (code changes only)
     OUTPUT: "Fixed (using CodeRabbit AI prompt): {issue.description}"
   ELSE IF: issue.suggestion or issue.recommendation exists
