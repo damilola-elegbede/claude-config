@@ -85,6 +85,31 @@ STEP 2: Fetch unresolved CodeRabbit comments (with pagination)
     SET: threads_cursor = reviewThreads.pageInfo.endCursor
     SET: has_more_threads = reviewThreads.pageInfo.hasNextPage
 
+  PARSE: each comment body for structured fields
+
+    SEVERITY/TYPE HEADER:
+      Pattern: emoji + type + "|" + emoji + severity
+      Examples:
+        - "🔧 Nitpick | 🔵 Trivial" → type=nitpick, severity=LOW
+        - "⚠️ Potential issue | 🟡 Major" → type=issue, severity=MEDIUM
+        - "🚨 Critical | 🔴 Critical" → type=critical, severity=HIGH
+
+      Mapping:
+        Trivial → LOW
+        Minor → LOW
+        Major → MEDIUM
+        Critical → HIGH
+
+    AI PROMPT EXTRACTION:
+      Look for section starting with "🤖 Prompt for AI Agents" or "🤖 Fix all issues with AI agents"
+      Extract the text block content following this header
+      Store as issue.ai_prompt
+
+    FALLBACK:
+      IF: ai_prompt not found
+        SET: issue.ai_prompt = null
+        MARK: issue.requires_analysis = true
+
   STORE: all_issues in memory
   OUTPUT: "Fetched {count} unresolved CodeRabbit comments from PR #{pr}"
 
@@ -204,28 +229,39 @@ Used by both PR mode and File mode.
 
 ```text
 FOR_EACH: issue in issues
-  ANALYZE: severity, type, fix complexity
+  IF: issue has parsed severity from header
+    USE: parsed severity
+  ELSE:
+    ANALYZE: comment body to determine severity
+
+  IF: issue has parsed type from header
+    USE: parsed type
+  ELSE:
+    ANALYZE: comment body to determine type
+
   ASSIGN: recommendation = "Fix" if severity >= MEDIUM or security/accessibility issue
   ASSIGN: recommendation = "Skip" if severity == LOW and type == "nitpick"
 
-ASSIGN: fix_count = count of issues where recommendation == "Fix"
-ASSIGN: skip_count = count of issues where recommendation == "Skip"
+CALCULATE: fix_count = count of issues where recommendation == "Fix"
+CALCULATE: skip_count = count of issues where recommendation == "Skip"
 ```
 
 ### Present Triage Table
 
 ```text
 FORMAT: Markdown table (REQUIRED - never use bullet lists or other formats)
-COLUMNS: #, Source, Severity, Location, Issue, Rec
+COLUMNS: #, Source, Severity, Location, Issue, Prompt, Rec
 
 DISPLAY:
   Review Issues:
 
-  | # | Source | Severity | Location | Issue | Rec |
-  |---|--------|----------|----------|-------|-----|
-  | 1 | coderabbit | HIGH | auth.ts:45 | Missing error handling | Fix |
-  | 2 | code-reviewer | MEDIUM | api.ts:12 | Input validation needed | Fix |
-  | 3 | coderabbit | LOW | utils.ts:8 | Use const vs let | Skip |
+  | # | Source | Severity | Location | Issue | Prompt | Rec |
+  |---|--------|----------|----------|-------|--------|-----|
+  | 1 | coderabbit | HIGH | auth.ts:45 | Missing error handling | ✓ | Fix |
+  | 2 | code-reviewer | MEDIUM | api.ts:12 | Input validation needed | ✓ | Fix |
+  | 3 | coderabbit | LOW | utils.ts:8 | Use const vs let | - | Skip |
+
+  Prompt column: ✓ = AI prompt extracted, - = fallback to analysis
 
   Summary: {fix_count} recommended fixes, {skip_count} recommended skips
 
@@ -250,11 +286,15 @@ ELSE:
 
 ```text
 FOR_EACH: approved issue
-  IF: issue.suggestion or issue.recommendation exists
+  IF: issue.ai_prompt exists
+    APPLY: fix using issue.ai_prompt as the instruction
+    OUTPUT: "Fixed (using CodeRabbit AI prompt): {issue.description}"
+  ELSE IF: issue.suggestion or issue.recommendation exists
     APPLY: fix using provided guidance
+    OUTPUT: "Fixed: {issue.description}"
   ELSE:
     DELEGATE: to appropriate agent based on issue.type
-  OUTPUT: "Fixed: {issue.description}"
+    OUTPUT: "Fixed: {issue.description}"
 
 FOR_EACH: skipped issue
   ASK_USER:
@@ -303,18 +343,20 @@ Fetched 3 unresolved CodeRabbit comments from PR #42
 
 Review Issues:
 
-| # | Source | Severity | Location | Issue | Rec |
-|---|--------|----------|----------|-------|-----|
-| 1 | coderabbit | HIGH | auth.ts:45 | Missing error handling | Fix |
-| 2 | coderabbit | MEDIUM | api.ts:12 | Add input validation | Fix |
-| 3 | coderabbit | LOW | utils.ts:8 | Use const vs let | Skip |
+| # | Source | Severity | Location | Issue | Prompt | Rec |
+|---|--------|----------|----------|-------|--------|-----|
+| 1 | coderabbit | HIGH | auth.ts:45 | Missing error handling | ✓ | Fix |
+| 2 | coderabbit | MEDIUM | api.ts:12 | Add input validation | ✓ | Fix |
+| 3 | coderabbit | LOW | utils.ts:8 | Use const vs let | - | Skip |
+
+Prompt column: ✓ = AI prompt extracted, - = fallback to analysis
 
 Summary: 2 recommended fixes, 1 recommended skip
 
 [User selects "Approve all recommended"]
 
-Fixed: Missing error handling
-Fixed: Add input validation
+Fixed (using CodeRabbit AI prompt): Missing error handling
+Fixed (using CodeRabbit AI prompt): Add input validation
 
 [User categorizes skip as "nitpick"]
 
@@ -336,13 +378,15 @@ Loaded 2 AI reviewer issues
 
 Review Issues:
 
-| # | Source | Severity | Location | Issue | Rec |
-|---|--------|----------|----------|-------|-----|
-| 1 | coderabbit | HIGH | auth.ts:45 | Missing error handling | Fix |
-| 2 | coderabbit | MEDIUM | api.ts:12 | Add input validation | Fix |
-| 3 | code-reviewer | HIGH | db.ts:78 | SQL injection risk | Fix |
-| 4 | code-reviewer | MEDIUM | perf.ts:23 | N+1 query detected | Fix |
-| 5 | coderabbit | LOW | utils.ts:8 | Use const vs let | Skip |
+| # | Source | Severity | Location | Issue | Prompt | Rec |
+|---|--------|----------|----------|-------|--------|-----|
+| 1 | coderabbit | HIGH | auth.ts:45 | Missing error handling | ✓ | Fix |
+| 2 | coderabbit | MEDIUM | api.ts:12 | Add input validation | ✓ | Fix |
+| 3 | code-reviewer | HIGH | db.ts:78 | SQL injection risk | - | Fix |
+| 4 | code-reviewer | MEDIUM | perf.ts:23 | N+1 query detected | - | Fix |
+| 5 | coderabbit | LOW | utils.ts:8 | Use const vs let | - | Skip |
+
+Prompt column: ✓ = AI prompt extracted, - = fallback to analysis
 
 Summary: 4 recommended fixes, 1 recommended skip
 
