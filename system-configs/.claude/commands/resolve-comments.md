@@ -266,31 +266,55 @@ FOR_EACH: issue in issues
   ELSE:
     ANALYZE: comment body to determine type
 
-  ASSIGN: recommendation = "Fix" if severity >= MEDIUM or security/accessibility issue
-  ASSIGN: recommendation = "Skip" if severity == LOW and type == "nitpick"
+  DETERMINE: recommendation and auto-generated reason
+    IF: severity == HIGH or severity == CRITICAL
+      SET: recommendation = "FIX"
+      SET: reason = "High-severity issue requires resolution"
+    ELSE IF: severity == MEDIUM AND type == "security"
+      SET: recommendation = "FIX"
+      SET: reason = "Security issue must be addressed"
+    ELSE IF: severity == MEDIUM AND type == "accessibility"
+      SET: recommendation = "FIX"
+      SET: reason = "Accessibility compliance required"
+    ELSE IF: severity == MEDIUM
+      SET: recommendation = "FIX"
+      SET: reason = "Recommended improvement for code quality"
+    ELSE IF: severity == LOW AND type == "nitpick"
+      SET: recommendation = "SKIP"
+      SET: reason = "Style preference, minimal impact"
+      SET: skip_category = "nitpick"
+    ELSE:
+      SET: recommendation = "SKIP"
+      SET: reason = "Minor issue, low priority"
+      SET: skip_category = "low-priority"
 
-CALCULATE: fix_count = count of issues where recommendation == "Fix"
-CALCULATE: skip_count = count of issues where recommendation == "Skip"
+CALCULATE: fix_count = count of issues where recommendation == "FIX"
+CALCULATE: skip_count = count of issues where recommendation == "SKIP"
 ```
 
 ### Present Triage Table
 
 ```text
-FORMAT: Markdown table (REQUIRED - never use bullet lists or other formats)
-COLUMNS: #, Source, Severity, Location, Issue, Prompt, Rec
+TABLE FORMAT REQUIREMENT:
+  MANDATORY: Output MUST be a markdown table. This is non-negotiable.
+  PROHIBITED: Bullet lists, numbered lists, prose descriptions are NOT acceptable.
+
+COLUMNS: #, Source, Description, Recommendation
+  - #: Issue number (sequential)
+  - Source: "coderabbit" or "code-reviewer"
+  - Description: Location + issue summary (e.g., "auth.ts:45 - Missing error handling")
+  - Recommendation: "FIX: [reason]" or "SKIP: [reason]" with auto-generated reason
 
 DISPLAY:
   Review Issues:
 
-  | # | Source | Severity | Location | Issue | Prompt | Rec |
-  |---|--------|----------|----------|-------|--------|-----|
-  | 1 | coderabbit | HIGH | auth.ts:45 | Missing error handling | ✓ | Fix |
-  | 2 | code-reviewer | MEDIUM | api.ts:12 | Input validation needed | ✓ | Fix |
-  | 3 | coderabbit | LOW | utils.ts:8 | Use const vs let | - | Skip |
+  | # | Source | Description | Recommendation |
+  |---|--------|-------------|----------------|
+  | 1 | coderabbit | auth.ts:45 - Missing error handling | FIX: High-severity issue |
+  | 2 | code-reviewer | api.ts:12 - Input validation needed | FIX: Security issue must be addressed |
+  | 3 | coderabbit | utils.ts:8 - Use const vs let | SKIP: Style preference |
 
-  Prompt column: ✓ = AI prompt extracted, - = fallback to analysis
-
-  Summary: {fix_count} recommended fixes, {skip_count} recommended skips
+  Summary: {fix_count} to fix, {skip_count} to skip
 
 IF: --dry-run flag
   OUTPUT: "Dry run complete. No changes made."
@@ -302,9 +326,8 @@ ELSE:
   ASK_USER:
     question: "How would you like to proceed?"
     options:
-      - "Approve all recommended ({fix_count} fixes)"
-      - "Select specific issues"
-      - "View detailed analysis"
+      - "Approve all fixes ({fix_count} issues)"
+      - "Review each issue individually"
       - "Skip all"
   WAIT: for user response
 ```
@@ -338,29 +361,23 @@ FOR_EACH: approved issue
         unknown → handle directly with analysis
     OUTPUT: "Fixed: {issue.description}"
 
-FOR_EACH: skipped issue (with bulk categorization option)
-  IF: multiple skipped issues (>3)
-    ASK_USER:
-      question: "How to categorize {skip_count} skipped issues?"
-      options:
-        - "Same reason for all" - Apply one category to all skipped
-        - "Categorize individually" - Ask for each issue
-    IF: user selected "Same reason for all"
-      ASK_USER: single category selection
-      APPLY: category to all skipped issues
-      SKIP: individual categorization
+FOR_EACH: skipped issue
+  USE: auto-generated skip_category and reason from evaluation phase
+  STORE: issue with category in skipped_issues
 
-  FOR_EACH: remaining uncategorized skipped issue
+IF: user selected "Review each issue individually"
+  FOR_EACH: issue in issues
+    DISPLAY: issue details (source, description, recommendation)
     ASK_USER:
-      question: "Reason for skipping '{issue.description}'?"
+      question: "Resolve this issue?"
       options:
-        - "nitpick" - Style preference, not worth changing
-        - "false-positive" - Incorrectly identified as issue
-        - "intentional" - Code is correct as-is by design
-        - "out-of-scope" - Valid but not part of this PR
-        - "will-fix-later" - Acknowledged, will address separately
+        - "Yes - apply fix"
+        - "No - skip"
     WAIT: for user response
-    STORE: issue with category in skipped_issues
+    IF: user selected "Yes - apply fix"
+      ADD: issue to approved_issues
+    ELSE:
+      ADD: issue to skipped_issues with auto-generated category
 ```
 
 ## Ignored Issues Schema
@@ -379,8 +396,8 @@ Output format (`.tmp/coderabbit-ignored.json`):
       "location": "file.ts:45",
       "description": "Issue description",
       "severity": "LOW",
-      "category": "nitpick|false-positive|intentional|out-of-scope|will-fix-later",
-      "reason": "User explanation (optional)"
+      "category": "nitpick|low-priority|unknown",
+      "reason": "Auto-generated reason from evaluation"
     }
   ]
 }
@@ -397,22 +414,18 @@ Fetched 3 unresolved CodeRabbit comments from PR #42
 
 Review Issues:
 
-| # | Source | Severity | Location | Issue | Prompt | Rec |
-|---|--------|----------|----------|-------|--------|-----|
-| 1 | coderabbit | HIGH | auth.ts:45 | Missing error handling | ✓ | Fix |
-| 2 | coderabbit | MEDIUM | api.ts:12 | Add input validation | ✓ | Fix |
-| 3 | coderabbit | LOW | utils.ts:8 | Use const vs let | - | Skip |
+| # | Source | Description | Recommendation |
+|---|--------|-------------|----------------|
+| 1 | coderabbit | auth.ts:45 - Missing error handling | FIX: High-severity issue |
+| 2 | coderabbit | api.ts:12 - Add input validation | FIX: Security issue must be addressed |
+| 3 | coderabbit | utils.ts:8 - Use const vs let | SKIP: Style preference |
 
-Prompt column: ✓ = AI prompt extracted, - = fallback to analysis
+Summary: 2 to fix, 1 to skip
 
-Summary: 2 recommended fixes, 1 recommended skip
-
-[User selects "Approve all recommended"]
+[User selects "Approve all fixes (2 issues)"]
 
 Fixed (using CodeRabbit AI prompt): Missing error handling
 Fixed (using CodeRabbit AI prompt): Add input validation
-
-[User categorizes skip as "nitpick"]
 
 Committed: fix: resolve CodeRabbit feedback (2 issues)
 Pushed to origin
@@ -432,17 +445,15 @@ Loaded 2 AI reviewer issues
 
 Review Issues:
 
-| # | Source | Severity | Location | Issue | Prompt | Rec |
-|---|--------|----------|----------|-------|--------|-----|
-| 1 | coderabbit | HIGH | auth.ts:45 | Missing error handling | ✓ | Fix |
-| 2 | coderabbit | MEDIUM | api.ts:12 | Add input validation | ✓ | Fix |
-| 3 | code-reviewer | HIGH | db.ts:78 | SQL injection risk | - | Fix |
-| 4 | code-reviewer | MEDIUM | perf.ts:23 | N+1 query detected | - | Fix |
-| 5 | coderabbit | LOW | utils.ts:8 | Use const vs let | - | Skip |
+| # | Source | Description | Recommendation |
+|---|--------|-------------|----------------|
+| 1 | coderabbit | auth.ts:45 - Missing error handling | FIX: High-severity issue |
+| 2 | coderabbit | api.ts:12 - Add input validation | FIX: Security issue must be addressed |
+| 3 | code-reviewer | db.ts:78 - SQL injection risk | FIX: Security issue must be addressed |
+| 4 | code-reviewer | perf.ts:23 - N+1 query detected | FIX: Recommended improvement |
+| 5 | coderabbit | utils.ts:8 - Use const vs let | SKIP: Style preference |
 
-Prompt column: ✓ = AI prompt extracted, - = fallback to analysis
-
-Summary: 4 recommended fixes, 1 recommended skip
+Summary: 4 to fix, 1 to skip
 
 [Interactive triage continues...]
 ```
