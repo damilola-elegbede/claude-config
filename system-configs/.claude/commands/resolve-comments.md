@@ -53,7 +53,7 @@ STEP 2: Fetch unresolved CodeRabbit comments (with pagination)
   INITIALIZE: all_issues = [], threads_cursor = null, has_more_threads = true, modified_files = []
 
   VALIDATE: owner/repo from gh repo view --json owner,name
-    SANITIZE: owner and repo must match pattern ^[a-zA-Z0-9_-]+$ (alphanumeric, hyphen, underscore only)
+    SANITIZE: owner and repo must match pattern ^[a-zA-Z0-9._-]+$ (alphanumeric, dot, hyphen, underscore only)
     IF: gh repo view fails
       OUTPUT: "Failed to get repository info. Ensure gh is authenticated and run from within a git repository."
       END
@@ -325,26 +325,28 @@ CALCULATE: skip_count = count of issues where recommendation == "SKIP"
 ### Present Triage Table
 
 ```text
-TABLE FORMAT REQUIREMENT:
-  MANDATORY: Output MUST be a markdown table. This is non-negotiable.
-  PROHIBITED: Bullet lists, numbered lists, prose descriptions are NOT acceptable.
+OUTPUT: "Review Issues:"
+OUTPUT: ""
+OUTPUT: "| # | Src | Description | Action |"
+OUTPUT: "|---|-----|-------------|--------|"
+FOR_EACH: issue in issues (sorted by recommendation: FIX first, then SKIP)
+  OUTPUT: "| {issue.number} | {src} | {issue.location} - {issue.summary} | {issue.recommendation} |"
+  NOTE: {src} = "CR" for coderabbit, "Agent" for code-reviewer
+OUTPUT: ""
+OUTPUT: "**Summary:** {fix_count} to fix, {skip_count} to skip"
 
-COLUMNS: #, Source, Description, Recommendation
-  - #: Issue number (sequential)
-  - Source: "coderabbit" or "code-reviewer"
-  - Description: Location + issue summary (e.g., "auth.ts:45 - Missing error handling")
-  - Recommendation: "FIX: [reason]" or "SKIP: [reason]" with auto-generated reason
+⚠️ FORMAT ENFORCEMENT:
+  - The above OUTPUT statements are LITERAL - you MUST output these exact strings
+  - The table header row "| # | Src | Description | Action |" MUST appear exactly as shown
+  - The separator row "|---|-----|-------------|--------|" MUST appear exactly as shown
+  - Each issue MUST be a table row starting with "| " and ending with " |"
 
-DISPLAY:
-  Review Issues:
-
-  | # | Source | Description | Recommendation |
-  |---|--------|-------------|----------------|
-  | 1 | coderabbit | auth.ts:45 - Missing error handling | FIX: High-severity issue |
-  | 2 | code-reviewer | api.ts:12 - Input validation needed | FIX: Security issue must be addressed |
-  | 3 | coderabbit | utils.ts:8 - Use const vs let | SKIP: Style preference |
-
-  Summary: {fix_count} to fix, {skip_count} to skip
+❌ PROHIBITED FORMATS (DO NOT USE):
+  - Bullet lists: "- Issue 1: ..."
+  - Numbered lists: "1. Issue: ..."
+  - Key-value pairs: "Source: coderabbit"
+  - Prose: "The first issue is..."
+  - Headers per issue: "### Issue 1"
 
 IF: --dry-run flag
   OUTPUT: "Dry run complete. No changes made."
@@ -452,11 +454,11 @@ Fetched 3 unresolved CodeRabbit comments from PR #42
 
 Review Issues:
 
-| # | Source | Description | Recommendation |
-|---|--------|-------------|----------------|
-| 1 | coderabbit | auth.ts:45 - Missing error handling | FIX: High-severity issue |
-| 2 | coderabbit | api.ts:12 - Add input validation | FIX: Security issue must be addressed |
-| 3 | coderabbit | utils.ts:8 - Use const vs let | SKIP: Style preference |
+| # | Src | Description | Action |
+|---|-----|-------------|--------|
+| 1 | CR | auth.ts:45 - Missing error handling | FIX |
+| 2 | CR | api.ts:12 - Add input validation | FIX |
+| 3 | CR | utils.ts:8 - Use const vs let | SKIP |
 
 Summary: 2 to fix, 1 to skip
 
@@ -483,13 +485,13 @@ Loaded 2 AI reviewer issues
 
 Review Issues:
 
-| # | Source | Description | Recommendation |
-|---|--------|-------------|----------------|
-| 1 | coderabbit | auth.ts:45 - Missing error handling | FIX: High-severity issue |
-| 2 | coderabbit | api.ts:12 - Add input validation | FIX: Security issue must be addressed |
-| 3 | code-reviewer | db.ts:78 - SQL injection risk | FIX: Security issue must be addressed |
-| 4 | code-reviewer | perf.ts:23 - N+1 query detected | FIX: Recommended improvement |
-| 5 | coderabbit | utils.ts:8 - Use const vs let | SKIP: Style preference |
+| # | Src | Description | Action |
+|---|-----|-------------|--------|
+| 1 | CR | auth.ts:45 - Missing error handling | FIX |
+| 2 | CR | api.ts:12 - Add input validation | FIX |
+| 3 | Agent | db.ts:78 - SQL injection risk | FIX |
+| 4 | Agent | perf.ts:23 - N+1 query detected | FIX |
+| 5 | CR | utils.ts:8 - Use const vs let | SKIP |
 
 Summary: 4 to fix, 1 to skip
 
