@@ -67,6 +67,24 @@ create_backup() {
     fi
 }
 
+# Function to rotate backups - keep only latest 5
+cleanup_old_backups() {
+    backup_count=$(find "$HOME" -maxdepth 1 -name '.claude.backup.*' -type d 2>/dev/null | wc -l | tr -d ' ')
+    if [ "$backup_count" -gt 5 ]; then
+        echo "Rotating backups (keeping latest 5)..."
+        # List backups by time, delete all but newest 5
+        # Use find for safer path handling
+        find "$HOME" -maxdepth 1 -name '.claude.backup.*' -type d -print0 2>/dev/null | \
+            xargs -0 ls -dt 2>/dev/null | tail -n +6 | while read -r old_backup; do
+            # Validate path before deletion
+            if [ -d "$old_backup" ] && echo "$old_backup" | grep -q "^$HOME/\.claude\.backup\.[0-9]"; then
+                rm -rf "$old_backup"
+                echo "  Removed old backup: $(basename "$old_backup")"
+            fi
+        done
+    fi
+}
+
 # Function to validate configs
 validate_configs() {
     echo "🔄 Syncing Claude configurations..."
@@ -287,6 +305,9 @@ main() {
 
     # Post-sync validation
     post_sync_validation
+
+    # Rotate old backups (keep only latest 5)
+    cleanup_old_backups
 
     end_time=$(date +%s)
     duration=$((end_time - start_time))
