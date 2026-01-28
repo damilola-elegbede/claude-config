@@ -24,7 +24,8 @@ COMMANDS_DIR = PROJECT_ROOT / "system-configs" / ".claude" / "commands"
 SKILLS_DIR = PROJECT_ROOT / "system-configs" / ".claude" / "skills"
 
 # Expected counts after optimization (consolidated from 31 agents, 21 commands)
-EXPECTED_AGENT_COUNT = 12
+# Updated: career-assistant removed as skills were deleted
+EXPECTED_AGENT_COUNT = 11
 EXPECTED_COMMAND_COUNT = 20
 
 # Non-agent/command documentation files to skip
@@ -210,14 +211,11 @@ def test_consolidated_agents_exist():
     """Verify consolidated agents were created correctly."""
     agents = get_all_agents()
 
-    # career-assistant should exist (consolidated from multiple agents)
-    assert "career-assistant" in agents, "career-assistant agent missing"
-
-    # Removed agents should not exist
+    # Removed agents should not exist (including career-assistant which was removed with skills)
     removed_agents = [
         "ats-auditor", "resume-parser", "content-writer",
         "career-strategist", "application-tracker", "company-researcher",
-        "mobile-ui"
+        "mobile-ui", "career-assistant"
     ]
     for removed in removed_agents:
         assert removed not in agents, f"Deleted agent {removed} still exists"
