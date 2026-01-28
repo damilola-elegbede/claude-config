@@ -55,7 +55,7 @@ Route fixes to domain experts based on diagnosis:
 ┌─────────────────────────────────────────────────────────────────┐
 │ 2. DIAGNOSE (Parallel)                                          │
 │    Deploy N debugger agents (one per failure)                   │
-│    Each returns: { cause, domain, files, approach }             │
+│    Each returns: { root_cause, domain, files, fix_approach }    │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
