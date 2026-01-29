@@ -66,6 +66,7 @@ STEP 2: Fetch unresolved CodeRabbit comments (with pagination)
             reviewThreads(first: 100, after: $after) {
               pageInfo { endCursor hasNextPage }
               nodes {
+                id
                 isResolved
                 comments(first: 100) {
                   pageInfo { endCursor hasNextPage }
@@ -87,6 +88,8 @@ STEP 2: Fetch unresolved CodeRabbit comments (with pagination)
       IF: thread.isResolved == true
         SKIP: this thread (already resolved)
 
+      STORE: thread_id = thread.id
+
       INITIALIZE: comments_cursor = null, has_more_comments = thread.comments.pageInfo.hasNextPage
       WHILE: has_more_comments
         RUN: fetch additional comments with comments_cursor
@@ -96,7 +99,10 @@ STEP 2: Fetch unresolved CodeRabbit comments (with pagination)
 
       FOR_EACH: comment in thread.comments.nodes
         IF: comment.author.login.toLowerCase() contains "coderabbit"
-          APPEND: comment to all_issues
+          APPEND: {
+            ...comment fields...,
+            thread_id: thread_id
+          } to all_issues
 
     NOTE: Outer WHILE loop handles thread pagination (>100 threads via threads_cursor)
           Inner WHILE handles comment pagination within each thread (>100 comments)
@@ -172,6 +178,45 @@ STEP 5: Finalize
       RUN: git add {modified_files} (never use git add -A)
       RUN: git commit -m "fix: resolve CodeRabbit feedback ({fix_count} issues)"
       RUN: git push
+
+      POST_THREAD_RESOLUTIONS:
+        INITIALIZE: resolution_results = [], success_count = 0, failure_count = 0
+        FOR_EACH: issue in fixed_issues
+          IF: issue.thread_id is missing or empty
+            APPEND: { location: issue.location, status: "skipped", error: "missing thread_id" } to resolution_results
+            INCREMENT: failure_count
+            OUTPUT: "Warning: Skipped {issue.location} - missing thread_id"
+            CONTINUE
+
+          GENERATE: brief summary of fix (max 100 chars)
+          SANITIZE: fix_summary
+            - Escape double quotes: " → \"
+            - Escape backticks: ` → \`
+            - Remove control characters (newlines, tabs → space)
+            - Neutralize @-mentions except @coderabbitai: @username → `@`username
+            - Truncate to 100 chars if needed
+
+          TRY:
+            RUN: gh api graphql -f query='
+              mutation($threadId: ID!, $body: String!) {
+                addPullRequestReviewThreadReply(input: {
+                  pullRequestReviewThreadId: $threadId,
+                  body: $body
+                }) {
+                  comment { id }
+                }
+              }' -F threadId={issue.thread_id} -f body="@coderabbitai resolve - {fix_summary}"
+            APPEND: { location: issue.location, status: "success" } to resolution_results
+            INCREMENT: success_count
+            OUTPUT: "Resolved thread: {issue.location}"
+          ON_ERROR:
+            APPEND: { location: issue.location, status: "failed", error: error_message } to resolution_results
+            INCREMENT: failure_count
+            OUTPUT: "Warning: Failed to resolve {issue.location}: {error_message}"
+
+        OUTPUT: "Thread resolution complete: {success_count} succeeded, {failure_count} failed"
+        IF: failure_count > 0
+          OUTPUT: "Failed threads: {list failed locations from resolution_results}"
 
       GENERATE: summary of changes
         DATA_SOURCE: fixed_issues list from triage (issues marked for fix with applied changes)
