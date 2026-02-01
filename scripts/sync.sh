@@ -73,11 +73,11 @@ cleanup_old_backups() {
     if [ "$backup_count" -gt 5 ]; then
         echo "Rotating backups (keeping latest 5)..."
         # List backups by time, delete all but newest 5
-        # Use find for safer path handling
-        find "$HOME" -maxdepth 1 -name '.claude.backup.*' -type d -print0 2>/dev/null | \
-            xargs -0 ls -dt 2>/dev/null | tail -n +6 | while read -r old_backup; do
-            # Validate path before deletion
-            if [ -d "$old_backup" ] && echo "$old_backup" | grep -q "^$HOME/\.claude\.backup\.[0-9]"; then
+        # Use find with strict pattern matching for security
+        find "$HOME" -maxdepth 1 -name '.claude.backup.[0-9]*_[0-9]*' -type d -print0 2>/dev/null | \
+            xargs -0 -I{} stat -f "%m %N" {} 2>/dev/null | sort -rn | cut -d' ' -f2- | tail -n +6 | while read -r old_backup; do
+            # Strict validation: must match exact backup format YYYYMMDD_HHMMSS
+            if [ -d "$old_backup" ] && echo "$old_backup" | grep -qE "^$HOME/\.claude\.backup\.[0-9]{8}_[0-9]{6}$"; then
                 rm -rf "$old_backup"
                 echo "  Removed old backup: $(basename "$old_backup")"
             fi
