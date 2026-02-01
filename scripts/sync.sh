@@ -214,6 +214,12 @@ sync_files() {
             print_warning "Failed to sync CLAUDE.md to home directory"
         fi
     fi
+
+    # Clean up misplaced CLAUDE.md in .claude directory
+    if [ -f "$TARGET_DIR/CLAUDE.md" ]; then
+        rm "$TARGET_DIR/CLAUDE.md"
+        echo "  🧹 Removed misplaced ~/.claude/CLAUDE.md"
+    fi
     echo ""
 
     return 0
