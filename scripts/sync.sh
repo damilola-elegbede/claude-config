@@ -72,12 +72,21 @@ cleanup_old_backups() {
     backup_count=$(find "$HOME" -maxdepth 1 -name '.claude.backup.*' -type d 2>/dev/null | wc -l | tr -d ' ')
     if [ "$backup_count" -gt 5 ]; then
         echo "Rotating backups (keeping latest 5)..."
+        # Detect stat format (BSD vs GNU) for portable mtime listing
+        if stat -f "%m %N" "$HOME" >/dev/null 2>&1; then
+            STAT_OPT='-f'
+            STAT_FMT='%m %N'
+        else
+            STAT_OPT='-c'
+            STAT_FMT='%Y %n'
+        fi
         # List backups by time, delete all but newest 5
-        # Use find for safer path handling
-        find "$HOME" -maxdepth 1 -name '.claude.backup.*' -type d -print0 2>/dev/null | \
-            xargs -0 ls -dt 2>/dev/null | tail -n +6 | while read -r old_backup; do
-            # Validate path before deletion
-            if [ -d "$old_backup" ] && echo "$old_backup" | grep -q "^$HOME/\.claude\.backup\.[0-9]"; then
+        # Use find with strict pattern matching for security
+        find "$HOME" -maxdepth 1 -name '.claude.backup.[0-9]*_[0-9]*' -type d \
+            -exec stat "$STAT_OPT" "$STAT_FMT" {} + 2>/dev/null | \
+            sort -rn | cut -d' ' -f2- | tail -n +6 | while read -r old_backup; do
+            # Strict validation: must match exact backup format YYYYMMDD_HHMMSS
+            if [ -d "$old_backup" ] && echo "$old_backup" | grep -qE "^$HOME/\.claude\.backup\.[0-9]{8}_[0-9]{6}$"; then
                 rm -rf "$old_backup"
                 echo "  Removed old backup: $(basename "$old_backup")"
             fi
@@ -212,6 +221,15 @@ sync_files() {
             echo "  ✅ CLAUDE.md → ~/CLAUDE.md"
         else
             print_warning "Failed to sync CLAUDE.md to home directory"
+        fi
+    fi
+
+    # Clean up misplaced CLAUDE.md in .claude directory (non-fatal)
+    if [ -f "$TARGET_DIR/CLAUDE.md" ]; then
+        if rm -f "$TARGET_DIR/CLAUDE.md"; then
+            echo "  🧹 Removed misplaced ~/.claude/CLAUDE.md"
+        else
+            print_warning "Failed to remove misplaced ~/.claude/CLAUDE.md"
         fi
     fi
     echo ""

@@ -81,16 +81,28 @@ Task tool:
 
     1. Create .tmp/ directory if needed: mkdir -p .tmp
 
-    2. Determine default branch:
-       DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo "main")
+    2. Determine default branch (with sanitization):
+       RAW_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
+       # Sanitize: allow alphanumeric, forward slash, hyphen, underscore, dot (valid git branch chars)
+       if echo "$RAW_BRANCH" | grep -qE '^[a-zA-Z0-9/_.-]+$'; then
+         DEFAULT_BRANCH="$RAW_BRANCH"
+       else
+         DEFAULT_BRANCH="main"
+       fi
 
     3. Run CodeRabbit CLI:
-       coderabbit review --prompt-only --type all --base $DEFAULT_BRANCH --config .coderabbit.yaml
+       coderabbit review --prompt-only --type all --base "$DEFAULT_BRANCH" --config .coderabbit.yaml
 
     Note: The --prompt-only flag produces AI-optimized text output, not JSON.
     Parse the text output by extracting structured sections (file paths, line numbers,
     issue descriptions) and transforming them into the JSON schema below.
-    Handle edge cases: missing sections, malformed lines, or empty output.
+
+    ERROR HANDLING for parsing:
+    - Wrap parsing in error boundaries
+    - If a line is malformed, log warning and continue to next line
+    - If a section is missing, skip it and continue
+    - If output is empty, write empty issues array
+    - Track and report parsing failures at end: "Parsed N issues, M lines skipped due to errors"
 
     4. Parse the output and write to .tmp/review-coderabbit.json with this schema:
        {
@@ -115,6 +127,8 @@ Task tool:
     If CodeRabbit returns no issues, write empty issues array.
 
 # Task 2: AI Code Review
+# NOTE: Uses code-reviewer agent type which has access to Read, Grep, Bash tools
+# The Task tool orchestration is valid as it's invoked by Claude, not by another agent
 Task tool:
   subagent_type: "code-reviewer"
   description: "Run AI code review"
