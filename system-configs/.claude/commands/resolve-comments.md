@@ -56,10 +56,21 @@ STEP 2: Fetch unresolved CodeRabbit comments (with pagination)
   INITIALIZE: all_issues = [], threads_cursor = null, has_more_threads = true, modified_files = []
 
   VALIDATE: owner/repo from gh repo view --json owner,name
-    SANITIZE: owner must match pattern ^[a-zA-Z0-9-]+$ (letters, digits, hyphens only per GitHub docs)
+    SANITIZE: owner must match pattern ^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?$ (letters, digits, hyphens only per GitHub docs)
+      - Must not start with hyphen (^-)
+      - Must not end with hyphen (-$)
+      - Must not contain consecutive hyphens (--)
     SANITIZE: repo must match pattern ^[a-zA-Z0-9_.-]+$ (letters, digits, underscores, hyphens, dots)
+      - Must not equal "." (reserved name)
+      - Must not end with ".git" (GitHub restriction)
     VALIDATE: length of owner <= 39 characters (GitHub limit)
     VALIDATE: length of repo <= 100 characters
+    IF: owner starts with hyphen, ends with hyphen, or contains consecutive hyphens
+      OUTPUT: "Invalid owner name: hyphens cannot be leading, trailing, or consecutive"
+      END
+    IF: repo equals "." OR repo ends with ".git"
+      OUTPUT: "Invalid repository name: reserved name or .git suffix not allowed"
+      END
     IF: owner or repo contains slashes or path traversal sequences (..)
       OUTPUT: "Invalid repository name: contains disallowed characters"
       END
@@ -224,13 +235,8 @@ STEP 5: Finalize
             IF: empty
               SET: fix_summary = "Issue resolved"
 
-          VALIDATE: issue.thread_id matches pattern ^[A-Za-z0-9+/=_-]+$ (GitHub GraphQL node_id format)
-            NOTE: GitHub uses URL-safe Base64 (A-Z a-z 0-9 _ -) for modern IDs, plus standard Base64 (+/=) for legacy
-            IF: thread_id validation fails
-              APPEND: { location: issue.location, status: "skipped", error: "invalid thread_id format" } to resolution_results
-              INCREMENT: failure_count
-              OUTPUT: "Warning: Skipped {issue.location} - invalid thread_id format"
-              CONTINUE
+          NOTE: thread_id is treated as opaque per GitHub docs - do not validate format
+          NOTE: GitHub explicitly states node IDs should not be decoded or validated against patterns
 
           TRY:
             RUN: gh api graphql -f query='
