@@ -94,6 +94,78 @@ cleanup_old_backups() {
     fi
 }
 
+# Function to validate settings.json hooks
+validate_settings_hooks() {
+    local settings_file="$SOURCE_DIR/settings.json"
+
+    if [ ! -f "$settings_file" ]; then
+        return 0  # No settings file, nothing to validate
+    fi
+
+    # Check if jq is available for JSON parsing
+    if ! command -v jq >/dev/null 2>&1; then
+        print_warning "jq not available, skipping settings hook validation"
+        return 0
+    fi
+
+    # Extract hook commands from settings.json
+    # Structure: .hooks.{HookType}[].hooks[].command
+    local hooks
+    hooks=$(jq -r '
+        .hooks // {} |
+        to_entries[] |
+        .value[] |
+        .hooks[] |
+        select(.type == "command") |
+        .command // empty
+    ' "$settings_file" 2>/dev/null)
+
+    if [ -z "$hooks" ]; then
+        return 0  # No hooks defined
+    fi
+
+    # Validate each hook command exists
+    # Use a temp file to track errors (POSIX-compatible - avoids subshell variable issue with pipes)
+    local hook_errors=0
+    local error_file
+    error_file=$(mktemp)
+    echo "0" > "$error_file"
+
+    echo "$hooks" | while IFS= read -r hook_cmd; do
+        if [ -n "$hook_cmd" ]; then
+            # Extract the base command (first word)
+            local base_cmd
+            base_cmd=$(echo "$hook_cmd" | awk '{print $1}')
+
+            # Check if it's a shell script that should exist (POSIX compatible)
+            # Check for relative path (./) or absolute path (/)
+            if [ "${base_cmd#./}" != "$base_cmd" ] || [ "${base_cmd#/}" != "$base_cmd" ]; then
+                # Relative or absolute path - check if file exists
+                local check_path="$base_cmd"
+                if [ "${base_cmd#./}" != "$base_cmd" ]; then
+                    check_path="$REPO_DIR/${base_cmd#./}"
+                fi
+                if [ ! -f "$check_path" ]; then
+                    print_error "Hook command not found: $base_cmd"
+                    # Increment error count in temp file
+                    current_errors=$(cat "$error_file")
+                    echo "$((current_errors + 1))" > "$error_file"
+                fi
+            fi
+        fi
+    done
+
+    hook_errors=$(cat "$error_file")
+    rm -f "$error_file"
+
+    if [ "$hook_errors" -gt 0 ]; then
+        print_error "Found $hook_errors invalid hook command(s) in settings.json"
+        return 1
+    fi
+
+    return 0
+}
+
 # Function to validate configs
 validate_configs() {
     echo "🔄 Syncing Claude configurations..."
@@ -108,6 +180,13 @@ validate_configs() {
         echo "❌ Source directory not found: $SOURCE_DIR"
         return 1
     fi
+
+    # Validate settings hooks before sync
+    if ! validate_settings_hooks; then
+        echo "❌ Settings hook validation failed"
+        return 1
+    fi
+    echo "  - Settings hooks: Valid"
 
     # Basic syntax validation
     AGENT_COUNT=$(find "$SOURCE_DIR/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')

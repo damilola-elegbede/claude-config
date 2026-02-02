@@ -1,26 +1,42 @@
 ---
-# SKILL TEMPLATE - LIGHTWEIGHT EXPERTISE MODULE
+# SKILL TEMPLATE - CLAUDE CODE SKILLS SYSTEM
 #
-# Skills provide focused domain knowledge without orchestration overhead
-# Target length: 20-30 lines (concise and focused)
+# Skills provide focused expertise and complex workflows with optional context isolation.
 #
-# Skills vs Agents vs Commands:
-# - Skills: Lightweight expertise (YAML patterns, Python idioms)
-# - Agents: Complex specialists with orchestration (backend-engineer, ml-engineer)
-# - Commands: Multi-agent workflows (/test, /prime, /sync)
+# Two formats supported:
+# 1. Directory-based (recommended): skills/<name>/SKILL.md
+# 2. Flat file (legacy): skills/<name>.md
+#
+# Skill categories:
+# - language: Programming language expertise (python, typescript)
+# - format: File format expertise (yaml, markdown)
+# - framework: Framework patterns (react, fastapi)
+# - infrastructure: DevOps tools (docker, kubernetes)
+# - workflow: Process expertise (git-workflows, cicd)
+# - orchestration: Complex multi-step workflows (ship-it, review)
 #
 # Fill in ALL placeholders. Delete these comments before use.
 #
-name: skill-name  # lowercase-hyphenated (e.g., yaml, markdown, python)
-description: Expertise in [domain] including [key capabilities]
-category: language  # language, format, framework, infrastructure, workflow
+name: skill-name  # lowercase-hyphenated, must match directory name
+description: Brief description under 60 chars
+category: workflow  # language, format, framework, infrastructure, workflow, orchestration
 ---
 
-# [Skill Name] Expertise
+# /skill-name Skill
+
+Brief description of what this skill does.
+
+## Usage
+
+```bash
+/skill-name              # Basic usage
+/skill-name --flag       # With options
+/skill-name argument     # With arguments
+```
 
 ## Domain Focus
 
-Expert knowledge in [specific domain/technology], providing best practices, patterns, and idioms for [2-3 specific use cases].
+[2-3 sentences describing the expertise area and primary use cases]
 
 ## Core Capabilities
 
@@ -31,44 +47,32 @@ Expert knowledge in [specific domain/technology], providing best practices, patt
 
 ## When to Use This Skill
 
-Invoke this skill when:
-
 - [Specific file type or pattern detected]
 - [Particular task or question about domain]
 - [Quality check or validation needed]
-- [Format-specific operation required]
 
-## Common Patterns
+## Execution
 
-### [Pattern 1 Name]
-
-```text
-# Example code or configuration
-[relevant example demonstrating key concept]
-```
-
-### [Pattern 2 Name]
+### Step 1: [Phase Name]
 
 ```text
-# Another practical example
-[second relevant example]
+[Execution steps in pseudocode format]
 ```
 
-## Best Practices
+### Step 2: [Phase Name]
 
-- [Practice 1: specific guideline]
-- [Practice 2: quality standard]
-- [Practice 3: common pitfall to avoid]
+```text
+[More execution steps]
+```
 
-## Quick Reference
+## Expected Output
 
-| Task | Pattern | Example |
-|------|---------|---------|
-| [Common task 1] | [Pattern description] | `[code example]` |
-| [Common task 2] | [Pattern description] | `[code example]` |
+```text
+Example of successful execution output
+```
 
-## Integration Notes
+## Notes
 
-- Works alongside: [related agents or skills]
-- Escalate to: [agent-name] for [complex scenarios]
-- Complements: [command-name] command for [workflow]
+- [Important implementation detail]
+- [Integration notes]
+- [Limitations or caveats]

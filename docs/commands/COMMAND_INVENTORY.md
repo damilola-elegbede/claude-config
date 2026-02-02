@@ -1,24 +1,25 @@
 # Command Inventory
 
-Post-optimization inventory of 21 commands (reduced from 23).
+Post-optimization inventory of 22 commands (reduced from 23).
 
 ## Summary
 
 | Category | Count | Execution Model |
 |----------|-------|-----------------|
-| Git Operations | 5 | Direct |
+| Git Operations | 6 | Direct |
 | Development | 4 | Wave-based |
 | Quality | 3 | Hybrid |
 | Orchestration | 3 | Wave-based |
 | Utilities | 5 | Direct/Hybrid |
-| **Total** | **21** | |
+| **Total** | **22** | |
 
-## Git Operations (5)
+## Git Operations (6)
 
 | Command | Description | Execution Model |
 |---------|-------------|-----------------|
 | `/branch` | Create branches with intelligent naming | Direct |
 | `/commit` | Git commits with message generation | Direct |
+| `/merge` | Merge branches with conflict handling | Direct |
 | `/pr` | Create PRs with smart descriptions | Direct |
 | `/push` | Push with validation | Direct |
 | `/rebase` | Rebase on target branch | Direct |
@@ -136,6 +137,12 @@ The following commands were consolidated:
 ```bash
 # Create feature branch
 /branch add-oauth-support
+
+# Merge main into current branch
+/merge
+
+# Merge specific branch with conflict strategy
+/merge develop --theirs
 
 # Commit changes
 /commit

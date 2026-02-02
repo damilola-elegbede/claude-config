@@ -108,7 +108,39 @@ README files, package managers, and framework conventions to find and run the ri
 - User explicitly requests with --create flag
 - No test files found in repository
 
-**Process:**
+**Process with Task Tracking:**
+
+Uses the Task system to track multi-step generation:
+
+```yaml
+Task Phases:
+  1. "Detect project type"
+     - Analyze files to determine language
+     - Identify framework preferences
+     - Status: pending → in_progress → completed
+
+  2. "Select test framework"
+     - Choose appropriate framework (Jest, pytest, etc.)
+     - Consider project conventions
+     - Status: pending → in_progress → completed
+
+  3. "Generate test structure"
+     - Deploy test-engineer agent
+     - Create test files and configuration
+     - Status: pending → in_progress → completed
+
+  4. "Install dependencies"
+     - Add test framework dependencies
+     - Update package manager configs
+     - Status: pending → in_progress → completed
+
+  5. "Verify tests run"
+     - Execute generated tests
+     - Report initial coverage
+     - Status: pending → in_progress → completed
+```
+
+**Implementation:**
 
 1. **Detect Project Type**
    - Language (based on files present)

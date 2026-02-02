@@ -53,25 +53,42 @@ STEP 2: Dry-run check
     OUTPUT: "Steps that would execute:\n{foreach step: '  📋 /{step}'}"
     END
 
-STEP 3: Execute enabled steps
-  SET: step_number = 1
-  SET: total_steps = count(enabled_steps)
+STEP 3: Create task plan with dependencies
+  USE: TaskCreate for each enabled step with proper dependencies
 
-  FOR_EACH: step in enabled_steps
-    OUTPUT: "📋 Step {step_number}/{total_steps}: {step}"
+  Example task creation (for full workflow):
+    TaskCreate: "Generate documentation" (no blockers)
+    TaskCreate: "Run test suite" (no blockers - can run parallel with docs)
+    TaskCreate: "Create semantic commit" (blockedBy: docs, test)
+    TaskCreate: "Execute code review" (blockedBy: commit)
+    TaskCreate: "Push to remote" (blockedBy: review)
+    TaskCreate: "Create pull request" (blockedBy: push)
+
+  USE: TaskUpdate to set dependencies between tasks:
+    - commit blocked by: docs, test (both must complete first)
+    - review blocked by: commit
+    - push blocked by: review
+    - pr blocked by: push
+
+STEP 4: Execute with progress tracking
+  FOR_EACH: unblocked task in task list (use TaskList to find next)
+    TaskUpdate: task → in_progress
+    OUTPUT: "📋 {task.activeForm}..."
 
     Skill tool: skill="{step}"
     WAIT: for Skill tool completion
 
     IF: skill returned failure
       OUTPUT: "❌ Step '{step}' failed. Halting."
+      TaskList: show current progress
       END
 
+    TaskUpdate: task → completed
     OUTPUT: "✅ {step} complete"
-    INCREMENT: step_number
 
-STEP 4: Summary
-  OUTPUT: "🎉 Complete ({total_steps}/{total_steps} steps)"
+STEP 5: Summary
+  TaskList: show final status
+  OUTPUT: "🎉 Complete ({completed_count}/{total_steps} steps)"
   END
 ```
 

@@ -334,3 +334,73 @@ jobs:
         else
           echo "✅ All critical scripts passed validation!"
         fi
+
+  docs-drift-detection:
+    name: Documentation Drift Detection
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+
+    - name: Check documentation accuracy
+      run: |
+        echo "🔍 Checking documentation drift..."
+
+        exit_code=0
+
+        # Count actual agents
+        actual_agents=$(find system-configs/.claude/agents -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+        echo "Actual agents deployed: $actual_agents"
+
+        # Count actual commands (excluding special files)
+        actual_commands=$(find system-configs/.claude/commands -name "*.md" \
+          ! -name "README.md" ! -name "*TEMPLATE*" ! -name "*CATEGORIES*" \
+          ! -name "*AUDIT*" ! -name "sync.md" 2>/dev/null | wc -l | tr -d ' ')
+        echo "Actual commands deployed: $actual_commands"
+
+        # Count actual skills
+        actual_skills=$(find system-configs/.claude/skills -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
+        echo "Actual skills deployed: $actual_skills"
+
+        # Check if CLAUDE.md agent routing table has all agents listed
+        if [ -f "system-configs/CLAUDE.md" ]; then
+          # Extract agent names from routing table
+          routing_agents=$(grep -E '^\| .+ \| `[a-z-]+` \|' system-configs/CLAUDE.md 2>/dev/null | \
+            sed -n 's/.*`\([a-z-]*\)`.*/\1/p' | sort -u | wc -l | tr -d ' ')
+
+          if [ "$routing_agents" -lt "$actual_agents" ]; then
+            echo "⚠️ Warning: Agent routing table may be incomplete"
+            echo "   Routing table has $routing_agents agents, but $actual_agents are deployed"
+          fi
+        fi
+
+        # Verify required agents exist
+        required_agents=(
+          "debugger"
+          "architect"
+          "security-auditor"
+          "code-reviewer"
+          "test-engineer"
+          "tech-writer"
+          "researcher"
+          "frontend-engineer"
+          "backend-engineer"
+          "devops"
+          "data-engineer"
+          "accessibility-auditor"
+        )
+
+        for agent in "${required_agents[@]}"; do
+          if [ ! -f "system-configs/.claude/agents/${agent}.md" ]; then
+            echo "❌ Missing required agent: $agent"
+            exit_code=1
+          fi
+        done
+
+        if [ $exit_code -ne 0 ]; then
+          echo "❌ Documentation drift detected!"
+          exit 1
+        else
+          echo "✅ Documentation appears consistent with deployed state"
+        fi
