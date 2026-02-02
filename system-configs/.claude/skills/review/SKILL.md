@@ -68,8 +68,10 @@ IF: --full flag
   SCOPE: all files in repository (use git ls-files)
   OUTPUT: "Mode: Full codebase review"
 ELSE:
-  SCOPE: git diff $(git merge-base main HEAD)..HEAD + uncommitted changes
-  RUN: git diff --name-only $(git merge-base main HEAD)..HEAD
+  SET: DEFAULT_BRANCH from origin/HEAD (git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+  FALLBACK: if command fails, use "main"
+  SCOPE: git diff $(git merge-base "$DEFAULT_BRANCH" HEAD)..HEAD + uncommitted changes
+  RUN: git diff --name-only $(git merge-base "$DEFAULT_BRANCH" HEAD)..HEAD
   RUN: git diff --name-only (uncommitted)
   MERGE: both file lists (deduplicated)
   OUTPUT: "Mode: Branch delta review ({count} files)"

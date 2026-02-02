@@ -58,6 +58,15 @@ Ensures digital products are usable by people with disabilities across visual, a
 - Plain language and readability assessment
 - Cognitive load reduction strategies
 
+## Prerequisites
+
+Automated accessibility testing requires Node.js and npm:
+
+```bash
+# Verify npm is available
+command -v npm >/dev/null 2>&1 || { echo "npm required but not installed"; exit 1; }
+```
+
 ## Automated Testing Tools
 
 Leverage CLI accessibility testing tools via Bash:

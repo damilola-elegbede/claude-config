@@ -21,6 +21,14 @@ from pathlib import Path
 from collections import defaultdict
 
 
+def _read_text(path: Path) -> str:
+    """Read file with explicit UTF-8 encoding and error handling."""
+    try:
+        return path.read_text(encoding="utf-8")
+    except OSError as exc:
+        raise RuntimeError(f"Failed to read {path}: {exc}") from exc
+
+
 def extract_command_references(content: str) -> list[str]:
     """Extract command references from file content.
 
@@ -67,11 +75,11 @@ def build_dependency_graph(commands_dir: Path, skills_dir: Path) -> tuple[dict, 
             command_name = "/" + file_path.stem
             all_commands.add(command_name)
 
-            content = file_path.read_text()
+            content = _read_text(file_path)
             references = extract_command_references(content)
 
             for ref in references:
-                if ref != command_name:  # Exclude self in extraction
+                if ref != command_name:  # Exclude self-references (documentation mentions)
                     graph[command_name].add(ref)
 
     # Process skills (directory-based)
@@ -83,12 +91,27 @@ def build_dependency_graph(commands_dir: Path, skills_dir: Path) -> tuple[dict, 
                     skill_name = "/" + skill_dir.name
                     all_commands.add(skill_name)
 
-                    content = skill_file.read_text()
+                    content = _read_text(skill_file)
                     references = extract_command_references(content)
 
                     for ref in references:
-                        if ref != skill_name:
+                        if ref != skill_name:  # Exclude self-references (documentation mentions)
                             graph[skill_name].add(ref)
+
+        # Process legacy flat-file skills (skills/<name>.md)
+        non_skill_files = {"README.md", "TEMPLATE.md"}
+        for skill_file in skills_dir.glob("*.md"):
+            if skill_file.name in non_skill_files:
+                continue
+            skill_name = "/" + skill_file.stem
+            all_commands.add(skill_name)
+
+            content = _read_text(skill_file)
+            references = extract_command_references(content)
+
+            for ref in references:
+                if ref != skill_name:  # Exclude self-references (documentation mentions)
+                    graph[skill_name].add(ref)
 
     return dict(graph), all_commands
 
@@ -188,7 +211,11 @@ def main():
     print("🔍 Checking for circular dependencies...")
 
     # Build dependency graph
-    graph, all_commands = build_dependency_graph(commands_dir, skills_dir)
+    try:
+        graph, all_commands = build_dependency_graph(commands_dir, skills_dir)
+    except RuntimeError as exc:
+        print(f"\n❌ {exc}", file=sys.stderr)
+        return 1
 
     if not graph:
         print("   No command dependencies found to check")

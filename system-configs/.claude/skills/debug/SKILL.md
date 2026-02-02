@@ -78,12 +78,12 @@ Task tool:
     }
 ```
 
-### Step 3: Apply Fix
+### Step 3: Propose Fix
 
 ```text
 IF: root cause identified with high confidence (>80%)
-  Implement the recommended fix
-  Run tests to verify
+  Present the recommended fix to Claude for implementation
+  (Note: debugger agent has read-only tools; Claude applies changes)
 
 ELSE:
   Present findings and ask for guidance

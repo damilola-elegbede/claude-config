@@ -87,7 +87,7 @@ Example task creation (for full workflow):
   TaskCreate: "Create pull request" (blockedBy: push)
     activeForm: "Creating pull request"
 
-USE: TaskUpdate to set dependencies:
+Dependencies are automatically enforced via blockedBy parameter in TaskCreate:
   - commit blocked by: docs, test (both must complete first)
   - review blocked by: commit
   - push blocked by: review

@@ -95,8 +95,9 @@ cleanup_old_backups() {
 }
 
 # Function to validate settings.json hooks
+# Note: Uses plain variable assignments instead of 'local' for POSIX compliance (SC3043)
 validate_settings_hooks() {
-    local settings_file="$SOURCE_DIR/settings.json"
+    settings_file="$SOURCE_DIR/settings.json"
 
     if [ ! -f "$settings_file" ]; then
         return 0  # No settings file, nothing to validate
@@ -110,7 +111,6 @@ validate_settings_hooks() {
 
     # Extract hook commands from settings.json
     # Structure: .hooks.{HookType}[].hooks[].command
-    local hooks
     hooks=$(jq -r '
         .hooks // {} |
         to_entries[] |
@@ -126,22 +126,20 @@ validate_settings_hooks() {
 
     # Validate each hook command exists
     # Use a temp file to track errors (POSIX-compatible - avoids subshell variable issue with pipes)
-    local hook_errors=0
-    local error_file
+    hook_errors=0
     error_file=$(mktemp)
     echo "0" > "$error_file"
 
     echo "$hooks" | while IFS= read -r hook_cmd; do
         if [ -n "$hook_cmd" ]; then
             # Extract the base command (first word)
-            local base_cmd
             base_cmd=$(echo "$hook_cmd" | awk '{print $1}')
 
             # Check if it's a shell script that should exist (POSIX compatible)
             # Check for relative path (./) or absolute path (/)
             if [ "${base_cmd#./}" != "$base_cmd" ] || [ "${base_cmd#/}" != "$base_cmd" ]; then
                 # Relative or absolute path - check if file exists
-                local check_path="$base_cmd"
+                check_path="$base_cmd"
                 if [ "${base_cmd#./}" != "$base_cmd" ]; then
                     check_path="$REPO_DIR/${base_cmd#./}"
                 fi

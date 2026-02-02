@@ -165,7 +165,7 @@ These skills use Claude Code's advanced features for complex workflows.
 ### 1. review
 
 **Category:** orchestration
-**Features:** `context: fork`, `agent: code-reviewer`
+**Features:** `context: fork`
 **Focus:** Dual-reviewer code analysis with parallel execution
 
 **Use When:**
