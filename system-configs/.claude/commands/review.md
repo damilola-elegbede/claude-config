@@ -83,8 +83,8 @@ Task tool:
 
     2. Determine default branch (with sanitization):
        RAW_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
-       # Sanitize: only allow alphanumeric, forward slash, hyphen, underscore
-       if echo "$RAW_BRANCH" | grep -qE '^[a-zA-Z0-9/_-]+$'; then
+       # Sanitize: allow alphanumeric, forward slash, hyphen, underscore, dot (valid git branch chars)
+       if echo "$RAW_BRANCH" | grep -qE '^[a-zA-Z0-9/_.-]+$'; then
          DEFAULT_BRANCH="$RAW_BRANCH"
        else
          DEFAULT_BRANCH="main"
