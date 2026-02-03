@@ -43,8 +43,9 @@ NON_AGENT_FILES = [
 
 # Complex/consolidated agents that may exceed standard file length limits
 # These agents combine functionality from multiple merged agents
-# Total agents: 12 (consolidated from 31)
+# Total agents: 13 (consolidated from 31)
 COMPLEX_AGENTS = [
+    'accessibility-auditor',  # WCAG compliance, assistive technology, comprehensive audit patterns
     'architect',           # Consolidated from: principal-architect, api-architect, cloud-architect, frontend-architect
     'backend-engineer',    # Server-side architecture and microservices
     'career-assistant',    # Consolidated from: jd-analyzer, resume-optimizer, content-writer, career-strategist

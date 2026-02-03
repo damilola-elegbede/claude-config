@@ -83,7 +83,21 @@ Route fixes to domain experts based on diagnosis:
 
 ## Execution Steps
 
-### Step 1: Fetch CI Failures
+### Step 1: Create Task Plan
+
+```text
+TaskCreate: "Fetch CI failure details" (no blockers)
+TaskCreate: "Diagnose failures" (blockedBy: fetch)
+TaskCreate: "Classify and route fixes" (blockedBy: diagnose)
+TaskCreate: "Apply fixes" (blockedBy: classify)
+TaskCreate: "Verify CI passes" (blockedBy: fixes)
+```
+
+### Step 2: Fetch CI Failures
+
+```text
+TaskUpdate: "Fetch CI failure details" → in_progress
+```
 
 ```bash
 # Get latest failed run (or use provided run-id)
@@ -93,30 +107,57 @@ gh run view <run-id> --json jobs,conclusion
 
 Extract: job names, failure messages, log URLs
 
-### Step 2: Deploy Diagnosis Agents
+```text
+TaskUpdate: "Fetch CI failure details" → completed
+```
 
-For each failed job, deploy a debugger agent in parallel:
+### Step 3: Deploy Diagnosis Agents (Parallel)
 
 ```text
-Prompt template for each debugger:
-"Investigate CI failure in job '<job-name>':
-- Failure message: <message>
-- Log excerpt: <relevant logs>
+TaskUpdate: "Diagnose failures" → in_progress
+```
 
-Return a JSON diagnosis:
+For each failed job, deploy a debugger agent **in parallel using run_in_background: true**:
+
+```text
+# Launch ALL debugger agents in a SINGLE message with multiple Task tool calls
+# Each Task tool call should have run_in_background: true
+
+Task 1 (background):
+  subagent_type: "debugger"
+  run_in_background: true
+  prompt: "Investigate CI failure in job '<job-1-name>':..."
+
+Task 2 (background):
+  subagent_type: "debugger"
+  run_in_background: true
+  prompt: "Investigate CI failure in job '<job-2-name>':..."
+
+# Wait for all to complete using TaskOutput
+```
+
+Each debugger returns JSON diagnosis:
+
+```json
 {
   "root_cause": "Brief description of what failed",
   "domain": "test|security|frontend|backend|data|pipeline|architecture",
   "files": ["list", "of", "files", "to", "fix"],
   "fix_approach": "How to fix this issue"
 }
-
-Focus on root cause, not symptoms. If multiple issues, identify the primary one."
 ```
 
-### Step 3: Route to Specialized Agents
+```text
+TaskUpdate: "Diagnose failures" → completed
+```
 
-Based on diagnosis domains, deploy fix agents in parallel:
+### Step 4: Route to Specialized Agents (Parallel)
+
+```text
+TaskUpdate: "Classify and route fixes" → in_progress
+```
+
+Based on diagnosis domains, deploy fix agents **in parallel using run_in_background: true**:
 
 | Diagnosis Domain | Deploy Agent |
 |------------------|--------------|
@@ -129,16 +170,31 @@ Based on diagnosis domains, deploy fix agents in parallel:
 | architecture | architect |
 
 ```text
-Prompt template for fix agents:
-"Fix the following CI failure:
-- Root cause: <from diagnosis>
-- Files to modify: <from diagnosis>
-- Approach: <from diagnosis>
+# Launch ALL fix agents in a SINGLE message with multiple Task tool calls
+# Each Task tool call should have run_in_background: true
 
-Implement the fix. Do not make unrelated changes."
+Task 1 (background):
+  subagent_type: "<domain-specific-agent>"
+  run_in_background: true
+  prompt: "Fix the following CI failure:
+    - Root cause: <from diagnosis>
+    - Files to modify: <from diagnosis>
+    - Approach: <from diagnosis>
+    Implement the fix. Do not make unrelated changes."
+
+# Wait for all to complete using TaskOutput
 ```
 
-### Step 4: Commit and Verify
+```text
+TaskUpdate: "Classify and route fixes" → completed
+TaskUpdate: "Apply fixes" → completed
+```
+
+### Step 5: Commit and Verify
+
+```text
+TaskUpdate: "Verify CI passes" → in_progress
+```
 
 ```bash
 # Stage and commit fixes
@@ -150,7 +206,11 @@ git push
 gh run watch
 ```
 
-### Step 5: Iterate if Needed
+```text
+TaskUpdate: "Verify CI passes" → completed
+```
+
+### Step 6: Iterate if Needed
 
 If CI still fails after fix:
 
@@ -158,6 +218,10 @@ If CI still fails after fix:
 2. Re-diagnose (may be different issues)
 3. Deploy appropriate fix agents
 4. Continue until green
+
+```text
+TaskList: show final status of all phases
+```
 
 ## Expected Output
 

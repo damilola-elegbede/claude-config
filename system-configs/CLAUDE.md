@@ -80,3 +80,107 @@ Don't over-delegate simple tasks. Use judgment.
 - Don't add features beyond what was asked
 - Don't refactor surrounding code when fixing a bug
 - Don't bypass quality gates to save time
+
+## Skills System
+
+Skills provide focused domain expertise without full agent orchestration.
+
+### Three-Tier Execution Model
+
+| Level | Type | Use When | Example |
+|-------|------|----------|---------|
+| 1 | Direct Execution | Simple, deterministic tasks | `/branch`, `/rebase`, `/merge` |
+| 2 | Skills | Domain expertise, format-specific | `/review`, `/debug`, `/ship-it` |
+| 3 | Agents | Complex specialists, deep analysis | `debugger`, `architect`, `security-auditor` |
+
+### Orchestration Skills
+
+| Skill | Purpose | Key Feature |
+|-------|---------|-------------|
+| `/review` | Dual-reviewer analysis | Parallel execution |
+| `/debug` | Root cause investigation | Context isolation |
+| `/ship-it` | Workflow orchestration | Task dependencies |
+
+## Available Commands
+
+Commands provide focused operations for common workflows:
+
+**Git Operations:** `/branch`, `/commit`, `/push`, `/pr`, `/rebase`, `/merge`, `/sync`
+**Quality:** `/test`, `/review`, `/audit`, `/docs`
+**Development:** `/debug`, `/fix-ci`, `/implement`, `/resolve-comments`
+**Planning:** `/plan`, `/prime`, `/prompt`, `/verify`, `/deps`
+**Orchestration:** `/ship-it` (combines multiple commands)
+
+## Task System
+
+Use tasks for multi-phase operations requiring progress visibility.
+
+### When to Use Tasks
+
+- 3+ distinct phases in a workflow
+- Dependencies between phases
+- User needs progress visibility
+- Complex orchestration across agents
+
+### Task Patterns
+
+| Pattern | Structure | Use Case |
+|---------|-----------|----------|
+| Sequential | A → B → C | Ordered steps with dependencies |
+| Diamond | (A + B parallel) → C | Independent work then synthesis |
+| Parallel with join | All complete → synthesis | Multiple analyses merged |
+
+### Task Best Practices
+
+- Mark task `in_progress` BEFORE starting work
+- Mark `completed` only when fully done
+- Never mark completed if errors/blockers exist
+- Create new task for discovered blockers
+
+## Agent Routing
+
+Use this table to route requests to the appropriate specialized agent.
+
+| Keywords | Agent | Category |
+|----------|-------|----------|
+| fix, broken, bug, crash, error, not working | `debugger` | development |
+| slow, performance, optimize, faster, latency, memory | `debugger` | development |
+| security, vulnerability, auth, hack, injection | `security-auditor` | quality |
+| accessibility, a11y, wcag, aria, screen reader | `accessibility-auditor` | quality |
+| architecture, system design, roadmap, infrastructure | `architect` | analysis |
+| backend, server, api, microservice, distributed | `backend-engineer` | development |
+| frontend, ui, component, react, vue, css, html | `frontend-engineer` | development |
+| test, spec, coverage, unit test, integration test | `test-engineer` | quality |
+| docs, documentation, readme, write up | `tech-writer` | quality |
+| review, check, audit, quality | `code-reviewer` | quality |
+| deploy, ci/cd, pipeline, docker, kubernetes | `devops` | development |
+| pipeline, etl, database, sql, data warehouse | `data-engineer` | development |
+| research, compare, evaluate, analyze, options | `researcher` | analysis |
+
+## Background Execution
+
+Use `run_in_background: true` for parallel agent work.
+
+### Pattern
+
+```yaml
+Parallel Agent Launch:
+  - Launch ALL parallel agents in SINGLE message
+  - Use TaskOutput to wait for completion
+  - Don't start dependent work until all complete
+
+Example:
+  # Launch two reviewers in parallel (single message with multiple Task calls)
+  Task(subagent_type="code-reviewer", prompt="Security review", run_in_background=true)
+  Task(subagent_type="code-reviewer", prompt="Quality review", run_in_background=true)
+
+  # Wait for both to complete before synthesis
+  TaskOutput(task_id=reviewer_1_id)
+  TaskOutput(task_id=reviewer_2_id)
+```
+
+### Commands Using Background Execution
+
+- `/fix-ci`: Parallel debuggers for multiple failures
+- `/review`: Parallel security and quality reviewers
+- `/ship-it`: Concurrent test and review phases

@@ -105,12 +105,34 @@ Run `/docs api` or `/docs readme` to fix
 
 ### Full Scan Mode
 
+For comprehensive documentation, `/docs --full` can leverage parallel execution:
+
+```yaml
+Parallel Execution Strategy:
+  # When multiple doc sections need updates, deploy tech-writers in parallel
+
+  Phase 1 - Analysis (sequential):
+    - Scan codebase for documentation gaps
+    - Identify sections: API, Architecture, Setup, README
+
+  Phase 2 - Generation (parallel):
+    # Launch multiple tech-writers in SINGLE message for parallel execution
+    - tech-writer: "Generate API documentation"
+    - tech-writer: "Generate architecture documentation"
+    - tech-writer: "Update setup guides"
+
+  Phase 3 - Synthesis (sequential):
+    - Verify consistency across docs
+    - Update cross-references
+    - Report summary
+```
+
 ```text
 User: /docs --full
 
 🔍 Comprehensive documentation scan...
 
-Deploying tech-writer agent...
+Deploying tech-writer agents in parallel...
 
 📊 Analysis complete:
   - 12 source files scanned

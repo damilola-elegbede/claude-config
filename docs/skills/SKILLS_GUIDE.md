@@ -1,11 +1,11 @@
-# Skills Guide: Lightweight Expertise Modules
+# Skills Guide: Expertise Modules and Orchestration
 
 ## Overview
 
-Skills provide focused domain expertise without orchestration overhead, filling the gap between direct execution
-and full agent delegation in the Claude Code framework.
+Skills provide focused domain expertise and complex workflow orchestration in the Claude Code framework.
+They range from lightweight format expertise to sophisticated multi-phase workflows.
 
-## Three-Tier Framework
+## Four-Tier Framework
 
 ```text
 Level 1: Direct Execution
@@ -13,13 +13,20 @@ Level 1: Direct Execution
 ├─ < 5 minutes completion
 └─ Example: Fix typos, add imports
 
-Level 2: Skills (NEW)
+Level 2: Expertise Skills
 ├─ Lightweight domain expertise
 ├─ Format-specific operations
 ├─ No orchestration needed
 └─ Example: YAML validation, Python idioms
 
-Level 3: Agents
+Level 3: Orchestration Skills (NEW)
+├─ Complex multi-phase workflows
+├─ Context isolation (context: fork)
+├─ Task tracking and parallel execution
+├─ Agent routing
+└─ Example: /review, /debug, /ship-it
+
+Level 4: Agents
 ├─ Complex specialists
 ├─ Multi-step orchestration
 └─ Example: backend-engineer, ml-engineer
@@ -27,13 +34,36 @@ Level 3: Agents
 
 ## Skills vs Agents vs Commands
 
-| Aspect | Skills | Agents | Commands |
-|--------|--------|--------|----------|
-| **Purpose** | Domain expertise | Complex specialists | Multi-agent workflows |
-| **Complexity** | Simple, focused | Multi-step tasks | Orchestrated operations |
-| **Duration** | Seconds | Minutes | Minutes to hours |
-| **Orchestration** | None | Claude orchestrates | Multi-agent coordination |
-| **Examples** | yaml, python, markdown | backend-engineer, ml-engineer | /test, /prime, /sync |
+| Aspect | Expertise Skills | Orchestration Skills | Agents | Commands |
+|--------|------------------|---------------------|--------|----------|
+| **Purpose** | Domain knowledge | Complex workflows | Specialists | Simple invocation |
+| **Complexity** | Simple, focused | Multi-phase | Multi-step | Straightforward |
+| **Duration** | Seconds | Minutes | Minutes | Seconds-Minutes |
+| **Context** | Main | Isolated (fork) | Isolated | Main |
+| **Task Tracking** | No | Yes | No | Optional |
+| **Examples** | yaml, python | /review, /ship-it | backend-engineer | /commit, /push |
+
+## Claude Code Skill Features
+
+Skills support advanced features from Claude Code's skill system:
+
+| Feature | Description | Use Case |
+|---------|-------------|----------|
+| `context: fork` | Run in isolated context | Complex workflows, reviews |
+| `agent: <type>` | Route to specific agent | Domain-specific work |
+| `allowed-tools` | Restrict available tools | Security, focus |
+| `user-invocable` | Control manual invocation | Background knowledge |
+
+## Directory Structure
+
+Skills use a directory-based structure:
+
+```text
+skills/<name>/
+  SKILL.md          # Required: skill definition
+  templates/        # Optional: supporting files
+  examples/         # Optional: reference material
+```
 
 ## Available Skills (Tier 1 - Core Skills)
 
@@ -127,6 +157,67 @@ Level 3: Agents
 - Semantic commit messages
 - Rebase workflows
 - Quality gate compliance
+
+## Orchestration Skills (Tier 2)
+
+These skills use Claude Code's advanced features for complex workflows.
+
+### 1. review
+
+**Category:** orchestration
+**Features:** `context: fork`
+**Focus:** Dual-reviewer code analysis with parallel execution
+
+**Use When:**
+
+- Reviewing code changes before commit
+- Running security and quality analysis
+- Getting external (CodeRabbit) and internal reviews
+
+**Key Capabilities:**
+
+- Parallel reviewer execution (run_in_background)
+- CodeRabbit CLI integration
+- Security, performance, accessibility review
+- Results passed to /resolve-comments for triage
+
+### 2. debug
+
+**Category:** orchestration
+**Features:** `context: fork`, `agent: debugger`
+**Focus:** Systematic root cause analysis
+
+**Use When:**
+
+- Investigating bugs and crashes
+- Performance optimization (--performance flag)
+- Creating GitHub issues from findings (--issue flag)
+
+**Key Capabilities:**
+
+- Isolated investigation context
+- Structured root cause analysis
+- Fix proposals with optional application via Claude
+- GitHub issue creation
+
+### 3. ship-it
+
+**Category:** orchestration
+**Features:** `context: fork`, Task system integration
+**Focus:** Complete development workflow orchestration
+
+**Use When:**
+
+- Shipping code through the full pipeline
+- Running docs -> test -> commit -> review -> push -> pr
+- Using composable workflow flags
+
+**Key Capabilities:**
+
+- Task dependency tracking
+- Progress visibility through TaskList
+- Composable flags (-d, -t, -c, -r, -p, -pr)
+- Failure recovery with clear status
 
 ## Using Skills
 
@@ -268,24 +359,50 @@ Process and workflow expertise:
 - **cicd**: CI/CD best practices
 - **testing-patterns**: TDD/BDD, test organization
 
+### orchestration
+
+Complex multi-phase workflows with Claude Code features:
+
+- **review**: Dual-reviewer code analysis with parallel execution
+- **debug**: Systematic root cause analysis with context isolation
+- **ship-it**: Complete development workflow with task tracking
+
+**Orchestration skills use:**
+
+- `context: fork` - Isolated execution context
+- `agent: <type>` - Route to specialized agents
+- Task system - Progress tracking with dependencies
+- `run_in_background` - Parallel agent execution
+
 ## Best Practices
 
-### When to Create a Skill
+### When to Create an Expertise Skill
 
-Create a skill when:
+Create an expertise skill when:
 
-- ✅ Domain expertise is reusable across projects
-- ✅ Patterns and idioms are well-established
-- ✅ No orchestration or multi-step execution needed
-- ✅ Quick reference would be valuable
-- ✅ Fits into existing category structure
+- Domain expertise is reusable across projects
+- Patterns and idioms are well-established
+- No orchestration or multi-step execution needed
+- Quick reference would be valuable
+
+### When to Create an Orchestration Skill
+
+Create an orchestration skill when:
+
+- Workflow has multiple phases with dependencies
+- Context isolation prevents pollution of main conversation
+- Parallel execution would improve efficiency
+- Task progress tracking provides value
+- Agent routing benefits from specialization
+
+### When NOT to Create a Skill
 
 Don't create a skill when:
 
-- ❌ Task requires orchestration or multiple tools
-- ❌ Better suited as an agent (complex, multi-step)
-- ❌ One-time or project-specific knowledge
-- ❌ Requires decision-making or strategy
+- Task is too simple (use command instead)
+- Better suited as an agent (domain specialist)
+- One-time or project-specific knowledge
+- No clear category fit
 
 ### Skill Size and Scope
 
@@ -317,7 +434,7 @@ Skills work best when:
 
 ## Skill Roadmap
 
-### Tier 1 (Current - Core Skills)
+### Expertise Skills (Tier 1 - Current)
 
 - ✅ yaml
 - ✅ markdown
@@ -325,7 +442,13 @@ Skills work best when:
 - ✅ bash
 - ✅ git-workflows
 
-### Tier 2 (Planned - Development Skills)
+### Orchestration Skills (Tier 2 - Current)
+
+- ✅ review - Dual-reviewer with parallel execution
+- ✅ debug - Root cause analysis with context isolation
+- ✅ ship-it - Workflow orchestration with task tracking
+
+### Planned Expertise Skills (Tier 3)
 
 - [ ] typescript
 - [ ] react
@@ -333,13 +456,11 @@ Skills work best when:
 - [ ] testing-patterns
 - [ ] api-design
 
-### Tier 3 (Future - Specialized Skills)
+### Planned Orchestration Skills (Tier 4)
 
-- [ ] json
-- [ ] fastapi
-- [ ] kubernetes
-- [ ] cicd
-- [ ] terraform
+- [ ] fix-ci - CI failure diagnosis and fix (upgrade from command)
+- [ ] audit - Ecosystem validation (upgrade from command)
+- [ ] prime - Codebase exploration (upgrade from command)
 
 ## Troubleshooting
 

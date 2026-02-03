@@ -1,7 +1,7 @@
 ---
 name: data-engineer
 description: MUST BE USED for data pipelines, ETL, databases, or data processing tasks. Use for ANY data engineering or database work. Triggers on "pipeline", "etl", "data processing", "spark", "airflow", "data warehouse", "analytics", "database", "query", "sql", "migration", "schema", "postgres", "mysql", "mongodb".
-tools: Read, Write, Edit, Bash, Grep
+tools: Read, Write, Edit, Bash, Grep, Glob
 model: sonnet
 color: blue
 category: development

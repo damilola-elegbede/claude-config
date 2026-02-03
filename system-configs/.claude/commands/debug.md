@@ -19,6 +19,30 @@ Systematic debugging using a single debugger agent. Investigates root causes, pr
 
 ## Behavior
 
+Uses explicit task phases for progress visibility:
+
+```yaml
+Task Phases:
+  1. "Investigate root cause"
+     - Deploy debugger agent
+     - Gather evidence and logs
+     - Identify probable cause
+     - Status: pending → in_progress → completed
+
+  2. "Implement fix"
+     - Apply targeted fix based on findings
+     - Minimal changes to address root cause
+     - Status: pending → in_progress → completed
+
+  3. "Verify fix"
+     - Run relevant tests
+     - Confirm issue resolved
+     - Check for regressions
+     - Status: pending → in_progress → completed
+```
+
+### Execution Steps
+
 1. **Analyze**: Deploy debugger agent to investigate the issue
 2. **Fix**: Implement the fix based on findings
 3. **Verify**: Run tests to confirm the fix works
