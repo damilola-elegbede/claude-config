@@ -372,8 +372,9 @@ jobs:
             sed -n 's/.*`\([a-z-]*\)`.*/\1/p' | sort -u | wc -l | tr -d ' ')
 
           if [ "$routing_agents" -lt "$actual_agents" ]; then
-            echo "⚠️ Warning: Agent routing table may be incomplete"
+            echo "❌ Agent routing table is incomplete"
             echo "   Routing table has $routing_agents agents, but $actual_agents are deployed"
+            exit_code=1
           fi
         fi
 

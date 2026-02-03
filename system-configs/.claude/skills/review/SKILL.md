@@ -124,6 +124,8 @@ Task tool:
   prompt: |
     Review files and output results to .tmp/review-local.json
 
+    1. Create .tmp/ directory if needed: mkdir -p .tmp
+
     Review for:
     - Security vulnerabilities
     - Performance problems
@@ -161,8 +163,10 @@ IF: both failed
 ### Step 5: Report Results
 
 ```text
-READ: .tmp/review-coderabbit.json
-READ: .tmp/review-local.json
+IF: coderabbit_failed != true
+  READ: .tmp/review-coderabbit.json
+IF: local_failed != true
+  READ: .tmp/review-local.json
 
 OUTPUT:
   Dual-Review Complete

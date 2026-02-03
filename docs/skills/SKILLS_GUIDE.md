@@ -197,7 +197,7 @@ These skills use Claude Code's advanced features for complex workflows.
 
 - Isolated investigation context
 - Structured root cause analysis
-- Automatic fix implementation
+- Fix proposals with optional application via Claude
 - GitHub issue creation
 
 ### 3. ship-it

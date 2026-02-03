@@ -111,14 +111,17 @@ validate_settings_hooks() {
 
     # Extract hook commands from settings.json
     # Structure: .hooks.{HookType}[].hooks[].command
-    hooks=$(jq -r '
+    if ! hooks=$(jq -r '
         .hooks // {} |
         to_entries[] |
         .value[] |
         .hooks[] |
         select(.type == "command") |
         .command // empty
-    ' "$settings_file" 2>/dev/null)
+    ' "$settings_file" 2>&1); then
+        print_error "Failed to parse settings.json (invalid JSON?): $hooks"
+        return 1
+    fi
 
     if [ -z "$hooks" ]; then
         return 0  # No hooks defined

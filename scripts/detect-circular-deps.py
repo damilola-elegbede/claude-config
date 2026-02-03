@@ -79,7 +79,9 @@ def build_dependency_graph(commands_dir: Path, skills_dir: Path) -> tuple[dict, 
             references = extract_command_references(content)
 
             for ref in references:
-                if ref != command_name:  # Exclude self-references (documentation mentions)
+                # Exclude self-references: commands naturally mention themselves in documentation
+                # (e.g., "/debug" explaining "Use /debug --performance"). These are not circular deps.
+                if ref != command_name:
                     graph[command_name].add(ref)
 
     # Process skills (directory-based)
@@ -95,7 +97,8 @@ def build_dependency_graph(commands_dir: Path, skills_dir: Path) -> tuple[dict, 
                     references = extract_command_references(content)
 
                     for ref in references:
-                        if ref != skill_name:  # Exclude self-references (documentation mentions)
+                        # Exclude self-references (documentation mentions, not actual cycles)
+                        if ref != skill_name:
                             graph[skill_name].add(ref)
 
         # Process legacy flat-file skills (skills/<name>.md)
@@ -110,7 +113,8 @@ def build_dependency_graph(commands_dir: Path, skills_dir: Path) -> tuple[dict, 
             references = extract_command_references(content)
 
             for ref in references:
-                if ref != skill_name:  # Exclude self-references (documentation mentions)
+                # Exclude self-references (documentation mentions, not actual cycles)
+                if ref != skill_name:
                     graph[skill_name].add(ref)
 
     return dict(graph), all_commands
