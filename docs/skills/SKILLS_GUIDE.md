@@ -404,6 +404,33 @@ Don't create a skill when:
 - One-time or project-specific knowledge
 - No clear category fit
 
+### Mutual Exclusivity Rule
+
+**Skills and commands MUST be mutually exclusive.** A name cannot exist as both a skill and a command.
+
+| If you need... | Use | Not |
+|----------------|-----|-----|
+| Orchestration workflow | Skill | Command |
+| Context isolation (`context: fork`) | Skill | Command |
+| Agent routing (`agent: <type>`) | Skill | Command |
+| Parallel execution | Skill | Command |
+| Simple, deterministic operation | Command | Skill |
+| Single-step execution | Command | Skill |
+
+**Validation enforces this rule.** Running `./scripts/validate-skills.py` will fail if any skill name matches a command name.
+
+**Resolution when duplicates exist:**
+
+1. Determine the primary use case (orchestration vs simple operation)
+2. Delete the inappropriate version
+3. Re-run validation to confirm
+
+This separation ensures:
+
+- No duplicate entries in search/autocomplete
+- Clear routing for each operation
+- Single source of truth for each workflow
+
 ### Skill Size and Scope
 
 **Good:** Focused, 20-30 lines, specific domain

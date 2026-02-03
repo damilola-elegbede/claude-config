@@ -25,8 +25,9 @@ SKILLS_DIR = PROJECT_ROOT / "system-configs" / ".claude" / "skills"
 
 # Expected counts after optimization (consolidated from 31 agents, 21 commands)
 # Updated: accessibility-auditor added as standalone complex agent
+# Updated: debug, review, ship-it moved from commands to skills (21 - 3 = 18)
 EXPECTED_AGENT_COUNT = 12
-EXPECTED_COMMAND_COUNT = 21
+EXPECTED_COMMAND_COUNT = 18
 
 # Non-agent/command documentation files to skip
 NON_AGENT_FILES = [

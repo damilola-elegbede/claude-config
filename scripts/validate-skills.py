@@ -207,11 +207,31 @@ def validate_skill_file(file_path):
     return issues
 
 
+def get_command_names(commands_dir):
+    """Get list of command names from the commands directory."""
+    command_names = set()
+    if not commands_dir.exists():
+        return command_names
+
+    for file_path in commands_dir.glob("*.md"):
+        # Extract command name from filename (without .md extension)
+        command_names.add(file_path.stem)
+
+    return command_names
+
+
+def check_skill_command_duplicates(skill_names, command_names):
+    """Check for skills that duplicate command names."""
+    duplicates = skill_names & command_names
+    return duplicates
+
+
 def main():
     """Main validation function."""
     script_dir = Path(__file__).parent
     repo_dir = script_dir.parent
     skills_dir = repo_dir / "system-configs" / ".claude" / "skills"
+    commands_dir = repo_dir / "system-configs" / ".claude" / "commands"
 
     if not skills_dir.exists():
         print(f"Skills directory not found at {skills_dir}")
@@ -220,20 +240,41 @@ def main():
 
     # Find all skills (both directory-based and flat files)
     skills_to_validate = []
+    skill_names = set()
 
     # Check for directory-based skills (skills/<name>/SKILL.md)
     for item in skills_dir.iterdir():
         if item.is_dir() and not item.name.startswith('.'):
             skills_to_validate.append(('directory', item))
+            skill_names.add(item.name)
 
     # Check for flat file skills (skills/<name>.md) - legacy support
     for file_path in skills_dir.glob("*.md"):
         if file_path.name not in NON_SKILL_FILES:
             skills_to_validate.append(('file', file_path))
+            skill_names.add(file_path.stem)
 
     if not skills_to_validate:
         print("No skill files found to validate")
         return 0
+
+    # Check for skill/command duplicates (mutual exclusivity enforcement)
+    command_names = get_command_names(commands_dir)
+    duplicates = check_skill_command_duplicates(skill_names, command_names)
+
+    if duplicates:
+        print("DUPLICATE DETECTION ERROR")
+        print("=" * 50)
+        print("Skills and commands must be mutually exclusive.")
+        print("The following items exist as BOTH skills AND commands:\n")
+        for name in sorted(duplicates):
+            print(f"  - {name}")
+        print("\nResolution:")
+        print("  - For orchestration workflows: Keep the skill, delete the command")
+        print("  - For simple operations: Keep the command, delete the skill")
+        print("\nSee docs/skills/SKILLS_GUIDE.md for guidance on skill vs command.")
+        print()
+        return 1
 
     print(f"Validating {len(skills_to_validate)} skills...\n")
 
