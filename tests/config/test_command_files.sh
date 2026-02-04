@@ -11,12 +11,12 @@ test_all_commands_exist() {
     assert_dir_exists "$commands_dir" \
         "Commands directory should exist"
 
-    # Check each expected command file (18 commands after skill migration)
-    # Note: debug, review, ship-it are now skills, not commands
+    # Check each expected command file (21 commands - ship-it, review, debug restored)
+    # Note: ship-it, review, debug restored as commands (skills don't receive CLI args)
     local expected_commands=("plan" "commit" "push" "test" "prime" "sync"
                             "fix-ci" "implement" "verify" "resolve-comments"
                             "docs" "audit" "branch" "pr" "rebase" "prompt"
-                            "deps" "merge")
+                            "deps" "merge" "ship-it" "review" "debug")
 
     for cmd in "${expected_commands[@]}"; do
         assert_file_exists "$commands_dir/${cmd}.md" \

@@ -158,66 +158,16 @@ skills/<name>/
 - Rebase workflows
 - Quality gate compliance
 
-## Orchestration Skills (Tier 2)
+## Orchestration Commands (Previously Skills)
 
-These skills use Claude Code's advanced features for complex workflows.
-
-### 1. review
-
-**Category:** orchestration
-**Features:** `context: fork`
-**Focus:** Dual-reviewer code analysis with parallel execution
-
-**Use When:**
-
-- Reviewing code changes before commit
-- Running security and quality analysis
-- Getting external (CodeRabbit) and internal reviews
-
-**Key Capabilities:**
-
-- Parallel reviewer execution (run_in_background)
-- CodeRabbit CLI integration
-- Security, performance, accessibility review
-- Results passed to /resolve-comments for triage
-
-### 2. debug
-
-**Category:** orchestration
-**Features:** `context: fork`, `agent: debugger`
-**Focus:** Systematic root cause analysis
-
-**Use When:**
-
-- Investigating bugs and crashes
-- Performance optimization (--performance flag)
-- Creating GitHub issues from findings (--issue flag)
-
-**Key Capabilities:**
-
-- Isolated investigation context
-- Structured root cause analysis
-- Fix proposals with optional application via Claude
-- GitHub issue creation
-
-### 3. ship-it
-
-**Category:** orchestration
-**Features:** `context: fork`, Task system integration
-**Focus:** Complete development workflow orchestration
-
-**Use When:**
-
-- Shipping code through the full pipeline
-- Running docs -> test -> commit -> review -> push -> pr
-- Using composable workflow flags
-
-**Key Capabilities:**
-
-- Task dependency tracking
-- Progress visibility through TaskList
-- Composable flags (-d, -t, -c, -r, -p, -pr)
-- Failure recovery with clear status
+> **Note:** `/review`, `/debug`, and `/ship-it` were previously orchestration skills but have been
+> **restored as commands** because skills don't receive CLI arguments (`<command-args>`).
+>
+> This means flags like `/ship-it -c -p` now work correctly.
+>
+> **Trade-off:** Commands don't support `context: fork` (isolated execution), but argument
+> passing is essential for these workflows. See [Command Inventory](../commands/COMMAND_INVENTORY.md)
+> for their current documentation.
 
 ## Using Skills
 
@@ -361,18 +311,10 @@ Process and workflow expertise:
 
 ### orchestration
 
-Complex multi-phase workflows with Claude Code features:
-
-- **review**: Dual-reviewer code analysis with parallel execution
-- **debug**: Systematic root cause analysis with context isolation
-- **ship-it**: Complete development workflow with task tracking
-
-**Orchestration skills use:**
-
-- `context: fork` - Isolated execution context
-- `agent: <type>` - Route to specialized agents
-- Task system - Progress tracking with dependencies
-- `run_in_background` - Parallel agent execution
+> **Note:** Orchestration workflows (`/review`, `/debug`, `/ship-it`) are now **commands**,
+> not skills. Skills don't receive CLI arguments, which broke flag handling.
+>
+> See [Command Inventory](../commands/COMMAND_INVENTORY.md) for current documentation.
 
 ## Best Practices
 
@@ -469,11 +411,10 @@ Skills work best when:
 - ✅ bash
 - ✅ git-workflows
 
-### Orchestration Skills (Tier 2 - Current)
+### Orchestration Workflows (Now Commands)
 
-- ✅ review - Dual-reviewer with parallel execution
-- ✅ debug - Root cause analysis with context isolation
-- ✅ ship-it - Workflow orchestration with task tracking
+> `/review`, `/debug`, `/ship-it` moved to commands - skills don't receive CLI args.
+> See [Command Inventory](../commands/COMMAND_INVENTORY.md).
 
 ### Planned Expertise Skills (Tier 3)
 

@@ -94,8 +94,9 @@ ESSENTIAL_COMMANDS=(
     "push"
     "prime"
     "plan"
+    "ship-it"
 )
-# Note: ship-it is now a skill, not a command
+# Note: ship-it restored as command (skills don't receive CLI args)
 
 COMMANDS_DIR="$ORIGINAL_DIR/system-configs/.claude/commands"
 MISSING_COMMANDS=()
