@@ -156,7 +156,7 @@ Task tool:
         {
           "id": {sequential number},
           "file": "path/to/file",
-          "line": {line number},
+          "line": {line number or null},
           "severity": "LOW|MEDIUM|HIGH|CRITICAL",
           "type": "security|performance|accessibility|quality",
           "description": "Issue description",

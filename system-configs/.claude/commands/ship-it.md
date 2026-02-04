@@ -75,10 +75,10 @@ STEP 4: Execute with progress tracking
     TaskUpdate: task → in_progress
     OUTPUT: "📋 {task.activeForm}..."
 
-    Skill tool: skill="{step}"
-    WAIT: for Skill tool completion
+    Command: "/{step}"
+    WAIT: for command completion
 
-    IF: skill returned failure
+    IF: command returned failure
       OUTPUT: "❌ Step '{step}' failed. Halting."
       TaskList: show current progress
       END

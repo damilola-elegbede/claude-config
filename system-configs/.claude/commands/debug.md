@@ -8,9 +8,9 @@ argument-hint: [issue] [--issue|--performance]
 ## Usage
 
 ```bash
-/debug <issue_description>       # Debug the issue
-/debug --performance <issue>     # Focus on performance debugging
-/debug --issue                   # Create GitHub issue from findings
+/debug <issue_description>              # Debug the issue
+/debug --performance <issue>            # Focus on performance debugging
+/debug --issue <issue_description>      # Debug and create GitHub issue
 ```
 
 ## Description
