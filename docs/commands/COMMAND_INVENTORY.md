@@ -1,6 +1,6 @@
 # Command Inventory
 
-Post-optimization inventory of 18 commands (reduced from 21 after skill consolidation).
+Post-optimization inventory of 21 commands.
 
 ## Summary
 
@@ -9,13 +9,13 @@ Post-optimization inventory of 18 commands (reduced from 21 after skill consolid
 | Git Operations | 6 | Direct |
 | Development | 2 | Wave-based |
 | Quality | 2 | Hybrid |
-| Orchestration | 2 | Wave-based |
+| Orchestration | 5 | Wave-based |
 | Utilities | 5 | Direct/Hybrid |
 | Integration | 1 | Wave-based |
-| **Total** | **18** | |
+| **Total** | **21** | |
 
-> **Note:** `/review`, `/debug`, and `/ship-it` are now **skills only** (not commands).
-> See [Skills Guide](../skills/SKILLS_GUIDE.md) for orchestration workflows.
+> **Note:** `/review`, `/debug`, and `/ship-it` are commands (restored from skills).
+> Skills don't receive CLI arguments, so these were moved back to commands.
 
 ## Git Operations (6)
 
@@ -28,33 +28,29 @@ Post-optimization inventory of 18 commands (reduced from 21 after skill consolid
 | `/push` | Push with validation | Direct |
 | `/rebase` | Rebase on target branch | Direct |
 
-## Development Commands (2)
+## Development Commands (3)
 
 | Command | Description | Execution Model | Flags |
 |---------|-------------|-----------------|-------|
 | `/implement` | Feature implementation from specs | Wave-based | `--spec`, `--tdd` |
 | `/plan` | PRD and task file generation | Wave-based | `--no-execute`, `--simple` |
+| `/debug` | Root cause analysis | Wave-based | `--performance`, `--issue` |
 
-> **Note:** `/debug` is now a skill. Use `/debug` to invoke the debug skill for root cause analysis.
-> For bug creation, use the debug skill with `--issue` flag.
-
-## Quality Commands (2)
+## Quality Commands (3)
 
 | Command | Description | Execution Model | Flags |
 |---------|-------------|-----------------|-------|
 | `/test` | Test discovery and execution | Hybrid | `--create`, `--framework`, `--coverage` |
 | `/audit` | Unified agent/command validation | Wave-based | `--scope agents\|commands\|all`, `--fix` |
+| `/review` | Dual-reviewer code analysis | Wave-based | `--full` |
 
-> **Note:** `/review` is now a skill. Use `/review` to invoke the review skill for dual-reviewer analysis.
-
-## Orchestration Commands (2)
+## Orchestration Commands (3)
 
 | Command | Description | Execution Model | Flags |
 |---------|-------------|-----------------|-------|
 | `/prime` | Repository understanding | Wave-based | `--lite`, `--full` |
 | `/fix-ci` | CI failure diagnosis | Wave-based | `--learn` |
-
-> **Note:** `/ship-it` is now a skill. Use `/ship-it` to invoke the ship-it skill for workflow orchestration.
+| `/ship-it` | Development workflow orchestration | Orchestrator | `-d`, `-t`, `-c`, `-r`, `-p`, `-pr`, `--dry-run` |
 
 ## Utility Commands (5)
 
@@ -72,29 +68,23 @@ Post-optimization inventory of 18 commands (reduced from 21 after skill consolid
 |---------|-------------|-----------------|-------|
 | `/resolve-comments` | CodeRabbit comment resolution | Wave-based | `--auto`, `--dry-run` |
 
-## Removed Commands (6)
+## Removed Commands (3)
 
-The following commands were consolidated or moved to skills:
+The following commands were consolidated:
 
 | Removed | Replacement | Migration |
 |---------|-------------|-----------|
 | `/implementation-plan` | `/plan --no-execute` | Use `--no-execute` flag |
 | `/agent-audit` | `/audit --scope agents` | Use `--scope agents` |
 | `/command-audit` | `/audit --scope commands` | Use `--scope commands` |
-| `/debug` (command) | `/debug` (skill) | Same invocation, now a skill |
-| `/review` (command) | `/review` (skill) | Same invocation, now a skill |
-| `/ship-it` (command) | `/ship-it` (skill) | Same invocation, now a skill |
 
-### Why Skills Instead of Commands?
+### Why Commands Instead of Skills?
 
-Orchestration workflows (`/debug`, `/review`, `/ship-it`) were moved to skills because:
+`/debug`, `/review`, and `/ship-it` were initially migrated to skills but have been restored as commands because:
 
-- **Context isolation**: Skills support `context: fork` for isolated execution
-- **Agent routing**: Skills support `agent: <type>` for specialized handling
-- **Parallel execution**: Skills enable `run_in_background` for concurrent work
-- **No duplication**: Skills and commands are mutually exclusive
-
-See [Skills Guide](../skills/SKILLS_GUIDE.md) for the full comparison.
+- **Argument passing**: Skills don't receive `<command-args>` from CLI, so flags like `-c -p` were ignored
+- **Practical functionality**: Commands properly handle argument parsing for composable workflows
+- **Trade-off**: Commands don't support `context: fork`, but working flags are more important
 
 ## Execution Models
 
