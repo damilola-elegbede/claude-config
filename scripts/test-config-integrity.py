@@ -26,9 +26,9 @@ SKILLS_DIR = PROJECT_ROOT / "system-configs" / ".claude" / "skills"
 # Expected counts after optimization (consolidated from 31 agents, 22 commands)
 # Updated: accessibility-auditor added as standalone complex agent
 # Updated: debug, review, ship-it restored as commands (skills don't receive CLI args)
-# Updated: skills-import added for importing skills from anthropics/skills
+# Note: sync and skills-import are project-local (.claude/commands/), not in system-configs
 EXPECTED_AGENT_COUNT = 12
-EXPECTED_COMMAND_COUNT = 22
+EXPECTED_COMMAND_COUNT = 20
 
 # Non-agent/command documentation files to skip
 NON_AGENT_FILES = [

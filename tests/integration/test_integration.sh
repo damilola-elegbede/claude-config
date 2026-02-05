@@ -106,12 +106,13 @@ test_repo_structure() {
 }
 
 # Test that sync command works for Claude configs
+# Note: sync is project-local (.claude/commands/), not in system-configs
 test_sync_functionality() {
-    local sync_file="$ORIGINAL_DIR/system-configs/.claude/commands/sync.md"
+    local sync_file="$ORIGINAL_DIR/.claude/commands/sync.md"
 
-    # Verify sync.md exists
+    # Verify sync.md exists in project-local location
     assert_file_exists "$sync_file" \
-        "sync.md should exist in repo"
+        "sync.md should exist in project-local .claude/commands/"
 
     # Verify it mentions Claude configuration sync
     assert_file_contains "$sync_file" "system-configs/.claude/" \

@@ -226,10 +226,10 @@ if [[ "$FETCH_FRESH" == "true" ]]; then
   # Parse skill names
   SKILL_NAMES=$(echo "$SKILLS_RAW" | jq -r '.[] | select(.type == "dir") | .name')
 
-  # Build cache with descriptions using jq for safe JSON construction
-  jq -n --arg timestamp "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-    '{timestamp: $timestamp, skills: []}' > "$CACHE_FILE"
+  # Build cache with descriptions
+  echo '{"timestamp":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'","skills":[' > "$CACHE_FILE"
 
+  FIRST=true
   for SKILL in $SKILL_NAMES; do
     # Fetch SKILL.md for description
     SKILL_MD=$(gh api "repos/anthropics/skills/contents/skills/$SKILL/SKILL.md" 2>/dev/null)
@@ -244,13 +244,16 @@ if [[ "$FETCH_FRESH" == "true" ]]; then
       # Get file list
       FILES=$(gh api "repos/anthropics/skills/contents/skills/$SKILL" 2>/dev/null | jq -r '.[].name' | tr '\n' ',' | sed 's/,$//')
 
-      # Safely append to JSON using jq (prevents injection from special chars)
-      TEMP_CACHE=$(mktemp)
-      jq --arg name "$SKILL" --arg desc "$DESC" --arg files "$FILES" \
-        '.skills += [{name: $name, description: $desc, files: $files}]' \
-        "$CACHE_FILE" > "$TEMP_CACHE" && mv "$TEMP_CACHE" "$CACHE_FILE"
+      if [[ "$FIRST" != "true" ]]; then
+        echo "," >> "$CACHE_FILE"
+      fi
+      FIRST=false
+
+      echo "{\"name\":\"$SKILL\",\"description\":\"$DESC\",\"files\":\"$FILES\"}" >> "$CACHE_FILE"
     fi
   done
+
+  echo ']}' >> "$CACHE_FILE"
 fi
 ```
 
@@ -375,14 +378,8 @@ for SKILL in $SKILL_NAMES; do
   FILES=$(gh api "repos/anthropics/skills/contents/skills/$SKILL" 2>/dev/null)
   FILE_COUNT=0
 
-  # Download each file (with path traversal protection)
+  # Download each file
   echo "$FILES" | jq -r '.[] | "\(.name)|\(.type)|\(.path)"' | while IFS='|' read -r NAME TYPE PATH; do
-    # Validate filename to prevent directory traversal
-    if [[ "$NAME" == *..* ]] || [[ "$NAME" == /* ]]; then
-      echo "⚠️ Skipping suspicious filename: $NAME"
-      continue
-    fi
-
     if [[ "$TYPE" == "file" ]]; then
       # Download file
       CONTENT=$(gh api "repos/anthropics/skills/contents/$PATH" 2>/dev/null | jq -r '.content' | base64 -d)
@@ -393,11 +390,6 @@ for SKILL in $SKILL_NAMES; do
       mkdir -p "$INSTALLED_DIR/$SKILL/$NAME"
       SUBFILES=$(gh api "repos/anthropics/skills/contents/$PATH" 2>/dev/null)
       echo "$SUBFILES" | jq -r '.[] | select(.type == "file") | "\(.name)|\(.path)"' | while IFS='|' read -r SUBNAME SUBPATH; do
-        # Validate subfile name to prevent directory traversal
-        if [[ "$SUBNAME" == *..* ]] || [[ "$SUBNAME" == /* ]]; then
-          echo "⚠️ Skipping suspicious filename: $SUBNAME"
-          continue
-        fi
         SUBCONTENT=$(gh api "repos/anthropics/skills/contents/$SUBPATH" 2>/dev/null | jq -r '.content' | base64 -d)
         echo "$SUBCONTENT" > "$INSTALLED_DIR/$SKILL/$NAME/$SUBNAME"
         FILE_COUNT=$((FILE_COUNT + 1))
