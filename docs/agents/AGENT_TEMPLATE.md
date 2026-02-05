@@ -4,7 +4,7 @@
 # This template matches the pattern used by 37 production agents
 # Target length: 30-50 lines (not 180+)
 #
-# Model selection (Claude Sonnet 4.5 / Opus 4.5 - November 2025):
+# Model selection (Claude Sonnet 4.5 / Opus 4.6 - February 2026):
 # - sonnet: Claude Sonnet 4.5 - Standard development, enhanced reasoning (DEFAULT)
 #   * 2x improvement in complex problem-solving
 #   * Native extended thinking support
@@ -14,7 +14,7 @@
 #   * principal-architect, project-orchestrator, result-arbitrator, career-strategist
 # - haiku: Rapid validation, simple operations (currently unused)
 #
-# Thinking level selection (optional - Sonnet 4.5/Opus 4.5 native support):
+# Thinking level selection (optional - Sonnet 4.5/Opus 4.6 native support):
 # - ultrathink (31,999 tokens): System-wide architecture, complex forensics, enterprise planning
 #   * Used by: principal-architect, project-orchestrator, result-arbitrator
 # - megathink (10,000 tokens): Domain expertise, multi-system coordination, complex optimization

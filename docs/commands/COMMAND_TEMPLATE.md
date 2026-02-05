@@ -63,7 +63,7 @@ Detailed behavior, workflows, agent strategies if needed for complex commands.
 
 - **argument-hint**: Shows users what arguments to provide (e.g., `[branch-name]`, `[file-path]`)
 - **allowed-tools**: Specify which tools can be used (e.g., `Bash(git add:*)`)
-- **model**: Override the default model (e.g., `claude-3-5-haiku-20241022`)
+- **model**: Override the default model (e.g., `claude-haiku-4-5-20251001`)
 - **thinking-level**: Specify enhanced thinking depth (e.g., `ultrathink`, `megathink`, `think harder`, `think`)
 - **thinking-tokens**: Token allocation for thinking level (e.g., `31999`, `10000`, `8000`, `4000`)
 
