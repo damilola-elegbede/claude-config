@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document defines the aggressive delegation model introduced with Opus 4.5 updates. The core principle is
+This document defines the aggressive delegation model introduced with Opus 4.6 updates. The core principle is
 **delegate by default** - Claude should only handle tasks directly when ALL Level 1 criteria are met.
 
 ## The 37-Agent Ecosystem
@@ -11,7 +11,7 @@ This document defines the aggressive delegation model introduced with Opus 4.5 u
 
 | Model | Count | Agents | Use Case |
 |-------|-------|--------|----------|
-| Opus 4.5 | 4 | principal-architect, project-orchestrator, result-arbitrator, career-strategist | Maximum reasoning depth |
+| Opus 4.6 | 4 | principal-architect, project-orchestrator, result-arbitrator, career-strategist | Maximum reasoning depth |
 | Sonnet 4.5 | 33 | All others | Standard development with enhanced reasoning |
 
 ### Extended Thinking Distribution
@@ -114,6 +114,7 @@ python3 scripts/validate-agent-yaml.py
 
 ## Change History
 
+- **February 2026**: Updated model references for Opus 4.6
 - **November 2025**: Introduced aggressive delegation model with Opus 4.5 updates
 - Added result-arbitrator agent for multi-agent conflict resolution
 - Updated thinking levels on backend-engineer, devops, code-reviewer

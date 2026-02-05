@@ -12,7 +12,7 @@ The Agent Specification API defines the interface and capabilities for Claude Co
 ---
 name: "agent-name"
 category: "development|infrastructure|architecture|design|quality|security|analysis|operations"
-model: "claude-3-5-sonnet-latest|claude-3-5-haiku-latest|claude-3-opus-latest"
+model: "claude-sonnet-4-5-20250929|claude-haiku-4-5-20251001|claude-opus-4-6"
 capabilities:
   - "Primary capability"
   - "Secondary capability"
@@ -38,7 +38,7 @@ performance_tier: "Standard|Premium|Critical"
 |-------|------|-------------|---------|
 | `name` | string | Unique agent identifier | "backend-engineer" |
 | `category` | string | Functional domain | "development" |
-| `model` | string | Claude model version | "claude-3-5-sonnet-latest" |
+| `model` | string | Claude model version | "claude-sonnet-4-5-20250929" |
 | `capabilities` | array | Core competencies | ["API development", "Database design"] |
 | `tools` | array | Allowed tool access | ["Read", "Write", "Bash"] |
 | `description` | string | Agent purpose and context | "Server-side development specialist" |
@@ -266,10 +266,10 @@ coordination: "Incident response and operational support"
 
 ## Model Selection Guidelines
 
-### Claude 3.5 Opus (Strategic & Complex)
+### Claude Opus 4.6 (Strategic & Complex)
 
 ```yaml
-model: "claude-3-5-opus-latest"
+model: "claude-opus-4-6"
 use_cases:
   - Strategic architecture decisions
   - Complex system design
@@ -283,10 +283,10 @@ agents:
 cost: "High - use for strategic decisions"
 ```
 
-### Claude 3.5 Sonnet (Standard Implementation)
+### Claude Sonnet 4.5 (Standard Implementation)
 
 ```yaml
-model: "claude-3-5-sonnet-latest"
+model: "claude-sonnet-4-5-20250929"
 use_cases:
   - Standard development tasks
   - Code review and analysis
@@ -296,10 +296,10 @@ agents: "Majority of agents (80%+)"
 cost: "Balanced - standard choice"
 ```
 
-### Claude 3.5 Haiku (Simple & Fast)
+### Claude Haiku 4.5 (Simple & Fast)
 
 ```yaml
-model: "claude-3-5-haiku-latest"
+model: "claude-haiku-4-5-20251001"
 use_cases:
   - Simple validation tasks
   - Quick analysis

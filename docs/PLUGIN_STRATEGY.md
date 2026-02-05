@@ -6,8 +6,8 @@ This document explains the plugin retention decisions made during the optimizati
 
 | Status | Count | Plugins |
 |--------|-------|---------|
-| Kept | 5 | frontend-design, agent-sdk-dev, security-guidance, explanatory-output-style, claude-opus-4-5-migration |
-| Removed | 4 | code-review, commit-commands, pr-review-toolkit, feature-dev |
+| Kept | 4 | frontend-design, agent-sdk-dev, security-guidance, explanatory-output-style |
+| Removed | 5 | code-review, commit-commands, pr-review-toolkit, feature-dev, claude-opus-4-5-migration |
 
 ## Guiding Principle
 
@@ -15,7 +15,7 @@ This document explains the plugin retention decisions made during the optimizati
 
 Plugins should complement, not duplicate, the custom command and agent ecosystem.
 
-## Kept Plugins (5)
+## Kept Plugins (4)
 
 ### frontend-design
 
@@ -45,14 +45,7 @@ Plugins should complement, not duplicate, the custom command and agent ecosystem
 - **No Custom Overlap**: Output style, not functionality
 - **Recommendation**: Keep enabled for educational contexts
 
-### claude-opus-4-5-migration
-
-- **Purpose**: Migration guidance for Opus 4.5
-- **Unique Value**: Temporary utility for model migration
-- **Lifecycle**: Remove after migration complete
-- **Recommendation**: Keep until all prompts migrated to Opus 4.5
-
-## Removed Plugins (4)
+## Removed Plugins (5)
 
 ### code-review (REMOVED)
 
@@ -77,6 +70,12 @@ Plugins should complement, not duplicate, the custom command and agent ecosystem
 - **Reason**: Duplicates `/implement` command
 - **Custom Implementation**: Wave orchestration with TDD support
 - **Migration**: Use `/implement` for feature development
+
+### claude-opus-4-5-migration (REMOVED)
+
+- **Reason**: Model migration complete (Opus 4.5 target reached, now on Opus 4.6)
+- **Lifecycle**: Was marked temporary — "Remove after migration complete"
+- **Status**: All prompts migrated to current model family
 
 ## Decision Framework
 
