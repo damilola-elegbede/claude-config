@@ -104,6 +104,20 @@ STEP 2: Fetch unresolved CodeRabbit comments (with pagination)
         }
       }' -F owner={owner} -F repo={repo} -F pr={pr} -F after={threads_cursor}
 
+    ON_ERROR:
+      IF: error contains "rate limit" OR status == 403
+        OUTPUT: "GitHub API rate limited. Wait 60s or check: gh auth status"
+        END
+      IF: error contains "Bad credentials" OR status == 401
+        OUTPUT: "GitHub authentication failed. Run: gh auth login"
+        END
+      IF: error contains "Could not resolve" OR response is malformed
+        OUTPUT: "GraphQL query failed: {error_message}"
+        RETRY: once after 2 second delay
+        IF: retry fails
+          OUTPUT: "Failed to fetch PR threads after retry. Aborting."
+          END
+
     FOR_EACH: thread in reviewThreads.nodes
       IF: thread.isResolved == true
         SKIP: this thread (already resolved)
@@ -206,13 +220,20 @@ STEP 5: Finalize
       RUN: git commit -m "fix: resolve CodeRabbit feedback ({fix_count} issues)"
       RUN: git push
 
-      POST_THREAD_RESOLUTIONS:
+      POST_THREAD_RESOLUTIONS (CRITICAL - DO NOT SKIP):
+        NOTE: This step posts "@coderabbitai resolve" as a REPLY to EACH review thread.
+              This is SEPARATE from the PR-level comment posted above.
+              CodeRabbit only marks threads resolved when they receive a direct reply.
+
         VALIDATE: fixed_issues is defined and is non-empty array
           IF: fixed_issues is undefined OR empty
             OUTPUT: "No fixes to post resolutions for"
             SKIP: POST_THREAD_RESOLUTIONS block
         INITIALIZE: resolution_results = [], success_count = 0, failure_count = 0
-        FOR_EACH: issue in fixed_issues
+        EXECUTE_FOR_EACH: issue in fixed_issues
+          NOTE: You MUST iterate through ALL issues and post a reply to EACH thread.
+                Do not batch or summarize - each thread needs its own GraphQL mutation call.
+
           IF: issue.thread_id is missing or empty
             APPEND: { location: issue.location, status: "skipped", error: "missing thread_id" } to resolution_results
             INCREMENT: failure_count
@@ -260,6 +281,12 @@ STEP 5: Finalize
         OUTPUT: "Thread resolution complete: {success_count} succeeded, {failure_count} failed"
         IF: failure_count > 0
           OUTPUT: "Failed threads: {list failed locations from resolution_results}"
+
+        VERIFY: success_count > 0
+          IF: success_count == 0 AND failure_count > 0
+            OUTPUT: "⚠️ WARNING: All thread resolutions failed. CodeRabbit threads remain unresolved."
+          IF: success_count > 0 AND failure_count > 0
+            OUTPUT: "⚠️ Partial success: {success_count} resolved, {failure_count} failed"
 
       GENERATE: summary of changes
         DATA_SOURCE: fixed_issues list from triage (issues marked for fix with applied changes)
