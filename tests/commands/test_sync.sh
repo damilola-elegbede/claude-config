@@ -1,18 +1,19 @@
 #!/bin/bash
 # Test for /sync command
+# Note: sync is a project-local command (.claude/commands/), not in system-configs
 
 # Source test utilities
 source "$(dirname "$0")/../utils.sh"
 
-# Test sync command file exists
+# Test sync command file exists (project-local location)
 test_sync_file_exists() {
-    assert_file_exists "$ORIGINAL_DIR/system-configs/.claude/commands/sync.md" \
-        "Sync command file should exist"
+    assert_file_exists "$ORIGINAL_DIR/.claude/commands/sync.md" \
+        "Sync command file should exist in project-local .claude/commands/"
 }
 
 # Test sync command structure
 test_sync_structure() {
-    local sync_file="$ORIGINAL_DIR/system-configs/.claude/commands/sync.md"
+    local sync_file="$ORIGINAL_DIR/.claude/commands/sync.md"
 
     # Check for YAML frontmatter
     assert_file_contains "$sync_file" "^---" \
@@ -34,7 +35,7 @@ test_sync_structure() {
 
 # Test sync command content
 test_sync_content() {
-    local sync_file="$ORIGINAL_DIR/system-configs/.claude/commands/sync.md"
+    local sync_file="$ORIGINAL_DIR/.claude/commands/sync.md"
 
     # Check for key behavior descriptions
     assert_file_contains "$sync_file" "system-configs/.claude/" \

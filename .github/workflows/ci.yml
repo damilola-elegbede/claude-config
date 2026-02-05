@@ -186,8 +186,8 @@ jobs:
           "system-configs/.claude/commands/push.md"
           "system-configs/.claude/commands/test.md"
           "system-configs/.claude/commands/prime.md"
-          "system-configs/.claude/commands/sync.md"
           "system-configs/.claude/commands/verify.md"
+          # Note: sync.md is project-local (.claude/commands/), not in system-configs
         )
 
         for file in "${required_files[@]}"; do

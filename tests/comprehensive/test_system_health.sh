@@ -88,7 +88,6 @@ fi
 echo "Checking command definitions..."
 
 ESSENTIAL_COMMANDS=(
-    "sync"
     "test"
     "commit"
     "push"
@@ -97,6 +96,7 @@ ESSENTIAL_COMMANDS=(
     "ship-it"
 )
 # Note: ship-it restored as command (skills don't receive CLI args)
+# Note: sync is project-local (.claude/commands/), not in system-configs
 
 COMMANDS_DIR="$ORIGINAL_DIR/system-configs/.claude/commands"
 MISSING_COMMANDS=()
