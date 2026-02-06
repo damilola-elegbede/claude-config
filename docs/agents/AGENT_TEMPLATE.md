@@ -36,7 +36,7 @@ category: development  # development, quality, security, architecture, design, a
 color: blue  # Must match category color - see AGENT_CATEGORIES.md
 # permissionMode: plan  # OPTIONAL: plan (read-only) / acceptEdits (can write) / default
 # memory: project        # OPTIONAL: project / local / user - persistent agent memory
-# skills: prime          # OPTIONAL: Skills to preload (comma-separated)
+# skills: prime          # OPTIONAL: Preloads skill content into agent context (comma-separated)
 ---
 
 # [Agent Name]

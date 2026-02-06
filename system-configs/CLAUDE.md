@@ -45,6 +45,9 @@ execution, not by you before execution.
 Wrong: "Skipping /docs because config files don't need documentation"
 Right: Execute /docs, let its analysis phase determine if documentation is needed
 
+Wrong: Running /resolve-comments in file mode because a prior /review passed --code-rabbit --local
+Right: Parse the current invocation's arguments; no flags means default mode
+
 This applies to:
 
 - Individual commands (/docs, /test, /commit, etc.)
