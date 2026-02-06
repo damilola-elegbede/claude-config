@@ -28,7 +28,7 @@ Resolves review comments from multiple sources with interactive triage.
 - **PR mode** (default): Fetch unresolved CodeRabbit comments from GitHub PR
 - **File mode** (`--code-rabbit` and/or `--local`): Triage issues from `/review` output files
 
-## Execution
+## Mode Selection
 
 ```text
 STEP 0: Determine mode from invocation arguments
