@@ -1,6 +1,6 @@
 # Agent Inventory
 
-Post-optimization inventory of 13 agents (consolidated from 31).
+Post-optimization inventory of 12 agents (consolidated from 31).
 
 ## Summary
 
@@ -11,11 +11,10 @@ Post-optimization inventory of 13 agents (consolidated from 31).
 | Quality | 4 | Sonnet |
 | Infrastructure | 2 | Sonnet |
 | Research | 1 | Sonnet |
-| Resume/Career | 1 | Sonnet |
 | Documentation | 1 | Sonnet |
-| **Total** | **13** | |
+| **Total** | **12** | |
 
-## All Agents (13)
+## All Agents (12)
 
 | Agent | Category | Description | Key Triggers |
 |-------|----------|-------------|--------------|

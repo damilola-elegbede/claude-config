@@ -1,7 +1,7 @@
 ---
 # AGENT TEMPLATE - PRODUCTION READY
 #
-# This template matches the pattern used by 37 production agents
+# This template matches the pattern used by 12 production agents
 # Target length: 30-50 lines (not 180+)
 #
 # Model selection (Claude Sonnet 4.5 / Opus 4.6 - February 2026):
@@ -9,8 +9,8 @@
 #   * 2x improvement in complex problem-solving
 #   * Native extended thinking support
 #   * Faster response times for better parallelization
-#   * 33/37 agents use Sonnet 4.5
-# - opus: Complex architecture requiring maximum reasoning depth (4/37 agents)
+#   * Most agents use Sonnet 4.5
+# - opus: Complex architecture requiring maximum reasoning depth
 #   * principal-architect, project-orchestrator, result-arbitrator, career-strategist
 # - haiku: Rapid validation, simple operations (currently unused)
 #
@@ -34,6 +34,9 @@ thinking-level: megathink  # OPTIONAL: ultrathink/megathink/think harder/think -
 thinking-tokens: 10000  # OPTIONAL: Must match thinking-level token count
 category: development  # development, quality, security, architecture, design, analysis, infrastructure, coordination - See docs/agents/AGENT_CATEGORIES.md for canonical list
 color: blue  # Must match category color - see AGENT_CATEGORIES.md
+# permissionMode: plan  # OPTIONAL: plan (read-only) / acceptEdits (can write) / default
+# memory: project        # OPTIONAL: project / local / user - persistent agent memory
+# skills: prime          # OPTIONAL: Skills to preload (comma-separated)
 ---
 
 # [Agent Name]

@@ -32,6 +32,10 @@ REQUIRED_FIELDS = [
 # Valid values for specific fields
 VALID_COLORS = ['blue', 'green', 'red', 'purple', 'yellow', 'orange', 'white', 'brown', 'cyan', 'pink']
 
+# Valid values for optional fields
+VALID_PERMISSION_MODES = ['default', 'acceptEdits', 'dontAsk', 'bypassPermissions', 'plan']
+VALID_MEMORY_VALUES = ['user', 'project', 'local']
+
 # Non-agent documentation files to skip
 NON_AGENT_FILES = [
     'README.md', 'AGENT_CATEGORIES.md', 'AGENT_TEMPLATE.md',
@@ -43,12 +47,11 @@ NON_AGENT_FILES = [
 
 # Complex/consolidated agents that may exceed standard file length limits
 # These agents combine functionality from multiple merged agents
-# Total agents: 13 (consolidated from 31)
+# Total agents: 12 (consolidated from 31)
 COMPLEX_AGENTS = [
     'accessibility-auditor',  # WCAG compliance, assistive technology, comprehensive audit patterns
     'architect',           # Consolidated from: principal-architect, api-architect, cloud-architect, frontend-architect
     'backend-engineer',    # Server-side architecture and microservices
-    'career-assistant',    # Consolidated from: jd-analyzer, resume-optimizer, content-writer, career-strategist
     'code-reviewer',       # Includes accessibility auditing
     'data-engineer',       # Consolidated from: data-engineer, database-admin
     'debugger',            # Consolidated from: debugger, performance-engineer
@@ -120,6 +123,16 @@ def parse_yaml_structure(yaml_text):
                     valid_thinking = ['ultrathink', 'megathink', 'think harder', 'think']
                     if value and value not in valid_thinking:
                         issues.append(f"Invalid thinking-level '{value}'. Must be one of: {', '.join(valid_thinking)}")
+
+                # Check for valid permissionMode values
+                if field == 'permissionMode':
+                    if value and value not in VALID_PERMISSION_MODES:
+                        issues.append(f"Invalid permissionMode '{value}'. Must be one of: {', '.join(VALID_PERMISSION_MODES)}")
+
+                # Check for valid memory values
+                if field == 'memory':
+                    if value and value not in VALID_MEMORY_VALUES:
+                        issues.append(f"Invalid memory '{value}'. Must be one of: {', '.join(VALID_MEMORY_VALUES)}")
 
         # Tools can be a simple list or have subfields - both are valid
 
@@ -204,7 +217,7 @@ def validate_agent_file(file_path):
         issues.append(f"File too short ({line_count} lines, expected ~46 per AGENT_TEMPLATE.md)")
     elif line_count > 500 and is_complex:
         issues.append(f"File too long ({line_count} lines, even for complex agent max 500)")
-    elif line_count > 60 and not is_complex:
+    elif line_count > 65 and not is_complex:
         issues.append(f"File too long ({line_count} lines, expected ~46 per AGENT_TEMPLATE.md)")
 
     # Check for required markdown sections as per AGENT_TEMPLATE.md

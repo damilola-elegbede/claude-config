@@ -5,6 +5,8 @@ tools: Read, Grep, Bash, Edit
 model: sonnet
 thinking-level: megathink
 thinking-tokens: 10000
+permissionMode: plan
+memory: project
 color: red
 category: security
 ---

@@ -12,6 +12,14 @@ manual intervention.
 
 - **Completion Sound** (PostToolUse):
 `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r`
+- **Session Start Sound** (SessionStart):
+`/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Presto.m4r`
+- **Subagent Start Sound** (SubagentStart):
+`/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Classic/Swish.m4r`
+- **Subagent Stop Sound** (SubagentStop):
+`/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r`
+- **Pre-Compact Warning** (PreCompact):
+`/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Aurora.m4r`
 - **Stop Sound** (Stop):
 `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Chord.m4r`
 - **Session End Sound** (SessionEnd):
@@ -21,6 +29,13 @@ manual intervention.
 - **Permission Request Sound** (PermissionRequest):
 `/System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/Resources/AlertTones/Modern/Keys.m4r`
 - **Implementation**: Direct afplay commands in Claude Code hooks
+
+### Quality Gate Hooks
+
+In addition to audio hooks, `PreToolUse` hooks enforce quality policies:
+
+- **--no-verify blocker**: Command-based hook that blocks `--no-verify` and `--no-gpg-sign` flags on Bash commands (exit code 2 = block)
+- **Destructive git detector**: Prompt-based hook (haiku model) that analyzes Bash commands for destructive git operations (`reset --hard`, `push --force`, `clean -f`, `branch -D`)
 
 ### Settings Configuration
 
@@ -98,6 +113,26 @@ Add to `$HOME/.claude/settings.json`:
 
 - Triggers on all tool operations (matcher: "*")
 - Plays Classic Swish sound for immediate feedback
+
+### SessionStart Hooks (Presto.m4r)
+
+- **SessionStart**: When a new Claude session begins
+- Plays Modern Presto sound for startup confirmation
+
+### SubagentStart Hooks (Swish.m4r)
+
+- **SubagentStart**: When a subagent or teammate spawns
+- Plays Classic Swish sound to indicate agent launch
+
+### SubagentStop Hooks (Chord.m4r)
+
+- **SubagentStop**: When a subagent or teammate finishes
+- Plays Modern Chord sound for agent completion
+
+### PreCompact Hooks (Aurora.m4r)
+
+- **PreCompact**: When context is about to be compacted
+- Plays Modern Aurora sound as a warning
 
 ### Stop Hooks (Chord.m4r)
 

@@ -74,6 +74,22 @@ Use specialized agents when the task benefits from focused expertise:
 
 Don't over-delegate simple tasks. Use judgment.
 
+## Agent Teams (Experimental)
+
+Multiple Claude instances coordinated via shared task list and mailbox. Use for
+multi-perspective analysis, parallel implementation, competing hypotheses, or
+cross-layer coordination. Don't use for single-domain or sequential workflows.
+
+| Pattern | Teammates | Use Case |
+|---------|-----------|----------|
+| Full-Stack Feature | backend, frontend, test-engineer | End-to-end feature |
+| Deep Review | security-auditor, code-reviewer, accessibility-auditor | Comprehensive audit |
+| Research Sprint | researcher, architect | Technology evaluation |
+| Debug Swarm | 3-5 debuggers with different hypotheses | Hard-to-reproduce bug |
+
+Best practices: give enough context in spawn prompt, size 5-6 tasks per teammate,
+avoid file conflicts, wait for completion before synthesizing.
+
 ## Mistakes to Avoid
 
 - Don't create documentation files unless explicitly requested
@@ -85,13 +101,14 @@ Don't over-delegate simple tasks. Use judgment.
 
 Skills provide focused domain expertise without full agent orchestration.
 
-### Three-Tier Execution Model
+### Execution Model
 
 | Level | Type | Use When | Example |
 |-------|------|----------|---------|
 | 1 | Direct Execution | Simple, deterministic tasks | `/branch`, `/rebase`, `/merge` |
 | 2 | Skills | Domain expertise, format-specific | `/review`, `/debug`, `/ship-it` |
 | 3 | Agents | Complex specialists, deep analysis | `debugger`, `architect`, `security-auditor` |
+| 4 | Agent Teams | Multi-perspective, parallel exploration | Full-stack features, competing hypotheses |
 
 ### Orchestration Skills
 
@@ -159,28 +176,7 @@ Use this table to route requests to the appropriate specialized agent.
 
 ## Background Execution
 
-Use `run_in_background: true` for parallel agent work.
+Use `run_in_background: true` for parallel agent work. Launch ALL parallel agents
+in a SINGLE message, then use TaskOutput to wait for completion before synthesis.
 
-### Pattern
-
-```yaml
-Parallel Agent Launch:
-  - Launch ALL parallel agents in SINGLE message
-  - Use TaskOutput to wait for completion
-  - Don't start dependent work until all complete
-
-Example:
-  # Launch two reviewers in parallel (single message with multiple Task calls)
-  Task(subagent_type="code-reviewer", prompt="Security review", run_in_background=true)
-  Task(subagent_type="code-reviewer", prompt="Quality review", run_in_background=true)
-
-  # Wait for both to complete before synthesis
-  TaskOutput(task_id=reviewer_1_id)
-  TaskOutput(task_id=reviewer_2_id)
-```
-
-### Commands Using Background Execution
-
-- `/fix-ci`: Parallel debuggers for multiple failures
-- `/review`: Parallel security and quality reviewers
-- `/ship-it`: Concurrent test and review phases
+Used by: `/fix-ci` (parallel debuggers), `/review` (parallel reviewers), `/ship-it` (concurrent phases)

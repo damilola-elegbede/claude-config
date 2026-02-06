@@ -17,7 +17,9 @@
       "Technical roadmap or implementation planning"
     ],
     "description": "MUST BE USED for system architecture, API design, cloud infrastructure, and technical roadmaps. Consolidated from principal-architect, api-architect, cloud-architect, and frontend-architect.",
-    "color": "purple"
+    "color": "purple",
+    "permissionMode": "plan",
+    "memory": "project"
   },
   {
     "name": "backend-engineer",
@@ -37,7 +39,8 @@
       "Event-driven or message queue implementation"
     ],
     "description": "MUST BE USED for server-side architecture, microservices, distributed systems, and database engineering.",
-    "color": "blue"
+    "color": "blue",
+    "permissionMode": "acceptEdits"
   },
   {
     "name": "career-assistant",
@@ -57,7 +60,8 @@
       "Career strategy or interview preparation"
     ],
     "description": "Expert in unified career support including job description analysis, resume optimization, company research, content writing, and career strategy.",
-    "color": "cyan"
+    "color": "cyan",
+    "permissionMode": "acceptEdits"
   },
   {
     "name": "code-reviewer",
@@ -77,7 +81,9 @@
       "Best practices compliance verification"
     ],
     "description": "MUST BE USED for pre-commit reviews, vulnerability detection, accessibility checks, and production readiness assessment.",
-    "color": "green"
+    "color": "green",
+    "permissionMode": "plan",
+    "memory": "local"
   },
   {
     "name": "data-engineer",
@@ -97,7 +103,8 @@
       "Data quality framework setup"
     ],
     "description": "Expert in data pipelines, ETL/ELT systems, and database administration. Consolidated from data-engineer and database-admin.",
-    "color": "blue"
+    "color": "blue",
+    "permissionMode": "acceptEdits"
   },
   {
     "name": "debugger",
@@ -117,7 +124,9 @@
       "Distributed system failures"
     ],
     "description": "MUST BE USED for debugging complex bugs and performance optimization. Consolidated from debugger and performance-engineer.",
-    "color": "orange"
+    "color": "orange",
+    "permissionMode": "acceptEdits",
+    "memory": "local"
   },
   {
     "name": "devops",
@@ -137,7 +146,9 @@
       "Production reliability or incident response"
     ],
     "description": "MUST BE USED for CI/CD, Kubernetes, IaC, and platform engineering. Consolidated from devops and platform-engineer.",
-    "color": "orange"
+    "color": "orange",
+    "permissionMode": "acceptEdits",
+    "memory": "local"
   },
   {
     "name": "frontend-engineer",
@@ -157,7 +168,8 @@
       "Frontend testing or debugging"
     ],
     "description": "MUST BE USED for frontend work, UI components, and design systems. Consolidated from frontend-engineer and ui-designer.",
-    "color": "blue"
+    "color": "blue",
+    "permissionMode": "acceptEdits"
   },
   {
     "name": "researcher",
@@ -177,7 +189,9 @@
       "Product strategy or prioritization"
     ],
     "description": "MUST BE USED for research, analysis, and strategy. Consolidated from researcher, codebase-analyst, ux-researcher, business-analyst, and product-strategist.",
-    "color": "yellow"
+    "color": "yellow",
+    "permissionMode": "plan",
+    "memory": "project"
   },
   {
     "name": "security-auditor",
@@ -197,7 +211,9 @@
       "Sensitive data handling implementation"
     ],
     "description": "MUST BE USED for security audits, vulnerability detection, and compliance reviews.",
-    "color": "red"
+    "color": "red",
+    "permissionMode": "plan",
+    "memory": "project"
   },
   {
     "name": "tech-writer",
@@ -217,7 +233,8 @@
       "Migration guides or setup instructions"
     ],
     "description": "MUST BE USED for documentation, READMEs, and API docs.",
-    "color": "cyan"
+    "color": "cyan",
+    "permissionMode": "acceptEdits"
   },
   {
     "name": "test-engineer",
@@ -237,6 +254,7 @@
       "Quality gate failures or flaky tests"
     ],
     "description": "MUST BE USED for test strategy and implementation across frameworks.",
-    "color": "green"
+    "color": "green",
+    "permissionMode": "acceptEdits"
   }
 ]

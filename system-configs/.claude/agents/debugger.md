@@ -5,6 +5,8 @@ tools: Read, Grep, Bash, Glob
 model: sonnet
 thinking-level: ultrathink
 thinking-tokens: 31999
+permissionMode: acceptEdits
+memory: local
 color: orange
 category: infrastructure
 ---

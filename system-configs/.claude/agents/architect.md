@@ -5,6 +5,8 @@ tools: Read, Write, Edit, Grep, Glob
 model: opus
 thinking-level: ultrathink
 thinking-tokens: 31999
+permissionMode: plan
+memory: project
 color: purple
 category: architecture
 ---

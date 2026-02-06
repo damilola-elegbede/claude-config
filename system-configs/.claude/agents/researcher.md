@@ -3,6 +3,8 @@ name: researcher
 description: MUST BE USED when researching technologies, analyzing codebases, understanding user needs, or gathering requirements. Use for ANY research or analysis task. Triggers on "research", "compare", "what's best", "options", "evaluate", "how does this work", "understand", "analyze", "user research", "usability", "requirements", "business needs".
 tools: Read, Grep, Glob, WebSearch, WebFetch
 model: sonnet
+permissionMode: plan
+memory: project
 color: yellow
 category: analysis
 ---

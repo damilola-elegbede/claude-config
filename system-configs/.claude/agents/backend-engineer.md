@@ -5,6 +5,7 @@ tools: Read, Write, Edit, Bash, Grep, Glob
 model: sonnet
 thinking-level: megathink
 thinking-tokens: 10000
+permissionMode: acceptEdits
 color: blue
 category: development
 ---
