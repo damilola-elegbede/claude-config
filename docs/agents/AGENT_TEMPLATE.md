@@ -34,7 +34,7 @@ thinking-level: megathink  # OPTIONAL: ultrathink/megathink/think harder/think -
 thinking-tokens: 10000  # OPTIONAL: Must match thinking-level token count
 category: development  # development, quality, security, architecture, design, analysis, infrastructure, coordination - See docs/agents/AGENT_CATEGORIES.md for canonical list
 color: blue  # Must match category color - see AGENT_CATEGORIES.md
-# permissionMode: plan  # OPTIONAL: plan (read-only) / acceptEdits (can write) / default
+# permissionMode: plan  # OPTIONAL: plan / acceptEdits / default / dontAsk / bypassPermissions
 # memory: project        # OPTIONAL: project / local / user - persistent agent memory
 # skills: prime          # OPTIONAL: Preloads skill content into agent context (comma-separated)
 ---

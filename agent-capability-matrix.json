@@ -1,5 +1,26 @@
 [
   {
+    "name": "accessibility-auditor",
+    "file": "accessibility-auditor.md",
+    "capabilities": [
+      "WCAG compliance: WCAG 2.1/2.2 Level A, AA, AAA validation and gap analysis",
+      "Screen reader testing: JAWS, NVDA, VoiceOver compatibility assessment",
+      "ARIA implementation: Role, state, property validation and widget patterns",
+      "Keyboard accessibility: Full operability verification, focus management, trap detection",
+      "Visual accessibility: Color contrast analysis, text resizing, reduced motion support"
+    ],
+    "when_to_use": [
+      "WCAG compliance audit required",
+      "Screen reader compatibility testing needed",
+      "Keyboard navigation verification",
+      "Color contrast and visual accessibility review",
+      "ARIA implementation validation or remediation"
+    ],
+    "description": "MUST BE USED for accessibility audits, WCAG compliance, and assistive technology testing. Use for ANY accessibility concern.",
+    "color": "purple",
+    "permissionMode": "plan"
+  },
+  {
     "name": "architect",
     "file": "architect.md",
     "capabilities": [
