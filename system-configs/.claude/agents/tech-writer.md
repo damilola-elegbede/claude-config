@@ -3,6 +3,7 @@ name: tech-writer
 description: MUST BE USED for writing documentation, READMEs, or API docs. Use for ANY documentation task. Triggers on "docs", "documentation", "readme", "write up", "explain".
 tools: Read, Write
 model: sonnet
+permissionMode: acceptEdits
 color: cyan
 category: coordination
 ---

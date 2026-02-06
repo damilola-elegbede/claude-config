@@ -53,6 +53,21 @@ Every agent file MUST include these fields:
 - **color**: Visual identifier
   - Valid values: `blue`, `green`, `red`, `purple`, `yellow`, `orange`, `pink`, `cyan`
 
+#### Optional Fields
+
+- **permissionMode**: Agent permission level
+  - Valid values: `default`, `acceptEdits`, `dontAsk`, `bypassPermissions`, `plan`
+  - `plan` = read-only agents (reviewers, auditors, researchers)
+  - `acceptEdits` = agents that need to write files (engineers, writers)
+
+- **memory**: Persistent agent memory scope
+  - Valid values: `user`, `project`, `local`
+  - `project` = remembers across sessions for this project
+  - `local` = project-specific debug/config context
+
+- **skills**: Skills to preload (comma-separated)
+  - Example: `prime, docs`
+
 ### 3. Prohibited Fields (Deprecated)
 
 These fields must NOT be used (not in AGENT_TEMPLATE.md format):
@@ -96,7 +111,7 @@ After YAML front-matter, agents must have these sections (~46 lines total):
 ### 2. File Length Requirement
 
 - **Target**: ~46 lines total
-- **Range**: 40-60 lines acceptable
+- **Range**: 40-65 lines acceptable (accommodates optional frontmatter fields)
 - **Format**: Concise, focused content
 
 ### 3. Field Ordering (Per AGENT_TEMPLATE.md)

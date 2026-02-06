@@ -5,6 +5,8 @@ tools: Read, Write, Bash
 model: sonnet
 thinking-level: think harder
 thinking-tokens: 8000
+permissionMode: acceptEdits
+memory: local
 color: orange
 category: infrastructure
 ---
