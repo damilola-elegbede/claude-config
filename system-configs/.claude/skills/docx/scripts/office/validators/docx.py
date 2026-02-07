@@ -179,6 +179,28 @@ class DOCXSchemaValidator(BaseSchemaValidator):
 
         return count
 
+    @staticmethod
+    def _safe_extract(zip_ref, temp_dir):
+        """Extract ZIP contents with Zip Slip protection."""
+        import os
+
+        for member in zip_ref.infolist():
+            if os.path.isabs(member.filename) or ".." in member.filename.split("/"):
+                raise ValueError(
+                    f"Unsafe ZIP entry rejected: {member.filename}"
+                )
+            target = os.path.normpath(os.path.join(temp_dir, member.filename))
+            if not target.startswith(os.path.normpath(temp_dir) + os.sep) and target != os.path.normpath(temp_dir):
+                raise ValueError(
+                    f"ZIP entry escapes target directory: {member.filename}"
+                )
+            if member.is_dir():
+                os.makedirs(target, exist_ok=True)
+            else:
+                os.makedirs(os.path.dirname(target), exist_ok=True)
+                with zip_ref.open(member) as src, open(target, "wb") as dst:
+                    dst.write(src.read())
+
     def count_paragraphs_in_original(self):
         original = self.original_file
         if original is None:
@@ -189,7 +211,7 @@ class DOCXSchemaValidator(BaseSchemaValidator):
         try:
             with tempfile.TemporaryDirectory() as temp_dir:
                 with zipfile.ZipFile(original, "r") as zip_ref:
-                    zip_ref.extractall(temp_dir)
+                    self._safe_extract(zip_ref, temp_dir)
 
                 doc_xml_path = temp_dir + "/word/document.xml"
                 root = lxml.etree.parse(doc_xml_path).getroot()
