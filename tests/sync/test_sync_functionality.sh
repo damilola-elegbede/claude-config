@@ -73,7 +73,7 @@ echo "Testing directory structure..."
 REQUIRED_DIRS=(
     "$SOURCE_DIR/.claude"
     "$SOURCE_DIR/.claude/agents"
-    "$SOURCE_DIR/.claude/commands"
+    "$SOURCE_DIR/.claude/skills"
 )
 
 for dir in "${REQUIRED_DIRS[@]}"; do
@@ -137,14 +137,14 @@ else
     exit 1
 fi
 
-# Test 9: Test command files sync readiness
-echo "Testing command files..."
+# Test 9: Test skill files sync readiness
+echo "Testing skill files..."
 
-COMMAND_COUNT=$(find "$SOURCE_DIR/.claude/commands" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-if [ "$COMMAND_COUNT" -gt 10 ]; then
-    echo -e "${GREEN}✓${NC} $COMMAND_COUNT commands ready for sync"
+SKILL_COUNT=$(find "$SOURCE_DIR/.claude/skills" -mindepth 1 -maxdepth 1 -type d ! -name '.*' 2>/dev/null | wc -l | tr -d ' ')
+if [ "$SKILL_COUNT" -gt 10 ]; then
+    echo -e "${GREEN}✓${NC} $SKILL_COUNT skills ready for sync"
 else
-    echo -e "${RED}✗${NC} Too few commands found: $COMMAND_COUNT"
+    echo -e "${RED}✗${NC} Too few skills found: $SKILL_COUNT"
     exit 1
 fi
 

@@ -1,18 +1,18 @@
 #!/bin/bash
-# Test for /plan command (Altoid style - simplified)
+# Test for /plan skill (migrated from command)
 
 # Source test utilities
 source "$(dirname "$0")/../utils.sh"
 
-# Test plan command file exists
+# Test plan skill file exists
 test_plan_file_exists() {
-    assert_file_exists "$ORIGINAL_DIR/system-configs/.claude/commands/plan.md" \
-        "Plan command file should exist"
+    assert_file_exists "$ORIGINAL_DIR/system-configs/.claude/skills/plan/SKILL.md" \
+        "Plan skill file should exist"
 }
 
-# Test plan command structure
+# Test plan skill structure
 test_plan_structure() {
-    local plan_file="$ORIGINAL_DIR/system-configs/.claude/commands/plan.md"
+    local plan_file="$ORIGINAL_DIR/system-configs/.claude/skills/plan/SKILL.md"
 
     # Check for YAML frontmatter
     assert_file_contains "$plan_file" "^---" \
@@ -32,11 +32,11 @@ test_plan_structure() {
         "Should have Expected Output section"
 }
 
-# Test plan command content
+# Test plan skill content
 test_plan_content() {
-    local plan_file="$ORIGINAL_DIR/system-configs/.claude/commands/plan.md"
+    local plan_file="$ORIGINAL_DIR/system-configs/.claude/skills/plan/SKILL.md"
 
-    # Check for key behavior descriptions (Altoid style)
+    # Check for key behavior descriptions
     assert_file_contains "$plan_file" "PRD" \
         "Should mention PRD"
 
@@ -48,10 +48,10 @@ test_plan_content() {
 }
 
 # Run all tests
-echo "Testing /plan command..."
+echo "Testing /plan skill..."
 
 test_plan_file_exists || exit 1
 test_plan_structure || exit 1
 test_plan_content || exit 1
 
-echo "All /plan command tests passed!"
+echo "All /plan skill tests passed!"

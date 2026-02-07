@@ -6,13 +6,13 @@ source "$(dirname "$0")/../utils.sh"
 
 # Test push command file exists
 test_push_file_exists() {
-    assert_file_exists "$ORIGINAL_DIR/system-configs/.claude/commands/push.md" \
+    assert_file_exists "$ORIGINAL_DIR/system-configs/.claude/skills/push/SKILL.md" \
         "Push command file should exist"
 }
 
 # Test push command structure
 test_push_structure() {
-    local push_file="$ORIGINAL_DIR/system-configs/.claude/commands/push.md"
+    local push_file="$ORIGINAL_DIR/system-configs/.claude/skills/push/SKILL.md"
 
     # Check for YAML frontmatter
     assert_file_contains "$push_file" "^---" \
@@ -34,7 +34,7 @@ test_push_structure() {
 
 # Test push command content
 test_push_content() {
-    local push_file="$ORIGINAL_DIR/system-configs/.claude/commands/push.md"
+    local push_file="$ORIGINAL_DIR/system-configs/.claude/skills/push/SKILL.md"
 
     # Check for key behavior descriptions
     assert_file_contains "$push_file" "git push" \

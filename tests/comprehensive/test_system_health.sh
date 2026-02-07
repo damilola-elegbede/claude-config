@@ -13,7 +13,7 @@ REQUIRED_DIRS=(
     "system-configs"
     "system-configs/.claude"
     "system-configs/.claude/agents"
-    "system-configs/.claude/commands"
+    "system-configs/.claude/skills"
     "scripts"
     "tests"
     "docs"
@@ -84,10 +84,10 @@ else
     echo -e "${YELLOW}⚠${NC} Command YAML validation reported issues (may be expected for legacy format)"
 fi
 
-# Test 4: Command completeness
-echo "Checking command definitions..."
+# Test 4: Skill completeness
+echo "Checking skill definitions..."
 
-ESSENTIAL_COMMANDS=(
+ESSENTIAL_SKILLS=(
     "test"
     "commit"
     "push"
@@ -95,26 +95,25 @@ ESSENTIAL_COMMANDS=(
     "plan"
     "ship-it"
 )
-# Note: ship-it restored as command (skills don't receive CLI args)
-# Note: sync is project-local (.claude/commands/), not in system-configs
+# Note: sync is project-local (.claude/skills/sync/), not in system-configs
 
-COMMANDS_DIR="$ORIGINAL_DIR/system-configs/.claude/commands"
-MISSING_COMMANDS=()
+SKILLS_DIR="$ORIGINAL_DIR/system-configs/.claude/skills"
+MISSING_SKILLS=()
 
-for cmd in "${ESSENTIAL_COMMANDS[@]}"; do
-    if [ ! -f "$COMMANDS_DIR/$cmd.md" ]; then
-        MISSING_COMMANDS+=("$cmd")
+for skill in "${ESSENTIAL_SKILLS[@]}"; do
+    if [ ! -f "$SKILLS_DIR/$skill/SKILL.md" ]; then
+        MISSING_SKILLS+=("$skill")
     fi
 done
 
-if [ ${#MISSING_COMMANDS[@]} -gt 0 ]; then
-    echo -e "${RED}✗${NC} Missing essential commands:"
-    for cmd in "${MISSING_COMMANDS[@]}"; do
-        echo "  - $cmd"
+if [ ${#MISSING_SKILLS[@]} -gt 0 ]; then
+    echo -e "${RED}✗${NC} Missing essential skills:"
+    for skill in "${MISSING_SKILLS[@]}"; do
+        echo "  - $skill"
     done
     exit 1
 else
-    echo -e "${GREEN}✓${NC} All essential commands present"
+    echo -e "${GREEN}✓${NC} All essential skills present"
 fi
 
 # Test 5: Agent system integrity
@@ -211,8 +210,8 @@ fi
 # Test 8: System metrics
 echo ""
 echo "System Health Metrics:"
-echo "  Total agents: $(find "$AGENTS_DIR" -name "*.md" -not -name "*TEMPLATE*" -not -name "README.md" | wc -l | tr -d ' ') (expected ~12)"
-echo "  Total commands: $(find "$COMMANDS_DIR" -name "*.md" | wc -l | tr -d ' ') (expected ~20)"
+echo "  Total agents: $(find "$AGENTS_DIR" -name "*.md" -not -name "*TEMPLATE*" -not -name "README.md" | wc -l | tr -d ' ') (expected ~15)"
+echo "  Total skills: $(find "$SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d ! -name '.*' 2>/dev/null | wc -l | tr -d ' ') (expected ~35)"
 echo "  Total scripts: $(find "$ORIGINAL_DIR/scripts" -name "*.sh" -o -name "*.py" | wc -l | tr -d ' ')"
 echo "  Total tests: $(find "$ORIGINAL_DIR/tests" -name "*.sh" | wc -l | tr -d ' ')"
 echo "  Documentation files: $(find "$ORIGINAL_DIR/docs" -name "*.md" | wc -l | tr -d ' ')"

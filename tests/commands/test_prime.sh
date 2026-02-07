@@ -6,13 +6,13 @@ source "$(dirname "$0")/../utils.sh"
 
 # Test prime command file exists
 test_prime_file_exists() {
-    assert_file_exists "$ORIGINAL_DIR/system-configs/.claude/commands/prime.md" \
+    assert_file_exists "$ORIGINAL_DIR/system-configs/.claude/skills/prime/SKILL.md" \
         "Prime command file should exist"
 }
 
 # Test prime command structure
 test_prime_structure() {
-    local prime_file="$ORIGINAL_DIR/system-configs/.claude/commands/prime.md"
+    local prime_file="$ORIGINAL_DIR/system-configs/.claude/skills/prime/SKILL.md"
 
     # Check for YAML frontmatter
     assert_file_contains "$prime_file" "^---" \
@@ -34,7 +34,7 @@ test_prime_structure() {
 
 # Test prime command content
 test_prime_content() {
-    local prime_file="$ORIGINAL_DIR/system-configs/.claude/commands/prime.md"
+    local prime_file="$ORIGINAL_DIR/system-configs/.claude/skills/prime/SKILL.md"
 
     # Check for key behavior descriptions (Altoid style)
     assert_file_contains "$prime_file" "repository" \

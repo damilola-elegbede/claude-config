@@ -23,12 +23,12 @@ AGENTS_DIR = PROJECT_ROOT / "system-configs" / ".claude" / "agents"
 COMMANDS_DIR = PROJECT_ROOT / "system-configs" / ".claude" / "commands"
 SKILLS_DIR = PROJECT_ROOT / "system-configs" / ".claude" / "skills"
 
-# Expected counts after optimization (consolidated from 31 agents, 22 commands)
-# Updated: accessibility-auditor added as standalone complex agent
-# Updated: debug, review, ship-it restored as commands (skills don't receive CLI args)
-# Note: sync and skills-import are project-local (.claude/commands/), not in system-configs
-EXPECTED_AGENT_COUNT = 12
-EXPECTED_COMMAND_COUNT = 20
+# Expected counts after optimization
+# Updated: feature-agent, ml-engineer, mobile-engineer added as new agents
+# Commands migrated to skills system - commands directory no longer exists
+# Note: sync and skills-import are project-local (.claude/skills/), not in system-configs
+EXPECTED_AGENT_COUNT = 15
+EXPECTED_SKILL_COUNT = 35
 
 # Non-agent/command documentation files to skip
 NON_AGENT_FILES = [
@@ -53,10 +53,17 @@ def count_agents() -> int:
 
 
 def count_commands() -> int:
-    """Count command files excluding documentation."""
+    """Count command files excluding documentation (legacy, kept for compatibility)."""
     if not COMMANDS_DIR.exists():
         return 0
     return len([f for f in COMMANDS_DIR.glob("*.md") if f.name not in NON_COMMAND_FILES])
+
+
+def count_skills() -> int:
+    """Count skill directories (each dir with SKILL.md is one skill)."""
+    if not SKILLS_DIR.exists():
+        return 0
+    return len([d for d in SKILLS_DIR.iterdir() if d.is_dir() and not d.name.startswith('.')])
 
 
 def get_all_agents() -> list[str]:
@@ -75,12 +82,9 @@ def extract_yaml_section(file_path: Path) -> str | None:
 
 
 def find_orphan_references() -> list[tuple[str, str]]:
-    """Find agent references in commands that don't exist."""
+    """Find agent references in skills (and legacy commands) that don't exist."""
     orphans: list[tuple[str, str]] = []
     valid_agents = set(a.lower() for a in get_all_agents())
-
-    if not COMMANDS_DIR.exists():
-        return orphans
 
     # Only look for explicit agent references in specific contexts
     # This is more targeted to avoid false positives
@@ -90,24 +94,44 @@ def find_orphan_references() -> list[tuple[str, str]]:
         r"use\s+the\s+(\w+-\w+)\s+agent",  # "use the agent-name agent"
     ]
 
-    for cmd_file in COMMANDS_DIR.glob("*.md"):
-        if cmd_file.name in NON_COMMAND_FILES:
-            continue
+    # Check skills directory (directory-based skills with SKILL.md)
+    if SKILLS_DIR.exists():
+        for skill_dir in SKILLS_DIR.iterdir():
+            if not skill_dir.is_dir() or skill_dir.name.startswith('.'):
+                continue
+            skill_file = skill_dir / "SKILL.md"
+            if not skill_file.exists():
+                continue
 
-        content = cmd_file.read_text()
+            content = skill_file.read_text()
 
-        # Find potential agent references
-        for pattern in agent_patterns:
-            matches = re.findall(pattern, content, re.IGNORECASE)
-            for match in matches:
-                match_lower = match.lower()
-                # Must look like an agent name (lowercase-letters-separated-by-hyphens)
-                if re.match(r"^[a-z]+-[a-z]+(?:-[a-z]+)?$", match_lower):
-                    # Skip built-in Task tool agent types
-                    if match_lower in BUILTIN_AGENT_TYPES:
-                        continue
-                    if match_lower not in valid_agents:
-                        orphans.append((cmd_file.name, match))
+            for pattern in agent_patterns:
+                matches = re.findall(pattern, content, re.IGNORECASE)
+                for match in matches:
+                    match_lower = match.lower()
+                    if re.match(r"^[a-z]+-[a-z]+(?:-[a-z]+)?$", match_lower):
+                        if match_lower in BUILTIN_AGENT_TYPES:
+                            continue
+                        if match_lower not in valid_agents:
+                            orphans.append((f"skills/{skill_dir.name}/SKILL.md", match))
+
+    # Legacy: Check commands directory if it still exists
+    if COMMANDS_DIR.exists():
+        for cmd_file in COMMANDS_DIR.glob("*.md"):
+            if cmd_file.name in NON_COMMAND_FILES:
+                continue
+
+            content = cmd_file.read_text()
+
+            for pattern in agent_patterns:
+                matches = re.findall(pattern, content, re.IGNORECASE)
+                for match in matches:
+                    match_lower = match.lower()
+                    if re.match(r"^[a-z]+-[a-z]+(?:-[a-z]+)?$", match_lower):
+                        if match_lower in BUILTIN_AGENT_TYPES:
+                            continue
+                        if match_lower not in valid_agents:
+                            orphans.append((cmd_file.name, match))
 
     return orphans
 
@@ -168,11 +192,12 @@ def test_agent_count():
     )
 
 
-def test_command_count():
-    """Verify expected command count after consolidation."""
-    actual = count_commands()
-    assert actual == EXPECTED_COMMAND_COUNT, (
-        f"Expected {EXPECTED_COMMAND_COUNT} commands, found {actual}"
+def test_skill_count():
+    """Verify expected skill count after migration from commands."""
+    actual = count_skills()
+    assert actual == EXPECTED_SKILL_COUNT, (
+        f"Expected {EXPECTED_SKILL_COUNT} skills, found {actual}. "
+        f"Skills: {sorted([d.name for d in SKILLS_DIR.iterdir() if d.is_dir() and not d.name.startswith('.')])}"
     )
 
 
@@ -194,6 +219,16 @@ def test_yaml_valid():
                 if not parse_yaml(agent_file, "agent"):
                     invalid.append(f"agents/{agent_file.name}")
 
+    # Check skills (directory-based)
+    if SKILLS_DIR.exists():
+        for skill_dir in SKILLS_DIR.iterdir():
+            if skill_dir.is_dir() and not skill_dir.name.startswith('.'):
+                skill_file = skill_dir / "SKILL.md"
+                if skill_file.exists():
+                    if not parse_yaml(skill_file, "command"):
+                        invalid.append(f"skills/{skill_dir.name}/SKILL.md")
+
+    # Legacy: Check commands directory if it still exists
     if COMMANDS_DIR.exists():
         for cmd_file in COMMANDS_DIR.glob("*.md"):
             if cmd_file.name not in NON_COMMAND_FILES:
@@ -223,20 +258,20 @@ def test_consolidated_agents_exist():
         assert removed not in agents, f"Deleted agent {removed} still exists"
 
 
-def test_consolidated_commands_exist():
-    """Verify consolidated commands were created correctly."""
-    if not COMMANDS_DIR.exists():
+def test_consolidated_skills_exist():
+    """Verify consolidated skills were created correctly after migration from commands."""
+    if not SKILLS_DIR.exists():
         return
 
-    commands = [f.stem for f in COMMANDS_DIR.glob("*.md") if f.name not in NON_COMMAND_FILES]
+    skills = [d.name for d in SKILLS_DIR.iterdir() if d.is_dir() and not d.name.startswith('.')]
 
-    # audit command should exist (consolidated from agent-audit + command-audit)
-    assert "audit" in commands, "audit command missing"
+    # audit skill should exist (consolidated from agent-audit + command-audit)
+    assert "audit" in skills, "audit skill missing"
 
-    # Removed commands should not exist
-    removed_commands = ["implementation-plan", "agent-audit", "command-audit"]
-    for removed in removed_commands:
-        assert removed not in commands, f"Deleted command {removed} still exists"
+    # Core skills that must exist (migrated from commands)
+    required_skills = ["plan", "commit", "push", "test", "prime", "verify", "review", "debug", "ship-it"]
+    for skill in required_skills:
+        assert skill in skills, f"Required skill {skill} missing"
 
 
 def main():
@@ -245,12 +280,12 @@ def main():
 
     tests = [
         ("Agent Count", test_agent_count),
-        ("Command Count", test_command_count),
+        ("Skill Count", test_skill_count),
         ("No Orphan References", test_no_orphan_references),
         ("YAML Valid", test_yaml_valid),
         # Routing keywords test removed - Boris Cherny philosophy uses identity/preferences, not routing tables
         ("Consolidated Agents", test_consolidated_agents_exist),
-        ("Consolidated Commands", test_consolidated_commands_exist),
+        ("Consolidated Skills", test_consolidated_skills_exist),
     ]
 
     passed = 0
