@@ -112,7 +112,7 @@ LOOP: max 5 iterations
     RUN: gh pr view $PR_URL --json reviews,reviewRequests
     IF: no reviews yet → WAIT 30 seconds, re-check (max 3 waits)
     IF: changes requested
-      INVOKE: /resolve-comments
+      INVOKE: /resolve-comments --auto
       INVOKE: /commit with review fix description
       INVOKE: /push
       CONTINUE: next iteration

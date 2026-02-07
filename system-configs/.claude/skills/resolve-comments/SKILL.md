@@ -3,7 +3,6 @@ name: resolve-comments
 description: Resolve review comments from any source. Use when addressing PR review feedback.
 argument-hint: "[pr-number] [--code-rabbit|--local|--auto|--dry-run]"
 category: orchestration
-context: fork
 ---
 
 # /resolve-comments
@@ -654,3 +653,14 @@ Summary: 4 to fix, 1 to skip
 - Skipped issues always saved to `.tmp/coderabbit-ignored.json` for `/ship-it`
 - `--auto` skips user interaction and applies all recommended fixes
 - `--dry-run` shows analysis without making any changes
+
+## Context Compatibility
+
+This skill requires user interaction (ASK_USER prompts) and MUST NOT use `context: fork`.
+When invoked from a forked context, callers MUST pass `--auto` to bypass prompts.
+
+| Caller | Flag Required | Reason |
+|--------|---------------|--------|
+| Direct user | None | Interactive triage available |
+| `/review` | `--auto` | Runs in `context: fork` |
+| `/feature-lifecycle` | `--auto` | Autonomous orchestrator |

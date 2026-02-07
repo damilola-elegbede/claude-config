@@ -209,7 +209,7 @@ OUTPUT:
 ```text
 IF: total issues > 0
   OUTPUT: "Launching interactive triage..."
-  Skill tool: skill="resolve-comments", args="--code-rabbit --local"
+  Skill tool: skill="resolve-comments", args="--code-rabbit --local --auto"
 ELSE:
   OUTPUT: "No issues found. Code looks good!"
   END

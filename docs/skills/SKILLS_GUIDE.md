@@ -126,6 +126,36 @@ Skills support advanced features from Claude Code's skill system:
 | `allowed-tools` | Restrict available tools | Security, focus |
 | `user-invocable` | Control manual invocation | Reference skills set to `false` |
 
+## `context: fork` Convention
+
+The `context: fork` frontmatter field runs a skill in an isolated subagent context. This provides
+clean separation but **prevents interactive prompts (`ASK_USER`) from reaching the user**.
+
+### When to Use `context: fork`
+
+- Skills that perform autonomous work without user interaction
+- Complex workflows where context isolation prevents side effects
+- Skills invoked by orchestrators that should not block on prompts
+
+### When NOT to Use `context: fork`
+
+- Skills that use `ASK_USER` prompts for interactive triage or confirmation
+- Skills where user decision-making is part of the core workflow
+
+### Calling Interactive Skills from Forked Contexts
+
+If an orchestrator (`context: fork`) invokes a skill that has interactive prompts, the caller
+MUST pass a flag (e.g., `--auto`) to bypass those prompts. Otherwise the skill will hang
+waiting for user input that can never be delivered.
+
+```text
+# Bad: /review (context: fork) calls /resolve-comments without --auto → hangs
+Skill tool: skill="resolve-comments", args="--code-rabbit --local"
+
+# Good: --auto bypasses unreachable prompts
+Skill tool: skill="resolve-comments", args="--code-rabbit --local --auto"
+```
+
 ## Directory Structure
 
 Skills use a directory-based structure:
