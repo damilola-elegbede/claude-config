@@ -7,13 +7,13 @@ source "$(dirname "$0")/../utils.sh"
 
 # Test sync command file exists (project-local location)
 test_sync_file_exists() {
-    assert_file_exists "$ORIGINAL_DIR/.claude/commands/sync.md" \
+    assert_file_exists "$ORIGINAL_DIR/.claude/skills/sync/SKILL.md" \
         "Sync command file should exist in project-local .claude/commands/"
 }
 
 # Test sync command structure
 test_sync_structure() {
-    local sync_file="$ORIGINAL_DIR/.claude/commands/sync.md"
+    local sync_file="$ORIGINAL_DIR/.claude/skills/sync/SKILL.md"
 
     # Check for YAML frontmatter
     assert_file_contains "$sync_file" "^---" \
@@ -35,7 +35,7 @@ test_sync_structure() {
 
 # Test sync command content
 test_sync_content() {
-    local sync_file="$ORIGINAL_DIR/.claude/commands/sync.md"
+    local sync_file="$ORIGINAL_DIR/.claude/skills/sync/SKILL.md"
 
     # Check for key behavior descriptions
     assert_file_contains "$sync_file" "system-configs/.claude/" \

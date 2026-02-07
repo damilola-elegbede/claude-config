@@ -6,6 +6,7 @@ model: sonnet
 permissionMode: acceptEdits
 color: green
 category: quality
+skills: testing-patterns
 ---
 
 # Test Engineer

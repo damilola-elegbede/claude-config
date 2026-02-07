@@ -9,6 +9,7 @@ permissionMode: acceptEdits
 memory: local
 color: orange
 category: infrastructure
+skills: git-conventions, cicd-patterns
 ---
 
 # DevOps

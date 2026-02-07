@@ -28,6 +28,10 @@ VALID_FIELDS = {
     'user-invocable',    # Whether user can invoke directly (default: true)
     'disable-model-invocation',  # Prevent model from invoking
     'allowed-tools',     # Restrict available tools
+    'argument-hint',     # Argument hints for autocomplete
+    'model',             # Model override
+    'hooks',             # Lifecycle hooks
+    'license',           # License info (Anthropic imported skills)
 }
 
 # Valid categories for skills
@@ -56,6 +60,9 @@ VALID_AGENTS = [
     'devops',
     'data-engineer',
     'tech-writer',
+    'mobile-engineer',
+    'ml-engineer',
+    'feature-agent',
 ]
 
 # Valid context values
@@ -170,6 +177,23 @@ def parse_yaml_structure(yaml_text, skill_name=None):
     return issues, fields_found
 
 
+def check_fork_askuser_conflict(file_path, fields):
+    """Check if a skill uses context: fork AND contains ASK_USER prompts."""
+    if fields.get('context') != 'fork':
+        return None
+
+    with open(file_path, 'r') as f:
+        content = f.read()
+
+    if 'ASK_USER' in content:
+        return (
+            "Skill uses 'context: fork' but contains ASK_USER prompts. "
+            "Forked contexts cannot relay interactive prompts to the user. "
+            "Remove 'context: fork' or ensure callers pass '--auto' to bypass prompts."
+        )
+    return None
+
+
 def validate_skill_directory(skill_dir):
     """Validate a skill in directory format (skills/<name>/SKILL.md)."""
     issues = []
@@ -186,8 +210,13 @@ def validate_skill_directory(skill_dir):
         issues.append("Missing YAML front-matter (must start with ---)")
         return issues
 
-    yaml_issues, _ = parse_yaml_structure(yaml_text, skill_name)
+    yaml_issues, fields = parse_yaml_structure(yaml_text, skill_name)
     issues.extend(yaml_issues)
+
+    # Check for context: fork + ASK_USER conflict
+    fork_conflict = check_fork_askuser_conflict(skill_file, fields)
+    if fork_conflict:
+        issues.append(fork_conflict)
 
     return issues
 
@@ -201,8 +230,13 @@ def validate_skill_file(file_path):
         issues.append("Missing YAML front-matter (must start with ---)")
         return issues
 
-    yaml_issues, _ = parse_yaml_structure(yaml_text)
+    yaml_issues, fields = parse_yaml_structure(yaml_text)
     issues.extend(yaml_issues)
+
+    # Check for context: fork + ASK_USER conflict
+    fork_conflict = check_fork_askuser_conflict(file_path, fields)
+    if fork_conflict:
+        issues.append(fork_conflict)
 
     return issues
 

@@ -38,11 +38,11 @@ resolve_verify_cmd_path() {
     echo "WAVE9-DEBUG: Entered resolve_verify_cmd_path function" >&2
     local script_dir="$1"
     echo "WAVE9-DEBUG: Function parameter script_dir='$script_dir'" >&2
-    
+
     # Primary path calculation
-    local primary_path="$script_dir/../../system-configs/.claude/commands/verify.md"
+    local primary_path="$script_dir/../../system-configs/.claude/skills/verify/SKILL.md"
     echo "WAVE9-DEBUG: Primary path='$primary_path'" >&2
-    
+
     # Fallback 1: Try to find repository root
     echo "WAVE9-DEBUG: Attempting git rev-parse" >&2
     local repo_root
@@ -50,24 +50,24 @@ resolve_verify_cmd_path() {
     echo "WAVE9-DEBUG: repo_root='$repo_root'" >&2
     local fallback1_path=""
     if [[ -n "$repo_root" ]]; then
-        fallback1_path="$repo_root/system-configs/.claude/commands/verify.md"
+        fallback1_path="$repo_root/system-configs/.claude/skills/verify/SKILL.md"
         echo "WAVE9-DEBUG: fallback1_path='$fallback1_path'" >&2
     fi
-    
+
     # Fallback 2: Working directory relative
-    local fallback2_path="system-configs/.claude/commands/verify.md"
+    local fallback2_path="system-configs/.claude/skills/verify/SKILL.md"
     echo "WAVE9-DEBUG: fallback2_path='$fallback2_path'" >&2
-    
+
     # Fallback 3: Absolute current directory
     local current_dir
     current_dir=$(pwd)
     echo "WAVE9-DEBUG: current_dir='$current_dir'" >&2
-    local fallback3_path="$current_dir/system-configs/.claude/commands/verify.md"
+    local fallback3_path="$current_dir/system-configs/.claude/skills/verify/SKILL.md"
     echo "WAVE9-DEBUG: fallback3_path='$fallback3_path'" >&2
-    
+
     # Test paths in order and return the first valid one
     local paths=("$primary_path" "$fallback1_path" "$fallback2_path" "$fallback3_path")
-    
+
     echo "WAVE9-DEBUG: Testing paths for file existence:" >&2
     for path in "${paths[@]}"; do
         echo "WAVE9-DEBUG: Testing path='$path'" >&2
@@ -80,7 +80,7 @@ resolve_verify_cmd_path() {
             echo "WAVE9-DEBUG: Path not valid or not found" >&2
         fi
     done
-    
+
     # If none found, return primary path for error reporting
     echo "WAVE9-DEBUG: No valid paths found, returning primary path" >&2
     echo "$primary_path"
@@ -98,16 +98,21 @@ readonly TEST_RESULTS_DIR="/tmp/verify-test-results-$$"
 # CI environment detection and optimization
 if [[ "${CI:-}" == "true" ]] || [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
     readonly CI_MODE=true
+    # shellcheck disable=SC2034
     readonly TEST_TIMEOUT=30  # Seconds for CI environment
+    # shellcheck disable=SC2034
     readonly SKIP_INTENSIVE_TESTS=true
     echo "ℹ CI environment detected - optimizing test execution"
 else
     readonly CI_MODE=false
+    # shellcheck disable=SC2034
     readonly TEST_TIMEOUT=60
+    # shellcheck disable=SC2034
     readonly SKIP_INTENSIVE_TESTS=false
 fi
 
 # Global flag for infrastructure availability
+# shellcheck disable=SC2034
 INFRASTRUCTURE_AVAILABLE=false
 
 # Test counters
@@ -147,7 +152,7 @@ run_test() {
 
     # Temporarily disable set -e to allow test debugging output
     set +e
-    
+
     # Use different function call method for better compatibility
     if type -t "$test_func" >/dev/null 2>&1; then
         echo "WAVE9-DEBUG: Function '$test_func' found, about to execute" >&2
@@ -158,7 +163,7 @@ run_test() {
         echo "ERROR: Test function '$test_func' not found or not executable"
         local test_result=1
     fi
-    
+
     set -e
 
     if [[ "${CI:-}" == "true" ]] || [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
@@ -210,6 +215,7 @@ setup_test_infrastructure() {
     rm -f "$test_file"
 
     print_info "Test infrastructure created in $TEST_RESULTS_DIR"
+    # shellcheck disable=SC2034
     INFRASTRUCTURE_AVAILABLE=true
     return 0
 }
@@ -233,34 +239,34 @@ cleanup_test_infrastructure() {
 test_verify_file_exists() {
     echo "WAVE9-DEBUG: ENTERED test_verify_file_exists() FUNCTION at $(date '+%H:%M:%S')" >&2
     echo "WAVE9-DEBUG: VERIFY_CMD_FILE='$VERIFY_CMD_FILE'" >&2
-    
+
     # Enhanced debugging output visible even with set -e
     if [[ "${CI:-}" == "true" ]] || [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
         echo "DEBUG PATH RESOLUTION:"
-        echo "  SCRIPT_DIR: '"$SCRIPT_DIR"'"
+        echo "  SCRIPT_DIR: '${SCRIPT_DIR}'"
         echo "  Computed absolute SCRIPT_DIR: '$(cd "$SCRIPT_DIR" 2>/dev/null && pwd || echo 'FAILED')'"
-        echo "  VERIFY_CMD_FILE: '"$VERIFY_CMD_FILE"'"
+        echo "  VERIFY_CMD_FILE: '${VERIFY_CMD_FILE}'"
         echo "  File exists check: $(test -f "$VERIFY_CMD_FILE" && echo 'YES' || echo 'NO')"
         echo "  Current working directory: '$(pwd)'"
-        
+
         # Show what we can find in the expected directory structure
         local verify_dir
         verify_dir=$(dirname "$VERIFY_CMD_FILE")
-        echo "  Verify command directory: '"$verify_dir"'"
+        echo "  Verify command directory: '${verify_dir}'"
         echo "  Directory exists: $(test -d "$verify_dir" && echo 'YES' || echo 'NO')"
-        
+
         if [[ -d "$verify_dir" ]]; then
             echo "  Directory contents:"
             ls -la "$verify_dir" 2>/dev/null | sed 's/^/    /' || echo "    (ls failed)"
         fi
     fi
-    
+
     echo "WAVE9-DEBUG: About to test file existence: '$VERIFY_CMD_FILE'" >&2
     if [[ -f "$VERIFY_CMD_FILE" ]]; then
         # Additional success validation
         if [[ "${CI:-}" == "true" ]]; then
             echo "SUCCESS: File found and accessible"
-            echo "  Final path: '"$VERIFY_CMD_FILE"'"
+            echo "  Final path: '${VERIFY_CMD_FILE}'"
             echo "  File size: $(wc -c < "$VERIFY_CMD_FILE" 2>/dev/null || echo 'unknown') bytes"
             echo "  File permissions: $(ls -l "$VERIFY_CMD_FILE" 2>/dev/null | awk '{print $1}' || echo 'unknown')"
         fi
@@ -271,7 +277,7 @@ test_verify_file_exists() {
         if [[ "${CI:-}" == "true" ]]; then
             echo "FAILURE: Could not locate verify.md file"
             echo "  This usually indicates a CI path resolution issue"
-            echo "  The test expects the file at: '"$VERIFY_CMD_FILE"'"
+            echo "  The test expects the file at: '${VERIFY_CMD_FILE}'"
             echo "  Current working directory: '$(pwd)'"
             echo "  Available files in current directory:"
             ls -la 2>/dev/null | head -20 | sed 's/^/    /' || echo "    (ls failed)"
@@ -316,20 +322,20 @@ try:
         print('Empty YAML frontmatter')
         sys.exit(1)
 
-    # Check required fields
-    required_fields = ['description', 'argument-hint', 'thinking-level', 'thinking-tokens']
+    # Check required fields for skill format
+    required_fields = ['description', 'argument-hint', 'name', 'category']
     for field in required_fields:
         if field not in yaml_content:
             print(f'Missing required field: {field}')
             sys.exit(1)
 
-    # Verify specific values
-    if yaml_content.get('thinking-level') != 'think harder':
-        print('Invalid thinking-level value')
+    # Verify specific values for skill format
+    if yaml_content.get('name') != 'verify':
+        print('Invalid name value')
         sys.exit(1)
 
-    if yaml_content.get('thinking-tokens') != 8000:
-        print('Invalid thinking-tokens value')
+    if yaml_content.get('category') != 'workflow':
+        print('Invalid category value')
         sys.exit(1)
 
 except FileNotFoundError:
@@ -351,7 +357,7 @@ except Exception as e:
 # Simple version that just runs the two critical tests
 run_basic_test_suite() {
     echo "WAVE9-DEBUG: Entered run_basic_test_suite function" >&2
-    
+
     echo -e "${YELLOW}============================================================${NC}"
     echo -e "${YELLOW}  /VERIFY COMMAND TEST SUITE (WAVE 9 DEBUGGING - FIXED)${NC}"
     echo -e "${YELLOW}============================================================${NC}"
@@ -360,7 +366,7 @@ run_basic_test_suite() {
     print_section "BASIC COMMAND STRUCTURE TESTS"
     echo "WAVE9-DEBUG: About to run file existence test" >&2
     run_test "Verify command file exists" test_verify_file_exists
-    
+
     echo "WAVE9-DEBUG: About to run YAML validation test" >&2
     run_test "YAML frontmatter validation" test_yaml_frontmatter_valid
 

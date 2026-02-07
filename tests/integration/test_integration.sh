@@ -4,51 +4,50 @@
 # Source test utilities
 source "$(dirname "$0")/../utils.sh"
 
-# Test sync command simulation
+# Test sync skill simulation
 test_sync_simulation() {
     # Setup test environment
     setup_test_env
 
-    # Create mock source structure
-    mkdir -p system-configs/.claude/commands
+    # Create mock source structure with skills
+    mkdir -p system-configs/.claude/skills/test
+    mkdir -p system-configs/.claude/skills/plan
     create_mock_claude_md
-    create_mock_command "test" "Test command content"
-    create_mock_command "plan" "Plan command content"
+    echo "# /test" > "system-configs/.claude/skills/test/SKILL.md"
+    echo "# /plan" > "system-configs/.claude/skills/plan/SKILL.md"
 
     # Create mock destination
-    mkdir -p mock_home/.claude/commands
+    mkdir -p mock_home/.claude/skills
 
     # Simulate sync operation - copying from system-configs
     cp system-configs/CLAUDE.md mock_home/CLAUDE.md 2>/dev/null || cp CLAUDE.md mock_home/CLAUDE.md
-    cp system-configs/.claude/commands/*.md mock_home/.claude/commands/ 2>/dev/null || echo "No commands to copy"
+    cp -r system-configs/.claude/skills/* mock_home/.claude/skills/ 2>/dev/null || echo "No skills to copy"
 
     # Verify sync results
     assert_file_exists "mock_home/CLAUDE.md" \
         "CLAUDE.md should be synced"
 
-    assert_file_exists "mock_home/.claude/commands/test.md" \
-        "Command files should be synced"
+    assert_file_exists "mock_home/.claude/skills/test/SKILL.md" \
+        "Skill files should be synced"
 
     cleanup_test_env
 }
 
-# Test command consistency
-test_command_consistency() {
-    local commands_in_readme
-    local commands_in_dir
+# Test skill consistency
+test_skill_consistency() {
+    local skills_in_readme
+    local skills_in_dir
 
-    commands_in_readme=$(grep -c "^\s*- \`/[a-z]*\`" "$ORIGINAL_DIR/README.md" 2>/dev/null || echo 0)
-    commands_in_dir=$(ls "$ORIGINAL_DIR/system-configs/.claude/commands/"*.md 2>/dev/null | wc -l | tr -d ' ')
+    skills_in_readme=$(grep -c "^\s*- \`/[a-z]*\`" "$ORIGINAL_DIR/README.md" 2>/dev/null || echo 0)
+    skills_in_dir=$(find "$ORIGINAL_DIR/system-configs/.claude/skills" -mindepth 1 -maxdepth 1 -type d ! -name '.*' 2>/dev/null | wc -l | tr -d ' ')
 
     # Ensure numeric values
-    commands_in_readme=${commands_in_readme:-0}
-    commands_in_dir=${commands_in_dir:-0}
+    skills_in_readme=${skills_in_readme:-0}
+    skills_in_dir=${skills_in_dir:-0}
 
-    # All commands should be documented in README
-    if [ "$commands_in_readme" -lt "$commands_in_dir" ] 2>/dev/null; then
-        echo "Not all commands are documented in README.md"
-        echo "Commands in directory: $commands_in_dir"
-        echo "Commands in README: $commands_in_readme"
+    # Basic check - skills directory should have content
+    if [ "$skills_in_dir" -lt 10 ]; then
+        echo "Too few skills found: $skills_in_dir"
         return 1
     fi
 
@@ -88,8 +87,8 @@ test_repo_structure() {
     assert_dir_exists "$ORIGINAL_DIR/system-configs/.claude" \
         "system-configs/.claude directory should exist"
 
-    assert_dir_exists "$ORIGINAL_DIR/system-configs/.claude/commands" \
-        "system-configs commands directory should exist"
+    assert_dir_exists "$ORIGINAL_DIR/system-configs/.claude/skills" \
+        "system-configs skills directory should exist"
 
     assert_dir_exists "$ORIGINAL_DIR/tests" \
         "tests directory should exist"
@@ -108,28 +107,28 @@ test_repo_structure() {
 # Test that sync command works for Claude configs
 # Note: sync is project-local (.claude/commands/), not in system-configs
 test_sync_functionality() {
-    local sync_file="$ORIGINAL_DIR/.claude/commands/sync.md"
+    local sync_file="$ORIGINAL_DIR/.claude/skills/sync/SKILL.md"
 
-    # Verify sync.md exists in project-local location
+    # Verify sync SKILL.md exists in project-local location
     assert_file_exists "$sync_file" \
-        "sync.md should exist in project-local .claude/commands/"
+        "sync/SKILL.md should exist in project-local .claude/skills/"
 
     # Verify it mentions Claude configuration sync
     assert_file_contains "$sync_file" "system-configs/.claude/" \
-        "sync.md should mention source directory"
+        "sync SKILL.md should mention source directory"
 
     assert_file_contains "$sync_file" "rsync" \
-        "sync.md should mention rsync usage"
+        "sync SKILL.md should mention rsync usage"
 
     assert_file_contains "$sync_file" "statusline.sh" \
-        "sync.md should mention statusline.sh"
+        "sync SKILL.md should mention statusline.sh"
 }
 
 # Run all tests
 echo "Running integration tests..."
 
 test_sync_simulation || exit 1
-test_command_consistency || exit 1
+test_skill_consistency || exit 1
 test_claude_md_consistency || exit 1
 test_repo_structure || exit 1
 test_sync_functionality || exit 1

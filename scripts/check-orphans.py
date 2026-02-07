@@ -84,6 +84,13 @@ def extract_agent_references(content):
                 "argument-hint", "thinking-level", "thinking-tokens",
                 "mcp-server", "multi-cloud", "multi-agent", "multi-step",
                 "high-performance", "open-ended", "real-time", "well-formed",
+                # CI/CD and testing patterns (not agent names)
+                "skip-ci", "integration-test", "unit-test", "paths-ignore",
+                # Technical compound terms (not agent names)
+                "docx-js", "low-contrast", "scroll-triggering", "read-only",
+                "high-level", "low-level", "built-in", "opt-in", "opt-out",
+                "run-time", "compile-time", "type-safe", "type-check",
+                "hot-reload", "hot-module", "tree-shaking",
             ]
             # Skip numbered agent references (e.g., debugger-2, test-engineer-4)
             if re.match(r"^[\w-]+-\d+$", match.lower()):
@@ -94,18 +101,21 @@ def extract_agent_references(content):
     return references
 
 
-def check_commands_for_orphans(valid_agents, verbose=False):
-    """Check command files for orphaned agent references."""
+def check_skills_for_orphans(valid_agents, verbose=False):
+    """Check skill files for orphaned agent references."""
     orphans = []
 
-    if not COMMANDS_DIR.exists():
+    if not SKILLS_DIR.exists():
         return orphans
 
-    for cmd_file in COMMANDS_DIR.glob("*.md"):
-        if cmd_file.name in NON_COMMAND_FILES:
+    for skill_dir in SKILLS_DIR.iterdir():
+        if not skill_dir.is_dir() or skill_dir.name.startswith('.'):
+            continue
+        skill_file = skill_dir / "SKILL.md"
+        if not skill_file.exists():
             continue
 
-        content = cmd_file.read_text()
+        content = skill_file.read_text()
         references = extract_agent_references(content)
 
         for ref in references:
@@ -113,13 +123,54 @@ def check_commands_for_orphans(valid_agents, verbose=False):
                 # Additional filtering for false positives
                 if ref not in ["debug", "test", "build", "deploy", "review"]:
                     orphans.append({
-                        "file": f"commands/{cmd_file.name}",
+                        "file": f"skills/{skill_dir.name}/SKILL.md",
                         "reference": ref,
                         "type": "agent"
                     })
 
         if verbose and references:
-            print(f"  {cmd_file.name}: found {len(references)} agent references")
+            print(f"  {skill_dir.name}: found {len(references)} agent references")
+
+    # Legacy: Check commands directory if it still exists
+    if COMMANDS_DIR.exists():
+        for cmd_file in COMMANDS_DIR.glob("*.md"):
+            if cmd_file.name in NON_COMMAND_FILES:
+                continue
+
+            content = cmd_file.read_text()
+            references = extract_agent_references(content)
+
+            for ref in references:
+                if ref not in valid_agents and len(ref) > 3:
+                    if ref not in ["debug", "test", "build", "deploy", "review"]:
+                        orphans.append({
+                            "file": f"commands/{cmd_file.name}",
+                            "reference": ref,
+                            "type": "agent"
+                        })
+
+            if verbose and references:
+                print(f"  {cmd_file.name}: found {len(references)} agent references")
+
+    # Legacy: Check flat-file skills (skills/*.md) in addition to directory-based skills
+    for skill_file in SKILLS_DIR.glob("*.md"):
+        if skill_file.name.startswith('.') or skill_file.name in NON_SKILL_FILES:
+            continue
+
+        content = skill_file.read_text()
+        references = extract_agent_references(content)
+
+        for ref in references:
+            if ref not in valid_agents and len(ref) > 3:
+                if ref not in ["debug", "test", "build", "deploy", "review"]:
+                    orphans.append({
+                        "file": f"skills/{skill_file.name}",
+                        "reference": ref,
+                        "type": "agent"
+                    })
+
+        if verbose and references:
+            print(f"  {skill_file.name}: found {len(references)} agent references")
 
     return orphans
 
@@ -212,10 +263,10 @@ def main():
 
     all_issues = []
 
-    # Check commands
-    print("Checking commands...")
-    cmd_orphans = check_commands_for_orphans(valid_agents, verbose)
-    all_issues.extend(cmd_orphans)
+    # Check skills (and legacy commands if they exist)
+    print("Checking skills...")
+    skill_orphans = check_skills_for_orphans(valid_agents, verbose)
+    all_issues.extend(skill_orphans)
 
     # Check CLAUDE.md
     print("Checking CLAUDE.md...")
@@ -234,7 +285,7 @@ def main():
         print("No orphaned references found")
         print(f"\nValidated:")
         print(f"  - {len(valid_agents)} agents")
-        print(f"  - {len(list(COMMANDS_DIR.glob('*.md')) if COMMANDS_DIR.exists() else [])} commands")
+        print(f"  - {len([d for d in SKILLS_DIR.iterdir() if d.is_dir() and not d.name.startswith('.')]) if SKILLS_DIR.exists() else 0} skills")
         return 0
 
     print(f"Found {len(all_issues)} issues:\n")

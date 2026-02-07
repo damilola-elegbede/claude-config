@@ -33,7 +33,7 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential python3-dev
+        sudo apt-get install -y build-essential python3-dev libxml2-dev libxslt-dev
       timeout-minutes: 3
 
     - name: Install Python dependencies with version pinning
@@ -181,13 +181,13 @@ jobs:
           "system-configs/CLAUDE.md"
           "LICENSE"
           "tests/test.sh"
-          "system-configs/.claude/commands/plan.md"
-          "system-configs/.claude/commands/commit.md"
-          "system-configs/.claude/commands/push.md"
-          "system-configs/.claude/commands/test.md"
-          "system-configs/.claude/commands/prime.md"
-          "system-configs/.claude/commands/verify.md"
-          # Note: sync.md is project-local (.claude/commands/), not in system-configs
+          "system-configs/.claude/skills/plan/SKILL.md"
+          "system-configs/.claude/skills/commit/SKILL.md"
+          "system-configs/.claude/skills/push/SKILL.md"
+          "system-configs/.claude/skills/test/SKILL.md"
+          "system-configs/.claude/skills/prime/SKILL.md"
+          "system-configs/.claude/skills/verify/SKILL.md"
+          # Note: sync is project-local (.claude/skills/sync/), not in system-configs
         )
 
         for file in "${required_files[@]}"; do
@@ -353,11 +353,10 @@ jobs:
         actual_agents=$(find system-configs/.claude/agents -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
         echo "Actual agents deployed: $actual_agents"
 
-        # Count actual commands (excluding special files)
-        actual_commands=$(find system-configs/.claude/commands -name "*.md" \
-          ! -name "README.md" ! -name "*TEMPLATE*" ! -name "*CATEGORIES*" \
-          ! -name "*AUDIT*" ! -name "sync.md" 2>/dev/null | wc -l | tr -d ' ')
-        echo "Actual commands deployed: $actual_commands"
+        # Count actual skills (directory-based, each dir with SKILL.md)
+        actual_skills=$(find system-configs/.claude/skills -mindepth 1 -maxdepth 1 -type d \
+          ! -name ".*" 2>/dev/null | wc -l | tr -d ' ')
+        echo "Actual skills deployed: $actual_skills"
 
         # Count actual skills (both directory-based and legacy flat-file)
         actual_skills=$(find system-configs/.claude/skills -mindepth 1 -maxdepth 1 \

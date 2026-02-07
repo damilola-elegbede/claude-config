@@ -31,7 +31,7 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential python3-dev
+        sudo apt-get install -y build-essential python3-dev libxml2-dev libxslt-dev
 
     - name: Install Python dependencies with version pinning
       run: |
@@ -115,59 +115,129 @@ jobs:
         ./tests/test.sh
 
     - name: Check if sync needed
-      if: contains(steps.changed-files.outputs.all_changed_files, 'system-configs/CLAUDE.md') || contains(steps.changed-files.outputs.all_changed_files, 'system-configs/.claude/commands/')
+      if: contains(steps.changed-files.outputs.all_changed_files, 'system-configs/CLAUDE.md') || contains(steps.changed-files.outputs.all_changed_files, 'system-configs/.claude/skills/')
       run: |
         echo "⚠️ Changes detected in configuration files!"
         echo "Remember to run /sync command after merging to update your local configuration."
 
-  command-validation:
-    name: Validate Commands
+  skill-validation:
+    name: Validate Skills
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v6
 
-    - name: Validate command structure
+    - name: Validate skill structure
       run: |
-        echo "Validating command files..."
+        echo "Validating skill files..."
 
-        for cmd in system-configs/.claude/commands/*.md; do
-          # Skip README.md file
-          if [[ "$(basename "$cmd")" == "README.md" ]]; then
-            echo "Skipping $cmd (documentation file)"
+        skills_dir="system-configs/.claude/skills"
+
+        if [ ! -d "$skills_dir" ]; then
+          echo "❌ Skills directory not found: $skills_dir"
+          exit 1
+        fi
+
+        found_skills=0
+
+        for skill_dir in "$skills_dir"/*/; do
+          # Skip if glob didn't match
+          [ -d "$skill_dir" ] || continue
+
+          skill_name=$(basename "$skill_dir")
+
+          # Skip hidden directories
+          if [[ "$skill_name" == .* ]]; then
             continue
           fi
 
-          echo "Checking $cmd..."
+          skill_file="$skill_dir/SKILL.md"
 
-          # Check for required sections in the new template structure
-          if ! grep -q "^# /" "$cmd"; then
-            echo "❌ Missing command header starting with '# /' in $cmd"
+          if [ ! -f "$skill_file" ]; then
+            echo "❌ Missing SKILL.md in $skill_name/"
             exit 1
           fi
 
-          if ! grep -q "^## Usage" "$cmd"; then
-            echo "❌ Missing Usage section in $cmd"
+          echo "Checking $skill_name/SKILL.md..."
+          found_skills=$((found_skills + 1))
+
+          # --- Common checks (all skill types) ---
+
+          # Check for YAML front-matter
+          if ! head -1 "$skill_file" | grep -q "^---"; then
+            echo "❌ Missing YAML front-matter (must start with ---) in $skill_name/SKILL.md"
             exit 1
           fi
 
-          if ! grep -q "^## Description" "$cmd"; then
-            echo "❌ Missing Description section in $cmd"
+          # Check for required front-matter fields
+          if ! grep -q "^name:" "$skill_file"; then
+            echo "❌ Missing 'name' field in front-matter of $skill_name/SKILL.md"
             exit 1
           fi
 
-          if ! grep -q "^## Expected Output" "$cmd"; then
-            echo "❌ Missing Expected Output section in $cmd"
+          if ! grep -q "^description:" "$skill_file"; then
+            echo "❌ Missing 'description' field in front-matter of $skill_name/SKILL.md"
             exit 1
           fi
 
-          # Note: Behavior section is now optional in the new template
+          # Check for at least one ## section (all skill types must have content structure)
+          if ! grep -q "^## " "$skill_file"; then
+            echo "❌ Missing markdown sections (no ## headings) in $skill_name/SKILL.md"
+            exit 1
+          fi
 
-          echo "✓ $cmd structure is valid"
+          # --- Type-specific checks ---
+
+          is_reference=false
+          is_imported=false
+          grep -q "^user-invocable: false" "$skill_file" && is_reference=true
+          grep -q "^license:" "$skill_file" && is_imported=true
+
+          if [ "$is_reference" = true ]; then
+            # Reference skills: must have a top-level heading (# Name Reference)
+            if ! grep -q "^# " "$skill_file"; then
+              echo "❌ Missing top-level heading (# ) in reference skill $skill_name/SKILL.md"
+              exit 1
+            fi
+            echo "✓ $skill_name/SKILL.md (reference skill)"
+
+          elif [ "$is_imported" = true ]; then
+            # Imported skills: validated by common checks above (front-matter + ## sections)
+            echo "✓ $skill_name/SKILL.md (imported skill)"
+
+          else
+            # User-invocable skills: must have /name header
+            if ! grep -q "^# /" "$skill_file"; then
+              echo "❌ Missing skill header starting with '# /' in $skill_name/SKILL.md"
+              exit 1
+            fi
+
+            # Must have either (Usage + Description) or phase-based structure (## Phase)
+            if grep -q "^## Phase" "$skill_file"; then
+              # Phase-based orchestration skill (e.g., feature-lifecycle)
+              echo "✓ $skill_name/SKILL.md (phase-based orchestration skill)"
+            else
+              if ! grep -q "^## Usage" "$skill_file"; then
+                echo "❌ Missing '## Usage' section in $skill_name/SKILL.md"
+                exit 1
+              fi
+
+              if ! grep -q "^## Description" "$skill_file"; then
+                echo "❌ Missing '## Description' section in $skill_name/SKILL.md"
+                exit 1
+              fi
+              echo "✓ $skill_name/SKILL.md (user-invocable skill)"
+            fi
+          fi
         done
 
-        echo "All command files are properly structured!"
+        if [ "$found_skills" -eq 0 ]; then
+          echo "❌ No skills found in $skills_dir"
+          exit 1
+        fi
+
+        echo "All $found_skills skill files are properly structured!"
 
   security-check:
     name: Security Scan

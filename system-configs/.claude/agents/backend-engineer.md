@@ -8,6 +8,7 @@ thinking-tokens: 10000
 permissionMode: acceptEdits
 color: blue
 category: development
+skills: api-design-patterns
 ---
 
 # Backend Engineer

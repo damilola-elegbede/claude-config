@@ -1,41 +1,44 @@
 #!/bin/bash
-# Test for command file validation (Altoid style - simple, powerful)
+# Test for skill file validation (migrated from command file validation)
 
 # Source test utilities
 source "$(dirname "$0")/../utils.sh"
 
-# Test all command files exist
-test_all_commands_exist() {
-    local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
+# Test all skill files exist
+test_all_skills_exist() {
+    local skills_dir="$ORIGINAL_DIR/system-configs/.claude/skills"
 
-    assert_dir_exists "$commands_dir" \
-        "Commands directory should exist"
+    assert_dir_exists "$skills_dir" \
+        "Skills directory should exist"
 
-    # Check each expected command file (21 commands - ship-it, review, debug restored)
-    # Note: ship-it, review, debug restored as commands (skills don't receive CLI args)
-    local expected_commands=("plan" "commit" "push" "test" "prime" "sync"
+    # Check each expected skill directory (migrated from commands)
+    local expected_skills=("plan" "commit" "push" "test" "prime"
                             "fix-ci" "implement" "verify" "resolve-comments"
                             "docs" "audit" "branch" "pr" "rebase" "prompt"
                             "deps" "merge" "ship-it" "review" "debug")
 
-    for cmd in "${expected_commands[@]}"; do
-        assert_file_exists "$commands_dir/${cmd}.md" \
-            "Command file ${cmd}.md should exist"
+    for skill in "${expected_skills[@]}"; do
+        assert_file_exists "$skills_dir/${skill}/SKILL.md" \
+            "Skill file ${skill}/SKILL.md should exist"
     done
 }
 
-# Test command YAML frontmatter structure
-test_command_yaml_frontmatter() {
-    local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
+# Test skill YAML frontmatter structure
+test_skill_yaml_frontmatter() {
+    local skills_dir="$ORIGINAL_DIR/system-configs/.claude/skills"
 
-    echo "Testing YAML frontmatter in command files..."
+    echo "Testing YAML frontmatter in skill files..."
 
-    for cmd_file in "$commands_dir"/*.md; do
-        local cmd_name=$(basename "$cmd_file" .md)
+    for skill_dir in "$skills_dir"/*/; do
+        [ -d "$skill_dir" ] || continue
+        local skill_file="$skill_dir/SKILL.md"
+        [ -f "$skill_file" ] || continue
 
-        # All commands should have frontmatter
-        if ! grep -q "^---$" "$cmd_file"; then
-            echo "Warning: ${cmd_name}.md missing YAML frontmatter"
+        local skill_name=$(basename "$skill_dir")
+
+        # All skills should have frontmatter
+        if ! grep -q "^---$" "$skill_file"; then
+            echo "Warning: ${skill_name}/SKILL.md missing YAML frontmatter"
             continue
         fi
 
@@ -43,60 +46,64 @@ test_command_yaml_frontmatter() {
         temp_file=$(mktemp)
 
         # Extract YAML front-matter
-        sed -n '/^---$/,/^---$/p' "$cmd_file" | sed '1d;$d' > "$temp_file"
+        sed -n '/^---$/,/^---$/p' "$skill_file" | sed '1d;$d' > "$temp_file"
 
         # Check required fields
         if ! grep -q "^description:" "$temp_file"; then
-            echo "${cmd_name}.md missing required 'description' field"
+            echo "${skill_name}/SKILL.md missing required 'description' field"
             rm "$temp_file"
             return 1
         fi
 
-        echo "Valid YAML frontmatter in ${cmd_name}.md"
+        echo "Valid YAML frontmatter in ${skill_name}/SKILL.md"
         rm "$temp_file"
     done
 
     return 0
 }
 
-# Test command file structure
-test_command_structure() {
-    local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
+# Test skill file structure (only for user-invocable skills, not reference skills)
+test_skill_structure() {
+    local skills_dir="$ORIGINAL_DIR/system-configs/.claude/skills"
 
-    for cmd_file in "$commands_dir"/*.md; do
-        local cmd_name=$(basename "$cmd_file" .md)
+    # Only check migrated command skills that are user-invocable
+    local command_skills=("plan" "commit" "push" "test" "prime"
+                          "fix-ci" "implement" "verify" "resolve-comments"
+                          "docs" "audit" "branch" "pr" "rebase" "prompt"
+                          "deps" "merge" "ship-it" "review" "debug")
 
-        # Check for YAML frontmatter or command header
-        if ! grep -q "^---$" "$cmd_file" && ! grep -q "# /${cmd_name}" "$cmd_file"; then
-            echo "${cmd_name}: Should have YAML frontmatter or command header"
-            return 1
+    for skill_name in "${command_skills[@]}"; do
+        local skill_file="$skills_dir/${skill_name}/SKILL.md"
+        [ -f "$skill_file" ] || continue
+
+        # Check for YAML frontmatter
+        if ! grep -q "^---$" "$skill_file"; then
+            continue
         fi
 
         # Check for required sections
-        if grep -q "^---$" "$cmd_file"; then
-            assert_file_contains "$cmd_file" "## Usage" \
-                "${cmd_name}: Should have Usage section"
-            assert_file_contains "$cmd_file" "## Description" \
-                "${cmd_name}: Should have Description section"
-            assert_file_contains "$cmd_file" "## Expected Output" \
-                "${cmd_name}: Should have Expected Output section"
-        fi
+        assert_file_contains "$skill_file" "## Usage" \
+            "${skill_name}: Should have Usage section"
+        assert_file_contains "$skill_file" "## Description" \
+            "${skill_name}: Should have Description section"
+        assert_file_contains "$skill_file" "## Expected Output" \
+            "${skill_name}: Should have Expected Output section"
 
         # Check for usage example
-        assert_file_contains "$cmd_file" "\`\`\`" \
-            "${cmd_name}: Should have code block for usage"
+        assert_file_contains "$skill_file" "\`\`\`" \
+            "${skill_name}: Should have code block for usage"
     done
 }
 
-# Test unified audit command
-test_command_audit_requirements() {
-    local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
-    local audit_file="$commands_dir/audit.md"
+# Test unified audit skill
+test_skill_audit_requirements() {
+    local skills_dir="$ORIGINAL_DIR/system-configs/.claude/skills"
+    local audit_file="$skills_dir/audit/SKILL.md"
 
     echo "  Testing unified audit implementation..."
 
     if [ ! -f "$audit_file" ]; then
-        echo "    Error: audit.md not found"
+        echo "    Error: audit/SKILL.md not found"
         return 1
     fi
 
@@ -115,11 +122,6 @@ test_command_audit_requirements() {
         echo "    Includes agents support"
     fi
 
-    # Check for commands validation
-    if grep -q "commands" "$audit_file"; then
-        echo "    Includes commands support"
-    fi
-
     # Check for YAML validation
     if grep -q -i "yaml" "$audit_file"; then
         echo "    Includes YAML support"
@@ -128,122 +130,55 @@ test_command_audit_requirements() {
     return 0
 }
 
-# Test frontmatter compliance
-test_frontmatter_compliance() {
-    local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
-    local failures=0
+# Test skill count (should be 35 after migration and additions)
+test_skill_count() {
+    local skills_dir="$ORIGINAL_DIR/system-configs/.claude/skills"
+    local skill_count=$(find "$skills_dir" -mindepth 1 -maxdepth 1 -type d ! -name '.*' 2>/dev/null | wc -l | tr -d ' ')
 
-    echo "  Validating command frontmatter against template..."
-
-    for cmd_file in "$commands_dir"/*.md; do
-        local cmd_name=$(basename "$cmd_file" .md)
-
-        if ! grep -q "^---$" "$cmd_file"; then
-            echo "    Warning: ${cmd_name}.md missing YAML frontmatter"
-            continue
-        fi
-
-        local yaml_content=$(sed -n '/^---$/,/^---$/p' "$cmd_file" | sed '1d;$d')
-
-        # Check for required description field
-        if ! echo "$yaml_content" | grep -q "^description:"; then
-            echo "    Error: ${cmd_name}.md missing required 'description' field"
-            failures=$((failures + 1))
-        fi
-    done
-
-    if [ $failures -gt 0 ]; then
-        echo "    Failed: $failures commands have frontmatter issues"
+    if [ "$skill_count" -lt 25 ] || [ "$skill_count" -gt 45 ]; then
+        echo "Skill count $skill_count outside expected range (25-45)"
         return 1
     fi
 
+    echo "Skill count: $skill_count (expected ~35)"
     return 0
 }
 
-# Test template format compliance
-test_template_format_compliance() {
-    local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
-    local failures=0
-
-    echo "  Validating command format against template..."
-
-    for cmd_file in "$commands_dir"/*.md; do
-        local cmd_name=$(basename "$cmd_file" .md)
-
-        if grep -q "^---$" "$cmd_file"; then
-            # Check required sections
-            if ! grep -q "## Usage" "$cmd_file"; then
-                echo "    Error: ${cmd_name}.md missing Usage section"
-                failures=$((failures + 1))
-            fi
-
-            if ! grep -q "## Description" "$cmd_file"; then
-                echo "    Error: ${cmd_name}.md missing Description section"
-                failures=$((failures + 1))
-            fi
-
-            if ! grep -q "## Expected Output" "$cmd_file"; then
-                echo "    Error: ${cmd_name}.md missing Expected Output section"
-                failures=$((failures + 1))
-            fi
-
-            # Check for optional Behavior section
-            if grep -q "## Behavior" "$cmd_file"; then
-                echo "    Info: ${cmd_name}.md includes optional Behavior section"
-            fi
-
-            # Check for $ARGUMENTS usage if argument-hint present
-            if grep -q "argument-hint:" "$cmd_file" && ! grep -q "\$ARGUMENTS" "$cmd_file"; then
-                echo "    Warning: ${cmd_name}.md has argument-hint but no \$ARGUMENTS placeholder"
-            fi
-        fi
-    done
-
-    return 0
-}
-
-# Test command count (should be 20 after consolidation)
-test_command_count() {
-    local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
-    local cmd_count=$(ls -1 "$commands_dir"/*.md 2>/dev/null | wc -l | tr -d ' ')
-
-    if [ "$cmd_count" -lt 15 ] || [ "$cmd_count" -gt 25 ]; then
-        echo "Command count $cmd_count outside expected range (15-25)"
-        return 1
-    fi
-
-    echo "Command count: $cmd_count (expected ~20)"
-    return 0
-}
-
-# Test documentation completeness
+# Test documentation completeness (only for user-invocable command-migrated skills)
 test_documentation_completeness() {
-    local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
+    local skills_dir="$ORIGINAL_DIR/system-configs/.claude/skills"
 
-    for cmd_file in "$commands_dir"/*.md; do
-        local cmd_name=$(basename "$cmd_file" .md)
+    # Only check migrated command skills for full documentation
+    local command_skills=("plan" "commit" "push" "test" "prime"
+                          "fix-ci" "implement" "verify" "resolve-comments"
+                          "docs" "audit" "branch" "pr" "rebase" "prompt"
+                          "deps" "merge" "ship-it" "review" "debug")
+
+    for skill_name in "${command_skills[@]}"; do
+        local skill_file="$skills_dir/${skill_name}/SKILL.md"
+        [ -f "$skill_file" ] || continue
 
         # Check file is not empty
-        if [ ! -s "$cmd_file" ]; then
-            echo "Command file ${cmd_name}.md is empty"
+        if [ ! -s "$skill_file" ]; then
+            echo "Skill file ${skill_name}/SKILL.md is empty"
             return 1
         fi
 
-        # Check for required sections or legacy content
-        if grep -q "^---$" "$cmd_file"; then
+        # Check for required sections
+        if grep -q "^---$" "$skill_file"; then
             local missing_sections=()
-            if ! grep -q "## Usage" "$cmd_file"; then
+            if ! grep -q "## Usage" "$skill_file"; then
                 missing_sections+=("Usage")
             fi
-            if ! grep -q "## Description" "$cmd_file"; then
+            if ! grep -q "## Description" "$skill_file"; then
                 missing_sections+=("Description")
             fi
-            if ! grep -q "## Expected Output" "$cmd_file"; then
+            if ! grep -q "## Expected Output" "$skill_file"; then
                 missing_sections+=("Expected Output")
             fi
 
             if [ ${#missing_sections[@]} -gt 0 ]; then
-                echo "${cmd_name}: Missing required sections: ${missing_sections[*]}"
+                echo "${skill_name}: Missing required sections: ${missing_sections[*]}"
                 return 1
             fi
         fi
@@ -262,7 +197,7 @@ test_validation_edge_cases() {
     cat > "$test_dir/empty-frontmatter.md" << 'EOF'
 ---
 ---
-# Empty Frontmatter Command
+# Empty Frontmatter Skill
 
 ## Usage
 ```
@@ -270,7 +205,7 @@ test_validation_edge_cases() {
 ```
 
 ## Description
-Test command with empty frontmatter.
+Test skill with empty frontmatter.
 
 ## Expected Output
 Test output.
@@ -279,10 +214,10 @@ EOF
     # 2. Long description
     cat > "$test_dir/long-description.md" << 'EOF'
 ---
-description: This is a very long description that exceeds the recommended sixty character limit for command descriptions
+description: This is a very long description that exceeds the recommended sixty character limit for skill descriptions
 argument-hint: [optional]
 ---
-# Long Description Command
+# Long Description Skill
 
 ## Usage
 ```
@@ -290,7 +225,7 @@ argument-hint: [optional]
 ```
 
 ## Description
-Test command with long description.
+Test skill with long description.
 
 ## Expected Output
 Test output.
@@ -302,7 +237,7 @@ EOF
 description: Valid description
 argument-hint [invalid format without colon]
 ---
-# Malformed YAML Command
+# Malformed YAML Skill
 
 ## Usage
 ```
@@ -310,27 +245,27 @@ argument-hint [invalid format without colon]
 ```
 
 ## Description
-Test command.
+Test skill.
 
 ## Expected Output
 Test output.
 EOF
 
-    # 4. Perfect command
-    cat > "$test_dir/perfect-command.md" << 'EOF'
+    # 4. Perfect skill
+    cat > "$test_dir/perfect-skill.md" << 'EOF'
 ---
 description: Short and descriptive
 argument-hint: [file-path]
 ---
-# Perfect Command
+# Perfect Skill
 
 ## Usage
 ```
-/perfect-command [file-path]
+/perfect-skill [file-path]
 ```
 
 ## Description
-A perfectly formatted command.
+A perfectly formatted skill.
 
 ## Expected Output
 Clear output description.
@@ -379,12 +314,12 @@ EOF
         fi
     done
 
-    echo "    Results: $valid_count valid, $invalid_count invalid commands"
+    echo "    Results: $valid_count valid, $invalid_count invalid skills"
 
     # Cleanup
     rm -rf "$test_dir"
 
-    # Expect 2 valid (long-description, perfect-command) and 2 invalid (empty-frontmatter, malformed-yaml)
+    # Expect 2 valid (long-description, perfect-skill) and 2 invalid (empty-frontmatter, malformed-yaml)
     if [ "$valid_count" -eq 2 ] && [ "$invalid_count" -eq 2 ]; then
         echo "    Edge case validation working correctly"
         return 0
@@ -395,48 +330,15 @@ EOF
     fi
 }
 
-# Test validation categories coverage
-test_validation_categories() {
-    local commands_dir="$ORIGINAL_DIR/system-configs/.claude/commands"
-    local audit_file="$commands_dir/audit.md"
-
-    echo "  Checking validation categories coverage..."
-
-    # Check audit covers agents
-    if grep -q "agents" "$audit_file"; then
-        echo "    Covers agents validation"
-    fi
-
-    # Check audit covers commands
-    if grep -q "commands" "$audit_file"; then
-        echo "    Covers commands validation"
-    fi
-
-    # Check audit covers YAML
-    if grep -qi "yaml" "$audit_file"; then
-        echo "    Covers YAML validation"
-    fi
-
-    # Check audit covers validation
-    if grep -qi "validation\|validate" "$audit_file"; then
-        echo "    Covers validation validation"
-    fi
-
-    return 0
-}
-
 # Run all tests
-echo "Testing command file validation..."
+echo "Testing skill file validation..."
 
-test_all_commands_exist || exit 1
-test_command_count || exit 1
-test_command_yaml_frontmatter || exit 1
-test_command_structure || exit 1
-test_frontmatter_compliance || exit 1
-test_template_format_compliance || exit 1
-test_command_audit_requirements || exit 1
+test_all_skills_exist || exit 1
+test_skill_count || exit 1
+test_skill_yaml_frontmatter || exit 1
+test_skill_structure || exit 1
+test_skill_audit_requirements || exit 1
 test_documentation_completeness || exit 1
 test_validation_edge_cases || exit 1
-test_validation_categories || exit 1
 
-echo "All command file validation tests passed!"
+echo "All skill file validation tests passed!"

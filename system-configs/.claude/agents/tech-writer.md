@@ -6,6 +6,7 @@ model: sonnet
 permissionMode: acceptEdits
 color: cyan
 category: coordination
+skills: markdown-linting
 ---
 
 # Tech Writer
