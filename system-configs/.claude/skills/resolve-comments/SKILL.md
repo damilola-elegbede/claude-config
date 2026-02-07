@@ -238,18 +238,24 @@ STEP 5: Finalize
       RUN: git push
 
       POST_THREAD_RESOLUTIONS (CRITICAL - DO NOT SKIP):
-        NOTE: This step posts "@coderabbitai resolve" as a REPLY to EACH review thread.
-              This is SEPARATE from the PR-level comment posted above.
+        NOTE: This step posts "@coderabbitai resolve" as a REPLY to EACH review thread
+              for BOTH fixed and skipped issues. This is SEPARATE from the PR-level comment.
               CodeRabbit only marks threads resolved when they receive a direct reply.
+              Skipped issues get resolved with an acknowledgment reason so threads don't
+              stay open indefinitely on the PR.
 
-        VALIDATE: fixed_issues is defined and is non-empty array
-          IF: fixed_issues is undefined OR empty
-            OUTPUT: "No fixes to post resolutions for"
+        VALIDATE: fixed_issues is defined (default to empty array if undefined)
+        VALIDATE: skipped_issues is defined (default to empty array if undefined)
+        SET: all_issues = fixed_issues + skipped_issues
+        VALIDATE: all_issues is defined and is non-empty array
+          IF: all_issues is undefined OR empty
+            OUTPUT: "No issues to post resolutions for"
             SKIP: POST_THREAD_RESOLUTIONS block
         INITIALIZE: resolution_results = [], success_count = 0, failure_count = 0
-        EXECUTE_FOR_EACH: issue in fixed_issues
-          NOTE: You MUST iterate through ALL issues and post a reply to EACH thread.
-                Do not batch or summarize - each thread needs its own GraphQL mutation call.
+        EXECUTE_FOR_EACH: issue in all_issues
+          NOTE: You MUST iterate through ALL issues (fixed AND skipped) and post a reply
+                to EACH thread. Do not batch or summarize - each thread needs its own
+                GraphQL mutation call.
 
           IF: issue.thread_id is missing or empty
             APPEND: { location: issue.location, status: "skipped", error: "missing thread_id" } to resolution_results
@@ -257,11 +263,21 @@ STEP 5: Finalize
             OUTPUT: "Warning: Skipped {issue.location} - missing thread_id"
             CONTINUE
 
-          GENERATE: brief summary of fix from issue.description (max 100 chars)
-          VALIDATE: issue.description exists and is non-empty
-            IF: description missing or empty
-              SET: fix_summary = "Issue resolved"
-          SANITIZE: fix_summary (BEFORE truncation to avoid cutting escape sequences)
+          IF: issue in fixed_issues
+            GENERATE: brief summary of fix from issue.description (max 100 chars)
+            VALIDATE: issue.description exists and is non-empty
+              IF: description missing or empty
+                SET: fix_summary = "Issue resolved"
+            SET: body_prefix = "Fixed"
+            SET: body_detail = fix_summary
+          ELSE (issue in skipped_issues):
+            SET: body_prefix = "Acknowledged"
+            SET: body_detail = issue.reason (from triage evaluation)
+            VALIDATE: body_detail exists and is non-empty
+              IF: body_detail missing or empty
+                SET: body_detail = "Reviewed and acknowledged"
+
+          SANITIZE: body_detail (BEFORE truncation to avoid cutting escape sequences)
             - Escape double quotes: " → \"
             - Escape backticks: ` → \`
             - Remove control characters (newlines, tabs → space)
@@ -269,9 +285,9 @@ STEP 5: Finalize
             - Neutralize all @-mentions: @username → `@`username
             - Restore placeholder: {{CODERABBIT}} → @coderabbitai
             - Truncate to 100 chars AFTER sanitization
-          VALIDATE: fix_summary is non-empty after sanitization
+          VALIDATE: body_detail is non-empty after sanitization
             IF: empty
-              SET: fix_summary = "Issue resolved"
+              SET: body_detail = "Issue resolved"
 
           NOTE: thread_id is treated as opaque per GitHub docs - do not validate format
           NOTE: GitHub explicitly states node IDs should not be decoded or validated against patterns
@@ -285,10 +301,10 @@ STEP 5: Finalize
                 }) {
                   comment { id }
                 }
-              }' -F threadId={issue.thread_id} -f body="@coderabbitai resolve - {fix_summary}"
-            APPEND: { location: issue.location, status: "success" } to resolution_results
+              }' -F threadId={issue.thread_id} -f body="@coderabbitai resolve - {body_prefix}: {body_detail}"
+            APPEND: { location: issue.location, status: "success", type: body_prefix } to resolution_results
             INCREMENT: success_count
-            OUTPUT: "Resolved thread: {issue.location}"
+            OUTPUT: "Resolved thread ({body_prefix}): {issue.location}"
           ON_ERROR:
             CAPTURE: error_message from gh api stderr or exit code
             APPEND: { location: issue.location, status: "failed", error: error_message } to resolution_results
@@ -305,23 +321,29 @@ STEP 5: Finalize
           IF: success_count > 0 AND failure_count > 0
             OUTPUT: "⚠️ Partial success: {success_count} resolved, {failure_count} failed"
 
+      COMPUTE: total = all_issues.length, fix_count = fixed_issues.length, skip_count = skipped_issues.length
       GENERATE: summary of changes
-        DATA_SOURCE: fixed_issues list from triage (issues marked for fix with applied changes)
+        DATA_SOURCE: all_issues (fixed_issues + skipped_issues) from triage
         CATEGORIZATION:
           - Map issue.type to categories: security→Security, error→Error Handling, performance→Performance,
             docs→Documentation, test→Testing, quality/other→Code Quality
           - Issues without type or unknown type: group under "Code Quality"
           - If issue spans multiple categories: use primary category based on severity
         FORMAT: markdown with:
-          - Heading: "## Addressed CodeRabbit Feedback"
-          - Total count: "**Resolved {fix_count} review comments**"
-          - Category breakdown (omit categories with zero issues)
+          - Heading: "## CodeRabbit Feedback Resolution"
+          - Total count: "**Resolved {total} review comments: {fix_count} fixed, {skip_count} acknowledged**"
+          - Category breakdown for fixed issues (omit categories with zero issues)
           - File-by-file changes with brief descriptions (max 100 chars per description)
+          - IF skipped_issues is non-empty:
+            - Subheading: "### Acknowledged (not fixed)"
+            - Table with columns: | Location | Reason |
+            - Each skipped issue gets a row with issue.location and issue.reason
         EDGE_CASES:
           - Empty categories: omit from output
           - Issues without file association: group under "General" section
           - Duplicate file paths: consolidate actions into single bullet
           - Summary exceeds 2000 chars: truncate file details, keep category counts
+          - No fixed issues (all skipped): omit category breakdown, show only acknowledged section
         VALIDATION:
           - Verify summary is non-empty
           - Verify markdown is well-formed
@@ -331,8 +353,8 @@ STEP 5: Finalize
             - Escape @-mentions except @coderabbitai
             - Remove control characters
           - Limit summary to 2000 chars with structure-aware truncation
-          - IF generation fails (empty fixed_issues, markdown validation error, or file write error):
-            use fallback: "@coderabbitai resolve - Addressed {fix_count} review comments. See commit for details."
+          - IF generation fails (empty all_issues, markdown validation error, or file write error):
+            use fallback: "@coderabbitai resolve - Resolved {total} review comments ({fix_count} fixed, {skip_count} acknowledged). See commit for details."
         WRITE: summary to .tmp/pr-comment.md
 
       VALIDATE: .tmp/pr-comment.md exists AND file size > 0
@@ -343,7 +365,7 @@ STEP 5: Finalize
     ELSE:
       OUTPUT: "Skipped commit/push/comment. Local changes preserved."
 
-  OUTPUT: "Resolved {fix_count} of {total} comments"
+  OUTPUT: "Resolved {total} comments: {fix_count} fixed, {skip_count} acknowledged"
   END
 ```
 
@@ -616,10 +638,13 @@ Fixed (using CodeRabbit AI prompt): Add input validation
 
 Committed: fix: resolve CodeRabbit feedback (2 issues)
 Pushed to origin
+Resolved thread (Fixed): auth.ts:45
+Resolved thread (Fixed): api.ts:12
+Resolved thread (Acknowledged): utils.ts:8
+Thread resolution complete: 3 succeeded, 0 failed
 Posted @coderabbitai resolve with change summary to PR #42
-Saved 1 skipped issue for /ship-it acknowledgment
 
-Resolved 2 of 3 comments
+Resolved 3 comments: 2 fixed, 1 acknowledged
 ```
 
 ### File Mode

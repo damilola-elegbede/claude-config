@@ -211,7 +211,7 @@ fi
 echo ""
 echo "System Health Metrics:"
 echo "  Total agents: $(find "$AGENTS_DIR" -name "*.md" -not -name "*TEMPLATE*" -not -name "README.md" | wc -l | tr -d ' ') (expected ~15)"
-echo "  Total skills: $(find "$SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d ! -name '.*' 2>/dev/null | wc -l | tr -d ' ') (expected ~35)"
+echo "  Total skills: $(find "$SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d ! -name '.*' 2>/dev/null | wc -l | tr -d ' ') (expected ~34)"
 echo "  Total scripts: $(find "$ORIGINAL_DIR/scripts" -name "*.sh" -o -name "*.py" | wc -l | tr -d ' ')"
 echo "  Total tests: $(find "$ORIGINAL_DIR/tests" -name "*.sh" | wc -l | tr -d ' ')"
 echo "  Documentation files: $(find "$ORIGINAL_DIR/docs" -name "*.md" | wc -l | tr -d ' ')"

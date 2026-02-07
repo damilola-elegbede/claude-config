@@ -27,7 +27,7 @@ Creates structured implementation plans with clear phases and agent assignments.
 
 1. **Analyze**: Deploy architect agent to understand requirements
 2. **Design**: Create technical architecture and task breakdown
-3. **Generate**: Write PRD and phase files to `$PLANS_DIR/<repo>/<feature>/`
+3. **Generate**: Write PRD and phase files to `.tmp/plans/<repo>/<feature>/`
 
 ### Clarification
 
@@ -59,7 +59,7 @@ Phases:
 
 Ready to generate files? (yes/no/modify): yes
 
-Generated in plans/my-app/authentication/:
+Generated in .tmp/plans/my-app/authentication/:
   - prd.md
   - phase_1_pr_1_database.md
   - phase_2_pr_1_auth_service.md
@@ -79,7 +79,7 @@ Tasks (1 PR):
   3. Clear auth state on logout
   4. Add confirmation dialog
 
-Generated: plans/my-app/logout/phase_1_pr_1_logout.md
+Generated: .tmp/plans/my-app/logout/phase_1_pr_1_logout.md
 ```
 
 ### No-Execute Mode

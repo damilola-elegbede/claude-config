@@ -1,7 +1,7 @@
 ---
 name: audit
-description: Validate agent and command ecosystem integrity. Use when checking configuration compliance or ecosystem health.
-argument-hint: "[--scope agents|commands|all] [--fix]"
+description: Validate agent and skill ecosystem integrity. Use when checking configuration compliance or ecosystem health.
+argument-hint: "[--scope agents|skills|all] [--fix]"
 category: workflow
 ---
 
@@ -10,15 +10,15 @@ category: workflow
 ## Usage
 
 ```bash
-/audit                     # Audit all agents and commands
+/audit                     # Audit all agents and skills
 /audit --scope agents      # Agents only
-/audit --scope commands    # Commands only
+/audit --scope skills      # Skills only
 /audit --fix               # Auto-fix issues
 ```
 
 ## Description
 
-Validate Claude Code configuration ecosystem. Checks agents and commands for YAML compliance, template adherence, and integrity.
+Validate Claude Code configuration ecosystem. Checks agents and skills for YAML compliance, template adherence, and integrity.
 
 ## Behavior
 
@@ -36,12 +36,12 @@ Validate Claude Code configuration ecosystem. Checks agents and commands for YAM
 - SYSTEM BOUNDARY statement present
 - No Task tool access
 
-**Commands:**
+**Skills:**
 
-- Frontmatter syntax
-- Description < 60 chars (autocomplete)
-- Argument-hint format
-- Agent references exist
+- SKILL.md frontmatter syntax (name, description required)
+- Skill directory structure (SKILL.md present)
+- Description quality and completeness
+- Bundled resource references valid (scripts/, references/, assets/)
 
 ## Expected Output
 
@@ -52,7 +52,7 @@ AUDIT REPORT - Configuration Ecosystem
 ──────────────────────────────────────
 Scope: all
 Agents: 12 total | 12 compliant | 0 issues
-Commands: 20 total | 20 compliant | 0 issues
+Skills: 20 total | 20 compliant | 0 issues
 Overall Compliance: 100%
 
 ✅ All validation checks passed

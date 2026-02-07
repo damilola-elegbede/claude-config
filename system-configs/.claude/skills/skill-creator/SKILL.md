@@ -321,6 +321,10 @@ When creating a new skill from scratch, always run the `init_skill.py` script. T
 conveniently generates a new template skill directory that automatically includes everything a
 skill requires, making the skill creation process much more efficient and reliable.
 
+> **Note:** `scripts/init_skill.py` and `scripts/package_skill.py` are bundled with the
+> upstream skill-creator from [anthropics/skills](https://github.com/anthropics/skills).
+> If these scripts are not present locally, import them via `/skills-import skill-creator`.
+
 Usage:
 
 ```bash
