@@ -244,6 +244,8 @@ STEP 5: Finalize
               Skipped issues get resolved with an acknowledgment reason so threads don't
               stay open indefinitely on the PR.
 
+        VALIDATE: fixed_issues is defined (default to empty array if undefined)
+        VALIDATE: skipped_issues is defined (default to empty array if undefined)
         SET: all_issues = fixed_issues + skipped_issues
         VALIDATE: all_issues is defined and is non-empty array
           IF: all_issues is undefined OR empty
@@ -319,6 +321,7 @@ STEP 5: Finalize
           IF: success_count > 0 AND failure_count > 0
             OUTPUT: "⚠️ Partial success: {success_count} resolved, {failure_count} failed"
 
+      COMPUTE: total = all_issues.length, fix_count = fixed_issues.length, skip_count = skipped_issues.length
       GENERATE: summary of changes
         DATA_SOURCE: all_issues (fixed_issues + skipped_issues) from triage
         CATEGORIZATION:
