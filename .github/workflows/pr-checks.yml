@@ -168,7 +168,13 @@ jobs:
             exit 1
           fi
 
-          # Check for required sections
+          # Reference skills (user-invocable: false) and imported skills have different structure
+          if grep -q "^user-invocable: false" "$skill_file" || grep -q "^license:" "$skill_file"; then
+            echo "✓ $skill_name/SKILL.md (reference/imported skill, front-matter valid)"
+            continue
+          fi
+
+          # Check for required sections (user-invocable skills only)
           if ! grep -q "^# /" "$skill_file"; then
             echo "❌ Missing skill header starting with '# /' in $skill_name/SKILL.md"
             exit 1
