@@ -1,6 +1,6 @@
 # Skills Inventory
 
-Complete inventory of 37 skills across 6 categories.
+Complete inventory of 36 skills across 6 categories.
 
 ## Summary
 
@@ -10,9 +10,9 @@ Complete inventory of 37 skills across 6 categories.
 | Agent-Routed | 4 | `/debug`, `/plan`, `/prime`, `/docs` |
 | Git Workflow | 6 | `/branch`, `/commit`, `/push`, `/pr` |
 | Utility | 6 | `/test`, `/audit`, `/sync`, `/verify` |
-| Agent-Preloaded Reference | 6 | `git-conventions`, `security-checklist` |
+| Agent-Preloaded Reference | 5 | `git-conventions`, `security-checklist` |
 | Imported (Anthropic) | 8 | `pdf`, `docx`, `webapp-testing` |
-| **Total** | **37** | |
+| **Total** | **36** | |
 
 All 22 former commands have been migrated to skills. There are **0 commands** remaining.
 
@@ -65,7 +65,7 @@ Direct-execution skills for common git operations.
 | `/sync` | Deploy configurations | Direct | `--dry-run`, `--backup`, `--force` |
 | `/skills-import` | Import Anthropic skills | Direct | `--list`, `--all` |
 
-## Agent-Preloaded Reference Skills (6)
+## Agent-Preloaded Reference Skills (5)
 
 Reference material injected into agent contexts. Not user-invocable (`user-invocable: false`).
 
@@ -76,7 +76,6 @@ Reference material injected into agent contexts. Not user-invocable (`user-invoc
 | `testing-patterns` | test-engineer | TDD/BDD patterns, test organization |
 | `api-design-patterns` | architect, backend-engineer | REST/GraphQL patterns, OpenAPI |
 | `markdown-linting` | tech-writer | Markdownlint rules, documentation formatting |
-| `cicd-patterns` | devops | CI/CD pipelines, GitHub Actions patterns |
 
 ## Imported Anthropic Skills (8)
 

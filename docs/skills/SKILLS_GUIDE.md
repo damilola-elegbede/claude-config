@@ -3,8 +3,8 @@
 ## Overview
 
 Skills are the unified extension mechanism for the Claude Code framework. All 23 former commands
-have been migrated to skills, joined by 6 agent-preloaded reference skills and 8 imported
-Anthropic skills, for a total of **37 skills and 0 commands**.
+have been migrated to skills, joined by 5 agent-preloaded reference skills and 8 imported
+Anthropic skills, for a total of **36 skills and 0 commands**.
 
 Skills range from lightweight git operations to sophisticated multi-phase orchestration workflows,
 agent-routed domain expertise, and background reference material preloaded into agent contexts.
@@ -35,7 +35,7 @@ Level 4: Agent Teams
 └─ Example: Full-stack feature, deep review
 ```
 
-## Skill Categories (37 Total)
+## Skill Categories (36 Total)
 
 ### Orchestration Skills (7)
 
@@ -86,7 +86,7 @@ Direct-execution skills for common git operations.
 | `/sync` | Deploy configurations | `--dry-run`, `--backup`, `--force` |
 | `/skills-import` | Import Anthropic skills | `--list`, `--all` |
 
-### Agent-Preloaded Reference Skills (6)
+### Agent-Preloaded Reference Skills (5)
 
 Reference material preloaded into agent contexts via the `skills` frontmatter field.
 These are not user-invocable (`user-invocable: false`).
@@ -98,7 +98,6 @@ These are not user-invocable (`user-invocable: false`).
 | `testing-patterns` | test-engineer | TDD/BDD patterns, test organization, coverage strategies |
 | `api-design-patterns` | architect, backend-engineer | REST/GraphQL patterns, OpenAPI, versioning |
 | `markdown-linting` | tech-writer | Markdownlint rules, documentation formatting |
-| `cicd-patterns` | devops | CI/CD pipeline patterns, GitHub Actions, deployment strategies |
 
 ### Imported Anthropic Skills (8)
 

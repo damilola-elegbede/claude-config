@@ -135,7 +135,7 @@ skills: git-conventions, security-checklist
 | architect | `api-design-patterns` |
 | backend-engineer | `api-design-patterns` |
 | code-reviewer | `git-conventions`, `security-checklist` |
-| devops | `git-conventions`, `cicd-patterns` |
+| devops | `git-conventions` |
 | security-auditor | `security-checklist` |
 | test-engineer | `testing-patterns` |
 | tech-writer | `markdown-linting` |
@@ -147,7 +147,6 @@ skills: git-conventions, security-checklist
 - `testing-patterns` - TDD/BDD patterns, test organization, coverage strategies
 - `api-design-patterns` - REST/GraphQL patterns, OpenAPI, versioning
 - `markdown-linting` - Markdownlint rules, documentation formatting
-- `cicd-patterns` - CI/CD pipeline patterns, GitHub Actions, deployment strategies
 
 **Best practices:**
 
@@ -166,7 +165,7 @@ skills: git-conventions, security-checklist
 | code-reviewer | sonnet | quality | `git-conventions`, `security-checklist` |
 | data-engineer | sonnet | development | - |
 | debugger | sonnet | development | - |
-| devops | sonnet | infrastructure | `git-conventions`, `cicd-patterns` |
+| devops | sonnet | infrastructure | `git-conventions` |
 | feature-agent | opus | orchestration | `feature-lifecycle` |
 | frontend-engineer | sonnet | development | - |
 | ml-engineer | sonnet | development | - |

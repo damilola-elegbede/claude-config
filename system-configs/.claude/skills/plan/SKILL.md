@@ -27,7 +27,7 @@ Creates structured implementation plans with clear phases and agent assignments.
 
 1. **Analyze**: Deploy architect agent to understand requirements
 2. **Design**: Create technical architecture and task breakdown
-3. **Generate**: Write PRD and phase files to `$PLANS_DIR/<repo>/<feature>/`
+3. **Generate**: Write PRD and phase files to `.tmp/plans/<repo>/<feature>/`
 
 ### Clarification
 

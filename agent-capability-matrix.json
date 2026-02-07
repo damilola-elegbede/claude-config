@@ -173,7 +173,7 @@
     "color": "orange",
     "permissionMode": "acceptEdits",
     "memory": "local",
-    "skills": ["git-conventions", "cicd-patterns"]
+    "skills": ["git-conventions"]
   },
   {
     "name": "feature-agent",

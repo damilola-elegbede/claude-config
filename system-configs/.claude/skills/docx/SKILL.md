@@ -587,3 +587,16 @@ replies, use `--parent` flag and nest markers inside the parent's.
 - **LibreOffice**: PDF conversion (auto-configured for sandboxed environments
   via `scripts/office/soffice.py`)
 - **Poppler**: `pdftoppm` for images
+
+### Bundled Scripts (from upstream)
+
+The following scripts are referenced in this skill but are bundled with the upstream
+[anthropics/skills](https://github.com/anthropics/skills) docx skill. If not present
+locally, import via `/skills-import docx`:
+
+- `scripts/office/soffice.py` — LibreOffice wrapper for conversion
+- `scripts/office/unpack.py` — DOCX unpacker (ZIP → XML)
+- `scripts/office/pack.py` — DOCX repacker (XML → ZIP) with validation
+- `scripts/office/validate.py` — DOCX schema validator
+- `scripts/comment.py` — Comment helper for XML editing
+- `scripts/accept_changes.py` — Tracked changes acceptance helper
