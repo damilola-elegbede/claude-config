@@ -2,9 +2,9 @@
 
 ## Overview
 
-Skills are the unified extension mechanism for the Claude Code framework. All 23 former commands
+Skills are the unified extension mechanism for the Claude Code framework. All 21 former commands
 have been migrated to skills, joined by 5 agent-preloaded reference skills and 8 imported
-Anthropic skills, for a total of **36 skills and 0 commands**.
+Anthropic skills, for a total of **34 skills and 0 commands**.
 
 Skills range from lightweight git operations to sophisticated multi-phase orchestration workflows,
 agent-routed domain expertise, and background reference material preloaded into agent contexts.
@@ -35,7 +35,7 @@ Level 4: Agent Teams
 └─ Example: Full-stack feature, deep review
 ```
 
-## Skill Categories (36 Total)
+## Skill Categories (34 Total)
 
 ### Orchestration Skills (7)
 
@@ -75,7 +75,7 @@ Direct-execution skills for common git operations.
 | `/merge` | Merge branches with conflict handling |
 | `/pr` | Create PRs with smart descriptions |
 
-### Utility Skills (6)
+### Utility Skills (4)
 
 | Skill | Description | Flags |
 |-------|-------------|-------|
@@ -83,8 +83,6 @@ Direct-execution skills for common git operations.
 | `/audit` | Unified agent/skill validation | `--scope agents\|skills\|all`, `--fix` |
 | `/prompt` | Prompt optimization | `--file` |
 | `/verify` | Skill verification | `--last`, `--command`, `--depth` |
-| `/sync` | Deploy configurations | `--dry-run`, `--backup`, `--force` |
-| `/skills-import` | Import Anthropic skills | `--list`, `--all` |
 
 ### Agent-Preloaded Reference Skills (5)
 

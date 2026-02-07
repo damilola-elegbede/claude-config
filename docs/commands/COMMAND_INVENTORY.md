@@ -1,6 +1,6 @@
 # Skills Inventory
 
-Complete inventory of 36 skills across 6 categories.
+Complete inventory of 34 skills across 6 categories.
 
 ## Summary
 
@@ -9,12 +9,12 @@ Complete inventory of 36 skills across 6 categories.
 | Orchestration | 7 | `/ship-it`, `/review`, `/fix-ci`, `/implement` |
 | Agent-Routed | 4 | `/debug`, `/plan`, `/prime`, `/docs` |
 | Git Workflow | 6 | `/branch`, `/commit`, `/push`, `/pr` |
-| Utility | 6 | `/test`, `/audit`, `/sync`, `/verify` |
+| Utility | 4 | `/test`, `/audit`, `/prompt`, `/verify` |
 | Agent-Preloaded Reference | 5 | `git-conventions`, `security-checklist` |
 | Imported (Anthropic) | 8 | `pdf`, `docx`, `webapp-testing` |
-| **Total** | **36** | |
+| **Total** | **34** | |
 
-All 22 former commands have been migrated to skills. There are **0 commands** remaining.
+All 21 former commands have been migrated to skills. There are **0 commands** remaining.
 
 ## Orchestration Skills (7)
 
@@ -54,7 +54,7 @@ Direct-execution skills for common git operations.
 | `/merge` | Merge branches with conflict handling | Direct |
 | `/pr` | Create PRs with smart descriptions | Direct |
 
-## Utility Skills (6)
+## Utility Skills (4)
 
 | Skill | Description | Execution Model | Flags |
 |-------|-------------|-----------------|-------|
@@ -62,8 +62,6 @@ Direct-execution skills for common git operations.
 | `/audit` | Unified agent/skill validation | Wave-based | `--scope agents\|skills\|all`, `--fix` |
 | `/prompt` | Prompt optimization | Direct | `--file` |
 | `/verify` | Skill verification | Hybrid | `--last`, `--command`, `--depth` |
-| `/sync` | Deploy configurations | Direct | `--dry-run`, `--backup`, `--force` |
-| `/skills-import` | Import Anthropic skills | Direct | `--list`, `--all` |
 
 ## Agent-Preloaded Reference Skills (5)
 
