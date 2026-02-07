@@ -4,6 +4,7 @@ Requires LibreOffice (soffice) to be installed.
 """
 
 import argparse
+import atexit
 import logging
 import shutil
 import subprocess
@@ -17,6 +18,19 @@ logger = logging.getLogger(__name__)
 _PROFILE_DIR = tempfile.mkdtemp(prefix="libreoffice_docx_profile_")
 LIBREOFFICE_PROFILE = _PROFILE_DIR
 MACRO_DIR = f"{LIBREOFFICE_PROFILE}/user/basic/Standard"
+
+
+def _cleanup_profile():
+    """Remove the temporary LibreOffice profile directory on process exit."""
+    try:
+        shutil.rmtree(LIBREOFFICE_PROFILE)
+    except FileNotFoundError:
+        pass
+    except Exception as e:
+        logger.debug("Failed to clean up LibreOffice profile %s: %s", LIBREOFFICE_PROFILE, e)
+
+
+atexit.register(_cleanup_profile)
 
 ACCEPT_CHANGES_MACRO = """<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">

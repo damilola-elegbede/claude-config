@@ -44,7 +44,12 @@ CONSTRAINTS:
 TYPE: feature | bugfix | refactor
 ```
 
-Save normalized spec to `.tmp/plans/feature-spec-<branch-name>.md`.
+Ensure the output directory exists, then save the normalized spec:
+
+```text
+RUN: mkdir -p .tmp/plans
+SAVE: .tmp/plans/feature-spec-<branch-name>.md
+```
 
 ## Phase 1: Plan
 
@@ -64,6 +69,7 @@ STEP 3: Self-review loop
   IF: gaps found → refine plan and re-review (max 2 iterations)
 
 STEP 4: Save plan
+  RUN: mkdir -p .tmp/plans
   SAVE: .tmp/plans/implementation-plan-<branch-name>.md
 ```
 

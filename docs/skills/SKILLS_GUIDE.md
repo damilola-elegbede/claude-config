@@ -2,7 +2,7 @@
 
 ## Overview
 
-Skills are the unified extension mechanism for the Claude Code framework. All 22 former commands
+Skills are the unified extension mechanism for the Claude Code framework. All 23 former commands
 have been migrated to skills, joined by 6 agent-preloaded reference skills and 8 imported
 Anthropic skills, for a total of **37 skills and 0 commands**.
 

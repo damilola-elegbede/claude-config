@@ -152,6 +152,26 @@ def check_skills_for_orphans(valid_agents, verbose=False):
             if verbose and references:
                 print(f"  {cmd_file.name}: found {len(references)} agent references")
 
+    # Legacy: Check flat-file skills (skills/*.md) in addition to directory-based skills
+    for skill_file in SKILLS_DIR.glob("*.md"):
+        if skill_file.name.startswith('.') or skill_file.name in NON_SKILL_FILES:
+            continue
+
+        content = skill_file.read_text()
+        references = extract_agent_references(content)
+
+        for ref in references:
+            if ref not in valid_agents and len(ref) > 3:
+                if ref not in ["debug", "test", "build", "deploy", "review"]:
+                    orphans.append({
+                        "file": f"skills/{skill_file.name}",
+                        "reference": ref,
+                        "type": "agent"
+                    })
+
+        if verbose and references:
+            print(f"  {skill_file.name}: found {len(references)} agent references")
+
     return orphans
 
 
