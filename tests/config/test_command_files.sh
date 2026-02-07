@@ -130,7 +130,7 @@ test_skill_audit_requirements() {
     return 0
 }
 
-# Test skill count (should be 35 after migration and additions)
+# Test skill count (should be 34 after migration and additions)
 test_skill_count() {
     local skills_dir="$ORIGINAL_DIR/system-configs/.claude/skills"
     local skill_count=$(find "$skills_dir" -mindepth 1 -maxdepth 1 -type d ! -name '.*' 2>/dev/null | wc -l | tr -d ' ')
@@ -140,7 +140,7 @@ test_skill_count() {
         return 1
     fi
 
-    echo "Skill count: $skill_count (expected ~35)"
+    echo "Skill count: $skill_count (expected ~34)"
     return 0
 }
 

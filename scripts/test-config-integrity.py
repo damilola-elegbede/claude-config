@@ -28,7 +28,7 @@ SKILLS_DIR = PROJECT_ROOT / "system-configs" / ".claude" / "skills"
 # Commands migrated to skills system - commands directory no longer exists
 # Note: sync and skills-import are project-local (.claude/skills/), not in system-configs
 EXPECTED_AGENT_COUNT = 15
-EXPECTED_SKILL_COUNT = 35
+EXPECTED_SKILL_COUNT = 34
 
 # Non-agent/command documentation files to skip
 NON_AGENT_FILES = [
