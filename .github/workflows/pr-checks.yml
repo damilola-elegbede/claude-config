@@ -207,22 +207,28 @@ jobs:
             echo "✓ $skill_name/SKILL.md (imported skill)"
 
           else
-            # User-invocable skills: must have /name header, Usage, and Description
+            # User-invocable skills: must have /name header
             if ! grep -q "^# /" "$skill_file"; then
               echo "❌ Missing skill header starting with '# /' in $skill_name/SKILL.md"
               exit 1
             fi
 
-            if ! grep -q "^## Usage" "$skill_file"; then
-              echo "❌ Missing '## Usage' section in $skill_name/SKILL.md"
-              exit 1
-            fi
+            # Must have either (Usage + Description) or phase-based structure (## Phase)
+            if grep -q "^## Phase" "$skill_file"; then
+              # Phase-based orchestration skill (e.g., feature-lifecycle)
+              echo "✓ $skill_name/SKILL.md (phase-based orchestration skill)"
+            else
+              if ! grep -q "^## Usage" "$skill_file"; then
+                echo "❌ Missing '## Usage' section in $skill_name/SKILL.md"
+                exit 1
+              fi
 
-            if ! grep -q "^## Description" "$skill_file"; then
-              echo "❌ Missing '## Description' section in $skill_name/SKILL.md"
-              exit 1
+              if ! grep -q "^## Description" "$skill_file"; then
+                echo "❌ Missing '## Description' section in $skill_name/SKILL.md"
+                exit 1
+              fi
+              echo "✓ $skill_name/SKILL.md (user-invocable skill)"
             fi
-            echo "✓ $skill_name/SKILL.md (user-invocable skill)"
           fi
         done
 
