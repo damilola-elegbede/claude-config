@@ -1,11 +1,15 @@
-# Skills Guide: Expertise Modules and Orchestration
+# Skills Guide
 
 ## Overview
 
-Skills provide focused domain expertise and complex workflow orchestration in the Claude Code framework.
-They range from lightweight format expertise to sophisticated multi-phase workflows.
+Skills are the unified extension mechanism for the Claude Code framework. All 22 former commands
+have been migrated to skills, joined by 6 agent-preloaded reference skills and 8 imported
+Anthropic skills, for a total of **37 skills and 0 commands**.
 
-## Four-Tier Framework
+Skills range from lightweight git operations to sophisticated multi-phase orchestration workflows,
+agent-routed domain expertise, and background reference material preloaded into agent contexts.
+
+## Four-Tier Execution Framework
 
 ```text
 Level 1: Direct Execution
@@ -13,35 +17,103 @@ Level 1: Direct Execution
 ├─ < 5 minutes completion
 └─ Example: Fix typos, add imports
 
-Level 2: Expertise Skills
-├─ Lightweight domain expertise
-├─ Format-specific operations
-├─ No orchestration needed
-└─ Example: YAML validation, Python idioms
+Level 2: Skills
+├─ All slash-command invocations
+├─ Git workflows, utilities, orchestration
+├─ Agent-routed domain expertise
+├─ Reference material preloaded into agents
+└─ Example: /commit, /review, /ship-it, /debug
 
-Level 3: Orchestration Skills (NEW)
-├─ Complex multi-phase workflows
-├─ Context isolation (context: fork)
-├─ Task tracking and parallel execution
-├─ Agent routing
-└─ Example: /review, /debug, /ship-it
-
-Level 4: Agents
-├─ Complex specialists
+Level 3: Agents
+├─ Complex specialists with deep context
 ├─ Multi-step orchestration
-└─ Example: backend-engineer, ml-engineer
+└─ Example: backend-engineer, architect, debugger
+
+Level 4: Agent Teams
+├─ Multiple Claude instances coordinated
+├─ Parallel implementation, competing hypotheses
+└─ Example: Full-stack feature, deep review
 ```
 
-## Skills vs Agents vs Commands
+## Skill Categories (37 Total)
 
-| Aspect | Expertise Skills | Orchestration Skills | Agents | Commands |
-|--------|------------------|---------------------|--------|----------|
-| **Purpose** | Domain knowledge | Complex workflows | Specialists | Simple invocation |
-| **Complexity** | Simple, focused | Multi-phase | Multi-step | Straightforward |
-| **Duration** | Seconds | Minutes | Minutes | Seconds-Minutes |
-| **Context** | Main | Isolated (fork) | Isolated | Main |
-| **Task Tracking** | No | Yes | No | Optional |
-| **Examples** | yaml, python | /review, /ship-it | backend-engineer | /commit, /push |
+### Orchestration Skills (7)
+
+Complex multi-phase workflows with task tracking, parallel execution, and agent routing.
+
+| Skill | Description | Key Features |
+|-------|-------------|--------------|
+| `/ship-it` | Development workflow orchestration | Flags: `-d`, `-t`, `-c`, `-r`, `-p`, `-pr`, `--dry-run` |
+| `/review` | Dual-reviewer code analysis | Parallel execution, `--full` |
+| `/fix-ci` | CI failure diagnosis and fix | `--learn` |
+| `/deps` | Dependency management | `audit`, `update`, `clean`, `--quick` |
+| `/resolve-comments` | CodeRabbit comment resolution | `--auto`, `--dry-run` |
+| `/implement` | Feature implementation from specs | `--spec`, `--tdd` |
+| `/feature-lifecycle` | End-to-end feature delivery | Agent team coordination |
+
+### Agent-Routed Skills (4)
+
+Skills that route to specialized agents for domain-specific work.
+
+| Skill | Description | Routed Agent | Flags |
+|-------|-------------|--------------|-------|
+| `/debug` | Root cause analysis | debugger | `--performance`, `--issue` |
+| `/plan` | PRD and task file generation | architect | `--no-execute`, `--simple` |
+| `/prime` | Repository understanding | researcher | `--lite`, `--full` |
+| `/docs` | Documentation generation | tech-writer | `--audit`, `--audit-and-fix`, `--clean` |
+
+### Git Workflow Skills (6)
+
+Direct-execution skills for common git operations.
+
+| Skill | Description |
+|-------|-------------|
+| `/branch` | Create branches with intelligent naming |
+| `/commit` | Git commits with message generation |
+| `/push` | Push with validation |
+| `/rebase` | Rebase on target branch |
+| `/merge` | Merge branches with conflict handling |
+| `/pr` | Create PRs with smart descriptions |
+
+### Utility Skills (6)
+
+| Skill | Description | Flags |
+|-------|-------------|-------|
+| `/test` | Test discovery and execution | `--create`, `--framework`, `--coverage` |
+| `/audit` | Unified agent/skill validation | `--scope agents\|skills\|all`, `--fix` |
+| `/prompt` | Prompt optimization | `--file` |
+| `/verify` | Skill verification | `--last`, `--command`, `--depth` |
+| `/sync` | Deploy configurations | `--dry-run`, `--backup`, `--force` |
+| `/skills-import` | Import Anthropic skills | `--list`, `--all` |
+
+### Agent-Preloaded Reference Skills (6)
+
+Reference material preloaded into agent contexts via the `skills` frontmatter field.
+These are not user-invocable (`user-invocable: false`).
+
+| Skill | Preloaded By | Purpose |
+|-------|-------------|---------|
+| `git-conventions` | code-reviewer, devops | Git best practices, commit conventions, branching strategies |
+| `security-checklist` | code-reviewer, security-auditor | OWASP checks, vulnerability patterns, secure coding |
+| `testing-patterns` | test-engineer | TDD/BDD patterns, test organization, coverage strategies |
+| `api-design-patterns` | architect, backend-engineer | REST/GraphQL patterns, OpenAPI, versioning |
+| `markdown-linting` | tech-writer | Markdownlint rules, documentation formatting |
+| `cicd-patterns` | devops | CI/CD pipeline patterns, GitHub Actions, deployment strategies |
+
+### Imported Anthropic Skills (8)
+
+Skills imported from Anthropic's official skill library via `/skills-import`.
+
+| Skill | Description |
+|-------|-------------|
+| `pdf` | PDF file reading and analysis |
+| `docx` | Word document reading and analysis |
+| `xlsx` | Excel spreadsheet reading and analysis |
+| `pptx` | PowerPoint presentation reading and analysis |
+| `webapp-testing` | Web application testing with browser automation |
+| `skill-creator` | Create new skills from templates |
+| `mcp-builder` | Build MCP server integrations |
+| `frontend-design` | Frontend design patterns and implementation |
 
 ## Claude Code Skill Features
 
@@ -52,11 +124,28 @@ Skills support advanced features from Claude Code's skill system:
 | `context: fork` | Run in isolated context | Complex workflows, reviews |
 | `agent: <type>` | Route to specific agent | Domain-specific work |
 | `allowed-tools` | Restrict available tools | Security, focus |
-| `user-invocable` | Control manual invocation | Background knowledge |
+| `user-invocable` | Control manual invocation | Reference skills set to `false` |
 
 ## Directory Structure
 
 Skills use a directory-based structure:
+
+```text
+system-configs/.claude/skills/
+├── ship-it/
+│   └── SKILL.md
+├── review/
+│   └── SKILL.md
+├── commit/
+│   └── SKILL.md
+├── git-conventions/
+│   └── SKILL.md
+├── pdf/
+│   └── SKILL.md
+└── ...
+```
+
+Each skill directory contains:
 
 ```text
 skills/<name>/
@@ -65,139 +154,38 @@ skills/<name>/
   examples/         # Optional: reference material
 ```
 
-## Available Skills (Tier 1 - Core Skills)
-
-### 1. yaml
-
-**Category:** format
-**Focus:** YAML syntax, validation, and frontmatter patterns
-
-**Use When:**
-
-- Creating or editing agent/command definitions
-- Validating YAML frontmatter
-- Troubleshooting YAML parsing errors
-
-**Key Capabilities:**
-
-- Agent and command frontmatter patterns
-- YAML syntax validation
-- Common anti-patterns identification
-- Compliance checking
-
-### 2. markdown
-
-**Category:** format
-**Focus:** Markdown formatting and linting compliance
-
-**Use When:**
-
-- Creating or editing documentation
-- Fixing markdownlint violations
-- Formatting technical content
-
-**Key Capabilities:**
-
-- Markdownlint rule compliance (MD001-MD058)
-- Documentation structure patterns
-- Code block formatting
-- Table formatting
-
-### 3. python
-
-**Category:** language
-**Focus:** Python best practices and validation scripts
-
-**Use When:**
-
-- Writing validation scripts
-- Implementing automation tools
-- Reviewing Python code
-
-**Key Capabilities:**
-
-- Python 3.8+ modern patterns
-- Script validation and error handling
-- File I/O with pathlib
-- CLI argument parsing
-
-### 4. bash
-
-**Category:** workflow
-**Focus:** Shell scripting and git hooks
-
-**Use When:**
-
-- Writing shell scripts
-- Creating git hooks
-- Building automation workflows
-
-**Key Capabilities:**
-
-- Safe script patterns (set -e, quotes, etc.)
-- Git hook templates
-- Error handling and exit codes
-- Script portability
-
-### 5. git-workflows
-
-**Category:** workflow
-**Focus:** Git operations and branching strategies
-
-**Use When:**
-
-- Managing branches
-- Writing commit messages
-- Resolving conflicts
-- Setting up quality gates
-
-**Key Capabilities:**
-
-- Branch naming conventions
-- Semantic commit messages
-- Rebase workflows
-- Quality gate compliance
-
-## Orchestration Commands (Previously Skills)
-
-> **Note:** `/review`, `/debug`, and `/ship-it` were previously orchestration skills but have been
-> **restored as commands** because skills don't receive CLI arguments (`<command-args>`).
->
-> This means flags like `/ship-it -c -p` now work correctly.
->
-> **Trade-off:** Commands don't support `context: fork` (isolated execution), but argument
-> passing is essential for these workflows. See [Command Inventory](../commands/COMMAND_INVENTORY.md)
-> for their current documentation.
-
 ## Using Skills
 
 ### Invocation
 
-Skills are automatically available in Claude Code CLI. Simply mention the skill domain:
+Skills are invoked as slash commands in Claude Code CLI:
 
 ```text
-User: "Can you help me validate this YAML frontmatter?"
-Claude: [Uses yaml skill for validation]
-
-User: "Fix these markdownlint errors"
-Claude: [Uses markdown skill for linting fixes]
-
-User: "What's the best way to write this Python script?"
-Claude: [Uses python skill for patterns and idioms]
+/commit              # Git commit with message generation
+/review --full       # Full dual-reviewer code analysis
+/ship-it -t -c -p    # Test, commit, push workflow
+/debug --performance  # Performance-focused root cause analysis
+/branch add-oauth    # Create feature branch
 ```
 
-### Integration with Agents and Commands
+### Integration with Agents
 
-Skills complement agents and commands:
+Skills complement agents in the execution hierarchy:
 
 ```text
 User requests → Claude analyzes complexity
 
-Simple task → Direct execution
-Format-specific → Skill (yaml, markdown)
-Complex task → Agent (backend-engineer)
-Workflow → Command (/test, /review)
+Simple task      → Direct execution (Level 1)
+Workflow/tool    → Skill invocation (Level 2)
+Complex task     → Agent delegation (Level 3)
+Multi-perspective → Agent team (Level 4)
 ```
+
+Agent-routed skills bridge Levels 2 and 3 by accepting slash-command invocation
+while delegating execution to specialized agents.
+
+Agent-preloaded reference skills enhance Level 3 by injecting domain knowledge
+into agent contexts automatically.
 
 ## Creating New Skills
 
@@ -209,33 +197,39 @@ Use `docs/skills/SKILL_TEMPLATE.md` as the foundation:
 ---
 name: skill-name
 description: Expertise in [domain]
-category: language|format|framework|infrastructure|workflow
 ---
 
-# [Skill Name] Expertise
+# [Skill Name]
 
-## Domain Focus
-[2-3 sentences about expertise area]
-
-## Core Capabilities
-- [4-5 specific capabilities]
-
-## When to Use This Skill
+## When to Use
 - [3-4 specific triggers]
 
+## Steps
+1. [Step-by-step execution instructions]
+
 ## Common Patterns
-[2-3 code examples with explanations]
+[Code examples with explanations]
+```
 
-## Best Practices
-- [3-5 key guidelines]
+### Reference Skill Template
 
-## Quick Reference
-| Task | Pattern | Example |
-|------|---------|---------|
+For agent-preloaded reference skills:
 
-## Integration Notes
-- Works alongside: [related tools]
-- Escalate to: [agent-name] for [scenarios]
+```markdown
+---
+name: reference-name
+description: Reference material for [domain]
+user-invocable: false
+---
+
+# [Reference Name]
+
+## Guidelines
+- [Domain-specific rules and patterns]
+
+## Checklist
+- [ ] [Validation item 1]
+- [ ] [Validation item 2]
 ```
 
 ### Validation
@@ -248,10 +242,10 @@ Validate new skills before syncing:
 
 ### Deployment
 
-Add skills to the framework via /sync:
+Add skills to the framework via `/sync`:
 
 ```bash
-# 1. Create skill in system-configs/.claude/skills/
+# 1. Create skill in system-configs/.claude/skills/<name>/SKILL.md
 # 2. Validate
 ./scripts/validate-skills.py
 
@@ -262,173 +256,57 @@ Add skills to the framework via /sync:
 ls ~/.claude/skills/
 ```
 
-## Skill Categories
+## Mutual Exclusivity Rule
 
-### language
+**Skills and commands are mutually exclusive.** Since all commands have been migrated to skills,
+there should be no command definitions remaining. The validation script enforces this:
 
-Programming language expertise:
+```bash
+./scripts/validate-skills.py
+```
 
-- **python**: Python 3.8+ patterns, idioms, validation
-- **typescript**: TypeScript patterns, type safety
-- **go**: Go idioms, concurrency patterns
-- **rust**: Rust ownership, safety patterns
-
-### format
-
-File format expertise:
-
-- **yaml**: YAML syntax, frontmatter validation
-- **markdown**: Markdown linting, documentation
-- **json**: JSON schemas, validation
-- **csv**: CSV parsing, data handling
-
-### framework
-
-Framework-specific patterns:
-
-- **react**: React patterns, hooks, components
-- **fastapi**: FastAPI patterns, async Python
-- **django**: Django patterns, ORM usage
-- **nextjs**: Next.js patterns, routing
-
-### infrastructure
-
-DevOps and infrastructure:
-
-- **docker**: Dockerfile best practices
-- **kubernetes**: K8s manifests, deployments
-- **terraform**: IaC patterns, AWS/cloud
-- **github-actions**: CI/CD workflows
-
-### workflow
-
-Process and workflow expertise:
-
-- **git-workflows**: Git operations, branching
-- **bash**: Shell scripting, automation
-- **cicd**: CI/CD best practices
-- **testing-patterns**: TDD/BDD, test organization
-
-### orchestration
-
-> **Note:** Orchestration workflows (`/review`, `/debug`, `/ship-it`) are now **commands**,
-> not skills. Skills don't receive CLI arguments, which broke flag handling.
->
-> See [Command Inventory](../commands/COMMAND_INVENTORY.md) for current documentation.
-
-## Best Practices
-
-### When to Create an Expertise Skill
-
-Create an expertise skill when:
-
-- Domain expertise is reusable across projects
-- Patterns and idioms are well-established
-- No orchestration or multi-step execution needed
-- Quick reference would be valuable
-
-### When to Create an Orchestration Skill
-
-Create an orchestration skill when:
-
-- Workflow has multiple phases with dependencies
-- Context isolation prevents pollution of main conversation
-- Parallel execution would improve efficiency
-- Task progress tracking provides value
-- Agent routing benefits from specialization
-
-### When NOT to Create a Skill
-
-Don't create a skill when:
-
-- Task is too simple (use command instead)
-- Better suited as an agent (domain specialist)
-- One-time or project-specific knowledge
-- No clear category fit
-
-### Mutual Exclusivity Rule
-
-**Skills and commands MUST be mutually exclusive.** A name cannot exist as both a skill and a command.
-
-| If you need... | Use | Not |
-|----------------|-----|-----|
-| Orchestration workflow | Skill | Command |
-| Context isolation (`context: fork`) | Skill | Command |
-| Agent routing (`agent: <type>`) | Skill | Command |
-| Parallel execution | Skill | Command |
-| Simple, deterministic operation | Command | Skill |
-| Single-step execution | Command | Skill |
-
-**Validation enforces this rule.** Running `./scripts/validate-skills.py` will fail if any skill name matches a command name.
-
-**Resolution when duplicates exist:**
-
-1. Determine the primary use case (orchestration vs simple operation)
-2. Delete the inappropriate version
-3. Re-run validation to confirm
-
-This separation ensures:
+If a command file is found with the same name as a skill, validation fails. This ensures:
 
 - No duplicate entries in search/autocomplete
 - Clear routing for each operation
 - Single source of truth for each workflow
 
+## Best Practices
+
+### When to Create a Skill
+
+Create a skill when:
+
+- A reusable workflow needs slash-command invocation
+- Domain expertise should be preloaded into agent contexts
+- Multi-phase orchestration benefits from task tracking
+- Agent routing enables domain-specific execution
+
+### When NOT to Create a Skill
+
+Don't create a skill when:
+
+- Task is a one-off operation (use direct execution)
+- Better suited as a full agent (deep domain specialist)
+- One-time or project-specific knowledge
+- No clear reuse pattern
+
 ### Skill Size and Scope
 
-**Good:** Focused, 20-30 lines, specific domain
+**Good:** Focused, clear purpose
 
-```markdown
-# YAML Expertise
-- YAML syntax rules
-- Agent/command frontmatter patterns
-- Validation checklist
-- Common errors
+```text
+/commit - Single responsibility: stage, generate message, commit
+/review - Clear phases: lint, security, quality, summary
+git-conventions - Reference: branching, commits, PR patterns
 ```
 
 **Bad:** Too broad, overlaps with agents
 
-```markdown
-# Backend Development Expertise
-- API design, database, testing, deployment...
-# → This should be backend-engineer agent
+```text
+# "Backend Development" skill
+# → This should be the backend-engineer agent
 ```
-
-### Integration Patterns
-
-Skills work best when:
-
-1. **Complementing agents**: Provide quick reference while agents handle complex tasks
-2. **Supporting commands**: Enable format-specific operations in workflows
-3. **Enhancing direct execution**: Add expertise without orchestration overhead
-
-## Skill Roadmap
-
-### Expertise Skills (Tier 1 - Current)
-
-- ✅ yaml
-- ✅ markdown
-- ✅ python
-- ✅ bash
-- ✅ git-workflows
-
-### Orchestration Workflows (Now Commands)
-
-> `/review`, `/debug`, `/ship-it` moved to commands - skills don't receive CLI args.
-> See [Command Inventory](../commands/COMMAND_INVENTORY.md).
-
-### Planned Expertise Skills (Tier 3)
-
-- [ ] typescript
-- [ ] react
-- [ ] docker
-- [ ] testing-patterns
-- [ ] api-design
-
-### Planned Orchestration Skills (Tier 4)
-
-- [ ] fix-ci - CI failure diagnosis and fix (upgrade from command)
-- [ ] audit - Ecosystem validation (upgrade from command)
-- [ ] prime - Codebase exploration (upgrade from command)
 
 ## Troubleshooting
 
@@ -451,48 +329,31 @@ ls ~/.claude/skills/
 ./scripts/validate-skills.py
 
 # Common issues:
-# - Invalid category (must be: language, format, framework, infrastructure, workflow)
 # - Invalid name format (must be lowercase-hyphenated)
-# - Missing required fields (name, description, category)
+# - Missing required fields (name, description)
+# - Duplicate skill/command name
 ```
 
 ### Skill vs Agent Confusion
 
 **Use skill when:**
 
-- Format-specific operation (YAML, Markdown, JSON)
-- Language idioms and patterns (Python, TypeScript)
-- Quick reference needed
-- No orchestration required
+- Slash-command invocation needed
+- Defined workflow with clear steps
+- Reference material for agent context
+- Quick, repeatable operation
 
 **Use agent when:**
 
-- Complex multi-step task
-- Requires tool orchestration
-- Strategic decisions needed
-- Multiple files or systems involved
-
-## Contributing New Skills
-
-1. **Identify need**: Confirm skill doesn't overlap with existing agents
-2. **Use template**: Start with `docs/skills/SKILL_TEMPLATE.md`
-3. **Follow conventions**: Lowercase-hyphenated names, valid category
-4. **Validate**: Run `./scripts/validate-skills.py`
-5. **Test**: Ensure skill provides value without duplication
-6. **Submit PR**: Include skill file and update this guide
+- Complex multi-step task requiring judgment
+- Deep domain expertise with tool orchestration
+- Strategic decisions across multiple files/systems
+- Investigation requiring iterative exploration
 
 ## Resources
 
 - **Skill Template**: `docs/skills/SKILL_TEMPLATE.md`
 - **Validation Script**: `scripts/validate-skills.py`
 - **Skills Directory**: `system-configs/.claude/skills/`
-- **Sync Command**: `/sync` deploys skills to `~/.claude/skills/`
-
----
-
-**Next Steps:**
-
-1. Review existing Tier 1 skills for usage patterns
-2. Propose new skills via GitHub issues
-3. Contribute skills following the template
-4. Share feedback on skill effectiveness
+- **Sync Skill**: `/sync` deploys skills to `~/.claude/skills/`
+- **Import Skill**: `/skills-import` imports Anthropic skills

@@ -191,9 +191,8 @@ validate_configs() {
 
     # Basic syntax validation
     AGENT_COUNT=$(find "$SOURCE_DIR/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-    COMMAND_COUNT=$(find "$SOURCE_DIR/commands" -name "*.md" ! -name "README.md" ! -name "*TEMPLATE*" ! -name "*CATEGORIES*" ! -name "*AUDIT*" ! -name "sync.md" 2>/dev/null | wc -l | tr -d ' ')
     SKILL_COUNT=$(find "$SOURCE_DIR/skills" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
-    echo "  - Configuration syntax: Valid ($AGENT_COUNT agents, $COMMAND_COUNT commands, $SKILL_COUNT skills)"
+    echo "  - Configuration syntax: Valid ($AGENT_COUNT agents, $SKILL_COUNT skills)"
 
     # Check target directory permissions
     if [ ! -w "$HOME" ]; then
@@ -213,7 +212,6 @@ sync_files() {
 
     # Create target directories
     mkdir -p "$TARGET_DIR/agents"
-    mkdir -p "$TARGET_DIR/commands"
     mkdir -p "$TARGET_DIR/skills"
     mkdir -p "$TARGET_DIR/output-styles"
 
@@ -228,28 +226,21 @@ sync_files() {
         return 1
     fi
 
-    # Sync commands using rsync
+    # Sync skills
     rsync_output=""
-    if rsync_output=$(rsync -a --delete --exclude="README.md" --exclude="*TEMPLATE*" --exclude="*CATEGORIES*" --exclude="*AUDIT*" --exclude="sync.md" --exclude="*.bak" --exclude="*.backup" --exclude="*.tmp" "$SOURCE_DIR/commands/" "$TARGET_DIR/commands/" 2>&1); then
-        COMMAND_COUNT=$(find "$SOURCE_DIR/commands" -name "*.md" ! -name "README.md" ! -name "*TEMPLATE*" ! -name "*CATEGORIES*" ! -name "*AUDIT*" ! -name "sync.md" 2>/dev/null | wc -l | tr -d ' ')
-        echo "  ✅ Commands: $COMMAND_COUNT files → ~/.claude/commands/"
+    if rsync_output=$(rsync -a --delete --exclude="README.md" --exclude="*TEMPLATE*" "$SOURCE_DIR/skills/" "$TARGET_DIR/skills/" 2>&1); then
+        SKILL_COUNT=$(find "$SOURCE_DIR/skills" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
+        echo "  ✅ Skills: $SKILL_COUNT skills → ~/.claude/skills/"
     else
-        echo "  ❌ Failed to sync commands"
+        echo "  ❌ Failed to sync skills"
         printf "    %s\n" "$rsync_output"
         return 1
     fi
 
-    # Sync skills if they exist
-    if [ -d "$SOURCE_DIR/skills" ]; then
-        rsync_output=""
-        if rsync_output=$(rsync -a --delete --exclude="README.md" --exclude="*TEMPLATE*" "$SOURCE_DIR/skills/" "$TARGET_DIR/skills/" 2>&1); then
-            SKILL_COUNT=$(find "$SOURCE_DIR/skills" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
-            echo "  ✅ Skills: $SKILL_COUNT skills → ~/.claude/skills/"
-        else
-            echo "  ❌ Failed to sync skills"
-            printf "    %s\n" "$rsync_output"
-            return 1
-        fi
+    # Clean up legacy commands directory if it exists
+    if [ -d "$TARGET_DIR/commands" ]; then
+        rm -rf "$TARGET_DIR/commands"
+        echo "  🧹 Removed legacy ~/.claude/commands/"
     fi
 
     # Sync output styles if they exist
@@ -323,15 +314,10 @@ post_sync_validation() {
 
     # Check file integrity
     agent_count=0
-    command_count=0
     skill_count=0
 
     if [ -d "$TARGET_DIR/agents" ]; then
         agent_count=$(find "$TARGET_DIR/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-    fi
-
-    if [ -d "$TARGET_DIR/commands" ]; then
-        command_count=$(find "$TARGET_DIR/commands" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
     fi
 
     if [ -d "$TARGET_DIR/skills" ]; then
@@ -340,9 +326,7 @@ post_sync_validation() {
 
     echo "  - File integrity: All files copied successfully"
     echo "  - Agent configs: $agent_count/$agent_count valid"
-    echo "  - Commands: $command_count/$command_count functional"
     echo "  - Skills: $skill_count/$skill_count valid"
-    echo "  - MCP integration: Not configured"
     echo ""
 
     return 0
@@ -362,7 +346,6 @@ main() {
         echo ""
         echo "📋 Files to sync:"
         echo "  - $(find "$SOURCE_DIR/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ') agent files → ~/.claude/agents/"
-        echo "  - $(find "$SOURCE_DIR/commands" -name "*.md" ! -name "README.md" ! -name "*TEMPLATE*" ! -name "*CATEGORIES*" ! -name "*AUDIT*" ! -name "sync.md" 2>/dev/null | wc -l | tr -d ' ') command files → ~/.claude/commands/"
         echo "  - $(find "$SOURCE_DIR/skills" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ') skills → ~/.claude/skills/"
         echo "  - settings.json → ~/.claude/settings.json"
         [ -f "$SOURCE_DIR/statusline.sh" ] && echo "  - statusline.sh → ~/.claude/statusline.sh"

@@ -120,16 +120,17 @@ Skills provide focused domain expertise without full agent orchestration.
 | `/review` | Dual-reviewer analysis | Parallel execution |
 | `/debug` | Root cause investigation | Context isolation |
 | `/ship-it` | Workflow orchestration | Task dependencies |
+| `/feature-lifecycle` | End-to-end feature implementation | Autonomous plan→merge |
 
-## Available Commands
+## Available Skills
 
-Commands provide focused operations for common workflows:
+Skills provide focused operations for common workflows:
 
-**Git Operations:** `/branch`, `/commit`, `/push`, `/pr`, `/rebase`, `/merge`, `/sync`
+**Git Operations:** `/branch`, `/commit`, `/push`, `/pr`, `/rebase`, `/merge`
 **Quality:** `/test`, `/review`, `/audit`, `/docs`
 **Development:** `/debug`, `/fix-ci`, `/implement`, `/resolve-comments`
 **Planning:** `/plan`, `/prime`, `/prompt`, `/verify`, `/deps`
-**Orchestration:** `/ship-it` (combines multiple commands)
+**Orchestration:** `/ship-it`, `/feature-lifecycle` (combines multiple skills)
 
 ## Task System
 
@@ -176,10 +177,13 @@ Use this table to route requests to the appropriate specialized agent.
 | deploy, ci/cd, pipeline, docker, kubernetes | `devops` | development |
 | pipeline, etl, database, sql, data warehouse | `data-engineer` | development |
 | research, compare, evaluate, analyze, options | `researcher` | analysis |
+| mobile, ios, android, swift, kotlin, react native | `mobile-engineer` | development |
+| ml, machine learning, model training, pytorch | `ml-engineer` | development |
+| implement feature, build feature, feature lifecycle | `feature-agent` | orchestration |
 
 ## Background Execution
 
 Use `run_in_background: true` for parallel agent work. Launch ALL parallel agents
 in a SINGLE message, then use TaskOutput to wait for completion before synthesis.
 
-Used by: `/fix-ci` (parallel debuggers), `/review` (parallel reviewers), `/ship-it` (concurrent phases)
+Used by: `/fix-ci` (parallel debuggers), `/review` (parallel reviewers), `/ship-it` (concurrent skills)

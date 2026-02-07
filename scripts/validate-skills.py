@@ -28,6 +28,10 @@ VALID_FIELDS = {
     'user-invocable',    # Whether user can invoke directly (default: true)
     'disable-model-invocation',  # Prevent model from invoking
     'allowed-tools',     # Restrict available tools
+    'argument-hint',     # Argument hints for autocomplete
+    'model',             # Model override
+    'hooks',             # Lifecycle hooks
+    'license',           # License info (Anthropic imported skills)
 }
 
 # Valid categories for skills
@@ -56,6 +60,9 @@ VALID_AGENTS = [
     'devops',
     'data-engineer',
     'tech-writer',
+    'mobile-engineer',
+    'ml-engineer',
+    'feature-agent',
 ]
 
 # Valid context values

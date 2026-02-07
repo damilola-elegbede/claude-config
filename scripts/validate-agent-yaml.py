@@ -56,7 +56,10 @@ COMPLEX_AGENTS = [
     'data-engineer',       # Consolidated from: data-engineer, database-admin
     'debugger',            # Consolidated from: debugger, performance-engineer
     'devops',              # Consolidated from: devops, platform-engineer
+    'feature-agent',       # Autonomous feature lifecycle orchestration
     'frontend-engineer',   # Consolidated from: frontend-engineer, ui-designer
+    'ml-engineer',         # ML training, inference, and pipeline development
+    'mobile-engineer',     # iOS, Android, and cross-platform mobile development
     'researcher',          # Consolidated from: researcher, codebase-analyst, ux-researcher, business-analyst, product-strategist
     'security-auditor',    # Comprehensive security patterns and checklists
     'tech-writer',         # Documentation patterns and templates
@@ -140,6 +143,18 @@ def parse_yaml_structure(yaml_text):
     for field in REQUIRED_FIELDS:
         if field not in fields_found:
             issues.append(f"Missing required field: {field}")
+
+    # Validate skills field if present (comma-separated list of skill names)
+    if 'skills' in field_values:
+        skills_value = field_values['skills']
+        if skills_value:
+            skill_names = [s.strip() for s in skills_value.split(',')]
+            for skill_name in skill_names:
+                if not re.match(r'^[a-z][a-z0-9-]*$', skill_name):
+                    issues.append(
+                        f"Invalid skill name '{skill_name}' in skills list. "
+                        "Must be lowercase-hyphenated (e.g., 'git-conventions')"
+                    )
 
     # Validate thinking-level and thinking-tokens consistency
     if 'thinking-level' in field_values and 'thinking-tokens' in field_values:

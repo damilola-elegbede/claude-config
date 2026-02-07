@@ -40,7 +40,8 @@
     "description": "MUST BE USED for system architecture, API design, cloud infrastructure, and technical roadmaps. Consolidated from principal-architect, api-architect, cloud-architect, and frontend-architect.",
     "color": "purple",
     "permissionMode": "plan",
-    "memory": "project"
+    "memory": "project",
+    "skills": ["api-design-patterns"]
   },
   {
     "name": "backend-engineer",
@@ -61,7 +62,8 @@
     ],
     "description": "MUST BE USED for server-side architecture, microservices, distributed systems, and database engineering.",
     "color": "blue",
-    "permissionMode": "acceptEdits"
+    "permissionMode": "acceptEdits",
+    "skills": ["api-design-patterns"]
   },
   {
     "name": "career-assistant",
@@ -104,7 +106,8 @@
     "description": "MUST BE USED for pre-commit reviews, vulnerability detection, accessibility checks, and production readiness assessment.",
     "color": "green",
     "permissionMode": "plan",
-    "memory": "local"
+    "memory": "local",
+    "skills": ["git-conventions", "security-checklist"]
   },
   {
     "name": "data-engineer",
@@ -169,7 +172,29 @@
     "description": "MUST BE USED for CI/CD, Kubernetes, IaC, and platform engineering. Consolidated from devops and platform-engineer.",
     "color": "orange",
     "permissionMode": "acceptEdits",
-    "memory": "local"
+    "memory": "local",
+    "skills": ["git-conventions", "cicd-patterns"]
+  },
+  {
+    "name": "feature-agent",
+    "file": "feature-agent.md",
+    "capabilities": [
+      "Spec parsing: Extracts structured requirements from markdown specs, GitHub issues, or inline descriptions",
+      "Plan generation: Creates implementation plans with task breakdowns and agent assignments",
+      "Lifecycle orchestration: Drives plan, implement, test, ship, monitor, and merge phases sequentially",
+      "CI/review monitoring: Watches PR checks and review feedback, auto-fixing failures up to 5 iterations",
+      "Multi-input support: Works from spec files, GitHub issues, inline descriptions, or interactive prompts"
+    ],
+    "when_to_use": [
+      "Complete feature implementation requested from a spec or issue",
+      "User wants autonomous end-to-end delivery (plan through merge)",
+      "GitHub issue needs full implementation lifecycle",
+      "Bug fix or refactor requires the full ship cycle"
+    ],
+    "description": "Specializes in autonomous end-to-end feature implementation from spec to merged PR. Use PROACTIVELY for complete feature lifecycles.",
+    "color": "purple",
+    "permissionMode": "acceptEdits",
+    "skills": ["feature-lifecycle"]
   },
   {
     "name": "frontend-engineer",
@@ -189,6 +214,48 @@
       "Frontend testing or debugging"
     ],
     "description": "MUST BE USED for frontend work, UI components, and design systems. Consolidated from frontend-engineer and ui-designer.",
+    "color": "blue",
+    "permissionMode": "acceptEdits"
+  },
+  {
+    "name": "ml-engineer",
+    "file": "ml-engineer.md",
+    "capabilities": [
+      "Model training: PyTorch, TensorFlow, JAX training loops, distributed training, hyperparameter tuning",
+      "Inference optimization: ONNX export, TensorRT, quantization, model distillation, batching strategies",
+      "ML pipelines: Feature engineering, data validation, experiment tracking (MLflow, W&B), CI/CD for ML",
+      "NLP and LLMs: Hugging Face Transformers, fine-tuning, prompt engineering, RAG architectures",
+      "MLOps: Model registry, A/B testing, canary deployments, monitoring for drift and degradation"
+    ],
+    "when_to_use": [
+      "Model training, fine-tuning, or evaluation tasks",
+      "Inference optimization for production deployment",
+      "ML pipeline design or implementation",
+      "Data preprocessing and feature engineering",
+      "Model serving infrastructure setup"
+    ],
+    "description": "MUST BE USED for machine learning model training, inference optimization, and ML pipeline development.",
+    "color": "cyan",
+    "permissionMode": "acceptEdits"
+  },
+  {
+    "name": "mobile-engineer",
+    "file": "mobile-engineer.md",
+    "capabilities": [
+      "iOS development: Swift, SwiftUI, UIKit, Core Data, Combine, async/await concurrency",
+      "Android development: Kotlin, Jetpack Compose, Room, Coroutines, Hilt dependency injection",
+      "Cross-platform: React Native with TypeScript, Flutter with Dart, shared business logic",
+      "Mobile architecture: MVVM, MVI, Clean Architecture, modular navigation patterns",
+      "Mobile testing: XCTest, Espresso, Detox, snapshot testing, UI automation"
+    ],
+    "when_to_use": [
+      "Native iOS or Android feature development",
+      "SwiftUI or Jetpack Compose UI implementation",
+      "React Native or Flutter cross-platform work",
+      "Mobile-specific performance optimization",
+      "App Store or Play Store submission preparation"
+    ],
+    "description": "MUST BE USED for mobile native development including iOS (Swift/SwiftUI), Android (Kotlin/Compose), and React Native/Flutter.",
     "color": "blue",
     "permissionMode": "acceptEdits"
   },
@@ -234,7 +301,8 @@
     "description": "MUST BE USED for security audits, vulnerability detection, and compliance reviews.",
     "color": "red",
     "permissionMode": "plan",
-    "memory": "project"
+    "memory": "project",
+    "skills": ["security-checklist"]
   },
   {
     "name": "tech-writer",
@@ -255,7 +323,8 @@
     ],
     "description": "MUST BE USED for documentation, READMEs, and API docs.",
     "color": "cyan",
-    "permissionMode": "acceptEdits"
+    "permissionMode": "acceptEdits",
+    "skills": ["markdown-linting"]
   },
   {
     "name": "test-engineer",
@@ -276,6 +345,7 @@
     ],
     "description": "MUST BE USED for test strategy and implementation across frameworks.",
     "color": "green",
-    "permissionMode": "acceptEdits"
+    "permissionMode": "acceptEdits",
+    "skills": ["testing-patterns"]
   }
 ]

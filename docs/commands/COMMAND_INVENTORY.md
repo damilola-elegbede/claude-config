@@ -1,90 +1,107 @@
-# Command Inventory
+# Skills Inventory
 
-Post-optimization inventory of 21 commands.
+Complete inventory of 37 skills across 6 categories.
 
 ## Summary
 
-| Category | Count | Execution Model |
-|----------|-------|-----------------|
-| Git Operations | 6 | Direct |
-| Development | 2 | Wave-based |
-| Quality | 2 | Hybrid |
-| Orchestration | 5 | Wave-based |
-| Utilities | 5 | Direct/Hybrid |
-| Integration | 1 | Wave-based |
-| **Total** | **21** | |
+| Category | Count | Examples |
+|----------|-------|---------|
+| Orchestration | 7 | `/ship-it`, `/review`, `/fix-ci`, `/implement` |
+| Agent-Routed | 4 | `/debug`, `/plan`, `/prime`, `/docs` |
+| Git Workflow | 6 | `/branch`, `/commit`, `/push`, `/pr` |
+| Utility | 6 | `/test`, `/audit`, `/sync`, `/verify` |
+| Agent-Preloaded Reference | 6 | `git-conventions`, `security-checklist` |
+| Imported (Anthropic) | 8 | `pdf`, `docx`, `webapp-testing` |
+| **Total** | **37** | |
 
-> **Note:** `/review`, `/debug`, and `/ship-it` are commands (restored from skills).
-> Skills don't receive CLI arguments, so these were moved back to commands.
+All 22 former commands have been migrated to skills. There are **0 commands** remaining.
 
-## Git Operations (6)
+## Orchestration Skills (7)
 
-| Command | Description | Execution Model |
-|---------|-------------|-----------------|
+Multi-phase workflows with task tracking, parallel execution, and agent routing.
+
+| Skill | Description | Execution Model | Flags |
+|-------|-------------|-----------------|-------|
+| `/ship-it` | Development workflow orchestration | Orchestrator | `-d`, `-t`, `-c`, `-r`, `-p`, `-pr`, `--dry-run` |
+| `/review` | Dual-reviewer code analysis | Wave-based | `--full` |
+| `/fix-ci` | CI failure diagnosis and fix | Wave-based | `--learn` |
+| `/deps` | Dependency management | Wave-based | `audit`, `update`, `clean`, `--quick` |
+| `/resolve-comments` | CodeRabbit comment resolution | Wave-based | `--auto`, `--dry-run` |
+| `/implement` | Feature implementation from specs | Wave-based | `--spec`, `--tdd` |
+| `/feature-lifecycle` | End-to-end feature delivery | Orchestrator | Agent team coordination |
+
+## Agent-Routed Skills (4)
+
+Skills that delegate execution to specialized agents.
+
+| Skill | Description | Routed Agent | Flags |
+|-------|-------------|--------------|-------|
+| `/debug` | Root cause analysis | debugger | `--performance`, `--issue` |
+| `/plan` | PRD and task file generation | architect | `--no-execute`, `--simple` |
+| `/prime` | Repository understanding | researcher | `--lite`, `--full` |
+| `/docs` | Documentation generation | tech-writer | `--audit`, `--audit-and-fix`, `--clean` |
+
+## Git Workflow Skills (6)
+
+Direct-execution skills for common git operations.
+
+| Skill | Description | Execution Model |
+|-------|-------------|-----------------|
 | `/branch` | Create branches with intelligent naming | Direct |
 | `/commit` | Git commits with message generation | Direct |
-| `/merge` | Merge branches with conflict handling | Direct |
-| `/pr` | Create PRs with smart descriptions | Direct |
 | `/push` | Push with validation | Direct |
 | `/rebase` | Rebase on target branch | Direct |
+| `/merge` | Merge branches with conflict handling | Direct |
+| `/pr` | Create PRs with smart descriptions | Direct |
 
-## Development Commands (3)
+## Utility Skills (6)
 
-| Command | Description | Execution Model | Flags |
-|---------|-------------|-----------------|-------|
-| `/implement` | Feature implementation from specs | Wave-based | `--spec`, `--tdd` |
-| `/plan` | PRD and task file generation | Wave-based | `--no-execute`, `--simple` |
-| `/debug` | Root cause analysis | Wave-based | `--performance`, `--issue` |
-
-## Quality Commands (3)
-
-| Command | Description | Execution Model | Flags |
-|---------|-------------|-----------------|-------|
+| Skill | Description | Execution Model | Flags |
+|-------|-------------|-----------------|-------|
 | `/test` | Test discovery and execution | Hybrid | `--create`, `--framework`, `--coverage` |
-| `/audit` | Unified agent/command validation | Wave-based | `--scope agents\|commands\|all`, `--fix` |
-| `/review` | Dual-reviewer code analysis | Wave-based | `--full` |
-
-## Orchestration Commands (3)
-
-| Command | Description | Execution Model | Flags |
-|---------|-------------|-----------------|-------|
-| `/prime` | Repository understanding | Wave-based | `--lite`, `--full` |
-| `/fix-ci` | CI failure diagnosis | Wave-based | `--learn` |
-| `/ship-it` | Development workflow orchestration | Orchestrator | `-d`, `-t`, `-c`, `-r`, `-p`, `-pr`, `--dry-run` |
-
-## Utility Commands (5)
-
-| Command | Description | Execution Model | Flags |
-|---------|-------------|-----------------|-------|
-| `/sync` | Deploy configurations | Direct | `--dry-run`, `--backup`, `--force` |
-| `/deps` | Dependency management | Wave-based | `audit`, `update`, `clean`, `--quick` |
-| `/docs` | Documentation generation | Hybrid | `--audit`, `--audit-and-fix`, `--clean` |
+| `/audit` | Unified agent/skill validation | Wave-based | `--scope agents\|skills\|all`, `--fix` |
 | `/prompt` | Prompt optimization | Direct | `--file` |
-| `/verify` | Command verification | Hybrid | `--last`, `--command`, `--depth` |
+| `/verify` | Skill verification | Hybrid | `--last`, `--command`, `--depth` |
+| `/sync` | Deploy configurations | Direct | `--dry-run`, `--backup`, `--force` |
+| `/skills-import` | Import Anthropic skills | Direct | `--list`, `--all` |
 
-### Integration Commands (1)
+## Agent-Preloaded Reference Skills (6)
 
-| Command | Description | Execution Model | Flags |
-|---------|-------------|-----------------|-------|
-| `/resolve-comments` | CodeRabbit comment resolution | Wave-based | `--auto`, `--dry-run` |
+Reference material injected into agent contexts. Not user-invocable (`user-invocable: false`).
+
+| Skill | Preloaded By | Purpose |
+|-------|-------------|---------|
+| `git-conventions` | code-reviewer, devops | Git best practices, commit conventions |
+| `security-checklist` | code-reviewer, security-auditor | OWASP checks, secure coding patterns |
+| `testing-patterns` | test-engineer | TDD/BDD patterns, test organization |
+| `api-design-patterns` | architect, backend-engineer | REST/GraphQL patterns, OpenAPI |
+| `markdown-linting` | tech-writer | Markdownlint rules, documentation formatting |
+| `cicd-patterns` | devops | CI/CD pipelines, GitHub Actions patterns |
+
+## Imported Anthropic Skills (8)
+
+Skills imported from Anthropic's official skill library via `/skills-import`.
+
+| Skill | Description | Source |
+|-------|-------------|--------|
+| `pdf` | PDF file reading and analysis | Anthropic |
+| `docx` | Word document reading and analysis | Anthropic |
+| `xlsx` | Excel spreadsheet reading and analysis | Anthropic |
+| `pptx` | PowerPoint presentation reading and analysis | Anthropic |
+| `webapp-testing` | Web application testing with browser automation | Anthropic |
+| `skill-creator` | Create new skills from templates | Anthropic |
+| `mcp-builder` | Build MCP server integrations | Anthropic |
+| `frontend-design` | Frontend design patterns and implementation | Anthropic |
 
 ## Removed Commands (3)
 
-The following commands were consolidated:
+The following commands were consolidated prior to the skills migration:
 
 | Removed | Replacement | Migration |
 |---------|-------------|-----------|
 | `/implementation-plan` | `/plan --no-execute` | Use `--no-execute` flag |
 | `/agent-audit` | `/audit --scope agents` | Use `--scope agents` |
 | `/command-audit` | `/audit --scope commands` | Use `--scope commands` |
-
-### Why Commands Instead of Skills?
-
-`/debug`, `/review`, and `/ship-it` were initially migrated to skills but have been restored as commands because:
-
-- **Argument passing**: Skills don't receive `<command-args>` from CLI, so flags like `-c -p` were ignored
-- **Practical functionality**: Commands properly handle argument parsing for composable workflows
-- **Trade-off**: Commands don't support `context: fork`, but working flags are more important
 
 ## Execution Models
 
@@ -108,9 +125,9 @@ The following commands were consolidated:
 
 ### Orchestrator
 
-- Calls other commands
+- Calls other skills
 - Workflow coordination
-- Sequential/parallel command execution
+- Sequential/parallel skill execution
 
 ## Usage Examples
 
@@ -123,11 +140,11 @@ The following commands were consolidated:
 # Implement from spec
 /implement auth-spec.md --tdd
 
-# Debug with saved output
-/debug "Login fails silently" --save
+# Debug with performance focus
+/debug "Login fails silently" --performance
 
-# Create bug from debug analysis
-/bug --from-debug
+# End-to-end feature delivery
+/feature-lifecycle "Add OAuth support"
 ```
 
 ### Quality Workflow
@@ -136,8 +153,8 @@ The following commands were consolidated:
 # Full audit
 /audit --scope all
 
-# Code review with fixes
-/review --full --fix
+# Code review with full analysis
+/review --full
 
 # Test with coverage
 /test --coverage
@@ -163,4 +180,14 @@ The following commands were consolidated:
 
 # Push safely
 /push
+```
+
+### Ship-It Workflow
+
+```bash
+# Full pipeline: test, commit, review, push, PR
+/ship-it -t -c -r -p -pr
+
+# Dry run to preview
+/ship-it -t -c -p --dry-run
 ```

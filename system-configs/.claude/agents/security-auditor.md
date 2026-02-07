@@ -9,6 +9,7 @@ permissionMode: plan
 memory: project
 color: red
 category: security
+skills: security-checklist
 ---
 
 # Security Auditor
