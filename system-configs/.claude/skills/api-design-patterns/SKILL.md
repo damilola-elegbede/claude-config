@@ -256,7 +256,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 ### API Keys
 
 ```text
-X-API-Key: sk_live_abc123def456
+X-API-Key: sk_live_EXAMPLE_KEY_REPLACE_ME
 ```
 
 - Prefix with environment: `sk_live_`, `sk_test_`

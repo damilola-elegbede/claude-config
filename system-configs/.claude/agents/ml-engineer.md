@@ -6,6 +6,8 @@ model: sonnet
 thinking-level: megathink
 thinking-tokens: 10000
 permissionMode: acceptEdits
+memory: project
+skills: testing-patterns
 color: cyan
 category: development
 ---

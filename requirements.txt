@@ -7,6 +7,10 @@
 # YAML Processing (required for agent validation)
 PyYAML==6.0.2
 
+# XML Security (required for Office document processing)
+defusedxml>=0.7.1
+lxml>=4.9.0
+
 # Development Dependencies (optional, for local development)
 # These are automatically excluded in CI if not needed
 

@@ -6,6 +6,7 @@ model: opus
 thinking-level: ultrathink
 thinking-tokens: 31999
 permissionMode: acceptEdits
+memory: project
 skills: feature-lifecycle
 color: purple
 category: orchestration

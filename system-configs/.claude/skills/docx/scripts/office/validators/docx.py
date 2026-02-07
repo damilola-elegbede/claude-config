@@ -260,9 +260,15 @@ class DOCXSchemaValidator(BaseSchemaValidator):
             try:
                 for elem in lxml.etree.parse(str(xml_file)).iter():
                     if val := elem.get(para_id_attr):
-                        if self._parse_id_value(val, base=16) >= 0x80000000:
+                        try:
+                            if self._parse_id_value(val, base=16) >= 0x80000000:
+                                errors.append(
+                                    f"  {xml_file.name}:{elem.sourceline}: paraId={val} >= 0x80000000"
+                                )
+                        except ValueError:
                             errors.append(
-                                f"  {xml_file.name}:{elem.sourceline}: paraId={val} >= 0x80000000"
+                                f"  {xml_file.name}:{elem.sourceline}: "
+                                f"paraId={val} is not valid hexadecimal"
                             )
 
                     if val := elem.get(durable_id_attr):
@@ -279,13 +285,19 @@ class DOCXSchemaValidator(BaseSchemaValidator):
                                     f"durableId={val} must be decimal in numbering.xml"
                                 )
                         else:
-                            if self._parse_id_value(val, base=16) >= 0x7FFFFFFF:
+                            try:
+                                if self._parse_id_value(val, base=16) >= 0x7FFFFFFF:
+                                    errors.append(
+                                        f"  {xml_file.name}:{elem.sourceline}: "
+                                        f"durableId={val} >= 0x7FFFFFFF"
+                                    )
+                            except ValueError:
                                 errors.append(
                                     f"  {xml_file.name}:{elem.sourceline}: "
-                                    f"durableId={val} >= 0x7FFFFFFF"
+                                    f"durableId={val} is not valid hexadecimal"
                                 )
-            except Exception:
-                pass
+            except (lxml.etree.XMLSyntaxError, OSError) as e:
+                errors.append(f"  {xml_file.name}: Error parsing XML: {e}")
 
         if errors:
             print(f"FAILED - {len(errors)} ID constraint violations:")

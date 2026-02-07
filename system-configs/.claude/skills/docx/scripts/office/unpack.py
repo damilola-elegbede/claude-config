@@ -51,6 +51,10 @@ def unpack(
         output_path.mkdir(parents=True, exist_ok=True)
 
         with zipfile.ZipFile(input_path, "r") as zf:
+            for member in zf.namelist():
+                member_path = (output_path / member).resolve()
+                if not str(member_path).startswith(str(output_path.resolve())):
+                    return None, f"Error: Zip Slip detected - refusing to extract '{member}' outside target directory"
             zf.extractall(output_path)
 
         xml_files = list(output_path.rglob("*.xml")) + list(output_path.rglob("*.rels"))

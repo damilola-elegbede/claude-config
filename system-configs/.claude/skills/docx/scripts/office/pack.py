@@ -40,14 +40,18 @@ def pack(
 
     if validate and original_file:
         original_path = Path(original_file)
-        if original_path.exists():
+        if not original_path.exists():
+            return None, f"Error: Original file not found: {original_file}"
+        with tempfile.TemporaryDirectory() as val_dir:
+            val_copy = Path(val_dir) / "validate"
+            shutil.copytree(input_dir, val_copy)
             success, output = _run_validation(
-                input_dir, original_path, suffix, infer_author_func
+                val_copy, original_path, suffix, infer_author_func
             )
-            if output:
-                print(output)
-            if not success:
-                return None, f"Error: Validation failed for {input_dir}"
+        if output:
+            print(output)
+        if not success:
+            return None, f"Error: Validation failed for {input_dir}"
 
     with tempfile.TemporaryDirectory() as temp_dir:
         temp_content_dir = Path(temp_dir) / "content"

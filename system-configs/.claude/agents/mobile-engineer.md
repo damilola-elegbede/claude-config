@@ -4,6 +4,8 @@ description: MUST BE USED for mobile native development including iOS (Swift/Swi
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: sonnet
 permissionMode: acceptEdits
+memory: project
+skills: testing-patterns
 color: blue
 category: development
 ---

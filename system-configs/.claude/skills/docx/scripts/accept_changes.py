@@ -7,13 +7,15 @@ import argparse
 import logging
 import shutil
 import subprocess
+import tempfile
 from pathlib import Path
 
 from office.soffice import get_soffice_env
 
 logger = logging.getLogger(__name__)
 
-LIBREOFFICE_PROFILE = "/tmp/libreoffice_docx_profile"
+_PROFILE_DIR = tempfile.mkdtemp(prefix="libreoffice_docx_profile_")
+LIBREOFFICE_PROFILE = _PROFILE_DIR
 MACRO_DIR = f"{LIBREOFFICE_PROFILE}/user/basic/Standard"
 
 ACCEPT_CHANGES_MACRO = """<?xml version="1.0" encoding="UTF-8"?>
@@ -76,7 +78,7 @@ def accept_changes(
     except subprocess.TimeoutExpired:
         return (
             None,
-            f"Successfully accepted all tracked changes: {input_file} -> {output_file}",
+            f"Error: LibreOffice timed out processing: {input_file}",
         )
 
     if result.returncode != 0:

@@ -54,14 +54,23 @@ def _ensure_shim() -> Path:
     if _SHIM_SO.exists():
         return _SHIM_SO
 
-    src = Path(tempfile.gettempdir()) / "lo_socket_shim.c"
-    src.write_text(_SHIM_SOURCE)
-    subprocess.run(
-        ["gcc", "-shared", "-fPIC", "-o", str(_SHIM_SO), str(src), "-ldl"],
-        check=True,
-        capture_output=True,
-    )
-    src.unlink()
+    with tempfile.NamedTemporaryFile(
+        suffix=".c", dir=tempfile.gettempdir(), delete=False
+    ) as src_f:
+        src = Path(src_f.name)
+        src_f.write(_SHIM_SOURCE.encode())
+
+    tmp_so = Path(tempfile.gettempdir()) / f"lo_socket_shim_{os.getpid()}.so"
+    try:
+        subprocess.run(
+            ["gcc", "-shared", "-fPIC", "-o", str(tmp_so), str(src), "-ldl"],
+            check=True,
+            capture_output=True,
+        )
+        os.replace(str(tmp_so), str(_SHIM_SO))
+    finally:
+        src.unlink(missing_ok=True)
+        tmp_so.unlink(missing_ok=True)
     return _SHIM_SO
 
 
