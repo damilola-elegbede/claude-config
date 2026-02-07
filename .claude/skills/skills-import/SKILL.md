@@ -293,6 +293,39 @@ if [[ "$MODE" == "list" ]]; then
   exit 0
 fi
 
+if [[ "$MODE" == "preview" ]]; then
+  if [[ -z "$SKILL_NAME" ]]; then
+    echo "Error: --preview requires a skill name"
+    echo "Usage: /skills-import --preview <skill-name>"
+    exit 1
+  fi
+
+  # Check if skill exists in cache
+  SKILL_EXISTS=$(echo "$SKILLS_JSON" | jq -r --arg name "$SKILL_NAME" '.skills[] | select(.name == $name) | .name')
+  if [[ -z "$SKILL_EXISTS" ]]; then
+    echo "Error: Skill '$SKILL_NAME' not found. Run /skills-import --list to see available skills."
+    exit 1
+  fi
+
+  echo ""
+  echo "Preview: $SKILL_NAME"
+  echo "---"
+
+  # Fetch and display SKILL.md content
+  SKILL_MD=$(gh api "repos/anthropics/skills/contents/skills/$SKILL_NAME/SKILL.md" 2>/dev/null)
+  if [[ $? -eq 0 ]]; then
+    echo "$SKILL_MD" | jq -r '.content' | base64 -d
+  else
+    echo "Error: Failed to fetch skill content"
+    exit 1
+  fi
+
+  echo ""
+  echo "---"
+  echo "Install with: /skills-import $SKILL_NAME"
+  exit 0
+fi
+
 # Interactive mode - use AskUserQuestion for selection
 # Download each selected skill to system-configs/.claude/skills/{name}/
 

@@ -115,59 +115,84 @@ jobs:
         ./tests/test.sh
 
     - name: Check if sync needed
-      if: contains(steps.changed-files.outputs.all_changed_files, 'system-configs/CLAUDE.md') || contains(steps.changed-files.outputs.all_changed_files, 'system-configs/.claude/commands/')
+      if: contains(steps.changed-files.outputs.all_changed_files, 'system-configs/CLAUDE.md') || contains(steps.changed-files.outputs.all_changed_files, 'system-configs/.claude/skills/')
       run: |
         echo "⚠️ Changes detected in configuration files!"
         echo "Remember to run /sync command after merging to update your local configuration."
 
-  command-validation:
-    name: Validate Commands
+  skill-validation:
+    name: Validate Skills
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v6
 
-    - name: Validate command structure
+    - name: Validate skill structure
       run: |
-        echo "Validating command files..."
+        echo "Validating skill files..."
 
-        for cmd in system-configs/.claude/commands/*.md; do
-          # Skip README.md file
-          if [[ "$(basename "$cmd")" == "README.md" ]]; then
-            echo "Skipping $cmd (documentation file)"
+        skills_dir="system-configs/.claude/skills"
+
+        if [ ! -d "$skills_dir" ]; then
+          echo "❌ Skills directory not found: $skills_dir"
+          exit 1
+        fi
+
+        found_skills=0
+
+        for skill_dir in "$skills_dir"/*/; do
+          # Skip if glob didn't match
+          [ -d "$skill_dir" ] || continue
+
+          skill_name=$(basename "$skill_dir")
+
+          # Skip hidden directories
+          if [[ "$skill_name" == .* ]]; then
             continue
           fi
 
-          echo "Checking $cmd..."
+          skill_file="$skill_dir/SKILL.md"
 
-          # Check for required sections in the new template structure
-          if ! grep -q "^# /" "$cmd"; then
-            echo "❌ Missing command header starting with '# /' in $cmd"
+          if [ ! -f "$skill_file" ]; then
+            echo "❌ Missing SKILL.md in $skill_name/"
             exit 1
           fi
 
-          if ! grep -q "^## Usage" "$cmd"; then
-            echo "❌ Missing Usage section in $cmd"
+          echo "Checking $skill_name/SKILL.md..."
+          found_skills=$((found_skills + 1))
+
+          # Check for YAML front-matter
+          if ! head -1 "$skill_file" | grep -q "^---"; then
+            echo "❌ Missing YAML front-matter (must start with ---) in $skill_name/SKILL.md"
             exit 1
           fi
 
-          if ! grep -q "^## Description" "$cmd"; then
-            echo "❌ Missing Description section in $cmd"
+          # Check for required sections
+          if ! grep -q "^# /" "$skill_file"; then
+            echo "❌ Missing skill header starting with '# /' in $skill_name/SKILL.md"
             exit 1
           fi
 
-          if ! grep -q "^## Expected Output" "$cmd"; then
-            echo "❌ Missing Expected Output section in $cmd"
+          if ! grep -q "^## Usage" "$skill_file"; then
+            echo "❌ Missing Usage section in $skill_name/SKILL.md"
             exit 1
           fi
 
-          # Note: Behavior section is now optional in the new template
+          if ! grep -q "^## Description" "$skill_file"; then
+            echo "❌ Missing Description section in $skill_name/SKILL.md"
+            exit 1
+          fi
 
-          echo "✓ $cmd structure is valid"
+          echo "✓ $skill_name/SKILL.md structure is valid"
         done
 
-        echo "All command files are properly structured!"
+        if [ "$found_skills" -eq 0 ]; then
+          echo "❌ No skills found in $skills_dir"
+          exit 1
+        fi
+
+        echo "All $found_skills skill files are properly structured!"
 
   security-check:
     name: Security Scan
