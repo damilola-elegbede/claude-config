@@ -162,35 +162,68 @@ jobs:
           echo "Checking $skill_name/SKILL.md..."
           found_skills=$((found_skills + 1))
 
+          # --- Common checks (all skill types) ---
+
           # Check for YAML front-matter
           if ! head -1 "$skill_file" | grep -q "^---"; then
             echo "❌ Missing YAML front-matter (must start with ---) in $skill_name/SKILL.md"
             exit 1
           fi
 
-          # Reference skills (user-invocable: false) and imported skills have different structure
-          if grep -q "^user-invocable: false" "$skill_file" || grep -q "^license:" "$skill_file"; then
-            echo "✓ $skill_name/SKILL.md (reference/imported skill, front-matter valid)"
-            continue
-          fi
-
-          # Check for required sections (user-invocable skills only)
-          if ! grep -q "^# /" "$skill_file"; then
-            echo "❌ Missing skill header starting with '# /' in $skill_name/SKILL.md"
+          # Check for required front-matter fields
+          if ! grep -q "^name:" "$skill_file"; then
+            echo "❌ Missing 'name' field in front-matter of $skill_name/SKILL.md"
             exit 1
           fi
 
-          if ! grep -q "^## Usage" "$skill_file"; then
-            echo "❌ Missing Usage section in $skill_name/SKILL.md"
+          if ! grep -q "^description:" "$skill_file"; then
+            echo "❌ Missing 'description' field in front-matter of $skill_name/SKILL.md"
             exit 1
           fi
 
-          if ! grep -q "^## Description" "$skill_file"; then
-            echo "❌ Missing Description section in $skill_name/SKILL.md"
+          # Check for at least one ## section (all skill types must have content structure)
+          if ! grep -q "^## " "$skill_file"; then
+            echo "❌ Missing markdown sections (no ## headings) in $skill_name/SKILL.md"
             exit 1
           fi
 
-          echo "✓ $skill_name/SKILL.md structure is valid"
+          # --- Type-specific checks ---
+
+          is_reference=false
+          is_imported=false
+          grep -q "^user-invocable: false" "$skill_file" && is_reference=true
+          grep -q "^license:" "$skill_file" && is_imported=true
+
+          if [ "$is_reference" = true ]; then
+            # Reference skills: must have a top-level heading (# Name Reference)
+            if ! grep -q "^# " "$skill_file"; then
+              echo "❌ Missing top-level heading (# ) in reference skill $skill_name/SKILL.md"
+              exit 1
+            fi
+            echo "✓ $skill_name/SKILL.md (reference skill)"
+
+          elif [ "$is_imported" = true ]; then
+            # Imported skills: validated by common checks above (front-matter + ## sections)
+            echo "✓ $skill_name/SKILL.md (imported skill)"
+
+          else
+            # User-invocable skills: must have /name header, Usage, and Description
+            if ! grep -q "^# /" "$skill_file"; then
+              echo "❌ Missing skill header starting with '# /' in $skill_name/SKILL.md"
+              exit 1
+            fi
+
+            if ! grep -q "^## Usage" "$skill_file"; then
+              echo "❌ Missing '## Usage' section in $skill_name/SKILL.md"
+              exit 1
+            fi
+
+            if ! grep -q "^## Description" "$skill_file"; then
+              echo "❌ Missing '## Description' section in $skill_name/SKILL.md"
+              exit 1
+            fi
+            echo "✓ $skill_name/SKILL.md (user-invocable skill)"
+          fi
         done
 
         if [ "$found_skills" -eq 0 ]; then
