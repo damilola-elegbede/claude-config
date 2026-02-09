@@ -30,7 +30,7 @@ Conducts uncompromising reviews across security, performance, accessibility, and
 - Multi-language: JavaScript/TypeScript, Python, Go, Rust, full-stack patterns
 - Architecture review: Design patterns, SOLID principles, maintainability
 - Claude-config validation: Agent/command counts, YAML compliance, routing table accuracy
-- CodeRabbit prediction: Identify issues before external review
+- Comprehensive review: CodeRabbit-style assertive analysis when invoked by /review
 
 ## When to Engage
 

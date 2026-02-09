@@ -117,7 +117,7 @@ Skills provide focused domain expertise without full agent orchestration.
 
 | Skill | Purpose | Key Feature |
 |-------|---------|-------------|
-| `/review` | Dual-reviewer analysis | Parallel execution |
+| `/review` | Comprehensive code review | Assertive analysis |
 | `/debug` | Root cause investigation | Context isolation |
 | `/ship-it` | Workflow orchestration | Task dependencies |
 | `/feature-lifecycle` | End-to-end feature implementation | Autonomous plan→merge |
@@ -186,4 +186,4 @@ Use this table to route requests to the appropriate specialized agent.
 Use `run_in_background: true` for parallel agent work. Launch ALL parallel agents
 in a SINGLE message, then use TaskOutput to wait for completion before synthesis.
 
-Used by: `/fix-ci` (parallel debuggers), `/review` (parallel reviewers), `/ship-it` (concurrent skills)
+Used by: `/fix-ci` (parallel debuggers), `/ship-it` (concurrent skills)
