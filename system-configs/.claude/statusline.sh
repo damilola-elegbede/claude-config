@@ -1,6 +1,6 @@
 #!/bin/bash
 # Claude Code StatusLine Configuration
-# Shows: model | git_branch | directory | output_mode | version
+# Shows: model | git_branch | directory | output_mode | version | context_window_%
 # Per-terminal version tracking: Each terminal shows ✨ when IT first sees a new version
 #
 # FALLBACK BEHAVIOR:
@@ -57,12 +57,36 @@ if [[ -z "$input" ]] || ! echo "$input" | jq . >/dev/null 2>&1; then
   current_dir=$(basename "$PWD")
   output_style="default"
   version="unknown"
+  context_pct="--"
 else
-  # Valid JSON input - extract information using jq
-  model_name=$(echo "$input" | jq -r '.model.display_name // "Claude"')
-  current_dir=$(basename "$(echo "$input" | jq -r '.workspace.current_dir // .cwd // "'"$PWD"'"')")
-  output_style=$(echo "$input" | jq -r '.output_style.name // "default"')
-  version=$(echo "$input" | jq -r '.version // "unknown"')
+  # Valid JSON input - extract all fields in a single jq call to reduce process overhead
+  jq_output=$(printf '%s' "$input" | jq -r --arg pwd "$PWD" '[
+    (.model.display_name // "Claude"),
+    (.workspace.current_dir // .cwd // $pwd),
+    (.output_style.name // "default"),
+    (.version // "unknown"),
+    ((.context_window.used_percentage // "") | tostring)
+  ] | @tsv')
+  IFS=$'\t' read -r model_name raw_dir output_style version context_pct <<< "$jq_output"
+  current_dir=$(basename "$raw_dir")
+fi
+
+# Validate & normalize context percentage
+if [[ -z "$context_pct" ]] || ! [[ "$context_pct" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+  context_pct="--"
+fi
+
+# Color threshold logic for context window percentage
+if [[ "$context_pct" == "--" ]]; then
+  ctx_color='\033[90m'; ctx_display="--"
+else
+  ctx_int=${context_pct%.*}
+  [[ -n "$ctx_int" ]] || ctx_int="0"
+  ctx_display="${ctx_int}%"
+  if [[ $ctx_int -ge 90 ]]; then ctx_color='\033[31m'        # Red
+  elif [[ $ctx_int -ge 80 ]]; then ctx_color='\033[38;5;208m' # Orange
+  elif [[ $ctx_int -ge 65 ]]; then ctx_color='\033[33m'       # Yellow
+  else ctx_color='\033[32m'; fi                                # Green
 fi
 
 # Get git branch (fallback if git command fails)
@@ -92,9 +116,11 @@ terminal_id="$(printf '%s' "$raw_id" | tr '/\n' '_' | tr -cd 'A-Za-z0-9._-')"
 if [[ "$TEST_MODE" -eq 1 ]]; then
     # Test mode: use test directory specified by environment variable or default
     if [[ -n "${CLAUDE_TEST_DIR:-}" ]]; then
-        terminal_versions_dir="${CLAUDE_TEST_DIR}/terminal_versions"
+        version_dir="${CLAUDE_TEST_DIR}"
+        terminal_versions_dir="${version_dir}/terminal_versions"
     else
-        terminal_versions_dir=".tmp/terminal_versions"
+        version_dir=".tmp"
+        terminal_versions_dir="$version_dir/terminal_versions"
     fi
 else
     # Production mode: use ~/.claude/terminal_versions/
@@ -335,11 +361,12 @@ rm -f "$version_dir/acknowledged_version" "$version_dir/notified_session" 2>/dev
 printf '\033[0m'
 
 # Output with colors
-# Model: red | Branch: orange | Dir: cyan | Style: yellow | Version: green (with ✨ if new)
+# Model: red | Branch: orange | Dir: cyan | Style: yellow | Version: green (with ✨ if new) | Context: dynamic color
 # Using • (bullet) as separator
-printf '\033[31m%s\033[0m \033[90m•\033[0m \033[38;5;208m%s\033[0m \033[90m•\033[0m \033[36m%s\033[0m \033[90m•\033[0m \033[33m%s\033[0m \033[90m•\033[0m \033[32m%s\033[0m\n' \
+printf '\033[31m%s\033[0m \033[90m•\033[0m \033[38;5;208m%s\033[0m \033[90m•\033[0m \033[36m%s\033[0m \033[90m•\033[0m \033[33m%s\033[0m \033[90m•\033[0m \033[32m%s\033[0m \033[90m•\033[0m '"${ctx_color}"'%s\033[0m\n' \
   "$model_name" \
   "$git_branch" \
   "$current_dir" \
   "$output_style" \
-  "$version_display"
+  "$version_display" \
+  "$ctx_display"
