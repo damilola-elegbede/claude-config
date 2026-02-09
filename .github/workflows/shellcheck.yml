@@ -23,9 +23,17 @@ jobs:
 
     - name: Install ShellCheck
       run: |
-        sudo apt-get update
-        sudo apt-get install -y shellcheck
-        shellcheck --version
+        # ShellCheck is pre-installed on ubuntu-latest runners
+        if command -v shellcheck &> /dev/null; then
+          echo "✓ ShellCheck already installed:"
+          shellcheck --version
+        else
+          echo "ShellCheck not found, installing via binary download..."
+          SHELLCHECK_VERSION="v0.10.0"
+          wget -qO- "https://github.com/koalaman/shellcheck/releases/download/${SHELLCHECK_VERSION}/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" \
+            | tar -xJf - --strip-components=1 -C /usr/local/bin/ "shellcheck-${SHELLCHECK_VERSION}/shellcheck"
+          shellcheck --version
+        fi
 
     - name: Find shell scripts
       id: find-scripts
@@ -165,8 +173,17 @@ jobs:
 
     - name: Install ShellCheck
       run: |
-        sudo apt-get update
-        sudo apt-get install -y shellcheck
+        # ShellCheck is pre-installed on ubuntu-latest runners
+        if command -v shellcheck &> /dev/null; then
+          echo "✓ ShellCheck already installed:"
+          shellcheck --version
+        else
+          echo "ShellCheck not found, installing via binary download..."
+          SHELLCHECK_VERSION="v0.10.0"
+          wget -qO- "https://github.com/koalaman/shellcheck/releases/download/${SHELLCHECK_VERSION}/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" \
+            | tar -xJf - --strip-components=1 -C /usr/local/bin/ "shellcheck-${SHELLCHECK_VERSION}/shellcheck"
+          shellcheck --version
+        fi
 
     - name: Validate critical scripts with strict rules
       run: |
