@@ -30,9 +30,12 @@ jobs:
         else
           echo "ShellCheck not found, installing via binary download..."
           SHELLCHECK_VERSION="v0.10.0"
+          BIN_DIR="$HOME/.local/bin"
+          mkdir -p "$BIN_DIR"
           wget -qO- "https://github.com/koalaman/shellcheck/releases/download/${SHELLCHECK_VERSION}/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" \
-            | tar -xJf - --strip-components=1 -C /usr/local/bin/ "shellcheck-${SHELLCHECK_VERSION}/shellcheck"
-          shellcheck --version
+            | tar -xJf - --strip-components=1 -C "$BIN_DIR" "shellcheck-${SHELLCHECK_VERSION}/shellcheck"
+          echo "$BIN_DIR" >> "$GITHUB_PATH"
+          "$BIN_DIR/shellcheck" --version
         fi
 
     - name: Find shell scripts
@@ -180,9 +183,12 @@ jobs:
         else
           echo "ShellCheck not found, installing via binary download..."
           SHELLCHECK_VERSION="v0.10.0"
+          BIN_DIR="$HOME/.local/bin"
+          mkdir -p "$BIN_DIR"
           wget -qO- "https://github.com/koalaman/shellcheck/releases/download/${SHELLCHECK_VERSION}/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" \
-            | tar -xJf - --strip-components=1 -C /usr/local/bin/ "shellcheck-${SHELLCHECK_VERSION}/shellcheck"
-          shellcheck --version
+            | tar -xJf - --strip-components=1 -C "$BIN_DIR" "shellcheck-${SHELLCHECK_VERSION}/shellcheck"
+          echo "$BIN_DIR" >> "$GITHUB_PATH"
+          "$BIN_DIR/shellcheck" --version
         fi
 
     - name: Validate critical scripts with strict rules

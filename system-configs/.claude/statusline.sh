@@ -80,7 +80,8 @@ fi
 if [[ "$context_pct" == "--" ]]; then
   ctx_color='\033[90m'; ctx_display="--"
 else
-  ctx_int=$(printf '%.0f' "$context_pct" 2>/dev/null || echo "0")
+  ctx_int=${context_pct%.*}
+  [[ -n "$ctx_int" ]] || ctx_int="0"
   ctx_display="${ctx_int}%"
   if [[ $ctx_int -ge 90 ]]; then ctx_color='\033[31m'        # Red
   elif [[ $ctx_int -ge 80 ]]; then ctx_color='\033[38;5;208m' # Orange
