@@ -60,9 +60,9 @@ if [[ -z "$input" ]] || ! echo "$input" | jq . >/dev/null 2>&1; then
   context_pct="--"
 else
   # Valid JSON input - extract all fields in a single jq call to reduce process overhead
-  jq_output=$(echo "$input" | jq -r '[
+  jq_output=$(printf '%s' "$input" | jq -r --arg pwd "$PWD" '[
     (.model.display_name // "Claude"),
-    (.workspace.current_dir // .cwd // "'"$PWD"'"),
+    (.workspace.current_dir // .cwd // $pwd),
     (.output_style.name // "default"),
     (.version // "unknown"),
     ((.context_window.used_percentage // "") | tostring)
