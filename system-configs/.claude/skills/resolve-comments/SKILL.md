@@ -14,7 +14,7 @@ category: orchestration
 /resolve-comments $ARGUMENTS         # Specific PR or flags
 /resolve-comments --code-rabbit       # Triage CodeRabbit issues from .tmp/
 /resolve-comments --local             # Triage AI reviewer issues from .tmp/
-/resolve-comments --code-rabbit --local  # Triage both (used by /review)
+/resolve-comments --code-rabbit --local  # Triage both sources from .tmp/
 /resolve-comments --auto              # Auto-apply all recommended fixes
 /resolve-comments --dry-run           # Analysis only, no changes
 ```
