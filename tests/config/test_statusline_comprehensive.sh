@@ -862,6 +862,158 @@ test_corrupted_version_file() {
 }
 
 # ============================================================================
+# CONTEXT WINDOW PERCENTAGE TESTS
+# ============================================================================
+
+test_context_pct_displays() {
+    local statusline_path="../../system-configs/.claude/statusline.sh"
+    local test_input='{"model":{"display_name":"Claude"},"version":"1.2.3","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"},"context_window":{"used_percentage":42}}'
+
+    rm -rf "$TEST_HOME/.claude"
+    mkdir -p ".tmp/terminal_versions"
+
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
+
+    if [[ "$output" != *"42%"* ]]; then
+        echo "Context percentage not displayed, got: $output"
+        return 1
+    fi
+
+    return 0
+}
+
+test_context_pct_null_fallback() {
+    local statusline_path="../../system-configs/.claude/statusline.sh"
+    local test_input='{"model":{"display_name":"Claude"},"version":"1.2.3","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"},"context_window":{"used_percentage":null}}'
+
+    rm -rf "$TEST_HOME/.claude"
+    mkdir -p ".tmp/terminal_versions"
+
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
+
+    # Strip ANSI codes to check raw content
+    output_clean=$(echo "$output" | sed 's/\x1b\[[0-9;]*m//g')
+
+    if [[ "$output_clean" != *"--"* ]]; then
+        echo "Null context_pct should show '--', got: $output_clean"
+        return 1
+    fi
+
+    return 0
+}
+
+test_context_pct_missing_field() {
+    local statusline_path="../../system-configs/.claude/statusline.sh"
+    local test_input='{"model":{"display_name":"Claude"},"version":"1.2.3","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"}}'
+
+    rm -rf "$TEST_HOME/.claude"
+    mkdir -p ".tmp/terminal_versions"
+
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
+
+    output_clean=$(echo "$output" | sed 's/\x1b\[[0-9;]*m//g')
+
+    if [[ "$output_clean" != *"--"* ]]; then
+        echo "Missing context_window should show '--', got: $output_clean"
+        return 1
+    fi
+
+    return 0
+}
+
+test_context_pct_green_threshold() {
+    local statusline_path="../../system-configs/.claude/statusline.sh"
+    local test_input='{"model":{"display_name":"Claude"},"version":"1.2.3","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"},"context_window":{"used_percentage":42}}'
+
+    rm -rf "$TEST_HOME/.claude"
+    mkdir -p ".tmp/terminal_versions"
+
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
+
+    # Green ANSI code: \033[32m should appear before 42%
+    if [[ "$output" != *$'\033[32m42%'* ]]; then
+        echo "42% should be green (\\033[32m), got: $output"
+        return 1
+    fi
+
+    return 0
+}
+
+test_context_pct_yellow_threshold() {
+    local statusline_path="../../system-configs/.claude/statusline.sh"
+    local test_input='{"model":{"display_name":"Claude"},"version":"1.2.3","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"},"context_window":{"used_percentage":68}}'
+
+    rm -rf "$TEST_HOME/.claude"
+    mkdir -p ".tmp/terminal_versions"
+
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
+
+    # Yellow ANSI code: \033[33m should appear before 68%
+    if [[ "$output" != *$'\033[33m68%'* ]]; then
+        echo "68% should be yellow (\\033[33m), got: $output"
+        return 1
+    fi
+
+    return 0
+}
+
+test_context_pct_orange_threshold() {
+    local statusline_path="../../system-configs/.claude/statusline.sh"
+    local test_input='{"model":{"display_name":"Claude"},"version":"1.2.3","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"},"context_window":{"used_percentage":85}}'
+
+    rm -rf "$TEST_HOME/.claude"
+    mkdir -p ".tmp/terminal_versions"
+
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
+
+    # Orange ANSI code: \033[38;5;208m should appear before 85%
+    if [[ "$output" != *$'\033[38;5;208m85%'* ]]; then
+        echo "85% should be orange (\\033[38;5;208m), got: $output"
+        return 1
+    fi
+
+    return 0
+}
+
+test_context_pct_red_threshold() {
+    local statusline_path="../../system-configs/.claude/statusline.sh"
+    local test_input='{"model":{"display_name":"Claude"},"version":"1.2.3","workspace":{"current_dir":"/tmp"},"output_style":{"name":"default"},"context_window":{"used_percentage":95}}'
+
+    rm -rf "$TEST_HOME/.claude"
+    mkdir -p ".tmp/terminal_versions"
+
+    HOME="$TEST_HOME" output=$(echo "$test_input" | bash "$statusline_path" --test 2>/dev/null)
+
+    # Red ANSI code: \033[31m should appear before 95%
+    # Note: model name also uses \033[31m, so check specifically for 95%
+    if [[ "$output" != *$'\033[31m95%'* ]]; then
+        echo "95% should be red (\\033[31m), got: $output"
+        return 1
+    fi
+
+    return 0
+}
+
+test_context_pct_invalid_json_fallback() {
+    local statusline_path="../../system-configs/.claude/statusline.sh"
+    local malformed_input='not json at all'
+
+    rm -rf "$TEST_HOME/.claude"
+    mkdir -p ".tmp/terminal_versions"
+
+    HOME="$TEST_HOME" output=$(echo "$malformed_input" | bash "$statusline_path" --test 2>/dev/null)
+
+    output_clean=$(echo "$output" | sed 's/\x1b\[[0-9;]*m//g')
+
+    if [[ "$output_clean" != *"--"* ]]; then
+        echo "Invalid JSON should show '--' for context, got: $output_clean"
+        return 1
+    fi
+
+    return 0
+}
+
+# ============================================================================
 # PERFORMANCE TESTS
 # ============================================================================
 
@@ -991,6 +1143,17 @@ run_test "Rapid version changes" test_rapid_version_changes
 print_section "PERMISSIONS & CORRUPTION"
 run_test "Permission denied scenarios" test_permission_denied
 run_test "Corrupted version file recovery" test_corrupted_version_file
+
+# Context window percentage tests
+print_section "CONTEXT WINDOW PERCENTAGE"
+run_test "Context % displays correctly" test_context_pct_displays
+run_test "Null context % shows -- fallback" test_context_pct_null_fallback
+run_test "Missing context_window shows -- fallback" test_context_pct_missing_field
+run_test "Green threshold (< 65%)" test_context_pct_green_threshold
+run_test "Yellow threshold (65-79%)" test_context_pct_yellow_threshold
+run_test "Orange threshold (80-89%)" test_context_pct_orange_threshold
+run_test "Red threshold (>= 90%)" test_context_pct_red_threshold
+run_test "Invalid JSON fallback includes --" test_context_pct_invalid_json_fallback
 
 # Performance tests
 print_section "PERFORMANCE"
