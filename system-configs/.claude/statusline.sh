@@ -119,8 +119,8 @@ if [[ "$TEST_MODE" -eq 1 ]]; then
         version_dir="${CLAUDE_TEST_DIR}"
         terminal_versions_dir="${version_dir}/terminal_versions"
     else
-        version_dir="$HOME/.claude"
-        terminal_versions_dir=".tmp/terminal_versions"
+        version_dir=".tmp"
+        terminal_versions_dir="$version_dir/terminal_versions"
     fi
 else
     # Production mode: use ~/.claude/terminal_versions/
