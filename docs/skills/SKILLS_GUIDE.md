@@ -44,7 +44,7 @@ Complex multi-phase workflows with task tracking, parallel execution, and agent 
 | Skill | Description | Key Features |
 |-------|-------------|--------------|
 | `/ship-it` | Development workflow orchestration | Flags: `-d`, `-t`, `-c`, `-r`, `-p`, `-pr`, `--dry-run` |
-| `/review` | Dual-reviewer code analysis | Parallel execution, `--full` |
+| `/review` | Comprehensive code review | Assertive analysis, `--full` |
 | `/fix-ci` | CI failure diagnosis and fix | `--learn` |
 | `/deps` | Dependency management | `audit`, `update`, `clean`, `--quick` |
 | `/resolve-comments` | CodeRabbit comment resolution | `--auto`, `--dry-run` |
@@ -189,7 +189,7 @@ Skills are invoked as slash commands in Claude Code CLI:
 
 ```text
 /commit              # Git commit with message generation
-/review --full       # Full dual-reviewer code analysis
+/review --full       # Full comprehensive code analysis
 /ship-it -t -c -p    # Test, commit, push workflow
 /debug --performance  # Performance-focused root cause analysis
 /branch add-oauth    # Create feature branch

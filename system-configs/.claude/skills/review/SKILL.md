@@ -1,6 +1,6 @@
 ---
 name: review
-description: Code review with dual-reviewer parallel analysis. Use when reviewing code changes.
+description: Comprehensive code review using code-reviewer agent with assertive analysis. Use when reviewing code changes.
 argument-hint: "[--full]"
 category: orchestration
 context: fork
@@ -17,39 +17,18 @@ context: fork
 
 ## Description
 
-Comprehensive code review that runs two reviewers in parallel:
+Comprehensive code review that launches a code-reviewer agent with a thorough,
+assertive review prompt covering security, bugs, performance, best practices,
+and code quality.
 
-1. **CodeRabbit CLI** - External AI review via `coderabbit review`
-2. **code-reviewer agent** - Internal AI analysis for security, performance, accessibility
-
-Both reviewers are mandatory. Results are passed to `/resolve-comments` for interactive triage.
-
-## Prerequisites
-
-CodeRabbit CLI must be installed and authenticated:
-
-```bash
-# Install
-curl -fsSL https://cli.coderabbit.ai/install.sh | sh
-
-# Authenticate
-coderabbit auth login
-
-# Verify
-coderabbit auth status
-```
+Results are passed to `/resolve-comments` for interactive triage.
 
 ## Execution
 
 ### Step 1: Validate Environment
 
 ```text
-CHECK: which coderabbit
-IF: not found
-  OUTPUT: "CodeRabbit CLI required. Install: curl -fsSL https://cli.coderabbit.ai/install.sh | sh"
-  END with error
-
-OUTPUT: "Starting dual-reviewer analysis..."
+OUTPUT: "Starting code review analysis..."
 ```
 
 ### Step 2: Determine Scope
@@ -70,84 +49,129 @@ IF: no files to review
   END
 ```
 
-### Step 3: Launch Parallel Reviewers (Background Tasks)
+### Step 3: Launch Code Reviewer
 
-**CRITICAL**: Launch BOTH reviewers in a SINGLE message with TWO Task tool calls using `run_in_background: true`.
+Launch a single code-reviewer agent with the comprehensive review prompt below.
 
 ```yaml
-# Task 1: CodeRabbit CLI Review (BACKGROUND)
-Task tool:
-  subagent_type: "general-purpose"
-  description: "Run CodeRabbit CLI review"
-  run_in_background: true  # <-- Enables parallel execution
-  prompt: |
-    Run CodeRabbit CLI review and output results to .tmp/review-coderabbit.json
-
-    1. Create .tmp/ directory if needed: mkdir -p .tmp
-
-    2. Determine default branch (with sanitization):
-       RAW_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
-       # Sanitize: allow alphanumeric, forward slash, hyphen, underscore, dot (valid git branch chars)
-       if echo "$RAW_BRANCH" | grep -qE '^[a-zA-Z0-9/_.-]+$'; then
-         DEFAULT_BRANCH="$RAW_BRANCH"
-       else
-         DEFAULT_BRANCH="main"
-       fi
-
-    3. Run CodeRabbit CLI:
-       coderabbit review --prompt-only --type all --base "$DEFAULT_BRANCH" --config .coderabbit.yaml
-
-    Note: The --prompt-only flag produces AI-optimized text output, not JSON.
-    Parse the text output by extracting structured sections (file paths, line numbers,
-    issue descriptions) and transforming them into the JSON schema below.
-
-    ERROR HANDLING for parsing:
-    - Wrap parsing in error boundaries
-    - If a line is malformed, log warning and continue to next line
-    - If a section is missing, skip it and continue
-    - If output is empty, write empty issues array
-    - Track and report parsing failures at end: "Parsed N issues, M lines skipped due to errors"
-
-    4. Parse the output and write to .tmp/review-coderabbit.json with this schema:
-       {
-         "schema_version": "1.0",
-         "branch": "{current_branch}",
-         "created_at": "{ISO timestamp}",
-         "source": "coderabbit",
-         "issues": [
-           {
-             "id": {sequential number},
-             "file": "path/to/file",
-             "line": {line number or null},
-             "severity": "LOW|MEDIUM|HIGH|CRITICAL",
-             "description": "Issue description",
-             "suggestion": "Fix suggestion"
-           }
-         ]
-       }
-
-    4. Report: "CodeRabbit found {count} issues"
-
-    If CodeRabbit returns no issues, write empty issues array.
-
-# Task 2: AI Code Review (BACKGROUND)
-# NOTE: Uses code-reviewer agent type which has access to Read, Grep, Bash tools
-# The Task tool orchestration is valid as it's invoked by Claude, not by another agent
 Task tool:
   subagent_type: "code-reviewer"
-  description: "Run AI code review"
-  run_in_background: true  # <-- Enables parallel execution
+  description: "Run comprehensive code review"
   prompt: |
+    You are an elite code reviewer conducting a comprehensive, assertive analysis.
     Review the following files and output results to .tmp/review-local.json
+
+    Create .tmp/ directory if needed: mkdir -p .tmp
 
     Files to review:
     {file_list from Step 2}
 
-    Review for:
-    - Security vulnerabilities (injection, auth issues, data exposure)
-    - Performance problems (N+1 queries, memory leaks, algorithm complexity)
-    - Accessibility issues (WCAG compliance, keyboard navigation, screen readers)
-    - Code quality (error handling, edge cases, maintainability)
+    ===== REVIEW INSTRUCTIONS =====
+
+    ## Output Structure
+
+    Your review MUST follow this three-part structure:
+
+    ### Part 1: Summary
+    A concise overview of changes, their purpose, and overall assessment.
+
+    ### Part 2: Walkthrough
+    For each changed file, provide:
+    - File path
+    - Brief description of what changed and why
+    - Any architectural implications
+
+    ### Part 3: Inline Comments
+    Specific, actionable findings tied to exact file paths and line numbers.
+
+    ## Analysis Domains
+
+    Evaluate ALL five domains for every file:
+
+    **1. Security**
+    - Injection vulnerabilities (SQL, command, XSS, SSRF)
+    - Authentication and authorization flaws
+    - Data exposure (secrets, PII, sensitive data in logs)
+    - Insecure deserialization, path traversal
+    - Missing input validation at trust boundaries
+    - Hardcoded credentials or API keys
+
+    **2. Bugs & Correctness**
+    - Null/undefined reference errors
+    - Off-by-one errors, boundary conditions
+    - Race conditions, concurrency issues
+    - Incorrect error handling (swallowed exceptions, wrong error types)
+    - Logic errors in conditionals and loops
+    - Type mismatches and implicit conversions
+    - Resource leaks (unclosed handles, missing cleanup)
+
+    **3. Performance**
+    - N+1 query patterns
+    - Unnecessary re-renders or recomputations
+    - Memory leaks (event listeners, closures, circular references)
+    - Algorithm complexity (O(n^2) where O(n) is possible)
+    - Unbounded data structures (missing pagination, limits)
+    - Blocking operations on hot paths
+    - Missing caching opportunities
+
+    **4. Best Practices**
+    - DRY violations (duplicated logic)
+    - SOLID principle violations
+    - Missing or inadequate error handling
+    - Poor naming (unclear, misleading, inconsistent)
+    - Magic numbers and hardcoded values
+    - Missing input validation
+    - Inconsistent patterns within the codebase
+
+    **5. Code Quality**
+    - Cyclomatic complexity > 10
+    - Functions > 50 lines
+    - Deep nesting (> 3 levels)
+    - Missing edge case handling
+    - Unclear control flow
+    - Dead code or unreachable branches
+    - Inconsistent formatting or style
+
+    ## Language-Specific Checks
+
+    **Python:**
+    - Mutable default arguments
+    - Missing `__init__.py` for packages
+    - Bare `except:` clauses
+    - f-string injection in logging
+    - Missing type hints on public APIs
+    - Unsafe `eval()`/`exec()` usage
+
+    **TypeScript/JavaScript:**
+    - `any` type usage (should be narrowed)
+    - Missing `await` on async calls
+    - Prototype pollution vectors
+    - Unsafe `innerHTML` or `dangerouslySetInnerHTML`
+    - Missing error boundaries in React
+    - Unhandled promise rejections
+
+    ## Review Profile: Assertive
+
+    - DO NOT hedge or soften findings. State issues directly.
+    - Use imperative language: "Fix this", "Remove this", "This must be changed"
+    - Every finding must include a concrete fix suggestion
+    - Do not praise code. Focus exclusively on problems.
+    - If code is acceptable, say so briefly and move on.
+    - Treat "it works" as insufficient — code must be correct, secure, and maintainable.
+
+    ## Severity Rules
+
+    - **CRITICAL**: Security vulnerabilities, data loss risks, crashes in production
+    - **HIGH**: Bugs that will manifest in normal usage, significant performance issues
+    - **MEDIUM**: Best practice violations, maintainability concerns, minor performance issues
+    - **LOW**: Style issues, minor improvements, nice-to-haves
+
+    Severity escalation:
+    - Any issue in auth/payment/PII handling code: escalate one level
+    - Any issue that affects multiple files or is systemic: escalate one level
+    - Any issue with a simple, obvious fix: do not de-escalate (easy to fix != unimportant)
+
+    ## Output Format
 
     Write results to .tmp/review-local.json with this schema:
     {
@@ -155,53 +179,50 @@ Task tool:
       "branch": "{current_branch}",
       "created_at": "{ISO timestamp}",
       "source": "code-reviewer",
+      "summary": "Brief overall assessment",
+      "walkthrough": [
+        {
+          "file": "path/to/file",
+          "description": "What changed and why"
+        }
+      ],
       "issues": [
         {
           "id": {sequential number},
           "file": "path/to/file",
           "line": {line number or null},
           "severity": "LOW|MEDIUM|HIGH|CRITICAL",
-          "type": "security|performance|accessibility|quality",
-          "description": "Issue description",
-          "suggestion": "Fix suggestion"
+          "type": "security|bugs|performance|best-practices|code-quality",
+          "description": "Issue description - be specific and direct",
+          "suggestion": "Concrete fix with code example when applicable"
         }
       ]
     }
 
-    Report: "AI reviewer found {count} issues"
+    Report: "Code reviewer found {count} issues"
 
-    If no issues found, write empty issues array.
-```
-
-### Step 3.5: Collect Background Results
-
-```text
-# Both tasks are now running in parallel
-# Use TaskOutput to wait for and collect results
-
-TaskOutput: task_id=<coderabbit_task_id>, block=true
-TaskOutput: task_id=<code_reviewer_task_id>, block=true
-
-# Both reviewers complete in parallel, reducing total review time
+    If no issues found, write empty issues array with summary.
 ```
 
 ### Step 4: Report Results
 
 ```text
-WAIT: for both Task agents to complete
+WAIT: for Task agent to complete
 
-READ: .tmp/review-coderabbit.json
 READ: .tmp/review-local.json
 
 OUTPUT:
-  Dual-Review Complete
+  Code Review Complete
 
   | Reviewer | Issues Found |
   |----------|--------------|
-  | CodeRabbit | {coderabbit_count} |
-  | AI Reviewer | {local_count} |
+  | Code Reviewer | {issue_count} |
 
-  Total: {total} issues
+  Severity breakdown:
+  - Critical: {critical_count}
+  - High: {high_count}
+  - Medium: {medium_count}
+  - Low: {low_count}
 ```
 
 ### Step 5: Hand Off to Triage
@@ -209,7 +230,7 @@ OUTPUT:
 ```text
 IF: total issues > 0
   OUTPUT: "Launching interactive triage..."
-  Skill tool: skill="resolve-comments", args="--code-rabbit --local --auto"
+  Skill tool: skill="resolve-comments", args="--local --auto"
 ELSE:
   OUTPUT: "No issues found. Code looks good!"
   END
@@ -220,28 +241,29 @@ ELSE:
 ```text
 User: /review
 
-Starting dual-reviewer analysis...
+Starting code review analysis...
 Mode: Branch delta review (5 files)
 
-[Launching parallel reviewers...]
+[Launching code reviewer...]
 
-Dual-Review Complete
+Code Review Complete
 
 | Reviewer | Issues Found |
 |----------|--------------|
-| CodeRabbit | 3 |
-| AI Reviewer | 2 |
+| Code Reviewer | 5 |
 
-Total: 5 issues
+Severity breakdown:
+- Critical: 0
+- High: 1
+- Medium: 3
+- Low: 1
 
 Launching interactive triage...
-[/resolve-comments --code-rabbit --local takes over]
+[/resolve-comments --local --auto takes over]
 ```
 
 ## Notes
 
-- Both reviewers run in parallel for speed
-- CodeRabbit CLI is required (command fails without it)
 - Results stored in `.tmp/` for `/resolve-comments` consumption
 - No auto-fix - all changes require user approval via triage
 - `--full` mode may take longer depending on codebase size
