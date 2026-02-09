@@ -59,12 +59,16 @@ if [[ -z "$input" ]] || ! echo "$input" | jq . >/dev/null 2>&1; then
   version="unknown"
   context_pct="--"
 else
-  # Valid JSON input - extract information using jq
-  model_name=$(echo "$input" | jq -r '.model.display_name // "Claude"')
-  current_dir=$(basename "$(echo "$input" | jq -r '.workspace.current_dir // .cwd // "'"$PWD"'"')")
-  output_style=$(echo "$input" | jq -r '.output_style.name // "default"')
-  version=$(echo "$input" | jq -r '.version // "unknown"')
-  context_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
+  # Valid JSON input - extract all fields in a single jq call to reduce process overhead
+  jq_output=$(echo "$input" | jq -r '[
+    (.model.display_name // "Claude"),
+    (.workspace.current_dir // .cwd // "'"$PWD"'"),
+    (.output_style.name // "default"),
+    (.version // "unknown"),
+    ((.context_window.used_percentage // "") | tostring)
+  ] | @tsv')
+  IFS=$'\t' read -r model_name raw_dir output_style version context_pct <<< "$jq_output"
+  current_dir=$(basename "$raw_dir")
 fi
 
 # Validate & normalize context percentage
@@ -111,8 +115,10 @@ terminal_id="$(printf '%s' "$raw_id" | tr '/\n' '_' | tr -cd 'A-Za-z0-9._-')"
 if [[ "$TEST_MODE" -eq 1 ]]; then
     # Test mode: use test directory specified by environment variable or default
     if [[ -n "${CLAUDE_TEST_DIR:-}" ]]; then
-        terminal_versions_dir="${CLAUDE_TEST_DIR}/terminal_versions"
+        version_dir="${CLAUDE_TEST_DIR}"
+        terminal_versions_dir="${version_dir}/terminal_versions"
     else
+        version_dir="$HOME/.claude"
         terminal_versions_dir=".tmp/terminal_versions"
     fi
 else
