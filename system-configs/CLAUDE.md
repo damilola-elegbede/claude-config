@@ -101,8 +101,8 @@ prompts. Enforce read-only via prompt constraints (not `mode: "plan"` — it blo
 
 | Pattern | Teammates | Use Case |
 |---------|-----------|----------|
-| Full-Stack Feature | backend, frontend, test-engineer | End-to-end feature |
-| Deep Review | code-reviewer, security-reviewer, a11y-reviewer | Comprehensive audit |
+| Full-Stack Feature | backend-engineer, frontend-engineer, test-engineer | End-to-end feature |
+| Deep Review | code-reviewer, security-auditor, accessibility-auditor | Comprehensive audit |
 | Research Sprint | researcher, architect | Technology evaluation |
 | Debug Swarm | 3-5 debuggers with different hypotheses | Hard-to-reproduce bug |
 | CI Fix | debugger-1..N, fixer-{domain} | Parallel CI failure resolution |
