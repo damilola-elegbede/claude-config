@@ -56,23 +56,23 @@ Route fixes to domain experts based on diagnosis:
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│ 2. DIAGNOSE (Parallel)                                          │
-│    Deploy N debugger agents (one per failure)                   │
+│ 2. TEAM SETUP                                                   │
+│    TeamCreate → fix-ci-{run-id}                                │
+│    Create diagnosis tasks in shared task list                   │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ 3. DIAGNOSE (Parallel Teammates)                                │
+│    Spawn diagnoser-1..N teammates (one per failure)            │
 │    Each returns: { root_cause, domain, files, fix_approach }    │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│ 3. CLASSIFY                                                     │
-│    Group fixes by domain                                        │
-│    Map to specialized agents                                    │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│ 4. FIX (Parallel)                                               │
-│    Deploy specialized agents based on classification            │
-│    Each agent fixes issues in their domain                      │
+│ 4. FIX (Parallel Teammates)                                     │
+│    Spawn fixer-{domain} teammates based on classification       │
+│    Each teammate fixes issues in their domain                   │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
@@ -80,7 +80,14 @@ Route fixes to domain experts based on diagnosis:
 │ 5. VERIFY                                                       │
 │    Commit fixes, push to remote                                 │
 │    Monitor CI run until complete                                │
-│    If still failing → iterate from step 1                       │
+│    If still failing → iterate from step 2                       │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ 6. CLEANUP (Always runs, even on failure)                       │
+│    SendMessage shutdown_request to all teammates                │
+│    TeamDelete                                                   │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -90,10 +97,11 @@ Route fixes to domain experts based on diagnosis:
 
 ```text
 TaskCreate: "Fetch CI failure details" (no blockers)
-TaskCreate: "Diagnose failures" (blockedBy: fetch)
-TaskCreate: "Classify and route fixes" (blockedBy: diagnose)
-TaskCreate: "Apply fixes" (blockedBy: classify)
-TaskCreate: "Verify CI passes" (blockedBy: fixes)
+TaskCreate: "Set up diagnosis team" (blockedBy: fetch)
+TaskCreate: "Diagnose failures" (blockedBy: team setup)
+TaskCreate: "Fix failures" (blockedBy: diagnose)
+TaskCreate: "Verify CI passes" (blockedBy: fix)
+TaskCreate: "Cleanup team" (blockedBy: verify)
 ```
 
 ### Step 2: Fetch CI Failures
@@ -114,83 +122,129 @@ Extract: job names, failure messages, log URLs
 TaskUpdate: "Fetch CI failure details" → completed
 ```
 
-### Step 3: Deploy Diagnosis Agents (Parallel)
+### Step 3: Create Team and Diagnose (Parallel Teammates)
 
 ```text
+TaskUpdate: "Set up diagnosis team" → in_progress
+```
+
+```text
+# Create the team
+TeamCreate:
+  team_name: "fix-ci-{run-id}"
+  description: "CI failure resolution for run {run-id}"
+
+# Create a diagnosis task for each failure
+TaskCreate: "Diagnose: {job-1-name}" (team task)
+TaskCreate: "Diagnose: {job-2-name}" (team task)
+...
+```
+
+```text
+TaskUpdate: "Set up diagnosis team" → completed
 TaskUpdate: "Diagnose failures" → in_progress
 ```
 
-For each failed job, deploy a debugger agent **in parallel using run_in_background: true**:
+Spawn one diagnoser teammate per failure **in a SINGLE message with multiple Task tool calls**:
 
 ```text
-# Launch ALL debugger agents in a SINGLE message with multiple Task tool calls
-# Each Task tool call should have run_in_background: true
+Task tool call 1:
+  subagent_type: "general-purpose"
+  name: "diagnoser-1"
+  team_name: "fix-ci-{run-id}"
+  model: "sonnet"
+  prompt: |
+    You are an expert debugging and performance specialist. Your capabilities:
 
-Task 1 (background):
-  subagent_type: "debugger"
-  run_in_background: true
-  prompt: "Investigate CI failure in job '<job-1-name>':..."
+    **Bug Investigation:**
+    - Intermittent bug investigation: Race conditions, timing issues, heisenbug tracking
+    - Production forensics: Log analysis, distributed tracing, failure cascade investigation
+    - Memory leak detection: Heap analysis, garbage collection patterns, allocation tracking
+    - Root cause analysis: Systematic investigation, evidence correlation, failure timeline
 
-Task 2 (background):
-  subagent_type: "debugger"
-  run_in_background: true
-  prompt: "Investigate CI failure in job '<job-2-name>':..."
+    **Performance Engineering:**
+    - Performance profiling: CPU, memory, I/O profiling and bottleneck identification
+    - Optimization strategies: Algorithm optimization, caching, query optimization
 
-# Wait for all to complete using TaskOutput
+    ## Your Task
+
+    Investigate CI failure in job '<job-1-name>':
+    - Error output: <paste relevant log lines>
+    - Job URL: <url>
+
+    Analyze the failure, read relevant source files, and determine root cause.
+
+    Write your diagnosis to .tmp/diagnosis-{job-1-name}.json:
+    {
+      "root_cause": "Brief description of what failed",
+      "domain": "test|security|frontend|backend|data|pipeline|architecture",
+      "files": ["list", "of", "files", "to", "fix"],
+      "fix_approach": "How to fix this issue"
+    }
+
+    Then mark your assigned task as completed.
+
+Task tool call 2:
+  subagent_type: "general-purpose"
+  name: "diagnoser-2"
+  team_name: "fix-ci-{run-id}"
+  model: "sonnet"
+  prompt: |
+    [Same identity preamble as above]
+
+    ## Your Task
+
+    Investigate CI failure in job '<job-2-name>':
+    ...
 ```
 
-Each debugger returns JSON diagnosis:
-
-```json
-{
-  "root_cause": "Brief description of what failed",
-  "domain": "test|security|frontend|backend|data|pipeline|architecture",
-  "files": ["list", "of", "files", "to", "fix"],
-  "fix_approach": "How to fix this issue"
-}
-```
+Wait for all diagnoser teammates to complete their tasks. Read diagnosis JSON files.
 
 ```text
 TaskUpdate: "Diagnose failures" → completed
 ```
 
-### Step 4: Route to Specialized Agents (Parallel)
+### Step 4: Classify and Fix (Parallel Teammates)
 
 ```text
-TaskUpdate: "Classify and route fixes" → in_progress
+TaskUpdate: "Fix failures" → in_progress
 ```
 
-Based on diagnosis domains, deploy fix agents **in parallel using run_in_background: true**:
+Group diagnosis results by domain. Create a fix task for each domain group. Spawn one
+fixer teammate per domain **in a SINGLE message with multiple Task tool calls**:
 
-| Diagnosis Domain | Deploy Agent |
-|------------------|--------------|
-| test | test-engineer |
-| security | security-auditor |
-| frontend | frontend-engineer |
-| backend | backend-engineer |
-| data | data-engineer |
-| pipeline | devops |
-| architecture | architect |
+| Diagnosis Domain | Teammate Name | Prompt Specialization |
+|------------------|---------------|----------------------|
+| test | fixer-test | Test patterns, mock strategies, assertion fixes |
+| security | fixer-security | Auth fixes, credential handling, vulnerability remediation |
+| frontend | fixer-frontend | React/Vue patterns, CSS fixes, client-side debugging |
+| backend | fixer-backend | API logic, server patterns, microservice fixes |
+| data | fixer-data | Database queries, migration fixes, data integrity |
+| pipeline | fixer-pipeline | Workflow syntax, CI config, deployment fixes |
+| architecture | fixer-architecture | Design patterns, cross-cutting concerns |
 
 ```text
-# Launch ALL fix agents in a SINGLE message with multiple Task tool calls
-# Each Task tool call should have run_in_background: true
+Task tool call:
+  subagent_type: "general-purpose"
+  name: "fixer-{domain}"
+  team_name: "fix-ci-{run-id}"
+  model: "sonnet"
+  prompt: |
+    You are a {domain} specialist. Fix the following CI failure(s):
 
-Task 1 (background):
-  subagent_type: "<domain-specific-agent>"
-  run_in_background: true
-  prompt: "Fix the following CI failure:
+    Failure 1:
     - Root cause: <from diagnosis>
     - Files to modify: <from diagnosis>
     - Approach: <from diagnosis>
-    Implement the fix. Do not make unrelated changes."
 
-# Wait for all to complete using TaskOutput
+    Implement the fix. Do not make unrelated changes.
+    Then mark your assigned task as completed.
 ```
 
+Wait for all fixer teammates to complete their tasks.
+
 ```text
-TaskUpdate: "Classify and route fixes" → completed
-TaskUpdate: "Apply fixes" → completed
+TaskUpdate: "Fix failures" → completed
 ```
 
 ### Step 5: Commit and Verify
@@ -200,8 +254,8 @@ TaskUpdate: "Verify CI passes" → in_progress
 ```
 
 ```bash
-# Stage and commit fixes
-git add -A
+# Stage and commit fixes (use explicit file list from diagnosis, never git add -A)
+git add <files from diagnosis JSONs>
 git commit -m "fix(ci): <summary of fixes>"
 
 # Push and monitor
@@ -213,13 +267,43 @@ gh run watch
 TaskUpdate: "Verify CI passes" → completed
 ```
 
-### Step 6: Iterate if Needed
+### Step 6: Cleanup (Always Runs)
+
+**This step runs even if earlier steps fail.** Clean up the team regardless of outcome.
+
+```text
+TaskUpdate: "Cleanup team" → in_progress
+```
+
+```text
+# Shutdown all teammates
+SendMessage:
+  type: "shutdown_request"
+  recipient: "diagnoser-1"
+  content: "Workflow complete, shutting down"
+
+SendMessage:
+  type: "shutdown_request"
+  recipient: "diagnoser-2"
+  content: "Workflow complete, shutting down"
+
+# ... repeat for all active teammates (diagnosers + fixers)
+
+# Delete the team
+TeamDelete
+```
+
+```text
+TaskUpdate: "Cleanup team" → completed
+```
+
+### Step 7: Iterate if Needed
 
 If CI still fails after fix:
 
-1. Fetch new failure data
+1. Return to Step 3 (create new team with incremented attempt)
 2. Re-diagnose (may be different issues)
-3. Deploy appropriate fix agents
+3. Deploy appropriate fix teammates
 4. Continue until green
 
 ```text
@@ -234,33 +318,36 @@ User: /fix-ci
 🔍 Fetching CI failures from run #987654...
 📊 Found 3 failures: lint, test:unit, build
 
-🔬 Phase 1: Diagnosis
-   Deploying 3 debugger agents in parallel...
+🏗️ Creating team: fix-ci-987654
 
-   Job: lint
+🔬 Phase 1: Diagnosis
+   Spawning 3 diagnoser teammates...
+   [tmux panes show diagnoser-1, diagnoser-2, diagnoser-3]
+
+   diagnoser-1 (lint):
    └─ Domain: frontend
    └─ Cause: ESLint error in auth.ts - unused variable
    └─ Files: src/auth.ts
 
-   Job: test:unit
+   diagnoser-2 (test:unit):
    └─ Domain: test
    └─ Cause: Mock outdated for new API response shape
    └─ Files: tests/api.test.ts
 
-   Job: build
+   diagnoser-3 (build):
    └─ Domain: pipeline
    └─ Cause: Missing dependency declaration
    └─ Files: package.json
 
 🔧 Phase 2: Fix
-   Deploying 3 specialized agents:
-   └─ frontend-engineer → src/auth.ts
-   └─ test-engineer → tests/api.test.ts
-   └─ devops → package.json
+   Spawning 3 fixer teammates:
+   └─ fixer-frontend → src/auth.ts
+   └─ fixer-test → tests/api.test.ts
+   └─ fixer-pipeline → package.json
 
-   ✓ frontend-engineer: Removed unused variable
-   ✓ test-engineer: Updated mock to match new API shape
-   ✓ devops: Added missing dependency
+   ✓ fixer-frontend: Removed unused variable
+   ✓ fixer-test: Updated mock to match new API shape
+   ✓ fixer-pipeline: Added missing dependency
 
 💾 Committed and pushed...
 
@@ -268,6 +355,7 @@ User: /fix-ci
 ⏳ Running... (2 min)
 
 ✅ All CI checks passed!
+🧹 Shutting down team fix-ci-987654...
 🎉 CI fixed in 1 iteration
 ```
 
@@ -301,7 +389,14 @@ Common Root Causes:
 ## Notes
 
 - Two-phase architecture separates diagnosis from fixing
-- Debuggers identify root cause; specialists apply fixes
-- Parallel execution for both phases when possible
-- Domain classification ensures expert handling
+- Uses TeamCreate for tmux visibility and shared task coordination
+- All teammates spawned with `model: "sonnet"` to match custom agent cost/behavior
+- Debugger identity and capabilities embedded in diagnoser spawn prompts (prompt-based specialization)
+- Domain-specific context embedded in fixer spawn prompts
+- Cleanup step (shutdown + TeamDelete) always runs, even on failure
+- Manual cleanup if needed: `rm -rf ~/.claude/teams/fix-ci-* ~/.claude/tasks/fix-ci-*`
+- When [#24316][tc] lands, replace `subagent_type: "general-purpose"` with custom agent types
+- Thinking level gap: teammates use default thinking, not ultrathink — a real limitation until #24316
 - Iterates until GitHub shows all checks green
+
+[tc]: https://github.com/anthropics/claude-code/issues/24316
