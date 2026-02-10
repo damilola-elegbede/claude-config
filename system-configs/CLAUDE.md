@@ -72,14 +72,14 @@ Don't over-delegate simple tasks. Use judgment.
 
 Multiple Claude instances coordinated via TeamCreate with shared task list and mailbox.
 
-**Any task that requires 2+ parallel agents MUST use TeamCreate.** Do not use
+**Any task that requires 2+ parallel agents or subagents MUST use TeamCreate.** Do not use
 `run_in_background` with multiple Task calls — those agents are invisible API calls
 with no terminal, no shared coordination, and no user visibility. TeamCreate gives
 each agent a real tmux pane where you can watch them work live.
 
 ### When to Use TeamCreate
 
-- **Any time you would spawn 2+ agents in the same workflow** — this is mandatory, not optional
+- **Any time you would spawn 2+ agents or subagents in the same workflow** — this is mandatory, not optional
 - User needs to see parallel agent progress in real-time (tmux panes)
 - Agents need shared task list coordination
 - Workflow requires graceful shutdown of all agents
@@ -155,9 +155,30 @@ Use tasks for multi-phase operations requiring progress visibility.
 - Mark task `in_progress` BEFORE starting work
 - Mark `completed` only when fully done — never if errors/blockers exist
 
+## Agent Routing
+
+| Keywords | Agent |
+|----------|-------|
+| fix, broken, bug, crash, error, not working | `debugger` |
+| slow, performance, optimize, latency, memory | `debugger` |
+| security, vulnerability, auth, injection | `security-auditor` |
+| accessibility, a11y, wcag, aria, screen reader | `accessibility-auditor` |
+| architecture, system design, infrastructure | `architect` |
+| backend, server, api, microservice | `backend-engineer` |
+| frontend, ui, component, react, css | `frontend-engineer` |
+| test, spec, coverage, unit test | `test-engineer` |
+| docs, documentation, readme | `tech-writer` |
+| review, check, audit, quality | `code-reviewer` |
+| deploy, ci/cd, pipeline, docker, kubernetes | `devops` |
+| pipeline, etl, database, sql | `data-engineer` |
+| research, compare, evaluate, analyze | `researcher` |
+| mobile, ios, android, swift, kotlin | `mobile-engineer` |
+| ml, machine learning, model training | `ml-engineer` |
+| implement feature, build feature | `feature-agent` |
+
 ## Background Execution
 
-**Rule: 2+ parallel agents → TeamCreate. Always.**
+**Rule: 2+ parallel agents or subagents → TeamCreate. Always.**
 
 `run_in_background: true` is only for single-agent background tasks (no terminal,
 invisible API call, output file only). For 2+ parallel agents, TeamCreate is mandatory
