@@ -45,15 +45,6 @@ execution, not by you before execution.
 Wrong: "Skipping /docs because config files don't need documentation"
 Right: Execute /docs, let its analysis phase determine if documentation is needed
 
-Wrong: Running /resolve-comments in file mode because a prior /review passed --code-rabbit --local
-Right: Parse the current invocation's arguments; no flags means default mode
-
-This applies to:
-
-- Individual commands (/docs, /test, /commit, etc.)
-- Steps within orchestrators (/ship-it, /review, etc.)
-- Any skill or agent invocation
-
 ## File Organization
 
 All temporary files, reports, and working documents go in `.tmp/`:
@@ -77,21 +68,52 @@ Use specialized agents when the task benefits from focused expertise:
 
 Don't over-delegate simple tasks. Use judgment.
 
-## Agent Teams (Experimental)
+## Agent Teams
 
-Multiple Claude instances coordinated via shared task list and mailbox. Use for
-multi-perspective analysis, parallel implementation, competing hypotheses, or
-cross-layer coordination. Don't use for single-domain or sequential workflows.
+Multiple Claude instances coordinated via TeamCreate with shared task list and mailbox.
+
+**Any task that requires 2+ parallel agents MUST use TeamCreate.** Do not use
+`run_in_background` with multiple Task calls — those agents are invisible API calls
+with no terminal, no shared coordination, and no user visibility. TeamCreate gives
+each agent a real tmux pane where you can watch them work live.
+
+### When to Use TeamCreate
+
+- **Any time you would spawn 2+ agents in the same workflow** — this is mandatory, not optional
+- User needs to see parallel agent progress in real-time (tmux panes)
+- Agents need shared task list coordination
+- Workflow requires graceful shutdown of all agents
+
+### When NOT to Use TeamCreate
+
+- Single agent delegation (use `Task` directly)
+- Sequential workflows where agents run one after another
+
+### Known Limitation
+
+TeamCreate only spawns `general-purpose` agents ([#24316][tc]). Mitigate by passing
+`model: "sonnet"` and embedding the custom agent's Identity/Core Capabilities in spawn
+prompts. Enforce read-only via prompt constraints (not `mode: "plan"` — it blocks file writes).
+
+[tc]: https://github.com/anthropics/claude-code/issues/24316
+
+### Patterns
 
 | Pattern | Teammates | Use Case |
 |---------|-----------|----------|
 | Full-Stack Feature | backend, frontend, test-engineer | End-to-end feature |
-| Deep Review | security-auditor, code-reviewer, accessibility-auditor | Comprehensive audit |
+| Deep Review | code-reviewer, security-reviewer, a11y-reviewer | Comprehensive audit |
 | Research Sprint | researcher, architect | Technology evaluation |
-| Debug Swarm | 3-5 debuggers with different hypotheses | Hard-to-reproduce bug |
+| Debug Swarm | 3-5 diagnosers with different hypotheses | Hard-to-reproduce bug |
+| CI Fix | diagnoser-1..N, fixer-{domain} | Parallel CI failure resolution |
 
-Best practices: give enough context in spawn prompt, size 5-6 tasks per teammate,
-avoid file conflicts, wait for completion before synthesizing.
+### Best Practices
+
+- Give enough context in spawn prompts (embed agent identity + skill content)
+- Size 5-6 tasks per teammate
+- Assign explicit file ownership to prevent conflicts between teammates
+- Always shutdown teammates and TeamDelete when done, even on failure
+- Wait for all teammates to complete before synthesizing results
 
 ## Mistakes to Avoid
 
@@ -111,16 +133,7 @@ Skills provide focused domain expertise without full agent orchestration.
 | 1 | Direct Execution | Simple, deterministic tasks | `/branch`, `/rebase`, `/merge` |
 | 2 | Skills | Domain expertise, format-specific | `/review`, `/debug`, `/ship-it` |
 | 3 | Agents | Complex specialists, deep analysis | `debugger`, `architect`, `security-auditor` |
-| 4 | Agent Teams | Multi-perspective, parallel exploration | Full-stack features, competing hypotheses |
-
-### Orchestration Skills
-
-| Skill | Purpose | Key Feature |
-|-------|---------|-------------|
-| `/review` | Comprehensive code review | Assertive analysis |
-| `/debug` | Root cause investigation | Context isolation |
-| `/ship-it` | Workflow orchestration | Task dependencies |
-| `/feature-lifecycle` | End-to-end feature implementation | Autonomous plan→merge |
+| 4 | Agent Teams (TeamCreate) | 2+ parallel agents in same workflow | `/fix-ci`, `/review --deep`, `/implement` |
 
 ## Available Skills
 
@@ -136,54 +149,16 @@ Skills provide focused operations for common workflows:
 
 Use tasks for multi-phase operations requiring progress visibility.
 
-### When to Use Tasks
+### Best Practices
 
-- 3+ distinct phases in a workflow
-- Dependencies between phases
-- User needs progress visibility
-- Complex orchestration across agents
-
-### Task Patterns
-
-| Pattern | Structure | Use Case |
-|---------|-----------|----------|
-| Sequential | A → B → C | Ordered steps with dependencies |
-| Diamond | (A + B parallel) → C | Independent work then synthesis |
-| Parallel with join | All complete → synthesis | Multiple analyses merged |
-
-### Task Best Practices
-
+- Use for 3+ phases with dependencies or progress visibility needs
 - Mark task `in_progress` BEFORE starting work
-- Mark `completed` only when fully done
-- Never mark completed if errors/blockers exist
-- Create new task for discovered blockers
-
-## Agent Routing
-
-Use this table to route requests to the appropriate specialized agent.
-
-| Keywords | Agent | Category |
-|----------|-------|----------|
-| fix, broken, bug, crash, error, not working | `debugger` | development |
-| slow, performance, optimize, faster, latency, memory | `debugger` | development |
-| security, vulnerability, auth, hack, injection | `security-auditor` | quality |
-| accessibility, a11y, wcag, aria, screen reader | `accessibility-auditor` | quality |
-| architecture, system design, roadmap, infrastructure | `architect` | analysis |
-| backend, server, api, microservice, distributed | `backend-engineer` | development |
-| frontend, ui, component, react, vue, css, html | `frontend-engineer` | development |
-| test, spec, coverage, unit test, integration test | `test-engineer` | quality |
-| docs, documentation, readme, write up | `tech-writer` | quality |
-| review, check, audit, quality | `code-reviewer` | quality |
-| deploy, ci/cd, pipeline, docker, kubernetes | `devops` | development |
-| pipeline, etl, database, sql, data warehouse | `data-engineer` | development |
-| research, compare, evaluate, analyze, options | `researcher` | analysis |
-| mobile, ios, android, swift, kotlin, react native | `mobile-engineer` | development |
-| ml, machine learning, model training, pytorch | `ml-engineer` | development |
-| implement feature, build feature, feature lifecycle | `feature-agent` | orchestration |
+- Mark `completed` only when fully done — never if errors/blockers exist
 
 ## Background Execution
 
-Use `run_in_background: true` for parallel agent work. Launch ALL parallel agents
-in a SINGLE message, then use TaskOutput to wait for completion before synthesis.
+**Rule: 2+ parallel agents → TeamCreate. Always.**
 
-Used by: `/fix-ci` (parallel debuggers), `/ship-it` (concurrent skills)
+`run_in_background: true` is only for single-agent background tasks (no terminal,
+invisible API call, output file only). For 2+ parallel agents, TeamCreate is mandatory
+— it provides live tmux panes, shared coordination, and graceful shutdown.
