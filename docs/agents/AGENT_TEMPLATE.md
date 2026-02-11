@@ -16,7 +16,8 @@
 # - haiku: Checklist-driven tasks, structured output, template-following
 #   * accessibility-auditor (WCAG checklists, automated tools, structured YAML reports)
 #   * tech-writer (markdown linting checklists, structured output, preloaded skill rules)
-#   * codex-delegate (Codex CLI orchestration, structured execution)
+# - codex (external): Codex CLI for cost-effective coding execution
+#   * codex-delegate (orchestrates Codex CLI, agent itself uses sonnet)
 #
 # Thinking level selection (optional - Sonnet 4.5/Opus 4.6 native support):
 # - ultrathink (31,999 tokens): System-wide architecture, complex forensics, enterprise planning

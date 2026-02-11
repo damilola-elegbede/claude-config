@@ -5,7 +5,7 @@ tools: Read, Write
 model: haiku
 permissionMode: acceptEdits
 color: cyan
-category: coordination
+category: quality
 skills: markdown-linting
 ---
 
