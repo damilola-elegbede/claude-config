@@ -175,6 +175,21 @@ Use tasks for multi-phase operations requiring progress visibility.
 | mobile, ios, android, swift, kotlin | `mobile-engineer` |
 | ml, machine learning, model training | `ml-engineer` |
 | implement feature, build feature | `feature-agent` |
+| codex, delegate coding, execute implementation | `codex-delegate` |
+
+## Model Tier Policy
+
+| Tier | Model | Agents |
+|------|-------|--------|
+| Execution | Codex CLI | codex-delegate (coding workhorse for well-defined tasks) |
+| Checklist | Haiku | accessibility-auditor, tech-writer |
+| Analysis | Sonnet | All other agents (default for TeamCreate teammates) |
+| Orchestration | Opus | architect, feature-agent, **main session** |
+
+- Main session MUST be Opus — never spawn Opus subagents except architect/feature-agent
+- Codex delegation: Claude plans → scopes → Codex executes → Claude reviews
+- Use Codex for implementation/tests/refactoring/fixes with clear requirements
+- Keep planning, review, debugging, research, and cross-file reasoning on Claude
 
 ## Background Execution
 

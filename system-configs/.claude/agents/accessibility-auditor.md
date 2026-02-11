@@ -2,7 +2,7 @@
 name: accessibility-auditor
 description: MUST BE USED for accessibility audits, WCAG compliance, and assistive technology testing. Use for ANY accessibility concern. Triggers on "accessibility", "a11y", "wcag", "screen reader", "aria", "keyboard navigation", "color contrast".
 tools: Read, Write, Grep, Glob, Bash
-model: sonnet
+model: haiku
 permissionMode: plan
 color: purple
 category: quality

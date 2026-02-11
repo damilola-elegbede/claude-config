@@ -64,6 +64,7 @@ COMPLEX_AGENTS = [
     'security-auditor',    # Comprehensive security patterns and checklists
     'tech-writer',         # Documentation patterns and templates
     'test-engineer',       # Testing strategies and patterns
+    'codex-delegate',      # Codex CLI orchestration and coding execution
 ]
 
 def extract_yaml_section(file_path):
