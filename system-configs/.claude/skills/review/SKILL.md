@@ -184,7 +184,7 @@ Task tool call 3:
   subagent_type: "general-purpose"
   name: "a11y-reviewer"
   team_name: "review-{current-branch}"
-  model: "sonnet"
+  model: "haiku"
   prompt: |
     You are an accessibility specialist conducting a focused accessibility review.
     IMPORTANT: Do NOT modify any source files. Only read source files and write your
@@ -526,7 +526,7 @@ Launching interactive triage...
 - No auto-fix — all changes require user approval via triage
 - `--full` mode may take longer depending on codebase size
 - `--deep` spawns three reviewers via TeamCreate for multi-perspective analysis
-- All `--deep` reviewers use `model: "sonnet"` with prompt-enforced read-only (no `mode: "plan"` — it blocks writing output files)
+- Code and security reviewers use `model: "sonnet"`; a11y-reviewer uses `model: "haiku"` (checklist-driven, structured output)
 - Code-reviewer prompt embeds `git-conventions` skill; security-reviewer embeds `security-checklist`
 - Cleanup (shutdown + TeamDelete) always runs after `--deep` review
 - Manual cleanup if needed: `rm -rf ~/.claude/teams/review-* ~/.claude/tasks/review-*`

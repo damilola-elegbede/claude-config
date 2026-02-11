@@ -281,6 +281,8 @@ Ready to proceed? Run without --dry-run
 
 - Uses TeamCreate for 2+ domains, single Task for 1 domain (avoids team overhead)
 - All teammates spawned with `model: "sonnet"` to match custom agent cost/behavior
+- Docs-domain tasks use `model: "haiku"` (template-following, structured output)
+- Well-scoped implementation tasks can be delegated to Codex via `/codex` for cost savings
 - File ownership prevents conflicts between teammates working in parallel
 - Shared files (types, configs) assigned to exactly one domain
 - Cleanup (shutdown + TeamDelete) always runs after multi-domain deployment

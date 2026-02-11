@@ -13,7 +13,11 @@
 # - opus: Complex architecture requiring maximum reasoning depth
 #   * principal-architect, project-orchestrator, result-arbitrator, career-strategist
 #   * feature-agent (orchestration requiring deep reasoning)
-# - haiku: Rapid validation, simple operations (currently unused)
+# - haiku: Checklist-driven tasks, structured output, template-following
+#   * accessibility-auditor (WCAG checklists, automated tools, structured YAML reports)
+#   * tech-writer (markdown linting checklists, structured output, preloaded skill rules)
+# - codex (external): Codex CLI for cost-effective coding execution
+#   * codex-delegate (orchestrates Codex CLI, agent itself uses sonnet)
 #
 # Thinking level selection (optional - Sonnet 4.5/Opus 4.6 native support):
 # - ultrathink (31,999 tokens): System-wide architecture, complex forensics, enterprise planning
@@ -155,11 +159,11 @@ skills: git-conventions, security-checklist
 - Reference skills should have `user-invocable: false` in their frontmatter
 - User-invocable skills can also be listed but will add to context size
 
-## Production Agents (15)
+## Production Agents (16)
 
 | Agent | Model | Category | Skills |
 |-------|-------|----------|--------|
-| accessibility-auditor | sonnet | quality | - |
+| accessibility-auditor | haiku | quality | - |
 | architect | opus | architecture | `api-design-patterns` |
 | backend-engineer | sonnet | development | `api-design-patterns` |
 | code-reviewer | sonnet | quality | `git-conventions`, `security-checklist` |
@@ -172,5 +176,6 @@ skills: git-conventions, security-checklist
 | mobile-engineer | sonnet | development | - |
 | researcher | sonnet | analysis | - |
 | security-auditor | sonnet | security | `security-checklist` |
-| tech-writer | sonnet | quality | `markdown-linting` |
+| tech-writer | haiku | quality | `markdown-linting` |
 | test-engineer | sonnet | quality | `testing-patterns` |
+| codex-delegate | sonnet | development | - |

@@ -391,6 +391,7 @@ Common Root Causes:
 - Two-phase architecture separates diagnosis from fixing
 - Uses TeamCreate for tmux visibility and shared task coordination
 - All teammates spawned with `model: "sonnet"` to match custom agent cost/behavior
+- Fixer teammates for simple domains (docs, lint, config) can use `model: "haiku"` for cost savings
 - Debugger identity and capabilities embedded in diagnoser spawn prompts (prompt-based specialization)
 - Domain-specific context embedded in fixer spawn prompts
 - Cleanup step (shutdown + TeamDelete) always runs, even on failure
